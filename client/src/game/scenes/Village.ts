@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import SocketManager from "../SocketManager";
+import SocketManager from "../managers/Socket";
 
 export default class Village extends Phaser.Scene {
   public socketManager = SocketManager;
