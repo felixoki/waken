@@ -2,24 +2,30 @@ import { ComponentName, StateName } from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
 import { handlers } from "./handlers";
+import { EntityName } from "@server/configs";
 
 export class Entity extends Phaser.GameObjects.Sprite {
-  public id: number;
+  public id: string;
+  
   public components = new Map<ComponentName, Component>();
-  declare state: StateName;
   public states?: Map<StateName, State>;
+
+  declare state: StateName;
+  declare name: EntityName;
 
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
     texture: string,
-    id: number,
+    id: string,
+    name: string,
     states?: Map<StateName, State>
   ) {
     super(scene, x, y, texture);
 
     this.id = id;
+    this.setName(name);
     this.states = states;
 
     this._init();
@@ -27,9 +33,12 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
   private _init() {
     this.scene.add.existing(this);
+    this.scene.sys.updateList.add(this);
   }
 
-  update() {}
+  preUpdate(time: number, delta: number) {
+    super.preUpdate(time, delta);
+  }
 
   destroy(fromScene?: boolean): void {
     super.destroy(fromScene);

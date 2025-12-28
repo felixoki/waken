@@ -1,10 +1,13 @@
 export interface PlayerConfig {
+  x: number;
+  y: number;
   id: string;
+  socketId: string;
 }
 
 export enum Direction {
-  UP = "up",
   DOWN = "down",
+  UP = "up",
   LEFT = "left",
   RIGHT = "right",
 }
@@ -12,12 +15,11 @@ export enum Direction {
 export enum StateName {
   IDLE = "idle",
   WALKING = "walking",
-  JUMPING = "jumping",
   RUNNING = "running",
+  JUMPING = "jumping",
   SLASHING = "slashing",
 }
 
 export enum ComponentName {
-  HEALTH = "health",
-  VELOCITY = "velocity",
+  ANIMATION = "animation",
 }
