@@ -9,6 +9,9 @@ export const config: Phaser.Types.Core.GameConfig = {
   scene: [Village],
   physics: {
     default: "arcade",
+    arcade: {
+      debug: true,
+    },
   },
   backgroundColor: "f3f3f3",
   pixelArt: true,

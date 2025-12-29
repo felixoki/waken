@@ -5,6 +5,7 @@ import { InputManager } from "./managers/Input";
 import { ANIMATIONS, EntityName } from "@server/configs";
 import { handlers } from "./handlers";
 import { State } from "./state/State";
+import { Scene } from "./scenes/Scene";
 
 export class Player extends Entity {
   public socketId: string;
@@ -12,18 +13,19 @@ export class Player extends Entity {
   public inputManager?: InputManager;
 
   constructor(
-    scene: Phaser.Scene,
+    scene: Scene,
     x: number,
     y: number,
     texture: string,
     id: string,
     name: string,
     direction: Direction,
+    directions: Direction[],
     states: Map<StateName, State>,
     socketId: string,
     isControllable: boolean
   ) {
-    super(scene, x, y, texture, id, name, direction, states);
+    super(scene, x, y, texture, id, name, direction, directions, states);
 
     this.socketId = socketId;
     this.isControllable = isControllable;
@@ -49,6 +51,7 @@ export class Player extends Entity {
     const prev = { state: this.state, direction: this.direction };
 
     this.setDirection(input.direction);
+    this.directions = input.directions;
 
     const { state, needsUpdate } = handlers.state.resolve(input, prev);
 
@@ -56,8 +59,7 @@ export class Player extends Entity {
 
     if (needsUpdate) this.states?.get(this.state)?.update(this);
 
-    if (this.isControllable)
-      this.scene.game.events.emit("player:input", input);
+    if (this.isControllable) this.scene.game.events.emit("player:input", input);
   }
 
   private _getInput(): PlayerInput {

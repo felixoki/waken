@@ -3,13 +3,14 @@ import { Player } from "../Player";
 import { EntityName } from "@server/configs";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
+import { Scene } from "../scenes/Scene";
 
 export class PlayerManager {
-  private scene: Phaser.Scene;
+  private scene: Scene;
   public player?: Player;
   private others: Map<string, Player> = new Map();
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Scene) {
     this.scene = scene;
   }
 
@@ -18,6 +19,9 @@ export class PlayerManager {
   }
 
   add(config: PlayerConfig, isLocal: boolean): void {
+    /**
+     * We should introduce a factory pattern here later on
+     */
     const player = new Player(
       this.scene,
       config.x,
@@ -26,6 +30,7 @@ export class PlayerManager {
       config.id,
       EntityName.PLAYER,
       Direction.DOWN,
+      [],
       new Map([
         [StateName.IDLE, new Idle()],
         [StateName.WALKING, new Walking()],
@@ -33,6 +38,8 @@ export class PlayerManager {
       config.socketId,
       isLocal
     );
+
+    this.scene.physicsManager.groups.players.add(player);
 
     if (isLocal) {
       this.player = player;

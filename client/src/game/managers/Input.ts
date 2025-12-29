@@ -1,4 +1,5 @@
 import { Direction } from "@server/types";
+import { Scene } from "../scenes/Scene";
 
 type Key = Phaser.Input.Keyboard.Key;
 
@@ -12,7 +13,7 @@ export class InputManager {
     SPACE: Key;
   };
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Scene) {
     this.keys = scene.input.keyboard!.addKeys({
       W: Phaser.Input.Keyboard.KeyCodes.W,
       A: Phaser.Input.Keyboard.KeyCodes.A,
