@@ -69,6 +69,7 @@ export class Player extends Entity {
   private _getInput(): PlayerInput {
     const direction = this.inputManager?.getDirection();
     const directions = this.inputManager?.getDirections();
+    const isRunning = this.inputManager?.isRunning();
 
     return {
       id: this.id,
@@ -76,6 +77,7 @@ export class Player extends Entity {
       y: this.y,
       direction: direction,
       directions: directions || [],
+      isRunning: isRunning || false,
       state: this.state,
       nextState: this.state, // return from InputManager
     };

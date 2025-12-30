@@ -6,12 +6,12 @@ import { Component } from "./Component";
 export class AnimationComponent extends Component {
   public name = ComponentName.ANIMATION;
   private entity: Entity;
-  private config: Record<StateName, AnimationConfig>;
+  private config: Partial<Record<StateName, AnimationConfig>>;
   private useMirroring: boolean;
 
   constructor(
     entity: Entity,
-    config: Record<StateName, AnimationConfig>,
+    config: Partial<Record<StateName, AnimationConfig>>,
     useMirroring: boolean = false
   ) {
     super();
@@ -27,6 +27,8 @@ export class AnimationComponent extends Component {
   update(): void {}
 
   play(state: StateName, direction: Direction): void {
+    if (!this.config[state]) return;
+
     const textureKey = `${this.entity.name}-${state}`;
     let dir = direction;
 

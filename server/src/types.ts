@@ -11,6 +11,7 @@ export interface PlayerInput {
   y: number;
   direction: Direction | null | undefined;
   directions: Direction[];
+  isRunning: boolean;
   state: StateName;
   nextState: StateName;
 }
@@ -39,6 +40,7 @@ export enum StateName {
   WALKING = "walking",
   RUNNING = "running",
   JUMPING = "jumping",
+  CASTING = "casting",
   SLASHING = "slashing",
 }
 

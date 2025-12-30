@@ -4,6 +4,7 @@ import { EntityName } from "@server/configs";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
 import { Scene } from "../scenes/Scene";
+import { Running } from "../state/Running";
 
 export class PlayerManager {
   private scene: Scene;
@@ -34,6 +35,7 @@ export class PlayerManager {
       new Map([
         [StateName.IDLE, new Idle()],
         [StateName.WALKING, new Walking()],
+        [StateName.RUNNING, new Running()],
       ]),
       config.socketId,
       isLocal

@@ -8,7 +8,8 @@ export const state = {
     const selectors = [
       {
         condition: () => input.direction,
-        state: () => StateName.WALKING,
+        state: () => (input.isRunning ? StateName.RUNNING : StateName.WALKING),
+        needsUpdate: true,
       },
       {
         condition: () => true,

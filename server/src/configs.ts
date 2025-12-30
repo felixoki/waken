@@ -10,7 +10,10 @@ export enum EntityName {
   PLAYER = "player",
 }
 
-export const ANIMATIONS: Record<string, Record<StateName, AnimationConfig>> = {
+export const ANIMATIONS: Record<
+  string,
+  Partial<Record<StateName, AnimationConfig>>
+> = {
   [EntityName.PLAYER]: {
     [StateName.IDLE]: {
       frameCount: 4,
@@ -24,7 +27,7 @@ export const ANIMATIONS: Record<string, Record<StateName, AnimationConfig>> = {
     },
     [StateName.RUNNING]: {
       frameCount: 8,
-      frameRate: 15,
+      frameRate: 10,
       repeat: -1,
     },
     [StateName.JUMPING]: {
@@ -32,7 +35,7 @@ export const ANIMATIONS: Record<string, Record<StateName, AnimationConfig>> = {
       frameRate: 12,
       repeat: 0,
     },
-    [StateName.SLASHING]: {
+    [StateName.CASTING]: {
       frameCount: 5,
       frameRate: 10,
       repeat: 0,
