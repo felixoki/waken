@@ -39,7 +39,7 @@ export class Player extends Entity {
     this.setScale(2);
 
     this.addComponent(
-      new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER])
+      new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER], true)
     );
   }
 
