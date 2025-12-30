@@ -48,7 +48,11 @@ export class Player extends Entity {
 
     if (!input) return;
 
-    const prev = { state: this.state, direction: this.direction };
+    const prev = {
+      state: this.state,
+      direction: this.direction,
+      directionCount: this.directions.length,
+    };
 
     this.setDirection(input.direction);
     this.directions = input.directions;

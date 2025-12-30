@@ -19,6 +19,11 @@ export class Walking implements State {
   }
 
   update(entity: Entity): void {
+    const anim = entity.getComponent<AnimationComponent>(
+      ComponentName.ANIMATION
+    );
+    anim?.play(this.name, entity.direction);
+
     handlers.move.getVelocity(entity, 200);
   }
 

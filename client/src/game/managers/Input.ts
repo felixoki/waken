@@ -25,12 +25,16 @@ export class InputManager {
   }
 
   getDirection(): Direction | null {
-    if (this.keys.W.isDown) return Direction.UP;
-    if (this.keys.S.isDown) return Direction.DOWN;
-    if (this.keys.A.isDown) return Direction.LEFT;
-    if (this.keys.D.isDown) return Direction.RIGHT;
+    const pressed = [
+      { key: this.keys.W, dir: Direction.UP },
+      { key: this.keys.S, dir: Direction.DOWN },
+      { key: this.keys.A, dir: Direction.LEFT },
+      { key: this.keys.D, dir: Direction.RIGHT },
+    ]
+      .filter((k) => k.key.isDown)
+      .sort((a, b) => b.key.timeDown - a.key.timeDown);
 
-    return null;
+    return pressed[0]?.dir || null;
   }
 
   getDirections(): Direction[] {
