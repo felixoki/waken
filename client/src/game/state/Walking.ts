@@ -3,6 +3,7 @@ import { Entity } from "../Entity";
 import { State } from "./State";
 import { AnimationComponent } from "../components/Animation";
 import { handlers } from "../handlers";
+import { SPEED_WALKING } from "@server/globals";
 
 export class Walking implements State {
   public name = StateName.WALKING;
@@ -24,7 +25,7 @@ export class Walking implements State {
     );
     anim?.play(this.name, entity.direction);
 
-    handlers.move.getVelocity(entity, 200);
+    handlers.move.getVelocity(entity, SPEED_WALKING);
   }
 
   exit(entity: Entity): void {

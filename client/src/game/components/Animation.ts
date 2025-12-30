@@ -32,16 +32,14 @@ export class AnimationComponent extends Component {
 
     if (this.useMirroring) {
       const dirs = this.entity.directions;
-      
-      const hasVertical =
-        dirs.includes(Direction.UP) || dirs.includes(Direction.DOWN);
-      const hasHorizontal =
-        dirs.includes(Direction.LEFT) || dirs.includes(Direction.RIGHT);
 
-      if (hasHorizontal) {
+      if (direction === Direction.LEFT || direction === Direction.RIGHT)
+        dir = Direction.DOWN;
+
+      if (dirs.includes(Direction.UP)) dir = Direction.UP;
+
+      if (dirs.includes(Direction.LEFT) || dirs.includes(Direction.RIGHT))
         this.entity.setFlipX(dirs.includes(Direction.LEFT));
-        if (!hasVertical) dir = Direction.DOWN;
-      }
     }
 
     const animKey = `${textureKey}-${dir}`;

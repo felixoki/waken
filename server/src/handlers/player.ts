@@ -13,7 +13,11 @@ export const player = {
     };
     players.add(player.id, player);
 
+    const others = players.getAll().filter((p) => p.id !== player.id);
+
     socket.emit("player:create:local", player);
+    socket.emit("player:create:others", others);
+    
     socket.broadcast.emit("player:create", player);
   },
 
