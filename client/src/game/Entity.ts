@@ -6,6 +6,9 @@ import { Scene } from "./scenes/Scene";
 import { PointableComponent } from "./components/Pointable";
 import { AnimationComponent } from "./components/Animation";
 import { ANIMATIONS } from "@server/configs";
+import { BehaviorQueue } from "./components/BehaviorQueue";
+import { Patrol } from "./behavior/Patrol";
+import { handlers } from "./handlers";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
@@ -68,6 +71,35 @@ export class Entity extends Phaser.GameObjects.Sprite {
     this.addComponent(
       new AnimationComponent(this, ANIMATIONS[this.name], false)
     );
+    this.addComponent(new BehaviorQueue(this));
+    this.getComponent<BehaviorQueue>(ComponentName.BEHAVIOR_QUEUE)?.add(
+      new Patrol(true)
+    );
+  }
+
+  update(): void {
+    const behavior = this.getComponent<BehaviorQueue>(
+      ComponentName.BEHAVIOR_QUEUE
+    );
+    const input = behavior?.update();
+
+    if (!input || this.isLocked) return;
+
+    const prev = {
+      state: this.state,
+      direction: this.direction,
+      directionCount: this.directions.length,
+    };
+
+    const prepared = { ...input, id: this.id, x: this.x, y: this.y };
+
+    const { state, needsUpdate } = handlers.state.resolve(prepared, prev);
+
+    if (input.direction) this.direction = input.direction;
+    if (input.directions) this.directions = input.directions;
+
+    if (state !== this.state) this.transitionTo(state);
+    if (needsUpdate) this.states?.get(this.state)?.update(this);
   }
 
   destroy(fromScene?: boolean): void {

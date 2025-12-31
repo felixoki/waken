@@ -1,4 +1,4 @@
-import { Direction, PlayerConfig, PlayerInput, StateName } from "@server/types";
+import { Direction, PlayerConfig, Input, StateName } from "@server/types";
 import { Player } from "../Player";
 import { EntityName } from "@server/types";
 import { Idle } from "../state/Idle";
@@ -56,7 +56,7 @@ export class PlayerManager {
     this.others.set(config.id, player);
   }
 
-  updateOther(input: PlayerInput): void {
+  updateOther(input: Input): void {
     const player = this.others.get(input.id);
     if (player) player.update(input);
   }

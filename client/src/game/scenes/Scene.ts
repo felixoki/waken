@@ -1,6 +1,6 @@
 import SocketManager from "../managers/Socket";
 import { PlayerManager } from "../managers/Player";
-import { EntityConfig, EntityHit, PlayerConfig, PlayerHit, PlayerInput } from "@server/types";
+import { EntityConfig, EntityHit, PlayerConfig, PlayerHit, Input } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
 
@@ -25,6 +25,7 @@ export class Scene extends Phaser.Scene {
 
   update(): void {
     this.playerManager.update();
+    this.entityManager.update();
   }
 
   private _registerEvents(): void {
@@ -49,11 +50,11 @@ export class Scene extends Phaser.Scene {
       this.playerManager.remove(data.id);
     });
 
-    this.socketManager.on("player:input", (data: PlayerInput) => {
+    this.socketManager.on("player:input", (data: Input) => {
       this.playerManager.updateOther(data);
     });
 
-    this.game.events.on("player:input", (data: PlayerInput) => {
+    this.game.events.on("player:input", (data: Input) => {
       this.socketManager.emit("player:input", data);
     });
 

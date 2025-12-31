@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { handlers } from "../handlers/index.js";
 import { PlayerStore } from "../stores/Player.js";
 import { tryCatch } from "../utils/tryCatch.js";
-import { EntityHit, PlayerHit, PlayerInput } from "../types.js";
+import { EntityHit, PlayerHit, Input } from "../types.js";
 import { EntityStore } from "../stores/Entity.js";
 
 type SocketEvent = {
@@ -26,7 +26,7 @@ export function registerHandlers(
     },
     {
       event: "player:input",
-      handler: (data: PlayerInput) =>
+      handler: (data: Input) =>
         handlers.player.input(data, socket, stores.players),
     },
     {

@@ -1,8 +1,8 @@
-import { Direction, PlayerInput, StateName } from "@server/types";
+import { Direction, Input, StateName } from "@server/types";
 
 export const state = {
   resolve: (
-    input: PlayerInput,
+    input: Partial<Input>,
     prev: { state: StateName; direction: Direction; directionCount: number }
   ) => {
     const selectors = [
@@ -32,7 +32,7 @@ export const state = {
     const changed = {
       state: selector?.state() !== prev.state,
       direction: !!input.direction && input.direction !== prev.direction,
-      directionCount: input.directions.length !== prev.directionCount,
+      directionCount: input.directions?.length !== prev.directionCount,
     };
 
     return {

@@ -9,7 +9,7 @@ export interface PlayerConfig {
   isHost: boolean;
 }
 
-export interface PlayerInput {
+export interface Input {
   id: string;
   x: number;
   y: number;
@@ -38,6 +38,11 @@ export interface EntityConfig {
 export interface EntityHit {
   attackerId: string;
   targetId: string;
+}
+
+export interface BehaviorInput {
+  targetX: number;
+  targetY: number;
 }
 
 /**
@@ -74,6 +79,7 @@ export enum StateName {
 export enum ComponentName {
   ANIMATION = "animation",
   POINTABLE = "pointable",
+  BEHAVIOR_QUEUE = "behaviorQueue",
 }
 
 export enum EntityName {

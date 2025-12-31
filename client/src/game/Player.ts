@@ -1,4 +1,4 @@
-import { Direction, PlayerInput, StateName, EntityName } from "@server/types";
+import { Direction, Input, StateName, EntityName } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
 import { InputManager } from "./managers/Input";
@@ -44,7 +44,7 @@ export class Player extends Entity {
     );
   }
 
-  update(remoteInput?: PlayerInput): void {
+  update(remoteInput?: Input): void {
     const input = remoteInput || this._getInput();
 
     if (!input || this.isLocked) return;
@@ -76,7 +76,7 @@ export class Player extends Entity {
     if (this.isControllable) this.scene.game.events.emit("player:input", input);
   }
 
-  private _getInput(): PlayerInput {
+  private _getInput(): Input {
     const direction = this.inputManager?.getDirection();
     const directions = this.inputManager?.getDirections();
     const isRunning = this.inputManager?.isRunning();

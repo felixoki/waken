@@ -1,13 +1,15 @@
-import { ComponentName, StateName } from "@server/types";
+import { ComponentName } from "@server/types";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
 
 export class PointableComponent extends Component {
-  public name: ComponentName = ComponentName.POINTABLE;
   private entity: Entity;
+
+  public name: ComponentName = ComponentName.POINTABLE;
 
   constructor(entity: Entity) {
     super();
+    
     this.entity = entity;
   }
 
@@ -20,8 +22,6 @@ export class PointableComponent extends Component {
     const playerManager = this.entity.scene.playerManager;
     const player = playerManager.player;
     player?.inputManager?.setTarget(this.entity.id);
-
-    this.entity.states?.get(StateName.SLASHING)?.enter(this.entity);
   }
 
   detach(): void {

@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { PlayerStore } from "../stores/Player.js";
 import { randomInt, randomUUID } from "crypto";
-import { PlayerHit, PlayerInput } from "../types.js";
+import { PlayerHit, Input } from "../types.js";
 
 export const player = {
   create: (socket: Socket, players: PlayerStore) => {
@@ -32,7 +32,7 @@ export const player = {
     socket.broadcast.emit("player:left", { id: player.id });
   },
 
-  input: (data: PlayerInput, socket: Socket, players: PlayerStore) => {
+  input: (data: Input, socket: Socket, players: PlayerStore) => {
     const player = players.get(data.id);
     if (!player) return;
 

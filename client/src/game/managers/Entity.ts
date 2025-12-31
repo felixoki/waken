@@ -15,11 +15,12 @@ export class EntityManager {
   }
 
   /**
-   * Entities should receive their data from the server
+   * Entities should receive data from the server
    */
-  update(data: any): void {
-    const entity = this.entities.get(data.id);
-    if (entity) entity.update(data);
+  updateOne(): void {}
+
+  update(): void {
+    for (const entity of this.entities.values()) entity.update();
   }
 
   add(config: EntityConfig): void {

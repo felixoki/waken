@@ -4,10 +4,11 @@ import { Entity } from "../Entity";
 import { Component } from "./Component";
 
 export class AnimationComponent extends Component {
-  public name = ComponentName.ANIMATION;
   private entity: Entity;
   private config: Partial<Record<StateName, AnimationConfig>>;
   private useMirroring: boolean;
+  
+  public name = ComponentName.ANIMATION;
 
   constructor(
     entity: Entity,
@@ -49,7 +50,8 @@ export class AnimationComponent extends Component {
     if (this.entity.texture.key !== textureKey)
       this.entity.setTexture(textureKey);
 
-    this.entity.play(animKey);
+    if (this.entity.anims.currentAnim?.key !== animKey)
+      this.entity.play(animKey);
   }
 
   private _createAnims(): void {
