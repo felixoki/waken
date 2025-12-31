@@ -11,3 +11,5 @@ export const HEIGHT_JUMPING = 40;
 
 export const DURATION_CASTING = 800;
 export const DURATION_JUMPING = 800;
+
+export const DURATION_SLASHING = 800;

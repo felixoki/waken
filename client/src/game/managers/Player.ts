@@ -1,6 +1,6 @@
 import { Direction, PlayerConfig, PlayerInput, StateName } from "@server/types";
 import { Player } from "../Player";
-import { EntityName } from "@server/configs";
+import { EntityName } from "@server/types";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
 import { Scene } from "../scenes/Scene";
@@ -42,6 +42,7 @@ export class PlayerManager {
         [StateName.CASTING, new Casting()],
       ]),
       config.socketId,
+      config.isHost,
       isLocal
     );
 

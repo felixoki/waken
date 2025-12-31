@@ -1,6 +1,4 @@
-import { Direction } from "@server/types";
 import { Scene } from "./Scene";
-import { Entity } from "../Entity";
 
 export default class Village extends Scene {
   constructor() {
@@ -47,35 +45,29 @@ export default class Village extends Scene {
         frameHeight: 64,
       }
     );
-  }
-
-  create() {
-    super.create();
-
-    const graphics = this.add.graphics();
-
-    graphics.fillStyle(0x0000ff, 1);
-    graphics.fillRect(0, 0, 32, 32);
-    graphics.generateTexture("training-dummy", 32, 32);
-    graphics.destroy();
-
-    const dummy = new Entity(
-      this,
-      400,
-      300,
-      "training-dummy",
-      "dummy",
-      "TrainingDummy",
-      Direction.DOWN,
-      [],
-      undefined
+    this.load.spritesheet(
+      "orc1-idle",
+      "assets/sprites/orc1_idle_with_shadow.png",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      }
     );
-    dummy.setInteractive();
-    dummy.on("pointerdown", () => {
-      /**
-       * We should direct the player to the target on click
-       */
-      this.playerManager.player?.inputManager?.setTarget(dummy.id);
-    });
+    this.load.spritesheet(
+      "orc1-walking",
+      "assets/sprites/orc1_walking_with_shadow.png",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      }
+    );
+    this.load.spritesheet(
+      "orc1-slashing",
+      "assets/sprites/orc1_slashing_with_shadow.png",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      }
+    );
   }
 }

@@ -1,8 +1,12 @@
+/**
+ * Players
+ */
 export interface PlayerConfig {
   id: string;
   socketId: string;
   x: number;
   y: number;
+  isHost: boolean;
 }
 
 export interface PlayerInput {
@@ -17,6 +21,28 @@ export interface PlayerInput {
   state: StateName;
 }
 
+export interface PlayerHit {
+  attackerId: string;
+  targetId: string;
+}
+
+/**
+ * Entities
+ */
+export interface EntityConfig {
+  id: string;
+  x: number;
+  y: number;
+}
+
+export interface EntityHit {
+  attackerId: string;
+  targetId: string;
+}
+
+/**
+ * Common
+ */
 export interface StateResolution {
   state: StateName;
   needsUpdate: boolean;
@@ -47,4 +73,10 @@ export enum StateName {
 
 export enum ComponentName {
   ANIMATION = "animation",
+  POINTABLE = "pointable",
+}
+
+export enum EntityName {
+  PLAYER = "player",
+  ORC1 = "orc1",
 }

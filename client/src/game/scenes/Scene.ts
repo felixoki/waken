@@ -1,19 +1,24 @@
 import SocketManager from "../managers/Socket";
 import { PlayerManager } from "../managers/Player";
-import { PlayerConfig, PlayerInput } from "@server/types";
+import { EntityConfig, EntityHit, PlayerConfig, PlayerHit, PlayerInput } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
+import { EntityManager } from "../managers/Entity";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhsyicsManager;
   public playerManager!: PlayerManager;
+  public entityManager!: EntityManager;
   public socketManager = SocketManager;
 
   create(): void {
     this.physicsManager = new PhsyicsManager(this);
     this.playerManager = new PlayerManager(this);
+    this.entityManager = new EntityManager(this);
 
     this.socketManager.init();
+
     this.socketManager.emit("player:create");
+    this.socketManager.emit("entity:create");
 
     this._registerEvents();
   }
@@ -23,10 +28,13 @@ export class Scene extends Phaser.Scene {
   }
 
   private _registerEvents(): void {
+    /**
+     * Players
+     */
     this.socketManager.on("player:create:local", (data: PlayerConfig) => {
       this.playerManager.add(data, true);
     });
-    
+
     this.socketManager.on("player:create:others", (data: PlayerConfig[]) => {
       data.forEach((player) => {
         this.playerManager.add(player, false);
@@ -49,6 +57,24 @@ export class Scene extends Phaser.Scene {
       this.socketManager.emit("player:input", data);
     });
 
+    this.game.events.on("player:hit", (data: PlayerHit) => {
+      this.socketManager.emit("player:hit", data);
+    });
+
+    /**
+     * Entities
+     */
+    this.socketManager.on("entity:create", (data: EntityConfig) => {
+      this.entityManager.add(data);
+    });
+
+    this.game.events.on("entity:hit", (data: EntityHit) => {
+      this.socketManager.emit("entity:hit", data);
+    });
+
+    /**
+     * Shutdown
+     */
     this.game.events.once("destroy", this.shutdown, this);
   }
 
@@ -60,6 +86,8 @@ export class Scene extends Phaser.Scene {
     this.socketManager.off("player:input");
 
     this.game.events.off("player:input");
+    this.game.events.off("player:hit");
+    this.game.events.off("entity:hit");
 
     this.playerManager.destroy();
     this.socketManager.disconnect();

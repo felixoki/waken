@@ -1,8 +1,11 @@
 import { ComponentName, Direction, StateName } from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
-import { EntityName } from "@server/configs";
+import { EntityName } from "@server/types";
 import { Scene } from "./scenes/Scene";
+import { PointableComponent } from "./components/Pointable";
+import { AnimationComponent } from "./components/Animation";
+import { ANIMATIONS } from "@server/configs";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
@@ -42,6 +45,11 @@ export class Entity extends Phaser.GameObjects.Sprite {
   }
 
   private _init() {
+    /**
+     * We will handle this with the camera later
+     */
+    this.setScale(2);
+
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.scene.physicsManager.groups.entities.add(this);
@@ -52,6 +60,14 @@ export class Entity extends Phaser.GameObjects.Sprite {
     this.body.setSize(16, 32);
     this.body.setOffset(24, 16);
     this.body.pushable = false;
+
+    /**
+     * We will handle this with a factory later
+     */
+    this.addComponent(new PointableComponent(this));
+    this.addComponent(
+      new AnimationComponent(this, ANIMATIONS[this.name], false)
+    );
   }
 
   destroy(fromScene?: boolean): void {

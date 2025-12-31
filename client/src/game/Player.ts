@@ -1,14 +1,15 @@
-import { Direction, PlayerInput, StateName } from "@server/types";
+import { Direction, PlayerInput, StateName, EntityName } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
 import { InputManager } from "./managers/Input";
-import { ANIMATIONS, EntityName } from "@server/configs";
+import { ANIMATIONS } from "@server/configs";
 import { handlers } from "./handlers";
 import { State } from "./state/State";
 import { Scene } from "./scenes/Scene";
 
 export class Player extends Entity {
   public socketId: string;
+  public isHost: boolean;
   public isControllable: boolean;
   public inputManager?: InputManager;
 
@@ -23,11 +24,13 @@ export class Player extends Entity {
     directions: Direction[],
     states: Map<StateName, State>,
     socketId: string,
+    isHost: boolean,
     isControllable: boolean
   ) {
     super(scene, x, y, texture, id, name, direction, directions, states);
 
     this.socketId = socketId;
+    this.isHost = isHost;
     this.isControllable = isControllable;
 
     if (this.isControllable) this.inputManager = new InputManager(this.scene);
@@ -36,8 +39,6 @@ export class Player extends Entity {
   }
 
   init(): void {
-    this.setScale(2);
-
     this.addComponent(
       new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER], true)
     );
