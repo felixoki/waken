@@ -3,6 +3,8 @@ import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
 import { DURATION_CASTING } from "@server/globals";
+import { handlers } from "../handlers";
+import { Projectile } from "../Projectile";
 
 export class Casting implements State {
   private timer: Phaser.Time.TimerEvent | null = null;
@@ -20,6 +22,22 @@ export class Casting implements State {
     this.timer = entity.scene.time.delayedCall(DURATION_CASTING, () => {
       this.exit(entity);
     });
+
+    const direction = entity.directions.length
+      ? handlers.combat.getDiagonalDirectionVector(entity.directions)
+      : handlers.combat.getDirectionVector(entity.direction);
+
+    new Projectile(
+      entity.scene,
+      entity.x + direction.x * 20,
+      entity.y + direction.y * 20,
+      16,
+      16,
+      entity.id,
+      200,
+      1000,
+      direction
+    );
   }
 
   update(_entity: Entity): void {}

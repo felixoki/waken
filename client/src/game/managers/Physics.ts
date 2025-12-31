@@ -1,3 +1,4 @@
+import { handlers } from "../handlers";
 import { Scene } from "../scenes/Scene";
 
 export class PhsyicsManager {
@@ -5,6 +6,7 @@ export class PhsyicsManager {
   public groups!: {
     players: Phaser.Physics.Arcade.Group;
     entities: Phaser.Physics.Arcade.Group;
+    hits: Phaser.Physics.Arcade.Group;
   };
 
   constructor(scene: Scene) {
@@ -21,10 +23,19 @@ export class PhsyicsManager {
       entities: this.scene.physics.add.group({
         collideWorldBounds: true,
       }),
+      hits: this.scene.physics.add.group(),
     };
 
     this.scene.physics.add.collider(this.groups.players, this.groups.players);
     this.scene.physics.add.collider(this.groups.players, this.groups.entities);
     this.scene.physics.add.collider(this.groups.entities, this.groups.entities);
+
+    this.scene.physics.add.overlap(
+      this.groups.entities,
+      this.groups.hits,
+      handlers.physics.overlap,
+      undefined,
+      this
+    );
   }
 }

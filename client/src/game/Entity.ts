@@ -1,8 +1,4 @@
-import {
-  ComponentName,
-  Direction,
-  StateName,
-} from "@server/types";
+import { ComponentName, Direction, StateName } from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
 import { EntityName } from "@server/configs";
@@ -48,10 +44,14 @@ export class Entity extends Phaser.GameObjects.Sprite {
   private _init() {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
+    this.scene.physicsManager.groups.entities.add(this);
 
-    // We need to pass these in for variety
-    this.body.setSize(16, 24);
+    /**
+     * We need to pass these in for variety
+     */
+    this.body.setSize(16, 32);
     this.body.setOffset(24, 16);
+    this.body.pushable = false;
   }
 
   destroy(fromScene?: boolean): void {
