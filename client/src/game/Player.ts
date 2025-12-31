@@ -6,6 +6,7 @@ import { ANIMATIONS } from "@server/configs";
 import { handlers } from "./handlers";
 import { State } from "./state/State";
 import { Scene } from "./scenes/Scene";
+import { BodyComponent } from "./components/Body";
 
 export class Player extends Entity {
   public socketId: string;
@@ -41,6 +42,15 @@ export class Player extends Entity {
   init(): void {
     this.addComponent(
       new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER], true)
+    );
+    this.addComponent(
+      new BodyComponent(this, {
+        width: 16,
+        height: 32,
+        offsetX: 24,
+        offsetY: 16,
+        pushable: false,
+      })
     );
   }
 
@@ -94,9 +104,5 @@ export class Player extends Entity {
       target: target,
       state: this.state,
     };
-  }
-
-  setDirection(direction: Direction | null | undefined): void {
-    this.direction = direction || this.direction;
   }
 }

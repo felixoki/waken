@@ -1,10 +1,12 @@
-import { Direction, Input } from "@server/types";
+import { BehaviorName, Direction, Input } from "@server/types";
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 
 export class Patrol extends Behavior {
   private start: number = 0;
   private direction: Direction = Direction.RIGHT;
+
+  public name = BehaviorName.PATROL;
 
   constructor(repeat: boolean = true) {
     super();

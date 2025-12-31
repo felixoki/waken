@@ -31,10 +31,10 @@ export class Casting implements State {
       entity.scene,
       entity.x + direction.x * 20,
       entity.y + direction.y * 20,
-      16,
-      16,
+      32,
+      32,
       entity.id,
-      200,
+      400,
       1000,
       direction
     );

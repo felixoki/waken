@@ -1,10 +1,7 @@
-import { Direction, EntityConfig, EntityName, StateName } from "@server/types";
+import { EntityConfig } from "@server/types";
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
-import { Idle } from "../state/Idle";
-import { Walking } from "../state/Walking";
-import { Running } from "../state/Running";
-import { Slashing } from "../state/Slashing";
+import { Factory } from "../factory/Factory";
 
 export class EntityManager {
   private scene: Scene;
@@ -24,25 +21,7 @@ export class EntityManager {
   }
 
   add(config: EntityConfig): void {
-    /**
-     * We should introduce a factory pattern here later on
-     */
-    const entity = new Entity(
-      this.scene,
-      config.x,
-      config.y,
-      `${EntityName.ORC1}-${StateName.IDLE}`,
-      config.id,
-      EntityName.ORC1,
-      Direction.DOWN,
-      [],
-      new Map([
-        [StateName.IDLE, new Idle()],
-        [StateName.WALKING, new Walking()],
-        [StateName.RUNNING, new Running()],
-        [StateName.SLASHING, new Slashing()],
-      ])
-    );
+    const entity = Factory.create(this.scene, config);
 
     this.scene.physicsManager.groups.entities.add(entity);
     this.entities.set(config.id, entity);

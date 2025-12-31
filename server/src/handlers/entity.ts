@@ -1,5 +1,12 @@
 import { Socket } from "socket.io";
-import { EntityHit } from "../types";
+import {
+  BehaviorName,
+  ComponentName,
+  Direction,
+  EntityHit,
+  EntityName,
+  StateName,
+} from "../types";
 import { EntityStore } from "../stores/Entity";
 import { randomInt, randomUUID } from "crypto";
 import { PlayerStore } from "../stores/Player";
@@ -13,7 +20,33 @@ export const entity = {
       x: randomInt(0, 400),
       y: randomInt(0, 400),
       id: randomUUID(),
+      name: EntityName.ORC1,
+      direction: Direction.DOWN,
+      directions: [],
+      components: [
+        { name: ComponentName.POINTABLE },
+        { name: ComponentName.ANIMATION },
+        {
+          name: ComponentName.BODY,
+          config: {
+            width: 16,
+            height: 32,
+            offsetX: 24,
+            offsetY: 12,
+            pushable: false,
+          },
+        },
+        { name: ComponentName.BEHAVIOR_QUEUE },
+      ],
+      states: [
+        StateName.IDLE,
+        StateName.WALKING,
+        StateName.RUNNING,
+        StateName.SLASHING,
+      ],
+      behaviors: [BehaviorName.PATROL],
     };
+
     entities.add(entity.id, entity);
 
     socket.emit("entity:create", entity);

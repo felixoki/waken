@@ -9,18 +9,6 @@ export interface PlayerConfig {
   isHost: boolean;
 }
 
-export interface Input {
-  id: string;
-  x: number;
-  y: number;
-  direction: Direction | null | undefined;
-  directions: Direction[];
-  isRunning: boolean;
-  isJumping: boolean;
-  target?: string;
-  state: StateName;
-}
-
 export interface PlayerHit {
   attackerId: string;
   targetId: string;
@@ -33,6 +21,12 @@ export interface EntityConfig {
   id: string;
   x: number;
   y: number;
+  name: EntityName;
+  direction: Direction;
+  directions: Direction[];
+  components: ComponentConfig[];
+  states: StateName[];
+  behaviors?: BehaviorName[];
 }
 
 export interface EntityHit {
@@ -48,6 +42,18 @@ export interface BehaviorInput {
 /**
  * Common
  */
+export interface Input {
+  id: string;
+  x: number;
+  y: number;
+  direction: Direction | null | undefined;
+  directions: Direction[];
+  isRunning: boolean;
+  isJumping: boolean;
+  target?: string;
+  state: StateName;
+}
+
 export interface StateResolution {
   state: StateName;
   needsUpdate: boolean;
@@ -78,11 +84,33 @@ export enum StateName {
 
 export enum ComponentName {
   ANIMATION = "animation",
-  POINTABLE = "pointable",
   BEHAVIOR_QUEUE = "behaviorQueue",
+  BODY = "body",
+  POINTABLE = "pointable",
 }
+
+export type ComponentConfig =
+  | { name: ComponentName.ANIMATION }
+  | { name: ComponentName.BEHAVIOR_QUEUE }
+  | { name: ComponentName.BODY; config: BodyConfig }
+  | { name: ComponentName.POINTABLE };
 
 export enum EntityName {
   PLAYER = "player",
   ORC1 = "orc1",
+}
+
+export enum BehaviorName {
+  PATROL = "patrol",
+}
+
+/**
+ * Components
+ */
+export interface BodyConfig {
+  width: number;
+  height: number;
+  offsetX: number;
+  offsetY: number;
+  pushable?: boolean;
 }

@@ -9,6 +9,7 @@ import { ANIMATIONS } from "@server/configs";
 import { BehaviorQueue } from "./components/BehaviorQueue";
 import { Patrol } from "./behavior/Patrol";
 import { handlers } from "./handlers";
+import { BodyComponent } from "./components/Body";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
@@ -58,18 +59,20 @@ export class Entity extends Phaser.GameObjects.Sprite {
     this.scene.physicsManager.groups.entities.add(this);
 
     /**
-     * We need to pass these in for variety
-     */
-    this.body.setSize(16, 32);
-    this.body.setOffset(24, 16);
-    this.body.pushable = false;
-
-    /**
      * We will handle this with a factory later
      */
     this.addComponent(new PointableComponent(this));
     this.addComponent(
       new AnimationComponent(this, ANIMATIONS[this.name], false)
+    );
+    this.addComponent(
+      new BodyComponent(this, {
+        width: 16,
+        height: 32,
+        offsetX: 24,
+        offsetY: 12,
+        pushable: false,
+      })
     );
     this.addComponent(new BehaviorQueue(this));
     this.getComponent<BehaviorQueue>(ComponentName.BEHAVIOR_QUEUE)?.add(
@@ -92,10 +95,9 @@ export class Entity extends Phaser.GameObjects.Sprite {
     };
 
     const prepared = { ...input, id: this.id, x: this.x, y: this.y };
-
     const { state, needsUpdate } = handlers.state.resolve(prepared, prev);
 
-    if (input.direction) this.direction = input.direction;
+    if (input.direction) this.setDirection(input.direction);
     if (input.directions) this.directions = input.directions;
 
     if (state !== this.state) this.transitionTo(state);
@@ -140,5 +142,12 @@ export class Entity extends Phaser.GameObjects.Sprite {
       component.detach();
       this.components.delete(name);
     }
+  }
+
+  /**
+   * Helpers
+   */
+  setDirection(direction: Direction | null | undefined): void {
+    this.direction = direction || this.direction;
   }
 }
