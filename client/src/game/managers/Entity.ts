@@ -2,6 +2,7 @@ import { EntityConfig } from "@server/types";
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
 import { Factory } from "../factory/Factory";
+import { DEFINITIONS } from "@server/configs";
 
 export class EntityManager {
   private scene: Scene;
@@ -12,7 +13,7 @@ export class EntityManager {
   }
 
   /**
-   * Entities should receive data from the server
+   * Entities can receive exclusive updates from the server
    */
   updateOne(): void {}
 
@@ -21,7 +22,8 @@ export class EntityManager {
   }
 
   add(config: EntityConfig): void {
-    const entity = Factory.create(this.scene, config);
+    const definition = DEFINITIONS[config.name];
+    const entity = Factory.create(this.scene, { ...config, ...definition! });
 
     this.scene.physicsManager.groups.entities.add(entity);
     this.entities.set(config.id, entity);

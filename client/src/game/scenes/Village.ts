@@ -69,5 +69,9 @@ export default class Village extends Scene {
         frameHeight: 64,
       }
     );
+    this.load.spritesheet("player_home", "assets/sprites/player_home.png", {
+      frameWidth: 16,
+      frameHeight: 16,
+    });
   }
 }

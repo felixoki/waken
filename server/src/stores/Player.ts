@@ -1,4 +1,4 @@
-import { PlayerConfig } from "../types.js";
+import { MapName, PlayerConfig } from "../types.js";
 
 export class PlayerStore {
   private players: Map<string, PlayerConfig> = new Map();
@@ -22,6 +22,12 @@ export class PlayerStore {
 
   getAll(): PlayerConfig[] {
     return Array.from(this.players.values());
+  }
+
+  getByMap(map: MapName): PlayerConfig[] {
+    return Array.from(this.players.values()).filter(
+      (player) => player.map === map
+    );
   }
 
   getBySocketId(id: string): PlayerConfig | undefined {

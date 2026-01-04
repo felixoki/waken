@@ -1,3 +1,5 @@
+import { MapName, PlayerConfig } from "../types";
+
 export class EntityStore {
   private entities: Map<string, any> = new Map();
 
@@ -20,5 +22,11 @@ export class EntityStore {
 
   getAll(): any[] {
     return Array.from(this.entities.values());
+  }
+
+  getByMap(map: MapName): PlayerConfig[] {
+    return Array.from(this.entities.values()).filter(
+      (entity) => entity.map === map
+    );
   }
 }

@@ -3,13 +3,8 @@ import { State } from "./state/State";
 import { Component } from "./components/Component";
 import { EntityName } from "@server/types";
 import { Scene } from "./scenes/Scene";
-import { PointableComponent } from "./components/Pointable";
-import { AnimationComponent } from "./components/Animation";
-import { ANIMATIONS } from "@server/configs";
 import { BehaviorQueue } from "./components/BehaviorQueue";
-import { Patrol } from "./behavior/Patrol";
 import { handlers } from "./handlers";
-import { BodyComponent } from "./components/Body";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
@@ -49,35 +44,9 @@ export class Entity extends Phaser.GameObjects.Sprite {
   }
 
   private _init() {
-    /**
-     * We will handle this with the camera later
-     */
-    this.setScale(2);
-
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.scene.physicsManager.groups.entities.add(this);
-
-    /**
-     * We will handle this with a factory later
-     */
-    this.addComponent(new PointableComponent(this));
-    this.addComponent(
-      new AnimationComponent(this, ANIMATIONS[this.name], false)
-    );
-    this.addComponent(
-      new BodyComponent(this, {
-        width: 16,
-        height: 32,
-        offsetX: 24,
-        offsetY: 12,
-        pushable: false,
-      })
-    );
-    this.addComponent(new BehaviorQueue(this));
-    this.getComponent<BehaviorQueue>(ComponentName.BEHAVIOR_QUEUE)?.add(
-      new Patrol(true)
-    );
   }
 
   update(): void {

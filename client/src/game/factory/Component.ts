@@ -1,4 +1,9 @@
-import { BodyConfig, ComponentConfig, ComponentName } from "@server/types";
+import {
+  BodyConfig,
+  ComponentConfig,
+  ComponentName,
+  TextureConfig,
+} from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "../components/Component";
 import { PointableComponent } from "../components/Pointable";
@@ -6,6 +11,7 @@ import { BehaviorQueue } from "../components/BehaviorQueue";
 import { BodyComponent } from "../components/Body";
 import { ANIMATIONS } from "@server/configs";
 import { AnimationComponent } from "../components/Animation";
+import { TextureComponent } from "../components/Texture";
 
 export class ComponentFactory {
   static create(
@@ -18,7 +24,7 @@ export class ComponentFactory {
       const map: Record<ComponentName, Component> = {
         [ComponentName.ANIMATION]: new AnimationComponent(
           entity,
-          ANIMATIONS[entity.name],
+          ANIMATIONS[entity.name] ?? {},
           false
         ),
         [ComponentName.BEHAVIOR_QUEUE]: new BehaviorQueue(entity),
@@ -27,6 +33,16 @@ export class ComponentFactory {
           (config as { name: ComponentName.BODY; config: BodyConfig }).config
         ),
         [ComponentName.POINTABLE]: new PointableComponent(entity),
+        [ComponentName.TEXTURE]: new TextureComponent(
+          entity,
+          (
+            config as {
+              name: ComponentName.TEXTURE;
+              config: TextureConfig;
+            }
+          ).config,
+          `${entity.name}_texture`
+        ),
       };
 
       if (map[config.name]) components.set(config.name, map[config.name]);

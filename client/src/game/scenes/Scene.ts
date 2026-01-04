@@ -1,6 +1,12 @@
 import SocketManager from "../managers/Socket";
 import { PlayerManager } from "../managers/Player";
-import { EntityConfig, EntityHit, PlayerConfig, PlayerHit, Input } from "@server/types";
+import {
+  EntityConfig,
+  EntityHit,
+  PlayerConfig,
+  PlayerHit,
+  Input,
+} from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
 
@@ -16,9 +22,7 @@ export class Scene extends Phaser.Scene {
     this.entityManager = new EntityManager(this);
 
     this.socketManager.init();
-
     this.socketManager.emit("player:create");
-    this.socketManager.emit("entity:create");
 
     this._registerEvents();
   }
@@ -69,6 +73,12 @@ export class Scene extends Phaser.Scene {
       this.entityManager.add(data);
     });
 
+    this.socketManager.on("entity:create:all", (data: EntityConfig[]) => {
+      data.forEach((entity) => {
+        this.entityManager.add(entity);
+      });
+    });
+
     this.game.events.on("entity:hit", (data: EntityHit) => {
       this.socketManager.emit("entity:hit", data);
     });
@@ -85,6 +95,8 @@ export class Scene extends Phaser.Scene {
     this.socketManager.off("player:create");
     this.socketManager.off("player:left");
     this.socketManager.off("player:input");
+    this.socketManager.off("entity:create");
+    this.socketManager.off("entity:create:all");
 
     this.game.events.off("player:input");
     this.game.events.off("player:hit");

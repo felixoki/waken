@@ -1,4 +1,9 @@
-import { ComponentName, EntityConfig, StateName } from "@server/types";
+import {
+  ComponentName,
+  EntityConfig,
+  EntityDefinition,
+  StateName,
+} from "@server/types";
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
 import { StateFactory } from "./State";
@@ -7,33 +12,36 @@ import { BehaviorQueue } from "../components/BehaviorQueue";
 import { BehaviorFactory } from "./Behavior";
 
 export class Factory {
-  static create(scene: Scene, config: EntityConfig): Entity {
-    const states = StateFactory.create(config.states);
-    const texture = `${config.name}-${StateName.IDLE}`;
+  static create(
+    scene: Scene,
+    definition: EntityConfig & EntityDefinition
+  ): Entity {
+    const states = StateFactory.create(definition.states);
+    const texture = `${definition.name}-${StateName.IDLE}`;
 
     const entity = new Entity(
       scene,
-      config.x,
-      config.y,
+      definition.x,
+      definition.y,
       texture,
-      config.id,
-      config.name,
-      config.direction,
-      config.directions,
+      definition.id,
+      definition.name,
+      definition.direction,
+      definition.directions,
       states
     );
 
-    const components = ComponentFactory.create(config.components, entity);
+    const components = ComponentFactory.create(definition.components, entity);
 
     for (const [_, component] of components) entity.addComponent(component);
 
-    if (config.behaviors && config.behaviors.length) {
+    if (definition.behaviors && definition.behaviors.length) {
       const behaviorQueue = entity.getComponent<BehaviorQueue>(
         ComponentName.BEHAVIOR_QUEUE
       );
 
       if (behaviorQueue) {
-        const behaviors = BehaviorFactory.create(config.behaviors);
+        const behaviors = BehaviorFactory.create(definition.behaviors);
         for (const behavior of behaviors) behaviorQueue.add(behavior);
       }
     }

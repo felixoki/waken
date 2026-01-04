@@ -18,7 +18,8 @@ export function registerHandlers(
   const events: SocketEvent[] = [
     {
       event: "player:create",
-      handler: () => handlers.player.create(socket, stores.players),
+      handler: () =>
+        handlers.player.create(socket, stores.players, stores.entities),
     },
     {
       event: "disconnect",
