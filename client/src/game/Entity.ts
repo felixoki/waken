@@ -71,6 +71,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     if (state !== this.state) this.transitionTo(state);
     if (needsUpdate) this.states?.get(this.state)?.update(this);
+    
+    this.setDepth(this.y);
   }
 
   destroy(fromScene?: boolean): void {

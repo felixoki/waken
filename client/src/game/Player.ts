@@ -41,7 +41,7 @@ export class Player extends Entity {
 
   init(): void {
     this.addComponent(
-      new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER], true)
+      new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER]!, true)
     );
     this.addComponent(
       new BodyComponent(this, {
@@ -84,6 +84,8 @@ export class Player extends Entity {
     }
 
     if (this.isControllable) this.scene.game.events.emit("player:input", input);
+    
+    this.setDepth(this.y);
   }
 
   private _getInput(): Input {

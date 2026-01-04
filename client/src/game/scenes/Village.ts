@@ -1,4 +1,6 @@
+import { MapName } from "@server/types";
 import { Scene } from "./Scene";
+import { MapFactory } from "../factory/Map";
 
 export default class Village extends Scene {
   constructor() {
@@ -73,5 +75,17 @@ export default class Village extends Scene {
       frameWidth: 16,
       frameHeight: 16,
     });
+    this.load.tilemapTiledJSON(MapName.VILLAGE, "assets/maps/village.json");
+  }
+
+  create() {
+    super.create();
+    
+    MapFactory.create(
+      this,
+      MapName.VILLAGE,
+      "player_home",
+      "player_home"
+    );
   }
 }
