@@ -49,25 +49,29 @@
 
 #### 1.1.2026
 
-- Try Tiled editor
+- Try Tiled editor ✅
 
 #### 2.1.2026
 
-- Add entity definitions
-- Add texture component
+- Add entity definitions ✅
+- Add texture component ✅
 
 #### 3.1.2026
 
-- Add map loader
+- Add map loader ✅
 
 #### 4.1.2026
 
-- Add map factory
+- Add map factory ✅
+
+#### 5.1.2026
+
+- Add casting at coordinates ✅
+
 
 #### Next up
 
 - Build first village section in Tiled editor
-- Add casting at coordinates
 - Add toolbar, spell types and projectile configs
 - Add inventory and pickable component
 - Implement pre loader
@@ -75,6 +79,9 @@
 - Switch host on disconnect
 - Build player house in Tiled editor
 - Add map transitions
+- Throttle network updates with change detection
+- Improve interpolation
+- Introduce camera
 
 ## Devlog
 

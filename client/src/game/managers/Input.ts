@@ -12,7 +12,7 @@ export class InputManager {
     SHIFT: Key;
     SPACE: Key;
   };
-  private target?: string;
+  private target?: { x: number; y: number };
 
   constructor(scene: Scene) {
     this.keys = scene.input.keyboard!.addKeys({
@@ -57,11 +57,11 @@ export class InputManager {
     return Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
   }
 
-  setTarget(target: string) {
+  setTarget(target: { x: number; y: number }): void {
     this.target = target;
   }
 
-  getTarget(): string | undefined {
+  getTarget(): { x: number; y: number } | undefined {
     const t = this.target;
     this.target = undefined;
     return t;

@@ -69,7 +69,7 @@ export interface Input {
   directions: Direction[];
   isRunning: boolean;
   isJumping: boolean;
-  target?: string;
+  target?: { x: number; y: number };
   state: StateName;
 }
 

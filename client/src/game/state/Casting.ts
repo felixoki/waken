@@ -23,9 +23,10 @@ export class Casting implements State {
       this.exit(entity);
     });
 
-    const direction = entity.directions.length
-      ? handlers.combat.getDiagonalDirectionVector(entity.directions)
-      : handlers.combat.getDirectionVector(entity.direction);
+    const direction = handlers.combat.getDirectionToPoint(
+      entity,
+      entity.target!
+    );
 
     new Projectile(
       entity.scene,

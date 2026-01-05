@@ -1,4 +1,5 @@
 import { Direction, DirectionVectors } from "@server/types";
+import { Entity } from "../Entity";
 
 export const combat = {
   getDirectionalOffset: (direction: Direction, distance: number) => {
@@ -26,12 +27,23 @@ export const combat = {
     });
 
     const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-    
+
     if (magnitude > 0) {
       vector.x /= magnitude;
       vector.y /= magnitude;
     }
 
     return vector;
+  },
+
+  getDirectionToPoint: (entity: Entity, target: { x: number; y: number }) => {
+    const dx = target.x - entity.x;
+    const dy = target.y - entity.y;
+
+    const magnitude = Math.sqrt(dx * dx + dy * dy);
+
+    if (magnitude > 0) return { x: dx / magnitude, y: dy / magnitude };
+
+    return { x: 0, y: 0 }
   },
 };

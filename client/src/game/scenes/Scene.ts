@@ -25,6 +25,17 @@ export class Scene extends Phaser.Scene {
     this.socketManager.emit("player:create");
 
     this._registerEvents();
+
+    /**
+     * We should register this from within the player
+     */
+    this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+      const target = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+      this.playerManager.player?.inputManager?.setTarget({
+        x: target.x,
+        y: target.y,
+      });
+    });
   }
 
   update(): void {

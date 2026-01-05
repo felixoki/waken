@@ -65,6 +65,7 @@ export class Player extends Entity {
       directionCount: this.directions.length,
     };
 
+    this.target = input.target;
     this.setDirection(input.direction);
     this.directions = input.directions;
 

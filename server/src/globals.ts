@@ -3,9 +3,9 @@ export const SERVER_PORT = 3001;
 
 export const CLIENT_URL = 'http://localhost:3000';
 
-export const SPEED_WALKING = 200;
-export const SPEED_RUNNING = 300;
-export const SPEED_JUMPING = 250;
+export const SPEED_WALKING = 100;
+export const SPEED_RUNNING = 150;
+export const SPEED_JUMPING = 125;
 
 export const HEIGHT_JUMPING = 40;
 

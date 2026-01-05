@@ -14,8 +14,11 @@ export const config: Phaser.Types.Core.GameConfig = {
     },
   },
   scale: {
-    zoom: 1.65,
+    zoom: 2,
   },
   backgroundColor: "f3f3f3",
   pixelArt: true,
+  fps: {
+    target: 60,
+  },
 };
