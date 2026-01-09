@@ -31,6 +31,7 @@ export class Scene extends Phaser.Scene {
      */
     this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
       const target = this.cameras.main.getWorldPoint(pointer.x, pointer.y);
+
       this.playerManager.player?.inputManager?.setTarget({
         x: target.x,
         y: target.y,

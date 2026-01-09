@@ -48,6 +48,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     this.scene.physicsManager.groups.entities.add(this);
+
+    this.setDepth(1000 + this.y);
   }
 
   update(): void {
@@ -73,7 +75,10 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (state !== this.state) this.transitionTo(state);
     if (needsUpdate) this.states?.get(this.state)?.update(this);
     
-    this.setDepth(this.y);
+    /**
+     * We will need to implement a proper depth sorting system
+     */
+    this.setDepth(1000 + this.y);
   }
 
   destroy(fromScene?: boolean): void {

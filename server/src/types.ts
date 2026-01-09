@@ -32,12 +32,28 @@ export interface EntityDefinition {
   components: ComponentConfig[];
   states: StateName[];
   behaviors?: BehaviorName[];
+  metadata?: EntityMetadata;
+}
+
+export interface EntityMetadata {
+  displayName?: string;
+  description?: string;
+  icon?: string;
+  stackable?: boolean;
 }
 
 export enum EntityName {
   PLAYER = "player",
   ORC1 = "orc1",
   HOUSE1 = "house1",
+  HOUSE2 = "house2",
+  HERBALIST = "herbalist",
+  WINDMILL = "windmill",
+  TREE1 = "tree1",
+  APPLETREE2 = "appletree2",
+  ROCK2 = "rock2",
+  FLYAMINATA1 = "flyaminata1",
+  BASKETFERN = "basketfern",
 }
 
 export interface EntityHit {
@@ -147,6 +163,9 @@ export enum ComponentName {
   BODY = "body",
   POINTABLE = "pointable",
   TEXTURE = "texture",
+  INVENTORY = "inventory",
+  PICKABLE = "pickable",
+  HOVERABLE = "hoverable",
 }
 
 export type ComponentConfig =
@@ -154,8 +173,11 @@ export type ComponentConfig =
   | { name: ComponentName.BEHAVIOR_QUEUE }
   | { name: ComponentName.BODY; config: BodyConfig }
   | { name: ComponentName.POINTABLE }
-  | { name: ComponentName.TEXTURE; config: TextureConfig; key: string };
-
+  | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
+  | { name: ComponentName.INVENTORY }
+  | { name: ComponentName.PICKABLE }
+  | { name: ComponentName.HOVERABLE }
+  
 export interface BodyConfig {
   width: number;
   height: number;
@@ -168,6 +190,12 @@ export interface TextureConfig {
   spritesheet: string;
   tileSize: number;
   tiles: { row: number; start: number; end: number }[];
+}
+
+export interface InventoryItem {
+  name: EntityName;
+  quantity: number;
+  stackable: boolean;
 }
 
 /**

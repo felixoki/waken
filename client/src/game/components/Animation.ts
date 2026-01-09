@@ -1,5 +1,4 @@
-import { ComponentName, Direction, StateName } from "@server/types";
-import { AnimationConfig } from "@server/configs";
+import { AnimationConfig, ComponentName, Direction, StateName } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
 

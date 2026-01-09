@@ -7,6 +7,7 @@ import { handlers } from "./handlers";
 import { State } from "./state/State";
 import { Scene } from "./scenes/Scene";
 import { BodyComponent } from "./components/Body";
+import { InventoryComponent } from "./components/Inventory";
 
 export class Player extends Entity {
   public socketId: string;
@@ -52,6 +53,7 @@ export class Player extends Entity {
         pushable: false,
       })
     );
+    this.addComponent(new InventoryComponent(this));
   }
 
   update(remoteInput?: Input): void {
@@ -85,8 +87,11 @@ export class Player extends Entity {
     }
 
     if (this.isControllable) this.scene.game.events.emit("player:input", input);
-    
-    this.setDepth(this.y);
+
+    /**
+     * We will need to implement a proper depth sorting system
+     */
+    this.setDepth(1000 + this.y);
   }
 
   private _getInput(): Input {

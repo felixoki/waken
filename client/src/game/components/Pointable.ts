@@ -9,7 +9,7 @@ export class PointableComponent extends Component {
 
   constructor(entity: Entity) {
     super();
-    
+
     this.entity = entity;
   }
 
@@ -18,10 +18,16 @@ export class PointableComponent extends Component {
     this.entity.on("pointerdown", this._onPointerDown, this);
   }
 
-  private _onPointerDown(): void {
-    const playerManager = this.entity.scene.playerManager;
-    const player = playerManager.player;
-    player?.inputManager?.setTarget(this.entity.id);
+  private _onPointerDown(
+    _pointer: Phaser.Input.Pointer,
+    _localX: number,
+    _localY: number,
+    event: Phaser.Types.Input.EventData
+  ): void {
+    const player = this.entity.scene.playerManager.player;
+    this.entity.emit("pointed", player);
+
+    event.stopPropagation();
   }
 
   detach(): void {

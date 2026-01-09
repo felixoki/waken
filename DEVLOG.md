@@ -77,13 +77,20 @@
 - Implement pre loader ✅
 - Introduce camera ✅
 
+#### 8.1.2026
+
+- Build first village section in Tiled editor ✅
+
+#### 9.1.2026
+
+- Add inventory ✅
+- Add pickable component ✅
+- Add hoverable component ✅
 
 #### Next up
 
-- Build first village section in Tiled editor
-- Add inventory and pickable component
-- Add toolbar, spell types and projectile configs
 - Emit damage and pick up events from server
+- Add toolbar, spell types and projectile configs
 - Switch host on disconnect
 - Build player house in Tiled editor
 - Add map transitions

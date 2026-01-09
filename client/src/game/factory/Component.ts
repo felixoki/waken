@@ -12,6 +12,9 @@ import { BodyComponent } from "../components/Body";
 import { ANIMATIONS } from "@server/configs";
 import { AnimationComponent } from "../components/Animation";
 import { TextureComponent } from "../components/Texture";
+import { PickableComponent } from "../components/Pickable";
+import { InventoryComponent } from "../components/Inventory";
+import { HoverableComponent } from "../components/Hoverable";
 
 export class ComponentFactory {
   static create(
@@ -43,6 +46,9 @@ export class ComponentFactory {
           ).config,
           `${entity.name}_texture`
         ),
+        [ComponentName.PICKABLE]: new PickableComponent(entity),
+        [ComponentName.INVENTORY]: new InventoryComponent(entity),
+        [ComponentName.HOVERABLE]: new HoverableComponent(entity),
       };
 
       if (map[config.name]) components.set(config.name, map[config.name]);
