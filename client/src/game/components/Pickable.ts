@@ -35,9 +35,10 @@ export class PickableComponent extends Component {
       return;
     }
 
-    /**
-     * We have to emit this to the server too
-     */
+    this.entity.scene.game.events.emit("entity:pickup", {
+      id: this.entity.id,
+    });
+
     this.entity.destroy();
   }
 }

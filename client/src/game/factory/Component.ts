@@ -9,7 +9,7 @@ import { Component } from "../components/Component";
 import { PointableComponent } from "../components/Pointable";
 import { BehaviorQueue } from "../components/BehaviorQueue";
 import { BodyComponent } from "../components/Body";
-import { ANIMATIONS } from "@server/configs";
+import { configs } from "@server/configs";
 import { AnimationComponent } from "../components/Animation";
 import { TextureComponent } from "../components/Texture";
 import { PickableComponent } from "../components/Pickable";
@@ -18,16 +18,16 @@ import { HoverableComponent } from "../components/Hoverable";
 
 export class ComponentFactory {
   static create(
-    configs: ComponentConfig[],
+    cfgs: ComponentConfig[],
     entity: Entity
   ): Map<ComponentName, Component> {
     const components = new Map<ComponentName, Component>();
 
-    for (const config of configs) {
+    for (const config of cfgs) {
       const map: Record<ComponentName, Component> = {
         [ComponentName.ANIMATION]: new AnimationComponent(
           entity,
-          ANIMATIONS[entity.name] ?? {},
+          configs.animations[entity.name] ?? {},
           false
         ),
         [ComponentName.BEHAVIOR_QUEUE]: new BehaviorQueue(entity),

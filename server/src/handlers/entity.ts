@@ -1,5 +1,9 @@
 import { Socket } from "socket.io";
-import { EntityHit, EntityName, MapName } from "../types";
+import {
+  EntityName,
+  EntityPickup,
+  MapName,
+} from "../types";
 import { EntityStore } from "../stores/Entity";
 import { randomInt, randomUUID } from "crypto";
 import { PlayerStore } from "../stores/Player";
@@ -15,16 +19,19 @@ export const entity = {
       id: randomUUID(),
       map: MapName.VILLAGE,
       name: EntityName.HOUSE1,
+      health: 100,
     };
 
     entities.add(entity.id, entity);
-
     socket.emit("entity:create", entity);
     socket.broadcast.emit("entity:create", entity);
   },
-  hit: (data: EntityHit, _socket: Socket, _entities: EntityStore) => {
-    // target is always an entity
-    // attacker is always a player
-    console.log("Entity hit data received on server:", data);
+
+  pickup: (data: EntityPickup, socket: Socket, entities: EntityStore) => {
+    const entity = entities.get(data.id);
+    if (!entity) return;
+
+    entities.remove(data.id);
+    socket.broadcast.emit("entity:destroy", { id: data.id });
   },
 };

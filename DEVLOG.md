@@ -87,10 +87,17 @@
 - Add pickable component ✅
 - Add hoverable component ✅
 
+#### 10.1.2026
+
+- Add outline pipeline ✅
+- Add tile animations ✅
+- Emit pick up events ✅
+
 #### Next up
 
-- Emit damage and pick up events from server
-- Add toolbar, spell types and projectile configs
+- Add spell configs
+- Emit damage events
+- Add ui inventory, toolbar and healthbar
 - Switch host on disconnect
 - Build player house in Tiled editor
 - Add map transitions
@@ -141,3 +148,13 @@ Technically it could be a quest based game where you follow a main quest and do 
 So instead of cities and forests and mountains and villages I landed on: One village. A village to harness and to take care of. I really got inspired by Anno at this point, figuring that the village starts rather small and the more you progress the more buildings you'd unlock and the more villager needs had to be met. Your decisions might even affect those needs: Like on leveling up you're presented with choices. A helper for the smith or a helper for the bakery. Produce iron faster or food, both of which you need to keep the village satisfied. It would of course benefit you to be smart about these decisions. I kind of got carried away there for a while, but I really liked the idea and actually it was perfect for starting small, then making it bigger later on.
 
 The first thing in this village that needs your attention is be the farm of an older couple. They can't handle the workload anymore, so you have to step in.
+
+#### What Is The Role Of AI
+
+I quickly realized I wanted to do the heavy lifting – or most of it for that matter – myself, and not let AI build a game for me. For the most part because this should be a learning experience. Also though I feel like to make the game in any shape or way maintainable, I should understand the code to its full extent. To this day I'm using AI mostly for researching and looking at snippets of what I'm going to build next. I've found that sometimes, just to look at a feature in fast fashion, letting ai build it is really helpful. Afterwards either discard it or rebuild it from scratch. I saved hours of implementing stuff only to realize I didn't want it in the first place by using AI.
+
+For the sake of entertainment I am going to collect some fun interactions with my agent of choice, Claude Sonnet 4.5. This is a rather colorful collection for that matter.
+
+```
+Claude on January 10th
+"Until then, YAGNI! Keep it simple"

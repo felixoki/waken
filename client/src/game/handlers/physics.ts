@@ -1,4 +1,3 @@
-import { EntityName } from "@server/types";
 import { Entity } from "../Entity";
 import { Hitbox } from "../Hitbox";
 
@@ -17,10 +16,8 @@ export const physics = {
 
     hitbox.hits.add(entity.id);
 
-    const event =
-      entity.name === EntityName.PLAYER ? "player:hit" : "entity:hit";
-
-    entity.scene.game.events.emit(event, {
+    entity.scene.game.events.emit("hit", {
+      name: hitbox.name,
       attackerId: hitbox.ownerId,
       targetId: entity.id,
     });

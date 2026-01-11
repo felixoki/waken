@@ -2,7 +2,7 @@ import { Direction, Input, StateName, EntityName } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
 import { InputManager } from "./managers/Input";
-import { ANIMATIONS } from "@server/configs";
+import { configs } from "@server/configs";
 import { handlers } from "./handlers";
 import { State } from "./state/State";
 import { Scene } from "./scenes/Scene";
@@ -42,14 +42,14 @@ export class Player extends Entity {
 
   init(): void {
     this.addComponent(
-      new AnimationComponent(this, ANIMATIONS[EntityName.PLAYER]!, true)
+      new AnimationComponent(this, configs.animations[EntityName.PLAYER]!, true)
     );
     this.addComponent(
       new BodyComponent(this, {
-        width: 16,
-        height: 32,
-        offsetX: 24,
-        offsetY: 16,
+        width: 12,
+        height: 16,
+        offsetX: 26,
+        offsetY: 24,
         pushable: false,
       })
     );

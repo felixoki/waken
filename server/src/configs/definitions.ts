@@ -1,127 +1,13 @@
 import {
-  AnimationConfig,
   BehaviorName,
   ComponentName,
   Direction,
   EntityDefinition,
   EntityName,
-  MapConfig,
-  MapName,
   StateName,
-} from "./types";
+} from "../types";
 
-export const ANIMATIONS: Partial<
-  Record<EntityName, Partial<Record<StateName, AnimationConfig>>>
-> = {
-  [EntityName.PLAYER]: {
-    [StateName.IDLE]: {
-      frameCount: 4,
-      frameRate: 6,
-      repeat: -1,
-    },
-    [StateName.WALKING]: {
-      frameCount: 4,
-      frameRate: 6,
-      repeat: -1,
-    },
-    [StateName.RUNNING]: {
-      frameCount: 8,
-      frameRate: 10,
-      repeat: -1,
-    },
-    [StateName.JUMPING]: {
-      frameCount: 8,
-      frameRate: 10,
-      repeat: 0,
-    },
-    [StateName.CASTING]: {
-      frameCount: 8,
-      frameRate: 10,
-      repeat: 0,
-    },
-  },
-  [EntityName.ORC1]: {
-    [StateName.IDLE]: {
-      frameCount: 4,
-      frameRate: 6,
-      repeat: -1,
-    },
-    [StateName.WALKING]: {
-      frameCount: 6,
-      frameRate: 8,
-      repeat: -1,
-    },
-    [StateName.RUNNING]: {
-      frameCount: 8,
-      frameRate: 10,
-      repeat: -1,
-    },
-    [StateName.SLASHING]: {
-      frameCount: 8,
-      frameRate: 10,
-      repeat: 0,
-    },
-  },
-};
-
-/**
- * Maps
- */
-
-export const MAPS: Record<MapName, MapConfig> = {
-  [MapName.VILLAGE]: {
-    id: MapName.VILLAGE,
-    json: "village.json",
-    spritesheets: [
-      {
-        key: "village_home",
-        file: "village_home.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        asTileset: true,
-      },
-      {
-        key: "village_herbalist_house",
-        file: "village_herbalist_house.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        asTileset: true,
-      },
-      {
-        key: "village_farm_house",
-        file: "village_farm_house.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        asTileset: true,
-      },
-      {
-        key: "ground_grass",
-        file: "ground_grass.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        asTileset: true,
-      },
-      {
-        key: "water_coasts",
-        file: "water_coasts.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        asTileset: true,
-      },
-      { key: "player-idle", file: "player_idle.png" },
-      { key: "player-walking", file: "player_walking.png" },
-      { key: "player-running", file: "player_running.png" },
-      { key: "player-jumping", file: "player_jumping.png" },
-      { key: "player-casting", file: "player_casting.png" },
-    ],
-  },
-};
-
-/**
- * Entity Definitions
- */
-
-export const DEFINITIONS: Partial<Record<EntityName, EntityDefinition>> = {
+export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.ORC1]: {
     direction: Direction.DOWN,
     directions: [],

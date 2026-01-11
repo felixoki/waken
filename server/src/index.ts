@@ -9,8 +9,8 @@ import { PlayerStore } from "./stores/Player.js";
 import { CLIENT_URL, SERVER_PORT } from "./globals.js";
 import { EntityStore } from "./stores/Entity.js";
 import { MapLoader } from "./loaders/Map.js";
-import { MAPS } from "./configs.js";
 import { MapName } from "./types.js";
+import { configs } from "./configs/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,7 +43,7 @@ const entities = new EntityStore();
  * Map loading will be dynmically later on
  */
 const loader = new MapLoader();
-const village = loader.load(MAPS.village.json);
+const village = loader.load(configs.maps.village.json);
 const ents = loader.parseEntities(MapName.VILLAGE, village);
 for (const e of ents) entities.add(e.id, e);
 

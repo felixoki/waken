@@ -2,10 +2,11 @@ import SocketManager from "../managers/Socket";
 import { PlayerManager } from "../managers/Player";
 import {
   EntityConfig,
-  EntityHit,
   PlayerConfig,
-  PlayerHit,
   Input,
+  EntityPickup,
+  EntityDestroy,
+  Hit,
 } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
@@ -76,12 +77,12 @@ export class Scene extends Phaser.Scene {
       this.playerManager.updateOther(data);
     });
 
+    this.socketManager.on("player:hurt", (data: any) => {
+      console.log("Player hurt", data);
+    })
+
     this.game.events.on("player:input", (data: Input) => {
       this.socketManager.emit("player:input", data);
-    });
-
-    this.game.events.on("player:hit", (data: PlayerHit) => {
-      this.socketManager.emit("player:hit", data);
     });
 
     /**
@@ -97,8 +98,24 @@ export class Scene extends Phaser.Scene {
       });
     });
 
-    this.game.events.on("entity:hit", (data: EntityHit) => {
-      this.socketManager.emit("entity:hit", data);
+    this.socketManager.on("entity:destroy", (data: EntityDestroy) => {
+      this.entityManager.remove(data.id);
+    });
+
+    this.socketManager.on("entity:hurt", (data: any) => {
+      console.log("Entity hurt", data);
+    });
+
+    this.game.events.on("entity:pickup", (data: EntityPickup) => {
+      this.socketManager.emit("entity:pickup", data);
+    });
+
+    /**
+     * Shared
+     */
+
+    this.game.events.on("hit", (data: Hit) => {
+      this.socketManager.emit("hit", data);
     });
 
     /**
@@ -113,12 +130,17 @@ export class Scene extends Phaser.Scene {
     this.socketManager.off("player:create");
     this.socketManager.off("player:left");
     this.socketManager.off("player:input");
+    this.socketManager.off("player:hurt");
+
     this.socketManager.off("entity:create");
     this.socketManager.off("entity:create:all");
+    this.socketManager.off("entity:destroy");
+    this.socketManager.off("entity:hurt");
 
     this.game.events.off("player:input");
-    this.game.events.off("player:hit");
-    this.game.events.off("entity:hit");
+    this.game.events.off("entity:pickup");
+    
+    this.game.events.off("hit");
 
     this.playerManager.destroy();
     this.socketManager.disconnect();

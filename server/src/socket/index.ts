@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { handlers } from "../handlers/index.js";
 import { PlayerStore } from "../stores/Player.js";
 import { tryCatch } from "../utils/tryCatch.js";
-import { EntityHit, PlayerHit, Input } from "../types.js";
+import { Input, Hit } from "../types.js";
 import { EntityStore } from "../stores/Entity.js";
 
 type SocketEvent = {
@@ -31,19 +31,19 @@ export function registerHandlers(
         handlers.player.input(data, socket, stores.players),
     },
     {
-      event: "player:hit",
-      handler: (data: PlayerHit) =>
-        handlers.player.hit(data, socket, stores.players),
-    },
-    {
       event: "entity:create",
       handler: () =>
         handlers.entity.create(socket, stores.entities, stores.players),
     },
     {
-      event: "entity:hit",
-      handler: (data: EntityHit) =>
-        handlers.entity.hit(data, socket, stores.entities),
+      event: "entity:pickup",
+      handler: (data) =>
+        handlers.entity.pickup(data, socket, stores.entities),
+    },
+    {
+      event: "hit",
+      handler: (data: Hit) =>
+        handlers.combat.hit(data, socket, stores.entities, stores.players),
     },
   ];
 

@@ -1,12 +1,21 @@
 import { MapName } from "@server/types";
 import { Scene } from "../scenes/Scene";
-import { MAPS } from "@server/configs";
+import { configs } from "@server/configs";
 
 export class Preloader {
   static load(scene: Scene, map: MapName) {
-    const config = MAPS[map];
+    const config = configs.maps[map];
 
     if (!config) throw new Error(`Map config for ${map} not found`);
+
+    /**
+     * Particle texture for spells
+     */
+    const graphics = scene.add.graphics();
+    graphics.fillStyle(0xffffff);
+    graphics.fillCircle(8, 8, 8);
+    graphics.generateTexture("particles", 16, 16);
+    graphics.destroy();
 
     scene.load.tilemapTiledJSON(config.id, `assets/maps/${config.json}`);
 

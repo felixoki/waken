@@ -7,12 +7,8 @@ export interface PlayerConfig {
   map: MapName;
   x: number;
   y: number;
+  health: number;
   isHost: boolean;
-}
-
-export interface PlayerHit {
-  attackerId: string;
-  targetId: string;
 }
 
 /**
@@ -24,6 +20,7 @@ export interface EntityConfig {
   x: number;
   y: number;
   name: EntityName;
+  health: number;
 }
 
 export interface EntityDefinition {
@@ -56,7 +53,20 @@ export enum EntityName {
   BASKETFERN = "basketfern",
 }
 
-export interface EntityHit {
+export interface EntityPickup {
+  id: string;
+}
+
+export interface EntityDestroy {
+  id: string;
+}
+
+/**
+ * Damage
+ */
+
+export interface Hit {
+  name: SpellName;
   attackerId: string;
   targetId: string;
 }
@@ -154,6 +164,38 @@ export interface AnimationConfig {
 }
 
 /**
+ * Spells
+ */
+
+export enum SpellName {
+  SHARD = "shard",
+}
+
+export interface SpellConfig {
+  name: SpellName;
+  damage: number;
+  knockback: number;
+  speed: number;
+  hitbox: {
+    width: number;
+    height: number;
+  };
+  particles: ParticleConfig;
+}
+
+export interface ParticleConfig {
+  tint: number[];
+  alpha: { start: number; end: number };
+  scale: { start: number; end: number };
+  speedY: { min: number; max: number };
+  speedX: { min: number; max: number };
+  lifespan: number;
+  frequency: number;
+  quantity: number;
+  blendMode: string;
+}
+
+/**
  * Components
  */
 
@@ -176,8 +218,8 @@ export type ComponentConfig =
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.INVENTORY }
   | { name: ComponentName.PICKABLE }
-  | { name: ComponentName.HOVERABLE }
-  
+  | { name: ComponentName.HOVERABLE };
+
 export interface BodyConfig {
   width: number;
   height: number;

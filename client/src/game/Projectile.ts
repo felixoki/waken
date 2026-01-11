@@ -1,27 +1,35 @@
+import { SpellName } from "@server/types";
 import { Hitbox } from "./Hitbox";
 import { Scene } from "./scenes/Scene";
+import { configs } from "@server/configs";
 
 export class Projectile extends Hitbox {
   private start: { x: number; y: number };
   private range: number;
+  private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
   constructor(
     scene: Scene,
     x: number,
     y: number,
-    width: number,
-    height: number,
     ownerId: string,
-    speed: number,
     range: number,
-    direction: { x: number; y: number }
+    direction: { x: number; y: number },
+    name: SpellName
   ) {
-    super(scene, x, y, width, height, ownerId);
+    const config = configs.spells[name];
+
+    super(scene, x, y, config.hitbox.width, config.hitbox.height, ownerId, name);
 
     this.start = { x, y };
     this.range = range;
 
-    this.body.setVelocity(direction.x * speed, direction.y * speed);
+    this.body.setVelocity(direction.x * config.speed, direction.y * config.speed);
+
+    this.emitter = this.scene.add.particles(0, 0, "particles", config.particles);
+    this.emitter.setDepth(1000);
+    this.emitter.startFollow(this);
+
     scene.events.on("update", this.update, this);
   }
 
@@ -38,6 +46,12 @@ export class Projectile extends Hitbox {
 
   destroy(fromScene?: boolean): void {
     this.scene.events.off("update", this.update, this);
+
+    if (this.emitter) {
+      this.emitter.stop();
+      this.emitter.destroy();
+    }
+
     super.destroy(fromScene);
   }
 }

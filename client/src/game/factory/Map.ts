@@ -1,10 +1,9 @@
 import { MapName, TiledProperty } from "@server/types";
 import { Scene } from "../scenes/Scene";
-import { MAPS } from "@server/configs";
-
+import { configs } from "@server/configs";
 export class MapFactory {
   static create(scene: Scene, map: MapName): Phaser.Tilemaps.Tilemap {
-    const config = MAPS[map];
+    const config = configs.maps[map];
 
     const tilemap = scene.make.tilemap({ key: map });
     const tilesets = config.spritesheets

@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { PlayerStore } from "../stores/Player.js";
 import { randomInt, randomUUID } from "crypto";
-import { PlayerHit, Input, MapName } from "../types.js";
+import { Input, MapName } from "../types.js";
 import { EntityStore } from "../stores/Entity.js";
 
 export const player = {
@@ -14,6 +14,7 @@ export const player = {
       id: randomUUID(),
       socketId: socket.id,
       map: MapName.VILLAGE,
+      health: 100,
       isHost,
     };
     players.add(player.id, player);
@@ -44,11 +45,5 @@ export const player = {
       ...{ x: data.x, y: data.y, state: data.state },
     });
     socket.broadcast.emit("player:input", data);
-  },
-
-  hit: (data: PlayerHit, _socket: Socket, _players: PlayerStore) => {
-    // target is always a player
-    // attacker is always an entity
-    console.log("Player hit data received on server:", data);
   },
 };

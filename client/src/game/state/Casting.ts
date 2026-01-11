@@ -1,4 +1,4 @@
-import { ComponentName, StateName } from "@server/types";
+import { ComponentName, SpellName, StateName } from "@server/types";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
@@ -32,12 +32,10 @@ export class Casting implements State {
       entity.scene,
       entity.x + direction.x * 20,
       entity.y + direction.y * 20,
-      32,
-      32,
       entity.id,
       400,
-      1000,
-      direction
+      direction,
+      SpellName.SHARD
     );
   }
 
