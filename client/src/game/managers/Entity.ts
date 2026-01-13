@@ -6,7 +6,7 @@ import { configs } from "@server/configs";
 
 export class EntityManager {
   private scene: Scene;
-  private entities: Map<string, Entity> = new Map();
+  public entities: Map<string, Entity> = new Map();
 
   constructor(scene: Scene) {
     this.scene = scene;

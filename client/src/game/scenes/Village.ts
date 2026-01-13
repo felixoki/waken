@@ -18,8 +18,6 @@ export default class Village extends Scene {
 
     const map = MapFactory.create(this, MapName.VILLAGE);
     this.tileManager = new TileManager(map);
-
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.setZoom(2);
   }
 }

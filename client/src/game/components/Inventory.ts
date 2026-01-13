@@ -1,19 +1,12 @@
 import { ComponentName, EntityName, InventoryItem } from "@server/types";
 import { Component } from "./Component";
 import { configs } from "@server/configs";
-import { Entity } from "../Entity";
+import EventBus from "../EventBus";
 
 export class InventoryComponent extends Component {
-  private entity: Entity;
   private items: (InventoryItem | null)[] = new Array(20).fill(null);
 
   public name = ComponentName.INVENTORY;
-
-  constructor(entity: Entity) {
-    super();
-
-    this.entity = entity;
-  }
 
   attach(): void {}
   update(): void {}
@@ -53,10 +46,7 @@ export class InventoryComponent extends Component {
     return false;
   }
 
-  /**
-   * Notify React / server of inventory change
-   */
   notify(): void {
-    console.log("Inventory updated:", this.items, this.entity.id);
+    EventBus.emit("inventory:update", [...this.items]);
   }
 }

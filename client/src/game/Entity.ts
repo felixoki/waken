@@ -11,6 +11,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public direction: Direction;
   public directions: Direction[];
   public isLocked: boolean = false;
+  public health: number = 100;
   public target?: { x: number; y: number };
 
   public components = new Map<ComponentName, Component>();
@@ -28,6 +29,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     texture: string,
     id: string,
     name: string,
+    health: number,
     direction: Direction,
     directions: Direction[],
     states?: Map<StateName, State>
@@ -36,6 +38,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     this.id = id;
     this.setName(name);
+    this.health = health;
 
     this.direction = direction;
     this.directions = directions;

@@ -71,6 +71,12 @@ export interface Hit {
   targetId: string;
 }
 
+export interface Hurt {
+  id: string;
+  health: number;
+  knockback: { x: number; y: number };
+}
+
 /**
  * Maps
  */

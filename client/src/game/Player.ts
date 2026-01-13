@@ -22,6 +22,7 @@ export class Player extends Entity {
     texture: string,
     id: string,
     name: string,
+    health: number,
     direction: Direction,
     directions: Direction[],
     states: Map<StateName, State>,
@@ -29,7 +30,18 @@ export class Player extends Entity {
     isHost: boolean,
     isControllable: boolean
   ) {
-    super(scene, x, y, texture, id, name, direction, directions, states);
+    super(
+      scene,
+      x,
+      y,
+      texture,
+      id,
+      name,
+      health,
+      direction,
+      directions,
+      states
+    );
 
     this.socketId = socketId;
     this.isHost = isHost;
@@ -53,7 +65,7 @@ export class Player extends Entity {
         pushable: false,
       })
     );
-    this.addComponent(new InventoryComponent(this));
+    this.addComponent(new InventoryComponent());
   }
 
   update(remoteInput?: Input): void {

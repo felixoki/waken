@@ -93,22 +93,32 @@
 - Add tile animations ✅
 - Emit pick up events ✅
 
+#### 11.1.2026
+
+- Add spell configs ✅
+- Emit damage events ✅
+
+#### 12.1.2026
+
+- Add ui inventory ✅
+- Add ui health bars ✅
+
 #### Next up
 
-- Add spell configs
-- Emit damage events
-- Add ui inventory, toolbar and healthbar
+- Add ui toolbar
 - Switch host on disconnect
 - Build player house in Tiled editor
 - Add map transitions
 - Throttle network updates / change detection
 - Improve interpolation
+- Add camera class
+- Add immovable and indestructible entities
 
 ## Devlog
 
 #### How To Make A Game
 
-In my teenage years I spent hundreds of hours playing video games such as Skyrim and Minecraft, exploring their vast worlds and lore. During COVID-19 Valheim came out and combined the best of these two games into one, even allowing my wife and myself to play together in co-op, happily building our viking village and occasionally wander out into the wilderness for a taste of adventure.
+In my teenage years I spent hundreds of hours playing video games such as Skyrim and Minecraft, exploring their vast worlds and lore. During COVID-19 Valheim came out and combined the best of these two games into one, even allowing my wife and myself to play together in co-op, happily building our viking village and occasionally wandering out into the wilderness for a taste of adventure.
 
 Ever since cozy games have been on quite the rise, or might have been even before that with games like Stardew Valley. But Valheim wasn't just cozy. Only thinking of landing on the shores of the Ashlands for the first time gives me chills to this day. Valheim did both, cozy and adventure.
 

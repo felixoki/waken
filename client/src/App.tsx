@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { config } from "./game/config";
 import Phaser from "phaser";
+import { Inventory } from "./ui/Inventory";
+import { Entities } from "./ui/Entities";
 
 function App() {
   const game = useRef<Phaser.Game | null>(null);
@@ -17,7 +19,11 @@ function App() {
   }, []);
 
   return (
-    <div id="game"></div>
+    <>
+      <div id="game"></div>
+      <Entities />
+      <Inventory />
+    </>
   );
 }
 

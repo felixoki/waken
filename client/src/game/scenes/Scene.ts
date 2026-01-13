@@ -7,10 +7,13 @@ import {
   EntityPickup,
   EntityDestroy,
   Hit,
+  Hurt,
 } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
 import { TileManager } from "../managers/Tile";
+import EventBus from "../EventBus";
+import { handlers } from "../handlers";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhsyicsManager;
@@ -46,6 +49,29 @@ export class Scene extends Phaser.Scene {
     this.playerManager.update();
     this.entityManager.update();
     this.tileManager.update(delta);
+
+    /**
+     * Calculate entity screen positions relative to centered player
+     */
+    const camera = this.cameras.main;
+    const entities = [
+      Array.from(this.entityManager.entities.values()),
+      Array.from(this.playerManager.others.values()),
+    ].flat();
+    const player = this.playerManager.player;
+
+    if (!player) return;
+
+    const data = entities
+      .filter((entity) => entity.active)
+      .map((entity) => ({
+        id: entity.id,
+        x: camera.centerX + (entity.x - player.x) * camera.zoom,
+        y: camera.centerY + (entity.y - player.y) * camera.zoom,
+        health: entity.health,
+      }));
+
+    EventBus.emit("entities:update", data);
   }
 
   private _registerEvents(): void {
@@ -57,6 +83,7 @@ export class Scene extends Phaser.Scene {
 
       const player = this.playerManager.player!;
       this.cameras.main.startFollow(player, false);
+      this.cameras.main.roundPixels = true;
     });
 
     this.socketManager.on("player:create:others", (data: PlayerConfig[]) => {
@@ -77,9 +104,15 @@ export class Scene extends Phaser.Scene {
       this.playerManager.updateOther(data);
     });
 
-    this.socketManager.on("player:hurt", (data: any) => {
-      console.log("Player hurt", data);
-    })
+    this.socketManager.on("player:hurt", (data: Hurt) => {
+      const player =
+        this.playerManager.others.get(data.id) || this.playerManager.player;
+
+      if (!player) return;
+
+      handlers.combat.hurt(player, data.health);
+      handlers.combat.knockback(player, data.knockback);
+    });
 
     this.game.events.on("player:input", (data: Input) => {
       this.socketManager.emit("player:input", data);
@@ -103,7 +136,12 @@ export class Scene extends Phaser.Scene {
     });
 
     this.socketManager.on("entity:hurt", (data: any) => {
-      console.log("Entity hurt", data);
+      const entity = this.entityManager.entities.get(data.id);
+
+      if (!entity) return;
+
+      handlers.combat.hurt(entity, data.health);
+      handlers.combat.knockback(entity, data.knockback);
     });
 
     this.game.events.on("entity:pickup", (data: EntityPickup) => {
@@ -139,7 +177,7 @@ export class Scene extends Phaser.Scene {
 
     this.game.events.off("player:input");
     this.game.events.off("entity:pickup");
-    
+
     this.game.events.off("hit");
 
     this.playerManager.destroy();

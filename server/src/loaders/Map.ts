@@ -40,6 +40,7 @@ export class MapLoader {
     return {
       id: randomUUID(),
       name,
+      health: 100,
       map: id,
       x: obj.x,
       y: obj.y,

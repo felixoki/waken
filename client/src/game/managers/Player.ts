@@ -11,7 +11,7 @@ import { Jumping } from "../state/Jumping";
 export class PlayerManager {
   private scene: Scene;
   public player?: Player;
-  private others: Map<string, Player> = new Map();
+  public others: Map<string, Player> = new Map();
 
   constructor(scene: Scene) {
     this.scene = scene;
@@ -32,6 +32,7 @@ export class PlayerManager {
       `${EntityName.PLAYER}-${StateName.IDLE}`,
       config.id,
       EntityName.PLAYER,
+      config.health,
       Direction.DOWN,
       [],
       new Map([

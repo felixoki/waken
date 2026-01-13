@@ -44,6 +44,29 @@ export const combat = {
 
     if (magnitude > 0) return { x: dx / magnitude, y: dy / magnitude };
 
-    return { x: 0, y: 0 }
+    return { x: 0, y: 0 };
+  },
+
+  hurt: (entity: Entity, health: number) => {
+    entity.health = health;
+
+    entity.scene.tweens.add({
+      targets: entity,
+      alpha: 0.1,
+      duration: 50,
+      yoyo: true,
+      repeat: 2,
+    });
+  },
+
+  knockback: (entity: Entity, knockback: { x: number; y: number }) => {
+    entity.body.setVelocity(
+      entity.body.velocity.x + knockback.x,
+      entity.body.velocity.y + knockback.y
+    );
+
+    const drag = entity.body.drag.x;
+    entity.body.setDrag(800);
+    entity.scene.time.delayedCall(300, () => entity.body.setDrag(drag));
   },
 };

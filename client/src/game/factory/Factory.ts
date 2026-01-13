@@ -26,6 +26,7 @@ export class Factory {
       texture,
       definition.id,
       definition.name,
+      definition.health,
       definition.direction,
       definition.directions,
       states
