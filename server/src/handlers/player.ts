@@ -6,26 +6,34 @@ import { EntityStore } from "../stores/Entity.js";
 
 export const player = {
   create: (socket: Socket, players: PlayerStore, entities: EntityStore) => {
-    const isHost = !players.getAll().length;
+    let player = players.getBySocketId(socket.id);
 
-    const player = {
-      x: randomInt(0, 400),
-      y: randomInt(0, 400),
-      id: randomUUID(),
-      socketId: socket.id,
-      map: MapName.VILLAGE,
-      health: 100,
-      isHost,
-    };
-    players.add(player.id, player);
+    if (!player) {
+      const isHost = !players.getAll().length;
 
-    const others = players.getAll().filter((p) => p.id !== player.id);
+      player = {
+        x: randomInt(0, 400),
+        y: randomInt(0, 400),
+        id: randomUUID(),
+        socketId: socket.id,
+        map: MapName.VILLAGE,
+        health: 100,
+        isHost,
+      };
+
+      players.add(player.id, player);
+      socket.join(player.map);
+    }
+
+    const others = players
+      .getByMap(player.map)
+      .filter((p) => p.id !== player.id);
 
     socket.emit("player:create:local", player);
     socket.emit("player:create:others", others);
-    socket.emit("entity:create:all", entities.getAll());
+    socket.emit("entity:create:all", entities.getByMap(player.map));
 
-    socket.broadcast.emit("player:create", player);
+    socket.to(player.map).emit("player:create", player);
   },
 
   delete: (socket: Socket, players: PlayerStore) => {
@@ -45,5 +53,35 @@ export const player = {
       ...{ x: data.x, y: data.y, state: data.state },
     });
     socket.broadcast.emit("player:input", data);
+  },
+
+  transition: (
+    map: MapName,
+    socket: Socket,
+    players: PlayerStore
+  ) => {
+    const player = players.getBySocketId(socket.id);
+    if (!player) return;
+
+    const prev = player.map;
+    const next = map;
+
+    /**
+     * We should specify these in the map configs later
+     */
+    const spawn = { x: randomInt(0, 400), y: randomInt(0, 400) };
+
+    players.update(player.id, {
+      ...player,
+      map: next,
+      x: spawn.x,
+      y: spawn.y,
+    });
+
+    socket.leave(prev);
+    socket.join(next);
+
+    socket.to(prev).emit("player:left", { id: player.id });
+    socket.emit("player:transition", next);
   },
 };

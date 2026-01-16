@@ -77,7 +77,7 @@ export class PlayerManager {
       this.player = undefined;
     }
 
-    for (const player of this.others.values()) player.destroy();
+    this.others.forEach((player) => player.destroy());
     this.others.clear();
   }
 }

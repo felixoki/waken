@@ -46,6 +46,15 @@ export class InventoryComponent extends Component {
     return false;
   }
 
+  get(): (InventoryItem | null)[] {
+    return this.items;
+  }
+
+  set(items: (InventoryItem | null)[]): void {
+    this.items = items;
+    this.emit();
+  }
+
   emit(): void {
     EventBus.emit("inventory:update", [...this.items]);
   }

@@ -21,18 +21,14 @@ export class PlayerStore {
   }
 
   getAll(): PlayerConfig[] {
-    return Array.from(this.players.values());
+    return [...this.players.values()];
   }
 
   getByMap(map: MapName): PlayerConfig[] {
-    return Array.from(this.players.values()).filter(
-      (player) => player.map === map
-    );
+    return [...this.players.values()].filter((player) => player.map === map);
   }
 
   getBySocketId(id: string): PlayerConfig | undefined {
-    return Array.from(this.players.values()).find(
-      (player) => player.socketId === id
-    );
+    return [...this.players.values()].find((player) => player.socketId === id);
   }
 }

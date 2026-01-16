@@ -21,12 +21,10 @@ export class EntityStore {
   }
 
   getAll(): any[] {
-    return Array.from(this.entities.values());
+    return [...this.entities.values()];
   }
 
   getByMap(map: MapName): PlayerConfig[] {
-    return Array.from(this.entities.values()).filter(
-      (entity) => entity.map === map
-    );
+    return [...this.entities.values()].filter((entity) => entity.map === map);
   }
 }

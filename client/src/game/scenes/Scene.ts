@@ -8,6 +8,8 @@ import {
   EntityDestroy,
   Hit,
   Hurt,
+  MapName,
+  ComponentName,
 } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
@@ -15,6 +17,8 @@ import { TileManager } from "../managers/Tile";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
 import { CameraManager } from "../managers/Camera";
+import { InventoryComponent } from "../components/Inventory";
+import { HotbarComponent } from "../components/Hotbar";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhsyicsManager;
@@ -29,9 +33,9 @@ export class Scene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
     this.cameraManager = new CameraManager(this);
+
     this.socketManager.init();
     this.socketManager.emit("player:create");
-    this.socketManager.emit("entity:create");
 
     this._registerEvents();
 
@@ -51,7 +55,7 @@ export class Scene extends Phaser.Scene {
   update(_time: number, delta: number): void {
     this.playerManager.update();
     this.entityManager.update();
-    this.tileManager.update(delta);
+    this.tileManager?.update(delta);
 
     this._updateInterface();
   }
@@ -62,10 +66,25 @@ export class Scene extends Phaser.Scene {
      */
     this.socketManager.on("player:create:local", (data: PlayerConfig) => {
       this.playerManager.add(data, true);
-
+      
       const player = this.playerManager.player!;
-      this.cameras.main.startFollow(player, false);
-      this.cameras.main.roundPixels = true;
+      const existing = this.registry.get("player");
+
+      if (existing) {
+        const inventory = player.getComponent<InventoryComponent>(
+          ComponentName.INVENTORY
+        );
+        const hotbar = player.getComponent<HotbarComponent>(
+          ComponentName.HOTBAR
+        );
+
+        inventory?.set(existing.inventory);
+        hotbar?.set(existing.hotbar);
+
+        this.registry.remove("player");
+      }
+
+      this.cameraManager.follow(player);
     });
 
     this.socketManager.on("player:create:others", (data: PlayerConfig[]) => {
@@ -96,8 +115,33 @@ export class Scene extends Phaser.Scene {
       handlers.combat.knockback(player, data.knockback);
     });
 
+    this.socketManager.on("player:transition", (data: MapName) => {
+      const player = this.playerManager.player;
+
+      const inventory = player?.getComponent<InventoryComponent>(
+        ComponentName.INVENTORY
+      );
+      const hotbar = player?.getComponent<HotbarComponent>(
+        ComponentName.HOTBAR
+      );
+
+      this.registry.set("player", {
+        inventory: inventory?.get(),
+        hotbar: hotbar?.get(),
+      });
+
+      this._unregisterEvents();
+
+      this.scene.stop();
+      this.scene.start(data);
+    });
+
     this.game.events.on("player:input", (data: Input) => {
       this.socketManager.emit("player:input", data);
+    });
+
+    this.game.events.on("player:transition", (data: { to: MapName }) => {
+      this.socketManager.emit("player:transition", data.to);
     });
 
     /**
@@ -117,7 +161,7 @@ export class Scene extends Phaser.Scene {
       this.entityManager.remove(data.id);
     });
 
-    this.socketManager.on("entity:hurt", (data: any) => {
+    this.socketManager.on("entity:hurt", (data: Hurt) => {
       const entity = this.entityManager.entities.get(data.id);
 
       if (!entity) return;
@@ -133,7 +177,6 @@ export class Scene extends Phaser.Scene {
     /**
      * Shared
      */
-
     this.game.events.on("hit", (data: Hit) => {
       this.socketManager.emit("hit", data);
     });
@@ -158,7 +201,7 @@ export class Scene extends Phaser.Scene {
     EventBus.emit("entities:update", data);
   }
 
-  shutdown(): void {
+  private _unregisterEvents(): void {
     this.input.off("pointerdown");
 
     this.socketManager.off("player:create:local");
@@ -167,6 +210,7 @@ export class Scene extends Phaser.Scene {
     this.socketManager.off("player:left");
     this.socketManager.off("player:input");
     this.socketManager.off("player:hurt");
+    this.socketManager.off("player:transition");
 
     this.socketManager.off("entity:create");
     this.socketManager.off("entity:create:all");
@@ -174,12 +218,18 @@ export class Scene extends Phaser.Scene {
     this.socketManager.off("entity:hurt");
 
     this.game.events.off("player:input");
+    this.game.events.off("player:transition");
     this.game.events.off("entity:pickup");
 
     this.game.events.off("hit");
+  }
+
+  shutdown(): void {
+    this._unregisterEvents();
 
     this.playerManager.destroy();
+    this.entityManager.destroy();
+    this.tileManager?.destroy();
     this.socketManager.disconnect();
-    this.tileManager.destroy();
   }
 }

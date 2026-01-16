@@ -57,5 +57,7 @@ export class HotbarComponent extends Component {
     );
 
     if (i !== -1) this.active = i;
+
+    this.emit();
   }
 }

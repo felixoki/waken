@@ -113,15 +113,28 @@
 - Add camera class ✅
 - Add damageable component ✅
 
+#### 15.1.2026
+
+- Add map transitions ✅
+
+#### 16.1.2026
+
+- Use registry to pass player between scenes ✅
+- Add transition component ✅
+
+
 #### Next up
 
-- Build player house in Tiled editor
-- Add map transitions
+- Add instance manager
+- Add hitbox generation to spell config
+- Build herbalist house in Tiled editor
+- Add world animation component
 - Add throttling network updates and change detection
 - Add host switching on disconnect
 - Update interpolation system
 - Add party manager
 - Add interface manager
+- Add spawns to maps
 
 ## Devlog
 

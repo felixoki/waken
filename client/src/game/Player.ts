@@ -17,6 +17,7 @@ import { Scene } from "./scenes/Scene";
 import { BodyComponent } from "./components/Body";
 import { InventoryComponent } from "./components/Inventory";
 import { HotbarComponent } from "./components/Hotbar";
+import { DamageableComponent } from "./components/Damageable";
 
 export class Player extends Entity {
   public socketId: string;
@@ -87,10 +88,11 @@ export class Player extends Entity {
         null,
       ])
     );
+    this.addComponent(new DamageableComponent());
   }
 
   update(remoteInput?: Input): void {
-    for (const component of this.components.values()) component.update();
+    this.components.forEach((component) => component.update());
 
     const input = remoteInput || this._getInput();
 

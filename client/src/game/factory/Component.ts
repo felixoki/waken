@@ -3,6 +3,7 @@ import {
   ComponentConfig,
   ComponentName,
   TextureConfig,
+  TransitionConfig,
 } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "../components/Component";
@@ -16,6 +17,7 @@ import { PickableComponent } from "../components/Pickable";
 import { InventoryComponent } from "../components/Inventory";
 import { HoverableComponent } from "../components/Hoverable";
 import { DamageableComponent } from "../components/Damageable";
+import { TransitionComponent } from "../components/Transition";
 
 export class ComponentFactory {
   static create(
@@ -52,6 +54,15 @@ export class ComponentFactory {
         [ComponentName.HOVERABLE]: new HoverableComponent(entity),
         [ComponentName.HOTBAR]: null!,
         [ComponentName.DAMAGEABLE]: new DamageableComponent(),
+        [ComponentName.TRANSITION]: new TransitionComponent(
+          entity,
+          (
+            config as {
+              name: ComponentName.TRANSITION;
+              config: TransitionConfig;
+            }
+          ).config
+        ),
       };
 
       if (map[config.name]) components.set(config.name, map[config.name]);

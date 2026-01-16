@@ -4,6 +4,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  MapName,
   StateName,
 } from "../types";
 
@@ -66,7 +67,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 0,
           offsetY: 0,
         },
-      },
+      }
     ],
     states: [],
     behaviors: [],
@@ -97,6 +98,16 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
       },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.HERBALIST,
+          width: 32,
+          height: 16,
+          offsetX: 16,
+          offsetY: 64,
+        },
+      }
     ],
     states: [],
     behaviors: [],

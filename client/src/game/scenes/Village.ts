@@ -4,9 +4,9 @@ import { MapFactory } from "../factory/Map";
 import { Preloader } from "../loaders/Preloader";
 import { TileManager } from "../managers/Tile";
 
-export default class Village extends Scene {
+export default class VillageScene extends Scene {
   constructor() {
-    super("Village");
+    super("village");
   }
 
   preload() {

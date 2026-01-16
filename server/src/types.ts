@@ -81,6 +81,7 @@ export interface Hurt {
  */
 export enum MapName {
   VILLAGE = "village",
+  HERBALIST = "herbalist",
 }
 
 export interface MapConfig {
@@ -231,6 +232,7 @@ export enum ComponentName {
   HOVERABLE = "hoverable",
   HOTBAR = "hotbar",
   DAMAGEABLE = "damageable",
+  TRANSITION = "transition",
 }
 
 export type ComponentConfig =
@@ -244,6 +246,7 @@ export type ComponentConfig =
   | { name: ComponentName.HOVERABLE }
   | { name: ComponentName.HOTBAR }
   | { name: ComponentName.DAMAGEABLE }
+  | { name: ComponentName.TRANSITION; config: TransitionConfig };
 
 export interface BodyConfig {
   width: number;
@@ -264,6 +267,14 @@ export interface InventoryItem {
   name: EntityName;
   quantity: number;
   stackable: boolean;
+}
+
+export interface TransitionConfig {
+  to: MapName;
+  width: number;
+  height: number;
+  offsetX: number;
+  offsetY: number;
 }
 
 /**

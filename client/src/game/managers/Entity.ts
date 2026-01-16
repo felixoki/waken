@@ -18,7 +18,7 @@ export class EntityManager {
   updateOne(): void {}
 
   update(): void {
-    for (const entity of this.entities.values()) entity.update();
+    this.entities.forEach((entity) => entity.update());
   }
 
   add(config: EntityConfig): void {
@@ -39,7 +39,7 @@ export class EntityManager {
   }
 
   destroy(): void {
-    for (const entity of this.entities.values()) entity.destroy();
+    this.entities.forEach((entity) => entity.destroy());
     this.entities.clear();
   }
 }
