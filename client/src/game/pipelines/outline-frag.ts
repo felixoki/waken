@@ -41,7 +41,7 @@ void main() {
 const MAX_SAMPLES = 100;
 const MIN_SAMPLES = 1;
 
-export function getFrag(quality: number = 0.1): string {
+export function getOutlineFrag(quality: number = 0.1): string {
   const samples = Math.max(quality * MAX_SAMPLES, MIN_SAMPLES);
   const angleStep = ((Math.PI * 2) / samples).toFixed(7);
   return frag.replace(/\#\{angleStep\}/, angleStep);

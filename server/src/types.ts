@@ -65,7 +65,7 @@ export interface EntityDestroy {
  * Damage
  */
 export interface Hit {
-  name: SpellName;
+  config: SpellConfig;
   attackerId: string;
   targetId: string;
 }
@@ -191,19 +191,32 @@ export interface AnimationConfig {
  */
 export enum SpellName {
   SHARD = "shard",
-  FIRESTORM = "firestorm",
+  SLASH = "slash",
+  ILLUMINATE = "illuminate",
+  HURT_SHADOWS = "hurt_shadows",
+}
+
+export enum SpellType {
+  PROJECTILE = "projectile",
+  AREA = "area",
+  SCENE = "scene",
+  MELEE = "melee",
 }
 
 export interface SpellConfig {
   name: SpellName;
+  type: SpellType;
   damage: number;
   knockback: number;
-  speed: number;
-  hitbox: {
+  speed?: number;
+  range?: number;
+  duration?: number;
+  hitbox?: {
     width: number;
     height: number;
   };
-  particles: ParticleConfig;
+  particles?: ParticleConfig;
+  shader?: ShaderConfig;
 }
 
 export interface ParticleConfig {
@@ -216,6 +229,10 @@ export interface ParticleConfig {
   frequency: number;
   quantity: number;
   blendMode: string;
+}
+
+export interface ShaderConfig {
+  pipeline: PipelineName;
 }
 
 /**
@@ -275,6 +292,15 @@ export interface TransitionConfig {
   height: number;
   offsetX: number;
   offsetY: number;
+}
+
+/**
+ * Pipelines
+ */
+export enum PipelineName {
+  OUTLINE = "outline",
+  LIGHT = "light",
+  REND = "rend",
 }
 
 /**

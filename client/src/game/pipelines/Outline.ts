@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { getFrag } from "./outline-frag";
+import { getOutlineFrag } from "./outline-frag";
 
 const PostFXPipeline = Phaser.Renderer.WebGL.Pipelines.PostFXPipeline;
 const Color = Phaser.Display.Color;
@@ -16,7 +16,7 @@ export class OutlinePipeline extends PostFXPipeline {
       name: "outline",
       game: game,
       renderTarget: true,
-      fragShader: getFrag(DEFAULT_QUALITY),
+      fragShader: getOutlineFrag(DEFAULT_QUALITY),
     });
 
     this.thickness = 0;

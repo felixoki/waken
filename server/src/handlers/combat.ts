@@ -1,6 +1,5 @@
 import { Socket } from "socket.io";
 import { EntityConfig, Hit, PlayerConfig, SpellConfig } from "../types";
-import { configs } from "../configs";
 import { InstanceManager } from "../managers/Instance";
 
 export const combat = {
@@ -33,7 +32,7 @@ export const combat = {
     const player = players.get(data.targetId);
     const target = entity || player;
 
-    const config = configs.spells[data.name];
+    const config = data.config;
 
     if (!attacker || !target || !config) return;
 

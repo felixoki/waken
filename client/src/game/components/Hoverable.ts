@@ -1,4 +1,4 @@
-import { ComponentName } from "@server/types";
+import { ComponentName, PipelineName } from "@server/types";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
 import { OutlinePipeline } from "../pipelines/Outline";
@@ -27,7 +27,7 @@ export class HoverableComponent extends Component {
   }
 
   private _hover(): void {
-    this.entity.setPostPipeline("outline");
+    this.entity.setPostPipeline(PipelineName.OUTLINE);
 
     const pipelines = this.entity.postPipelines;
 

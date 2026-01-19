@@ -2,6 +2,9 @@ import Phaser from "phaser";
 import { OutlinePipeline } from "./pipelines/Outline";
 import VillageScene from "./scenes/Village";
 import { HerbalistScene } from "./scenes/Herbalist";
+import { LightPipeline } from "./pipelines/Light";
+import { RendPipeline } from "./pipelines/Rend";
+import { PipelineName } from "@server/types";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -23,7 +26,9 @@ export const config: Phaser.Types.Core.GameConfig = {
   callbacks: {
     postBoot: (game) => {
       const renderer = game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
-      renderer.pipelines.addPostPipeline('outline', OutlinePipeline);
-    }
-  }
+      renderer.pipelines.addPostPipeline(PipelineName.OUTLINE, OutlinePipeline);
+      renderer.pipelines.addPostPipeline(PipelineName.LIGHT, LightPipeline);
+      renderer.pipelines.addPostPipeline(PipelineName.REND, RendPipeline);
+    },
+  },
 };

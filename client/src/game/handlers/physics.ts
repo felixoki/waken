@@ -24,7 +24,7 @@ export const physics = {
     hitbox.hits.add(entity.id);
 
     entity.scene.game.events.emit("hit", {
-      name: hitbox.name,
+      config: hitbox.config,
       attackerId: hitbox.ownerId,
       targetId: entity.id,
     });

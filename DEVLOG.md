@@ -124,18 +124,27 @@
 - Add instance manager ✅
 - Add game start menu ✅
 
+#### 18.1.2026
+
+- Add ui improvements ✅
+
+#### 19.1.2026
+
+- Add hitbox generation to spell config ✅
+
 
 #### Next up
 
-- Add hitbox generation to spell config
-- Add spell impact preview
 - Add interactable component
 - Add vendor component
+- Improve shader usage
+- Add effects, spell resistances and weaknesses
+- Add spell impact preview
 - Add countinghouse to server
 - Build herbalist house in Tiled editor
 - Add world animation component
-- Add throttling network updates and change detection
 - Add host switching on disconnect
+- Add throttling network updates and change detection
 - Update interpolation system
 - Add party manager
 - Add interface manager
