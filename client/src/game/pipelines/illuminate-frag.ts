@@ -1,4 +1,4 @@
-export const getLightFrag = (): string => `
+export const getIlluminateFrag = (): string => `
 precision mediump float;
 
 uniform sampler2D uMainSampler;

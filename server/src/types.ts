@@ -200,19 +200,10 @@ export enum SpellName {
   SHARD = "shard",
   SLASH = "slash",
   ILLUMINATE = "illuminate",
-  HURT_SHADOWS = "hurt_shadows",
-}
-
-export enum SpellType {
-  PROJECTILE = "projectile",
-  AREA = "area",
-  SCENE = "scene",
-  MELEE = "melee",
 }
 
 export interface SpellConfig {
   name: SpellName;
-  type: SpellType;
   damage: number;
   knockback: number;
   speed?: number;
@@ -222,24 +213,6 @@ export interface SpellConfig {
     width: number;
     height: number;
   };
-  particles?: ParticleConfig;
-  shader?: ShaderConfig;
-}
-
-export interface ParticleConfig {
-  tint: number[];
-  alpha: { start: number; end: number };
-  scale: { start: number; end: number };
-  speedY: { min: number; max: number };
-  speedX: { min: number; max: number };
-  lifespan: number;
-  frequency: number;
-  quantity: number;
-  blendMode: string;
-}
-
-export interface ShaderConfig {
-  pipeline: PipelineName;
 }
 
 /**
@@ -310,8 +283,7 @@ export interface TransitionConfig {
  */
 export enum PipelineName {
   OUTLINE = "outline",
-  LIGHT = "light",
-  REND = "rend",
+  ILLUMINATE = "illuminate",
 }
 
 /**

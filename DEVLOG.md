@@ -139,6 +139,7 @@
 #### Next up
 
 - Improve shader usage
+- Add depth sorting global variables
 - Add effects, spell resistances and weaknesses
 - Add spell impact preview
 - Build herbalist house in Tiled editor

@@ -1,10 +1,4 @@
-import {
-  ComponentName,
-  SpellConfig,
-  SpellName,
-  SpellType,
-  StateName,
-} from "@server/types";
+import { ComponentName, SpellName, StateName } from "@server/types";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
@@ -14,29 +8,8 @@ import { Player } from "../Player";
 import { HotbarComponent } from "../components/Hotbar";
 import { configs } from "@server/configs";
 
-type Handler = (
-  entity: Entity,
-  config: SpellConfig,
-  target: { x: number; y: number },
-  direction: { x: number; y: number },
-) => void;
-
 export class Casting implements State {
   private timer: Phaser.Time.TimerEvent | null = null;
-
-  private handlers: Record<SpellType, Handler> = {
-    [SpellType.PROJECTILE]: (entity, config, _target, direction) =>
-      handlers.spells.projectile(entity, config, direction),
-
-    [SpellType.MELEE]: (entity, config, _target, direction) =>
-      handlers.spells.melee(entity, config, direction),
-
-    [SpellType.AREA]: (entity, config, target, _direction) =>
-      handlers.spells.area(entity, config, target),
-
-    [SpellType.SCENE]: (entity, config, _target, _direction) =>
-      handlers.spells.scene(entity, config),
-  };
 
   public name: StateName = StateName.CASTING;
 
@@ -60,7 +33,7 @@ export class Casting implements State {
       entity.target!,
     );
 
-    this.handlers[config.type](entity, config, entity.target!, direction);
+    handlers.spells[config.name](entity, config, entity.target!, direction);
 
     this.timer = entity.scene.time.delayedCall(DURATION_CASTING, () => {
       this.exit(entity);

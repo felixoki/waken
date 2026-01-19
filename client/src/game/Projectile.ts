@@ -5,6 +5,7 @@ import { Scene } from "./scenes/Scene";
 export class Projectile extends Hitbox {
   private start: { x: number; y: number };
   private range: number;
+  private emitter!: Phaser.GameObjects.Particles.ParticleEmitter;
 
   constructor(
     scene: Scene,
@@ -32,11 +33,6 @@ export class Projectile extends Hitbox {
       direction.y * config.speed!,
     );
 
-    if (this.emitter) {
-      this.emitter.setPosition(0, 0);
-      this.emitter.startFollow(this);
-    }
-
     scene.events.on("update", this.update, this);
   }
 
@@ -49,6 +45,12 @@ export class Projectile extends Hitbox {
     );
 
     if (distance >= this.range) this.destroy();
+  }
+
+  setEmitter(emitter: Phaser.GameObjects.Particles.ParticleEmitter): void {
+    this.emitter = emitter;
+    this.emitter.setPosition(0, 0);
+    this.emitter.startFollow(this);
   }
 
   destroy(fromScene?: boolean): void {
