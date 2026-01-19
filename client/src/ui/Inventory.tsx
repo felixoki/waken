@@ -4,7 +4,7 @@ import EventBus from "../game/EventBus";
 
 export function Inventory() {
   const [items, setItems] = useState<(InventoryItem | null)[]>(
-    Array(20).fill(null)
+    Array(20).fill(null),
   );
 
   useEffect(() => {
@@ -21,14 +21,14 @@ export function Inventory() {
 
   return (
     <>
-      <h3>Inventory</h3>
-      <ul>
+      <h3 className="text-white mb-3">Inventory</h3>
+      <ul className="flex flex-wrap gap-1">
         {items.map((item, i) => (
           <li
             key={i}
-            className="border border-slate-200 rounded p-2 my-2 text-xs"
+            className="flex items-center justify-center border border-slate-500 rounded-lg text-xs text-white w-16 aspect-square"
           >
-            {item?.name} {item?.quantity}
+            {item?.quantity} {item?.name}
           </li>
         ))}
       </ul>

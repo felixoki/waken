@@ -128,6 +128,10 @@
 #### Next up
 
 - Add hitbox generation to spell config
+- Add spell impact preview
+- Add interactable component
+- Add vendor component
+- Add countinghouse to server
 - Build herbalist house in Tiled editor
 - Add world animation component
 - Add throttling network updates and change detection

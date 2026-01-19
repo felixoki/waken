@@ -24,7 +24,7 @@ export function Entities() {
   }, []);
 
   return (
-    <>
+    <div className="fixed top-0 left-0 w-5xl h-5xl pointer-events-none">
       {entities.map((e) => (
         <span
           key={e.id}
@@ -34,6 +34,6 @@ export function Entities() {
           {e.health}
         </span>
       ))}
-    </>
+    </div>
   );
 }

@@ -31,7 +31,7 @@ export const player = {
       };
 
       players.add(player.id, player);
-      socket.join(player.map);
+      socket.join(`game:${instance.id}:${player.map}`);
     }
 
     const others = players
@@ -42,7 +42,9 @@ export const player = {
     socket.emit("player:create:others", others);
     socket.emit("entity:create:all", entities.getByMap(player.map));
 
-    socket.to(player.map).emit("player:create", player);
+    socket
+      .to(`game:${instance.id}:${player.map}`)
+      .emit("player:create", player);
   },
 
   delete: (socket: Socket, instances: InstanceManager) => {

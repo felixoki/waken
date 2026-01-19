@@ -22,30 +22,35 @@ export function Menu({ ready }: { ready: () => void }) {
   }, []);
 
   return (
-    <div className="p-3">
-      <button
-        className="px-2 py-1 bg-blue-500 text-white rounded w-full mb-5"
-        onClick={() => {
-          SocketManager.emit("game:create");
-        }}
-      >
-        Create New Game
-      </button>
-      {games.map((id) => (
-        <div key={id} className="even:bg-slate-50 rounded p-3">
-          <div className="flex justify-between items-center">
-            <div>{id}</div>
-            <button
-              className="px-2 py-1 bg-blue-500 text-white rounded"
-              onClick={() => {
-                SocketManager.emit("game:join", { instanceId: id });
-              }}
-            >
-              Join
-            </button>
+    <div className="max-w-150 mx-auto flex flex-col justify-center items-center gap-7 h-screen">
+      <div className="flex justify-between items-center w-full p-3">
+        <h1 className="text-white">Games</h1>
+        <button
+          className="px-3 py-2 bg-blue-500 text-white rounded"
+          onClick={() => {
+            SocketManager.emit("game:create");
+          }}
+        >
+          Create new game
+        </button>
+      </div>
+      <div className="w-full">
+        {games.map((id) => (
+          <div key={id} className="odd:bg-slate-800 rounded p-3">
+            <div className="flex justify-between items-center">
+              <div className="text-white">{id}</div>
+              <button
+                className="px-3 py-1.5 bg-blue-500 text-white rounded"
+                onClick={() => {
+                  SocketManager.emit("game:join", { instanceId: id });
+                }}
+              >
+                Join
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+body {
+  height: 100vh;
+  background-color: var(--color-gray-900);
+}
+
+@font-face {
+  font-family: "Arco";
+  src: url("/fonts/ARCO.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-arco {
+  font-family: "Arco", sans-serif;
+}
