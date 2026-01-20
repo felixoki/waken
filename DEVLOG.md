@@ -135,12 +135,17 @@
 - Add vendor component ✅
 - Add resources store to server ✅
 
+#### 20.1.2026
+
+- Add area spells ✅
+
 
 #### Next up
 
-- Improve shader usage
+- Add vendor functionality
 - Add depth sorting global variables
-- Add effects, spell resistances and weaknesses
+- Improve illuminate shader
+- Add effects, resistances and weaknesses
 - Add spell impact preview
 - Build herbalist house in Tiled editor
 - Add world animation component
@@ -190,9 +195,9 @@ Besides knowing I wanted to build it story-driven, what was clear to me right aw
 
 So preferably people would play together. But what would they actually do? There was this scaffold of a story and a fantasy world, but what would players do in this world over and over? Why would they come back to it day after day?
 
-Technically it could be a quest based game where you follow a main quest and do side quests along the way, in a vast open world full of cities, npcs, creatures, forests, mountains, rivers and villages. The whole world would be "editable" in a Minecraft or Valheim sense, combined with farming and taming animals for a cozy experience. But building such a world simply is out of scope. If I wanted this project to go anywhere it needed a core loop I could actually implement.
+Technically it could be a quest based game where you follow a main quest and do side quests along the way, in a vast open world full of cities, npcs, creatures, forests, mountains, rivers and villages. The whole world would be "editable" in a Minecraft or Valheim sense, combined with farming and taming animals for a cozy experience. The dream game to make. But building it is just out of scope. If I wanted this project to go anywhere it needed a core loop I could actually implement.
 
-So instead of cities and forests and mountains and villages I landed on: One village. A village to harness and to take care of. I really got inspired by Anno at this point, figuring that the village starts rather small and the more you progress the more buildings you'd unlock and the more villager needs had to be met. Your decisions might even affect those needs: Like on leveling up you're presented with choices. A helper for the smith or a helper for the bakery. Produce iron faster or food, both of which you need to keep the village satisfied. It would of course benefit you to be smart about these decisions. I kind of got carried away there for a while, but I really liked the idea and actually it was perfect for starting small, then making it bigger later on.
+So instead of cities and forests and mountains and villages I landed on: One village. A village to harness and to take care of. I really got inspired by Anno at this point, figuring that the village starts out rather small and the more you progress the more buildings you'd unlock and the more villager needs had to be met. Your decisions might even affect those needs: Like on leveling up you're presented with choices. A helper for the smith or a helper for the bakery. Produce iron faster or food, both of which you need to keep the village satisfied. It would of course benefit you to be smart about these decisions. I kind of got carried away there for a while, but I really liked the idea and actually it was perfect for starting small, then making it bigger later on.
 
 The first thing in this village that needs your attention is be the farm of an older couple. They can't handle the workload anymore, so you have to step in.
 

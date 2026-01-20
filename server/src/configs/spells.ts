@@ -28,4 +28,14 @@ export const spells: Record<SpellName, SpellConfig> = {
     knockback: 0,
     duration: 5000,
   },
+  [SpellName.HURT_SHADOWS]: {
+    name: SpellName.HURT_SHADOWS,
+    damage: 50,
+    knockback: 0,
+    duration: 1000,
+    hitbox: {
+      width: 120,
+      height: 120,
+    },
+  },
 };

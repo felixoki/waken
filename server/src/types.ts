@@ -200,6 +200,7 @@ export enum SpellName {
   SHARD = "shard",
   SLASH = "slash",
   ILLUMINATE = "illuminate",
+  HURT_SHADOWS = "hurt_shadows",
 }
 
 export interface SpellConfig {

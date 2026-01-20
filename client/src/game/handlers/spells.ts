@@ -62,4 +62,42 @@ export const spells: Record<SpellName, SpellHandler> = {
   ) => {
     effects.shaders.illuminate(entity.scene, config.duration!);
   },
+
+  [SpellName.HURT_SHADOWS]: (
+    entity: Entity,
+    config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    new Hitbox(
+      entity.scene,
+      target.x,
+      target.y,
+      config.hitbox!.width,
+      config.hitbox!.height,
+      entity.id,
+      config,
+    );
+
+    const half = {
+      width: config.hitbox!.width / 2,
+      height: config.hitbox!.height / 2,
+    };
+
+    for (let i = 0; i < 8; i++) {
+      const x = target.x + Phaser.Math.Between(-half.width / 2, half.width / 2);
+      const y = target.y + Phaser.Math.Between(-half.height / 2, half.height / 2);
+
+      const angle = Phaser.Math.Between(0, 360);
+      const direction = {
+        x: Math.cos(Phaser.Math.DegToRad(angle)),
+        y: Math.sin(Phaser.Math.DegToRad(angle)),
+      };
+
+      entity.scene.time.delayedCall(i * 50, () => {
+        const temp = { x, y } as Entity;
+        effects.emitters.slash(entity.scene, temp, direction);
+      });
+    }
+  },
 };
