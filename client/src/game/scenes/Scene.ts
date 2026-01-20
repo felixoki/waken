@@ -10,6 +10,7 @@ import {
   Hurt,
   MapName,
   ComponentName,
+  Item,
 } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
@@ -71,10 +72,10 @@ export class Scene extends Phaser.Scene {
 
       if (existing) {
         const inventory = player.getComponent<InventoryComponent>(
-          ComponentName.INVENTORY
+          ComponentName.INVENTORY,
         );
         const hotbar = player.getComponent<HotbarComponent>(
-          ComponentName.HOTBAR
+          ComponentName.HOTBAR,
         );
 
         inventory?.set(existing.inventory);
@@ -118,10 +119,10 @@ export class Scene extends Phaser.Scene {
       const player = this.playerManager.player;
 
       const inventory = player?.getComponent<InventoryComponent>(
-        ComponentName.INVENTORY
+        ComponentName.INVENTORY,
       );
       const hotbar = player?.getComponent<HotbarComponent>(
-        ComponentName.HOTBAR
+        ComponentName.HOTBAR,
       );
 
       this.registry.set("player", {
@@ -188,6 +189,34 @@ export class Scene extends Phaser.Scene {
     });
 
     /**
+     * Items
+     */
+    this.socketManager.on(
+      "item:remove",
+      (data: Item) => {
+        /**
+         * We should make this a handler later on
+         */
+        const player = this.playerManager.player;
+        if (!player) return;
+
+        const inventory = player.getComponent<InventoryComponent>(
+          ComponentName.INVENTORY,
+        );
+        if (!inventory) return;
+
+        inventory.remove(data.name, data.quantity);
+      },
+    );
+
+    EventBus.on(
+      "item:collect",
+      (data: Item) => {
+        this.socketManager.emit("item:collect", data);
+      },
+    );
+
+    /**
      * Shared
      */
     this.game.events.on("hit", (data: Hit) => {
@@ -239,6 +268,9 @@ export class Scene extends Phaser.Scene {
 
     this.game.events.off("entity:pickup");
     this.game.events.off("entity:interact");
+
+    this.socketManager.off("item:remove");
+    EventBus.off("item:collect");
 
     this.game.events.off("hit");
   }

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { InventoryItem } from "@server/types";
+import { Item } from "@server/types";
 import EventBus from "../game/EventBus";
 
 export function Inventory() {
-  const [items, setItems] = useState<(InventoryItem | null)[]>(
+  const [items, setItems] = useState<(Item | null)[]>(
     Array(20).fill(null),
   );
 
   useEffect(() => {
-    const add = (items: (InventoryItem | null)[]) => {
+    const add = (items: (Item | null)[]) => {
       setItems(items);
     };
 

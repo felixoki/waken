@@ -1,10 +1,10 @@
 import {
   BodyConfig,
+  CollectorConfig,
   ComponentConfig,
   ComponentName,
   TextureConfig,
   TransitionConfig,
-  VendorConfig,
 } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "../components/Component";
@@ -20,7 +20,7 @@ import { HoverableComponent } from "../components/Hoverable";
 import { DamageableComponent } from "../components/Damageable";
 import { TransitionComponent } from "../components/Transition";
 import { InteractableComponent } from "../components/Interactable";
-import { VendorComponent } from "../components/Vendor";
+import { CollectorComponent } from "../components/Collector";
 
 export class ComponentFactory {
   static create(
@@ -67,9 +67,9 @@ export class ComponentFactory {
           ).config,
         ),
         [ComponentName.INTERACTABLE]: new InteractableComponent(entity),
-        [ComponentName.VENDOR]: new VendorComponent(
+        [ComponentName.COLLECTOR]: new CollectorComponent(
           entity,
-          (config as { name: ComponentName.VENDOR; config: VendorConfig })
+          (config as { name: ComponentName.COLLECTOR; config: CollectorConfig })
             .config,
         ),
       };

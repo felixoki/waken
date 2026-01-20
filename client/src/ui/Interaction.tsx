@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
-import { VendorConfig } from "@server/types";
+import { Item } from "@server/types";
+import { definitions } from "@server/configs/definitions";
 
 interface Interaction {
   id: string;
-  vendor?: {
-    config: VendorConfig;
-  };
+  collects?: Item[];
 }
 
 export const Interaction = () => {
   const [data, setData] = useState<Interaction | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const give = (item: Item) => {
+    const items = data?.collects?.filter((i) => i.name !== item.name) || [];
+    setData({ ...data!, collects: items });
+    EventBus.emit("item:collect", item);
+  };
 
   useEffect(() => {
     const handler = (data: Interaction) => {
@@ -30,13 +35,26 @@ export const Interaction = () => {
 
   return (
     <div>
-      <h3>Interaction with {data.id}</h3>
-      {data.vendor && (
+      <h3 className="text-white mb-3">Interaction: {data.id}</h3>
+      {data.collects && (
         <div>
-          <h4>Vendor</h4>
-          <p>
-            This entity is a vendor for: {data.vendor.config.accepts.join(", ")}
-          </p>
+          <h4 className="text-white mb-3">Collects:</h4>
+          <ul className="flex flex-wrap gap-1">
+            {data.collects.map((item, i) => (
+              <li key={i} className="flex flex-col gap-1">
+                <div className="flex items-center justify-center border border-slate-500 rounded-lg text-xs text-white w-16 aspect-square">
+                  {item?.quantity}{" "}
+                  {definitions[item?.name]?.metadata?.displayName}
+                </div>
+                <button
+                  className="p-0.5 bg-blue-500 text-white rounded"
+                  onClick={() => give(item)}
+                >
+                  Give
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>

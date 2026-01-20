@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { handlers } from "../handlers/index.js";
 import { tryCatch } from "../utils/tryCatch.js";
-import { Input, Hit, MapName } from "../types.js";
+import { Input, Hit, MapName, EntityPickup, Item } from "../types.js";
 import { InstanceManager } from "../managers/Instance.js";
 
 type SocketEvent = {
@@ -12,7 +12,7 @@ type SocketEvent = {
 export function registerHandlers(
   _io: Server,
   socket: Socket,
-  instances: InstanceManager
+  instances: InstanceManager,
 ) {
   const events: SocketEvent[] = [
     /**
@@ -60,7 +60,16 @@ export function registerHandlers(
     },
     {
       event: "entity:pickup",
-      handler: (data) => handlers.entity.pickup(data, socket, instances),
+      handler: (data: EntityPickup) =>
+        handlers.entity.pickup(data, socket, instances),
+    },
+    /**
+     * Items
+     */
+    {
+      event: "item:collect",
+      handler: (data: Item) =>
+        handlers.item.collect(data, socket, instances),
     },
     /**
      * Shared

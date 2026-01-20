@@ -132,20 +132,20 @@
 
 - Add hitbox generation to spell config ✅
 - Add interactable component ✅
-- Add vendor component ✅
-- Add resources store to server ✅
+- Add collector component ✅
+- Add items store to server ✅
 
 #### 20.1.2026
 
 - Add area spells ✅
+- Add collector functionality ✅
 
 
 #### Next up
 
-- Add vendor functionality
-- Add depth sorting global variables
-- Improve illuminate shader
 - Add effects, resistances and weaknesses
+- Improve illuminate shader
+- Add depth sorting global variables
 - Add spell impact preview
 - Build herbalist house in Tiled editor
 - Add world animation component

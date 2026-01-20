@@ -62,9 +62,9 @@ export interface EntityDestroy {
 }
 
 /**
- * Vendors
+ * Collectors
  */
-export interface VendorConfig {
+export interface CollectorConfig {
   accepts: EntityName[];
 }
 
@@ -232,7 +232,7 @@ export enum ComponentName {
   DAMAGEABLE = "damageable",
   TRANSITION = "transition",
   INTERACTABLE = "interactable",
-  VENDOR = "vendor",
+  COLLECTOR = "collector",
 }
 
 export type ComponentConfig =
@@ -248,7 +248,7 @@ export type ComponentConfig =
   | { name: ComponentName.DAMAGEABLE }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.INTERACTABLE }
-  | { name: ComponentName.VENDOR; config: VendorConfig };
+  | { name: ComponentName.COLLECTOR; config: CollectorConfig };
 
 export interface BodyConfig {
   width: number;
@@ -265,7 +265,7 @@ export interface TextureConfig {
   tiles: { row: number; start: number; end: number }[];
 }
 
-export interface InventoryItem {
+export interface Item {
   name: EntityName;
   quantity: number;
   stackable: boolean;

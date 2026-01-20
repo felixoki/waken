@@ -1,10 +1,10 @@
-import { ComponentName, EntityName, InventoryItem } from "@server/types";
+import { ComponentName, EntityName, Item } from "@server/types";
 import { Component } from "./Component";
 import { configs } from "@server/configs";
 import EventBus from "../EventBus";
 
 export class InventoryComponent extends Component {
-  private items: (InventoryItem | null)[] = new Array(20).fill(null);
+  private items: (Item | null)[] = new Array(20).fill(null);
 
   public name = ComponentName.INVENTORY;
 
@@ -19,7 +19,7 @@ export class InventoryComponent extends Component {
 
     if (def.metadata.stackable) {
       const existing = this.items.findIndex(
-        (item) => item?.name === name && item.stackable && item.quantity < 50
+        (item) => item?.name === name && item.stackable && item.quantity < 50,
       );
 
       if (existing !== -1) {
@@ -46,11 +46,26 @@ export class InventoryComponent extends Component {
     return false;
   }
 
-  get(): (InventoryItem | null)[] {
+  remove(name: EntityName, quantity: number = 1): boolean {
+    const index = this.items.findIndex((item) => item?.name === name);
+
+    if (index !== -1 && this.items[index]) {
+      if (this.items[index]!.quantity > quantity)
+        this.items[index]!.quantity -= quantity;
+      else this.items[index] = null;
+
+      this.emit();
+      return true;
+    }
+
+    return false;
+  }
+
+  get(): (Item | null)[] {
     return this.items;
   }
 
-  set(items: (InventoryItem | null)[]): void {
+  set(items: (Item | null)[]): void {
     this.items = items;
     this.emit();
   }

@@ -17,7 +17,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.VENDOR,
+        name: ComponentName.COLLECTOR,
         config: {
           accepts: [EntityName.FLYAMINATA1, EntityName.BASKETFERN],
         },

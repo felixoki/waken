@@ -1,6 +1,6 @@
 import { EntityName } from "../types";
 
-export class ResourceStore {
+export class ItemsStore {
   private items: Map<EntityName, number> = new Map();
 
   get(name: EntityName): number {

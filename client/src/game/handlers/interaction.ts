@@ -1,19 +1,26 @@
 import { ComponentName } from "@server/types";
-import { VendorComponent } from "../components/Vendor";
+import { CollectorComponent } from "../components/Collector";
 import { Entity } from "../Entity";
 import EventBus from "../EventBus";
+import { InventoryComponent } from "../components/Inventory";
 
 export const interaction = {
   start(entity: Entity) {
-    console.log("Interacting with entity:", entity);
-    const isVendor = entity.getComponent<VendorComponent>(ComponentName.VENDOR);
+    const collector = entity.getComponent<CollectorComponent>(
+      ComponentName.COLLECTOR,
+    );
+    const inventory =
+      entity.scene.playerManager.player?.getComponent<InventoryComponent>(
+        ComponentName.INVENTORY,
+      );
+    const items = inventory
+      ?.get()
+      .filter((item) => item && collector?.config.accepts.includes(item.name));
 
     EventBus.emit("interaction:start", {
       id: entity.id,
-      ...(isVendor && {
-        vendor: {
-          config: isVendor.config,
-        },
+      ...(collector && {
+        collects: items,
       }),
     });
   },
