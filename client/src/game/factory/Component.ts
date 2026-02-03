@@ -21,6 +21,7 @@ import { DamageableComponent } from "../components/Damageable";
 import { TransitionComponent } from "../components/Transition";
 import { InteractableComponent } from "../components/Interactable";
 import { CollectorComponent } from "../components/Collector";
+import { BounceComponent } from "../components/Bounce";
 
 export class ComponentFactory {
   static create(
@@ -72,6 +73,7 @@ export class ComponentFactory {
           (config as { name: ComponentName.COLLECTOR; config: CollectorConfig })
             .config,
         ),
+        [ComponentName.BOUNCE]: new BounceComponent(entity),
       };
 
       if (map[config.name]) components.set(config.name, map[config.name]);

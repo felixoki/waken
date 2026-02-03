@@ -32,6 +32,9 @@ export class AnimationComponent extends Component {
     const textureKey = `${this.entity.name}-${state}`;
     let dir = direction;
 
+    /**
+     * Should be removed with next update
+     */
     if (this.useMirroring) {
       const dirs = this.entity.directions;
 

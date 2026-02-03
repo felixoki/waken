@@ -5,13 +5,13 @@ export const animations: Partial<
 > = {
   [EntityName.PLAYER]: {
     [StateName.IDLE]: {
-      frameCount: 4,
-      frameRate: 6,
+      frameCount: 8,
+      frameRate: 10,
       repeat: -1,
     },
     [StateName.WALKING]: {
-      frameCount: 4,
-      frameRate: 6,
+      frameCount: 8,
+      frameRate: 10,
       repeat: -1,
     },
     [StateName.RUNNING]: {

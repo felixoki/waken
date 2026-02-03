@@ -157,18 +157,37 @@
 - Add herbalist map ✅
 - Add village map details ✅
 
+#### 3.2.2026
 
-#### Next up
+- Add grass bounce component ✅
 
+
+#### Backlog
+
+### Features
+
+- Add depth sorting system
+- Remove animation mirroring
+- Add renders boolean to map factory
+- Add dynamic keys for detail layers
+- Refactor physics and combat handlers
+- Add particle texture for sharp effects
 - Add spawns to maps
+- Add player rolling state
+- Add host switching on disconnect
+- Move target registration to player
+- Add interface manager
+- Show health bars only for damageable entities
+
 - Add herbalist
+- Communicate interactions to the server
+- Lock entities during interaction
 - Add world animation component
 - Add effects, resistances and weaknesses
 - Improve illuminate shader
-- Add depth sorting global variables
 - Add spell impact preview
-- Add host switching on disconnect
 - Add throttling network updates and change detection
 - Update interpolation system
 - Add party manager
-- Add interface manager
+
+### Bugs

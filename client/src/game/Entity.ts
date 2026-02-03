@@ -50,7 +50,6 @@ export class Entity extends Phaser.GameObjects.Sprite {
   private _init() {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
-    this.scene.physicsManager.groups.entities.add(this);
 
     this.setDepth(1000 + this.y);
   }

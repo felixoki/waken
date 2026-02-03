@@ -194,9 +194,6 @@ export class Scene extends Phaser.Scene {
     this.socketManager.on(
       "item:remove",
       (data: Item) => {
-        /**
-         * We should make this a handler later on
-         */
         const player = this.playerManager.player;
         if (!player) return;
 

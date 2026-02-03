@@ -46,9 +46,32 @@ export enum EntityName {
   HOUSE2 = "house2",
   HERBALIST = "herbalist",
   WINDMILL = "windmill",
+  BARN = "barn",
+  HENHOUSE = "henhouse",
+  WELL = "well",
   TREE1 = "tree1",
+  TREE2 = "tree2",
+  TREE4 = "tree4",
+  TREE5 = "tree5",
   APPLETREE2 = "appletree2",
+  STUMP1 = "stump1",
+  STUMP2 = "stump2",
+  BUSH1 = "bush1",
+  BUSH2 = "bush2",
+  BUSH3 = "bush3",
+  BUSH4 = "bush4",
+  REED1 = "reed1",
+  REED2 = "reed2",
+  REED3 = "reed3",
+  ROCK1 = "rock1",
   ROCK2 = "rock2",
+  ROCK3 = "rock3",
+  ROCK4 = "rock4",
+  ROCK8 = "rock8",
+  ROCKS1 = "rocks1",
+  ROCKS3 = "rocks3",
+  ROCKS5 = "rocks5",
+  ROCKS6 = "rocks6",
   FLYAMINATA1 = "flyaminata1",
   BASKETFERN = "basketfern",
 }
@@ -233,6 +256,7 @@ export enum ComponentName {
   TRANSITION = "transition",
   INTERACTABLE = "interactable",
   COLLECTOR = "collector",
+  BOUNCE = "bounce",
 }
 
 export type ComponentConfig =
@@ -248,7 +272,8 @@ export type ComponentConfig =
   | { name: ComponentName.DAMAGEABLE }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.INTERACTABLE }
-  | { name: ComponentName.COLLECTOR; config: CollectorConfig };
+  | { name: ComponentName.COLLECTOR; config: CollectorConfig }
+  | { name: ComponentName.BOUNCE };
 
 export interface BodyConfig {
   width: number;
@@ -257,6 +282,7 @@ export interface BodyConfig {
   offsetY: number;
   pushable?: boolean;
   immovable?: boolean;
+  collides?: boolean;
 }
 
 export interface TextureConfig {

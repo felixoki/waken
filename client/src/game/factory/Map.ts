@@ -56,7 +56,7 @@ export class MapFactory {
     const objectLayers = tilemap.objects;
 
     objectLayers.forEach((layer) => {
-      if (layer.name === "details")
+      if (layer.name.includes("details"))
         this.createStaticLayer(scene, tilemap, layer);
     });
 
@@ -74,7 +74,8 @@ export class MapFactory {
       /**
        * Hardcoded for now, will be dynamic later
        */
-      const textureKey = "ground_grass_details";
+      let textureKey = "ground_grass_details";
+      if (layer.name === "flowers_details") textureKey = "village_home";
 
       const tileset = tilemap.tilesets.find((ts) => ts.name === textureKey);
       if (!tileset) return;

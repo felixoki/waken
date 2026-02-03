@@ -64,14 +64,14 @@ export class Player extends Entity {
 
   init(): void {
     this.addComponent(
-      new AnimationComponent(this, configs.animations[EntityName.PLAYER]!, true)
+      new AnimationComponent(this, configs.animations[EntityName.PLAYER]!, false)
     );
     this.addComponent(
       new BodyComponent(this, {
-        width: 12,
-        height: 16,
-        offsetX: 26,
-        offsetY: 24,
+        width: 8,
+        height: 12,
+        offsetX: 12,
+        offsetY: 12,
         pushable: false,
       })
     );

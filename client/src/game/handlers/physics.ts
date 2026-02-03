@@ -4,7 +4,7 @@ import { Entity } from "../Entity";
 import { Hitbox } from "../Hitbox";
 
 export const physics = {
-  overlap: (obj1: any, obj2: any) => {
+  hit: (obj1: any, obj2: any) => {
     const entity = obj1 as Entity;
     const hitbox = obj2 as Hitbox;
 
@@ -17,7 +17,7 @@ export const physics = {
       return;
 
     const damageable = entity.getComponent<DamageableComponent>(
-      ComponentName.DAMAGEABLE
+      ComponentName.DAMAGEABLE,
     );
     if (!damageable) return;
 
@@ -28,5 +28,12 @@ export const physics = {
       attackerId: hitbox.ownerId,
       targetId: entity.id,
     });
+  },
+
+  overlap: (obj1: any, obj2: any) => {
+    const entity = obj1 as Entity;
+    const other = obj2 as Entity;
+
+    entity.scene.game.events.emit("entity:overlap", entity, other);
   },
 };

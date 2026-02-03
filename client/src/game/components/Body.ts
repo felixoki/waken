@@ -20,6 +20,13 @@ export class BodyComponent extends Component {
     this.entity.body.setOffset(this.config.offsetX, this.config.offsetY);
     this.entity.body.pushable = this.config.pushable || false;
     this.entity.body.setImmovable(this.config.immovable || false);
+
+    const collides = this.config.collides ?? true;
+    const group = collides
+      ? this.entity.scene.physicsManager.groups.entities
+      : this.entity.scene.physicsManager.groups.overlaps;
+
+    group.add(this.entity);
   }
 
   update(): void {}

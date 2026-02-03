@@ -16,9 +16,6 @@ export class EntityManager {
     return this.entities.get(id);
   }
 
-  /**
-   * Entities can receive exclusive updates from the server
-   */
   updateOne(): void {}
 
   update(): void {
@@ -29,7 +26,6 @@ export class EntityManager {
     const definition = configs.definitions[config.name];
     const entity = Factory.create(this.scene, { ...config, ...definition! });
 
-    this.scene.physicsManager.groups.entities.add(entity);
     this.entities.set(config.id, entity);
   }
 

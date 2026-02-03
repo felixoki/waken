@@ -7,6 +7,7 @@ export class PhsyicsManager {
     players: Phaser.Physics.Arcade.Group;
     entities: Phaser.Physics.Arcade.Group;
     hits: Phaser.Physics.Arcade.Group;
+    overlaps: Phaser.Physics.Arcade.Group;
   };
 
   constructor(scene: Scene) {
@@ -24,6 +25,7 @@ export class PhsyicsManager {
         collideWorldBounds: true,
       }),
       hits: this.scene.physics.add.group(),
+      overlaps: this.scene.physics.add.group(),
     };
 
     this.scene.physics.add.collider(this.groups.players, this.groups.players);
@@ -33,6 +35,22 @@ export class PhsyicsManager {
     this.scene.physics.add.overlap(
       this.groups.entities,
       this.groups.hits,
+      handlers.physics.hit,
+      undefined,
+      this
+    );
+
+    this.scene.physics.add.overlap(
+      this.groups.players,
+      this.groups.overlaps,
+      handlers.physics.overlap,
+      undefined,
+      this
+    );
+
+    this.scene.physics.add.overlap(
+      this.groups.entities,
+      this.groups.overlaps,
       handlers.physics.overlap,
       undefined,
       this

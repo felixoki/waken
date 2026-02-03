@@ -68,10 +68,10 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 64,
-          height: 64,
-          offsetX: 0,
-          offsetY: 0,
+          width: 128,
+          height: 48,
+          offsetX: 32,
+          offsetY: 80,
         },
       },
     ],
@@ -102,16 +102,21 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+        config: {
+          width: 128,
+          height: 48,
+          offsetX: 32,
+          offsetY: 60,
+        },
       },
       {
         name: ComponentName.TRANSITION,
         config: {
           to: MapName.HERBALIST,
-          width: 32,
+          width: 16,
           height: 16,
-          offsetX: 16,
-          offsetY: 64,
+          offsetX: 0,
+          offsetY: 40,
         },
       },
     ],
@@ -140,6 +145,59 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           ],
         },
         key: "windmill_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BARN]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_farm_house",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 9, end: 13 },
+            { row: 2, start: 9, end: 13 },
+            { row: 3, start: 9, end: 13 },
+            { row: 4, start: 9, end: 13 },
+            { row: 5, start: 9, end: 13 },
+          ],
+        },
+        key: "barn_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.HENHOUSE]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_farm_house",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 15, end: 17 },
+            { row: 3, start: 15, end: 17 },
+            { row: 4, start: 15, end: 17 },
+            { row: 5, start: 15, end: 17 },
+          ],
+        },
+        key: "henhouse_texture",
       },
       {
         name: ComponentName.BODY,
@@ -179,6 +237,31 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.WELL]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 35, start: 5, end: 7 },
+            { row: 36, start: 5, end: 7 },
+            { row: 37, start: 5, end: 7 },
+          ],
+        },
+        key: "well_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 16, offsetX: 8, offsetY: 8 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.TREE1]: {
     direction: Direction.DOWN,
     directions: [],
@@ -197,6 +280,101 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           ],
         },
         key: "tree1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 24,
+          offsetY: 48,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE2]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 13, end: 16 },
+            { row: 16, start: 13, end: 16 },
+            { row: 17, start: 13, end: 16 },
+            { row: 18, start: 13, end: 16 },
+          ],
+        },
+        key: "tree2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 24,
+          offsetY: 32,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE4]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 35, start: 11, end: 16 },
+            { row: 36, start: 11, end: 16 },
+            { row: 37, start: 11, end: 16 },
+            { row: 38, start: 11, end: 16 },
+            { row: 39, start: 11, end: 16 },
+          ],
+        },
+        key: "tree5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 40,
+          offsetY: 48,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE5]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 43, start: 13, end: 16 },
+            { row: 44, start: 13, end: 16 },
+            { row: 45, start: 13, end: 16 },
+            { row: 46, start: 13, end: 16 },
+            { row: 47, start: 13, end: 16 },
+          ],
+        },
+        key: "tree5_texture",
       },
       {
         name: ComponentName.BODY,
@@ -242,6 +420,273 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.STUMP1]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 43, start: 7, end: 9 },
+            { row: 44, start: 7, end: 9 },
+          ],
+        },
+        key: "stump1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 28, height: 8, offsetX: 12, offsetY: 8 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STUMP2]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 51, start: 12, end: 13 },
+            { row: 52, start: 12, end: 13 },
+          ],
+        },
+        key: "stump2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 12, height: 8, offsetX: 12, offsetY: 8 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH1]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 25, start: 14, end: 16 },
+            { row: 26, start: 14, end: 16 },
+            { row: 27, start: 14, end: 16 },
+          ],
+        },
+        key: "bush1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 12,
+          offsetX: 12,
+          offsetY: 24,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH2]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 29, start: 5, end: 6 },
+            { row: 30, start: 5, end: 6 },
+          ],
+        },
+        key: "bush2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH3]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "plants_bushes",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 16, end: 18 },
+            { row: 2, start: 16, end: 18 },
+            { row: 3, start: 16, end: 18 },
+          ],
+        },
+        key: "bush3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 4,
+          height: 4,
+          offsetX: 24,
+          offsetY: 20,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH4]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "plants_bushes",
+          tileSize: 16,
+          tiles: [
+            { row: 4, start: 25, end: 26 },
+            { row: 5, start: 25, end: 26 },
+          ],
+        },
+        key: "bush4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 4,
+          height: 4,
+          offsetX: 16,
+          offsetY: 12,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.REED1]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "reed",
+          tileSize: 16,
+          tiles: [{ row: 2, start: 2, end: 2 }],
+        },
+        key: "reed1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 16, offsetX: 0, offsetY: 0, collides: false },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.REED2]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "reed",
+          tileSize: 16,
+          tiles: [{ row: 2, start: 4, end: 4 }],
+        },
+        key: "reed2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 16, offsetX: 0, offsetY: 0, collides: false },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.REED3]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "reed",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 6, end: 6 },
+            { row: 2, start: 6, end: 6 },
+          ],
+        },
+        key: "reed3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 24, offsetX: 0, offsetY: 8, collides: false },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK1]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 45, start: 2, end: 5 },
+            { row: 46, start: 2, end: 5 },
+            { row: 47, start: 2, end: 5 },
+            { row: 48, start: 2, end: 5 },
+          ],
+        },
+        key: "rock1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 40, height: 24, offsetX: 8, offsetY: 24 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.ROCK2]: {
     direction: Direction.DOWN,
     directions: [],
@@ -255,14 +700,205 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 45, start: 6, end: 8 },
             { row: 46, start: 6, end: 8 },
             { row: 47, start: 6, end: 8 },
-            { row: 48, start: 6, end: 8 },
           ],
         },
         key: "rock2_texture",
       },
       {
         name: ComponentName.BODY,
-        config: { width: 32, height: 24, offsetX: 8, offsetY: 24 },
+        config: { width: 32, height: 16, offsetX: 8, offsetY: 24 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK3]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 45, start: 9, end: 11 },
+            { row: 46, start: 9, end: 11 },
+            { row: 47, start: 9, end: 11 },
+          ],
+        },
+        key: "rock3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 24, height: 12, offsetX: 12, offsetY: 24 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK4]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 49, start: 2, end: 5 },
+            { row: 50, start: 2, end: 5 },
+            { row: 51, start: 2, end: 5 },
+            { row: 52, start: 2, end: 5 },
+          ],
+        },
+        key: "rock4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 40, height: 24, offsetX: 12, offsetY: 24 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK8]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 53, start: 6, end: 7 },
+            { row: 54, start: 6, end: 7 },
+          ],
+        },
+        key: "rock8_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 8, offsetX: 8, offsetY: 16 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCKS1]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 29, start: 11, end: 13 },
+            { row: 30, start: 11, end: 13 },
+            { row: 31, start: 11, end: 13 },
+          ],
+        },
+        key: "rocks1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 16,
+          offsetX: 16,
+          offsetY: 12,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCKS3]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 33, start: 2, end: 3 },
+            { row: 34, start: 2, end: 3 },
+          ],
+        },
+        key: "rocks3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 6,
+          height: 6,
+          offsetX: 12,
+          offsetY: 12,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCKS5]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 33, start: 8, end: 9 },
+            { row: 34, start: 8, end: 9 },
+          ],
+        },
+        key: "rocks5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 6,
+          height: 6,
+          offsetX: 12,
+          offsetY: 12,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCKS6]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 33, start: 10, end: 11 },
+            { row: 34, start: 10, end: 11 },
+          ],
+        },
+        key: "rocks6_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 6,
+          height: 6,
+          offsetX: 12,
+          offsetY: 12,
+        },
       },
     ],
     states: [],

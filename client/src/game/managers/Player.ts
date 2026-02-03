@@ -22,9 +22,6 @@ export class PlayerManager {
   }
 
   add(config: PlayerConfig, isLocal: boolean): void {
-    /**
-     * We should introduce a factory pattern here later on
-     */
     const player = new Player(
       this.scene,
       config.x,
