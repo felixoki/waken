@@ -93,6 +93,13 @@
       "id": 3,
       "name": "wall",
       "opacity": 1,
+      "properties": [
+        {
+          "name": "collides",
+          "type": "bool",
+          "value": true
+        }
+      ],
       "type": "tilelayer",
       "visible": true,
       "width": 16,
@@ -182,6 +189,17 @@
           "width": 1,
           "x": 128,
           "y": 112
+        },
+        {
+          "height": 1,
+          "id": 2,
+          "name": "Herbalist_Exit",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 1,
+          "x": 128,
+          "y": 192
         }
       ],
       "opacity": 1,
@@ -192,7 +210,7 @@
     }
   ],
   "nextlayerid": 11,
-  "nextobjectid": 2,
+  "nextobjectid": 4,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",

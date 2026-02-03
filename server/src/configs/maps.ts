@@ -3,6 +3,7 @@ import { MapConfig, MapName } from "../types";
 export const maps: Record<MapName, MapConfig> = {
   [MapName.VILLAGE]: {
     id: MapName.VILLAGE,
+    spawn: { x: 434, y: 608 },
     json: "village.json",
     spritesheets: [
       {
@@ -113,6 +114,7 @@ export const maps: Record<MapName, MapConfig> = {
   },
   [MapName.HERBALIST]: {
     id: MapName.HERBALIST,
+    spawn: { x: 128, y: 168 },
     json: "herbalist.json",
     spritesheets: [
       {

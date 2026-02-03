@@ -45,6 +45,7 @@ export enum EntityName {
   HOUSE1 = "house1",
   HOUSE2 = "house2",
   HERBALIST = "herbalist",
+  HERBALIST_EXIT = "herbalist_exit",
   WINDMILL = "windmill",
   BARN = "barn",
   HENHOUSE = "henhouse",
@@ -116,6 +117,7 @@ export enum MapName {
 
 export interface MapConfig {
   id: MapName;
+  spawn: { x: number; y: number };
   json: string;
   spritesheets: Spritesheet[];
 }
@@ -297,8 +299,16 @@ export interface Item {
   stackable: boolean;
 }
 
+export interface Transition {
+  to: MapName;
+  x: number;
+  y: number;
+}
+
 export interface TransitionConfig {
   to: MapName;
+  x: number;
+  y: number;
   width: number;
   height: number;
   offsetX: number;

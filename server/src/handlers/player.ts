@@ -1,7 +1,8 @@
 import { Socket } from "socket.io";
-import { randomInt, randomUUID } from "crypto";
-import { Input, MapName } from "../types.js";
+import { randomUUID } from "crypto";
+import { Input, MapName, Transition } from "../types.js";
 import { InstanceManager } from "../managers/Instance.js";
+import { configs } from "../configs/index.js";
 
 export const player = {
   create: (socket: Socket, instances: InstanceManager) => {
@@ -19,13 +20,14 @@ export const player = {
 
     if (!player) {
       const isHost = !players.getAll().length;
+      const map = configs.maps[MapName.VILLAGE];
 
       player = {
-        x: randomInt(0, 400),
-        y: randomInt(0, 400),
+        x: map.spawn.x,
+        y: map.spawn.y,
         id: randomUUID(),
         socketId: socket.id,
-        map: MapName.VILLAGE,
+        map: map.id,
         health: 100,
         isHost,
       };
@@ -74,7 +76,7 @@ export const player = {
     socket.broadcast.emit("player:input", data);
   },
 
-  transition: (map: MapName, socket: Socket, instances: InstanceManager) => {
+  transition: (data: Transition, socket: Socket, instances: InstanceManager) => {
     const instance = instances.getBySocketId(socket.id);
     if (!instance) return;
 
@@ -82,18 +84,13 @@ export const player = {
     if (!player) return;
 
     const prev = player.map;
-    const next = map;
-
-    /**
-     * We should specify these in the map configs later
-     */
-    const spawn = { x: randomInt(0, 400), y: randomInt(0, 400) };
+    const next = data.to;
 
     instance.players.update(player.id, {
       ...player,
       map: next,
-      x: spawn.x,
-      y: spawn.y,
+      x: data.x,
+      y: data.y,
     });
 
     socket.leave(`game:${instance.id}:${prev}`);

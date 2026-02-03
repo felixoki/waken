@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { handlers } from "../handlers/index.js";
 import { tryCatch } from "../utils/tryCatch.js";
-import { Input, Hit, MapName, EntityPickup, Item } from "../types.js";
+import { Input, Hit, EntityPickup, Item, Transition } from "../types.js";
 import { InstanceManager } from "../managers/Instance.js";
 
 type SocketEvent = {
@@ -48,8 +48,8 @@ export function registerHandlers(
     },
     {
       event: "player:transition",
-      handler: (map: MapName) =>
-        handlers.player.transition(map, socket, instances),
+      handler: (data: Transition) =>
+        handlers.player.transition(data, socket, instances),
     },
     /**
      * Entity

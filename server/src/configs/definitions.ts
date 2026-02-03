@@ -113,10 +113,32 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.TRANSITION,
         config: {
           to: MapName.HERBALIST,
+          x: 128,
+          y: 168,
           width: 16,
           height: 16,
           offsetX: 0,
           offsetY: 40,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.HERBALIST_EXIT]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 208,
+          y: 176,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
         },
       },
     ],
@@ -256,7 +278,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 16, offsetX: 8, offsetY: 8 },
+        config: { width: 20, height: 12, offsetX: 8, offsetY: 16 },
       },
     ],
     states: [],
@@ -349,7 +371,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 16,
           height: 24,
-          offsetX: 40,
+          offsetX: 36,
           offsetY: 48,
         },
       },

@@ -57,6 +57,8 @@ export class TransitionComponent extends Component {
   private _enter(): void {
     this.entity.scene.game.events.emit("player:transition", {
       to: this.config.to,
+      x: this.config.x,
+      y: this.config.y,
     });
   }
 }

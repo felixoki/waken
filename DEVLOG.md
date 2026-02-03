@@ -160,19 +160,18 @@
 #### 3.2.2026
 
 - Add grass bounce component ✅
+- Remove animation mirroring ✅
+- Add spawns to maps ✅
 
 
 #### Backlog
 
 ### Features
 
-- Add depth sorting system
-- Remove animation mirroring
 - Add renders boolean to map factory
 - Add dynamic keys for detail layers
 - Refactor physics and combat handlers
 - Add particle texture for sharp effects
-- Add spawns to maps
 - Add player rolling state
 - Add host switching on disconnect
 - Move target registration to player
@@ -181,6 +180,7 @@
 
 - Add herbalist
 - Communicate interactions to the server
+- Add depth sorting system
 - Lock entities during interaction
 - Add world animation component
 - Add effects, resistances and weaknesses

@@ -35,7 +35,6 @@ export class ComponentFactory {
         [ComponentName.ANIMATION]: new AnimationComponent(
           entity,
           configs.animations[entity.name] ?? {},
-          false,
         ),
         [ComponentName.BEHAVIOR_QUEUE]: new BehaviorQueue(entity),
         [ComponentName.BODY]: new BodyComponent(

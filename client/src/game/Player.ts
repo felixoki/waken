@@ -38,7 +38,7 @@ export class Player extends Entity {
     states: Map<StateName, State>,
     socketId: string,
     isHost: boolean,
-    isControllable: boolean
+    isControllable: boolean,
   ) {
     super(
       scene,
@@ -50,7 +50,7 @@ export class Player extends Entity {
       health,
       direction,
       directions,
-      states
+      states,
     );
 
     this.socketId = socketId;
@@ -64,7 +64,7 @@ export class Player extends Entity {
 
   init(): void {
     this.addComponent(
-      new AnimationComponent(this, configs.animations[EntityName.PLAYER]!, false)
+      new AnimationComponent(this, configs.animations[EntityName.PLAYER]!),
     );
     this.addComponent(
       new BodyComponent(this, {
@@ -73,7 +73,7 @@ export class Player extends Entity {
         offsetX: 12,
         offsetY: 12,
         pushable: false,
-      })
+      }),
     );
     this.addComponent(new InventoryComponent());
     this.addComponent(
@@ -86,7 +86,7 @@ export class Player extends Entity {
         null,
         null,
         null,
-      ])
+      ]),
     );
     this.addComponent(new DamageableComponent());
   }

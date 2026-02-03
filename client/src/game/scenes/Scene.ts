@@ -11,6 +11,7 @@ import {
   MapName,
   ComponentName,
   Item,
+  Transition,
 } from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
 import { EntityManager } from "../managers/Entity";
@@ -78,6 +79,7 @@ export class Scene extends Phaser.Scene {
           ComponentName.HOTBAR,
         );
 
+        player.direction = existing.direction;
         inventory?.set(existing.inventory);
         hotbar?.set(existing.hotbar);
 
@@ -126,6 +128,7 @@ export class Scene extends Phaser.Scene {
       );
 
       this.registry.set("player", {
+        direction: player?.direction,
         inventory: inventory?.get(),
         hotbar: hotbar?.get(),
       });
@@ -144,8 +147,13 @@ export class Scene extends Phaser.Scene {
       this.socketManager.emit("player:input", data);
     });
 
-    this.game.events.on("player:transition", (data: { to: MapName }) => {
-      this.socketManager.emit("player:transition", data.to);
+    this.game.events.on("player:transition", (data: Transition) => {
+      const player = this.playerManager.player;
+      if (!player) return;
+
+      player.isLocked = true;
+
+      this.socketManager.emit("player:transition", data);
     });
 
     /**

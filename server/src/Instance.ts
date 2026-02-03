@@ -15,7 +15,7 @@ export class Instance {
   constructor(id: string, host: string) {
     this.id = id;
     this.host = host;
-    
+
     this.players = new PlayerStore();
     this.entities = new EntityStore();
     this.items = new ItemsStore();
@@ -23,8 +23,16 @@ export class Instance {
     const loader = new MapLoader();
 
     const village = loader.load(configs.maps.village.json);
-    const ents = loader.parseEntities(MapName.VILLAGE, village);
+    const villageEntities = loader.parseEntities(MapName.VILLAGE, village);
 
-    ents.forEach((e) => this.entities.add(e.id, e));
+    const herbalist = loader.load(configs.maps.herbalist.json);
+    const herbalistEntities = loader.parseEntities(
+      MapName.HERBALIST,
+      herbalist,
+    );
+
+    [...villageEntities, ...herbalistEntities].forEach((e) =>
+      this.entities.add(e.id, e),
+    );
   }
 }

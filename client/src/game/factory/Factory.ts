@@ -14,7 +14,7 @@ import { BehaviorFactory } from "./Behavior";
 export class Factory {
   static create(
     scene: Scene,
-    definition: EntityConfig & EntityDefinition
+    definition: EntityConfig & EntityDefinition,
   ): Entity {
     const states = StateFactory.create(definition.states);
     const texture = `${definition.name}-${StateName.IDLE}`;
@@ -29,16 +29,22 @@ export class Factory {
       definition.health,
       definition.direction,
       definition.directions,
-      states
+      states,
     );
 
     const components = ComponentFactory.create(definition.components, entity);
 
     for (const [_, component] of components) entity.addComponent(component);
 
+    const hasTexture = definition.components.some(
+      (c) => c.name === ComponentName.TEXTURE,
+    );
+
+    if (!hasTexture) entity.setVisible(false);
+
     if (definition.behaviors && definition.behaviors.length) {
       const behaviorQueue = entity.getComponent<BehaviorQueue>(
-        ComponentName.BEHAVIOR_QUEUE
+        ComponentName.BEHAVIOR_QUEUE,
       );
 
       if (behaviorQueue) {
