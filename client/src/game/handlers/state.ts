@@ -23,6 +23,11 @@ export const state = {
         needsUpdate: false,
       },
       {
+        condition: () => input.isRolling,
+        state: () => StateName.ROLLING,
+        needsUpdate: false,
+      },
+      {
         condition: () => input.direction,
         state: () => (input.isRunning ? StateName.RUNNING : StateName.WALKING),
         needsUpdate: true,

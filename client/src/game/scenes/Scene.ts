@@ -199,27 +199,21 @@ export class Scene extends Phaser.Scene {
     /**
      * Items
      */
-    this.socketManager.on(
-      "item:remove",
-      (data: Item) => {
-        const player = this.playerManager.player;
-        if (!player) return;
+    this.socketManager.on("item:remove", (data: Item) => {
+      const player = this.playerManager.player;
+      if (!player) return;
 
-        const inventory = player.getComponent<InventoryComponent>(
-          ComponentName.INVENTORY,
-        );
-        if (!inventory) return;
+      const inventory = player.getComponent<InventoryComponent>(
+        ComponentName.INVENTORY,
+      );
+      if (!inventory) return;
 
-        inventory.remove(data.name, data.quantity);
-      },
-    );
+      inventory.remove(data.name, data.quantity);
+    });
 
-    EventBus.on(
-      "item:collect",
-      (data: Item) => {
-        this.socketManager.emit("item:collect", data);
-      },
-    );
+    EventBus.on("item:collect", (data: Item) => {
+      this.socketManager.emit("item:collect", data);
+    });
 
     /**
      * Shared
@@ -241,7 +235,7 @@ export class Scene extends Phaser.Scene {
     const entities = [
       ...this.entityManager.entities.values(),
       ...this.playerManager.others.values(),
-    ];
+    ].filter((entity) => entity.getComponent(ComponentName.DAMAGEABLE));
     const player = this.playerManager.player;
 
     const data = this.cameraManager.getInterfaceData(entities, player!);

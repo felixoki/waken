@@ -311,7 +311,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 24,
           offsetY: 48,
         },
-      },
+      }
     ],
     states: [],
     behaviors: [],

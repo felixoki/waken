@@ -1,16 +1,13 @@
-import { ComponentName, StateName, WeaponName } from "@server/types";
+import { ComponentName, StateName } from "@server/types";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
-import { DURATION_SLASHING } from "@server/globals";
+import { DURATION_ROLLING, SPEED_ROLLING } from "@server/globals";
 import { handlers } from "../handlers";
-import { Hitbox } from "../Hitbox";
-import { weapons } from "@server/configs/weapons";
 
-export class Slashing implements State {
+export class Rolling implements State {
   private timer: Phaser.Time.TimerEvent | null = null;
-  private hitbox: Hitbox | null = null;
-  public name: StateName = StateName.SLASHING;
+  public name = StateName.ROLLING;
 
   enter(entity: Entity): void {
     entity.setState(this.name);
@@ -21,23 +18,17 @@ export class Slashing implements State {
     );
     anim?.play(this.name, entity.direction);
 
-    this.timer = entity.scene.time.delayedCall(DURATION_SLASHING, () => {
+    handlers.move.getVelocity(entity, SPEED_ROLLING);
+
+    this.timer = entity.scene.time.delayedCall(DURATION_ROLLING, () => {
       this.exit(entity);
     });
-
-    const offset = handlers.direction.getDirectionalOffset(
-      entity.direction,
-      16,
-    );
-    const config = weapons[WeaponName.SLASH];
-
-    handlers.weapons[WeaponName.SLASH](entity, config, offset);
   }
 
   update(_entity: Entity): void {}
 
   exit(entity: Entity): void {
-    this.hitbox?.destroy();
+    entity.body.setVelocity(0, 0);
 
     if (this.timer) {
       this.timer.destroy();

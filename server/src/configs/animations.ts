@@ -29,6 +29,11 @@ export const animations: Partial<
       frameRate: 10,
       repeat: 0,
     },
+    [StateName.ROLLING]: {
+      frameCount: 8,
+      frameRate: 10,
+      repeat: 0,
+    },
   },
   [EntityName.ORC1]: {
     [StateName.IDLE]: {

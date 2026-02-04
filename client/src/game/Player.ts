@@ -141,6 +141,7 @@ export class Player extends Entity {
     const directions = this.inputManager?.getDirections();
     const isRunning = this.inputManager?.isRunning();
     const isJumping = this.inputManager?.isJumping();
+    const isRolling = this.inputManager?.isRolling();
     const target = this.inputManager?.getTarget();
 
     const hotbar = this.getComponent<HotbarComponent>(ComponentName.HOTBAR);
@@ -154,6 +155,7 @@ export class Player extends Entity {
       directions: directions || [],
       isRunning: isRunning || false,
       isJumping: isJumping || false,
+      isRolling: isRolling || false,
       target: target,
       state: this.state,
       equipped: equipped,

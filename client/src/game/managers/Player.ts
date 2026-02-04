@@ -7,6 +7,7 @@ import { Scene } from "../scenes/Scene";
 import { Running } from "../state/Running";
 import { Casting } from "../state/Casting";
 import { Jumping } from "../state/Jumping";
+import { Rolling } from "../state/Rolling";
 
 export class PlayerManager {
   private scene: Scene;
@@ -38,6 +39,7 @@ export class PlayerManager {
         [StateName.RUNNING, new Running()],
         [StateName.JUMPING, new Jumping()],
         [StateName.CASTING, new Casting()],
+        [StateName.ROLLING, new Rolling()]
       ]),
       config.socketId,
       config.isHost,

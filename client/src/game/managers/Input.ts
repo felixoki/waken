@@ -11,6 +11,7 @@ export class InputManager {
     A: Key;
     S: Key;
     D: Key;
+    C: Key;
     SHIFT: Key;
     SPACE: Key;
   };
@@ -24,6 +25,7 @@ export class InputManager {
       A: Phaser.Input.Keyboard.KeyCodes.A,
       S: Phaser.Input.Keyboard.KeyCodes.S,
       D: Phaser.Input.Keyboard.KeyCodes.D,
+      C: Phaser.Input.Keyboard.KeyCodes.C,
       SHIFT: Phaser.Input.Keyboard.KeyCodes.SHIFT,
       SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE,
     }) as typeof this.keys;
@@ -69,6 +71,10 @@ export class InputManager {
 
   isJumping(): boolean {
     return Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
+  }
+
+  isRolling(): boolean {
+    return Phaser.Input.Keyboard.JustDown(this.keys.C);
   }
 
   setTarget(target: { x: number; y: number }): void {

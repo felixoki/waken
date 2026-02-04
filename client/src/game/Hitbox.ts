@@ -1,10 +1,10 @@
-import { SpellConfig } from "@server/types";
+import { SpellConfig, WeaponConfig } from "@server/types";
 import { Scene } from "./scenes/Scene";
 
 export class Hitbox extends Phaser.GameObjects.Rectangle {
   public hits = new Set<string>();
   public ownerId: string;
-  public config: SpellConfig;
+  public config: SpellConfig | WeaponConfig;
 
   declare body: Phaser.Physics.Arcade.Body;
 
@@ -15,7 +15,7 @@ export class Hitbox extends Phaser.GameObjects.Rectangle {
     width: number,
     height: number,
     ownerId: string,
-    config: SpellConfig,
+    config: SpellConfig | WeaponConfig,
   ) {
     super(scene, x, y, width, height);
 

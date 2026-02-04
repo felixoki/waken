@@ -96,7 +96,7 @@ export interface CollectorConfig {
  * Damage
  */
 export interface Hit {
-  config: SpellConfig;
+  config: SpellConfig | WeaponConfig;
   attackerId: string;
   targetId: string;
 }
@@ -141,6 +141,7 @@ export interface Input {
   directions: Direction[];
   isRunning: boolean;
   isJumping: boolean;
+  isRolling: boolean;
   target?: { x: number; y: number };
   state: StateName;
   equipped: HotbarSlot | null | undefined;
@@ -185,6 +186,7 @@ export enum StateName {
   JUMPING = "jumping",
   CASTING = "casting",
   SLASHING = "slashing",
+  ROLLING = "rolling",
 }
 
 export interface StateResolution {
@@ -234,6 +236,24 @@ export interface SpellConfig {
   knockback: number;
   speed?: number;
   range?: number;
+  duration?: number;
+  hitbox?: {
+    width: number;
+    height: number;
+  };
+}
+
+/**
+ * Weapons
+ */
+export enum WeaponName {
+  SLASH = "slash",
+}
+
+export interface WeaponConfig {
+  name: WeaponName;
+  damage: number;
+  knockback: number;
   duration?: number;
   hitbox?: {
     width: number;

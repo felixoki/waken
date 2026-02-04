@@ -167,22 +167,23 @@
 - Add renders boolean to map factory ✅
 - Add dynamic keys for detail layers ✅
 - Refactor physics and combat handlers ✅
+- Fix slashing state ✅
+- Add rolling state ✅
+- Show health bars only for damageable entities ✅
 
 #### Backlog
 
 ##### High priority
 
-- Add rolling state
-- Fix slashing state
 - Add host switching on disconnect
 - Move target registration to player
-- Show health bars only for damageable entities
 - Add interface manager
 
 ##### Medium priority
 
 - Add herbalist
 - Communicate interactions to the server
+- Add pathfinding 
 - Add depth sorting system
 - Lock entities during interaction
 - Add world animation component
@@ -193,3 +194,13 @@
 - Add throttling network updates and change detection
 - Update interpolation system
 - Add party manager
+
+## Roadmap
+
+```mermaid
+timeline
+    title Roadmap 2026
+    February : Forest procedural generation
+             : Boss fight system
+    March    : First playthrough demo ⭐
+```
