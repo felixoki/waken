@@ -6,17 +6,17 @@ import { TileManager } from "../managers/Tile";
 
 export class HerbalistScene extends Scene {
   constructor() {
-    super("herbalist");
+    super("herbalist_house");
   }
 
   preload() {
-    Preloader.load(this, MapName.HERBALIST);
+    Preloader.load(this, MapName.HERBALIST_HOUSE);
   }
 
   create() {
     super.create();
 
-    const map = MapFactory.create(this, MapName.HERBALIST);
+    const map = MapFactory.create(this, MapName.HERBALIST_HOUSE);
     this.tileManager = new TileManager(map);
     this.cameraManager.setZoom(3);
   }

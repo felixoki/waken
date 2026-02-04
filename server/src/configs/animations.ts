@@ -35,6 +35,18 @@ export const animations: Partial<
       repeat: 0,
     },
   },
+  [EntityName.HERBALIST]: {
+    [StateName.IDLE]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+  },
   [EntityName.ORC1]: {
     [StateName.IDLE]: {
       frameCount: 4,

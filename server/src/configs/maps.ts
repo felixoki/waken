@@ -118,10 +118,10 @@ export const maps: Record<MapName, MapConfig> = {
       { key: "orc1-slashing", file: "orc1_slashing_with_shadow.png" },
     ],
   },
-  [MapName.HERBALIST]: {
-    id: MapName.HERBALIST,
+  [MapName.HERBALIST_HOUSE]: {
+    id: MapName.HERBALIST_HOUSE,
     spawn: { x: 128, y: 168 },
-    json: "herbalist.json",
+    json: "herbalist_house.json",
     spritesheets: [
       {
         key: "village_herbalist_boiler",
@@ -143,6 +143,18 @@ export const maps: Record<MapName, MapConfig> = {
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
+      },
+      {
+        key: "herbalist-idle",
+        file: "herbalist_idle.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "herbalist-walking",
+        file: "herbalist_walking.png",
+        frameWidth: 32,
+        frameHeight: 32,
       },
       {
         key: "player-idle",

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="22" nextobjectid="426">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="22" nextobjectid="427">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -1797,7 +1797,7 @@
  </layer>
  <objectgroup id="4" name="objects">
   <object id="1" name="House1" x="384" y="528" width="1" height="1"/>
-  <object id="2" name="Herbalist" x="208" y="96" width="1" height="1"/>
+  <object id="2" name="Herbalist_House" x="208" y="96" width="1" height="1"/>
   <object id="3" name="Windmill" x="560" y="96" width="1" height="1"/>
   <object id="4" name="House2" x="944" y="96" width="1" height="1"/>
   <object id="5" name="Tree1" x="320" y="720" width="1" height="1"/>

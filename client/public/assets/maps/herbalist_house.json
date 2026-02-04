@@ -200,6 +200,17 @@
           "width": 1,
           "x": 128,
           "y": 192
+        },
+        {
+          "height": 1,
+          "id": 4,
+          "name": "Herbalist",
+          "rotation": 0,
+          "type": "",
+          "visible": true,
+          "width": 1,
+          "x": 128,
+          "y": 96
         }
       ],
       "opacity": 1,
@@ -210,7 +221,7 @@
     }
   ],
   "nextlayerid": 11,
-  "nextobjectid": 4,
+  "nextobjectid": 5,
   "orientation": "orthogonal",
   "renderorder": "right-down",
   "tiledversion": "1.11.2",

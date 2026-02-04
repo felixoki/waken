@@ -173,13 +173,14 @@
 - Add host switching on disconnect ✅
 - Move target registration to input manager ✅
 - Add interface manager ✅
+- Add herbalist ✅
 
 #### Backlog
 
 ##### High priority
 
-- Add herbalist
 - Add pathfinding
+- Add dialogue system
 - Communicate interactions to the server
 - Lock entities during interaction
 

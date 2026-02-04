@@ -45,6 +45,7 @@ export enum EntityName {
   HOUSE1 = "house1",
   HOUSE2 = "house2",
   HERBALIST = "herbalist",
+  HERBALIST_HOUSE = "herbalist_house",
   HERBALIST_EXIT = "herbalist_exit",
   WINDMILL = "windmill",
   BARN = "barn",
@@ -112,7 +113,7 @@ export interface Hurt {
  */
 export enum MapName {
   VILLAGE = "village",
-  HERBALIST = "herbalist",
+  HERBALIST_HOUSE = "herbalist_house",
 }
 
 export interface MapConfig {

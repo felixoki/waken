@@ -40,7 +40,11 @@ export class Factory {
       (c) => c.name === ComponentName.TEXTURE,
     );
 
-    if (!hasTexture) entity.setVisible(false);
+    const hasAnimation = definition.components.some(
+      (c) => c.name === ComponentName.ANIMATION,
+    );
+
+    if (!hasTexture && !hasAnimation) entity.setVisible(false);
 
     if (definition.behaviors && definition.behaviors.length) {
       const behaviorQueue = entity.getComponent<BehaviorQueue>(

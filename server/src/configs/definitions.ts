@@ -78,7 +78,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
-  [EntityName.HERBALIST]: {
+  [EntityName.HERBALIST_HOUSE]: {
     direction: Direction.DOWN,
     directions: [],
     components: [
@@ -112,7 +112,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TRANSITION,
         config: {
-          to: MapName.HERBALIST,
+          to: MapName.HERBALIST_HOUSE,
           x: 128,
           y: 168,
           width: 16,
@@ -143,6 +143,34 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     states: [],
+    behaviors: [],
+  },
+  [EntityName.HERBALIST]: {
+    direction: Direction.DOWN,
+    directions: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      {
+        name: ComponentName.COLLECTOR,
+        config: {
+          accepts: [EntityName.FLYAMINATA1, EntityName.BASKETFERN],
+        },
+      },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
     behaviors: [],
   },
   [EntityName.WINDMILL]: {
@@ -311,7 +339,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 24,
           offsetY: 48,
         },
-      }
+      },
     ],
     states: [],
     behaviors: [],
@@ -623,7 +651,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 16, offsetX: 0, offsetY: 0, collides: false },
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+        },
       },
       {
         name: ComponentName.BOUNCE,
@@ -647,7 +681,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 16, offsetX: 0, offsetY: 0, collides: false },
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+        },
       },
       {
         name: ComponentName.BOUNCE,
@@ -674,7 +714,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 24, offsetX: 0, offsetY: 8, collides: false },
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 0,
+          offsetY: 8,
+          collides: false,
+        },
       },
       {
         name: ComponentName.BOUNCE,

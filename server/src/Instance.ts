@@ -25,9 +25,9 @@ export class Instance {
     const village = loader.load(configs.maps.village.json);
     const villageEntities = loader.parseEntities(MapName.VILLAGE, village);
 
-    const herbalist = loader.load(configs.maps.herbalist.json);
+    const herbalist = loader.load(configs.maps.herbalist_house.json);
     const herbalistEntities = loader.parseEntities(
-      MapName.HERBALIST,
+      MapName.HERBALIST_HOUSE,
       herbalist,
     );
 
