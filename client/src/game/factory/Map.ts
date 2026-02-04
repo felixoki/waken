@@ -25,10 +25,7 @@ export class MapFactory {
 
     tilemap.layers.forEach((data, index) => {
       const name = data.name;
-
-      /**
-       * We will do this with a boolean from Tiled in the future
-       */
+      
       if (name === "objects") return;
 
       const properties = data.properties as TiledProperty[] | undefined;
@@ -50,14 +47,21 @@ export class MapFactory {
       layer.setDepth(index * 10);
     });
 
-    /**
-     * We will do this with a boolean from Tiled in the future
-     */
     const objectLayers = tilemap.objects;
 
     objectLayers.forEach((layer) => {
-      if (layer.name.includes("details"))
-        this.createStaticLayer(scene, tilemap, layer);
+      const properties = layer.properties as TiledProperty[];
+
+      if (!properties || !Array.isArray(properties)) return;
+
+      const render = properties.some(
+        (prop) => prop.name === "renders" && prop.value === true,
+      );
+
+      const texture = properties.find((prop) => prop.name === "texture");
+
+      if (render && texture)
+        this.createStaticLayer(scene, tilemap, layer, texture.value);
     });
 
     return tilemap;
@@ -67,24 +71,19 @@ export class MapFactory {
     scene: Scene,
     tilemap: Phaser.Tilemaps.Tilemap,
     layer: Phaser.Tilemaps.ObjectLayer,
+    texture: string,
   ): void {
     layer.objects.forEach((obj) => {
       if (!obj.gid) return;
 
-      /**
-       * Hardcoded for now, will be dynamic later
-       */
-      let textureKey = "ground_grass_details";
-      if (layer.name === "flowers_details") textureKey = "village_home";
-
-      const tileset = tilemap.tilesets.find((ts) => ts.name === textureKey);
+      const tileset = tilemap.tilesets.find((ts) => ts.name === texture);
       if (!tileset) return;
 
       const id = obj.gid - tileset.firstgid;
       const x = obj.x ?? 0;
       const y = obj.y ?? 0;
 
-      const image = scene.add.image(x, y, textureKey, id);
+      const image = scene.add.image(x, y, texture, id);
       image.setOrigin(0, 1);
       image.setDepth(50);
     });

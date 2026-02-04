@@ -1289,6 +1289,10 @@
 </data>
  </layer>
  <objectgroup id="16" name="grass_ground_details">
+  <properties>
+   <property name="renders" type="bool" value="true"/>
+   <property name="texture" value="grass_ground_details"/>
+  </properties>
   <object id="52" gid="4130" x="442.084" y="655.89" width="16" height="16"/>
   <object id="53" gid="4151" x="442.056" y="671.966" width="16" height="16"/>
   <object id="54" gid="4131" x="458.056" y="655.857" width="16" height="16"/>
@@ -1531,6 +1535,10 @@
   <object id="414" gid="4201" x="837.787" y="636.498" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="21" name="flowers_details">
+  <properties>
+   <property name="renders" type="bool" value="true"/>
+   <property name="texture" value="village_home"/>
+  </properties>
   <object id="292" gid="928" x="335.842" y="687.023" width="16" height="16"/>
   <object id="293" gid="926" x="467.05" y="701.031" width="16" height="16"/>
   <object id="294" gid="923" x="512.478" y="686.945" width="16" height="16"/>

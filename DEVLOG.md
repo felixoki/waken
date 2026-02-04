@@ -163,20 +163,22 @@
 - Remove animation mirroring ✅
 - Add spawns to maps ✅
 
+#### 4.2.2026
+- Add renders boolean to map factory ✅
+- Add dynamic keys for detail layers ✅
 
 #### Backlog
 
-### Features
+##### High priority
 
-- Add renders boolean to map factory
-- Add dynamic keys for detail layers
 - Refactor physics and combat handlers
-- Add particle texture for sharp effects
 - Add player rolling state
 - Add host switching on disconnect
 - Move target registration to player
-- Add interface manager
 - Show health bars only for damageable entities
+- Add interface manager
+
+##### Medium priority
 
 - Add herbalist
 - Communicate interactions to the server
@@ -184,10 +186,9 @@
 - Lock entities during interaction
 - Add world animation component
 - Add effects, resistances and weaknesses
+- Add particle texture for sharp effects
 - Improve illuminate shader
 - Add spell impact preview
 - Add throttling network updates and change detection
 - Update interpolation system
 - Add party manager
-
-### Bugs
