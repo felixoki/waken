@@ -32,7 +32,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     health: number,
     direction: Direction,
     directions: Direction[],
-    states?: Map<StateName, State>
+    states?: Map<StateName, State>,
   ) {
     super(scene, x, y, texture);
 
@@ -60,7 +60,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
      * We should not return the input from update but get it separately
      */
     const behavior = this.getComponent<BehaviorQueue>(
-      ComponentName.BEHAVIOR_QUEUE
+      ComponentName.BEHAVIOR_QUEUE,
     );
     const input = behavior?.update();
 
@@ -80,7 +80,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     if (state !== this.state) this.transitionTo(state);
     if (needsUpdate) this.states?.get(this.state)?.update(this);
-    
+
     /**
      * We will need to implement a proper depth sorting system
      */
@@ -88,6 +88,9 @@ export class Entity extends Phaser.GameObjects.Sprite {
   }
 
   destroy(fromScene?: boolean): void {
+    this.components.forEach((component) => component.detach());
+    this.components.clear();
+
     super.destroy(fromScene);
   }
 

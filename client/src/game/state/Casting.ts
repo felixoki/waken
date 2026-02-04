@@ -28,7 +28,7 @@ export class Casting implements State {
     const equipped = hotbar?.get();
 
     const config = configs.spells[equipped?.name as SpellName];
-    const direction = handlers.combat.getDirectionToPoint(
+    const direction = handlers.direction.getDirectionToPoint(
       entity,
       entity.target!,
     );

@@ -1,50 +1,33 @@
-import { Direction, DirectionVectors } from "@server/types";
+import { ComponentName } from "@server/types";
+import { DamageableComponent } from "../components/Damageable";
 import { Entity } from "../Entity";
+import { Hitbox } from "../Hitbox";
 
 export const combat = {
-  getDirectionalOffset: (direction: Direction, distance: number) => {
-    const offsets = {
-      [Direction.UP]: { x: 0, y: -distance },
-      [Direction.DOWN]: { x: 0, y: distance },
-      [Direction.LEFT]: { x: -distance, y: 0 },
-      [Direction.RIGHT]: { x: distance, y: 0 },
-    };
+  hit: (obj1: any, obj2: any) => {
+    const entity = obj1 as Entity;
+    const hitbox = obj2 as Hitbox;
 
-    return offsets[direction] || { x: 0, y: 0 };
-  },
+    /**
+     * We will only ever fire off hit events from the host player's client
+     */
+    const isHost = entity.scene.playerManager.player?.isHost;
 
-  getDirectionVector: (direction: Direction) => {
-    return DirectionVectors[direction] || { x: 0, y: 0 };
-  },
+    if (hitbox.ownerId === entity.id || hitbox.hits.has(entity.id) || !isHost)
+      return;
 
-  getDiagonalDirectionVector: (directions: Direction[]) => {
-    let vector = { x: 0, y: 0 };
+    const damageable = entity.getComponent<DamageableComponent>(
+      ComponentName.DAMAGEABLE,
+    );
+    if (!damageable) return;
 
-    directions.forEach((direction) => {
-      const dirVector = DirectionVectors[direction];
-      vector.x += dirVector.x;
-      vector.y += dirVector.y;
+    hitbox.hits.add(entity.id);
+
+    entity.scene.game.events.emit("hit", {
+      config: hitbox.config,
+      attackerId: hitbox.ownerId,
+      targetId: entity.id,
     });
-
-    const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-
-    if (magnitude > 0) {
-      vector.x /= magnitude;
-      vector.y /= magnitude;
-    }
-
-    return vector;
-  },
-
-  getDirectionToPoint: (entity: Entity, target: { x: number; y: number }) => {
-    const dx = target.x - entity.x;
-    const dy = target.y - entity.y;
-
-    const magnitude = Math.sqrt(dx * dx + dy * dy);
-
-    if (magnitude > 0) return { x: dx / magnitude, y: dy / magnitude };
-
-    return { x: 0, y: 0 };
   },
 
   hurt: (entity: Entity, health: number) => {
@@ -64,7 +47,7 @@ export const combat = {
 
     entity.body.setVelocity(
       entity.body.velocity.x + knockback.x,
-      entity.body.velocity.y + knockback.y
+      entity.body.velocity.y + knockback.y,
     );
 
     const drag = entity.body.drag.x;

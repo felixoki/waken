@@ -35,7 +35,7 @@ export class PhsyicsManager {
     this.scene.physics.add.overlap(
       this.groups.entities,
       this.groups.hits,
-      handlers.physics.hit,
+      handlers.combat.hit,
       undefined,
       this
     );

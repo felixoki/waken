@@ -166,13 +166,14 @@
 #### 4.2.2026
 - Add renders boolean to map factory ✅
 - Add dynamic keys for detail layers ✅
+- Refactor physics and combat handlers ✅
 
 #### Backlog
 
 ##### High priority
 
-- Refactor physics and combat handlers
-- Add player rolling state
+- Add rolling state
+- Fix slashing state
 - Add host switching on disconnect
 - Move target registration to player
 - Show health bars only for damageable entities

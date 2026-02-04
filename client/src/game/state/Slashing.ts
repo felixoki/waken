@@ -24,16 +24,9 @@ export class Slashing implements State {
       this.exit(entity);
     });
 
-    const offset = handlers.combat.getDirectionalOffset(entity.direction, 16);
+    // const offset = handlers.direction.getDirectionalOffset(entity.direction, 16);
 
-    this.hitbox = new Hitbox(
-      entity.scene,
-      entity.x + offset.x,
-      entity.y + offset.y,
-      16,
-      16,
-      entity.id
-    );
+    // this.hitbox = new Hitbox();
   }
 
   update(_entity: Entity): void {}
