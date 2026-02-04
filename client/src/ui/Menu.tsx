@@ -19,6 +19,12 @@ export function Menu({ ready }: { ready: () => void }) {
 
     SocketManager.on("game:list", setGames);
     SocketManager.emit("game:list");
+
+    return () => {
+      SocketManager.off("game:create");
+      SocketManager.off("game:join");
+      SocketManager.off("game:list");
+    };
   }, []);
 
   return (

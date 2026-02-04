@@ -21,6 +21,7 @@ import { handlers } from "../handlers";
 import { CameraManager } from "../managers/Camera";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
+import { InterfaceManager } from "../managers/Interface";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhsyicsManager;
@@ -28,6 +29,7 @@ export class Scene extends Phaser.Scene {
   public entityManager!: EntityManager;
   public tileManager!: TileManager;
   public cameraManager!: CameraManager;
+  public interfaceManager!: InterfaceManager;
   public socketManager = SocketManager;
 
   create(): void {
@@ -35,30 +37,17 @@ export class Scene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
     this.cameraManager = new CameraManager(this);
-
+    this.interfaceManager = new InterfaceManager(this);
+    
     this.socketManager.emit("player:create");
-
     this._registerEvents();
-
-    /**
-     * We should register this from within the player
-     */
-    this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-      const target = this.cameraManager.getWorldPoint(pointer.x, pointer.y);
-
-      this.playerManager.player?.inputManager?.setTarget({
-        x: target.x,
-        y: target.y,
-      });
-    });
   }
 
   update(_time: number, delta: number): void {
     this.playerManager.update();
     this.entityManager.update();
     this.tileManager?.update(delta);
-
-    this._updateInterface();
+    this.interfaceManager.update();
   }
 
   private _registerEvents(): void {
@@ -235,26 +224,7 @@ export class Scene extends Phaser.Scene {
     this.game.events.once("destroy", this.shutdown, this);
   }
 
-  /**
-   * This should be interfaceManager.update() later on
-   */
-  private _updateInterface(): void {
-    const entities = [
-      ...this.entityManager.entities.values(),
-      ...this.playerManager.others.values(),
-    ].filter((entity) => entity.getComponent(ComponentName.DAMAGEABLE));
-    const player = this.playerManager.player;
-
-    const data = this.cameraManager.getInterfaceData(entities, player!);
-    EventBus.emit("entities:update", data);
-  }
-
   private _unregisterEvents(): void {
-    this.input.off("pointerdown");
-
-    this.socketManager.off("game:create");
-    this.socketManager.off("game:join");
-
     this.socketManager.off("player:create:local");
     this.socketManager.off("player:create:others");
     this.socketManager.off("player:create");
@@ -263,6 +233,7 @@ export class Scene extends Phaser.Scene {
     this.socketManager.off("player:hurt");
     this.socketManager.off("player:transition");
     this.socketManager.off("player:error");
+    this.socketManager.off("player:host:transfer");
 
     this.socketManager.off("entity:create");
     this.socketManager.off("entity:create:all");

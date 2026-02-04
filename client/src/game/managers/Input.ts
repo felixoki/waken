@@ -4,6 +4,7 @@ import { Scene } from "../scenes/Scene";
 type Key = Phaser.Input.Keyboard.Key;
 
 export class InputManager {
+  private scene: Scene;
   private keys: {
     Q: Key;
     W: Key;
@@ -18,6 +19,7 @@ export class InputManager {
   private target?: { x: number; y: number };
 
   constructor(scene: Scene) {
+    this.scene = scene;
     this.keys = scene.input.keyboard!.addKeys({
       Q: Phaser.Input.Keyboard.KeyCodes.Q,
       W: Phaser.Input.Keyboard.KeyCodes.W,
@@ -29,6 +31,8 @@ export class InputManager {
       SHIFT: Phaser.Input.Keyboard.KeyCodes.SHIFT,
       SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE,
     }) as typeof this.keys;
+
+    this.registerPointerEvents();
   }
 
   getDirection(): Direction | null {
@@ -85,5 +89,23 @@ export class InputManager {
     const t = this.target;
     this.target = undefined;
     return t;
+  }
+
+  registerPointerEvents(): void {
+    this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+      const target = this.scene.cameraManager.getWorldPoint(
+        pointer.x,
+        pointer.y,
+      );
+
+      this.setTarget({
+        x: target.x,
+        y: target.y,
+      });
+    });
+  }
+
+  destroy(): void {
+    this.scene.input.off("pointerdown");
   }
 }

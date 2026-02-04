@@ -161,4 +161,9 @@ export class Player extends Entity {
       equipped: equipped,
     };
   }
+
+  destroy(): void {
+    this.inputManager?.destroy();
+    super.destroy();
+  }
 }

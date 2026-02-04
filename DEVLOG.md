@@ -171,23 +171,24 @@
 - Add rolling state ✅
 - Show health bars only for damageable entities ✅
 - Add host switching on disconnect ✅
+- Move target registration to input manager ✅
+- Add interface manager ✅
 
 #### Backlog
 
 ##### High priority
 
-- Move target registration to player
-- Add interface manager
+- Add herbalist
+- Add pathfinding
+- Communicate interactions to the server
+- Lock entities during interaction
 
 ##### Medium priority
 
-- Add herbalist
-- Communicate interactions to the server
-- Add pathfinding 
 - Add depth sorting system
-- Lock entities during interaction
 - Add world animation component
 - Add effects, resistances and weaknesses
+- Add mana usage
 - Add particle texture for sharp effects
 - Improve illuminate shader
 - Add spell impact preview

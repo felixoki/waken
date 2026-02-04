@@ -31,25 +31,4 @@ export class CameraManager {
       y: this.camera.centerY + (y - entity.y) * this.camera.zoom,
     };
   }
-
-  /**
-   * We should introduce an interface manager later on
-   */
-  getInterfaceData(
-    entities: Entity[],
-    center: Entity
-  ): Array<{
-    id: string;
-    health: number;
-    x: number;
-    y: number;
-  }> {
-    return entities
-      .filter((e) => e.active)
-      .map((e) => ({
-        id: e.id,
-        health: e.health,
-        ...this.getScreenPosition(e.x, e.y, center),
-      }));
-  }
 }
