@@ -10,7 +10,7 @@ type SocketEvent = {
 };
 
 export function registerHandlers(
-  _io: Server,
+  io: Server,
   socket: Socket,
   instances: InstanceManager,
 ) {
@@ -40,7 +40,7 @@ export function registerHandlers(
     },
     {
       event: "disconnect",
-      handler: () => handlers.player.delete(socket, instances),
+      handler: () => handlers.player.delete(io, socket, instances),
     },
     {
       event: "player:input",

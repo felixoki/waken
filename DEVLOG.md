@@ -170,12 +170,12 @@
 - Fix slashing state ✅
 - Add rolling state ✅
 - Show health bars only for damageable entities ✅
+- Add host switching on disconnect ✅
 
 #### Backlog
 
 ##### High priority
 
-- Add host switching on disconnect
 - Move target registration to player
 - Add interface manager
 
@@ -194,6 +194,10 @@
 - Add throttling network updates and change detection
 - Update interpolation system
 - Add party manager
+
+##### Ideas
+
+- Aim assist spell
 
 ## Roadmap
 

@@ -143,6 +143,13 @@ export class Scene extends Phaser.Scene {
       console.error(`Player error: ${data.message}`);
     });
 
+    this.socketManager.on("player:host:transfer", () => {
+      const player = this.playerManager.player;
+      if (!player) return;
+
+      player.isHost = true;
+    });
+
     this.game.events.on("player:input", (data: Input) => {
       this.socketManager.emit("player:input", data);
     });

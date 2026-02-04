@@ -1,4 +1,4 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
 import { Input, MapName, Transition } from "../types.js";
 import { InstanceManager } from "../managers/Instance.js";
@@ -49,15 +49,29 @@ export const player = {
       .emit("player:create", player);
   },
 
-  delete: (socket: Socket, instances: InstanceManager) => {
+  delete: (io: Server, socket: Socket, instances: InstanceManager) => {
     const instance = instances.getBySocketId(socket.id);
     if (!instance) return;
 
     const player = instance.players.getBySocketId(socket.id);
     if (!player) return;
 
+    const isHost = player.isHost;
+
     instance.players.remove(player.id);
     instances.removeConnection(socket.id);
+
+    const others = instance.players.getAll();
+
+    if (isHost && others.length) {
+      const host = others[0];
+      instance.players.update(host.id, { ...host, isHost: true });
+
+      const hostSocket = io.sockets.sockets.get(host.socketId);
+      hostSocket?.emit("player:host:transfer");
+    }
+
+    if (!others.length) instances.remove(instance.id);
 
     socket.broadcast.emit("player:left", { id: player.id });
   },
@@ -76,7 +90,11 @@ export const player = {
     socket.broadcast.emit("player:input", data);
   },
 
-  transition: (data: Transition, socket: Socket, instances: InstanceManager) => {
+  transition: (
+    data: Transition,
+    socket: Socket,
+    instances: InstanceManager,
+  ) => {
     const instance = instances.getBySocketId(socket.id);
     if (!instance) return;
 
