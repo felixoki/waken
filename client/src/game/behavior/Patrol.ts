@@ -46,17 +46,16 @@ export class Patrol extends Behavior {
     if (now - this.scan.last > this.scan.interval) {
       this.scan.last = now;
 
-      const players = [
-        ...entity.scene.playerManager.others.values(),
-        entity.scene.playerManager.player,
-      ];
+      const players = entity.scene.managers.players.all.filter(
+        (p) => p && p.map === entity.map,
+      );
 
       for (const player of players) {
         if (
           handlers.vision.canSee(
             entity.scene,
             entity,
-            player!,
+            player,
             /**
              * We should introduce a patrol config
              */
@@ -67,7 +66,7 @@ export class Patrol extends Behavior {
         ) {
           entity.scene.game.events.emit("entity:spotted:player", {
             entityId: entity.id,
-            playerId: player!.id,
+            playerId: player.id,
           });
 
           return {
@@ -81,35 +80,38 @@ export class Patrol extends Behavior {
 
     if (this.idle.time > 0) {
       this.idle.time -= entity.scene.game.loop.delta;
-
       return {};
     }
 
     if (!this.target && !this.path.length) this.target = this._getRandomPoint();
 
     if (this.target && !this.path.length) {
-      const scene = entity.scene;
+      if (!entity.scene.tileManager) return {};
+
+      const { entities } = entity.scene.managers;
 
       const grid = handlers.path.mergeObstacles(
-        scene.tileManager.getCollisionGrid(),
-        scene.entityManager.getStatic(
-          scene.tileManager.map.tileWidth,
-          scene.tileManager.map.tileHeight,
+        entity.scene.tileManager.getCollisionGrid(),
+        entities.getStatic(
+          entity.scene,
+          entity.scene.tileManager.map.tileWidth,
+          entity.scene.tileManager.map.tileHeight,
         ),
       );
 
       const start = {
-        x: Math.floor(entity.x / scene.tileManager.map.tileWidth),
-        y: Math.floor(entity.y / scene.tileManager.map.tileHeight),
+        x: Math.floor(entity.x / entity.scene.tileManager.map.tileWidth),
+        y: Math.floor(entity.y / entity.scene.tileManager.map.tileHeight),
       };
 
       const end = {
-        x: Math.floor(this.target.x / scene.tileManager.map.tileWidth),
-        y: Math.floor(this.target.y / scene.tileManager.map.tileHeight),
+        x: Math.floor(this.target.x / entity.scene.tileManager.map.tileWidth),
+        y: Math.floor(this.target.y / entity.scene.tileManager.map.tileHeight),
       };
 
       this.path =
-        handlers.path.find(grid, start, end, scene.tileManager.map) || [];
+        handlers.path.find(grid, start, end, entity.scene.tileManager.map) ||
+        [];
 
       if (!this.path.length) this.target = null;
     }

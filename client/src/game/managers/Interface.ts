@@ -1,7 +1,7 @@
-import { ComponentName } from "@server/types";
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
 import EventBus from "../EventBus";
+import { ComponentName } from "@server/types";
 
 export class InterfaceManager {
   private scene: Scene;
@@ -11,14 +11,20 @@ export class InterfaceManager {
   }
 
   update(): void {
-    const entities = [
-      ...this.scene.entityManager.entities.values(),
-      ...this.scene.playerManager.others.values(),
-    ].filter((entity) => entity.getComponent(ComponentName.DAMAGEABLE));
+    const player = this.scene.managers.players.player;
+    if (!player || player.map !== this.scene.scene.key) return;
 
-    const player = this.scene.playerManager.player!;
-    const data = this._getScreenData(entities, player);
+    const all = [
+      ...this.scene.managers.entities.all,
+      ...this.scene.managers.players.others.values(),
+    ].filter(
+      (entity) =>
+        entity &&
+        entity.map === this.scene.scene.key &&
+        entity.getComponent(ComponentName.DAMAGEABLE),
+    );
 
+    const data = this._getScreenData(all, player);
     EventBus.emit("entities:update", data);
   }
 

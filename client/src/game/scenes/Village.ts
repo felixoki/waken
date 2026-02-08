@@ -6,7 +6,7 @@ import { TileManager } from "../managers/Tile";
 
 export default class VillageScene extends Scene {
   constructor() {
-    super("village");
+    super(MapName.VILLAGE);
   }
 
   preload() {

@@ -31,7 +31,7 @@ export class Player extends Entity {
     y: number,
     texture: string,
     id: string,
-    name: string,
+    name: EntityName,
     health: number,
     direction: Direction,
     directions: Direction[],

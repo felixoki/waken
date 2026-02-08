@@ -11,11 +11,13 @@ export class Preloader {
     /**
      * Particle texture for spells
      */
-    const graphics = scene.add.graphics();
-    graphics.fillStyle(0xffffff);
-    graphics.fillCircle(8, 8, 8);
-    graphics.generateTexture("particles", 16, 16);
-    graphics.destroy();
+    if (!scene.textures.exists("particles")) {
+      const graphics = scene.add.graphics();
+      graphics.fillStyle(0xffffff);
+      graphics.fillCircle(8, 8, 8);
+      graphics.generateTexture("particles", 16, 16);
+      graphics.destroy();
+    }
 
     /**
      * Tilemap
@@ -23,17 +25,19 @@ export class Preloader {
     scene.load.tilemapTiledJSON(config.id, `assets/maps/${config.json}`);
 
     /**
-     * Tilesets and spritesheets
+     * Tilesets and spritesheets - only load if not already loaded
      */
     config.spritesheets.forEach((spritesheet) => {
-      scene.load.spritesheet(
-        spritesheet.key,
-        `assets/sprites/${spritesheet.file}`,
-        {
-          frameWidth: spritesheet.frameWidth || 64,
-          frameHeight: spritesheet.frameHeight || 64,
-        }
-      );
+      if (!scene.textures.exists(spritesheet.key)) {
+        scene.load.spritesheet(
+          spritesheet.key,
+          `assets/sprites/${spritesheet.file}`,
+          {
+            frameWidth: spritesheet.frameWidth || 64,
+            frameHeight: spritesheet.frameHeight || 64,
+          }
+        );
+      }
     });
   }
 }

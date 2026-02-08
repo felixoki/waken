@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
-import { Input, MapName, Transition } from "../types.js";
+import { Direction, Input, MapName, Transition } from "../types.js";
 import { InstanceManager } from "../managers/Instance.js";
 import { configs } from "../configs/index.js";
 
@@ -8,10 +8,7 @@ export const player = {
   create: (socket: Socket, instances: InstanceManager) => {
     const instance = instances.getBySocketId(socket.id);
 
-    if (!instance) {
-      socket.emit("player:error", { message: "No instance found for player" });
-      return;
-    }
+    if (!instance) return;
 
     const players = instance.players;
     const entities = instance.entities;
@@ -25,6 +22,7 @@ export const player = {
       player = {
         x: map.spawn.x,
         y: map.spawn.y,
+        direction: Direction.DOWN,
         id: randomUUID(),
         socketId: socket.id,
         map: map.id,
@@ -42,7 +40,7 @@ export const player = {
 
     socket.emit("player:create:local", player);
     socket.emit("player:create:others", others);
-    socket.emit("entity:create:all", entities.getByMap(player.map));
+    socket.emit("entity:create:all", entities.getAll());
 
     socket
       .to(`game:${instance.id}:${player.map}`)
@@ -85,7 +83,13 @@ export const player = {
 
     instance.players.update(data.id, {
       ...player,
-      ...{ x: data.x, y: data.y, state: data.state },
+      ...{
+        x: data.x,
+        y: data.y,
+        state: data.state,
+        ...(data.direction && { direction: data.direction }),
+        isRunning: data.isRunning,
+      },
     });
     socket.broadcast.emit("player:input", data);
   },
@@ -117,6 +121,15 @@ export const player = {
     socket
       .to(`game:${instance.id}:${prev}`)
       .emit("player:left", { id: player.id });
-    socket.emit("player:transition", next);
+
+    const updated = instance.players.get(player.id);
+    const others = instance.players
+      .getByMap(next)
+      .filter((p) => p.id !== player.id);
+
+    socket.emit("player:transition", updated);
+    socket.emit("player:create:others", others);
+
+    socket.to(`game:${instance.id}:${next}`).emit("player:create", updated);
   },
 };

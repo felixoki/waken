@@ -27,7 +27,7 @@ export class PickableComponent extends Component {
 
   pickup(player: Player): void {
     const inventory = player.getComponent<InventoryComponent>(
-      ComponentName.INVENTORY
+      ComponentName.INVENTORY,
     );
 
     if (!inventory?.add(this.entity.name)) return;
@@ -36,6 +36,6 @@ export class PickableComponent extends Component {
       id: this.entity.id,
     });
 
-    this.entity.destroy();
+    this.entity.scene.managers.entities.remove(this.entity.id);
   }
 }

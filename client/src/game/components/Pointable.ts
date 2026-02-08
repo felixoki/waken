@@ -22,9 +22,9 @@ export class PointableComponent extends Component {
     _pointer: Phaser.Input.Pointer,
     _localX: number,
     _localY: number,
-    event: Phaser.Types.Input.EventData
+    event: Phaser.Types.Input.EventData,
   ): void {
-    const player = this.entity.scene.playerManager.player;
+    const player = this.entity.scene.managers.players.player;
     this.entity.emit("pointed", player);
 
     event.stopPropagation();

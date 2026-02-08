@@ -30,14 +30,14 @@ export class TransitionComponent extends Component {
     const body = this.zone.body as Phaser.Physics.Arcade.Body;
     body.setImmovable(true);
 
-    const player = scene.playerManager.player!;
+    const group = scene.physicsManager.groups.players;
 
     this.collider = scene.physics.add.collider(
       this.zone,
-      player,
+      group,
       this._enter,
       undefined,
-      this
+      this,
     );
   }
 
@@ -45,7 +45,7 @@ export class TransitionComponent extends Component {
     if (this.zone && this.entity)
       this.zone.setPosition(
         this.entity.x + this.config.offsetX,
-        this.entity.y + this.config.offsetY
+        this.entity.y + this.config.offsetY,
       );
   }
 
@@ -54,7 +54,10 @@ export class TransitionComponent extends Component {
     this.collider?.destroy();
   }
 
-  private _enter(): void {
+  private _enter(_zone: any, player: any): void {
+    const local = player as Entity;
+    if (local !== this.entity.scene.managers.players.player) return;
+
     this.entity.scene.game.events.emit("player:transition", {
       to: this.config.to,
       x: this.config.x,

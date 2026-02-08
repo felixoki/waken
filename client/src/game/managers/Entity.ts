@@ -1,31 +1,36 @@
 import { EntityConfig } from "@server/types";
 import { Entity } from "../Entity";
-import { Scene } from "../scenes/Scene";
 import { Factory } from "../factory/Factory";
 import { configs } from "@server/configs";
+import { Scene } from "../scenes/Scene";
+import type { MainScene } from "../scenes/Main";
 
 export class EntityManager {
-  private scene: Scene;
   public entities: Map<string, Entity> = new Map();
+  private main: MainScene;
 
-  constructor(scene: Scene) {
-    this.scene = scene;
+  constructor(main: MainScene) {
+    this.main = main;
   }
 
   get(id: string): Entity | undefined {
     return this.entities.get(id);
   }
 
-  updateOne(): void {}
+  get all(): Entity[] {
+    return [...this.entities.values()];
+  }
 
   update(): void {
     this.entities.forEach((entity) => entity.update());
   }
 
   add(config: EntityConfig): void {
+    const scene = this.main.scene.get(config.map) as Scene;
     const definition = configs.definitions[config.name];
-    const entity = Factory.create(this.scene, { ...config, ...definition! });
+    const entity = Factory.create(scene, { ...config, ...definition! });
 
+    entity.map = config.map;
     this.entities.set(config.id, entity);
   }
 
@@ -44,16 +49,15 @@ export class EntityManager {
   }
 
   getStatic(
+    scene: Scene,
     width: number,
     height: number,
   ): Array<{ x: number; y: number; width: number; height: number }> {
-    return Array.from(this.entities.values()).flatMap((entity) => {
+    return [...this.entities.values()].flatMap((entity) => {
+      if (entity.scene !== scene) return [];
+
       const body = entity.body;
-      if (
-        !entity.body ||
-        !this.scene.physicsManager.groups.entities.contains(entity)
-      )
-        return [];
+      if (!entity.body) return [];
 
       const left = body.x;
       const top = body.y;

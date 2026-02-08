@@ -1,4 +1,4 @@
-import { ComponentName, Direction, Input, StateName } from "@server/types";
+import { ComponentName, Direction, Input, MapName, StateName } from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
 import { EntityName } from "@server/types";
@@ -8,6 +8,7 @@ import { handlers } from "./handlers";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
+  public map!: MapName;
   public direction: Direction;
   public directions: Direction[];
   public isLocked: boolean = false;
@@ -28,7 +29,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     y: number,
     texture: string,
     id: string,
-    name: string,
+    name: EntityName,
     health: number,
     direction: Direction,
     directions: Direction[],
@@ -55,6 +56,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
   }
 
   update(remoteInput?: Partial<Input>): void {
+    this.components.forEach((component) => component.update());
+
     const input = remoteInput || this._getInput();
 
     if (!input || this.isLocked) return;
@@ -84,7 +87,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
       this.setPosition(x, y);
     }
 
-    const isHost = this.scene.playerManager.player?.isHost;
+    const scene = this.scene as Scene;
+    const isHost = scene.managers.players?.player?.isHost;
     if (isHost && input) this.scene.game.events.emit("entity:input", input);
 
     /**
@@ -94,7 +98,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
   }
 
   protected _getInput(): Partial<Input> | null {
-    const isHost = this.scene.playerManager.player?.isHost;
+    const scene = this.scene as Scene;
+    const isHost = scene.managers.players?.player?.isHost;
 
     if (!isHost) return null;
 

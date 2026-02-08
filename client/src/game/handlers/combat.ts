@@ -11,7 +11,7 @@ export const combat = {
     /**
      * We will only ever fire off hit events from the host player's client
      */
-    const isHost = entity.scene.playerManager.player?.isHost;
+    const isHost = entity.scene.managers.players?.player?.isHost;
 
     if (hitbox.ownerId === entity.id || hitbox.hits.has(entity.id) || !isHost)
       return;

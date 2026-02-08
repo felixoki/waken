@@ -1,7 +1,7 @@
 import { io, Socket } from "socket.io-client";
 import { SERVER_URL } from "@server/globals";
 
-export class SocketManager {
+class SocketManager {
   private static instance: SocketManager;
   private socket: Socket | null = null;
   private isConnected: boolean = false;
@@ -11,9 +11,10 @@ export class SocketManager {
 
   static getInstance(): SocketManager {
     if (!SocketManager.instance) SocketManager.instance = new SocketManager();
+
     return SocketManager.instance;
   }
-
+  
   init(): Socket {
     if (this.socket && this.isConnected) return this.socket;
 

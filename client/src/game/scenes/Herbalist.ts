@@ -6,7 +6,7 @@ import { TileManager } from "../managers/Tile";
 
 export class HerbalistScene extends Scene {
   constructor() {
-    super("herbalist_house");
+    super(MapName.HERBALIST_HOUSE);
   }
 
   preload() {

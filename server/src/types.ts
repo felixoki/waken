@@ -7,6 +7,7 @@ export interface PlayerConfig {
   map: MapName;
   x: number;
   y: number;
+  direction: Direction | null;
   health: number;
   isHost: boolean;
 }

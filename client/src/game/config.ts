@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { OutlinePipeline } from "./pipelines/Outline";
+import { MainScene } from "./scenes/Main";
 import VillageScene from "./scenes/Village";
 import { HerbalistScene } from "./scenes/Herbalist";
 import { IlluminatePipeline } from "./pipelines/Illuminate";
@@ -10,7 +11,7 @@ export const config: Phaser.Types.Core.GameConfig = {
   parent: "game",
   width: 1024,
   height: 1024,
-  scene: [VillageScene, HerbalistScene],
+  scene: [MainScene, VillageScene, HerbalistScene],
   physics: {
     default: "arcade",
     arcade: {
@@ -23,10 +24,16 @@ export const config: Phaser.Types.Core.GameConfig = {
     target: 60,
   },
   callbacks: {
+    /**
+     * We should introduce a loader for this
+     */
     postBoot: (game) => {
       const renderer = game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
       renderer.pipelines.addPostPipeline(PipelineName.OUTLINE, OutlinePipeline);
-      renderer.pipelines.addPostPipeline(PipelineName.ILLUMINATE, IlluminatePipeline);
+      renderer.pipelines.addPostPipeline(
+        PipelineName.ILLUMINATE,
+        IlluminatePipeline,
+      );
     },
   },
 };

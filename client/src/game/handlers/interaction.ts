@@ -10,7 +10,7 @@ export const interaction = {
       ComponentName.COLLECTOR,
     );
     const inventory =
-      entity.scene.playerManager.player?.getComponent<InventoryComponent>(
+      entity.scene.managers.players?.player?.getComponent<InventoryComponent>(
         ComponentName.INVENTORY,
       );
     const items = inventory

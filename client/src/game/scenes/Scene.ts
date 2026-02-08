@@ -1,282 +1,46 @@
-import SocketManager from "../managers/Socket";
-import { PlayerManager } from "../managers/Player";
-import {
-  EntityConfig,
-  PlayerConfig,
-  Input,
-  EntityPickup,
-  EntityDestroy,
-  Hit,
-  Hurt,
-  MapName,
-  ComponentName,
-  Item,
-  Transition,
-  Spot,
-} from "@server/types";
 import { PhsyicsManager } from "../managers/Physics";
-import { EntityManager } from "../managers/Entity";
 import { TileManager } from "../managers/Tile";
-import EventBus from "../EventBus";
-import { handlers } from "../handlers";
 import { CameraManager } from "../managers/Camera";
-import { InventoryComponent } from "../components/Inventory";
-import { HotbarComponent } from "../components/Hotbar";
 import { InterfaceManager } from "../managers/Interface";
+import type { MainScene } from "./Main";
+import { Player } from "../Player";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhsyicsManager;
-  public playerManager!: PlayerManager;
-  public entityManager!: EntityManager;
   public tileManager!: TileManager;
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
-  public socketManager = SocketManager;
+
+  get managers() {
+    const main = this.scene.get("main") as MainScene;
+
+    return {
+      players: main.playerManager,
+      entities: main.entityManager,
+      socket: main.socketManager,
+    };
+  }
 
   create(): void {
     this.physicsManager = new PhsyicsManager(this);
-    this.playerManager = new PlayerManager(this);
-    this.entityManager = new EntityManager(this);
     this.cameraManager = new CameraManager(this);
     this.interfaceManager = new InterfaceManager(this);
 
-    this.socketManager.emit("player:create");
-    this._registerEvents();
+    this.game.events.on(
+      "camera:follow",
+      (data: { key: string; player: Player }) => {
+        if (data.key === this.scene.key)
+          this.cameraManager.follow(data.player);
+      },
+    );
   }
 
   update(_time: number, delta: number): void {
-    this.playerManager.update();
-    this.entityManager.update();
     this.tileManager?.update(delta);
     this.interfaceManager.update();
   }
 
-  private _registerEvents(): void {
-    /**
-     * Players
-     */
-    this.socketManager.on("player:create:local", (data: PlayerConfig) => {
-      this.playerManager.add(data, true);
-
-      const player = this.playerManager.player!;
-      const existing = this.registry.get("player");
-
-      if (existing) {
-        const inventory = player.getComponent<InventoryComponent>(
-          ComponentName.INVENTORY,
-        );
-        const hotbar = player.getComponent<HotbarComponent>(
-          ComponentName.HOTBAR,
-        );
-
-        player.direction = existing.direction;
-        inventory?.set(existing.inventory);
-        hotbar?.set(existing.hotbar);
-
-        this.registry.remove("player");
-      }
-
-      this.cameraManager.follow(player);
-    });
-
-    this.socketManager.on("player:create:others", (data: PlayerConfig[]) => {
-      data.forEach((player) => {
-        this.playerManager.add(player, false);
-      });
-    });
-
-    this.socketManager.on("player:create", (data: PlayerConfig) => {
-      this.playerManager.add(data, false);
-    });
-
-    this.socketManager.on("player:left", (data: { id: string }) => {
-      this.playerManager.remove(data.id);
-    });
-
-    this.socketManager.on("player:input", (data: Input) => {
-      this.playerManager.updateOther(data);
-    });
-
-    this.socketManager.on("player:hurt", (data: Hurt) => {
-      const player =
-        this.playerManager.others.get(data.id) || this.playerManager.player;
-
-      if (!player) return;
-
-      handlers.combat.hurt(player, data.health);
-      handlers.combat.knockback(player, data.knockback);
-    });
-
-    this.socketManager.on("player:transition", (data: MapName) => {
-      const player = this.playerManager.player;
-
-      const inventory = player?.getComponent<InventoryComponent>(
-        ComponentName.INVENTORY,
-      );
-      const hotbar = player?.getComponent<HotbarComponent>(
-        ComponentName.HOTBAR,
-      );
-
-      this.registry.set("player", {
-        direction: player?.direction,
-        inventory: inventory?.get(),
-        hotbar: hotbar?.get(),
-      });
-
-      this._unregisterEvents();
-
-      this.scene.stop();
-      this.scene.start(data);
-    });
-
-    this.socketManager.on("player:error", (data: { message: string }) => {
-      console.error(`Player error: ${data.message}`);
-    });
-
-    this.socketManager.on("player:host:transfer", () => {
-      const player = this.playerManager.player;
-      if (!player) return;
-
-      player.isHost = true;
-    });
-
-    this.game.events.on("player:input", (data: Input) => {
-      this.socketManager.emit("player:input", data);
-    });
-
-    this.game.events.on("player:transition", (data: Transition) => {
-      const player = this.playerManager.player;
-      if (!player) return;
-
-      player.isLocked = true;
-
-      this.socketManager.emit("player:transition", data);
-    });
-
-    /**
-     * Entities
-     */
-    this.socketManager.on("entity:create", (data: EntityConfig) => {
-      this.entityManager.add(data);
-    });
-
-    this.socketManager.on("entity:create:all", (data: EntityConfig[]) => {
-      data.forEach((entity) => {
-        this.entityManager.add(entity);
-      });
-    });
-
-    this.socketManager.on("entity:destroy", (data: EntityDestroy) => {
-      this.entityManager.remove(data.id);
-    });
-
-    this.socketManager.on("entity:input", (data: Partial<Input>) => {
-      const entity = this.entityManager.get(data.id!);
-      if (!entity) return;
-
-      entity.update(data);
-    });
-
-    this.socketManager.on("entity:hurt", (data: Hurt) => {
-      const entity = this.entityManager.entities.get(data.id);
-
-      if (!entity) return;
-
-      handlers.combat.hurt(entity, data.health);
-      handlers.combat.knockback(entity, data.knockback);
-    });
-
-    this.game.events.on("entity:input", (data: Partial<Input>) => {
-      this.socketManager.emit("entity:input", data);
-    });
-
-    this.game.events.on("entity:pickup", (data: EntityPickup) => {
-      this.socketManager.emit("entity:pickup", data);
-    });
-
-    this.game.events.on("entity:interact", (data: string) => {
-      /**
-       * Should we tell the server about this too?
-       */
-      const entity = this.entityManager.get(data);
-      if (!entity) return;
-
-      handlers.interaction.start(entity);
-    });
-
-    this.game.events.on("entity:spotted:player", (data: Spot) => {
-      this.socketManager.emit("entity:spotted:player", data);
-    });
-
-    /**
-     * Items
-     */
-    this.socketManager.on("item:remove", (data: Item) => {
-      const player = this.playerManager.player;
-      if (!player) return;
-
-      const inventory = player.getComponent<InventoryComponent>(
-        ComponentName.INVENTORY,
-      );
-      if (!inventory) return;
-
-      inventory.remove(data.name, data.quantity);
-    });
-
-    EventBus.on("item:collect", (data: Item) => {
-      this.socketManager.emit("item:collect", data);
-    });
-
-    /**
-     * Shared
-     */
-    this.game.events.on("hit", (data: Hit) => {
-      this.socketManager.emit("hit", data);
-    });
-
-    /**
-     * Shutdown
-     */
-    this.game.events.once("destroy", this.shutdown, this);
-  }
-
-  private _unregisterEvents(): void {
-    this.socketManager.off("player:create:local");
-    this.socketManager.off("player:create:others");
-    this.socketManager.off("player:create");
-    this.socketManager.off("player:left");
-    this.socketManager.off("player:input");
-    this.socketManager.off("player:hurt");
-    this.socketManager.off("player:transition");
-    this.socketManager.off("player:error");
-    this.socketManager.off("player:host:transfer");
-
-    this.socketManager.off("entity:create");
-    this.socketManager.off("entity:create:all");
-    this.socketManager.off("entity:destroy");
-    this.socketManager.off("entity:input");
-    this.socketManager.off("entity:hurt");
-
-    this.game.events.off("player:input");
-    this.game.events.off("player:transition");
-
-    this.game.events.off("entity:input");
-    this.game.events.off("entity:pickup");
-    this.game.events.off("entity:interact");
-    this.game.events.off("entity:spotted:player");
-
-    this.socketManager.off("item:remove");
-    EventBus.off("item:collect");
-
-    this.game.events.off("hit");
-  }
-
   shutdown(): void {
-    this._unregisterEvents();
-
-    this.playerManager.destroy();
-    this.entityManager.destroy();
     this.tileManager?.destroy();
-    this.socketManager.disconnect();
   }
 }
