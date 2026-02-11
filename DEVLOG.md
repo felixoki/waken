@@ -193,59 +193,63 @@
 - Update map transitions ✅
 - Add fullsize mode ✅
 
+#### 9.2.2025
+
+- Add economy manager ✅
+
 #### 10.2.2025
-- Add dialog trees ✅
+
+- Add dialogue trees ✅
 - Remove instance management ✅
 - Split types ✅
 - Make direction pointer based ✅
 
-
 ### Next up
 
 - Dialogue system ⭐
-    - Add dialogue component
-    - Add dialogue server roundtrip
-    - Lock entities during interaction
+  - Add dialogue component
+  - Add dialogue server roundtrip
+  - Separate dialogue and collect
+  - Lock entities during interaction
 
-- Villager needs ⭐
-    - Add economy manager
-    - Add resource venison meat (dropped by deer)
+- Economy ⭐
+  - Add server ticks
 
 - Procedural forest generation ⭐
-    - Add attack behavior
-    - Add party management
-    - Add map creation
-    - Add ambience manager
-    - Add foggy forest shader
+  - Add attack behavior
+  - Add party management
+  - Add map creation
+  - Add ambience manager
+  - Add foggy forest shader
 
 - Save files ⭐
-    - Add database
-    - Add autosaves
-    - Add manual saves
-    - Add save file loading
+  - Add database
+  - Add autosaves
+  - Add manual saves
+  - Add save file loading
 
 - Party management ⭐
 
 - General
-    - Update tile collision layer
+  - Update tile collision layer
 
 ### Backlog
 
 - Spells ⭐
-    - Aim assist
-    - Catch animal
-    - Water fountain
-    - Improve illuminate shader
-    - Add mana usage
-    - Add particle texture for sharp effects
-    - Add spell impact preview
+  - Aim assist
+  - Catch animal
+  - Water fountain
+  - Improve illuminate shader
+  - Add mana usage
+  - Add particle texture for sharp effects
+  - Add spell impact preview
 
 - Effects ⭐
-    - Add wet effect
-    - Add resistances and weaknesses
+  - Add wet effect
+  - Add resistances and weaknesses
 
 - Farming ⭐
-    - Add plantable component
+  - Add plantable component
 
 - Animal keeping ⭐
 
@@ -254,25 +258,43 @@
 - Tavern ⭐
 
 - Blacksmith ⭐
-    - Add resource iron (dropped by orcs)
-    - Add resource horn (dropped by oxes)
-    - Venison fat (dropped by deer)
-    - Add crafting system
-    - Add lantern
+  - Add resource iron (dropped by orcs)
+  - Add resource horn (dropped by oxes)
+  - Venison fat (dropped by deer)
+  - Add crafting system
+  - Add lantern
 
 - Harbor district ⭐
 
 - Sewerage ⭐
-    - Add blood ghost cultists
+  - Add blood ghost cultists
 
 - Game sounds ⭐
-    - Add music and ambience
+  - Add music and ambience
 
 - Refactoring and improvement
-    - Improve depth sorting system
-    - Add world animation component
-    - Add throttling network updates and change detection
-    - Update interpolation system
+  - Improve depth sorting system
+  - Add world animation component
+  - Add throttling network updates and change detection
+  - Update interpolation system
+
+## Economy
+
+| Category   | Tier 1                       | Tier 2                           | Tier 3 |
+| ---------- | ---------------------------- | -------------------------------- | ------ |
+| Meat       | Venison, Boar                | Pork                             | Beef   |
+| Vegetables | Blueberry, Strawberry, Apple | Carrot, Onion, Cabbage, Cucumber | Bread  |
+| Drinks     | -                            | Milk                             | Wine   |
+| Cloths     | -                            | Sheep wool, Fox pelt             | -      |
+
+## Collectors
+
+| Collector   | Collects                                                                                                   | Produces                         |
+| ----------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| Blacksmith  | Wood, Iron ore, Glass                                                                                      | Axe, Pickaxe, Lantern, Hoe, Iron |
+| Herbalist   | **T1:** Sunflower, Mugwort, Daffodil<br>**T2:** Blue lotus, Clary sage, Bearded tooth fungus<br>Vial, Wood | Potions                          |
+| Glassblower | Potash (Wood), Quartz, Bone ash (Bones)                                                                    | Glass, Vial                      |
+| Mage        | Iron, Glass, Pearls, Gems, Runes                                                                           | Rings, Amulets, Spells           |
 
 ## Procedural generation configs
 
@@ -281,9 +303,7 @@
 #### Non-aggro animals
 
 - Fox (Fox pelt)
-- Rabbit (Rabbit meat)
-- Deer (Venison fat, venison meat, deer hide)
-- Ox (Ox meat, Ox horn)
+- Deer (Venison meat)
 
 #### Aggro animals
 
@@ -292,9 +312,9 @@
 
 #### Aggro entities
 
-- Goblin1 (Rat meat)
-- Goblin2 (Rat meat)
-- Orc1 (Iron)
+- Goblin1 (Rat meat, bones)
+- Goblin2 (Rat meat, bones)
+- Orc1 (Iron ore)
 
 #### Boss
 
@@ -305,10 +325,7 @@
 - Sunflower
 - Carrot
 - Mugwort
-- Blue lotus
 - Daffodil
-- Snowdrop
-- White ways
+- Blue lotus
 - Bearded tooth fungus
-- Valerian root
 - Clary sage
