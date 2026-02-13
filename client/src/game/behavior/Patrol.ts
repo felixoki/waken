@@ -18,14 +18,24 @@ interface Idle {
   duration: number;
 }
 
+interface Stuck {
+  lastPosition: Waypoint;
+  lastCheck: number;
+  interval: number;
+}
+
 export class Patrol extends Behavior {
   private spawn: Waypoint = { x: 0, y: 0 };
   private radius: number;
   private path: Waypoint[] = [];
   private target: Waypoint | null = null;
-  private scan: Scan = { last: 0, interval: 500 };
-  private idle: Idle = { time: 0, duration: 2000 };
-
+  private scan: Scan = { last: 0, interval: 1500 };
+  private idle: Idle = { time: 0, duration: 4000 };
+  private stuck: Stuck = {
+    lastPosition: { x: 0, y: 0 },
+    lastCheck: 0,
+    interval: 1000,
+  };
   public name = BehaviorName.PATROL;
 
   constructor(radius: number, repeat: boolean) {
@@ -35,9 +45,6 @@ export class Patrol extends Behavior {
     this.repeat = repeat;
   }
 
-  /**
-   * We need to add stuck detection later on
-   */
   update(entity: Entity): Partial<Input> {
     if (this.spawn.x === 0) this.spawn = { x: entity.x, y: entity.y };
 
@@ -80,7 +87,22 @@ export class Patrol extends Behavior {
 
     if (this.idle.time > 0) {
       this.idle.time -= entity.scene.game.loop.delta;
+
       return {};
+    }
+
+    if (this.path.length && now - this.stuck.lastCheck > this.stuck.interval) {
+      this.stuck.lastCheck = now;
+
+      const deltaX = Math.abs(entity.x - this.stuck.lastPosition.x);
+      const deltaY = Math.abs(entity.y - this.stuck.lastPosition.y);
+
+      if (deltaX < 2 && deltaY < 2) {
+        this.path = [];
+        this.target = null;
+      }
+
+      this.stuck.lastPosition = { x: entity.x, y: entity.y };
     }
 
     if (!this.target && !this.path.length) this.target = this._getRandomPoint();
