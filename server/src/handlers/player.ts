@@ -2,12 +2,12 @@ import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
 import { Direction, Input, MapName, Transition } from "../types/index.js";
 import { configs } from "../configs/index.js";
-import { Game } from "../Game.js";
+import { World } from "../World.js";
 
 export const player = {
-  create: (socket: Socket, game: Game) => {
-    const players = game.players;
-    const entities = game.entities;
+  create: (socket: Socket, world: World) => {
+    const players = world.players;
+    const entities = world.entities;
 
     let player = players.getBySocketId(socket.id);
 
@@ -41,17 +41,17 @@ export const player = {
     socket.to(`map:${player.map}`).emit("player:create", player);
   },
 
-  delete: (io: Server, socket: Socket, game: Game) => {
-    const player = game.players.getBySocketId(socket.id);
+  delete: (io: Server, socket: Socket, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
     const isHost = player.isHost;
-    game.players.remove(player.id);
-    const others = game.players.getAll();
+    world.players.remove(player.id);
+    const others = world.players.getAll();
 
     if (isHost && others.length) {
       const host = others[0];
-      game.players.update(host.id, { ...host, isHost: true });
+      world.players.update(host.id, { ...host, isHost: true });
 
       const hostSocket = io.sockets.sockets.get(host.socketId);
       hostSocket?.emit("player:host:transfer");
@@ -60,11 +60,11 @@ export const player = {
     socket.broadcast.emit("player:left", { id: player.id });
   },
 
-  input: (data: Input, socket: Socket, game: Game) => {
-    const player = game.players.getBySocketId(socket.id);
+  input: (data: Input, socket: Socket, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    game.players.update(data.id, {
+    world.players.update(data.id, {
       ...player,
       ...{
         x: data.x,
@@ -77,14 +77,14 @@ export const player = {
     socket.broadcast.emit("player:input", data);
   },
 
-  transition: (data: Transition, socket: Socket, game: Game) => {
-    const player = game.players.getBySocketId(socket.id);
+  transition: (data: Transition, socket: Socket, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
     const prev = player.map;
     const next = data.to;
 
-    game.players.update(player.id, {
+    world.players.update(player.id, {
       ...player,
       map: next,
       x: data.x,
@@ -96,8 +96,8 @@ export const player = {
 
     socket.to(`map:${prev}`).emit("player:left", { id: player.id });
 
-    const updated = game.players.get(player.id);
-    const others = game.players
+    const updated = world.players.get(player.id);
+    const others = world.players
       .getByMap(next)
       .filter((p) => p.id !== player.id);
 

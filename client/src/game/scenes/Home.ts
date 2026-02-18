@@ -1,22 +1,22 @@
 import { MapName } from "@server/types";
-import { Preloader } from "../loaders/Preloader";
 import { Scene } from "./Scene";
+import { Preloader } from "../loaders/Preloader";
 import { MapFactory } from "../factory/Map";
 import { TileManager } from "../managers/Tile";
 
-export class HerbalistScene extends Scene {
+export class HomeScene extends Scene {
   constructor() {
-    super(MapName.HERBALIST_HOUSE);
+    super(MapName.HOME);
   }
 
   preload() {
-    Preloader.load(this, MapName.HERBALIST_HOUSE);
+    Preloader.load(this, MapName.HOME);
   }
 
   create() {
     super.create();
 
-    const map = MapFactory.create(this, MapName.HERBALIST_HOUSE);
+    const map = MapFactory.create(this, MapName.HOME);
     this.tileManager = new TileManager(map);
     this.cameraManager.setZoom(3);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);

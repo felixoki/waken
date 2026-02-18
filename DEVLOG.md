@@ -178,47 +178,60 @@
 - Add interface manager ✅
 - Add herbalist ✅
 
-#### 5.2.2025
+#### 5.2.2026
 
 - Task planning ✅
 
-#### 6.2.2025
+#### 6.2.2026
 
 - Add pathfinding ✅
 - Add raycasting ✅
 - Update patrol component ✅
 
-#### 8.2.2025
+#### 8.2.2026
 
 - Update map transitions ✅
 - Add fullsize mode ✅
 
-#### 9.2.2025
+#### 9.2.2026
 
 - Add economy manager ✅
 
-#### 10.2.2025
+#### 10.2.2026
 
 - Add dialogue trees ✅
 - Remove instance management ✅
 - Split types ✅
 - Make direction pointer based ✅
 
-#### 12.2.2025
+#### 12.2.2026
 
 - Update tile collision layer ✅
 
-#### 13.2.2025
+#### 13.2.2026
+
 - Add dialogue component ✅
 - Add dialogue server roundtrip ✅
 - Separate dialogue and collect ✅
 - Add server ticks ✅
+- Add stuck detection ✅
 
+#### 14.2.2026
+
+- Add coast collisions ✅
+
+#### 16.2.2026
+
+- Draw city entrance ✅
+- Add home scene ✅
+
+#### 18.2.2026
+
+- Add attack behavior ✅
 
 ### Next up
 
 - Procedural forest generation ⭐
-  - Add attack behavior
   - Add party management
   - Add map creation
   - Add ambience manager
@@ -284,21 +297,43 @@
 
 ## Economy
 
-| Category   | Tier 1                       | Tier 2                           | Tier 3 |
-| ---------- | ---------------------------- | -------------------------------- | ------ |
-| Meat       | Venison, Boar                | Pork                             | Beef   |
-| Vegetables | Blueberry, Strawberry, Apple | Carrot, Onion, Cabbage, Cucumber | Bread  |
-| Drinks     | -                            | Milk                             | Wine   |
-| Cloths     | -                            | Sheep wool, Fox pelt             | -      |
+**Meat**
+- Tier 1: Venison, Boar
+- Tier 2: Pork
+- Tier 3: Beef
+
+**Vegetables**
+- Tier 1: Blueberry, Strawberry, Apple
+- Tier 2: Carrot, Onion, Cabbage, Cucumber
+- Tier 3: Bread
+
+**Drinks**
+- Tier 2: Milk
+- Tier 3: Wine
+
+**Cloths**
+- Tier 2: Sheep wool, Fox pelt
 
 ## Collectors
 
-| Collector   | Collects                                                                                                   | Produces                         |
-| ----------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| Blacksmith  | Wood, Iron ore, Glass                                                                                      | Axe, Pickaxe, Lantern, Hoe, Iron |
-| Herbalist   | **T1:** Sunflower, Mugwort, Daffodil<br>**T2:** Blue lotus, Clary sage, Bearded tooth fungus<br>Vial, Wood | Potions                          |
-| Glassblower | Potash (Wood), Quartz, Bone ash (Bones)                                                                    | Glass, Vial                      |
-| Mage        | Iron, Glass, Pearls, Gems, Runes                                                                           | Rings, Amulets, Spells           |
+**Blacksmith**
+- Collects: Wood, Iron ore, Glass
+- Produces: Axe, Pickaxe, Lantern, Hoe, Iron
+
+**Herbalist**
+- Collects:
+  - T1: Sunflower, Mugwort, Daffodil
+  - T2: Blue lotus, Clary sage, Bearded tooth fungus
+  - Vial, Wood
+- Produces: Potions
+
+**Glassblower**
+- Collects: Potash (Wood), Quartz, Bone ash (Bones)
+- Produces: Glass, Vial
+
+**Mage**
+- Collects: Iron, Glass, Pearls, Gems, Runes
+- Produces: Rings, Amulets, Spells
 
 ## Procedural generation configs
 
@@ -333,3 +368,25 @@
 - Blue lotus
 - Bearded tooth fungus
 - Clary sage
+
+### Dungeon
+
+#### Non-aggro animals
+
+- Goat (Goat meat)
+
+#### Aggro animals
+
+- Rat (Rat meat)
+
+#### Aggro entities
+
+- Goblin1 (Rat meat, bones)
+- Goblin2 (Rat meat, bones)
+- Goblin3 (Spell books)
+- Orc1 (Iron ore)
+- Orc2 (Iron ore)
+
+#### Boss
+
+- Cave troll

@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import { configs } from "../configs";
-import { Game } from "../Game";
+import { World } from "../World";
 import {
   NeedName,
   DialogueChoice,
@@ -14,7 +14,7 @@ import {
 
 export const dialogue = {
   getMood: (context: DialogueContext): Mood => {
-    if (context.game.economy.isLow(NeedName.MEAT)) return Mood.HUNGRY;
+    if (context.world.economy.isLow(NeedName.MEAT)) return Mood.HUNGRY;
     return Mood.HAPPY;
   },
 
@@ -86,18 +86,18 @@ export const dialogue = {
     },
   },
 
-  iterate: (entityId: string, socket: Socket, game: Game, nodeId: NodeId) => {
-    const entity = game.entities.get(entityId);
+  iterate: (entityId: string, socket: Socket, world: World, nodeId: NodeId) => {
+    const entity = world.entities.get(entityId);
     if (!entity) return;
 
     const definition = configs.definitions[entity.name];
     if (!definition) return;
 
-    const player = game.players.getBySocketId(socket.id);
+    const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
     const context: DialogueContext = {
-      game,
+      world,
       playerId: player.id,
       entityId,
     };

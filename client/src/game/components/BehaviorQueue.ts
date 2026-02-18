@@ -1,4 +1,4 @@
-import { ComponentName, Input } from "@server/types";
+import { BehaviorName, ComponentName, Input } from "@server/types";
 import { Behavior } from "../behavior/Behavior";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
@@ -38,8 +38,29 @@ export class BehaviorQueue extends Component {
     return input;
   }
 
+  get<T extends Behavior>(name: BehaviorName): T | null {
+    if (this.current?.name === name) return this.current as T;
+
+    const behavior = this.queue.find((b) => b.name === name);
+    return (behavior as T) || null;
+  }
+
   add(behavior: Behavior): void {
     this.queue.push(behavior);
+  }
+
+  shiftTo(name: BehaviorName): void {
+    const index = this.queue.findIndex((b) => b.name === name);
+    if (index === -1) return;
+
+    const [behavior] = this.queue.splice(index, 1);
+
+    if (this.current) {
+      this.current.reset();
+      this.queue.unshift(this.current);
+    }
+
+    this.current = behavior;
   }
 
   detach(): void {}

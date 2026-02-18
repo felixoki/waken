@@ -7,7 +7,7 @@ import { MapName } from "./types";
 import { EconomyManager } from "./managers/Economy";
 import { DAY } from "./globals";
 
-export class Game {
+export class World {
   public readonly players: PlayerStore;
   public readonly entities: EntityStore;
   public readonly items: ItemsStore;
@@ -29,13 +29,11 @@ export class Game {
   load() {
     const loader = new MapLoader();
 
-    const village = loader.load(configs.maps.village.json);
-    const ve = loader.parseEntities(MapName.VILLAGE, village);
-
-    const herbalist = loader.load(configs.maps.herbalist_house.json);
-    const he = loader.parseEntities(MapName.HERBALIST_HOUSE, herbalist);
-
-    [...ve, ...he].forEach((e) => this.entities.add(e.id, e));
+    Object.entries(configs.maps).forEach(([name, config]) => {
+      const tilemap = loader.load(config.json);
+      const entities = loader.parseEntities(name as MapName, tilemap);
+      entities.forEach((e) => this.entities.add(e.id, e));
+    });
   }
 
   update(delta: number) {

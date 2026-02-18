@@ -16,8 +16,8 @@ export const weapons: Record<WeaponName, WeaponHandler> = {
   ) => {
     new Hitbox(
       entity.scene,
-      entity.x + direction.x * 16,
-      entity.y + direction.y * 16,
+      entity.x + direction.x,
+      entity.y + direction.y,
       config.hitbox?.width || 16,
       config.hitbox?.height || 16,
       entity.id,

@@ -52,6 +52,18 @@ export const direction = {
     if (deg >= -45 && deg < 45) return Direction.RIGHT;
     if (deg >= 45 && deg < 135) return Direction.DOWN;
     if (deg >= -135 && deg < -45) return Direction.UP;
+    
     return Direction.LEFT;
+  },
+
+  toAngle: (dir: Direction): number => {
+    const angles = {
+      [Direction.RIGHT]: 0,
+      [Direction.DOWN]: Math.PI / 2,
+      [Direction.LEFT]: Math.PI,
+      [Direction.UP]: -Math.PI / 2,
+    };
+
+    return angles[dir] ?? 0;
   },
 };

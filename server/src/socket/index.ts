@@ -9,7 +9,7 @@ import {
   Transition,
   Spot,
 } from "../types/index.js";
-import { Game } from "../Game.js";
+import { World } from "../World.js";
 import { NodeId } from "../types/dialogue.js";
 
 type SocketEvent = {
@@ -17,68 +17,67 @@ type SocketEvent = {
   handler: (...args: any[]) => void | Promise<void>;
 };
 
-export function registerHandlers(io: Server, socket: Socket, game: Game) {
+export function registerHandlers(io: Server, socket: Socket, world: World) {
   const events: SocketEvent[] = [
     /**
      * Player
      */
     {
       event: "player:create",
-      handler: () => handlers.player.create(socket, game),
+      handler: () => handlers.player.create(socket, world),
     },
     {
       event: "disconnect",
-      handler: () => handlers.player.delete(io, socket, game),
+      handler: () => handlers.player.delete(io, socket, world),
     },
     {
       event: "player:input",
-      handler: (data: Input) => handlers.player.input(data, socket, game),
+      handler: (data: Input) => handlers.player.input(data, socket, world),
     },
     {
       event: "player:transition",
       handler: (data: Transition) =>
-        handlers.player.transition(data, socket, game),
+        handlers.player.transition(data, socket, world),
     },
     /**
      * Entity
      */
     {
       event: "entity:create",
-      handler: () => handlers.entity.create(socket, game),
+      handler: () => handlers.entity.create(socket, world),
     },
     {
       event: "entity:input",
       handler: (data: Partial<Input>) =>
-        handlers.entity.input(data, socket, game),
+        handlers.entity.input(data, socket, world),
     },
     {
       event: "entity:pickup",
       handler: (data: EntityPickup) =>
-        handlers.entity.pickup(data, socket, game),
+        handlers.entity.pickup(data, socket, world),
     },
     {
       event: "entity:spotted:player",
-      handler: (data: Spot) =>
-        console.log(`Entity ${data.entityId} spotted player ${data.playerId}`),
+      handler: (data: Spot) => handlers.entity.spot(data, socket, world),
     },
     {
       event: "entity:dialogue:iterate",
       handler: (data: { entityId: string; nodeId: NodeId }) =>
-        handlers.dialogue.iterate(data.entityId, socket, game, data.nodeId),
+        handlers.dialogue.iterate(data.entityId, socket, world, data.nodeId),
     },
     /**
      * Items
      */
     {
       event: "item:collect",
-      handler: (data: Item) => handlers.item.collect(data, socket, game),
+      handler: (data: Item) => handlers.item.collect(data, socket, world),
     },
     /**
      * Shared
      */
     {
       event: "hit",
-      handler: (data: Hit) => handlers.combat.hit(data, socket, game),
+      handler: (data: Hit) => handlers.combat.hit(data, socket, world),
     },
   ];
 

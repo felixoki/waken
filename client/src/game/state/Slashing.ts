@@ -5,7 +5,7 @@ import { AnimationComponent } from "../components/Animation";
 import { DURATION_SLASHING } from "@server/globals";
 import { handlers } from "../handlers";
 import { Hitbox } from "../Hitbox";
-import { weapons } from "@server/configs/weapons";
+import { configs } from "@server/configs";
 
 export class Slashing implements State {
   private timer: Phaser.Time.TimerEvent | null = null;
@@ -27,9 +27,9 @@ export class Slashing implements State {
 
     const offset = handlers.direction.getDirectionalOffset(
       entity.facing,
-      16,
+      24,
     );
-    const config = weapons[WeaponName.SLASH];
+    const config = configs.weapons[WeaponName.SLASH];
 
     handlers.weapons[WeaponName.SLASH](entity, config, offset);
   }

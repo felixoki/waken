@@ -1,5 +1,6 @@
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
+import { handlers } from "./index";
 
 interface RayHit {
   x: number;
@@ -103,10 +104,14 @@ export const vision = {
     distance: number,
     angle: number = Math.PI / 2,
     count: number = 5,
+    proximity: number = 80,
   ): boolean => {
     if (!vision.inRange(from, to, distance)) return false;
 
-    const facing = from.rotation;
+    const actualDist = Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y);
+    if (actualDist <= proximity) return true;
+
+    const facing = handlers.direction.toAngle(from.facing);
     const target = Phaser.Math.Angle.Between(from.x, from.y, to.x, to.y);
     const diff = Phaser.Math.Angle.Wrap(target - facing);
 
@@ -119,7 +124,7 @@ export const vision = {
       const rayAngle = start + step * i;
       const hit = vision.raycast(scene, from.x, from.y, rayAngle, distance);
 
-      if (hit.hit && vision.intersects({ x: from.x, y: from.y }, hit, to))
+      if (vision.intersects({ x: from.x, y: from.y }, hit, to))
         return true;
     }
 

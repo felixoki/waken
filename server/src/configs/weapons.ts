@@ -1,4 +1,4 @@
-import { DURATION_SLASHING } from "../globals";
+import { DURATION_SLASHING, RANGE_SLASHING } from "../globals";
 import { WeaponConfig, WeaponName } from "../types";
 
 export const weapons: Record<WeaponName, WeaponConfig> = {
@@ -6,6 +6,7 @@ export const weapons: Record<WeaponName, WeaponConfig> = {
     name: WeaponName.SLASH,
     damage: 20,
     knockback: 80,
+    range: RANGE_SLASHING,
     duration: DURATION_SLASHING,
     hitbox: {
       width: 30,

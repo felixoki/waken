@@ -16,3 +16,4 @@ export * from './spells';
 export * from './states';
 export * from './tiled';
 export * from './weapons';
+export * from './path';

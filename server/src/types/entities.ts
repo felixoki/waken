@@ -35,6 +35,7 @@ export enum EntityName {
   PLAYER = "player",
   ORC1 = "orc1",
   HOUSE1 = "house1",
+  HOUSE1_EXIT = "house1_exit",
   HOUSE2 = "house2",
   HERBALIST = "herbalist",
   HERBALIST_HOUSE = "herbalist_house",

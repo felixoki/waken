@@ -16,7 +16,6 @@ function App() {
     if (game.current || !inGame) return;
 
     game.current = new Phaser.Game(config);
-    console.log(game);
 
     return () => {
       game.current?.destroy(true);

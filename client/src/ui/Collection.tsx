@@ -41,7 +41,7 @@ export const Collection = () => {
           items.map((item) => (
             <li
               key={item.name}
-              className="flex flex-col items-center justify-center text-center rounded-lg text-xs w-16 aspect-square bg-gray-200"
+              className="flex flex-col items-center justify-center text-center rounded-lg text-xs w-16 aspect-square text-slate-900 bg-gray-200"
             >
               {configs.definitions[item.name]?.metadata?.displayName}{" "}
               <button

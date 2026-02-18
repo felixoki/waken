@@ -5,6 +5,7 @@ import VillageScene from "./scenes/Village";
 import { HerbalistScene } from "./scenes/Herbalist";
 import { IlluminatePipeline } from "./pipelines/Illuminate";
 import { PipelineName } from "@server/types";
+import { HomeScene } from "./scenes/Home";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -15,7 +16,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [MainScene, VillageScene, HerbalistScene],
+  scene: [MainScene, VillageScene, HerbalistScene, HomeScene],
   physics: {
     default: "arcade",
     arcade: {

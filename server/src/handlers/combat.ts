@@ -6,7 +6,7 @@ import {
   SpellConfig,
   WeaponConfig,
 } from "../types";
-import { Game } from "../Game";
+import { World } from "../World";
 
 export const combat = {
   getKnockback: (
@@ -25,9 +25,9 @@ export const combat = {
     return { x, y };
   },
 
-  hit: (data: Hit, socket: Socket, game: Game) => {
-    const players = game.players;
-    const entities = game.entities;
+  hit: (data: Hit, socket: Socket, world: World) => {
+    const players = world.players;
+    const entities = world.entities;
 
     const attacker =
       players.get(data.attackerId) || entities.get(data.attackerId);

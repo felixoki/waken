@@ -1,32 +1,18 @@
-import { BehaviorName, Input } from "@server/types";
+import {
+  BehaviorName,
+  Idle,
+  Input,
+  Scan,
+  Stuck,
+  Waypoint,
+} from "@server/types";
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 
-interface Waypoint {
-  x: number;
-  y: number;
-}
-
-interface Scan {
-  last: number;
-  interval: number;
-}
-
-interface Idle {
-  time: number;
-  duration: number;
-}
-
-interface Stuck {
-  lastPosition: Waypoint;
-  lastCheck: number;
-  interval: number;
-}
-
 export class Patrol extends Behavior {
   private spawn: Waypoint = { x: 0, y: 0 };
-  private radius: number;
+  private radius: number = 300;
   private path: Waypoint[] = [];
   private target: Waypoint | null = null;
   private scan: Scan = { last: 0, interval: 1500 };
@@ -34,7 +20,7 @@ export class Patrol extends Behavior {
   private stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
-    interval: 1000,
+    interval: 200,
   };
   public name = BehaviorName.PATROL;
 
@@ -67,7 +53,7 @@ export class Patrol extends Behavior {
              * We should introduce a patrol config
              */
             400,
-            Math.PI / 3,
+            Math.PI * 2,
             7,
           )
         ) {
@@ -91,35 +77,17 @@ export class Patrol extends Behavior {
       return {};
     }
 
-    if (this.path.length && now - this.stuck.lastCheck > this.stuck.interval) {
-      this.stuck.lastCheck = now;
-
-      const deltaX = Math.abs(entity.x - this.stuck.lastPosition.x);
-      const deltaY = Math.abs(entity.y - this.stuck.lastPosition.y);
-
-      if (deltaX < 2 && deltaY < 2) {
-        this.path = [];
-        this.target = null;
-      }
-
-      this.stuck.lastPosition = { x: entity.x, y: entity.y };
+    if (this.path.length && handlers.path.stuck(entity, this.stuck, now, 4)) {
+      this.path = [];
+      this.target = null;
     }
 
     if (!this.target && !this.path.length) this.target = this._getRandomPoint();
 
     if (this.target && !this.path.length) {
-      if (!entity.scene.tileManager) return {};
+      const grid = handlers.path.getGrid(entity.scene);
 
-      const { entities } = entity.scene.managers;
-
-      const grid = handlers.path.mergeObstacles(
-        entity.scene.tileManager.getCollisionGrid(),
-        entities.getStatic(
-          entity.scene,
-          entity.scene.tileManager.map.tileWidth,
-          entity.scene.tileManager.map.tileHeight,
-        ),
-      );
+      if (!grid.length || !entity.scene.tileManager) return {};
 
       const start = {
         x: Math.floor(entity.x / entity.scene.tileManager.map.tileWidth),
@@ -139,40 +107,15 @@ export class Patrol extends Behavior {
     }
 
     if (this.path.length) {
-      const next = this.path[0];
-      const distance = Phaser.Math.Distance.Between(
-        entity.x,
-        entity.y,
-        next.x,
-        next.y,
-      );
+      const input = handlers.path.follow(entity, this.path, 8, false);
 
-      if (distance < 8) {
-        this.path.shift();
-
-        if (!this.path.length) {
-          this.target = null;
-          this.idle.time = this.idle.duration;
-
-          return {};
-        }
+      if (!input) {
+        this.target = null;
+        this.idle.time = this.idle.duration;
+        return {};
       }
 
-      if (this.path.length) {
-        const angle = Phaser.Math.Angle.Between(
-          entity.x,
-          entity.y,
-          next.x,
-          next.y,
-        );
-        const direction = handlers.direction.fromAngle(angle);
-
-        return {
-          facing: direction,
-          moving: [direction],
-          isRunning: false,
-        };
-      }
+      return input;
     }
 
     return {

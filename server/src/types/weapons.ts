@@ -6,6 +6,7 @@ export interface WeaponConfig {
   name: WeaponName;
   damage: number;
   knockback: number;
+  range: number;
   duration?: number;
   hitbox?: {
     width: number;

@@ -1,4 +1,4 @@
-import { Game } from "../Game";
+import { World } from "../World";
 
 export enum Mood {
   HUNGRY = "HUNGRY",
@@ -49,7 +49,7 @@ export interface Dialogue {
 }
 
 export interface DialogueContext {
-  game: Game;
+  world: World;
   playerId: string;
   entityId: string;
 }

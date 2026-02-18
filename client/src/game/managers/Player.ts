@@ -23,6 +23,11 @@ export class PlayerManager {
     return [...this.others.values(), this.player!];
   }
 
+  get(id: string): Player | undefined {
+    if (this.player?.id === id) return this.player;
+    return this.others.get(id);
+  }
+
   update(): void {
     this.player?.update();
   }

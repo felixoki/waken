@@ -36,7 +36,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       StateName.RUNNING,
       StateName.SLASHING,
     ],
-    behaviors: [BehaviorName.PATROL],
+    behaviors: [BehaviorName.PATROL, BehaviorName.ATTACK],
   },
   [EntityName.HOUSE1]: {
     facing: Direction.DOWN,
@@ -68,6 +68,38 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 48,
           offsetX: 32,
           offsetY: 80,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.HOME,
+          x: 184,
+          y: 168,
+          width: 16,
+          height: 16,
+          offsetX: 48,
+          offsetY: 56,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.HOUSE1_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 432,
+          y: 608,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
         },
       },
     ],

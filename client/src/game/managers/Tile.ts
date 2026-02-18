@@ -91,6 +91,7 @@ export class TileManager {
           const tile = this.tilemap.getTileAt(x, y, true, layer.name);
           return tile?.collides;
         });
+        
         return collides ? 1 : 0;
       }),
     );

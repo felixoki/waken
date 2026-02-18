@@ -63,6 +63,13 @@ export const maps: Record<MapName, MapConfig> = {
         asTileset: true,
       },
       {
+        key: "bridges",
+        file: "bridges.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
         key: "water_coasts",
         file: "water_coasts.png",
         frameWidth: 16,
@@ -72,6 +79,13 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "road_stone",
         file: "road_stone.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "road_walls_paving",
+        file: "road_walls_paving.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
@@ -155,6 +169,63 @@ export const maps: Record<MapName, MapConfig> = {
         file: "herbalist_walking.png",
         frameWidth: 32,
         frameHeight: 32,
+      },
+      {
+        key: "player-idle",
+        file: "player_idle.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "player-walking",
+        file: "player_walking.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "player-running",
+        file: "player_running.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "player-jumping",
+        file: "player_jumping.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "player-casting",
+        file: "player_casting.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "player-rolling",
+        file: "player_rolling.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+    ],
+  },
+  [MapName.HOME]: {
+    id: MapName.HOME,
+    spawn: { x: 184, y: 168 },
+    json: "home.json",
+    spritesheets: [
+      {
+        key: "village_home_interior",
+        file: "village_home_interior.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_home_walls_floor",
+        file: "village_home_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
       },
       {
         key: "player-idle",

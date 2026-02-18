@@ -1,4 +1,8 @@
 import { DIRECTIONS, DIRECTIONS_CARDINAL } from "@server/globals";
+import { Scene } from "../scenes/Scene";
+import { Entity } from "../Entity";
+import { Input, Stuck, Waypoint } from "@server/types";
+import { handlers } from ".";
 
 interface Node {
   x: number;
@@ -167,6 +171,78 @@ export const path = {
 
         open.push(n);
       }
+    }
+
+    return null;
+  },
+
+  getGrid: (scene: Scene): number[][] => {
+    const { tileManager } = scene;
+    if (!tileManager) return [];
+
+    return path.mergeObstacles(
+      tileManager.getCollisionGrid(),
+      scene.managers.entities.getStatic(
+        scene,
+        tileManager.map.tileWidth,
+        tileManager.map.tileHeight,
+      ),
+    );
+  },
+
+  stuck: (
+    entity: Entity,
+    stuck: Stuck,
+    now: number,
+    threshold: number,
+  ): boolean => {
+    if (now - stuck.lastCheck < stuck.interval) return false;
+
+    stuck.lastCheck = now;
+
+    const deltaX = Math.abs(entity.x - stuck.lastPosition.x);
+    const deltaY = Math.abs(entity.y - stuck.lastPosition.y);
+
+    stuck.lastPosition = { x: entity.x, y: entity.y };
+
+    return deltaX < threshold && deltaY < threshold;
+  },
+
+  follow: (
+    entity: Entity,
+    path: Waypoint[],
+    threshold: number,
+    isRunning: boolean,
+  ): Partial<Input> | null => {
+    if (!path.length) return null;
+
+    const next = path[0];
+    const distance = Phaser.Math.Distance.Between(
+      entity.x,
+      entity.y,
+      next.x,
+      next.y,
+    );
+
+    if (distance < threshold) {
+      path.shift();
+      if (!path.length) return null;
+    }
+
+    if (path.length) {
+      const angle = Phaser.Math.Angle.Between(
+        entity.x,
+        entity.y,
+        path[0].x,
+        path[0].y,
+      );
+      const direction = handlers.direction.fromAngle(angle);
+
+      return {
+        facing: direction,
+        moving: [direction],
+        isRunning,
+      };
     }
 
     return null;

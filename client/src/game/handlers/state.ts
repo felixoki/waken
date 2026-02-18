@@ -12,6 +12,11 @@ export const state = {
   ) => {
     const selectors = [
       {
+        condition: () => input.state === StateName.SLASHING,
+        state: () => StateName.SLASHING,
+        needsUpdate: false,
+      },
+      {
         condition: () =>
           input.target && input.equipped?.type === HotbarSlotType.SPELL,
         state: () => StateName.CASTING,

@@ -14,12 +14,15 @@ import {
   Item,
   Transition,
   Spot,
+  BehaviorName,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
+import { BehaviorQueue } from "../components/BehaviorQueue";
+import { Attack } from "../behavior/Attack";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -36,7 +39,7 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
 
-    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE];
+    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE, MapName.HOME];
     const ready = new Set<string>();
 
     scenes.forEach((key) => {
@@ -193,9 +196,30 @@ export class MainScene extends Phaser.Scene {
     this.socketManager.on("entity:hurt", (data: Hurt) => {
       const entity = this.entityManager.entities.get(data.id);
       if (!entity) return;
-
+      
       handlers.combat.hurt(entity, data.health);
       handlers.combat.knockback(entity, data.knockback);
+    });
+    
+    this.socketManager.on(
+      "entity:dialogue:response",
+      (data: DialogueResponse) => {
+        handlers.dialogue.start(data);
+      },
+    );
+
+    this.socketManager.on("entity:spotted:player", (data: Spot) => {
+      const entity = this.entityManager.get(data.entityId);
+      if (!entity) return;
+
+      const queue = entity.getComponent<BehaviorQueue>(ComponentName.BEHAVIOR_QUEUE);
+      if (!queue) return;
+
+      const attack = queue.get<Attack>(BehaviorName.ATTACK);
+      if (!attack) return;
+
+      attack.start(data.playerId);
+      queue.shiftTo(BehaviorName.ATTACK);
     });
 
     this.game.events.on("entity:input", (data: Partial<Input>) => {
@@ -212,13 +236,6 @@ export class MainScene extends Phaser.Scene {
         nodeId: NodeId.GREETING,
       });
     });
-
-    this.socketManager.on(
-      "entity:dialogue:response",
-      (data: DialogueResponse) => {
-        handlers.dialogue.start(data);
-      },
-    );
 
     this.game.events.on("entity:spotted:player", (data: Spot) => {
       this.socketManager.emit("entity:spotted:player", data);

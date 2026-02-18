@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 import { fileURLToPath } from "url";
 import { registerHandlers } from "./socket/index.js";
 import { CLIENT_URL, SERVER_PORT, TICK_RATE } from "./globals.js";
-import { Game } from "./Game.js";
+import { World } from "./World.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,14 +32,14 @@ const io = new Server(server, {
   },
 });
 
-const game = new Game();
+const world = new World();
 
 setInterval(() => {
-  game.update(TICK_RATE);
+  world.update(TICK_RATE);
 }, TICK_RATE);
 
 io.on("connection", (socket) => {
-  registerHandlers(io, socket, game);
+  registerHandlers(io, socket, world);
 });
 
 server.listen(SERVER_PORT, () => {
