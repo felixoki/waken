@@ -69,4 +69,24 @@ export const emitters = {
       }
     }
   },
+
+  death: (scene: Scene, x: number, y: number) => {
+    const emitter = scene.add.particles(x, y, "particles", {
+      tint: [0xff3300, 0xff5500, 0xffaa00, 0xffffff],
+      alpha: { start: 1, end: 0 },
+      scale: { start: 0.5, end: 0.1 },
+      speed: { min: 30, max: 80 },
+      lifespan: 500,
+      quantity: 16,
+      frequency: -1,
+      blendMode: "ADD",
+    });
+
+    emitter.setDepth(2000);
+    emitter.explode();
+
+    scene.time.delayedCall(500, () => {
+      emitter.destroy();
+    });
+  },
 };

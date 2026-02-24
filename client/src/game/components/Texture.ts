@@ -54,8 +54,5 @@ export class TextureComponent extends Component {
 
   update(): void {}
 
-  detach(): void {
-    if (this.entity.scene.textures.exists(this.key))
-      this.entity.scene.textures.remove(this.key);
-  }
+  detach(): void {}
 }

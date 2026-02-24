@@ -17,7 +17,25 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
     moving: [],
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.FLYAMINATA1,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.BASKETFERN,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            }
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,
@@ -36,7 +54,123 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       StateName.RUNNING,
       StateName.SLASHING,
     ],
-    behaviors: [BehaviorName.PATROL, BehaviorName.ATTACK],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+    ],
+  },
+  [EntityName.DRAKE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+    ],
+  },
+  [EntityName.DUCK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+    ],
+  },
+  [EntityName.FOX]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.RUNNING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+    ],
+  },
+  [EntityName.DEER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.RUNNING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+    ],
   },
   [EntityName.HOUSE1]: {
     facing: Direction.DOWN,
@@ -68,6 +202,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 48,
           offsetX: 32,
           offsetY: 80,
+          static: true,
         },
       },
       {
@@ -135,6 +270,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 48,
           offsetX: 32,
           offsetY: 60,
+          static: true,
         },
       },
       {
@@ -197,9 +333,10 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.BEHAVIOR_QUEUE },
     ],
     states: [StateName.IDLE, StateName.WALKING],
-    behaviors: [],
+    behaviors: [{ name: BehaviorName.STAY }],
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
@@ -254,7 +391,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
       },
     ],
     states: [],
@@ -281,7 +418,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
       },
     ],
     states: [],
@@ -307,7 +444,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
       },
     ],
     states: [],
@@ -337,7 +474,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0 },
+        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
       },
     ],
     states: [],
@@ -362,7 +499,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 20, height: 12, offsetX: 8, offsetY: 16 },
+        config: { width: 20, height: 12, offsetX: 8, offsetY: 16, static: true },
       },
     ],
     states: [],
@@ -394,6 +531,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 24,
           offsetX: 24,
           offsetY: 48,
+          static: true,
         },
       },
     ],
@@ -425,6 +563,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 24,
           offsetX: 24,
           offsetY: 32,
+          static: true,
         },
       },
     ],
@@ -457,6 +596,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 24,
           offsetX: 36,
           offsetY: 48,
+          static: true,
         },
       },
     ],
@@ -489,6 +629,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 24,
           offsetX: 24,
           offsetY: 48,
+          static: true,
         },
       },
     ],
@@ -520,6 +661,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 24,
           offsetX: 24,
           offsetY: 32,
+          static: true,
         },
       },
     ],
@@ -544,7 +686,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 28, height: 8, offsetX: 12, offsetY: 8 },
+        config: { width: 28, height: 8, offsetX: 12, offsetY: 8, static: true },
       },
     ],
     states: [],
@@ -568,7 +710,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 12, height: 8, offsetX: 12, offsetY: 8 },
+        config: { width: 12, height: 8, offsetX: 12, offsetY: 8, static: true },
       },
     ],
     states: [],
@@ -598,6 +740,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 12,
           offsetX: 12,
           offsetY: 24,
+          static: true,
         },
       },
     ],
@@ -627,6 +770,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 12,
           offsetX: 8,
           offsetY: 16,
+          static: true,
         },
       },
     ],
@@ -657,6 +801,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 4,
           offsetX: 24,
           offsetY: 20,
+          static: true,
         },
       },
     ],
@@ -686,6 +831,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 4,
           offsetX: 16,
           offsetY: 12,
+          static: true,
         },
       },
     ],
@@ -713,6 +859,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 0,
           offsetY: 0,
           collides: false,
+          static: true,
         },
       },
       {
@@ -743,6 +890,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 0,
           offsetY: 0,
           collides: false,
+          static: true,
         },
       },
       {
@@ -776,6 +924,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 0,
           offsetY: 8,
           collides: false,
+          static: true,
         },
       },
       {
@@ -805,7 +954,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 40, height: 24, offsetX: 8, offsetY: 24 },
+        config: { width: 40, height: 24, offsetX: 8, offsetY: 24, static: true },
       },
     ],
     states: [],
@@ -830,7 +979,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 32, height: 16, offsetX: 8, offsetY: 24 },
+        config: { width: 32, height: 16, offsetX: 8, offsetY: 24, static: true },
       },
     ],
     states: [],
@@ -855,7 +1004,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 24, height: 12, offsetX: 12, offsetY: 24 },
+        config: { width: 24, height: 12, offsetX: 12, offsetY: 24, static: true },
       },
     ],
     states: [],
@@ -881,7 +1030,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 40, height: 24, offsetX: 12, offsetY: 24 },
+        config: { width: 40, height: 24, offsetX: 12, offsetY: 24, static: true },
       },
     ],
     states: [],
@@ -905,7 +1054,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 8, offsetX: 8, offsetY: 16 },
+        config: { width: 16, height: 8, offsetX: 8, offsetY: 16, static: true },
       },
     ],
     states: [],
@@ -935,6 +1084,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 16,
           offsetX: 16,
           offsetY: 12,
+          static: true,
         },
       },
     ],
@@ -964,6 +1114,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 6,
           offsetX: 12,
           offsetY: 12,
+          static: true,
         },
       },
     ],
@@ -993,6 +1144,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 6,
           offsetX: 12,
           offsetY: 12,
+          static: true,
         },
       },
     ],
@@ -1022,6 +1174,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
           height: 6,
           offsetX: 12,
           offsetY: 12,
+          static: true,
         },
       },
     ],
@@ -1046,7 +1199,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 16, offsetX: 8, offsetY: 8 },
+        config: { width: 16, height: 16, offsetX: 8, offsetY: 8, static: true },
       },
       { name: ComponentName.POINTABLE },
       {
@@ -1082,7 +1235,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 16, height: 24, offsetX: 0, offsetY: 8 },
+        config: { width: 16, height: 24, offsetX: 0, offsetY: 8, static: true },
       },
       {
         name: ComponentName.POINTABLE,

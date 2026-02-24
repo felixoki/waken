@@ -9,6 +9,7 @@ import {
 import { BorderGenerator } from "../generators/Border";
 import { TerrainGenerator } from "../generators/Terrain";
 import { TerrainSmoother } from "../smoothers/Terrain";
+import { EntitySpawner } from "../spawners/Entity";
 
 export class MapBuilder {
   private config: BiomeConfig;
@@ -113,31 +114,59 @@ export class MapBuilder {
     }
 
     /**
+     * Spawn entities
+     */
+    const seed = this.config.noise.seed ?? "default";
+    const spawner = new EntitySpawner(this.config, seed);
+    const spawn = this._findSpawn(terrain);
+    const entities = spawner.spawn(terrain, spawn);
+
+    /**
      * Assemble final map
      */
     const tilesets: any[] = [];
 
     for (const name of tilesetOrder) {
-      const tileset = this.loader.load(name);
-      tilesets.push({ firstgid: firstgids.get(name)!, ...tileset });
+      const ts = this.loader.load(name);
+
+      tilesets.push({
+        columns: ts.columns,
+        firstgid: firstgids.get(name)!,
+        image: ts.image,
+        imageheight: ts.imageheight,
+        imagewidth: ts.imagewidth,
+        margin: ts.margin,
+        name: ts.name,
+        spacing: ts.spacing,
+        tilecount: ts.tilecount,
+        tileheight: ts.tileheight,
+        tilewidth: ts.tilewidth,
+        ...(ts.tiles?.length ? { tiles: ts.tiles } : {}),
+      });
     }
 
-    const spawn = this._findSpawn(terrain);
-
     const tilemap = {
-      width,
+      compressionlevel: -1,
       height,
-      tilewidth: tileWidth,
-      tileheight: tileHeight,
+      infinite: false,
+      layers: tiledLayers,
+      nextlayerid: layerId,
+      nextobjectid: 1,
       orientation: "orthogonal",
       renderorder: "right-down",
-      layers: tiledLayers,
+      tiledversion: "1.11.0",
+      tileheight: tileHeight,
       tilesets,
+      tilewidth: tileWidth,
+      type: "map",
+      version: "1.10",
+      width,
     };
 
     return {
       tilemap,
       spawn,
+      entities,
     };
   }
 

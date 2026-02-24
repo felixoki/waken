@@ -69,4 +69,62 @@ export const animations: Partial<
       repeat: 0,
     },
   },
+  [EntityName.DRAKE]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+  },
+  [EntityName.DUCK]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+  },
+  [EntityName.FOX]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+  },
+  [EntityName.DEER]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+  },
 };

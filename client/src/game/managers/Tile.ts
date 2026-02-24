@@ -23,6 +23,16 @@ export class TileManager {
   }
 
   update(delta: number): void {
+    const cam = this.tilemap.scene.cameras.main;
+    const view = cam.worldView;
+    const tw = this.tilemap.tileWidth;
+    const th = this.tilemap.tileHeight;
+
+    const minX = Math.floor(view.x / tw) - 1;
+    const minY = Math.floor(view.y / th) - 1;
+    const maxX = Math.ceil((view.x + view.width) / tw) + 1;
+    const maxY = Math.ceil((view.y + view.height) / th) + 1;
+
     this.animations.forEach((anim) => {
       anim.elapsedTime += delta;
 
@@ -31,9 +41,11 @@ export class TileManager {
         anim.currentFrame = (anim.currentFrame + 1) % anim.frames.length;
 
         const frameGid = anim.frames[anim.currentFrame];
-        anim.positions.forEach(({ layer, x, y }) =>
-          layer.putTileAt(frameGid, x, y),
-        );
+        
+        anim.positions.forEach(({ layer, x, y }) => {
+          if (x >= minX && x <= maxX && y >= minY && y <= maxY)
+            layer.putTileAt(frameGid, x, y);
+        });
       }
     });
   }
@@ -91,7 +103,7 @@ export class TileManager {
           const tile = this.tilemap.getTileAt(x, y, true, layer.name);
           return tile?.collides;
         });
-        
+
         return collides ? 1 : 0;
       }),
     );

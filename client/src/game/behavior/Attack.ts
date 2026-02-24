@@ -28,9 +28,9 @@ export class Attack extends Behavior {
 
   public name = BehaviorName.ATTACK;
 
-  constructor(repeat: boolean = false) {
+  constructor() {
     super();
-    this.repeat = repeat;
+    this.repeat = true;
   }
 
   start(targetId: string): void {

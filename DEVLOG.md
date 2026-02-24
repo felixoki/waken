@@ -229,11 +229,21 @@
 
 - Add attack behavior ✅
 
+#### 19.2.2026
+
+- Update tile collision layer ✅
+
 #### 20.2.2026
 
 - Add map builder ✅
 - Add border, noise and terrain generators ✅
 - Add terrain smoother ✅
+- Add stay behavior ✅
+- Add duck and drake ✅
+
+#### 22.2.2026
+
+- Add death and loot ✅
 
 ### Next up
 
@@ -250,8 +260,7 @@
 - Party management ⭐
 
 - General
-  - Update tile collision layer
-  - Add stay and amble behavior
+  - Add crafting, flee and amble behavior
   - Lock entities during interaction
 
 ### Backlog

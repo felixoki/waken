@@ -1,4 +1,10 @@
-import { ComponentName, Direction, Input, MapName, StateName } from "@server/types";
+import {
+  ComponentName,
+  Direction,
+  Input,
+  MapName,
+  StateName,
+} from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
 import { EntityName } from "@server/types";
@@ -12,6 +18,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public facing: Direction;
   public moving: Direction[];
   public isLocked: boolean = false;
+  public isStatic: boolean = false;
   public health: number = 100;
   public target?: { x: number; y: number };
 
@@ -21,7 +28,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   declare scene: Scene;
   declare state: StateName;
   declare name: EntityName;
-  declare body: Phaser.Physics.Arcade.Body;
+  declare body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
 
   constructor(
     scene: Scene,
@@ -50,13 +57,13 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
   private _init() {
     this.scene.add.existing(this);
-    this.scene.physics.add.existing(this);
-
     this.setDepth(1000 + this.y);
   }
 
   update(remoteInput?: Partial<Input>): void {
-    this.components.forEach((component) => component.update());
+    this.components.forEach((component) => {
+      if (component.name !== ComponentName.BEHAVIOR_QUEUE) component.update();
+    });
 
     const input = remoteInput || this._getInput();
 

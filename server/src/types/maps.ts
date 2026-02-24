@@ -2,6 +2,7 @@ export enum MapName {
   VILLAGE = "village",
   HERBALIST_HOUSE = "herbalist_house",
   HOME = "home",
+  REALM = "realm",
 }
 
 export interface MapConfig {

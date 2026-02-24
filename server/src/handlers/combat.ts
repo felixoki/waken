@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
 import {
+  ComponentName,
   EntityConfig,
   Hit,
   PlayerConfig,
@@ -7,6 +8,8 @@ import {
   WeaponConfig,
 } from "../types";
 import { World } from "../World";
+import { configs } from "../configs";
+import { randomUUID } from "crypto";
 
 export const combat = {
   getKnockback: (
@@ -46,6 +49,42 @@ export const combat = {
 
     if (entity) entities.update(target.id, { ...target, health: health });
     if (player) players.update(target.id, { ...target, health: health });
+
+    if (entity && health <= 0) {
+      entities.remove(entity.id);
+
+      socket.to(`map:${entity.map}`).emit("entity:destroy", { id: entity.id });
+      socket.emit("entity:destroy", { id: entity.id });
+
+      const definition = configs.definitions[entity.name];
+      const damagable = definition?.components.find(
+        (c) => c.name === ComponentName.DAMAGEABLE,
+      );
+
+      if (damagable && damagable.config) {
+        const loot = damagable.config.loot;
+
+        loot.forEach((entry) => {
+          if (Math.random() > entry.chance) return;
+
+          const item: EntityConfig = {
+            id: randomUUID(),
+            name: entry.name,
+            map: entity.map,
+            x: entity.x + (Math.random() - 0.5) * 32,
+            y: entity.y + (Math.random() - 0.5) * 32,
+            health: 100,
+          };
+
+          world.entities.add(item.id, item);
+
+          socket.to(`map:${entity.map}`).emit("entity:create", item);
+          socket.emit("entity:create", item);
+        });
+      }
+
+      return;
+    }
 
     const knockback = combat.getKnockback(target, attacker, config);
 

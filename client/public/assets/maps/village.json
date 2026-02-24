@@ -6394,6 +6394,50 @@
                  "width":1,
                  "x":616,
                  "y":1198
+                }, 
+                {
+                 "height":1,
+                 "id":474,
+                 "name":"Drake",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":784,
+                 "y":864
+                }, 
+                {
+                 "height":1,
+                 "id":475,
+                 "name":"Duck",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":800,
+                 "y":864
+                }, 
+                {
+                 "height":1,
+                 "id":477,
+                 "name":"Fox",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":720,
+                 "y":496
+                }, 
+                {
+                 "height":1,
+                 "id":478,
+                 "name":"Deer",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":752,
+                 "y":496
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6402,7 +6446,7 @@
          "y":0
         }],
  "nextlayerid":26,
- "nextobjectid":474,
+ "nextobjectid":479,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -6411,7 +6455,7 @@
         {
          "columns":17,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_home.png",
+         "image":"..\/sprites\/village_home.png",
          "imageheight":912,
          "imagewidth":272,
          "margin":0,
@@ -6909,7 +6953,7 @@
         {
          "columns":37,
          "firstgid":970,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_herbalist_house.png",
+         "image":"..\/sprites\/village_herbalist_house.png",
          "imageheight":256,
          "imagewidth":592,
          "margin":0,
@@ -6922,7 +6966,7 @@
         {
          "columns":12,
          "firstgid":1562,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/ground_grass.png",
+         "image":"..\/sprites\/ground_grass.png",
          "imageheight":336,
          "imagewidth":192,
          "margin":0,
@@ -6935,7 +6979,7 @@
         {
          "columns":30,
          "firstgid":1814,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/water_coasts.png",
+         "image":"..\/sprites\/water_coasts.png",
          "imageheight":784,
          "imagewidth":480,
          "margin":0,
@@ -10367,7 +10411,7 @@
         {
          "columns":31,
          "firstgid":3284,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_farm_house.png",
+         "image":"..\/sprites\/village_farm_house.png",
          "imageheight":336,
          "imagewidth":496,
          "margin":0,
@@ -10380,7 +10424,7 @@
         {
          "columns":21,
          "firstgid":3935,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/ground_grass_details.png",
+         "image":"..\/sprites\/ground_grass_details.png",
          "imageheight":288,
          "imagewidth":336,
          "margin":0,
@@ -10393,7 +10437,7 @@
         {
          "columns":31,
          "firstgid":4313,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_farm_ground_grass.png",
+         "image":"..\/sprites\/village_farm_ground_grass.png",
          "imageheight":320,
          "imagewidth":496,
          "margin":0,
@@ -10421,7 +10465,7 @@
         {
          "columns":12,
          "firstgid":4933,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/road_stone.png",
+         "image":"..\/sprites\/road_stone.png",
          "imageheight":272,
          "imagewidth":192,
          "margin":0,
@@ -10434,7 +10478,7 @@
         {
          "columns":21,
          "firstgid":5137,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/road_walls_paving.png",
+         "image":"..\/sprites\/road_walls_paving.png",
          "imageheight":288,
          "imagewidth":336,
          "margin":0,
@@ -10447,7 +10491,7 @@
         {
          "columns":27,
          "firstgid":5515,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/plants_bushes.png",
+         "image":"..\/sprites\/plants_bushes.png",
          "imageheight":112,
          "imagewidth":432,
          "margin":0,
@@ -10460,7 +10504,7 @@
         {
          "columns":12,
          "firstgid":5704,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/reed.png",
+         "image":"..\/sprites\/reed.png",
          "imageheight":48,
          "imagewidth":192,
          "margin":0,
@@ -10473,7 +10517,7 @@
         {
          "columns":41,
          "firstgid":5740,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/bridges.png",
+         "image":"..\/sprites\/bridges.png",
          "imageheight":672,
          "imagewidth":656,
          "margin":0,
@@ -10486,7 +10530,7 @@
         {
          "columns":30,
          "firstgid":7462,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_market_objects.png",
+         "image":"..\/sprites\/village_market_objects.png",
          "imageheight":576,
          "imagewidth":480,
          "margin":0,
@@ -10499,7 +10543,7 @@
         {
          "columns":28,
          "firstgid":8542,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_tavern_house.png",
+         "image":"..\/sprites\/village_tavern_house.png",
          "imageheight":464,
          "imagewidth":448,
          "margin":0,

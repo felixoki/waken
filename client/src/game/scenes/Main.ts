@@ -23,6 +23,8 @@ import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { BehaviorQueue } from "../components/BehaviorQueue";
 import { Attack } from "../behavior/Attack";
+import { DamageableComponent } from "../components/Damageable";
+import { effects } from "../effects";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -39,7 +41,7 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
 
-    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE, MapName.HOME];
+    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE, MapName.HOME, MapName.REALM];
     const ready = new Set<string>();
 
     scenes.forEach((key) => {
@@ -60,7 +62,7 @@ export class MainScene extends Phaser.Scene {
       this.scene.get(key).scene.setVisible(false);
     });
 
-    if (scenes.length) this.scene.bringToTop(MapName.VILLAGE);
+    if (scenes.length) this.scene.bringToTop(MapName.REALM);
   }
 
   update(_time: number, _delta: number): void {
@@ -185,6 +187,17 @@ export class MainScene extends Phaser.Scene {
     });
 
     this.socketManager.on("entity:destroy", (data: EntityDestroy) => {
+      const entity = this.entityManager.entities.get(data.id);
+
+      if (entity) {
+        const damageable = entity.getComponent<DamageableComponent>(
+          ComponentName.DAMAGEABLE,
+        );
+
+        if (damageable)
+          effects.emitters.death(entity.scene, entity.x, entity.y);
+      }
+
       this.entityManager.remove(data.id);
     });
 
@@ -196,11 +209,11 @@ export class MainScene extends Phaser.Scene {
     this.socketManager.on("entity:hurt", (data: Hurt) => {
       const entity = this.entityManager.entities.get(data.id);
       if (!entity) return;
-      
+
       handlers.combat.hurt(entity, data.health);
       handlers.combat.knockback(entity, data.knockback);
     });
-    
+
     this.socketManager.on(
       "entity:dialogue:response",
       (data: DialogueResponse) => {
@@ -212,7 +225,9 @@ export class MainScene extends Phaser.Scene {
       const entity = this.entityManager.get(data.entityId);
       if (!entity) return;
 
-      const queue = entity.getComponent<BehaviorQueue>(ComponentName.BEHAVIOR_QUEUE);
+      const queue = entity.getComponent<BehaviorQueue>(
+        ComponentName.BEHAVIOR_QUEUE,
+      );
       if (!queue) return;
 
       const attack = queue.get<Attack>(BehaviorName.ATTACK);

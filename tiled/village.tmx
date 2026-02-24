@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="96" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="474">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="96" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="479">
  <editorsettings>
-  <export format="json"/>
+  <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="village_home" tilewidth="16" tileheight="16" tilecount="969" columns="17">
   <image source="../client/public/assets/sprites/village_home.png" width="272" height="912"/>
@@ -3172,5 +3172,9 @@
   <object id="471" name="Market_Table" x="520" y="1233" width="1" height="1"/>
   <object id="472" name="Barrel1" x="582" y="1194" width="1" height="1"/>
   <object id="473" name="Barrels1" x="616" y="1198" width="1" height="1"/>
+  <object id="474" name="Drake" x="784" y="864" width="1" height="1"/>
+  <object id="475" name="Duck" x="800" y="864" width="1" height="1"/>
+  <object id="477" name="Fox" x="720" y="496" width="1" height="1"/>
+  <object id="478" name="Deer" x="752" y="496" width="1" height="1"/>
  </objectgroup>
 </map>

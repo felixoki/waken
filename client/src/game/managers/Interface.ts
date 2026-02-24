@@ -14,17 +14,20 @@ export class InterfaceManager {
     const player = this.scene.managers.players.player;
     if (!player || player.map !== this.scene.scene.key) return;
 
-    const all = [
-      ...this.scene.managers.entities.all,
-      ...this.scene.managers.players.others.values(),
-    ].filter(
-      (entity) =>
-        entity &&
-        entity.map === this.scene.scene.key &&
-        entity.getComponent(ComponentName.DAMAGEABLE),
-    );
+    const key = this.scene.scene.key;
+    const entities: Entity[] = [];
 
-    const data = this._getScreenData(all, player);
+    this.scene.managers.entities.entities.forEach((entity) => {
+      if (entity.map === key && entity.hasComponent(ComponentName.DAMAGEABLE))
+        entities.push(entity);
+    });
+
+    this.scene.managers.players.others.forEach((entity) => {
+      if (entity.map === key && entity.hasComponent(ComponentName.DAMAGEABLE))
+        entities.push(entity);
+    });
+
+    const data = this._getScreenData(entities, player);
     EventBus.emit("entities:update", data);
   }
 

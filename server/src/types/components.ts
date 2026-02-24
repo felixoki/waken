@@ -29,7 +29,7 @@ export type ComponentConfig =
   | { name: ComponentName.PICKABLE }
   | { name: ComponentName.HOVERABLE }
   | { name: ComponentName.HOTBAR }
-  | { name: ComponentName.DAMAGEABLE }
+  | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.INTERACTABLE }
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
@@ -43,6 +43,7 @@ export interface BodyConfig {
   pushable?: boolean;
   immovable?: boolean;
   collides?: boolean;
+  static?: boolean;
 }
 
 export interface TextureConfig {
@@ -71,4 +72,8 @@ export interface TransitionConfig {
   height: number;
   offsetX: number;
   offsetY: number;
+}
+
+export interface DamageableConfig {
+  loot: (Item & { chance: number })[];
 }

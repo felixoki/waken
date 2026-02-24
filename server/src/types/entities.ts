@@ -2,7 +2,7 @@ import { Direction } from './directions';
 import { MapName } from './maps';
 import { ComponentConfig } from './components';
 import { StateName } from './states';
-import { BehaviorName } from './behaviors';
+import { BehaviorConfig } from './behaviors';
 import { Dialogue } from './dialogue';
 
 export interface EntityConfig {
@@ -19,7 +19,7 @@ export interface EntityDefinition {
   moving: Direction[];
   components: ComponentConfig[];
   states: StateName[];
-  behaviors?: BehaviorName[];
+  behaviors?: BehaviorConfig[];
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
 }
@@ -72,6 +72,10 @@ export enum EntityName {
   VENISON_MEAT = "venison_meat",
   BOAR_MEAT = "boar_meat",
   WOOD = "wood",
+  DRAKE = "drake",
+  DUCK = "duck",
+  FOX = "fox",
+  DEER = "deer",
 }
 
 export interface EntityPickup {

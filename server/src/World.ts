@@ -6,6 +6,9 @@ import { ItemsStore } from "./stores/Items";
 import { MapName } from "./types";
 import { EconomyManager } from "./managers/Economy";
 import { DAY } from "./globals";
+import { generateBiome } from "./biomes";
+import { BiomeName } from "./types/generation";
+import { randomUUID } from "crypto";
 
 export class World {
   public readonly players: PlayerStore;
@@ -30,10 +33,27 @@ export class World {
     const loader = new MapLoader();
 
     Object.entries(configs.maps).forEach(([name, config]) => {
+      if (name === MapName.REALM) return;
       const tilemap = loader.load(config.json);
       const entities = loader.parseEntities(name as MapName, tilemap);
       entities.forEach((e) => this.entities.add(e.id, e));
     });
+
+    const realm = generateBiome(BiomeName.FOREST, "test-seed-123");
+    
+    if (realm) {
+      for (const e of realm.entities) {
+        const id = randomUUID();
+        this.entities.add(id, {
+          id,
+          map: MapName.REALM,
+          name: e.name,
+          x: e.x,
+          y: e.y,
+          health: 100,
+        });
+      }
+    }
   }
 
   update(delta: number) {

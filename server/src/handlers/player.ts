@@ -13,7 +13,7 @@ export const player = {
 
     if (!player) {
       const isHost = !players.getAll().length;
-      const map = configs.maps[MapName.VILLAGE];
+      const map = configs.maps[MapName.REALM];
 
       player = {
         x: map.spawn.x,

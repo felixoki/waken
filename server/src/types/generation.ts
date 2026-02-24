@@ -1,3 +1,9 @@
+import { EntityName } from "./entities";
+
+export enum BiomeName {
+  FOREST = "forest",
+}
+
 export enum TerrainName {
   WATER = "water",
   GROUND = "ground",
@@ -101,7 +107,7 @@ export interface BorderConfig {
 }
 
 export interface BiomeConfig {
-  id: string;
+  id: BiomeName;
   width: number;
   height: number;
   tileWidth: number;
@@ -110,6 +116,8 @@ export interface BiomeConfig {
   layers: LayerConfig[];
   borders: BorderConfig[];
   terrain: TerrainName[];
+  objects: SpawnRule[];
+  exclusion: number;
 }
 
 export interface GeneratedMap {
@@ -118,4 +126,26 @@ export interface GeneratedMap {
     x: number;
     y: number;
   };
+  entities: Entity[];
+}
+
+export interface GroupConfig {
+  min: number;
+  max: number;
+  radius: number;
+}
+
+export interface SpawnRule {
+  entities: EntityName[];
+  terrain: TerrainName[];
+  density: number;
+  spacing: number;
+  cluster?: boolean;
+  group?: GroupConfig;
+}
+
+export interface Entity {
+  name: EntityName;
+  x: number;
+  y: number;
 }

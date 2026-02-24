@@ -1,4 +1,4 @@
-import { PhsyicsManager } from "../managers/Physics";
+import { PhysicsManager } from "../managers/Physics";
 import { TileManager } from "../managers/Tile";
 import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
@@ -6,7 +6,7 @@ import type { MainScene } from "./Main";
 import { Player } from "../Player";
 
 export class Scene extends Phaser.Scene {
-  public physicsManager!: PhsyicsManager;
+  public physicsManager!: PhysicsManager;
   public tileManager!: TileManager;
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
@@ -22,7 +22,7 @@ export class Scene extends Phaser.Scene {
   }
 
   create(): void {
-    this.physicsManager = new PhsyicsManager(this);
+    this.physicsManager = new PhysicsManager(this);
     this.cameraManager = new CameraManager(this);
     this.interfaceManager = new InterfaceManager(this);
 

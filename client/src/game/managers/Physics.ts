@@ -1,11 +1,12 @@
 import { handlers } from "../handlers";
 import { Scene } from "../scenes/Scene";
 
-export class PhsyicsManager {
+export class PhysicsManager {
   private scene: Scene;
   public groups!: {
     players: Phaser.Physics.Arcade.Group;
     entities: Phaser.Physics.Arcade.Group;
+    statics: Phaser.Physics.Arcade.StaticGroup;
     hits: Phaser.Physics.Arcade.Group;
     overlaps: Phaser.Physics.Arcade.Group;
   };
@@ -24,20 +25,21 @@ export class PhsyicsManager {
       entities: this.scene.physics.add.group({
         collideWorldBounds: true,
       }),
+      statics: this.scene.physics.add.staticGroup(),
       hits: this.scene.physics.add.group(),
       overlaps: this.scene.physics.add.group(),
     };
 
     this.scene.physics.add.collider(this.groups.players, this.groups.players);
     this.scene.physics.add.collider(this.groups.players, this.groups.entities);
-    this.scene.physics.add.collider(this.groups.entities, this.groups.entities);
+    this.scene.physics.add.collider(this.groups.players, this.groups.statics);
 
     this.scene.physics.add.overlap(
       this.groups.entities,
       this.groups.hits,
       handlers.combat.hit,
       undefined,
-      this
+      this,
     );
 
     this.scene.physics.add.overlap(
@@ -45,7 +47,7 @@ export class PhsyicsManager {
       this.groups.overlaps,
       handlers.physics.overlap,
       undefined,
-      this
+      this,
     );
 
     this.scene.physics.add.overlap(
@@ -53,7 +55,7 @@ export class PhsyicsManager {
       this.groups.overlaps,
       handlers.physics.overlap,
       undefined,
-      this
+      this,
     );
   }
 }
