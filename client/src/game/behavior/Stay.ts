@@ -2,7 +2,7 @@ import { BehaviorName, Input } from "@server/types";
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 
-export class Stay extends Behavior {
+export class StayBehavior extends Behavior {
   public name = BehaviorName.STAY;
 
   constructor() {

@@ -3144,9 +3144,9 @@
   <object id="441" name="Reed1" x="207.998" y="512" width="1" height="1"/>
   <object id="442" name="Reed3" x="176" y="520" width="1" height="1"/>
   <object id="443" name="Reed3" x="160" y="520" width="1" height="1"/>
-  <object id="444" name="Reed3" x="144" y="528" width="1" height="1"/>
-  <object id="445" name="Reed3" x="160" y="512" width="1" height="1"/>
-  <object id="446" name="Reed3" x="176" y="544" width="1" height="1"/>
+  <object id="444" name="Reed2" x="144" y="528" width="1" height="1"/>
+  <object id="445" name="Reed2" x="160" y="512" width="1" height="1"/>
+  <object id="446" name="Reed2" x="176" y="544" width="1" height="1"/>
   <object id="447" name="Reed3" x="512" y="408" width="1" height="1"/>
   <object id="448" name="Reed3" x="496" y="376" width="1" height="1"/>
   <object id="449" name="Reed3" x="512.001" y="392" width="1" height="1"/>

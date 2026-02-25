@@ -127,4 +127,26 @@ export const animations: Partial<
       repeat: -1,
     },
   },
+  [EntityName.BOAR]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 8,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 5,
+      frameRate: 7,
+      repeat: -1,
+    },
+    [StateName.SLASHING]: {
+      frameCount: 5,
+      frameRate: 7,
+      repeat: -1,
+    },
+  },
 };

@@ -22,9 +22,10 @@ import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { BehaviorQueue } from "../components/BehaviorQueue";
-import { Attack } from "../behavior/Attack";
+import { AttackBehavior } from "../behavior/Attack";
 import { DamageableComponent } from "../components/Damageable";
 import { effects } from "../effects";
+import { FleeBehavior } from "../behavior/Flee";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -41,13 +42,19 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
 
-    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE, MapName.HOME, MapName.REALM];
+    const scenes = [
+      MapName.VILLAGE,
+      MapName.HERBALIST_HOUSE,
+      MapName.HOME,
+      MapName.REALM,
+    ];
     const ready = new Set<string>();
 
     scenes.forEach((key) => {
       const scene = this.scene.get(key);
 
       scene.events.once(Phaser.Scenes.Events.CREATE, () => {
+        scene.scene.setVisible(false);
         ready.add(key);
 
         if (ready.size === scenes.length) {
@@ -59,7 +66,6 @@ export class MainScene extends Phaser.Scene {
 
     scenes.forEach((key) => {
       this.scene.launch(key);
-      this.scene.get(key).scene.setVisible(false);
     });
 
     if (scenes.length) this.scene.bringToTop(MapName.REALM);
@@ -201,6 +207,10 @@ export class MainScene extends Phaser.Scene {
       this.entityManager.remove(data.id);
     });
 
+    this.socketManager.on("entity:despawn", (data: string) => {
+      this.entityManager.remove(data);
+    });
+
     this.socketManager.on("entity:input", (data: Partial<Input>) => {
       const entity = this.entityManager.get(data.id!);
       entity?.update(data);
@@ -230,11 +240,20 @@ export class MainScene extends Phaser.Scene {
       );
       if (!queue) return;
 
-      const attack = queue.get<Attack>(BehaviorName.ATTACK);
-      if (!attack) return;
+      const flee = queue.get<FleeBehavior>(BehaviorName.FLEE);
 
-      attack.start(data.playerId);
-      queue.shiftTo(BehaviorName.ATTACK);
+      if (flee) {
+        flee.start(data.playerId);
+        queue.shiftTo(BehaviorName.FLEE);
+        return;
+      }
+
+      const attack = queue.get<AttackBehavior>(BehaviorName.ATTACK);
+
+      if (attack) {
+        attack.start(data.playerId);
+        queue.shiftTo(BehaviorName.ATTACK);
+      }
     });
 
     this.game.events.on("entity:input", (data: Partial<Input>) => {
@@ -254,6 +273,10 @@ export class MainScene extends Phaser.Scene {
 
     this.game.events.on("entity:spotted:player", (data: Spot) => {
       this.socketManager.emit("entity:spotted:player", data);
+    });
+
+    this.game.events.on("entity:flee", (data: string) => {
+      this.socketManager.emit("entity:flee", data);
     });
 
     EventBus.on(

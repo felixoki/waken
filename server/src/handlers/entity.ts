@@ -49,4 +49,14 @@ export const entity = {
     socket.to(`map:${entity.map}`).emit("entity:spotted:player", data);
     socket.emit("entity:spotted:player", data);
   },
+
+  flee: (data: string, socket: Socket, world: World) => {
+    const entity = world.entities.get(data);
+    if (!entity) return;
+
+    world.entities.remove(data);
+
+    socket.to(`map:${entity.map}`).emit("entity:despawn", data);
+    socket.emit("entity:despawn", data);
+  }
 };

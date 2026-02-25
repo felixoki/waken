@@ -11,7 +11,7 @@ import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 import { configs } from "@server/configs";
 
-export class Attack extends Behavior {
+export class AttackBehavior extends Behavior {
   private target: { id: string; lastPosition: Waypoint | null } = {
     id: "",
     lastPosition: null,

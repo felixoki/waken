@@ -32,8 +32,51 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
               quantity: 1,
               stackable: true,
               chance: 0.25,
-            }
+            },
           ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+    ],
+  },
+  [EntityName.BOAR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [],
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
@@ -141,8 +184,11 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [StateName.IDLE, StateName.WALKING, StateName.RUNNING],
     behaviors: [
       {
-        name: BehaviorName.AMBLE,
+        name: BehaviorName.WANDER,
         config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+      {
+        name: BehaviorName.FLEE,
       },
     ],
   },
@@ -167,8 +213,11 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [StateName.IDLE, StateName.WALKING, StateName.RUNNING],
     behaviors: [
       {
-        name: BehaviorName.AMBLE,
+        name: BehaviorName.WANDER,
         config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+      {
+        name: BehaviorName.FLEE,
       },
     ],
   },
@@ -499,7 +548,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 20, height: 12, offsetX: 8, offsetY: 16, static: true },
+        config: {
+          width: 20,
+          height: 12,
+          offsetX: 8,
+          offsetY: 16,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -903,6 +958,7 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.REED3]: {
     facing: Direction.DOWN,
     moving: [],
+    offset: { y: -8 },
     components: [
       {
         name: ComponentName.TEXTURE,
@@ -954,7 +1010,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 40, height: 24, offsetX: 8, offsetY: 24, static: true },
+        config: {
+          width: 40,
+          height: 24,
+          offsetX: 8,
+          offsetY: 24,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -979,7 +1041,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 32, height: 16, offsetX: 8, offsetY: 24, static: true },
+        config: {
+          width: 32,
+          height: 16,
+          offsetX: 8,
+          offsetY: 24,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -1004,7 +1072,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 24, height: 12, offsetX: 12, offsetY: 24, static: true },
+        config: {
+          width: 24,
+          height: 12,
+          offsetX: 12,
+          offsetY: 24,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -1030,7 +1104,13 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 40, height: 24, offsetX: 12, offsetY: 24, static: true },
+        config: {
+          width: 40,
+          height: 24,
+          offsetX: 12,
+          offsetY: 24,
+          static: true,
+        },
       },
     ],
     states: [],

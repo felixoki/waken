@@ -10,7 +10,7 @@ import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 
-export class Amble extends Behavior {
+export class AmbleBehavior extends Behavior {
   private spawn: Waypoint = { x: 0, y: 0 };
   private radius: number;
   private path: Waypoint[] = [];

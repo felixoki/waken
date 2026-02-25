@@ -514,6 +514,30 @@ export const maps: Record<MapName, MapConfig> = {
         frameWidth: 32,
         frameHeight: 32,
       },
+      {
+        key: "boar-idle",
+        file: "boar_idle_with_shadow.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "boar-walking",
+        file: "boar_walking_with_shadow.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "boar-running",
+        file: "boar_running_with_shadow.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "boar-slashing",
+        file: "boar_slashing_with_shadow.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
     ],
   },
 };

@@ -1,41 +1,43 @@
 import {
   BehaviorName,
-  Idle,
   Input,
-  PatrolBehaviorConfig,
   Scan,
   Stuck,
   Waypoint,
+  WanderBehaviorConfig,
 } from "@server/types";
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 
-export class PatrolBehavior extends Behavior {
+export class WanderBehavior extends Behavior {
   private spawn: Waypoint = { x: 0, y: 0 };
   private radius: number;
   private path: Waypoint[] = [];
   private target: Waypoint | null = null;
-  private scan: Scan = { last: 0, interval: 1500 };
-  private idle: Idle = { time: 0, duration: 4000 };
+  private scan: Scan = { last: 0, interval: 1000 };
+  private idle: { time: number; range: [number, number] } = {
+    time: 0,
+    range: [2000, 6000],
+  };
   private stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
     interval: 200,
   };
-  private vision: number = 400;
+  private vision: number = 300;
   private fov: number = Math.PI * 2;
 
-  public name = BehaviorName.PATROL;
+  public name = BehaviorName.WANDER;
 
-  constructor(config?: PatrolBehaviorConfig) {
+  constructor(config?: WanderBehaviorConfig) {
     super();
 
-    this.radius = config?.radius ?? 300;
+    this.radius = config?.radius ?? 120;
     this.repeat = config?.repeat ?? true;
-    this.scan.interval = config?.scan?.interval ?? 1500;
-    this.idle.duration = config?.idle?.duration ?? 4000;
-    this.vision = config?.vision ?? 400;
+    this.scan.interval = config?.scan?.interval ?? 1000;
+    this.idle.range = config?.idle?.range ?? [2000, 6000];
+    this.vision = config?.vision ?? 300;
     this.fov = config?.fov ?? Math.PI * 2;
   }
 
@@ -67,18 +69,13 @@ export class PatrolBehavior extends Behavior {
             playerId: player.id,
           });
 
-          return {
-            facing: entity.facing,
-            moving: [],
-            isRunning: false,
-          };
+          return { facing: entity.facing, moving: [], isRunning: false };
         }
       }
     }
 
     if (this.idle.time > 0) {
       this.idle.time -= entity.scene.game.loop.delta;
-
       return {};
     }
 
@@ -91,17 +88,18 @@ export class PatrolBehavior extends Behavior {
 
     if (this.target && !this.path.length) {
       const grid = handlers.path.getGrid(entity.scene);
-
       if (!grid.length || !entity.scene.tileManager) return {};
 
-      const start = {
-        x: Math.floor(entity.x / entity.scene.tileManager.map.tileWidth),
-        y: Math.floor(entity.y / entity.scene.tileManager.map.tileHeight),
-      };
+      const tw = entity.scene.tileManager.map.tileWidth;
+      const th = entity.scene.tileManager.map.tileHeight;
 
+      const start = {
+        x: Math.floor(entity.x / tw),
+        y: Math.floor(entity.y / th),
+      };
       const end = {
-        x: Math.floor(this.target.x / entity.scene.tileManager.map.tileWidth),
-        y: Math.floor(this.target.y / entity.scene.tileManager.map.tileHeight),
+        x: Math.floor(this.target.x / tw),
+        y: Math.floor(this.target.y / th),
       };
 
       this.path =
@@ -116,18 +114,14 @@ export class PatrolBehavior extends Behavior {
 
       if (!input) {
         this.target = null;
-        this.idle.time = this.idle.duration;
+        this.idle.time = this._randomIdle();
         return {};
       }
 
       return input;
     }
 
-    return {
-      facing: entity.facing,
-      moving: [],
-      isRunning: false,
-    };
+    return { facing: entity.facing, moving: [], isRunning: false };
   }
 
   reset(): void {
@@ -145,5 +139,10 @@ export class PatrolBehavior extends Behavior {
       x: this.spawn.x + Math.cos(angle) * distance,
       y: this.spawn.y + Math.sin(angle) * distance,
     };
+  }
+
+  private _randomIdle(): number {
+    const [min, max] = this.idle.range;
+    return min + Math.random() * (max - min);
   }
 }

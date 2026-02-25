@@ -3,8 +3,8 @@ import { BiomeConfig, BiomeName, TerrainName } from "../types/generation";
 
 export const forest: BiomeConfig = {
   id: BiomeName.FOREST,
-  width: 72,
-  height: 72,
+  width: 160,
+  height: 160,
   tileWidth: 16,
   tileHeight: 16,
 
@@ -19,9 +19,9 @@ export const forest: BiomeConfig = {
     {
       terrain: TerrainName.WATER,
       tileset: "village_farm_ground_grass",
-      threshold: -0.3,
+      threshold: -0.5,
     },
-    { terrain: TerrainName.GROUND, tileset: "village_home", threshold: -0.1 },
+    { terrain: TerrainName.GROUND, tileset: "village_home", threshold: -0.3 },
     { terrain: TerrainName.GRASS, tileset: "village_home", threshold: null },
   ],
 
@@ -64,9 +64,9 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.REED1, EntityName.REED2, EntityName.REED3],
       terrain: [TerrainName.GRASS],
-      density: 0.5,
+      density: 0.3,
       spacing: 0,
-      group: { min: 3, max: 8, radius: 1 },
+      group: { min: 3, max: 4, radius: 1 },
     },
     {
       entities: [
@@ -97,7 +97,7 @@ export const forest: BiomeConfig = {
         EntityName.BUSH4,
       ],
       terrain: [TerrainName.GRASS],
-      density: 0.1,
+      density: 0.4,
       spacing: 2,
       cluster: true,
     },
@@ -120,7 +120,27 @@ export const forest: BiomeConfig = {
       spacing: 15,
       group: { min: 1, max: 2, radius: 3 },
     },
+    {
+      entities: [EntityName.BOAR],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.01,
+      spacing: 15,
+      group: { min: 1, max: 2, radius: 3 },
+    },
+    {
+      entities: [EntityName.DEER],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.1,
+      spacing: 10,
+      group: { min: 0, max: 2, radius: 2 },
+    },
+    {
+      entities: [EntityName.FOX],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.05,
+      spacing: 30,
+    },
   ],
 
-  exclusion: 8,
+  exclusion: 0,
 };

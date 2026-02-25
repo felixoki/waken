@@ -61,6 +61,10 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: Spot) => handlers.entity.spot(data, socket, world),
     },
     {
+      event: "entity:flee",
+      handler: (data: string) => handlers.entity.flee(data, socket, world),
+    },
+    {
       event: "entity:dialogue:iterate",
       handler: (data: { entityId: string; nodeId: NodeId }) =>
         handlers.dialogue.iterate(data.entityId, socket, world, data.nodeId),

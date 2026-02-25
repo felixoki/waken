@@ -22,6 +22,7 @@ export interface EntityDefinition {
   behaviors?: BehaviorConfig[];
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
+  offset?: { x?: number; y?: number };
 }
 
 export interface EntityMetadata {
@@ -76,6 +77,7 @@ export enum EntityName {
   DUCK = "duck",
   FOX = "fox",
   DEER = "deer",
+  BOAR = "boar",
 }
 
 export interface EntityPickup {

@@ -18,7 +18,7 @@ export default class RealmScene extends Scene {
 
     const map = MapFactory.create(this, MapName.REALM);
     this.tileManager = new TileManager(map);
-    this.cameraManager.setZoom(3);
+    this.cameraManager.setZoom(1);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
   }
 }

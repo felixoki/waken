@@ -245,11 +245,25 @@
 
 - Add death and loot ✅
 
+#### 23.2.2026
+
+- Add amble behavior ✅
+
+#### 24.2.2026
+
+- Refactor procedural generation ✅
+
+#### 25.2.2026
+
+- Add boar ✅
+- Add wander and flee behavior ✅
+
 ### Next up
 
 - Procedural forest generation ⭐
   - Add ambience manager
   - Add foggy forest shader
+  - Add chunk manager
 
 - Save files ⭐
   - Add database
@@ -260,7 +274,7 @@
 - Party management ⭐
 
 - General
-  - Add crafting, flee and amble behavior
+  - Add crafting behavior
   - Lock entities during interaction
 
 ### Backlog
@@ -357,11 +371,10 @@
 #### Non-aggro animals
 
 - Fox (Fox pelt)
-- Deer (Venison meat)
+- Deer (Venison meat, deer hide)
 
 #### Aggro animals
 
-- Rat (Rat meat)
 - Boar (Boar meat)
 
 #### Aggro entities

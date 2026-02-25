@@ -114,10 +114,8 @@ export class MapFactory {
             worldY + obj.height / 2,
             obj.width,
             obj.height,
-            0xff00ff,
-            0.6,
           );
-          rect.setDepth(10003);
+          rect.setVisible(false);
           scene.physics.add.existing(rect, true);
 
           scene.physics.add.collider(scene.physicsManager.groups.players, rect);
