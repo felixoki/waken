@@ -1,4 +1,4 @@
-import { EntityConfig } from "@server/types";
+import { EntityConfig, MapName } from "@server/types";
 import { Entity } from "../Entity";
 import { Factory } from "../factory/Factory";
 import { configs } from "@server/configs";
@@ -29,6 +29,9 @@ export class EntityManager {
 
   add(config: EntityConfig): void {
     const scene = this.main.scene.get(config.map) as Scene;
+
+    if (!scene?.physicsManager) return;
+
     const definition = configs.definitions[config.name];
     const entity = Factory.create(scene, { ...config, ...definition! });
 
@@ -43,6 +46,15 @@ export class EntityManager {
       entity.destroy();
       this.entities.delete(id);
     }
+  }
+
+  removeByMap(map: MapName): void {
+    this.entities.forEach((entity, id) => {
+      if (entity.map === map) {
+        entity.destroy();
+        this.entities.delete(id);
+      }
+    });
   }
 
   destroy(): void {

@@ -7,10 +7,6 @@ export class ItemsStore {
     return this.items.get(name) || 0;
   }
 
-  getAll(): Map<EntityName, number> {
-    return this.items;
-  }
-
   add(name: EntityName, quantity: number): void {
     const current = this.items.get(name) || 0;
     this.items.set(name, current + quantity);

@@ -1333,4 +1333,47 @@ export const definitions: Partial<Record<EntityName, EntityDefinition>> = {
       stackable: true,
     },
   },
+  [EntityName.JUMP]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 32,
+          offsetX: 0,
+          offsetY: 0,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 434,
+          y: 608,
+          width: 32,
+          height: 32,
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home",
+          tileSize: 16,
+          tiles: [
+            { row: 35, start: 5, end: 7 },
+            { row: 36, start: 5, end: 7 },
+            { row: 37, start: 5, end: 7 },
+          ],
+        },
+        key: "jump_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
 };

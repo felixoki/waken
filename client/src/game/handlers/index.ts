@@ -4,6 +4,7 @@ import { dialogue } from "./dialogue";
 import { move } from "./move";
 import { path } from "./path";
 import { physics } from "./physics";
+import { player } from "./player";
 import { spells } from "./spells";
 import { state } from "./state";
 import { vision } from "./vision";
@@ -16,6 +17,7 @@ export const handlers = {
   direction,
   physics,
   combat,
+  player,
   spells,
   weapons,
   dialogue,

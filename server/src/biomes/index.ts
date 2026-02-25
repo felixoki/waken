@@ -9,8 +9,8 @@ const biomes: Record<string, BiomeConfig> = {
   forest,
 };
 
-export function generateBiome(biomeId: string, seed?: string) {
-  const config = biomes[biomeId];
+export function generateBiome(id: string, seed?: string) {
+  const config = biomes[id];
   if (!config) return;
 
   const seededConfig = seed

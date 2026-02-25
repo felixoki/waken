@@ -7,6 +7,7 @@ import { Hotbar } from "./ui/Hotbar";
 import { Menu } from "./ui/Menu";
 import { Dialogue } from "./ui/Dialogue";
 import { Collection } from "./ui/Collection";
+import { PartyPanel as Party } from "./ui/Party";
 
 function App() {
   const game = useRef<Phaser.Game | null>(null);
@@ -34,6 +35,7 @@ function App() {
         <Inventory />
         <Dialogue />
         <Collection />
+        <Party />
       </div>
     </div>
   );

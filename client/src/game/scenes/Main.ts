@@ -15,11 +15,11 @@ import {
   Transition,
   Spot,
   BehaviorName,
+  Party,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
 import { InventoryComponent } from "../components/Inventory";
-import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { BehaviorQueue } from "../components/BehaviorQueue";
 import { AttackBehavior } from "../behavior/Attack";
@@ -42,12 +42,7 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
 
-    const scenes = [
-      MapName.VILLAGE,
-      MapName.HERBALIST_HOUSE,
-      MapName.HOME,
-      MapName.REALM,
-    ];
+    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE, MapName.HOME];
     const ready = new Set<string>();
 
     scenes.forEach((key) => {
@@ -68,7 +63,7 @@ export class MainScene extends Phaser.Scene {
       this.scene.launch(key);
     });
 
-    if (scenes.length) this.scene.bringToTop(MapName.REALM);
+    if (scenes.length) this.scene.bringToTop(MapName.VILLAGE);
   }
 
   update(_time: number, _delta: number): void {
@@ -89,6 +84,8 @@ export class MainScene extends Phaser.Scene {
       const player = this.playerManager.player!;
 
       this.game.events.emit("camera:follow", { key: data.map, player });
+
+      EventBus.emit("player:create:local", { id: data.id });
     });
 
     this.socketManager.on("player:create:others", (data: PlayerConfig[]) => {
@@ -101,7 +98,7 @@ export class MainScene extends Phaser.Scene {
       this.playerManager.add(data, false);
     });
 
-    this.socketManager.on("player:left", (data: { id: string }) => {
+    this.socketManager.on("player:leave", (data: { id: string }) => {
       this.playerManager.remove(data.id);
     });
 
@@ -120,43 +117,7 @@ export class MainScene extends Phaser.Scene {
     });
 
     this.socketManager.on("player:transition", (data: PlayerConfig) => {
-      const player = this.playerManager.player;
-
-      if (!player) return;
-
-      const prev = {
-        inventory: player
-          .getComponent<InventoryComponent>(ComponentName.INVENTORY)
-          ?.get(),
-        hotbar: player
-          .getComponent<HotbarComponent>(ComponentName.HOTBAR)
-          ?.get(),
-        map: player.map,
-        scene: player.scene,
-      };
-
-      this.playerManager.remove(player.id);
-      this.playerManager.add(data, true);
-
-      const updated = this.playerManager.player!;
-
-      updated.isLocked = false;
-      updated
-        .getComponent<InventoryComponent>(ComponentName.INVENTORY)
-        ?.set(prev.inventory!);
-      updated
-        .getComponent<HotbarComponent>(ComponentName.HOTBAR)
-        ?.set(prev.hotbar);
-
-      const scene = this.scene.get(data.map);
-
-      prev.scene.scene.setVisible(false);
-      scene.scene.setVisible(true);
-
-      this.game.events.emit("camera:follow", {
-        key: data.map,
-        player: updated,
-      });
+      handlers.player.transition(data, this);
     });
 
     this.socketManager.on("player:host:transfer", () => {
@@ -317,6 +278,78 @@ export class MainScene extends Phaser.Scene {
      */
     this.game.events.on("hit", (data: Hit) => {
       this.socketManager.emit("hit", data);
+    });
+
+    /**
+     * Party
+     */
+    this.socketManager.on(
+      "party:start",
+      (data: {
+        tilemap: any;
+        spawn: { x: number; y: number };
+        entities: EntityConfig[];
+        players: PlayerConfig[];
+      }) => {
+        this.cache.tilemap.add(MapName.REALM, {
+          format: Phaser.Tilemaps.Formats.TILED_JSON,
+          data: data.tilemap,
+        });
+
+        this.scene.launch(MapName.REALM);
+
+        const scene = this.scene.get(MapName.REALM);
+        scene.events.once(Phaser.Scenes.Events.CREATE, () => {
+          data.entities.forEach((config) => {
+            this.entityManager.add(config);
+          });
+
+          this.scene.bringToTop(MapName.REALM);
+
+          const localId = this.playerManager.player?.id;
+          const localConfig = data.players.find((p) => p.id === localId);
+
+          if (localConfig) {
+            handlers.player.transition(localConfig, this);
+          }
+
+          data.players
+            .filter((p) => p.id !== localId)
+            .forEach((config) => this.playerManager.add(config, false));
+        });
+      },
+    );
+
+    this.socketManager.on("party:list", (data: Party[]) => {
+      EventBus.emit("party:list", data);
+    });
+
+    this.socketManager.on("party:create", (data: Party) => {
+      EventBus.emit("party:create", data);
+    });
+
+    this.socketManager.on("party:update", (data: Party) => {
+      EventBus.emit("party:update", data);
+    });
+
+    this.socketManager.on("party:leave", () => {
+      EventBus.emit("party:leave");
+    });
+
+    EventBus.on("party:create:request", () => {
+      this.socketManager.emit("party:create");
+    });
+
+    EventBus.on("party:join:request", (id: string) => {
+      this.socketManager.emit("party:join", id);
+    });
+
+    EventBus.on("party:leave:request", () => {
+      this.socketManager.emit("party:leave");
+    });
+
+    EventBus.on("party:start:request", () => {
+      this.socketManager.emit("party:start");
     });
   }
 

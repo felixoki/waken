@@ -78,6 +78,7 @@ export enum EntityName {
   FOX = "fox",
   DEER = "deer",
   BOAR = "boar",
+  JUMP = "jump",
 }
 
 export interface EntityPickup {

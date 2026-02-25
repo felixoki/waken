@@ -83,6 +83,25 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: "hit",
       handler: (data: Hit) => handlers.combat.hit(data, socket, world),
     },
+    /**
+     * Party
+     */
+    {
+      event: "party:create",
+      handler: () => handlers.party.create(socket, world),
+    },
+    {
+      event: "party:join",
+      handler: (data: string) => handlers.party.join(data, socket, world),
+    },
+    {
+      event: "party:leave",
+      handler: () => handlers.party.leave(socket, world),
+    },
+    {
+      event: "party:start",
+      handler: () => handlers.party.start(socket, io, world),
+    },
   ];
 
   events.forEach(({ event, handler }) => {

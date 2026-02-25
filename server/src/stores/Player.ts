@@ -20,7 +20,7 @@ export class PlayerStore {
     if (player) Object.assign(player, updates);
   }
 
-  getAll(): PlayerConfig[] {
+  get all(): PlayerConfig[] {
     return [...this.players.values()];
   }
 

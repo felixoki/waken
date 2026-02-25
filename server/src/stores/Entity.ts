@@ -20,7 +20,7 @@ export class EntityStore {
     if (entity) Object.assign(entity, updates);
   }
 
-  getAll(): EntityConfig[] {
+  get all(): EntityConfig[] {
     return [...this.entities.values()];
   }
 

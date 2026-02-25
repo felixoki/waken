@@ -257,6 +257,7 @@
 
 - Add boar ✅
 - Add wander and flee behavior ✅
+- Add party management ✅
 
 ### Next up
 
@@ -271,11 +272,10 @@
   - Add manual saves
   - Add save file loading
 
-- Party management ⭐
-
 - General
   - Add crafting behavior
   - Lock entities during interaction
+  - Add world animation component
 
 ### Backlog
 
@@ -320,7 +320,6 @@
 
 - Refactoring and improvement
   - Improve depth sorting system
-  - Add world animation component
   - Add throttling network updates and change detection
   - Update interpolation system
 

@@ -1,5 +1,6 @@
 import { handlers } from "../../handlers";
 import { TilesetLoader } from "../../loaders/Tileset";
+import { EntityName } from "../../types";
 import {
   BiomeConfig,
   GeneratedMap,
@@ -122,6 +123,12 @@ export class MapBuilder {
     const entities = spawner.spawn(terrain, spawn);
 
     /**
+     * Jump point
+     */
+    const jump = this._findJumpPosition(terrain, spawn);
+    entities.push({ name: EntityName.JUMP, x: jump.x, y: jump.y });
+
+    /**
      * Assemble final map
      */
     const tilesets: any[] = [];
@@ -203,5 +210,40 @@ export class MapBuilder {
       tileWidth,
       tileHeight,
     );
+  }
+
+  private _findJumpPosition(
+    terrain: TerrainName[],
+    spawn: { x: number; y: number },
+  ): { x: number; y: number } {
+    const { width, height, tileWidth, tileHeight } = this.config;
+    const gen = handlers.generation;
+
+    const tile = {
+      x: Math.floor(spawn.x / tileWidth),
+      y: Math.floor(spawn.y / tileHeight),
+    };
+    const min = 40;
+    const candidates: { x: number; y: number }[] = [];
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const index = gen.toIndex(x, y, width);
+        if (!this.config.terrain.includes(terrain[index])) continue;
+
+        const distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
+        if (distance < min) continue;
+
+        candidates.push({ x, y });
+      }
+    }
+
+    const seed = this.config.noise.seed ?? "default";
+    const hash = gen.spatialHash(candidates.length, 0, seed.length);
+    const pick = candidates.length
+      ? candidates[hash % candidates.length]
+      : { x: tile.x + min, y: tile.y + min };
+
+    return gen.tileToWorld(pick.x, pick.y, tileWidth, tileHeight);
   }
 }
