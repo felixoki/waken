@@ -8,8 +8,8 @@ import {
   WeaponConfig,
 } from "../types";
 import { World } from "../World";
-import { configs } from "../configs";
 import { randomUUID } from "crypto";
+import { definitions } from "../definitions";
 
 export const combat = {
   getKnockback: (
@@ -56,7 +56,7 @@ export const combat = {
       socket.to(`map:${entity.map}`).emit("entity:destroy", { id: entity.id });
       socket.emit("entity:destroy", { id: entity.id });
 
-      const definition = configs.definitions[entity.name];
+      const definition = definitions[entity.name];
       const damagable = definition?.components.find(
         (c) => c.name === ComponentName.DAMAGEABLE,
       );

@@ -1,5 +1,4 @@
 import { animations } from "./animations";
-import { definitions } from "./definitions";
 import { COMMON_CHOICES, COMMON_NODES } from "./dialogue";
 import { maps } from "./maps";
 import { needs } from "./needs";
@@ -8,7 +7,6 @@ import { weapons } from "./weapons";
 
 export const configs = {
   animations,
-  definitions,
   maps,
   spells,
   weapons,

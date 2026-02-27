@@ -1,9 +1,9 @@
 import { EntityConfig, MapName } from "@server/types";
 import { Entity } from "../Entity";
 import { Factory } from "../factory/Factory";
-import { configs } from "@server/configs";
 import { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
+import { definitions } from "@server/definitions";
 
 export class EntityManager {
   public entities: Map<string, Entity> = new Map();
@@ -32,7 +32,7 @@ export class EntityManager {
 
     if (!scene?.physicsManager) return;
 
-    const definition = configs.definitions[config.name];
+    const definition = definitions[config.name];
     const entity = Factory.create(scene, { ...config, ...definition! });
 
     entity.map = config.map;

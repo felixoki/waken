@@ -11,6 +11,7 @@ import {
   Mood,
   NodeId,
 } from "../types";
+import { definitions } from "../definitions";
 
 export const dialogue = {
   getMood: (context: DialogueContext): Mood => {
@@ -90,7 +91,7 @@ export const dialogue = {
     const entity = world.entities.get(entityId);
     if (!entity) return;
 
-    const definition = configs.definitions[entity.name];
+    const definition = definitions[entity.name];
     if (!definition) return;
 
     const player = world.players.getBySocketId(socket.id);

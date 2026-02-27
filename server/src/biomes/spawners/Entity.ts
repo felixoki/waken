@@ -6,7 +6,7 @@ import {
   TerrainName,
 } from "../../types/generation";
 import { NoiseGenerator } from "../generators/Noise";
-import { configs } from "../../configs";
+import { definitions } from "../../definitions";
 
 export class EntitySpawner {
   private config: BiomeConfig;
@@ -52,7 +52,7 @@ export class EntitySpawner {
           const hash = gen.spatialHash(x, y, r);
           const name = rule.entities[hash % rule.entities.length];
           const pos = gen.tileToWorld(x, y, tileWidth, tileHeight);
-          const offset = configs.definitions[name]?.offset;
+          const offset = definitions[name]?.offset;
 
           entities.push({
             name,
@@ -99,7 +99,7 @@ export class EntitySpawner {
       const hash = gen.spatialHash(spot.x, spot.y, r + i);
       const name = rule.entities[hash % rule.entities.length];
       const pos = gen.tileToWorld(spot.x, spot.y, tileWidth, tileHeight);
-      const offset = configs.definitions[name]?.offset;
+      const offset = definitions[name]?.offset;
 
       entities.push({
         name,

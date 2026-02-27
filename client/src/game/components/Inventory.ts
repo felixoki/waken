@@ -1,6 +1,6 @@
 import { ComponentName, EntityName, Item } from "@server/types";
 import { Component } from "./Component";
-import { configs } from "@server/configs";
+import { definitions } from "@server/definitions";
 import EventBus from "../EventBus";
 
 export class InventoryComponent extends Component {
@@ -13,7 +13,7 @@ export class InventoryComponent extends Component {
   detach(): void {}
 
   add(name: EntityName, quantity: number = 1): boolean {
-    const def = configs.definitions[name];
+    const def = definitions[name];
 
     if (!def || !def.metadata) return false;
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="21" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="village_tavern_interior" tilewidth="16" tileheight="16" tilecount="462" columns="21">
+  <image source="../client/public/assets/sprites/village_tavern_interior.png" width="336" height="352"/>
+ </tileset>
+ <tileset firstgid="463" name="village_tavern_walls_floor" tilewidth="16" tileheight="16" tilecount="180" columns="10">
+  <image source="../client/public/assets/sprites/village_tavern_walls_floor.png" width="160" height="288"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="21" height="14">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+623,475,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,473,625,
+623,475,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,473,625,
+623,475,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,473,625,
+623,475,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,473,625,
+623,475,136,0,0,139,463,464,464,618,619,620,464,464,465,136,0,0,139,473,625,
+623,475,0,158,0,0,473,616,634,628,629,630,634,617,475,0,158,0,0,473,625,
+623,546,464,464,464,464,507,625,474,474,474,474,474,623,506,464,464,464,464,547,625,
+633,634,634,634,634,634,634,635,474,474,474,474,474,633,634,634,634,634,634,634,635
+</data>
+ </layer>
+</map>
