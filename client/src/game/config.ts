@@ -4,9 +4,13 @@ import { MainScene } from "./scenes/Main";
 import VillageScene from "./scenes/Village";
 import { HerbalistScene } from "./scenes/Herbalist";
 import { IlluminatePipeline } from "./pipelines/Illuminate";
+import { AmbiencePipeline } from "./pipelines/Ambience";
 import { PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
 import RealmScene from "./scenes/Realm";
+import { BlacksmithScene } from "./scenes/Blacksmith";
+import { TavernScene } from "./scenes/Tavern";
+import { GlassblowerScene } from "./scenes/Glassblower";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -17,11 +21,20 @@ export const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [MainScene, VillageScene, HerbalistScene, HomeScene, RealmScene],
+  scene: [
+    MainScene,
+    VillageScene,
+    HerbalistScene,
+    HomeScene,
+    RealmScene,
+    BlacksmithScene,
+    TavernScene,
+    GlassblowerScene
+  ],
   physics: {
     default: "arcade",
     arcade: {
-      debug: false,
+      debug: true,
     },
   },
   backgroundColor: "302929",
@@ -43,6 +56,10 @@ export const config: Phaser.Types.Core.GameConfig = {
       renderer.pipelines.addPostPipeline(
         PipelineName.ILLUMINATE,
         IlluminatePipeline,
+      );
+      renderer.pipelines.addPostPipeline(
+        PipelineName.AMBIENCE,
+        AmbiencePipeline,
       );
     },
   },

@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { getOutlineFrag } from "./outline-frag";
+import { getOutlineFrag } from "./frags/outline";
 
 const PostFXPipeline = Phaser.Renderer.WebGL.Pipelines.PostFXPipeline;
 const Color = Phaser.Display.Color;

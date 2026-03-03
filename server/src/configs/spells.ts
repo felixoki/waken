@@ -30,12 +30,24 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.HURT_SHADOWS]: {
     name: SpellName.HURT_SHADOWS,
-    damage: 50,
+    damage: 75,
     knockback: 0,
-    duration: 1000,
+    duration: 300,
     hitbox: {
-      width: 120,
-      height: 120,
+      width: 100,
+      height: 100,
+    },
+  },
+  [SpellName.METEOR_SHOWER]: {
+    name: SpellName.METEOR_SHOWER,
+    damage: 35,
+    knockback: 80,
+    duration: 300,
+    meteorCount: 7,
+    radius: 40,
+    hitbox: {
+      width: 40,
+      height: 40,
     },
   },
 };

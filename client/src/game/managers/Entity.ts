@@ -28,8 +28,9 @@ export class EntityManager {
   }
 
   add(config: EntityConfig): void {
-    const scene = this.main.scene.get(config.map) as Scene;
+    if (this.entities.has(config.id)) return;
 
+    const scene = this.main.scene.get(config.map) as Scene;
     if (!scene?.physicsManager) return;
 
     const definition = definitions[config.name];

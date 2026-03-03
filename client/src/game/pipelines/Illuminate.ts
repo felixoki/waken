@@ -1,4 +1,4 @@
-import { getIlluminateFrag } from "./illuminate-frag";
+import { getIlluminateFrag } from "./frags/illuminate";
 
 const PostFXPipeline = Phaser.Renderer.WebGL.Pipelines.PostFXPipeline;
 const Color = Phaser.Display.Color;

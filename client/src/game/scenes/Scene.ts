@@ -2,6 +2,7 @@ import { PhysicsManager } from "../managers/Physics";
 import { TileManager } from "../managers/Tile";
 import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
+import { PipelineName } from "@server/types";
 import type { MainScene } from "./Main";
 import { Player } from "../Player";
 
@@ -25,6 +26,8 @@ export class Scene extends Phaser.Scene {
     this.physicsManager = new PhysicsManager(this);
     this.cameraManager = new CameraManager(this);
     this.interfaceManager = new InterfaceManager(this);
+
+    this.cameras.main.setPostPipeline(PipelineName.AMBIENCE);
 
     this.game.events.on(
       "camera:follow",

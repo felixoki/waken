@@ -33,7 +33,7 @@ export class HoverableComponent extends Component {
 
     if (pipelines && pipelines.length) {
       const pipeline = pipelines[pipelines.length - 1];
-      (pipeline as OutlinePipeline).thickness = 1;
+      (pipeline as OutlinePipeline).thickness = 2;
     }
   }
 

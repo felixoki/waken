@@ -5902,17 +5902,6 @@
                 }, 
                 {
                  "height":1,
-                 "id":427,
-                 "name":"Orc1",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1,
-                 "x":160,
-                 "y":720
-                }, 
-                {
-                 "height":1,
                  "id":428,
                  "name":"Reed2",
                  "rotation":0,
@@ -6090,7 +6079,7 @@
                 {
                  "height":1,
                  "id":444,
-                 "name":"Reed3",
+                 "name":"Reed2",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -6101,7 +6090,7 @@
                 {
                  "height":1,
                  "id":445,
-                 "name":"Reed3",
+                 "name":"Reed2",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -6112,7 +6101,7 @@
                 {
                  "height":1,
                  "id":446,
-                 "name":"Reed3",
+                 "name":"Reed2",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -6309,17 +6298,6 @@
                 }, 
                 {
                  "height":1,
-                 "id":464,
-                 "name":"Tavern",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1,
-                 "x":160,
-                 "y":1168
-                }, 
-                {
-                 "height":1,
                  "id":466,
                  "name":"Market_Stand1",
                  "rotation":0,
@@ -6327,7 +6305,7 @@
                  "visible":true,
                  "width":1,
                  "x":320,
-                 "y":1120
+                 "y":1128
                 }, 
                 {
                  "height":1,
@@ -6338,7 +6316,7 @@
                  "visible":true,
                  "width":1,
                  "x":464,
-                 "y":1120
+                 "y":1128
                 }, 
                 {
                  "height":1,
@@ -6419,25 +6397,47 @@
                 }, 
                 {
                  "height":1,
-                 "id":477,
-                 "name":"Fox",
+                 "id":479,
+                 "name":"Blacksmith_House",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":720,
-                 "y":496
+                 "x":160,
+                 "y":1344
                 }, 
                 {
                  "height":1,
-                 "id":478,
-                 "name":"Deer",
+                 "id":480,
+                 "name":"Tavern",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":752,
-                 "y":496
+                 "x":160,
+                 "y":1168
+                }, 
+                {
+                 "height":1,
+                 "id":483,
+                 "name":"Glassblower_House",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":376,
+                 "y":1328
+                }, 
+                {
+                 "height":1,
+                 "id":484,
+                 "name":"Citizen1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":288,
+                 "y":1200
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6446,7 +6446,7 @@
          "y":0
         }],
  "nextlayerid":26,
- "nextobjectid":479,
+ "nextobjectid":485,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -10551,6 +10551,33 @@
          "spacing":0,
          "tilecount":812,
          "tileheight":16,
+         "tiles":[
+                {
+                 "id":231,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":4,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":16,
+                             "x":0,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    }
+                }],
          "tilewidth":16
         }, 
         {

@@ -43,7 +43,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":13,
          "id":5,
-         "name":"interior",
+         "name":"interior1",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -67,7 +67,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":13,
          "id":8,
-         "name":"interior-1",
+         "name":"interior2",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -91,7 +91,7 @@
             0, 0, 0, 0, 0, 490, 0, 0, 0, 0, 489, 0, 0, 0, 0, 0],
          "height":13,
          "id":3,
-         "name":"wall",
+         "name":"walls",
          "opacity":1,
          "properties":[
                 {
@@ -121,7 +121,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":13,
          "id":6,
-         "name":"interior-2",
+         "name":"interior3",
          "opacity":1,
          "properties":[
                 {
@@ -151,7 +151,31 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":13,
          "id":9,
-         "name":"interior-3",
+         "name":"interior4",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":16,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 167, 168, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 206, 207, 208, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 246, 247, 248, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":13,
+         "id":11,
+         "name":"interior5",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -175,7 +199,7 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":13,
          "id":4,
-         "name":"objects",
+         "name":"boiler",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -188,17 +212,6 @@
          "id":10,
          "name":"objects",
          "objects":[
-                {
-                 "height":1,
-                 "id":1,
-                 "name":"Boiler",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1,
-                 "x":128,
-                 "y":112
-                }, 
                 {
                  "height":1,
                  "id":2,
@@ -218,8 +231,19 @@
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":128,
+                 "x":160,
                  "y":96
+                }, 
+                {
+                 "height":1,
+                 "id":5,
+                 "name":"Light",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":214,
+                 "y":64
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -227,8 +251,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":11,
- "nextobjectid":5,
+ "nextlayerid":12,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -237,7 +261,7 @@
         {
          "columns":40,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_herbalist_interior.png",
+         "image":"..\/sprites\/village_herbalist_interior.png",
          "imageheight":144,
          "imagewidth":640,
          "margin":0,
@@ -511,7 +535,7 @@
         {
          "columns":28,
          "firstgid":361,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_herbalist_walls_floor.png",
+         "image":"..\/sprites\/village_herbalist_walls_floor.png",
          "imageheight":80,
          "imagewidth":448,
          "margin":0,
@@ -926,7 +950,7 @@
                              "type":"",
                              "visible":true,
                              "width":16,
-                             "x":0.00353977694199692,
+                             "x":0.00353978,
                              "y":0
                             }],
                      "opacity":1,
@@ -1006,7 +1030,7 @@
                              "visible":true,
                              "width":14,
                              "x":0,
-                             "y":0.00353977694199514
+                             "y":0.00353978
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -1318,7 +1342,7 @@
                              "visible":true,
                              "width":16,
                              "x":0,
-                             "y":0.00353977694199692
+                             "y":0.00353978
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -1423,7 +1447,7 @@
                              "visible":true,
                              "width":14,
                              "x":0,
-                             "y":0.00353977694199603
+                             "y":0.00353978
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -1501,7 +1525,7 @@
                              "visible":true,
                              "width":14,
                              "x":0,
-                             "y":0.00353977694199692
+                             "y":0.00353978
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -1891,7 +1915,7 @@
                              "type":"",
                              "visible":true,
                              "width":16,
-                             "x":0.00353977694199781,
+                             "x":0.00353978,
                              "y":2
                             }],
                      "opacity":1,
@@ -1984,7 +2008,7 @@
         {
          "columns":24,
          "firstgid":501,
-         "image":"..\/..\/..\/..\/..\/waking\/client\/public\/assets\/sprites\/village_herbalist_boiler.png",
+         "image":"..\/sprites\/village_herbalist_boiler.png",
          "imageheight":48,
          "imagewidth":384,
          "margin":0,
@@ -1992,6 +2016,319 @@
          "spacing":0,
          "tilecount":72,
          "tileheight":16,
+         "tiles":[
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":0
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":2
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":4
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":6
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":8
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":10
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":12
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":14
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":16
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":18
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":20
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":22
+                        }],
+                 "id":0
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":1
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":3
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":5
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":7
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":9
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":11
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":13
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":15
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":17
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":19
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":21
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":23
+                        }],
+                 "id":1
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":24
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":26
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":28
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":30
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":32
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":34
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":36
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":38
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":40
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":42
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":44
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":46
+                        }],
+                 "id":24
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":25
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":27
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":29
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":31
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":33
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":35
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":37
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":39
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":41
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":43
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":45
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":47
+                        }],
+                 "id":25
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":48
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":50
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":52
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":54
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":56
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":58
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":60
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":62
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":64
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":66
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":68
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":70
+                        }],
+                 "id":48
+                }, 
+                {
+                 "animation":[
+                        {
+                         "duration":100,
+                         "tileid":49
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":51
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":53
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":55
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":57
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":59
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":61
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":63
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":65
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":67
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":69
+                        }, 
+                        {
+                         "duration":100,
+                         "tileid":71
+                        }],
+                 "id":49
+                }],
          "tilewidth":16
         }],
  "tilewidth":16,

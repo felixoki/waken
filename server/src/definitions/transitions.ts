@@ -121,4 +121,44 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.BLACKSMITH_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 120,
+          y: 1412,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TAVERN_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 160,
+          y: 1240,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
 };

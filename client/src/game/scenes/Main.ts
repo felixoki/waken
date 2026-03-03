@@ -42,7 +42,14 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
 
-    const scenes = [MapName.VILLAGE, MapName.HERBALIST_HOUSE, MapName.HOME];
+    const scenes = [
+      MapName.VILLAGE,
+      MapName.HERBALIST_HOUSE,
+      MapName.HOME,
+      MapName.BLACKSMITH_HOUSE,
+      MapName.TAVERN,
+      MapName.GLASSBLOWER_HOUSE,
+    ];
     const ready = new Set<string>();
 
     scenes.forEach((key) => {
@@ -307,11 +314,9 @@ export class MainScene extends Phaser.Scene {
           this.scene.bringToTop(MapName.REALM);
 
           const localId = this.playerManager.player?.id;
-          const localConfig = data.players.find((p) => p.id === localId);
+          const config = data.players.find((p) => p.id === localId);
 
-          if (localConfig) {
-            handlers.player.transition(localConfig, this);
-          }
+          if (config) handlers.player.transition(config, this);
 
           data.players
             .filter((p) => p.id !== localId)

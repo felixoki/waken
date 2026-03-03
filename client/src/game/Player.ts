@@ -82,7 +82,7 @@ export class Player extends Entity {
         { type: HotbarSlotType.SPELL, name: SpellName.SLASH },
         { type: HotbarSlotType.SPELL, name: SpellName.ILLUMINATE },
         { type: HotbarSlotType.SPELL, name: SpellName.HURT_SHADOWS },
-        null,
+        { type: HotbarSlotType.SPELL, name: SpellName.METEOR_SHOWER },
         null,
         null,
         null,

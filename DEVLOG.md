@@ -259,11 +259,24 @@
 - Add wander and flee behavior ✅
 - Add party management ✅
 
+#### 27.2.2026
+
+- Refactor definitions ✅
+- Refactor slash and hurt shadow spell ✅
+- Add party management ✅
+
+#### 2.3.2026
+
+- Add tavern scene ✅
+- Add blacksmith scene ✅
+- Add glassblower scene ✅
+
 ### Next up
 
-- Procedural forest generation ⭐
+- Day cycle ⭐
   - Add ambience manager
-  - Add foggy forest shader
+
+- Procedural forest generation ⭐
   - Add chunk manager
 
 - Save files ⭐
@@ -274,6 +287,7 @@
 
 - General
   - Add crafting behavior
+  - Add idle action state
   - Lock entities during interaction
   - Add world animation component
 
@@ -283,11 +297,9 @@
   - Aim assist
   - Catch animal
   - Water fountain
-  - Meteor shower
   - Lightning strike
-  - Improve illuminate shader
+  - Absorb life
   - Add mana usage
-  - Add particle texture for sharp effects
   - Add spell impact preview
 
 - Effects ⭐
@@ -295,25 +307,16 @@
   - Add resistances and weaknesses
 
 - Farming ⭐
-  - Add plantable component
+  - Add plantable and growable component
 
 - Animal keeping ⭐
 
-- Market district ⭐
-
-- Tavern ⭐
-
 - Blacksmith ⭐
   - Add resource iron (dropped by orcs)
-  - Add resource horn (dropped by oxes)
-  - Venison fat (dropped by deer)
   - Add crafting system
   - Add lantern
 
 - Harbor district ⭐
-
-- Sewerage ⭐
-  - Add blood ghost cultists
 
 - Game sounds ⭐
   - Add music and ambience

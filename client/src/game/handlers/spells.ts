@@ -67,7 +67,7 @@ export const spells: Record<SpellName, SpellHandler> = {
     entity: Entity,
     config: SpellConfig,
     target: { x: number; y: number },
-    _direction: { x: number; y: number },
+    direction: { x: number; y: number },
   ) => {
     new Hitbox(
       entity.scene,
@@ -79,24 +79,51 @@ export const spells: Record<SpellName, SpellHandler> = {
       config,
     );
 
-    const half = {
-      width: config.hitbox!.width / 2,
-      height: config.hitbox!.height / 2,
-    };
+    effects.emitters.claw(
+      entity.scene,
+      target.x,
+      target.y,
+      { width: config.hitbox!.width, height: config.hitbox!.height },
+      direction,
+    );
+  },
 
-    for (let i = 0; i < 8; i++) {
-      const x = target.x + Phaser.Math.Between(-half.width / 2, half.width / 2);
-      const y = target.y + Phaser.Math.Between(-half.height / 2, half.height / 2);
+  [SpellName.METEOR_SHOWER]: (
+    entity: Entity,
+    config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    const count = 6;
+    const radius = config.radius!;
+    let isShaking = false;
 
-      const angle = Phaser.Math.Between(0, 360);
-      const direction = {
-        x: Math.cos(Phaser.Math.DegToRad(angle)),
-        y: Math.sin(Phaser.Math.DegToRad(angle)),
+    for (let i = 0; i < count; i++) {
+      const delay = Phaser.Math.Between(0, 1500);
+      const impact = {
+        x: target.x + Phaser.Math.Between(-radius, radius),
+        y: target.y + Phaser.Math.Between(-radius, radius),
       };
 
-      entity.scene.time.delayedCall(i * 50, () => {
-        const temp = { x, y } as Entity;
-        effects.emitters.slash(entity.scene, temp, direction);
+      entity.scene.time.delayedCall(delay, () => {
+        effects.emitters.fall(entity.scene, impact, () => {
+          if (!isShaking) {
+            isShaking = true;
+            entity.scene.cameras.main.shake(2000, 0.0004);
+          }
+
+          new Hitbox(
+            entity.scene,
+            impact.x,
+            impact.y,
+            config.hitbox!.width,
+            config.hitbox!.height,
+            entity.id,
+            config,
+          );
+
+          effects.emitters.impact(entity.scene, impact);
+        });
       });
     }
   },
