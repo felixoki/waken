@@ -51,6 +51,7 @@ export const player = {
       (p) => p.status === PartyStatus.LOBBY,
     );
     socket.emit("party:list", lobbies);
+    socket.emit("world:time", world.getTime());
   },
 
   delete: (io: Server, socket: Socket, world: World) => {

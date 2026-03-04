@@ -15,6 +15,7 @@ import {
   Transition,
   Spot,
   Party,
+  TimePhase,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
@@ -22,10 +23,12 @@ import { InventoryComponent } from "../components/Inventory";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { DamageableComponent } from "../components/Damageable";
 import { effects } from "../effects";
+import { AmbienceManager } from "../managers/Ambience";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
   public entityManager!: EntityManager;
+  public ambienceManager!: AmbienceManager;
   public socketManager = SocketManager;
 
   constructor() {
@@ -37,6 +40,7 @@ export class MainScene extends Phaser.Scene {
 
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
+    this.ambienceManager = new AmbienceManager(this);
 
     const scenes = [
       MapName.VILLAGE,
@@ -75,6 +79,17 @@ export class MainScene extends Phaser.Scene {
   }
 
   private _registerEvents(): void {
+    /**
+     * World
+     */
+    this.socketManager.on("world:time", (data: { phase: TimePhase }) => {
+      this.ambienceManager.setPhase(data.phase, false);
+    });
+
+    this.socketManager.on("world:phase", (data: TimePhase) => {
+      this.ambienceManager.setPhase(data, true);
+    });
+
     /**
      * Players
      */

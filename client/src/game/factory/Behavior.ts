@@ -1,11 +1,4 @@
-import {
-  AmbleBehaviorConfig,
-  BehaviorConfig,
-  BehaviorName,
-  FleeBehaviorConfig,
-  PatrolBehaviorConfig,
-  WanderBehaviorConfig,
-} from "@server/types";
+import { BehaviorConfig, BehaviorName } from "@server/types";
 import { Behavior } from "../behavior/Behavior";
 import { PatrolBehavior } from "../behavior/Patrol";
 import { AttackBehavior } from "../behavior/Attack";
@@ -15,42 +8,36 @@ import { WanderBehavior } from "../behavior/Wander";
 import { FleeBehavior } from "../behavior/Flee";
 
 export class BehaviorFactory {
-  static create(cfgs: BehaviorConfig[]): Behavior[] {
-    const behaviors: Behavior[] = [];
+  static create(behaviors: BehaviorConfig[]): Behavior[] {
+    const array: Behavior[] = [];
 
-    for (const config of cfgs) {
-      const map: Record<BehaviorName, Behavior> = {
-        [BehaviorName.PATROL]: new PatrolBehavior(
-          (
-            config as {
-              name: BehaviorName.PATROL;
-              config?: PatrolBehaviorConfig;
-            }
-          ).config,
-        ),
-        [BehaviorName.ATTACK]: new AttackBehavior(),
-        [BehaviorName.STAY]: new StayBehavior(),
-        [BehaviorName.AMBLE]: new AmbleBehavior(
-          (config as { name: BehaviorName.AMBLE; config?: AmbleBehaviorConfig })
-            .config,
-        ),
-        [BehaviorName.FLEE]: new FleeBehavior(
-          (config as { name: BehaviorName.FLEE; config?: FleeBehaviorConfig })
-            .config,
-        ),
-        [BehaviorName.WANDER]: new WanderBehavior(
-          (
-            config as {
-              name: BehaviorName.WANDER;
-              config?: WanderBehaviorConfig;
-            }
-          ).config,
-        ),
-      };
+    for (const behavior of behaviors) {
+      let be: Behavior | null = null;
 
-      if (map[config.name]) behaviors.push(map[config.name]);
+      switch (behavior.name) {
+        case BehaviorName.PATROL:
+          be = new PatrolBehavior(behavior.config);
+          break;
+        case BehaviorName.ATTACK:
+          be = new AttackBehavior();
+          break;
+        case BehaviorName.STAY:
+          be = new StayBehavior();
+          break;
+        case BehaviorName.AMBLE:
+          be = new AmbleBehavior(behavior.config);
+          break;
+        case BehaviorName.FLEE:
+          be = new FleeBehavior(behavior.config);
+          break;
+        case BehaviorName.WANDER:
+          be = new WanderBehavior(behavior.config);
+          break;
+      }
+
+      if (be) array.push(be);
     }
 
-    return behaviors;
+    return array;
   }
 }

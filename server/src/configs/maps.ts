@@ -198,6 +198,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.VILLAGE,
     spawn: { x: 434, y: 608 },
     json: "village.json",
+    isIndoor: false,
     spritesheets: [
       ...player,
       ...animals,
@@ -286,6 +287,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.HERBALIST_HOUSE,
     spawn: { x: 128, y: 168 },
     json: "herbalist_house.json",
+    isIndoor: true,
     spritesheets: [
       ...player,
       {
@@ -327,6 +329,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.BLACKSMITH_HOUSE,
     spawn: { x: 128, y: 168 },
     json: "blacksmith_house.json",
+    isIndoor: true,
     spritesheets: [
       ...player,
       {
@@ -375,6 +378,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.GLASSBLOWER_HOUSE,
     spawn: { x: 128, y: 168 },
     json: "glassblower_house.json",
+    isIndoor: true,
     spritesheets: [
       ...player,
       {
@@ -390,6 +394,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.HOME,
     spawn: { x: 184, y: 168 },
     json: "home.json",
+    isIndoor: true,
     spritesheets: [
       ...player,
       {
@@ -412,6 +417,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.TAVERN,
     spawn: { x: 128, y: 168 },
     json: "tavern.json",
+    isIndoor: true,
     spritesheets: [
       ...player,
       {
@@ -434,6 +440,7 @@ export const maps: Record<MapName, MapConfig> = {
     id: MapName.REALM,
     spawn: { x: 434, y: 608 },
     json: "",
+    isIndoor: false,
     spritesheets: [
       ...player,
       ...animals,

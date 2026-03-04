@@ -12,6 +12,7 @@ export interface MapConfig {
   id: MapName;
   spawn: { x: number; y: number };
   json: string;
+  isIndoor: boolean;
   spritesheets: Spritesheet[];
 }
 

@@ -94,6 +94,7 @@ export enum EntityName {
   BARREL1 = "barrel1",
   BARRELS1 = "barrels1",
   CITIZEN1 = "citizen1",
+  TORCH1 = "torch1",
 }
 
 export interface EntityPickup {

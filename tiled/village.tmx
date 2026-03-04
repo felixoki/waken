@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="96" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="485">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="64" height="96" tilewidth="16" tileheight="16" infinite="0" nextlayerid="29" nextobjectid="492">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -1554,6 +1554,69 @@
     <frame tileid="1565" duration="100"/>
     <frame tileid="2046" duration="100"/>
     <frame tileid="2527" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="13145" name="torch" tilewidth="16" tileheight="16" tilecount="162" columns="9">
+  <image source="../client/public/assets/sprites/torch.png" width="144" height="288"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="0" duration="100"/>
+    <frame tileid="27" duration="100"/>
+    <frame tileid="54" duration="100"/>
+    <frame tileid="81" duration="100"/>
+    <frame tileid="108" duration="100"/>
+    <frame tileid="135" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="1">
+   <animation>
+    <frame tileid="1" duration="100"/>
+    <frame tileid="28" duration="100"/>
+    <frame tileid="55" duration="100"/>
+    <frame tileid="82" duration="100"/>
+    <frame tileid="109" duration="100"/>
+    <frame tileid="136" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="9">
+   <animation>
+    <frame tileid="9" duration="100"/>
+    <frame tileid="36" duration="100"/>
+    <frame tileid="63" duration="100"/>
+    <frame tileid="90" duration="100"/>
+    <frame tileid="117" duration="100"/>
+    <frame tileid="144" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="10">
+   <animation>
+    <frame tileid="10" duration="100"/>
+    <frame tileid="37" duration="100"/>
+    <frame tileid="64" duration="100"/>
+    <frame tileid="91" duration="100"/>
+    <frame tileid="118" duration="100"/>
+    <frame tileid="145" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="18">
+   <animation>
+    <frame tileid="18" duration="100"/>
+    <frame tileid="45" duration="100"/>
+    <frame tileid="72" duration="100"/>
+    <frame tileid="99" duration="100"/>
+    <frame tileid="126" duration="100"/>
+    <frame tileid="153" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="19">
+   <animation>
+    <frame tileid="19" duration="100"/>
+    <frame tileid="46" duration="100"/>
+    <frame tileid="73" duration="100"/>
+    <frame tileid="100" duration="100"/>
+    <frame tileid="127" duration="100"/>
+    <frame tileid="154" duration="100"/>
    </animation>
   </tile>
  </tileset>
@@ -3674,5 +3737,11 @@
   <object id="480" name="Tavern" x="160" y="1168" width="1" height="1"/>
   <object id="483" name="Glassblower_House" x="376" y="1328" width="1" height="1"/>
   <object id="484" name="Citizen1" x="288" y="1200" width="1" height="1"/>
+  <object id="485" name="Torch1" x="450" y="588" width="1" height="1"/>
+  <object id="487" name="Torch1" x="335" y="1384" width="1" height="1"/>
+  <object id="488" name="Torch1" x="416" y="1384" width="1" height="1"/>
+  <object id="489" name="Torch1" x="160" y="1352" width="1" height="1"/>
+  <object id="490" name="Torch1" x="136" y="1210" width="1" height="1"/>
+  <object id="491" name="Torch1" x="182" y="1210" width="1" height="1"/>
  </objectgroup>
 </map>

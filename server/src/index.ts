@@ -32,7 +32,7 @@ const io = new Server(server, {
   },
 });
 
-const world = new World();
+const world = new World(io);
 
 setInterval(() => {
   world.update(TICK_RATE);

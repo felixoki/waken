@@ -3,14 +3,16 @@ import { MapLoader } from "./loaders/Map";
 import { EntityStore } from "./stores/Entity";
 import { PlayerStore } from "./stores/Player";
 import { ItemsStore } from "./stores/Items";
-import { MapName } from "./types";
+import { MapName, TimePhase, TimeState } from "./types";
 import { EconomyManager } from "./managers/Economy";
-import { DAY } from "./globals";
+import { DAY, PHASE_STARTS } from "./globals";
 import { PartyStore } from "./stores/Party";
+import { Server } from "socket.io";
 
 export class World {
-  private time: { current: number; days: number } = { current: 0, days: 0 };
-  
+  private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
+  private server: Server;
+
   public readonly players: PlayerStore;
   public readonly entities: EntityStore;
   public readonly items: ItemsStore;
@@ -18,12 +20,13 @@ export class World {
 
   public economy: EconomyManager;
 
-  constructor() {
+  constructor(server: Server) {
+    this.server = server;
+
     this.players = new PlayerStore();
     this.entities = new EntityStore();
     this.items = new ItemsStore();
     this.parties = new PartyStore();
-    
     this.economy = new EconomyManager(this.items);
 
     this.load();
@@ -48,6 +51,28 @@ export class World {
       this.time.days++;
     }
 
+    const phase = this._getPhase(this.time.current);
+
+    if (phase !== this.time.phase) {
+      this.time.phase = phase;
+      this.server.emit("world:phase", this.time.phase);
+    }
+
     this.economy.update();
+  }
+
+  getTime(): TimeState {
+    return { ...this.time };
+  }
+
+  private _getPhase(current: number): TimePhase {
+    const progress = current / DAY;
+
+    let result = TimePhase.DAWN;
+
+    for (const { phase, start } of PHASE_STARTS)
+      if (progress >= start) result = phase;
+
+    return result;
   }
 }

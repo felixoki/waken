@@ -1,11 +1,4 @@
-import {
-  BodyConfig,
-  CollectorConfig,
-  ComponentConfig,
-  ComponentName,
-  TextureConfig,
-  TransitionConfig,
-} from "@server/types";
+import { ComponentConfig, ComponentName } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "../components/Component";
 import { PointableComponent } from "../components/Pointable";
@@ -22,62 +15,73 @@ import { TransitionComponent } from "../components/Transition";
 import { InteractableComponent } from "../components/Interactable";
 import { CollectorComponent } from "../components/Collector";
 import { BounceComponent } from "../components/Bounce";
+import { LightComponent } from "../components/Light";
 
 export class ComponentFactory {
   static create(
-    cfgs: ComponentConfig[],
+    components: ComponentConfig[],
     entity: Entity,
   ): Map<ComponentName, Component> {
-    const components = new Map<ComponentName, Component>();
+    const map = new Map<ComponentName, Component>();
 
-    for (const config of cfgs) {
-      const map: Record<ComponentName, Component> = {
-        [ComponentName.ANIMATION]: new AnimationComponent(
-          entity,
-          configs.animations[entity.name] ?? {},
-        ),
-        [ComponentName.BEHAVIOR_QUEUE]: new BehaviorQueue(entity),
-        [ComponentName.BODY]: new BodyComponent(
-          entity,
-          (config as { name: ComponentName.BODY; config: BodyConfig }).config,
-        ),
-        [ComponentName.POINTABLE]: new PointableComponent(entity),
-        [ComponentName.TEXTURE]: new TextureComponent(
-          entity,
-          (
-            config as {
-              name: ComponentName.TEXTURE;
-              config: TextureConfig;
-            }
-          ).config,
-          `${entity.name}_texture`,
-        ),
-        [ComponentName.PICKABLE]: new PickableComponent(entity),
-        [ComponentName.INVENTORY]: new InventoryComponent(),
-        [ComponentName.HOVERABLE]: new HoverableComponent(entity),
-        [ComponentName.HOTBAR]: null!,
-        [ComponentName.DAMAGEABLE]: new DamageableComponent(),
-        [ComponentName.TRANSITION]: new TransitionComponent(
-          entity,
-          (
-            config as {
-              name: ComponentName.TRANSITION;
-              config: TransitionConfig;
-            }
-          ).config,
-        ),
-        [ComponentName.INTERACTABLE]: new InteractableComponent(entity),
-        [ComponentName.COLLECTOR]: new CollectorComponent(
-          entity,
-          (config as { name: ComponentName.COLLECTOR; config: CollectorConfig })
-            .config,
-        ),
-        [ComponentName.BOUNCE]: new BounceComponent(entity),
-      };
+    for (const component of components) {
+      let comp: Component | null = null;
 
-      if (map[config.name]) components.set(config.name, map[config.name]);
+      switch (component.name) {
+        case ComponentName.ANIMATION:
+          comp = new AnimationComponent(
+            entity,
+            configs.animations[entity.name] ?? {},
+          );
+          break;
+        case ComponentName.BEHAVIOR_QUEUE:
+          comp = new BehaviorQueue(entity);
+          break;
+        case ComponentName.BODY:
+          comp = new BodyComponent(entity, component.config);
+          break;
+        case ComponentName.POINTABLE:
+          comp = new PointableComponent(entity);
+          break;
+        case ComponentName.TEXTURE:
+          comp = new TextureComponent(
+            entity,
+            component.config,
+            `${entity.name}_texture`,
+          );
+          break;
+        case ComponentName.PICKABLE:
+          comp = new PickableComponent(entity);
+          break;
+        case ComponentName.INVENTORY:
+          comp = new InventoryComponent();
+          break;
+        case ComponentName.HOVERABLE:
+          comp = new HoverableComponent(entity);
+          break;
+        case ComponentName.DAMAGEABLE:
+          comp = new DamageableComponent();
+          break;
+        case ComponentName.TRANSITION:
+          comp = new TransitionComponent(entity, component.config);
+          break;
+        case ComponentName.INTERACTABLE:
+          comp = new InteractableComponent(entity);
+          break;
+        case ComponentName.COLLECTOR:
+          comp = new CollectorComponent(entity, component.config);
+          break;
+        case ComponentName.BOUNCE:
+          comp = new BounceComponent(entity);
+          break;
+        case ComponentName.LIGHT:
+          comp = new LightComponent(entity, component.config);
+          break;
+      }
+
+      if (comp) map.set(component.name, comp);
     }
 
-    return components;
+    return map;
   }
 }

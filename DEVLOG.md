@@ -276,10 +276,12 @@
 - Refactor behavior shifts ✅
 - Refactor definitions and map configs ✅
 
-### Next up
+#### 4.3.2026
+- Add ambience manager ✅
+- Add day cycle ✅
 
-- Day cycle ⭐
-  - Add ambience manager
+
+### Next up
 
 - Procedural forest generation ⭐
   - Add chunk manager
@@ -295,6 +297,7 @@
   - Add idle-action state
   - Lock entities during interaction
   - Add world animation component
+  - Add economy ui
 
 ### Bugs
 

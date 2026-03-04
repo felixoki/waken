@@ -43,7 +43,6 @@ export const spells: Record<SpellName, SpellConfig> = {
     damage: 35,
     knockback: 80,
     duration: 300,
-    meteorCount: 7,
     radius: 40,
     hitbox: {
       width: 40,

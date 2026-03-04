@@ -1,6 +1,7 @@
 import { EntityName } from './entities';
 import { MapName } from './maps';
 import { CollectorConfig } from './collectors';
+import { LightConfig } from './ambience';
 
 export enum ComponentName {
   ANIMATION = "animation",
@@ -17,6 +18,7 @@ export enum ComponentName {
   INTERACTABLE = "interactable",
   COLLECTOR = "collector",
   BOUNCE = "bounce",
+  LIGHT = "light",
 }
 
 export type ComponentConfig =
@@ -33,7 +35,8 @@ export type ComponentConfig =
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.INTERACTABLE }
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
-  | { name: ComponentName.BOUNCE };
+  | { name: ComponentName.BOUNCE }
+  | { name: ComponentName.LIGHT; config: LightConfig };
 
 export interface BodyConfig {
   width: number;

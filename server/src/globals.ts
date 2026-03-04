@@ -1,3 +1,5 @@
+import { TimePhase } from "./types";
+
 export const SERVER_URL = "http://localhost:3001";
 export const SERVER_PORT = 3001;
 
@@ -10,8 +12,16 @@ export const SPEED_ROLLING = 120;
 
 export const HEIGHT_JUMPING = 40;
 
-export const DAY = 30 * 60 * 1000;
+export const DAY = 30 * 1000; //30 * 60 * 1000;
 export const TICK_RATE = 1000 / 60;
+
+export const PHASE_TRANSITION_DURATION = 3000;
+export const PHASE_STARTS = [
+  { phase: TimePhase.DAWN, start: 0 },
+  { phase: TimePhase.DAY, start: 0.1 },
+  { phase: TimePhase.DUSK, start: 0.5 },
+  { phase: TimePhase.NIGHT, start: 0.6 },
+];
 
 export const DURATION_CASTING = 800;
 export const DURATION_JUMPING = 800;

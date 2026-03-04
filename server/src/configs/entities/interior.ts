@@ -69,4 +69,33 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.TORCH1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 100,
+          intensity: 0.8,
+          color: 0xffd980,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "torch",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 1, end: 2 },
+            { row: 2, start: 1, end: 2 },
+            { row: 3, start: 1, end: 2 },
+          ],
+        },
+        key: "torch1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
 };

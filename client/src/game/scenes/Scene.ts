@@ -27,6 +27,9 @@ export class Scene extends Phaser.Scene {
     this.cameraManager = new CameraManager(this);
     this.interfaceManager = new InterfaceManager(this);
 
+    this.lights.enable();
+    this.lights.setAmbientColor(0xffffff);
+
     this.cameras.main.setPostPipeline(PipelineName.AMBIENCE);
 
     this.game.events.on(

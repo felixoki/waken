@@ -4,6 +4,7 @@ import { entities } from "./entities";
 import { maps } from "./maps";
 import { needs } from "./needs";
 import { spells } from "./spells";
+import { time } from "./time";
 import { weapons } from "./weapons";
 
 export const configs = {
@@ -14,4 +15,5 @@ export const configs = {
   weapons,
   needs,
   dialogue: { choices: COMMON_CHOICES, nodes: COMMON_NODES },
+  time,
 };

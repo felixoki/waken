@@ -57,6 +57,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
   private _init() {
     this.scene.add.existing(this);
+    this.setPipeline('Light2D');
     this.setDepth(1000 + this.y);
   }
 
