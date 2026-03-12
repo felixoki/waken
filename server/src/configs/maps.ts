@@ -268,6 +268,13 @@ export const maps: Record<MapName, MapConfig> = {
         asTileset: true,
       },
       {
+        key: "water_detilazation",
+        file: "water_detilazation.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
         key: "road_stone",
         file: "road_stone.png",
         frameWidth: 16,

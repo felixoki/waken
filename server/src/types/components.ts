@@ -19,6 +19,7 @@ export enum ComponentName {
   COLLECTOR = "collector",
   BOUNCE = "bounce",
   LIGHT = "light",
+  TEXTURE_ANIMATION = "textureAnimation",
 }
 
 export type ComponentConfig =
@@ -36,7 +37,8 @@ export type ComponentConfig =
   | { name: ComponentName.INTERACTABLE }
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
   | { name: ComponentName.BOUNCE }
-  | { name: ComponentName.LIGHT; config: LightConfig };
+  | { name: ComponentName.LIGHT; config: LightConfig }
+  | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig };
 
 export interface BodyConfig {
   width: number;
@@ -75,6 +77,16 @@ export interface TransitionConfig {
   height: number;
   offsetX: number;
   offsetY: number;
+}
+
+export interface TextureAnimationConfig {
+  spritesheet: string;
+  tileSize: number;
+  tiles: { row: number; start: number; end: number }[];
+  frames: number;
+  direction: 'horizontal' | 'vertical';
+  frameRate: number;
+  repeat: number;
 }
 
 export interface DamageableConfig {

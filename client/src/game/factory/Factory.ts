@@ -41,7 +41,9 @@ export class Factory {
     );
 
     const hasAnimation = definition.components.some(
-      (c) => c.name === ComponentName.ANIMATION,
+      (c) =>
+        c.name === ComponentName.ANIMATION ||
+        c.name === ComponentName.TEXTURE_ANIMATION,
     );
 
     if (!hasTexture && !hasAnimation) entity.setVisible(false);

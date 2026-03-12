@@ -82,7 +82,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       {
-        name: ComponentName.TEXTURE,
+        name: ComponentName.TEXTURE_ANIMATION,
         config: {
           spritesheet: "torch",
           tileSize: 16,
@@ -91,8 +91,11 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 2, start: 1, end: 2 },
             { row: 3, start: 1, end: 2 },
           ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 10,
+          repeat: -1,
         },
-        key: "torch1_texture",
       },
     ],
     states: [],

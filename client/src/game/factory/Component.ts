@@ -16,6 +16,7 @@ import { InteractableComponent } from "../components/Interactable";
 import { CollectorComponent } from "../components/Collector";
 import { BounceComponent } from "../components/Bounce";
 import { LightComponent } from "../components/Light";
+import { TextureAnimationComponent } from "../components/TextureAnimation";
 
 export class ComponentFactory {
   static create(
@@ -76,6 +77,9 @@ export class ComponentFactory {
           break;
         case ComponentName.LIGHT:
           comp = new LightComponent(entity, component.config);
+          break;
+        case ComponentName.TEXTURE_ANIMATION:
+          comp = new TextureAnimationComponent(entity, component.config);
           break;
       }
 
