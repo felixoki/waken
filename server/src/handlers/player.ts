@@ -1,25 +1,17 @@
 import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
-import {
-  Direction,
-  Input,
-  MapName,
-  PartyStatus,
-  Transition,
-} from "../types/index.js";
+import { Direction, Input, MapName, Transition } from "../types/index.js";
 import { configs } from "../configs/index.js";
 import { World } from "../World.js";
 import { party } from "./party.js";
+import { handlers } from "./index.js";
 
 export const player = {
-  create: (socket: Socket, world: World) => {
-    const players = world.players;
-    const entities = world.entities;
-
-    let player = players.getBySocketId(socket.id);
+  create: (io: Server, socket: Socket, world: World) => {
+    let player = world.players.getBySocketId(socket.id);
 
     if (!player) {
-      const isHost = !players.all.length;
+      const isHost = !world.players.all.length;
       const map = configs.maps[MapName.VILLAGE];
 
       player = {
@@ -33,24 +25,28 @@ export const player = {
         isHost,
       };
 
-      players.add(player.id, player);
+      world.players.add(player.id, player);
       socket.join(`map:${player.map}`);
     }
 
-    const others = players
-      .getByMap(player.map)
-      .filter((p) => p.id !== player.id);
-
     socket.emit("player:create:local", player);
-    socket.emit("player:create:others", others);
-    socket.emit("entity:create:all", entities.getByMap(player.map));
+    socket.emit(
+      "player:create:others",
+      world.players.getOthersOnMap(player.id, player.map),
+    );
+
+    handlers.chunks.sync.player(
+      socket,
+      world,
+      player.id,
+      player.map,
+      player.x,
+      player.y,
+    );
+    handlers.chunks.sync.host(io, world);
 
     socket.to(`map:${player.map}`).emit("player:create", player);
-
-    const lobbies = world.parties.all.filter(
-      (p) => p.status === PartyStatus.LOBBY,
-    );
-    socket.emit("party:list", lobbies);
+    socket.emit("party:list", world.parties.getLobbies());
     socket.emit("world:time", world.getTime());
   },
 
@@ -58,24 +54,28 @@ export const player = {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    party.leave(socket, world);
+    party.leave(socket, io, world);
+    handlers.chunks.clear(socket, world, player.id);
 
     const isHost = player.isHost;
     world.players.remove(player.id);
-    const others = world.players.all;
 
-    if (isHost && others.length) {
-      const host = others[0];
+    if (isHost && world.players.all.length) {
+      const host =
+        world.players.all.find((p) => p.map === MapName.REALM) ??
+        world.players.all[0];
       world.players.update(host.id, { ...host, isHost: true });
 
       const hostSocket = io.sockets.sockets.get(host.socketId);
       hostSocket?.emit("player:host:transfer");
+      
+      handlers.chunks.sync.host(io, world);
     }
 
     socket.broadcast.emit("player:leave", { id: player.id });
   },
 
-  input: (data: Input, socket: Socket, world: World) => {
+  input: (data: Input, io: Server, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
@@ -89,40 +89,62 @@ export const player = {
         isRunning: data.isRunning,
       },
     });
+
     socket.broadcast.emit("player:input", data);
+
+    const { activated, deactivated } = handlers.chunks.sync.player(
+      socket,
+      world,
+      player.id,
+      player.map,
+      data.x,
+      data.y,
+    );
+
+    if (activated.length || deactivated.length)
+      handlers.chunks.sync.host(io, world);
   },
 
-  transition: (data: Transition, socket: Socket, world: World) => {
+  transition: (data: Transition, io: Server, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    const prev = player.map;
-    const next = data.to;
+    const prev = { map: player.map };
+
+    handlers.chunks.clear(socket, world, player.id);
 
     world.players.update(player.id, {
       ...player,
-      map: next,
+      map: data.to,
       x: data.x,
       y: data.y,
     });
 
-    socket.leave(`map:${prev}`);
-    socket.join(`map:${next}`);
-
-    socket.to(`map:${prev}`).emit("player:leave", { id: player.id });
+    socket.leave(`map:${prev.map}`);
+    socket.join(`map:${data.to}`);
+    socket.to(`map:${prev.map}`).emit("player:leave", { id: player.id });
 
     const updated = world.players.get(player.id);
-    const others = world.players
-      .getByMap(next)
-      .filter((p) => p.id !== player.id);
+    const others = world.players.getOthersOnMap(player.id, data.to);
 
     socket.emit("player:transition", updated);
     socket.emit("player:create:others", others);
-    socket.emit("entity:create:all", world.entities.getByMap(next));
 
-    socket.to(`map:${next}`).emit("player:create", updated);
+    handlers.chunks.sync.player(
+      socket,
+      world,
+      player.id,
+      data.to,
+      data.x,
+      data.y,
+    );
+    handlers.chunks.sync.host(io, world);
 
-    const lobby = world.parties.getByPlayerId(player.id);
-    if (lobby && prev === MapName.REALM) party.cleanup(socket, world, lobby.id);
+    socket.to(`map:${data.to}`).emit("player:create", updated);
+
+    const party = world.parties.getByPlayerId(player.id);
+
+    if (party && prev.map === MapName.REALM)
+      handlers.party.cleanup(io, socket, world, party.id);
   },
 };

@@ -8,6 +8,7 @@ import { EconomyManager } from "./managers/Economy";
 import { DAY, PHASE_STARTS } from "./globals";
 import { PartyStore } from "./stores/Party";
 import { Server } from "socket.io";
+import { ChunkManager } from "./managers/Chunk";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
@@ -17,6 +18,7 @@ export class World {
   public readonly entities: EntityStore;
   public readonly items: ItemsStore;
   public readonly parties: PartyStore;
+  public readonly chunks: ChunkManager;
 
   public economy: EconomyManager;
 
@@ -27,6 +29,8 @@ export class World {
     this.entities = new EntityStore();
     this.items = new ItemsStore();
     this.parties = new PartyStore();
+    this.chunks = new ChunkManager();
+
     this.economy = new EconomyManager(this.items);
 
     this.load();
@@ -35,12 +39,17 @@ export class World {
   load() {
     const loader = new MapLoader();
 
-    Object.entries(configs.maps).forEach(([name, config]) => {
-      if (name === MapName.REALM) return;
-      const tilemap = loader.load(config.json);
-      const entities = loader.parseEntities(name as MapName, tilemap);
-      entities.forEach((e) => this.entities.add(e.id, e));
-    });
+    Object.entries(configs.maps)
+      .filter(([name, _]) => name !== MapName.REALM)
+      .forEach(([name, config]) => {
+        const tilemap = loader.load(config.json);
+        const entities = loader.parseEntities(name as MapName, tilemap);
+
+        entities.forEach((entity) => {
+          this.entities.add(entity.id, entity);
+          this.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
+        });
+      });
   }
 
   update(delta: number) {

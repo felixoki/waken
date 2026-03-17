@@ -5,6 +5,14 @@ export const SERVER_PORT = 3001;
 
 export const CLIENT_URL = "http://localhost:3000";
 
+export const GAME_WIDTH = 640;
+export const GAME_HEIGHT = 352;
+
+export const TILE_SIZE = 16;
+export const CHUNK_SIZE = 16;
+export const CHUNK_PIXEL_SIZE = CHUNK_SIZE * TILE_SIZE;
+export const CHUNK_ACTIVATION_RADIUS = 2;
+
 export const SPEED_WALKING = 80;
 export const SPEED_RUNNING = 120;
 export const SPEED_JUMPING = 100;

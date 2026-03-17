@@ -5,9 +5,10 @@ import { EntityConfig, MapName, PartyStatus } from "../types";
 import { generateBiome } from "../biomes";
 import { BiomeName } from "../types/generation";
 import { configs } from "../configs/index.js";
+import { handlers } from ".";
 
 export const party = {
-  cleanup: (socket: Socket, world: World, partyId: string) => {
+  cleanup: (io: Server, socket: Socket, world: World, partyId: string) => {
     const data = world.parties.get(partyId);
     if (!data || data.status !== PartyStatus.IN_GAME) return;
 
@@ -18,10 +19,13 @@ export const party = {
 
     if (!remaining) {
       world.entities.getByMap(MapName.REALM).forEach((entity) => {
+        world.chunks.removeEntity(entity.id);
         world.entities.remove(entity.id);
       });
 
       data.status = PartyStatus.LOBBY;
+
+      handlers.host.realm.unload(io, world);
 
       socket.to(`party:${data.id}`).emit("party:update", data);
       socket.emit("party:update", data);
@@ -29,9 +33,7 @@ export const party = {
   },
 
   broadcast: (socket: Socket, world: World) => {
-    const list = world.parties.all.filter(
-      (p) => p.status === PartyStatus.LOBBY,
-    );
+    const list = world.parties.getLobbies();
     const maps = Object.values(MapName).filter((m) => m !== MapName.REALM);
 
     socket.emit("party:list", list);
@@ -73,7 +75,7 @@ export const party = {
     party.broadcast(socket, world);
   },
 
-  leave: (socket: Socket, world: World) => {
+  leave: (socket: Socket, io: Server, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
@@ -81,11 +83,14 @@ export const party = {
     if (!data) return;
 
     data.members = data.members.filter((id) => id !== player.id);
+
     socket.leave(`party:${data.id}`);
     socket.emit("party:leave");
 
     if (data.status === PartyStatus.IN_GAME && player.map === MapName.REALM) {
       const village = configs.maps[MapName.VILLAGE];
+
+      handlers.chunks.clear(socket, world, player.id);
 
       world.players.update(player.id, {
         map: MapName.VILLAGE,
@@ -98,15 +103,23 @@ export const party = {
       socket.to(`map:${MapName.REALM}`).emit("player:leave", { id: player.id });
 
       const updated = world.players.get(player.id);
-      const others = world.players
-        .getByMap(MapName.VILLAGE)
-        .filter((p) => p.id !== player.id);
+      const others = world.players.getOthersOnMap(player.id, MapName.VILLAGE);
 
       socket.emit("player:transition", updated);
       socket.emit("player:create:others", others);
+
+      handlers.chunks.sync.player(
+        socket,
+        world,
+        player.id,
+        MapName.VILLAGE,
+        village.spawn.x,
+        village.spawn.y,
+      );
+
       socket.to(`map:${MapName.VILLAGE}`).emit("player:create", updated);
 
-      party.cleanup(socket, world, data.id);
+      party.cleanup(io, socket, world, data.id);
     }
 
     if (!data.members.length) {
@@ -135,9 +148,8 @@ export const party = {
     if (!biome) return;
 
     data.status = PartyStatus.IN_GAME;
-    const entities: EntityConfig[] = [];
 
-    for (const entity of biome.entities) {
+    const entities: EntityConfig[] = biome.entities.map((entity) => {
       const id = randomUUID();
       const config: EntityConfig = {
         id,
@@ -149,8 +161,9 @@ export const party = {
       };
 
       world.entities.add(id, config);
-      entities.push(config);
-    }
+      world.chunks.registerEntity(id, config.map, config.x, config.y);
+      return config;
+    });
 
     for (const id of data.members) {
       const member = world.players.get(id);
@@ -160,6 +173,7 @@ export const party = {
       if (!memberSocket) continue;
 
       const prev = member.map;
+      handlers.chunks.clear(memberSocket, world, id);
 
       world.players.update(id, {
         map: MapName.REALM,
@@ -170,6 +184,15 @@ export const party = {
       memberSocket.leave(`map:${prev}`);
       memberSocket.join(`map:${MapName.REALM}`);
       memberSocket.to(`map:${prev}`).emit("player:leave", { id: member.id });
+
+      handlers.chunks.sync.player(
+        memberSocket,
+        world,
+        id,
+        MapName.REALM,
+        biome.spawn.x,
+        biome.spawn.y,
+      );
     }
 
     const players = data.members
@@ -185,6 +208,9 @@ export const party = {
 
     socket.emit("party:start", payload);
     socket.to(`party:${data.id}`).emit("party:start", payload);
+
+    handlers.host.realm.load(io, world, payload, data.members);
+    handlers.chunks.sync.host(io, world);
 
     party.broadcast(socket, world);
   },

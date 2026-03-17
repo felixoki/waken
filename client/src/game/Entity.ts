@@ -57,7 +57,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
   private _init() {
     this.scene.add.existing(this);
-    this.setPipeline('Light2D');
+    // this.setPipeline('Light2D');
     this.setDepth(1000 + this.y);
   }
 
@@ -110,6 +110,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     const isHost = scene.managers.players?.player?.isHost;
 
     if (!isHost) return null;
+    if (!scene.managers.chunks?.isActive(this.map, this.x, this.y)) return null;
 
     const behavior = this.getComponent<BehaviorQueue>(
       ComponentName.BEHAVIOR_QUEUE,

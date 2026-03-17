@@ -18,7 +18,8 @@ export class GlassblowerScene extends Scene {
 
     const map = MapFactory.create(this, MapName.GLASSBLOWER_HOUSE);
     this.tileManager = new TileManager(map);
-    this.cameraManager.setZoom(3);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+    this.cameraManager.fitZoom();
   }
 }

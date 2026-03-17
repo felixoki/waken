@@ -24,7 +24,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      */
     {
       event: "player:create",
-      handler: () => handlers.player.create(socket, world),
+      handler: () => handlers.player.create(io, socket, world),
     },
     {
       event: "disconnect",
@@ -32,12 +32,12 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     },
     {
       event: "player:input",
-      handler: (data: Input) => handlers.player.input(data, socket, world),
+      handler: (data: Input) => handlers.player.input(data, io, socket, world),
     },
     {
       event: "player:transition",
       handler: (data: Transition) =>
-        handlers.player.transition(data, socket, world),
+        handlers.player.transition(data, io, socket, world),
     },
     /**
      * Entity
@@ -96,7 +96,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     },
     {
       event: "party:leave",
-      handler: () => handlers.party.leave(socket, world),
+      handler: () => handlers.party.leave(socket, io, world),
     },
     {
       event: "party:start",

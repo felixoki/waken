@@ -58,6 +58,10 @@ export class EntityManager {
     });
   }
 
+  deactivate(ids: string[]): void {
+    for (const id of ids) this.remove(id);
+  }
+
   destroy(): void {
     this.entities.forEach((entity) => entity.destroy());
     this.entities.clear();

@@ -203,23 +203,98 @@ export const emitters = {
     spawn(1, delay);
   },
 
-  death: (scene: Scene, x: number, y: number) => {
-    const emitter = scene.add.particles(x, y, "particle_circle", {
-      tint: [0xff3300, 0xff5500, 0xffaa00, 0xffffff],
-      alpha: { start: 1, end: 0 },
-      scale: { start: 0.5, end: 0.1 },
-      speed: { min: 30, max: 80 },
-      lifespan: 500,
-      quantity: 16,
-      frequency: -1,
-      blendMode: "ADD",
-    });
+  dissolve: (entity: Entity) => {
+    const scene = entity.scene;
+    const {
+      frame,
+      scaleX: sx,
+      scaleY: sy,
+      depth,
+      x: worldX,
+      y: worldY,
+      originX,
+      originY,
+    } = entity;
 
-    emitter.setDepth(2000);
-    emitter.explode();
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d")!;
+    canvas.width = frame.cutWidth;
+    canvas.height = frame.cutHeight;
 
-    scene.time.delayedCall(500, () => {
-      emitter.destroy();
+    ctx.drawImage(
+      frame.source.image as HTMLImageElement,
+      frame.cutX,
+      frame.cutY,
+      frame.cutWidth,
+      frame.cutHeight,
+      0,
+      0,
+      frame.cutWidth,
+      frame.cutHeight,
+    );
+
+    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels: { x: number; y: number }[] = [];
+
+    for (let py = 0; py < canvas.height; py++)
+      for (let px = 0; px < canvas.width; px++)
+        if (data[(py * canvas.width + px) * 4 + 3] > 0)
+          pixels.push({ x: px, y: py });
+
+    const windAngle = -Math.PI / 6;
+    const cosW = Math.cos(windAngle);
+    const sinW = Math.sin(windAngle);
+
+    let minDot = Infinity;
+    let maxDot = -Infinity;
+
+    for (const p of pixels) {
+      const dot = p.x * cosW + p.y * sinW;
+      if (dot < minDot) minDot = dot;
+      if (dot > maxDot) maxDot = dot;
+    }
+
+    const dotRange = maxDot - minDot || 1;
+    const stagger = 400;
+    const duration = 600;
+    const radius = Math.max(sx, sy) * 0.6;
+
+    entity.setVisible(false);
+
+    const particles: Phaser.GameObjects.Arc[] = [];
+
+    for (const p of pixels) {
+      const px = worldX + (p.x - frame.cutWidth * originX) * sx;
+      const py = worldY + (p.y - frame.cutHeight * originY) * sy;
+
+      const circle = scene.add.circle(px, py, radius, 0x111111);
+      circle.setDepth(depth);
+      particles.push(circle);
+
+      const dot = p.x * cosW + p.y * sinW;
+      const delay = ((dot - minDot) / dotRange) * stagger;
+
+      const driftX =
+        cosW * Phaser.Math.Between(10, 30) + Phaser.Math.Between(-6, 6);
+      const driftY =
+        sinW * Phaser.Math.Between(10, 30) + Phaser.Math.Between(-6, 6);
+
+      scene.tweens.add({
+        targets: circle,
+        x: px + driftX,
+        y: py + driftY,
+        alpha: 0,
+        delay,
+        duration: duration + Phaser.Math.Between(-100, 100),
+        ease: "Quad.easeIn",
+        onComplete: () => circle.destroy(),
+      });
+    }
+
+    scene.time.delayedCall(stagger + duration + 200, () => {
+      particles.forEach((p) => {
+        if (p.active) p.destroy();
+      });
     });
   },
 

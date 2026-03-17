@@ -24,11 +24,13 @@ import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { DamageableComponent } from "../components/Damageable";
 import { effects } from "../effects";
 import { AmbienceManager } from "../managers/Ambience";
+import { ChunkManager } from "../managers/Chunk";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
   public entityManager!: EntityManager;
   public ambienceManager!: AmbienceManager;
+  public chunkManager!: ChunkManager;
   public socketManager = SocketManager;
 
   constructor() {
@@ -41,6 +43,7 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
     this.ambienceManager = new AmbienceManager(this);
+    this.chunkManager = new ChunkManager();
 
     const scenes = [
       MapName.VILLAGE,
@@ -74,6 +77,11 @@ export class MainScene extends Phaser.Scene {
   }
 
   update(_time: number, _delta: number): void {
+    const player = this.playerManager.player;
+
+    if (player)
+      this.chunkManager.updateFromPlayer(player.map, player.x, player.y);
+
     this.playerManager.update();
     this.entityManager.update();
   }
@@ -180,7 +188,7 @@ export class MainScene extends Phaser.Scene {
         );
 
         if (damageable)
-          effects.emitters.death(entity.scene, entity.x, entity.y);
+          effects.emitters.dissolve(entity);
       }
 
       this.entityManager.remove(data.id);
@@ -256,6 +264,13 @@ export class MainScene extends Phaser.Scene {
     });
 
     /**
+     * Chunks
+     */
+    this.socketManager.on("chunk:deactivate", (data: string[]) => {
+      this.entityManager.deactivate(data);
+    });
+
+    /**
      * Items
      */
     this.socketManager.on("item:remove", (data: Item) => {
@@ -305,12 +320,13 @@ export class MainScene extends Phaser.Scene {
             this.entityManager.add(config);
           });
 
-          this.scene.bringToTop(MapName.REALM);
-
           const localId = this.playerManager.player?.id;
           const config = data.players.find((p) => p.id === localId);
 
-          if (config) handlers.player.transition(config, this);
+          if (config) {
+            this.scene.bringToTop(MapName.REALM);
+            handlers.player.transition(config, this);
+          } else scene.scene.setVisible(false);
 
           data.players
             .filter((p) => p.id !== localId)
@@ -333,6 +349,14 @@ export class MainScene extends Phaser.Scene {
 
     this.socketManager.on("party:leave", () => {
       EventBus.emit("party:leave");
+    });
+
+    this.socketManager.on("party:cleanup", () => {
+      this.entityManager.entities.forEach((entity) => {
+        if (entity.map === MapName.REALM) this.entityManager.remove(entity.id);
+      });
+
+      this.scene.stop(MapName.REALM);
     });
 
     EventBus.on("party:create:request", () => {

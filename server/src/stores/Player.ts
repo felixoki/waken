@@ -28,6 +28,10 @@ export class PlayerStore {
     return [...this.players.values()].filter((player) => player.map === map);
   }
 
+  getOthersOnMap(id: string, map: MapName): PlayerConfig[] {
+    return this.getByMap(map).filter((p) => p.id !== id);
+  }
+
   getBySocketId(id: string): PlayerConfig | undefined {
     return [...this.players.values()].find((player) => player.socketId === id);
   }

@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div>
-      <div id="game"></div>
+      <div id="game" className="w-screen h-screen"></div>
       <Entities />
       <div className="fixed top-0 left-0 flex flex-col gap-4 p-4">
         <Hotbar />

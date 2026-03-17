@@ -19,6 +19,7 @@ export class Scene extends Phaser.Scene {
       players: main.playerManager,
       entities: main.entityManager,
       socket: main.socketManager,
+      chunks: main.chunkManager,
     };
   }
 

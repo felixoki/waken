@@ -280,11 +280,27 @@
 - Add ambience manager ✅
 - Add day cycle ✅
 
+#### 12.3.2026
+- Add texture animation component ✅
+
+#### 17.3.2026
+- Add chunk manager ✅
+- Add dissolve emitter ✅
+
+### In progress
+
+- Butterfly effigy spell
+- Add economy ui
+- Add detail layers
 
 ### Next up
 
 - Procedural forest generation ⭐
-  - Add chunk manager
+  - Detail layer
+  - Entity creation queue
+  - Static entity groups
+  - Chunk-scoped socket rooms
+  - Party leader authority
 
 - Save files ⭐
   - Add database
@@ -296,22 +312,22 @@
   - Add crafting behavior
   - Add idle-action state
   - Lock entities during interaction
-  - Add world animation component
-  - Add economy ui
 
 ### Bugs
 
 - Jumping and rolling into a scene causes crash
+- Jumping down ignores collisions
+- Light2D is broken for static entities
 
 ### Backlog
 
-- Spells ⭐
-  - Aim assist
-  - Catch animal
+- Magic ⭐
+  - Aim assist spell
+  - Catch animal spell
   - Water fountain
   - Lightning strike
   - Absorb life
-  - Add mana usage
+  - Add mana usage bar
   - Add spell impact preview
 
 - Effects ⭐

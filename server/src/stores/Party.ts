@@ -1,4 +1,4 @@
-import { Party } from "../types";
+import { Party, PartyStatus } from "../types";
 
 export class PartyStore {
   private parties: Map<string, Party> = new Map();
@@ -21,5 +21,9 @@ export class PartyStore {
 
   getByPlayerId(id: string): Party | undefined {
     return this.all.find((p) => p.members.includes(id));
+  }
+
+  getLobbies(): Party[] {
+    return this.all.filter((p) => p.status === PartyStatus.LOBBY);
   }
 }

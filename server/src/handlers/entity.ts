@@ -8,7 +8,7 @@ export const entity = {
     const player = world.players.getBySocketId(socket.id);
     if (!player || !player.isHost) return;
 
-    const entity = {
+    const config = {
       x: randomInt(0, 400),
       y: randomInt(0, 400),
       id: randomUUID(),
@@ -17,10 +17,12 @@ export const entity = {
       health: 100,
     };
 
-    world.entities.add(entity.id, entity);
+    world.entities.add(config.id, config);
+    world.chunks.registerEntity(config.id, config.map, config.x, config.y);
 
-    socket.to(`map:${entity.map}`).emit("entity:create", entity);
-    socket.emit("entity:create", entity);
+    const key = world.chunks.getChunkByEntity(config.id);
+    if (key) socket.to(`chunk:${key}`).emit("entity:create", config);
+    socket.emit("entity:create", config);
   },
 
   input: (data: Partial<Input>, socket: Socket, world: World) => {
@@ -30,23 +32,35 @@ export const entity = {
     entity.x = data.x ?? entity.x;
     entity.y = data.y ?? entity.y;
 
-    socket.to(`map:${entity.map}`).emit("entity:input", data);
+    world.chunks.moveEntity(data.id!, entity.map, entity.x, entity.y);
+
+    const key = world.chunks.getChunkByEntity(data.id!);
+    if (!key || !world.chunks.isChunkActive(key)) return;
+
+    socket.to(`chunk:${key}`).emit("entity:input", data);
   },
 
   pickup: (data: EntityPickup, socket: Socket, world: World) => {
     const entity = world.entities.get(data.id);
     if (!entity) return;
 
-    world.entities.remove(data.id);
+    const key = world.chunks.getChunkByEntity(entity.id);
 
-    socket.to(`map:${entity.map}`).emit("entity:destroy", { id: data.id });
+    world.chunks.removeEntity(entity.id);
+    world.entities.remove(entity.id);
+
+    if (key)
+      socket.to(`chunk:${key}`).emit("entity:destroy", { id: entity.id });
   },
 
   spot: (data: Spot, socket: Socket, world: World) => {
     const entity = world.entities.get(data.entityId);
     if (!entity) return;
 
-    socket.to(`map:${entity.map}`).emit("entity:spotted:player", data);
+    const key = world.chunks.getChunkByEntity(data.entityId);
+    if (!key || !world.chunks.isChunkActive(key)) return;
+
+    socket.to(`chunk:${key}`).emit("entity:spotted:player", data);
     socket.emit("entity:spotted:player", data);
   },
 
@@ -54,9 +68,13 @@ export const entity = {
     const entity = world.entities.get(data);
     if (!entity) return;
 
-    world.entities.remove(data);
+    const key = world.chunks.getChunkByEntity(entity.id);
 
-    socket.to(`map:${entity.map}`).emit("entity:despawn", data);
-    socket.emit("entity:despawn", data);
-  }
+    world.chunks.removeEntity(entity.id);
+    world.entities.remove(entity.id);
+
+    if (key)
+      socket.to(`chunk:${key}`).emit("entity:despawn", { id: entity.id });
+    socket.emit("entity:despawn", { id: entity.id });
+  },
 };
