@@ -1,4 +1,4 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import {
   ComponentConfig,
   ComponentName,
@@ -6,12 +6,15 @@ import {
   Hit,
   Item,
   PlayerConfig,
+  Revive,
   SpellConfig,
   WeaponConfig,
 } from "../types";
 import { World } from "../World";
 import { randomUUID } from "crypto";
 import { configs } from "../configs";
+import { REVIVE_MANA } from "../globals";
+import { handlers } from ".";
 
 export const combat = {
   getKnockback: (
@@ -30,34 +33,56 @@ export const combat = {
     return { x, y };
   },
 
-  hit: (data: Hit, socket: Socket, world: World) => {
-    const players = world.players;
-    const entities = world.entities;
+  kill: {
+    player: (
+      player: PlayerConfig,
+      attacker: PlayerConfig | EntityConfig,
+      config: SpellConfig | WeaponConfig,
+      socket: Socket,
+      io: Server,
+      world: World,
+    ) => {
+      world.players.update(player.id, { health: 0, isDead: true });
 
-    const attacker =
-      players.get(data.attackerId) || entities.get(data.attackerId);
-    const entity = entities.get(data.targetId);
-    const player = players.get(data.targetId);
-    const target = entity || player;
+      const knockback = combat.getKnockback(player, attacker, config);
+      const event = {
+        id: player.id,
+        health: 0,
+        knockback,
+        attackerId: attacker.id,
+      };
 
-    const config = data.config;
+      const key = world.chunks.toChunkKey(player.map, player.x, player.y);
+      if (key) socket.to(`chunk:${key}`).emit("player:hurt", event);
+      socket.emit("player:hurt", event);
 
-    if (!attacker || !target || !config) return;
+      const party = world.parties.getByPlayerId(player.id);
+      if (party) {
+        const event = { id: player.id, x: player.x, y: player.y };
+        io.to(`party:${party.id}`).emit("player:death", event);
+        handlers.party.wipe(party.id, io, world);
+      }
+    },
 
-    /**
-     * We will later add logic for critical hits, resistances, etc.
-     */
-    const health = target.health - config.damage;
+    entity: (
+      entity: EntityConfig,
+      socket: Socket,
+      io: Server,
+      world: World,
+    ) => {
+      const chunkKey = world.chunks.getChunkByEntity(entity.id);
+      world.chunks.removeEntity(entity.id);
+      world.entities.remove(entity.id);
 
-    if (entity) entities.update(target.id, { ...target, health: health });
-    if (player) players.update(target.id, { ...target, health: health });
+      const caller = world.players.getBySocketId(socket.id);
+      const party = caller && world.parties.getByPlayerId(caller.id);
 
-    if (entity && health <= 0) {
-      entities.remove(entity.id);
-
-      const key = world.chunks.getChunkByEntity(entity.id);
-      if (key) socket.to(`chunk:${key}`).emit("entity:destroy", entity.id);
-      socket.emit("entity:destroy", entity.id);
+      if (party) io.to(`party:${party.id}`).emit("entity:destroy", entity.id);
+      else {
+        if (chunkKey)
+          socket.to(`chunk:${chunkKey}`).emit("entity:destroy", entity.id);
+        socket.emit("entity:destroy", entity.id);
+      }
 
       const definition = configs.entities[entity.name];
       const damagable = definition?.components.find(
@@ -81,29 +106,100 @@ export const combat = {
           };
 
           world.entities.add(item.id, item);
+          world.chunks.registerEntity(item.id, item.map, item.x, item.y);
 
-          const key = world.chunks.getChunkByEntity(item.id);
-          if (key) socket.to(`chunk:${key}`).emit("entity:create", item);
-          socket.emit("entity:create", item);
+          if (party) io.to(`party:${party.id}`).emit("entity:create", item);
+          else {
+            const key = world.chunks.getChunkByEntity(item.id);
+            if (key) socket.to(`chunk:${key}`).emit("entity:create", item);
+            socket.emit("entity:create", item);
+          }
         });
       }
+    },
+  },
 
+  hit: (data: Hit, socket: Socket, io: Server, world: World) => {
+    const players = world.players;
+    const entities = world.entities;
+
+    const attacker =
+      players.get(data.attackerId) || entities.get(data.attackerId);
+    const entity = entities.get(data.targetId);
+    const player = players.get(data.targetId);
+    const target = entity || player;
+
+    const config = data.config;
+
+    if (!attacker || !target || !config || (player && player.isDead)) return;
+
+    const health = target.health - config.damage;
+
+    if (player && health <= 0) {
+      combat.kill.player(player, attacker, config, socket, io, world);
+      return;
+    }
+
+    if (entity && health <= 0) {
+      combat.kill.entity(entity, socket, io, world);
       return;
     }
 
     const knockback = combat.getKnockback(target, attacker, config);
 
+    if (player) players.update(target.id, { health });
+    if (entity) entities.update(target.id, { ...target, health });
+
     const event = {
       id: target.id,
-      health: health,
-      knockback: knockback,
+      health,
+      knockback,
       attackerId: attacker.id,
     };
 
     const emit = entity ? "entity:hurt" : "player:hurt";
-    const key = world.chunks.getChunkByEntity(target.id);
+    const map = player?.map || entity?.map;
+    const key = map
+      ? world.chunks.toChunkKey(map, target.x, target.y)
+      : undefined;
 
     if (key) socket.to(`chunk:${key}`).emit(emit, event);
     socket.emit(emit, event);
+  },
+
+  revive: (data: Revive, socket: Socket, io: Server, world: World) => {
+    const reviver = world.players.getBySocketId(socket.id);
+    if (!reviver || reviver.isDead) return;
+
+    const target = world.players.get(data.id);
+    if (!target || !target.isDead) return;
+
+    const party = world.parties.getByPlayerId(reviver.id);
+    if (!party || !party.members.includes(target.id)) return;
+
+    if (reviver.mana < REVIVE_MANA) return;
+
+    world.players.update(reviver.id, {
+      mana: reviver.mana - REVIVE_MANA,
+    });
+
+    world.players.update(target.id, {
+      isDead: false,
+      health: 100,
+      x: reviver.x,
+      y: reviver.y,
+    });
+
+    socket.emit("player:mana", reviver.mana - REVIVE_MANA);
+
+    const reviveEvent = {
+      id: target.id,
+      x: reviver.x,
+      y: reviver.y,
+      health: 100,
+    };
+
+    socket.emit("player:mana", reviver.mana - REVIVE_MANA);
+    io.to(`party:${party.id}`).emit("player:revive", reviveEvent);
   },
 };

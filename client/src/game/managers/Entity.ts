@@ -95,7 +95,18 @@ export class EntityManager {
       this.queue.length &&
       performance.now() - start < CHUNK_ACTIVATION_BUDGET
     ) {
-      const config = this.queue.shift()!;
+      const config = this.queue[0];
+
+      if (this.entities.has(config.id)) {
+        this.queue.shift();
+        this.queued.delete(config.id);
+        continue;
+      }
+
+      const scene = this.main.scene.get(config.map) as Scene;
+      if (!scene?.managers?.physics) break;
+
+      this.queue.shift();
       this.queued.delete(config.id);
       this._create(config);
     }
@@ -105,7 +116,7 @@ export class EntityManager {
     if (this.entities.has(config.id)) return;
 
     const scene = this.main.scene.get(config.map) as Scene;
-    if (!scene.managers.physics) return;
+    if (!scene?.managers?.physics) return;
 
     const definition = configs.entities[config.name];
     const entity = Factory.create(scene, { ...config, ...definition! });

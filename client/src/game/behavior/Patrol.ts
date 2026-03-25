@@ -4,6 +4,7 @@ import {
   Input,
   PatrolBehaviorConfig,
   Scan,
+  StateName,
   Stuck,
   Waypoint,
 } from "@server/types";
@@ -48,7 +49,7 @@ export class PatrolBehavior extends Behavior {
       this.scan.last = now;
 
       const players = entity.scene.managers.players.all.filter(
-        (p) => p && p.map === entity.map,
+        (p) => p && p.map === entity.map && p.state !== StateName.DEAD,
       );
 
       for (const player of players) {

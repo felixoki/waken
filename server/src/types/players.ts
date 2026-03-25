@@ -11,4 +11,5 @@ export interface PlayerConfig {
   health: number;
   mana: number;
   isAuthority: boolean;
+  isDead: boolean;
 }

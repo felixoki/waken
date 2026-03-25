@@ -22,6 +22,7 @@ export const farming = {
         x: data.x,
         y: data.y,
         health: 1,
+        createdAt: Date.now(),
       },
       socket,
       world,

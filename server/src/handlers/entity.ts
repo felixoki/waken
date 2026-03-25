@@ -5,7 +5,11 @@ import { World } from "../World";
 
 export const entity = {
   create: (data: Omit<EntityConfig, "id">, socket: Socket, world: World) => {
-    const config = { ...data, id: randomUUID(), createdAt: data.createdAt ?? Date.now() };
+    const config = {
+      ...data,
+      id: randomUUID(),
+      createdAt: data.createdAt ?? Date.now(),
+    };
 
     world.entities.add(config.id, config);
     world.chunks.registerEntity(config.id, config.map, config.x, config.y);
@@ -39,7 +43,11 @@ export const entity = {
     world.chunks.removeEntity(entity.id);
     world.entities.remove(entity.id);
 
-    if (key) socket.to(`chunk:${key}`).emit("entity:destroy", entity.id);
+    const player = world.players.getBySocketId(socket.id);
+    const party = player && world.parties.getByPlayerId(player.id);
+
+    if (party) socket.to(`party:${party.id}`).emit("entity:destroy", entity.id);
+    else if (key) socket.to(`chunk:${key}`).emit("entity:destroy", entity.id);
   },
 
   spot: (data: Spot, socket: Socket, world: World) => {

@@ -39,6 +39,8 @@ export const DURATION_SLASHING = 800;
 
 export const RANGE_SLASHING = 40;
 
+export const REVIVE_MANA = 30;
+
 export const DIRECTIONS_CARDINAL = [
   { dx: 0, dy: -1 },
   { dx: 1, dy: 0 },

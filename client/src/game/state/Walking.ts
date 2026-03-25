@@ -12,7 +12,7 @@ export class Walking implements State {
     entity.setState(this.name);
 
     const anim = entity.getComponent<AnimationComponent>(
-      ComponentName.ANIMATION
+      ComponentName.ANIMATION,
     );
     anim?.play(this.name, entity.facing);
 
@@ -21,7 +21,7 @@ export class Walking implements State {
 
   update(entity: Entity): void {
     const anim = entity.getComponent<AnimationComponent>(
-      ComponentName.ANIMATION
+      ComponentName.ANIMATION,
     );
     anim?.play(this.name, entity.facing);
 
@@ -29,6 +29,7 @@ export class Walking implements State {
   }
 
   exit(entity: Entity): void {
-    entity.body.setVelocity(0, 0);
+    const body = entity.body as Phaser.Physics.Arcade.Body;
+    body.setVelocity(0, 0);
   }
 }

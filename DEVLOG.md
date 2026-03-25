@@ -323,9 +323,14 @@
 - Add plantable and growable component ✅
 - Add hoe, carrot, tomato and cabbage ✅
 
+#### 25.3.2026
+
+- Add authority system ✅
+- Player death
+
 ### In progress
 
-- Party leader authority
+-
 
 ### Next up
 
@@ -338,11 +343,15 @@
 ### Bugs
 
 - Jumping down ignores collisions
+- Realm authority for multiple realm instances is broken
+- Cannot reenter realm with the same party
+- Cannot leave party after one member died
 
 ### Backlog
 
 - Procedural generation ⭐
   - Detail layer
+  - Worker for map generation
 
 - Magic ⭐
   - Aim assist spell
@@ -373,30 +382,36 @@
 ## Economy
 
 **Meat**
+
 - Tier 1: Venison, Boar
 - Tier 2: Pork
 - Tier 3: Beef
 
 **Vegetables**
+
 - Tier 1: Blueberry, Strawberry, Apple
 - Tier 2: Carrot, Onion, Cabbage, Cucumber
 - Tier 3: Bread
 
 **Drinks**
+
 - Tier 2: Milk
 - Tier 3: Wine
 
 **Cloths**
+
 - Tier 1: Deer hide
 - Tier 2: Sheep wool, Fox pelt
 
 ## Collectors
 
 **Blacksmith**
+
 - Collects: Wood, Iron ore, Glass
 - Produces: Axe, Pickaxe, Lantern, Hoe, Iron
 
 **Herbalist**
+
 - Collects:
   - T1: Sunflower, Mugwort, Daffodil
   - T2: Blue lotus, Clary sage, Bearded tooth fungus
@@ -404,10 +419,12 @@
 - Produces: Potions
 
 **Glassblower**
+
 - Collects: Potash (Wood), Quartz, Bone ash (Bones)
 - Produces: Glass, Vial
 
 **Mage**
+
 - Collects: Iron, Glass, Pearls, Gems, Runes
 - Produces: Rings, Amulets, Spells
 

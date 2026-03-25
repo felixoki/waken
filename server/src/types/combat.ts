@@ -1,5 +1,5 @@
-import { SpellConfig } from './spells';
-import { WeaponConfig } from './weapons';
+import { SpellConfig } from "./spells";
+import { WeaponConfig } from "./weapons";
 
 export interface Hit {
   config: SpellConfig | WeaponConfig;
@@ -17,4 +17,14 @@ export interface Hurt {
 export interface Spot {
   entityId: string;
   playerId: string;
+}
+
+export interface Death {
+  id: string;
+  x: number;
+  y: number;
+}
+
+export interface Revive {
+  id: string;
 }

@@ -14,6 +14,8 @@ import {
   Spot,
   Party,
   TimePhase,
+  StateName,
+  Death,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
@@ -23,6 +25,7 @@ import { DamageableComponent } from "../components/Damageable";
 import { effects } from "../effects";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
+import { Player } from "../Player";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -30,6 +33,7 @@ export class MainScene extends Phaser.Scene {
   public ambienceManager!: AmbienceManager;
   public chunkManager!: ChunkManager;
   public socketManager = SocketManager;
+  public spectate: Player | null = null;
 
   constructor() {
     super("main");
@@ -87,9 +91,23 @@ export class MainScene extends Phaser.Scene {
 
   update(_time: number, _delta: number): void {
     const player = this.playerManager.player;
+    const target = this.spectate || player;
 
-    if (player)
-      this.chunkManager.updateFromPlayer(player.map, player.x, player.y);
+    if (target) {
+      const positions = [{ map: target.map, x: target.x, y: target.y }];
+
+      if (player?.isAuthority)
+        for (const other of this.playerManager.others.values())
+          if (other.map === target.map)
+            positions.push({ map: other.map, x: other.x, y: other.y });
+
+      const changed = this.chunkManager.updateFromPositions(positions);
+
+      if (changed && this.spectate)
+        this.socketManager.emit("player:spectate", {
+          targetId: this.spectate.id,
+        });
+    }
 
     this.playerManager.update();
     this.entityManager.update();
@@ -200,8 +218,7 @@ export class MainScene extends Phaser.Scene {
           ComponentName.DAMAGEABLE,
         );
 
-        if (damageable)
-          effects.emitters.dissolve(entity);
+        if (damageable) effects.emitters.dissolve(entity);
       }
 
       this.entityManager.remove(data);
@@ -313,12 +330,9 @@ export class MainScene extends Phaser.Scene {
     /**
      * Economy
      */
-    this.socketManager.on(
-      "economy:update",
-      (data: Record<string, number>) => {
-        EventBus.emit("economy:update", data);
-      },
-    );
+    this.socketManager.on("economy:update", (data: Record<string, number>) => {
+      EventBus.emit("economy:update", data);
+    });
 
     /**
      * Shared
@@ -350,7 +364,7 @@ export class MainScene extends Phaser.Scene {
         this.scene.launch(MapName.REALM);
 
         const scene = this.scene.get(MapName.REALM);
-        
+
         scene.events.once(Phaser.Scenes.Events.CREATE, () => {
           this.entityManager.batch(data.entities);
 
@@ -401,6 +415,110 @@ export class MainScene extends Phaser.Scene {
 
     EventBus.on("party:start:request", () => {
       this.socketManager.emit("party:start");
+    });
+
+    /**
+     * Death
+     */
+    this.socketManager.on("player:death", (data: Death) => {
+      const isLocal = this.playerManager.player?.id === data.id;
+      const player = isLocal
+        ? this.playerManager.player
+        : this.playerManager.others.get(data.id);
+
+      if (player) player.transitionTo(StateName.DEAD);
+
+      if (isLocal && this.playerManager.player) {
+        const inventory =
+          this.playerManager.player.getComponent<InventoryComponent>(
+            ComponentName.INVENTORY,
+          );
+
+        if (inventory) inventory.set(new Array(20).fill(null));
+
+        EventBus.emit("player:health", 0);
+      }
+
+      EventBus.emit("player:death", data);
+    });
+
+    this.socketManager.on(
+      "player:revive",
+      (data: { id: string; x: number; y: number; health: number }) => {
+        const isLocal = this.playerManager.player?.id === data.id;
+        const player = isLocal
+          ? this.playerManager.player
+          : this.playerManager.others.get(data.id);
+
+        if (player) {
+          player.setPosition(data.x, data.y);
+          player.health = data.health;
+          player.transitionTo(StateName.IDLE);
+        }
+
+        if (isLocal) {
+          EventBus.emit("player:health", data.health);
+
+          this.spectate = null;
+
+          this.game.events.emit("camera:follow", {
+            key: this.playerManager.player!.map,
+            player: this.playerManager.player!,
+          });
+        }
+
+        EventBus.emit("player:revive", data);
+      },
+    );
+
+    this.socketManager.on("player:mana", (mana: number) => {
+      const player = this.playerManager.player;
+      if (!player) return;
+
+      player.mana = mana;
+      EventBus.emit("player:mana", mana);
+    });
+
+    this.socketManager.on("player:inventory:wipe", () => {
+      const player = this.playerManager.player;
+      if (!player) return;
+
+      const inventory = player.getComponent<InventoryComponent>(
+        ComponentName.INVENTORY,
+      );
+      inventory?.set(new Array(20).fill(null));
+    });
+
+    this.socketManager.on("party:wipe", () => {
+      const player = this.playerManager.player;
+      if (!player) return;
+
+      this.spectate = null;
+
+      const inventory = player.getComponent<InventoryComponent>(
+        ComponentName.INVENTORY,
+      );
+      inventory?.set(new Array(20).fill(null));
+
+      EventBus.emit("party:wipe");
+    });
+
+    EventBus.on("player:revive:request", (id: string) => {
+      this.socketManager.emit("player:revive", { id });
+    });
+
+    EventBus.on("player:spectate:request", (targetId: string) => {
+      const target = this.playerManager.others.get(targetId);
+      if (!target) return;
+
+      this.spectate = target;
+
+      this.game.events.emit("camera:follow", {
+        key: target.map,
+        player: target,
+      });
+
+      this.socketManager.emit("player:spectate", { targetId });
     });
   }
 

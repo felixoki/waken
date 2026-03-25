@@ -8,12 +8,49 @@ import { configs } from "../configs/index.js";
 import { handlers } from ".";
 
 export const party = {
-  cleanup: (socket: Socket, world: World, partyId: string) => {
-    const data = world.parties.get(partyId);
+  lives: (id: string, world: World): boolean => {
+    const data = world.parties.get(id);
+    if (!data) return true;
+
+    return data.members.some((memberId) => {
+      const member = world.players.get(memberId);
+      return member && !member.isDead;
+    });
+  },
+
+  wipe: (id: string, io: Server, world: World) => {
+    const data = world.parties.get(id);
+    if (!data) return;
+
+    if (party.lives(id, world)) return;
+
+    const village = configs.maps[MapName.VILLAGE];
+
+    for (const memberId of data.members) {
+      const member = world.players.get(memberId);
+      if (!member) continue;
+
+      const memberSocket = io.sockets.sockets.get(member.socketId);
+      if (!memberSocket) continue;
+
+      handlers.player.transfer(memberSocket, io, world, memberId, MapName.VILLAGE, village.spawn.x, village.spawn.y, {
+        health: 100,
+        isDead: false,
+      }, data.members);
+
+      memberSocket.emit("party:wipe");
+    }
+
+    const firstSocket = io.sockets.sockets.get(world.players.get(data.members[0])!.socketId);
+    if (firstSocket) party.cleanup(firstSocket, world, data.id);
+  },
+
+  cleanup: (socket: Socket, world: World, id: string) => {
+    const data = world.parties.get(id);
     if (!data || data.status !== PartyStatus.IN_GAME) return;
 
-    const remaining = data.members.some((id) => {
-      const member = world.players.get(id);
+    const remaining = data.members.some((memberId) => {
+      const member = world.players.get(memberId);
       return member?.map === MapName.REALM;
     });
 
@@ -88,48 +125,12 @@ export const party = {
     if (data.status === PartyStatus.IN_GAME && player.map === MapName.REALM) {
       const village = configs.maps[MapName.VILLAGE];
 
-      handlers.chunks.clear(socket, world, player.id);
-
-      const nextId = world.transferAuthority(MapName.REALM, player.id);
-
-      if (nextId) {
-        const nextSocket = io.sockets.sockets.get(
-          world.players.get(nextId)!.socketId,
-        );
-        nextSocket?.emit("player:authority", true);
-      }
-
-      const isAuthority = !world.getAuthority(MapName.VILLAGE);
-
-      world.players.update(player.id, {
-        map: MapName.VILLAGE,
-        x: village.spawn.x,
-        y: village.spawn.y,
-        isAuthority,
+      handlers.player.transfer(socket, io, world, player.id, MapName.VILLAGE, village.spawn.x, village.spawn.y, {
+        isDead: false,
+        health: 100,
       });
 
-      if (isAuthority) world.setAuthority(MapName.VILLAGE, player.id);
-
-      socket.leave(`map:${MapName.REALM}`);
-      socket.join(`map:${MapName.VILLAGE}`);
-      socket.to(`map:${MapName.REALM}`).emit("player:leave", player.id);
-
-      const updated = world.players.get(player.id);
-      const others = world.players.getOthersOnMap(player.id, MapName.VILLAGE);
-
-      socket.emit("player:transition", updated);
-      socket.emit("player:create:others", others);
-
-      handlers.chunks.sync.player(
-        socket,
-        world,
-        player.id,
-        MapName.VILLAGE,
-        village.spawn.x,
-        village.spawn.y,
-      );
-
-      socket.to(`map:${MapName.VILLAGE}`).emit("player:create", updated);
+      socket.emit("player:inventory:wipe");
 
       party.cleanup(socket, world, data.id);
     }

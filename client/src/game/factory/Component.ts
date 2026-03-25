@@ -72,7 +72,7 @@ export class ComponentFactory {
           comp = new InteractableComponent(entity);
           break;
         case ComponentName.COLLECTOR:
-          comp = new CollectorComponent(entity, component.config);
+          comp = new CollectorComponent(component.config);
           break;
         case ComponentName.BOUNCE:
           comp = new BounceComponent(entity);

@@ -6,6 +6,8 @@ import { Running } from "../state/Running";
 import { Jumping } from "../state/Jumping";
 import { Casting } from "../state/Casting";
 import { Slashing } from "../state/Slashing";
+import { Rolling } from "../state/Rolling";
+import { Dead } from "../state/Dead";
 
 export class StateFactory {
     static create(names: StateName[]): Map<StateName, State> {
@@ -16,6 +18,8 @@ export class StateFactory {
         [StateName.JUMPING]: new Jumping(),
         [StateName.CASTING]: new Casting(),
         [StateName.SLASHING]: new Slashing(),
+        [StateName.ROLLING]: new Rolling(),
+        [StateName.DEAD]: new Dead(),
       };
 
     const states = new Map<StateName, State>();

@@ -16,6 +16,7 @@ export const move = {
 
     if (vector.x !== 0 || vector.y !== 0) vector.normalize().scale(speed);
 
-    entity.body.setVelocity(vector.x, vector.y);
+    const body = entity.body as Phaser.Physics.Arcade.Body;
+    body.setVelocity(vector.x, vector.y);
   },
 };

@@ -14,7 +14,7 @@ import {
 
 export const dialogue = {
   getMood: (context: DialogueContext): Mood => {
-    if (context.world.economy.isLow(NeedName.MEAT)) return Mood.HUNGRY;
+    if (context.world.economy.isLow(NeedName.FOOD)) return Mood.HUNGRY;
     return Mood.HAPPY;
   },
 

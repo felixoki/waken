@@ -8,6 +8,7 @@ import {
   Transition,
   Spot,
   EntityConfig,
+  Revive,
 } from "../types/index.js";
 import { World } from "../World.js";
 import { NodeId } from "../types/dialogue.js";
@@ -38,6 +39,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: "player:transition",
       handler: (data: Transition) =>
         handlers.player.transition(data, io, socket, world),
+    },
+    {
+      event: "player:spectate",
+      handler: (data: { targetId: string }) =>
+        handlers.player.spectate(data, socket, world),
     },
     /**
      * Entity
@@ -92,7 +98,15 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      */
     {
       event: "hit",
-      handler: (data: Hit) => handlers.combat.hit(data, socket, world),
+      handler: (data: Hit) => handlers.combat.hit(data, socket, io, world),
+    },
+    /**
+     * Death
+     */
+    {
+      event: "player:revive",
+      handler: (data: Revive) =>
+        handlers.combat.revive(data, socket, io, world),
     },
     /**
      * Party

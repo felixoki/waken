@@ -52,19 +52,16 @@ export class AttackBehavior extends Behavior {
       return {};
     }
 
+    const dead = target.state === StateName.DEAD;
+
     if (!this.target.lastPosition)
       this.target.lastPosition = { x: target.x, y: target.y };
 
     const now = Date.now();
 
-    const canSee = handlers.vision.canSee(
-      entity.scene,
-      entity,
-      target,
-      600,
-      Math.PI / 2,
-      7,
-    );
+    const canSee =
+      !dead &&
+      handlers.vision.canSee(entity.scene, entity, target, 600, Math.PI / 2, 7);
 
     if (canSee) {
       this.target.lastPosition = { x: target.x, y: target.y };
