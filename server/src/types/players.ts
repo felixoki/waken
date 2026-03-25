@@ -10,5 +10,5 @@ export interface PlayerConfig {
   facing: Direction;
   health: number;
   mana: number;
-  isHost: boolean;
+  isAuthority: boolean;
 }

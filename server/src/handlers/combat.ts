@@ -77,6 +77,7 @@ export const combat = {
             x: entity.x + (Math.random() - 0.5) * 32,
             y: entity.y + (Math.random() - 0.5) * 32,
             health: 100,
+            createdAt: Date.now(),
           };
 
           world.entities.add(item.id, item);

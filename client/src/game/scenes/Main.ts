@@ -161,11 +161,11 @@ export class MainScene extends Phaser.Scene {
       handlers.player.transition(data, this);
     });
 
-    this.socketManager.on("player:host:transfer", () => {
+    this.socketManager.on("player:authority", (data: boolean) => {
       const player = this.playerManager.player;
       if (!player) return;
 
-      player.isHost = true;
+      player.isAuthority = data;
     });
 
     this.game.events.on("player:input", (data: Input) => {
@@ -291,10 +291,6 @@ export class MainScene extends Phaser.Scene {
       this.entityManager.deactivate(data);
     });
 
-    this.socketManager.on("chunks:active", (data: string[]) => {
-      this.chunkManager.updateRemote(data);
-    });
-
     /**
      * Items
      */
@@ -389,11 +385,6 @@ export class MainScene extends Phaser.Scene {
 
     this.socketManager.on("party:leave", () => {
       EventBus.emit("party:leave");
-    });
-
-    this.socketManager.on("party:cleanup", () => {
-      this.entityManager.removeByMap(MapName.REALM);
-      this.scene.stop(MapName.REALM);
     });
 
     EventBus.on("party:create:request", () => {

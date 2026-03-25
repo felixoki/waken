@@ -24,7 +24,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      */
     {
       event: "player:create",
-      handler: () => handlers.player.create(io, socket, world),
+      handler: () => handlers.player.create(socket, world),
     },
     {
       event: "disconnect",
@@ -32,7 +32,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     },
     {
       event: "player:input",
-      handler: (data: Input) => handlers.player.input(data, io, socket, world),
+      handler: (data: Input) => handlers.player.input(data, socket, world),
     },
     {
       event: "player:transition",

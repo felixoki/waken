@@ -24,7 +24,12 @@ export class GrowableComponent extends Component {
   }
 
   attach(): void {
-    this.applyStage(this.config.stages[0]);
+    if (this.entity.createdAt)
+      this.elapsed = Date.now() - this.entity.createdAt;
+
+    const progress = Math.min(this.elapsed / this.config.duration, 1);
+    this.stageIndex = this.getStageIndex(progress);
+    this.applyStage(this.config.stages[this.stageIndex]);
     this.entity.on("pointed", this.harvest, this);
   }
 

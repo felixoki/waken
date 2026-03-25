@@ -8,12 +8,13 @@ export const combat = {
     const entity = obj1 as Entity;
     const hitbox = obj2 as Hitbox;
 
-    /**
-     * We will only ever fire off hit events from the host player's client
-     */
-    const isHost = entity.scene.managers.players?.player?.isHost;
+    const isAuthority = entity.scene.managers.players?.player?.isAuthority;
 
-    if (hitbox.ownerId === entity.id || hitbox.hits.has(entity.id) || !isHost)
+    if (
+      hitbox.ownerId === entity.id ||
+      hitbox.hits.has(entity.id) ||
+      !isAuthority
+    )
       return;
 
     const damageable = entity.getComponent<DamageableComponent>(

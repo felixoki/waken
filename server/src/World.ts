@@ -22,6 +22,8 @@ export class World {
 
   public economy: EconomyManager;
 
+  private authority = new Map<MapName, string>();
+
   constructor(server: Server) {
     this.server = server;
 
@@ -77,6 +79,35 @@ export class World {
 
   getTime(): TimeState {
     return { ...this.time };
+  }
+
+  getAuthority(map: MapName): string | undefined {
+    return this.authority.get(map);
+  }
+
+  setAuthority(map: MapName, playerId: string): void {
+    this.authority.set(map, playerId);
+  }
+
+  clearAuthority(map: MapName): void {
+    this.authority.delete(map);
+  }
+
+  transferAuthority(map: MapName, from: string, exclude: string[] = []): string | undefined {
+    if (this.authority.get(map) !== from) return undefined;
+
+    const next = this.players
+      .getByMap(map)
+      .find((p) => p.id !== from && !exclude.includes(p.id));
+
+    if (next) {
+      this.authority.set(map, next.id);
+      this.players.update(next.id, { isAuthority: true });
+      return next.id;
+    }
+
+    this.authority.delete(map);
+    return undefined;
   }
 
   private _getPhase(current: number): TimePhase {

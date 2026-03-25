@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Socket } from "socket.io";
 import { MapName } from "../types";
 import { World } from "../World";
 
@@ -41,24 +41,12 @@ export const chunks = {
 
       return { activated, deactivated };
     },
-
-    host: (io: Server, world: World) => {
-      const player = world.players.all.find((p) => p.isHost);
-      if (!player) return;
-
-      const socket = io.sockets.sockets.get(player.socketId);
-      if (!socket) return;
-
-      const chunks = world.chunks.getActiveChunks();
-      chunks.forEach((key) => socket.join(`chunk:${key}`));
-      socket.emit("chunks:active", [...chunks]);
-    },
   },
 
   clear: (socket: Socket, world: World, playerId: string): string[] => {
     const chunks = world.chunks.clearPlayer(playerId);
     chunks.forEach((key) => socket.leave(`chunk:${key}`));
-    
+
     return chunks;
   },
 };

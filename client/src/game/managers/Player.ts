@@ -64,7 +64,7 @@ export class PlayerManager {
         [StateName.ROLLING, new Rolling()],
       ]),
       config.socketId,
-      config.isHost,
+      config.isAuthority,
       isLocal,
     );
 

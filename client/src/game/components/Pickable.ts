@@ -36,7 +36,7 @@ export class PickableComponent extends Component {
     this.entity.scene.game.events.emit("entity:pickup", this.entity.id);
 
     effects.shaders.stretch(this.entity, () => {
-      this.entity.scene.managers.entities.remove(this.entity.id);
+      this.entity.scene?.managers.entities.remove(this.entity.id);
     });
   }
 }

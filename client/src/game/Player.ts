@@ -21,7 +21,7 @@ import { DamageableComponent } from "./components/Damageable";
 
 export class Player extends Entity {
   public socketId: string;
-  public isHost: boolean;
+  public isAuthority: boolean;
   public isControllable: boolean;
   public inputManager?: InputManager;
 
@@ -38,7 +38,7 @@ export class Player extends Entity {
     moving: Direction[],
     states: Map<StateName, State>,
     socketId: string,
-    isHost: boolean,
+    isAuthority: boolean,
     isControllable: boolean,
   ) {
     super(
@@ -56,7 +56,7 @@ export class Player extends Entity {
 
     this.mana = mana;
     this.socketId = socketId;
-    this.isHost = isHost;
+    this.isAuthority = isAuthority;
     this.isControllable = isControllable;
 
     if (this.isControllable) this.inputManager = new InputManager(this.scene);

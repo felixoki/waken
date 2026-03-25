@@ -3,7 +3,6 @@ import { MapName } from "@server/types";
 
 export class ChunkManager {
   private active = new Set<string>();
-  private remote = new Set<string>();
   private lastKey = "";
 
   updateFromPlayer(map: MapName, x: number, y: number): void {
@@ -20,17 +19,6 @@ export class ChunkManager {
     for (let dy = -r; dy <= r; dy++)
       for (let dx = -r; dx <= r; dx++)
         this.active.add(`${map}:${cx + dx}:${cy + dy}`);
-
-    for (const k of this.remote) this.active.add(k);
-  }
-
-  updateRemote(chunks: string[]): void {
-    this.remote = new Set(chunks);
-    for (const k of this.remote) this.active.add(k);
-  }
-
-  update(chunks: string[]): void {
-    this.active = new Set(chunks);
   }
 
   isActive(map: MapName, x: number, y: number): boolean {

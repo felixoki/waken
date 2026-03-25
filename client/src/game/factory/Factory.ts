@@ -32,6 +32,8 @@ export class Factory {
       states,
     );
 
+    entity.createdAt = definition.createdAt;
+
     const components = ComponentFactory.create(definition.components, entity);
 
     for (const [_, component] of components) entity.addComponent(component);

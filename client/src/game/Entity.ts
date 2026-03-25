@@ -21,6 +21,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public isStatic: boolean = false;
   public health: number = 100;
   public mana: number = 100;
+  public createdAt: number = 0;
   public target?: { x: number; y: number };
 
   protected _depthY: number = 0;
@@ -99,8 +100,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
     }
 
     const scene = this.scene as Scene;
-    const isHost = scene.managers.players?.player?.isHost;
-    if (isHost && input) this.scene.game.events.emit("entity:input", input);
+    const isAuthority = scene.managers.players?.player?.isAuthority;
+    if (isAuthority && input) this.scene.game.events.emit("entity:input", input);
 
     const depthY = Math.round(this.y);
     
@@ -112,9 +113,9 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
   protected _getInput(): Partial<Input> | null {
     const scene = this.scene as Scene;
-    const isHost = scene.managers.players?.player?.isHost;
+    const isAuthority = scene.managers.players?.player?.isAuthority;
 
-    if (!isHost) return null;
+    if (!isAuthority) return null;
     if (!scene.managers.chunks?.isActive(this.map, this.x, this.y)) return null;
 
     const behavior = this.getComponent<BehaviorQueue>(

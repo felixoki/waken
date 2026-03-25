@@ -5,7 +5,7 @@ import { World } from "../World";
 
 export const entity = {
   create: (data: Omit<EntityConfig, "id">, socket: Socket, world: World) => {
-    const config = { ...data, id: randomUUID() };
+    const config = { ...data, id: randomUUID(), createdAt: data.createdAt ?? Date.now() };
 
     world.entities.add(config.id, config);
     world.chunks.registerEntity(config.id, config.map, config.x, config.y);

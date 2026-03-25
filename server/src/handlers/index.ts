@@ -4,7 +4,6 @@ import { dialogue } from "./dialogue.js";
 import { entity } from "./entity.js";
 import { farming } from "./farming.js";
 import { generation } from "./generation.js";
-import { host } from "./host.js";
 import { item } from "./item.js";
 import { party } from "./party.js";
 import { player } from "./player.js";
@@ -19,5 +18,4 @@ export const handlers = {
   dialogue,
   generation,
   party,
-  host
 };

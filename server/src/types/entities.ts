@@ -12,6 +12,7 @@ export interface EntityConfig {
   y: number;
   name: EntityName;
   health: number;
+  createdAt: number;
 }
 
 export interface EntityDefinition {
