@@ -1,11 +1,11 @@
-import { animations } from "./animations";
-import { COMMON_CHOICES, COMMON_NODES } from "./dialogue";
-import { entities } from "./entities";
-import { maps } from "./maps";
-import { needs } from "./needs";
-import { spells } from "./spells";
-import { time } from "./time";
-import { weapons } from "./weapons";
+import { animations } from "./animations.js";
+import { COMMON_CHOICES, COMMON_NODES } from "./dialogue.js";
+import { entities } from "./entities/index.js";
+import { maps } from "./maps.js";
+import { needs } from "./needs.js";
+import { spells } from "./spells.js";
+import { time } from "./time.js";
+import { weapons } from "./weapons.js";
 
 export const configs = {
   animations,

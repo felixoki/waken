@@ -363,20 +363,35 @@
 - Fix texture errors ✅
 - Parties returning from realm are not visible ✅
 
+#### 1.4.2026
+
+- Add database and redis ✅
+- Add autosaves ✅
+- Add server child processes ✅
+
+#### 5.4.2026
+
+- Join friend games ✅
+
+#### 7.4.2026
+
+- Hosting ✅
+
 ### In progress
 
-
-### Next up
-
-- Save files ⭐
-  - Add database
-  - Add autosaves
-  - Add manual saves
-  - Add save file loading
+- Add chest component
+- Add shadow wanderer
+- Add defend behavior
+- Add reflect damage spell
+- Add dark claw spell
 
 ### Bugs
 
+- Loading save games from realm is broken
+
 ### Backlog
+
+- Electron wrapper ⭐
 
 - Multiplayer ⭐
   - Global chat
@@ -405,8 +420,8 @@
   - Update interpolation system
   - Add crafting behavior
   - Add idle-action state
-  - Add chest component
   - Depth sorting for fences
+  - Inventory persistence
 
 ## Economy
 

@@ -1,9 +1,9 @@
-import { configs } from "./configs";
+import { configs } from "./configs/index.js";
 import { MapLoader } from "./loaders/Map";
 import { EntityStore } from "./stores/Entity";
 import { PlayerStore } from "./stores/Player";
 import { ItemsStore } from "./stores/Items";
-import { Event, MapName, TimePhase, TimeState } from "./types";
+import { Event, MapName, TimePhase, TimeState } from "./types/index.js";
 import { EconomyManager } from "./managers/Economy";
 import { DAY, PHASE_STARTS } from "./globals";
 import { PartyStore } from "./stores/Party";
@@ -35,8 +35,6 @@ export class World {
     this.authority = new AuthorityManager();
 
     this.economy = new EconomyManager(this.items);
-
-    this.load();
   }
 
   load() {
@@ -80,6 +78,10 @@ export class World {
 
   getTime(): TimeState {
     return { ...this.time };
+  }
+
+  setTime(time: TimeState): void {
+    this.time = time;
   }
 
   private _getPhase(current: number): TimePhase {

@@ -14,7 +14,18 @@
     "build:client": "npm run build --workspace=client",
     "build:server": "npm run build --workspace=server",
     "build": "npm run build:server && npm run build:client",
-    "start": "npm run start --workspace=server"
+    "start": "npm run start --workspace=server",
+    "clear": "docker compose -f docker-compose.dev.yml exec -T postgres psql -U waken -d waken -c 'TRUNCATE worlds, world_members, player_data, world_state CASCADE;' && docker compose -f docker-compose.dev.yml exec -T redis redis-cli FLUSHALL && echo '✓ Database cleared!'",
+    "server:connect": "ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213",
+    "server:deploy": "rsync -az --exclude node_modules --exclude dist -e \"ssh -i ./wakenssh -o IdentitiesOnly=yes\" ./server/ root@178.104.59.213:/opt/waken/server/ && rsync -az -e \"ssh -i ./wakenssh -o IdentitiesOnly=yes\" ./client/public/assets/ root@178.104.59.213:/opt/waken/client/public/assets/ && ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213 \"cd /opt/waken/server && pm2 restart waken-lobby --update-env\"",
+    "server:logs": "ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213 \"pm2 logs waken-lobby --lines 200\"",
+    "server:status": "ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213 \"pm2 status\"",
+    "server:health": "curl -sS http://178.104.59.213:3100/health && echo",
+    "server:restart": "ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213 \"cd /opt/waken/server && pm2 restart waken-lobby --update-env\"",
+    "server:stop": "ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213 \"pm2 stop waken-lobby\"",
+    "server:clear": "ssh -i ./wakenssh -o IdentitiesOnly=yes root@178.104.59.213 \"docker compose -f /opt/waken/docker-compose.dev.yml exec -T postgres psql -U waken -d waken -c 'TRUNCATE worlds, world_members, player_data, world_state CASCADE;' && docker compose -f /opt/waken/docker-compose.dev.yml exec -T redis redis-cli FLUSHALL && echo '✓ Database cleared!'\"",
+    "client:local": "echo \"VITE_LOBBY_URL=http://localhost:3100\" > client/.env.local",
+    "client:remote": "echo \"VITE_LOBBY_URL=http://178.104.59.213:3100\" > client/.env.local"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

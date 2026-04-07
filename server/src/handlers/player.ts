@@ -11,23 +11,31 @@ import {
 import { configs } from "../configs/index.js";
 import { World } from "../World.js";
 import { handlers } from "./index.js";
+import { WORLD_ID } from "../server.js";
+import { save } from "../db/save.js";
+import { load } from "../db/load.js";
 
 export const player = {
-  create: (socket: Socket, world: World) => {
+  create: async (socket: Socket, world: World, playerId?: string) => {
     let player = world.players.getBySocketId(socket.id);
 
     if (!player) {
       const map = configs.maps[MapName.VILLAGE];
       const isAuthority = !world.authority.get(map.id);
 
+      const id = playerId || randomUUID();
+      let saved = null;
+
+      if (WORLD_ID && playerId) saved = await load.player(WORLD_ID, playerId);
+
       player = {
-        x: map.spawn.x,
-        y: map.spawn.y,
-        facing: Direction.DOWN,
-        id: randomUUID(),
+        id,
         socketId: socket.id,
-        map: map.id,
-        health: 100,
+        map: (saved?.data?.map as MapName) || map.id,
+        x: saved?.position?.x || map.spawn.x,
+        y: saved?.position?.y || map.spawn.y,
+        facing: (saved?.data?.facing as Direction) || Direction.DOWN,
+        health: saved?.health || 100,
         mana: 100000,
         isAuthority,
         isDead: false,
@@ -60,9 +68,20 @@ export const player = {
     socket.emit(Event.ECONOMY_UPDATE, world.economy.getSnapshot());
   },
 
-  delete: (io: Server, socket: Socket, world: World) => {
+  delete: async (io: Server, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
+
+    if (WORLD_ID)
+      await save.player(WORLD_ID, {
+        playerId: player.id,
+        position: { x: player.x, y: player.y },
+        health: player.health,
+        data: {
+          map: player.map,
+          facing: player.facing,
+        },
+      });
 
     if (player.locked) {
       const entity = world.entities.get(player.locked);

@@ -1,5 +1,4 @@
 import { io, Socket } from "socket.io-client";
-import { SERVER_URL } from "@server/globals";
 
 class SocketManager {
   private static instance: SocketManager;
@@ -14,10 +13,10 @@ class SocketManager {
     return SocketManager.instance;
   }
   
-  init(): Socket {
+  init(serverUrl: string = "http://localhost:3001"): Socket {
     if (this.socket && this.isConnected) return this.socket;
 
-    this.socket = io(SERVER_URL);
+    this.socket = io(serverUrl, { transports: ["websocket"] });
 
     this.socket.on("connect", () => {
       this.isConnected = true;

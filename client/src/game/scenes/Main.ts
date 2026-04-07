@@ -82,7 +82,8 @@ export class MainScene extends Phaser.Scene {
 
         if (ready.size === scenes.length) {
           this._registerEvents();
-          this.socketManager.emit(Event.PLAYER_CREATE);
+          const playerId = localStorage.getItem("playerId");
+          this.socketManager.emit(Event.PLAYER_CREATE, playerId);
         }
       });
     });
