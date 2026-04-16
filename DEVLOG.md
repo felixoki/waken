@@ -404,6 +404,7 @@
 
 - Loading save games from realm is broken
 - Entities change direction too quickly
+- Day and night cycle is broken when entering realm
 
 ### Backlog
 

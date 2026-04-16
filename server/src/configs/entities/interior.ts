@@ -282,6 +282,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           direction: "vertical",
           frameRate: 10,
           repeat: -1,
+          autoplay: true,
         },
       },
     ],
