@@ -18,6 +18,7 @@ export enum ComponentName {
   GROWABLE = "growable",
   HOTBAR = "hotbar",
   HOVERABLE = "hoverable",
+  FOLLOW = "follow",
   INTERACTABLE = "interactable",
   INVENTORY = "inventory",
   LEARNABLE = "learnable",
@@ -43,6 +44,7 @@ export type ComponentConfig =
   | { name: ComponentName.GROWABLE; config: GrowableConfig }
   | { name: ComponentName.HOTBAR }
   | { name: ComponentName.HOVERABLE }
+  | { name: ComponentName.FOLLOW; config: FollowConfig }
   | { name: ComponentName.INTERACTABLE }
   | { name: ComponentName.INVENTORY }
   | { name: ComponentName.LEARNABLE; config: LearnableConfig }
@@ -60,6 +62,10 @@ export interface AuraConfig {
   quantity?: number;
   frequency?: number;
   lifespan?: number;
+}
+
+export interface FollowConfig {
+  offsets: Partial<Record<string, { x: number; y: number }>>;
 }
 
 export interface LearnableConfig {

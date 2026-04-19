@@ -1,17 +1,26 @@
 import {
   ComponentName,
+  EntityName,
   Event,
+  HotbarSlot,
+  HotbarSlotType,
   MapName,
   PlayerConfig,
   StateName,
 } from "@server/types";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
+import { AnimationComponent } from "../components/Animation";
+import { FollowComponent } from "../components/Follow";
+import { LightComponent } from "../components/Light";
 import type { MainScene } from "../scenes/Main";
 import type RealmScene from "../scenes/Realm";
 import { Entity } from "../Entity";
+import { Factory } from "../factory/Factory";
 import { handlers } from ".";
 import EventBus from "../EventBus";
+import { configs } from "@server/configs";
+import type { Player } from "../Player";
 
 export const player = {
   _transitioning: false,
@@ -103,6 +112,68 @@ export const player = {
         main.entityManager.removeByMap(MapName.REALM);
         (main.scene.get(MapName.REALM) as RealmScene).teardown();
       }, 0);
+  },
+
+  lantern: {
+    sync: (
+      p: Player,
+      equipped: HotbarSlot | null | undefined,
+    ): void => {
+      const id = `lantern-${p.id}`;
+      const exists = !!p.scene.managers.entities.get(id);
+      const isLantern =
+        equipped?.type === HotbarSlotType.ENTITY &&
+        equipped?.name === EntityName.LANTERN;
+      if (isLantern && !exists) player.lantern.equip(p);
+      else if (!isLantern && exists) player.lantern.unequip(p);
+
+      if (isLantern) {
+        const entity = p.scene.managers.entities.get(id);
+        const light = entity?.getComponent<LightComponent>(ComponentName.LIGHT);
+        const active =
+          p.state === StateName.IDLE || p.state === StateName.WALKING;
+        light?.setActive(active);
+      }
+    },
+
+    equip: (p: Player): void => {
+      const def = configs.entities[EntityName.LANTERN];
+      if (!def) return;
+
+      const id = `lantern-${p.id}`;
+      const entity = Factory.create(p.scene, {
+        ...def,
+        id,
+        map: p.map,
+        x: p.x,
+        y: p.y,
+        name: EntityName.LANTERN,
+        health: 1,
+        createdAt: 0,
+        isLocked: false,
+        facing: p.facing,
+        moving: [],
+      });
+
+      entity.map = p.map;
+      p.scene.managers.entities.entities.set(id, entity);
+
+      entity
+        .getComponent<FollowComponent>(ComponentName.FOLLOW)
+        ?.setTarget(p);
+
+      const anim = p.getComponent<AnimationComponent>(ComponentName.ANIMATION);
+      anim?.setVariant("lantern");
+      anim?.play(p.state, p.facing);
+    },
+
+    unequip: (p: Player): void => {
+      p.scene.managers.entities.remove(`lantern-${p.id}`);
+
+      const anim = p.getComponent<AnimationComponent>(ComponentName.ANIMATION);
+      anim?.setVariant(null);
+      anim?.play(p.state, p.facing);
+    },
   },
 
   transition: (data: PlayerConfig, main: MainScene): void => {

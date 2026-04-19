@@ -32,7 +32,7 @@ export const PHASE_STARTS = [
 
 export const DURATION_CASTING = 800;
 export const DURATION_JUMPING = 800;
-export const DURATION_ROLLING = 800;
+export const DURATION_ROLLING = 600;
 export const DURATION_DASHING = 50;
 export const DURATION_SLASHING = 800;
 

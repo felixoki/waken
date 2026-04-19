@@ -29,12 +29,15 @@ export const player = {
 
       if (WORLD_ID && playerId) saved = await load.player(WORLD_ID, playerId);
 
+      const savedMap = saved?.data?.map as MapName | undefined;
+      const isRealmSave = savedMap === MapName.REALM;
+
       player = {
         id,
         socketId: socket.id,
-        map: (saved?.data?.map as MapName) || map.id,
-        x: saved?.position?.x || map.spawn.x,
-        y: saved?.position?.y || map.spawn.y,
+        map: isRealmSave ? map.id : savedMap || map.id,
+        x: isRealmSave ? map.spawn.x : saved?.position?.x || map.spawn.x,
+        y: isRealmSave ? map.spawn.y : saved?.position?.y || map.spawn.y,
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
         health: saved?.health || 100,
         mana: 100000,
@@ -76,7 +79,7 @@ export const player = {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    if (WORLD_ID)
+    if (WORLD_ID && player.map !== MapName.REALM)
       await save.player(WORLD_ID, {
         playerId: player.id,
         position: { x: player.x, y: player.y },

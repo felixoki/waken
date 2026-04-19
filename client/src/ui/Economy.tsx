@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { EconomySnapshot, EntityName, Event } from "@server/types";
 import { configs } from "@server/configs";
+import { Icon } from "./Icon";
 
 export function Economy() {
   const [needs, setNeeds] = useState<EconomySnapshot>([]);
@@ -45,7 +46,11 @@ function Item({ name, quantity }: { name: EntityName; quantity: number }) {
         title={config?.metadata?.description || name || ""}
         className="relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square bg-gray-200"
       >
-        {config?.metadata?.displayName || name || ""}
+        {config?.metadata?.icon ? (
+          <Icon icon={config.metadata.icon} />
+        ) : (
+          config?.metadata?.displayName || name || ""
+        )}
         <span className="absolute bottom-1 right-1">{quantity}</span>
       </button>
     </li>

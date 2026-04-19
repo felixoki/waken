@@ -47,13 +47,29 @@ export const direction = {
     return { x: 0, y: 0 };
   },
 
-  fromAngle: (angle: number): Direction => {
+  fromAngle: (angle: number, current?: Direction): Direction => {
     const deg = Phaser.Math.RadToDeg(angle);
-    if (deg >= -45 && deg < 45) return Direction.RIGHT;
-    if (deg >= 45 && deg < 135) return Direction.DOWN;
-    if (deg >= -135 && deg < -45) return Direction.UP;
 
-    return Direction.LEFT;
+    const getZone = (d: number): Direction => {
+      if (d >= -45 && d < 45) return Direction.RIGHT;
+      if (d >= 45 && d < 135) return Direction.DOWN;
+      if (d >= -135 && d < -45) return Direction.UP;
+      return Direction.LEFT;
+    };
+
+    const candidate = getZone(deg);
+    if (!current || candidate === current) return candidate;
+
+    const H = 12;
+    
+    switch (current) {
+      case Direction.RIGHT: if (deg >= -(45 + H) && deg < 45 + H) return current; break;
+      case Direction.DOWN: if (deg >= 45 - H && deg < 135 + H) return current; break;
+      case Direction.UP: if (deg >= -135 - H && deg < -45 + H) return current; break;
+      case Direction.LEFT: if (deg >= 135 - H || deg < -135 + H) return current; break;
+    }
+
+    return candidate;
   },
 
   toAngle: (dir: Direction): number => {

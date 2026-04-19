@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Event, Item } from "@server/types";
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
+import { Icon } from "./Icon";
 
 export function Storage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,8 +67,9 @@ export function Storage() {
               onClick={() => item && withdraw(item)}
             >
               {item
-                ? configs.entities[item.name]?.metadata?.displayName ||
-                  item.name
+                ? configs.entities[item.name]?.metadata?.icon
+                  ? <Icon icon={configs.entities[item.name]!.metadata!.icon!} />
+                  : configs.entities[item.name]?.metadata?.displayName || item.name
                 : ""}
               {item && (
                 <span className="absolute bottom-1 right-1">

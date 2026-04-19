@@ -40,10 +40,16 @@ export interface EntityDefinition {
   offset?: { x?: number; y?: number };
 }
 
+export interface Icon {
+  spritesheet: string;
+  row: number;
+  col: number;
+}
+
 export interface EntityMetadata {
   displayName?: string;
   description?: string;
-  icon?: string;
+  icon?: Icon;
   stackable?: boolean;
 }
 
@@ -115,6 +121,7 @@ export enum EntityName {
   HOUSE1_EXIT = "house1_exit",
   HOUSE2 = "house2",
   IRON_ORE = "iron_ore",
+  LANTERN = "lantern",
   MARKET_STAND1 = "market_stand1",
   MARKET_STAND2 = "market_stand2",
   MARKET_STAND3 = "market_stand3",

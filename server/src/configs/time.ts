@@ -33,13 +33,13 @@ export const time = {
       },
     },
     [TimePhase.NIGHT]: {
-      ambient: 0x667788,
+      ambient: 0x3b4757,
       lightIntensity: 1.2,
       coolness: 0.4,
-      saturation: 0.7,
-      contrast: 0.85,
+      saturation: 0.62,
+      contrast: 0.83,
       vignette: {
-        strength: 0.35,
+        strength: 0.42,
       },
     },
   } satisfies Record<TimePhase, AmbienceConfig>,

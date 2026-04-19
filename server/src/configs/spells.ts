@@ -21,6 +21,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "A chargeable magic projectile that grows stronger the longer you hold.",
       displayName: "Shard",
+      icon: { spritesheet: "icons5", row: 16, col: 9 },
     },
   },
   [SpellName.SLASH]: {
@@ -52,6 +53,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "A powerful melee attack.",
       displayName: "Slash",
+      icon: { spritesheet: "icons5", row: 2, col: 9 },
     },
   },
   [SpellName.ILLUMINATE]: {

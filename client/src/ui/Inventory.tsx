@@ -9,6 +9,7 @@ import {
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
 import { ContextMenu, ContextMenuAction } from "./ContextMenu";
+import { Icon } from "./Icon";
 
 export function Inventory() {
   const [items, setItems] = useState<(ItemInterface | null)[]>(
@@ -151,7 +152,11 @@ function Item({
         className="relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square bg-gray-200"
         onContextMenu={onContextMenu}
       >
-        {config?.metadata?.displayName || item?.name || ""}
+        {config?.metadata?.icon ? (
+          <Icon icon={config.metadata.icon} />
+        ) : (
+          config?.metadata?.displayName || item?.name || ""
+        )}
         <span className="absolute bottom-1 right-1">{item?.quantity}</span>
       </button>
     </li>

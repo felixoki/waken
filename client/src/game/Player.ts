@@ -73,8 +73,8 @@ export class Player extends Entity {
         { type: HotbarSlotType.SPELL, name: SpellName.SHARD },
         { type: HotbarSlotType.SPELL, name: SpellName.SLASH },
         { type: HotbarSlotType.ENTITY, name: EntityName.AXE },
+        { type: HotbarSlotType.ENTITY, name: EntityName.LANTERN },
         { type: HotbarSlotType.ENTITY, name: EntityName.HOE },
-        { type: HotbarSlotType.SPELL, name: SpellName.HURT_SHADOWS },
         null,
         null,
         null,
@@ -95,7 +95,7 @@ export class Player extends Entity {
     if (this.isLocked) {
       if (input.moving) this.moving = input.moving;
       if (input.facing) this.setFacing(input.facing);
-      
+
       this.pointerdown = input.pointerdown;
 
       if (this.inputManager) {
@@ -130,6 +130,8 @@ export class Player extends Entity {
 
     if (state !== this.state) this.transitionTo(state);
     if (needsUpdate) this.states?.get(this.state)?.update(this);
+
+    handlers.player.lantern.sync(this, input.equipped);
 
     if (remoteInput) {
       const x = Phaser.Math.Linear(this.x, input.x, 0.2);
@@ -178,6 +180,7 @@ export class Player extends Entity {
   }
 
   destroy(): void {
+    handlers.player.lantern.unequip(this);
     this.inputManager?.destroy();
     super.destroy();
   }

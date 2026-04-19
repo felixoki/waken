@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Event, HotbarSlotType, SpellName } from "@server/types";
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
+import { Icon } from "./Icon";
 
 export function Spells() {
   const [spells, setSpells] = useState<SpellName[]>([]);
@@ -58,7 +59,11 @@ function Spell({ name, onClick }: { name: SpellName; onClick: () => void }) {
         className="relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square bg-gray-200"
         onClick={onClick}
       >
-        {config?.metadata?.displayName || name}
+        {config?.metadata?.icon ? (
+          <Icon icon={config.metadata.icon} />
+        ) : (
+          config?.metadata?.displayName || name
+        )}
       </button>
     </li>
   );

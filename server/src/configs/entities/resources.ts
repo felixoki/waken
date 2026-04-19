@@ -29,6 +29,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Quartz",
       description: "A small, delicate crystal with a pale glow.",
       stackable: true,
+      icon: { spritesheet: "icons2", row: 14, col: 19 },
     },
   },
   [EntityName.WOOD]: {
@@ -57,6 +58,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wood",
       description: "A piece of chopped wood.",
       stackable: true,
+      icon: { spritesheet: "icons3", row: 2, col: 28 },
     },
   },
 };

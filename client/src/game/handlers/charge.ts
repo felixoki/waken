@@ -6,6 +6,7 @@ interface ChargeState {
   startTime: number;
   config: SpellConfig;
   emitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  emberEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
   spawnZone: Phaser.Geom.Circle;
   direction: { x: number; y: number };
   entity: Entity;
@@ -46,7 +47,7 @@ function getScaledConfig(config: SpellConfig, percent: number): SpellConfig {
 }
 
 function updateCharge(state: ChargeState): void {
-  const { entity, emitter, spawnZone } = state;
+  const { entity, emitter, emberEmitter, spawnZone } = state;
   const target = entity.target || { x: entity.x + 1, y: entity.y };
 
   state.direction = handlers.direction.getDirectionToPoint(entity, target);
@@ -59,6 +60,7 @@ function updateCharge(state: ChargeState): void {
   const tipY = entity.y + Math.sin(angle) * tipDistance;
 
   emitter.setPosition(tipX, tipY);
+  emberEmitter.setPosition(tipX, tipY);
   spawnZone.setTo(0, 0, 4 + 76 * (1 - percent));
   emitter.quantity = Math.round(3 + percent * 6);
 }
@@ -79,10 +81,37 @@ export const charge = {
       blendMode: "ADD",
       moveToX: 0,
       moveToY: 0,
-      emitZone: { type: "random", source: spawnZone },
-    } as any);
+    });
+
+    emitter.addEmitZone({
+      type: "random",
+      source: spawnZone,
+    } as Phaser.Types.GameObjects.Particles.ParticleEmitterRandomZoneConfig);
 
     emitter.setDepth(2000);
+
+    const emberEmitter = entity.scene.add.particles(
+      tipX,
+      tipY,
+      "particle_circle",
+      {
+        tint: [0x00ccff, 0x88ddff, 0xaaffff],
+        alpha: { start: 0.6, end: 0 },
+        scale: { start: 0.1, end: 0.02 },
+        speed: { min: 1, max: 6 },
+        lifespan: 900,
+        frequency: 40,
+        quantity: 2,
+        blendMode: "ADD",
+      },
+    );
+
+    emberEmitter.addEmitZone({
+      type: "random",
+      source: spawnZone,
+    } as Phaser.Types.GameObjects.Particles.ParticleEmitterRandomZoneConfig);
+
+    emberEmitter.setDepth(2001);
 
     const updateListener = () => {
       const s = charges.get(entity.id);
@@ -93,6 +122,7 @@ export const charge = {
       startTime: entity.scene.time.now,
       config,
       emitter,
+      emberEmitter,
       spawnZone,
       direction: { x: 1, y: 0 },
       entity,
@@ -123,7 +153,11 @@ export const charge = {
     state.active = false;
     entity.scene.events.off("update", state.updateListener);
     state.emitter.stop();
-    entity.scene.time.delayedCall(400, () => state.emitter.destroy());
+    state.emberEmitter.stop();
+    entity.scene.time.delayedCall(400, () => {
+      state.emitter.destroy();
+      state.emberEmitter.destroy();
+    });
 
     charges.delete(entity.id);
   },

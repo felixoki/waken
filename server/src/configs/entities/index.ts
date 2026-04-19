@@ -2,6 +2,7 @@ import { animals } from "./animals";
 import { buildings } from "./buildings";
 import { creatures } from "./creatures";
 import { crops } from "./crops";
+import { equipment } from "./equipment";
 import { flora } from "./flora";
 import { food } from "./food";
 import { ingredients } from "./ingredients";
@@ -17,6 +18,7 @@ export const entities = {
   ...buildings,
   ...creatures,
   ...crops,
+  ...equipment,
   ...flora,
   ...food,
   ...ingredients,

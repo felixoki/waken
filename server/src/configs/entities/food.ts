@@ -33,6 +33,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Venison Meat",
       description: "A piece of fresh venison meat.",
       stackable: true,
+      icon: { spritesheet: "icons1", row: 6, col: 16 },
     },
   },
 };

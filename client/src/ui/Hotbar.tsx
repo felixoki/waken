@@ -2,6 +2,7 @@ import { EntityName, Event, HotbarSlot, SpellName } from "@server/types";
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
+import { Icon } from "./Icon";
 
 export function Hotbar() {
   const [slots, setSlots] = useState<(HotbarSlot | null)[]>(() =>
@@ -49,11 +50,15 @@ function Slot({
   return (
     <button
       title={config?.metadata?.description || name || ""}
-      className={`relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square ${
+      className={`relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square overflow-hidden ${
         active ? "text-blue-600 bg-blue-100" : " bg-gray-200"
       }`}
     >
-      {config?.metadata?.displayName || name || ""}
+      {config?.metadata?.icon ? (
+        <Icon icon={config.metadata.icon} />
+      ) : (
+        config?.metadata?.displayName || name || ""
+      )}
     </button>
   );
 }

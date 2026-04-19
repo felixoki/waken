@@ -16,7 +16,20 @@ export const emitters = {
     });
     emitter.setDepth(1000);
 
-    return emitter;
+    const embers = scene.add.particles(x, y, "particle_circle", {
+      tint: [0x00ccff, 0x88ddff, 0xaaffff],
+      alpha: { start: 0.6, end: 0 },
+      scale: { start: 0.1, end: 0.02 },
+      speed: { min: 1, max: 6 },
+      lifespan: 500,
+      frequency: 30,
+      quantity: 2,
+      blendMode: "ADD",
+    });
+    embers.setDepth(1001);
+    embers.startFollow(emitter);
+
+    return { main: emitter, embers };
   },
 
   slash: (

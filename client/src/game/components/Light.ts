@@ -8,6 +8,7 @@ export class LightComponent extends Component {
   public entity: Entity;
   public light: Phaser.GameObjects.Light;
   public intensity: number;
+  public active: boolean = true;
 
   constructor(entity: Entity, config: LightConfig) {
     super();
@@ -21,6 +22,11 @@ export class LightComponent extends Component {
       config.color,
       config.intensity,
     );
+  }
+
+  setActive(active: boolean): void {
+    this.active = active;
+    this.light.intensity = active ? this.intensity : 0;
   }
 
   update() {

@@ -8,7 +8,7 @@ import { AUTOSAVE_INTERVAL, TICK_RATE } from "./globals.js";
 import { World } from "./World.js";
 import { save } from "./db/save.js";
 import { load } from "./db/load.js";
-import { EntityConfig } from "./types/index.js";
+import { EntityConfig, MapName } from "./types/index.js";
 
 const app = express();
 const server = createServer(app);
@@ -61,19 +61,21 @@ if (WORLD_ID)
     });
 
     await Promise.all(
-      world.players.all.map((player) =>
-        save.player(WORLD_ID, {
-          playerId: player.id,
-          position: { x: player.x, y: player.y },
-          health: player.health,
-          data: {
-            map: player.map,
-            facing: player.facing,
-            spells: player.spells,
-            inventory: player.inventory,
-          },
-        }),
-      ),
+      world.players.all
+        .filter((player) => player.map !== MapName.REALM)
+        .map((player) =>
+          save.player(WORLD_ID, {
+            playerId: player.id,
+            position: { x: player.x, y: player.y },
+            health: player.health,
+            data: {
+              map: player.map,
+              facing: player.facing,
+              spells: player.spells,
+              inventory: player.inventory,
+            },
+          }),
+        ),
     );
   }, AUTOSAVE_INTERVAL);
 

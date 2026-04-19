@@ -395,35 +395,37 @@
 - Add chest component ✅
 - Animate chests ✅
 - Add inventory persistence ✅
+- Add spell charging ✅
+
+#### 18.4.2026
+
+- Use icons ✅
+- Add lantern ✅
+
+#### 19.04.2026
+
+- Loading save games from realm is broken ✅
+- Entities change direction too quickly ✅
+- Update rolling state ✅
 
 ### In progress
 
-- Use icons
 
 ### Bugs
 
-- Loading save games from realm is broken
-- Entities change direction too quickly
 - Day and night cycle is broken when entering realm
 
 ### Backlog
 
 - Electron wrapper ⭐
 
-- Procedural generation ⭐
-  - Detail layer
-
 - Magic ⭐
   - Catch animal spell
-  - Water fountain
   - Absorb life
   - Add reflect damage spell
-  - Add dark claw spell
-  - Refactor shard spell
 
 - Effects ⭐
-  - Add wet effect
-  - Add resistances and weaknesses
+  - Add wet effect, resistance and weakness
 
 - Animal keeping ⭐
 
@@ -433,8 +435,6 @@
 - Refactoring and improvement ⭐
   - Add throttling network updates and change detection
   - Update interpolation system
-  - Add crafting behavior
-  - Add idle-action state
   - Depth sorting for fences
 
 ## Economy

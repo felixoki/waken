@@ -47,5 +47,5 @@ export interface SpellConfig {
 export interface SpellMetadata {
   displayName?: string;
   description?: string;
-  icon?: string;
+  icon?: import('./entities.js').IconRef;
 }

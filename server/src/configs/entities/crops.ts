@@ -48,6 +48,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Carrot Seed",
       description: "Plant to grow a carrot.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 1 },
     },
   },
   [EntityName.CARROT]: {
@@ -119,6 +120,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Carrot",
       description: "A crunchy orange root vegetable.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 1 },
     },
   },
   [EntityName.TOMATO_SEED]: {
@@ -131,6 +133,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tomato Seed",
       description: "Plant to grow a tomato.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 2 },
     },
   },
   [EntityName.TOMATO]: {
@@ -203,6 +206,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tomato",
       description: "A plump red fruit.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 2 },
     },
   },
   [EntityName.CABBAGE_SEED]: {
@@ -215,6 +219,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Cabbage Seed",
       description: "Plant to grow a cabbage.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 3 },
     },
   },
   [EntityName.CABBAGE]: {
@@ -290,6 +295,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Cabbage",
       description: "A leafy green vegetable.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 3 },
     },
   },
 };

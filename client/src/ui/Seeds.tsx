@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { EntityName, Event, seeds } from "@server/types";
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
+import { Icon } from "./Icon";
 
 const available = Object.keys(seeds) as EntityName[];
 
@@ -68,7 +69,11 @@ function Seed({
         }`}
         onClick={onClick}
       >
-        {config?.metadata?.displayName || name || ""}
+        {config?.metadata?.icon ? (
+          <Icon icon={config.metadata.icon} />
+        ) : (
+          config?.metadata?.displayName || name || ""
+        )}
       </button>
     </li>
   );

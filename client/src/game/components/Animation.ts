@@ -10,6 +10,7 @@ import { Component } from "./Component";
 export class AnimationComponent extends Component {
   private entity: Entity;
   private config: Partial<Record<StateName, AnimationConfig>>;
+  private variant: string | null = null;
 
   public name = ComponentName.ANIMATION;
 
@@ -28,19 +29,55 @@ export class AnimationComponent extends Component {
 
   update(): void {}
 
+  setVariant(variant: string | null): void {
+    this.variant = variant;
+    if (variant) this._createVariantAnims(variant);
+  }
+
   play(state: StateName, direction: Direction): void {
     if (!this.config[state]) return;
 
-    const textureKey = `${this.entity.name}-${state}`;
-    let dir = direction;
+    const variantKey = this.variant
+      ? `${this.entity.name}-${state}-${this.variant}`
+      : null;
+    const defaultKey = `${this.entity.name}-${state}`;
+    const useVariant =
+      variantKey !== null && this.entity.scene.textures.exists(variantKey);
 
-    const animKey = `${textureKey}-${dir}`;
+    const textureKey = useVariant ? variantKey! : defaultKey;
+    const animKey = `${textureKey}-${direction}`;
 
     if (this.entity.texture.key !== textureKey)
       this.entity.setTexture(textureKey);
 
     if (this.entity.anims.currentAnim?.key !== animKey)
       this.entity.play(animKey);
+  }
+
+  private _createVariantAnims(variant: string): void {
+    const scene = this.entity.scene;
+    const directions = Object.values(Direction);
+
+    Object.entries(this.config).forEach(([state, config]) => {
+      const key = `${this.entity.name}-${state}-${variant}`;
+
+      if (!scene.textures.exists(key)) return;
+
+      directions.forEach((direction, dirIndex) => {
+        const anim = `${key}-${direction}`;
+        const start = dirIndex * config.frameCount;
+        const end = start + config.frameCount - 1;
+
+        if (!scene.anims.exists(anim)) {
+          scene.anims.create({
+            key: anim,
+            frames: scene.anims.generateFrameNumbers(key, { start, end }),
+            frameRate: config.frameRate,
+            repeat: config.repeat,
+          });
+        }
+      });
+    });
   }
 
   private _createAnims(): void {

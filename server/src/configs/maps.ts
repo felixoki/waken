@@ -37,6 +37,18 @@ const player: Spritesheet[] = [
     frameWidth: 32,
     frameHeight: 32,
   },
+  {
+    key: "player-idle-lantern",
+    file: "player_idle_with_lantern.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "player-walking-lantern",
+    file: "player_walking_with_lantern.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
 ];
 
 const animals: Spritesheet[] = [
@@ -402,6 +414,27 @@ const icons: Spritesheet[] = [
   {
     key: "icons4",
     file: "icons4.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "icons5",
+    file: "icons5.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "icons6",
+    file: "icons6.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "icons7",
+    file: "icons7.png",
     frameWidth: 16,
     frameHeight: 16,
     asTileset: true,

@@ -5,7 +5,7 @@ import { Scene } from "./scenes/Scene";
 export class Projectile extends Hitbox {
   private start: { x: number; y: number };
   private range: number;
-  private emitter!: Phaser.GameObjects.Particles.ParticleEmitter;
+  private emitters: Phaser.GameObjects.Particles.ParticleEmitter[] = [];
 
   constructor(
     scene: Scene,
@@ -48,17 +48,17 @@ export class Projectile extends Hitbox {
   }
 
   setEmitter(emitter: Phaser.GameObjects.Particles.ParticleEmitter): void {
-    this.emitter = emitter;
-    this.emitter.setPosition(0, 0);
-    this.emitter.startFollow(this);
+    emitter.setPosition(0, 0);
+    emitter.startFollow(this);
+    this.emitters.push(emitter);
   }
 
   destroy(fromScene?: boolean): void {
     this.scene.events.off("update", this.update, this);
 
-    if (this.emitter) {
-      this.emitter.stop();
-      this.emitter.destroy();
+    for (const emitter of this.emitters) {
+      emitter.stop();
+      emitter.destroy();
     }
 
     super.destroy(fromScene);

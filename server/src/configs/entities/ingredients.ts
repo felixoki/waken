@@ -122,6 +122,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Belladonna",
       description: "A poisonous plant with striking purple flowers.",
       stackable: true,
+      icon: { spritesheet: "icons1", row: 16, col: 13 },
     },
   },
   [EntityName.SUNFLOWER]: {

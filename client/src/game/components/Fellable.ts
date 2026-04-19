@@ -80,6 +80,8 @@ export class FellableComponent extends Component {
     this.entity.scene.time.delayedCall(SHAKE_DURATION, () => {
       this._cleanup();
 
+      if (!this.entity.scene) return;
+
       this.entity.scene.game.events.emit(Event.ENTITY_FELL, {
         id: this.entity.id,
         x: this.entity.x,

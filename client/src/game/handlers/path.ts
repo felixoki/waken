@@ -231,7 +231,7 @@ export const path = {
         path[0].x,
         path[0].y,
       );
-      const direction = handlers.direction.fromAngle(angle);
+      const direction = handlers.direction.fromAngle(angle, entity.facing);
 
       return {
         facing: direction,

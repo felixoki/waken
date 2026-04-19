@@ -28,13 +28,14 @@ export const spells: Record<SpellName, SpellHandler> = {
       config,
     );
 
-    const emitter = effects.emitters.shard(
+    const { main, embers } = effects.emitters.shard(
       entity.scene,
       projectile.x,
       projectile.y,
       config.chargePercent,
     );
-    projectile.setEmitter(emitter);
+    projectile.setEmitter(main);
+    projectile.setEmitter(embers);
   },
 
   [SpellName.SLASH]: (

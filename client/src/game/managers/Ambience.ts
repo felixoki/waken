@@ -130,11 +130,11 @@ export class AmbienceManager {
       if (animate)
         this.scene.tweens.add({
           targets: component.light,
-          intensity: target,
+          intensity: component.active ? target : 0,
           duration: PHASE_TRANSITION_DURATION,
           ease: "Sine.easeInOut",
         });
-      else component.light.intensity = target;
+      else component.light.intensity = component.active ? target : 0;
     }
   }
 }
