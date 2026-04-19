@@ -8,6 +8,7 @@ export enum Mood {
 export enum NodeId {
   GREETING = "greeting",
   STORY = "story",
+  QUEST = "quest",
 }
 
 export enum ChoiceId {
@@ -29,8 +30,7 @@ export interface DialogueChoice {
 
 export enum DialogueEffectName {
   CONVERSATION_END = "conversation:end",
-  COLLECTION_START = "collection:start",
-  COLLECTION_END = "collection:end",
+  ITEM_GIVE = "item:give",
 }
 
 export interface DialogueEffect {

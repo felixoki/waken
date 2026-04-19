@@ -200,6 +200,13 @@ const plants: Spritesheet[] = [
     frameHeight: 16,
     asTileset: true,
   },
+  {
+    key: "gathering6",
+    file: "gathering6.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
 ];
 
 const buildings: Spritesheet[] = [

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="1438">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="40" nextobjectid="1442">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -8346,7 +8346,7 @@
   <object id="1387" name="Farmplot" x="1144.08" y="230.867" width="1" height="1"/>
   <object id="1388" name="Farmplot" x="1160.08" y="230.867" width="1" height="1"/>
   <object id="1389" name="Farmplot" x="1176.08" y="230.867" width="1" height="1"/>
-  <object id="1390" name="Tree5" x="128" y="1504" width="1" height="1"/>
+  <object id="1390" name="Tree5" x="128" y="1536" width="1" height="1"/>
   <object id="1391" name="Tree5" x="176" y="1520" width="1" height="1"/>
   <object id="1392" name="Tree1" x="224" y="1616" width="1" height="1"/>
   <object id="1393" name="Bush1" x="144" y="1616" width="1" height="1"/>
@@ -8369,7 +8369,5 @@
   <object id="1432" name="Duck" x="44.1293" y="325.404" width="1" height="1"/>
   <object id="1433" name="Duck" x="71.6814" y="310.734" width="1" height="1"/>
   <object id="1434" name="Drake" x="31.9879" y="368.06" width="1" height="1"/>
-  <object id="1436" name="Shadow_wanderer" x="432" y="704" width="1" height="1"/>
-  <object id="1437" name="Chest1" x="560" y="768" width="1" height="1"/>
  </objectgroup>
 </map>

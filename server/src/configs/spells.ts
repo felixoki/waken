@@ -13,7 +13,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       height: 10,
     },
     charge: {
-      duration: 1500,
+      duration: 1000,
       min: 0.25,
       max: 1,
     },

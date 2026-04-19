@@ -10924,7 +10924,7 @@
                  "visible":true,
                  "width":1,
                  "x":128,
-                 "y":1504
+                 "y":1536
                 }, 
                 {
                  "height":1,
@@ -11167,28 +11167,6 @@
                  "width":1,
                  "x":31.9879,
                  "y":368.06
-                }, 
-                {
-                 "height":1,
-                 "id":1436,
-                 "name":"Shadow_wanderer",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1,
-                 "x":432,
-                 "y":704
-                }, 
-                {
-                 "height":1,
-                 "id":1437,
-                 "name":"Chest1",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1,
-                 "x":560,
-                 "y":768
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -11197,7 +11175,7 @@
          "y":0
         }],
  "nextlayerid":40,
- "nextobjectid":1438,
+ "nextobjectid":1442,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

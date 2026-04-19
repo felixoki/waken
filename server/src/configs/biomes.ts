@@ -102,15 +102,21 @@ export const forest: BiomeConfig = {
       cluster: true,
     },
     {
-      entities: [EntityName.FLYAMINATA1, EntityName.BASKETFERN],
+      entities: [
+        EntityName.SUNFLOWER,
+        EntityName.DAFFODIL,
+        EntityName.BLUE_LOTUS,
+        EntityName.CLARY_SAGE,
+        EntityName.BELLADONNA,
+      ],
       terrain: [TerrainName.GRASS],
-      density: 0.05,
+      density: 0.2,
       spacing: 2,
     },
     {
       entities: [EntityName.DUCK, EntityName.DRAKE],
       terrain: [TerrainName.WATER],
-      density: 0.02,
+      density: 0.01,
       spacing: 4,
     },
     {
@@ -143,8 +149,8 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.SHADOW_WANDERER],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      density: 0.001,
-      spacing: 90,
+      density: 0.01,
+      spacing: 60,
     },
   ],
 

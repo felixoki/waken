@@ -44,14 +44,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "Are you looking for herbs?",
-            effects: [
-              {
-                name: DialogueEffectName.COLLECTION_START,
-              },
-            ],
-          },
-          {
             text: "What is your role in this village?",
             next: NodeId.STORY,
           },
@@ -78,7 +70,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [EntityName.WOOD, EntityName.IRON_ORE, EntityName.GLASS],
+          accepts: [
+            EntityName.WOOD,
+            EntityName.IRON_ORE,
+            EntityName.IRON1,
+            EntityName.GLASS,
+          ],
         },
       },
       { name: ComponentName.ANIMATION },
@@ -100,14 +97,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
         individual: [
-          {
-            text: "Are you looking for materials?",
-            effects: [
-              {
-                name: DialogueEffectName.COLLECTION_START,
-              },
-            ],
-          },
           {
             text: "What is your role in this village?",
             next: NodeId.STORY,
@@ -135,7 +124,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [EntityName.QUARTZ1],
+          accepts: [EntityName.QUARTZ1, EntityName.BONE],
         },
       },
       { name: ComponentName.ANIMATION },
@@ -157,14 +146,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
         individual: [
-          {
-            text: "Are you looking for quartz?",
-            effects: [
-              {
-                name: DialogueEffectName.COLLECTION_START,
-              },
-            ],
-          },
           {
             text: "What is your role in this village?",
             next: NodeId.STORY,
@@ -215,14 +196,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "Are you looking for venison meat?",
-            effects: [
-              {
-                name: DialogueEffectName.COLLECTION_START,
-              },
-            ],
-          },
-          {
             text: "What is your role in this village?",
             next: NodeId.STORY,
           },
@@ -272,14 +245,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "Are you looking for wheat?",
-            effects: [
-              {
-                name: DialogueEffectName.COLLECTION_START,
-              },
-            ],
-          },
-          {
             text: "What is your role in this village?",
             next: NodeId.STORY,
           },
@@ -328,14 +293,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
         individual: [
-          {
-            text: "Are you looking for ingredients?",
-            effects: [
-              {
-                name: DialogueEffectName.COLLECTION_START,
-              },
-            ],
-          },
           {
             text: "What is your role in this village?",
             next: NodeId.STORY,
@@ -802,7 +759,24 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "I'm looking for a rare silver sword. It's hidden somewhere deep in the forest. But they say there are wolves lurking in the woods, so I'm unsure if it's worth the risk.",
+        choices: [
+          {
+            text: "Maybe I can find it for you.",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "Hmm, I don't know if you're up for the task.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },

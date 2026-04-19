@@ -61,4 +61,59 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons3", row: 2, col: 28 },
     },
   },
+  [EntityName.BONE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 14, end: 15 },
+            { row: 2, start: 14, end: 15 },
+          ],
+        },
+        key: "bone_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bone",
+      description: "A cracked bone left behind by a fallen goblin.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 1, col: 13 },
+    },
+  },
+  [EntityName.IRON1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "crystals",
+          tileSize: 16,
+          tiles: [{ row: 8, start: 13, end: 13 }],
+        },
+        key: "iron1_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Iron",
+      description: "A rough chunk of iron ore.",
+      stackable: true,
+      icon: { spritesheet: "icons2", row: 10, col: 19 },
+    },
+  },
 };

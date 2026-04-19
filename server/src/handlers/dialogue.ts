@@ -4,7 +4,9 @@ import { World } from "../World";
 import { handlers } from ".";
 import {
   BehaviorName,
+  ComponentName,
   Direction,
+  DialogueEffectName,
   Event,
   NeedName,
   DialogueChoice,
@@ -107,7 +109,7 @@ export const dialogue = {
     if (!player) return;
 
     if (nodeId === NodeId.GREETING) {
-      if (entity.isLocked) return;
+      if (entity.isLocked && player.locked !== entityId) return;
 
       entity.isLocked = true;
       player.locked = entityId;
@@ -156,6 +158,36 @@ export const dialogue = {
         next: choice!.next,
         effects: choice!.effects,
       }));
+
+    const collectorConfig = definition.components
+      ?.find((c) => c.name === ComponentName.COLLECTOR)
+      ?.config as { accepts: string[] } | undefined;
+
+    if (collectorConfig) {
+      const giveChoices = player.inventory
+        .filter(
+          (item) =>
+            item &&
+            item.quantity > 0 &&
+            collectorConfig.accepts.includes(item.name),
+        )
+        .map((item) => {
+          const displayName =
+            configs.entities[item!.name]?.metadata?.displayName || item!.name;
+          return {
+            text: `Give ${displayName} (${item!.quantity})`,
+            next: NodeId.GREETING,
+            effects: [
+              {
+                name: DialogueEffectName.ITEM_GIVE,
+                params: { name: item!.name, quantity: item!.quantity },
+              },
+            ],
+          };
+        });
+
+      choices.unshift(...giveChoices);
+    }
 
     socket.emit(Event.ENTITY_DIALOGUE_RESPONSE, {
       entityId,

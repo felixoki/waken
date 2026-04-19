@@ -39,8 +39,6 @@ export enum Event {
   ENTITY_DIALOGUE_CHOICE = "entity_dialogue_choice",
   ENTITY_LOCK = "entity_lock",
   ENTITY_UNLOCK = "entity_unlock",
-  ENTITY_COLLECTION_OPEN = "entity_collection_open",
-  ENTITY_COLLECTION_REQUEST = "entity_collection_request",
   ENTITY_PLANT = "entity_plant",
   ENTITY_HARVEST = "entity_harvest",
   ENTITY_OVERLAP = "entity_overlap",

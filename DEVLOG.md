@@ -407,13 +407,15 @@
 - Loading save games from realm is broken ✅
 - Entities change direction too quickly ✅
 - Update rolling state ✅
+- Day and night cycle is broken when entering realm ✅
+- Add flowers to forest config ✅
+- Update collection dialogue ✅
 
 ### In progress
 
 
 ### Bugs
 
-- Day and night cycle is broken when entering realm
 
 ### Backlog
 
@@ -447,8 +449,8 @@
 
 **Vegetables**
 
-- Tier 1: Blueberry, Strawberry, Apple
-- Tier 2: Carrot, Onion, Cabbage, Cucumber
+- Tier 1: Raspberry
+- Tier 2: Carrot, Tomato, Cabbage
 - Tier 3: Bread
 
 **Drinks**
@@ -465,8 +467,8 @@
 
 **Blacksmith**
 
-- Collects: Wood, Iron ore, Glass
-- Produces: Axe, Pickaxe, Lantern, Hoe, Iron
+- Collects: Wood, Iron, Glass
+- Produces: Axe, Pickaxe, Lantern, Hoe
 
 **Herbalist**
 

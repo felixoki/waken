@@ -6,7 +6,6 @@ import { Entities } from "./ui/Entities";
 import { Hotbar } from "./ui/Hotbar";
 import { Menu } from "./ui/Menu";
 import { Dialogue } from "./ui/Dialogue";
-import { Collection } from "./ui/Collection";
 import { PartyPanel as Party } from "./ui/Party";
 import { Stats } from "./ui/Stats";
 import { Economy } from "./ui/Economy";
@@ -49,7 +48,6 @@ function App() {
             <Inventory />
           </div>
           <Dialogue />
-          <Collection />
           <Spells />
           <Seeds />
         </div>

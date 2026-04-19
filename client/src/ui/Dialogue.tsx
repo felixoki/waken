@@ -4,6 +4,7 @@ import {
   DialogueEffectName,
   DialogueResponse,
 } from "@server/types/dialogue";
+import { Item } from "@server/types";
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { Event } from "@server/types";
@@ -19,10 +20,11 @@ export const Dialogue = () => {
         setIsOpen(false);
         setData(null);
       },
-      [DialogueEffectName.COLLECTION_START]: () => {
-        EventBus.emit(Event.ENTITY_COLLECTION_REQUEST, data?.entityId);
+      [DialogueEffectName.ITEM_GIVE]: (effect: DialogueEffect) => {
+        if (effect.params) {
+          EventBus.emit(Event.ITEM_COLLECT, effect.params as Item);
+        }
       },
-      [DialogueEffectName.COLLECTION_END]: () => {},
     };
 
   const choose = (choice: DialogueChoice) => {

@@ -9,7 +9,6 @@ import { spells } from "./spells";
 import { state } from "./state";
 import { vision } from "./vision";
 import { weapons } from "./weapons";
-import { collection } from "./collection";
 import { behavior } from "./behavior";
 import { charge } from "./charge";
 
@@ -24,7 +23,6 @@ export const handlers = {
   spells,
   weapons,
   dialogue,
-  collection,
   vision,
   path,
   behavior,

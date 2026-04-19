@@ -349,13 +349,6 @@ export class MainScene extends Phaser.Scene {
       this.socketManager.emit(Event.ENTITY_DIALOGUE_END, data);
     });
 
-    EventBus.on(Event.ENTITY_COLLECTION_REQUEST, (data: string) => {
-      const entity = this.entityManager.get(data);
-      if (!entity) return;
-
-      handlers.collection.open(entity);
-    });
-
     /**
      * Chunks
      */
