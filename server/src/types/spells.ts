@@ -1,3 +1,7 @@
+import { Damage } from './damage.js';
+import { EffectName } from './effects.js';
+import { Icon } from './entities.js';
+
 export enum SpellName {
   SHARD = "shard",
   SLASH = "slash",
@@ -27,9 +31,10 @@ export interface ChargeConfig {
 
 export interface SpellConfig {
   name: SpellName;
-  damage: number;
+  damage: Damage;
   knockback: number;
   mana: number;
+  effects?: [EffectName, number][];
   speed?: number;
   range?: number;
   duration?: number;
@@ -47,5 +52,5 @@ export interface SpellConfig {
 export interface SpellMetadata {
   displayName?: string;
   description?: string;
-  icon?: import('./entities.js').IconRef;
+  icon?: Icon;
 }

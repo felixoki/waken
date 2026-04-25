@@ -40,7 +40,7 @@ export const player = {
         y: isRealmSave ? map.spawn.y : saved?.position?.y || map.spawn.y,
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
         health: saved?.health || 100,
-        mana: 100000,
+        mana: saved?.mana || 100,
         isAuthority,
         isDead: false,
         spells: (saved?.data?.spells as SpellName[]) || [],

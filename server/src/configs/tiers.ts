@@ -10,7 +10,7 @@ export const tiers: TierUpgrade[] = [
   {
     tier: 2,
     requirements: [
-      { item: EntityName.IRON_ORE, quantity: 20 },
+      { item: EntityName.IRON1, quantity: 20 },
       { item: EntityName.WOOD, quantity: 10 },
     ],
   },

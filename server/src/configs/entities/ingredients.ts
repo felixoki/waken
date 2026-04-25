@@ -38,7 +38,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Fly aminata",
-      description: "A small, delicate mushroom with a pale cap.",
+      description: "A small mushroom with a pale red cap dotted with white spots.",
       stackable: true,
     },
   },
@@ -74,7 +74,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Basket fern",
-      description: "A lush green fern typical for this region.",
+      description: "A lush green fern with broad, arching fronds common to shaded groves.",
       stackable: true,
     },
   },
@@ -120,7 +120,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Belladonna",
-      description: "A poisonous plant with striking purple flowers.",
+      description: "A poisonous plant with dark berries and bold purple blossoms.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 16, col: 13 },
     },
@@ -168,8 +168,9 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Sunflower",
-      description: "A tall, bright flower that follows the sun.",
+      description: "A tall, golden flower with a broad face that follows the sun.",
       stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 4 },
     },
   },
   [EntityName.RASPBERRY]: {
@@ -215,7 +216,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Raspberry",
-      description: "A cluster of ripe red raspberries.",
+      description: "A thorny bush bearing clusters of small, bright red berries.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 10, col: 13 },
     },
@@ -309,7 +310,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Blue lotus",
-      description: "A rare aquatic flower with vivid blue petals.",
+      description: "A rare aquatic flower with bold blue petals and a sweet scent.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 4, col: 31 },
     },
@@ -403,7 +404,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Bearded tooth fungus",
-      description: "A peculiar white fungus with cascading tooth-like spines.",
+      description: "A peculiar white fungus adorned with cascading tooth-like spines.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 18, col: 13 },
     },
@@ -420,9 +421,9 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Drop of the Bellan Trail",
-      description: "A mysterious potion brewed from rare aquatic flowers and forest herbs.",
+      description: "A mysterious potion crafted from rare aquatic flowers and forest herbs.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 4, col: 1 },
+      icon: { spritesheet: "icons2", row: 4, col: 28 },
     },
   },
   [EntityName.SUNGOLD_POTION]: {
@@ -436,10 +437,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Sungold Potion",
+      displayName: "Sungold potion",
       description: "A warm golden potion distilled from sunflowers and belladonna.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 5, col: 1 },
+      icon: { spritesheet: "icons2", row: 14, col: 28 },
     },
   },
 };

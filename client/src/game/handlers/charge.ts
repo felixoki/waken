@@ -28,7 +28,10 @@ function getScaledConfig(config: SpellConfig, percent: number): SpellConfig {
   return {
     ...config,
     chargePercent: percent,
-    damage: Math.round(config.damage * percent),
+    damage: {
+      ...config.damage,
+      amount: Math.round(config.damage.amount * percent),
+    },
     knockback: Math.round(config.knockback * percent),
     speed: config.speed
       ? Math.max(
@@ -90,16 +93,21 @@ export const charge = {
 
     emitter.setDepth(2000);
 
-    const emberEmitter = entity.scene.add.particles(tipX, tipY, "particle_circle", {
-      tint: [0x00ccff, 0x88ddff, 0xaaffff],
-      alpha: { start: 0.6, end: 0 },
-      scale: { start: 0.1, end: 0.02 },
-      speed: { min: 1, max: 6 },
-      lifespan: 900,
-      frequency: 40,
-      quantity: 2,
-      blendMode: "ADD",
-    });
+    const emberEmitter = entity.scene.add.particles(
+      tipX,
+      tipY,
+      "particle_circle",
+      {
+        tint: [0x00ccff, 0x88ddff, 0xaaffff],
+        alpha: { start: 0.6, end: 0 },
+        scale: { start: 0.1, end: 0.02 },
+        speed: { min: 1, max: 6 },
+        lifespan: 900,
+        frequency: 40,
+        quantity: 2,
+        blendMode: "ADD",
+      },
+    );
 
     emberEmitter.addEmitZone({
       type: "random",

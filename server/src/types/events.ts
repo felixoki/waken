@@ -85,10 +85,15 @@ export enum Event {
   /** Combat */
   HIT = "hit",
 
+  /** Effects */
+  EFFECT_APPLY = "effect_apply",
+  EFFECT_REMOVE = "effect_remove",
+
   /** Camera */
   CAMERA_FOLLOW = "camera_follow",
 
   /** Spells */
+  PLAYER_CAST = "player_cast",
   SPELL_LEARN = "spell_learn",
   SPELL_LEARN_CONFIRM = "spell_learn_confirm",
   SPELLS_SYNC = "spells_sync",

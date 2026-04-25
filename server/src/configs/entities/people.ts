@@ -70,6 +70,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE, StateName.WALKING],
     behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Herbalist",
+      description: "A village healer who brews potions from gathered herbs.",
+    },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
@@ -152,6 +156,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE, StateName.WALKING],
     behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Blacksmith",
+      description: "A sturdy smith who forges tools and weapons from raw ore.",
+    },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
@@ -227,6 +235,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE],
     behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Glassblower",
+      description: "A skilled artisan who crafts glass and vials from quartz.",
+    },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
@@ -277,6 +289,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE],
     behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Greengrocer",
+      description: "A trader who collects and supplies fresh produce to villagers.",
+    },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
@@ -327,6 +343,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE],
     behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Baker",
+      description: "A warm-hearted baker who turns grain into bread for all.",
+    },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
@@ -377,6 +397,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE],
     behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Beverage Saler",
+      description: "A vendor who mixes and sells refreshing drinks for villagers.",
+    },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,

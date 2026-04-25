@@ -1,6 +1,7 @@
 import {
   ComponentName,
   Direction,
+  EffectName,
   Event,
   Input,
   MapName,
@@ -8,6 +9,7 @@ import {
 } from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
+import { Effect } from "./effects/Effect";
 import { EntityName } from "@server/types";
 import { Scene } from "./scenes/Scene";
 import { BehaviorQueue } from "./components/BehaviorQueue";
@@ -30,6 +32,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   protected _depthY: number = 0;
 
   public components = new Map<ComponentName, Component>();
+  public effects = new Map<EffectName, Effect>();
   public states?: Map<StateName, State>;
 
   declare scene: Scene;
@@ -139,6 +142,9 @@ export class Entity extends Phaser.GameObjects.Sprite {
     this.components.forEach((component) => component.detach());
     this.components.clear();
 
+    this.effects.forEach((effect) => effect.detach());
+    this.effects.clear();
+
     super.destroy(fromScene);
   }
 
@@ -175,6 +181,29 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (component) {
       component.detach();
       this.components.delete(name);
+    }
+  }
+  
+  /**
+   * Effect management
+   */
+  addEffect(effect: Effect): void {
+    const existing = this.effects.get(effect.name);
+    if (existing) existing.detach();
+    effect.attach();
+    this.effects.set(effect.name, effect);
+  }
+
+  hasEffect(name: EffectName): boolean {
+    return this.effects.has(name);
+  }
+
+  removeEffect(name: EffectName): void {
+    const effect = this.effects.get(name);
+
+    if (effect) {
+      effect.detach();
+      this.effects.delete(name);
     }
   }
 

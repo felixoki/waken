@@ -5,14 +5,23 @@ import { PlayerStore } from "./stores/Player";
 import { ItemsStore } from "./stores/Items";
 import { Event, MapName, TimePhase, TimeState } from "./types/index.js";
 import { EconomyManager } from "./managers/Economy";
-import { DAY, PHASE_STARTS } from "./globals";
+import {
+  DAY,
+  MAX_HEALTH,
+  MAX_MANA,
+  PHASE_STARTS,
+  REGEN_HEALTH_PER_SECOND,
+  REGEN_MANA_PER_SECOND,
+} from "./globals";
 import { PartyStore } from "./stores/Party";
 import { Server } from "socket.io";
 import { ChunkManager } from "./managers/Chunk";
 import { AuthorityManager } from "./managers/Authority";
+import { combat } from "./handlers/combat.js";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
+  private regenAccumulator = 0;
   private server: Server;
 
   public readonly players: PlayerStore;
@@ -70,10 +79,38 @@ export class World {
 
     this.economy.update();
 
+    this.regenAccumulator += delta;
+
+    if (this.regenAccumulator >= 1000) {
+      this.regenAccumulator -= 1000;
+
+      for (const player of this.players.all) {
+        if (player.isDead) continue;
+
+        const health = Math.min(
+          player.health + REGEN_HEALTH_PER_SECOND,
+          MAX_HEALTH,
+        );
+        const mana = Math.min(player.mana + REGEN_MANA_PER_SECOND, MAX_MANA);
+
+        if (health !== player.health) {
+          this.players.update(player.id, { health });
+          this.server.to(player.socketId).emit(Event.PLAYER_HEALTH, health);
+        }
+
+        if (mana !== player.mana) {
+          this.players.update(player.id, { mana });
+          this.server.to(player.socketId).emit(Event.PLAYER_MANA, mana);
+        }
+      }
+    }
+
     if (this.economy.dirty) {
       this.economy.dirty = false;
       this.server.emit(Event.ECONOMY_UPDATE, this.economy.getSnapshot());
     }
+
+    combat.effects.tick(this, this.server, Date.now());
   }
 
   getTime(): TimeState {

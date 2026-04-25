@@ -3,6 +3,7 @@ import { MapName } from "./maps";
 import { CollectorConfig } from "./collectors";
 import { LightConfig } from "./ambience";
 import { GrowthStageConfig } from "./farming";
+import { DamageType } from "./damage.js";
 import { SpellName } from "./spells";
 
 export enum ComponentName {
@@ -124,6 +125,8 @@ export interface TextureAnimationConfig {
 
 export interface DamageableConfig {
   loot: (Item & { chance: number })[];
+  resistances?: DamageType[];
+  weaknesses?: DamageType[];
 }
 
 export interface GrowableConfig {

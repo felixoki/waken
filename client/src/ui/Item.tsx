@@ -41,12 +41,12 @@ export function Item({
   const description = config?.metadata?.description;
 
   const baseClass =
-    "relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square";
+    "relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square overflow-hidden transition-colors";
 
   const stateClass = disabled
     ? "bg-gray-200 opacity-50 cursor-not-allowed"
     : active
-      ? "text-blue-600 bg-blue-100"
+      ? "bg-gray-200 border-2 border-blue-600"
       : "bg-gray-200";
 
   const handleMouseEnter = () => {
@@ -79,20 +79,25 @@ export function Item({
         {quantity !== undefined && quantity > 0 && bar === undefined && (
           <span className="absolute bottom-1 right-1">{quantity}</span>
         )}
-        {bar !== undefined && (() => {
-          const MAX = 100;
-          const fill = Math.min(Math.max(bar, 0), MAX) / MAX;
-          const barColor =
-            bar > 50 ? "bg-green-500" : bar > 20 ? "bg-yellow-400" : "bg-red-500";
-          return (
-            <div className="absolute right-1.5 top-1.5 bottom-1.5 w-1.5 rounded-full bg-black/30 overflow-hidden">
-              <div
-                className={`${barColor} absolute bottom-0 left-0 right-0 rounded-full transition-all`}
-                style={{ height: `${fill * 100}%` }}
-              />
-            </div>
-          );
-        })()}
+        {bar !== undefined &&
+          (() => {
+            const MAX = 100;
+            const fill = Math.min(Math.max(bar, 0), MAX) / MAX;
+            const barColor =
+              bar > 50
+                ? "bg-green-500"
+                : bar > 20
+                  ? "bg-yellow-400"
+                  : "bg-red-500";
+            return (
+              <div className="absolute right-1.5 top-1.5 bottom-1.5 w-1.5 rounded-full bg-black/30 overflow-hidden">
+                <div
+                  className={`${barColor} absolute bottom-0 left-0 right-0 rounded-full transition-all`}
+                  style={{ height: `${fill * 100}%` }}
+                />
+              </div>
+            );
+          })()}
       </button>
 
       {hovered && name && (
@@ -101,7 +106,9 @@ export function Item({
         >
           <div className="flex items-center gap-2 mb-1">
             {config?.metadata?.icon && (
-              <Icon icon={config.metadata.icon} zoom={2} />
+              <div className="rounded overflow-hidden">
+                <Icon icon={config.metadata.icon} zoom={2} />
+              </div>
             )}
             <p className="font-semibold leading-tight">{displayName}</p>
           </div>

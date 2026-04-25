@@ -139,6 +139,33 @@ export const animations: Partial<
       repeat: 0,
     },
   },
+  [EntityName.TROLL]: {
+    [StateName.IDLE]: {
+      frameCount: 7,
+      frameRate: 7,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 8,
+      frameRate: 8,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.SLASHING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: 0,
+    },
+    [StateName.THROWING]: {
+      frameCount: 10,
+      frameRate: 10,
+      repeat: 0,
+    },
+  },
   [EntityName.DRAKE]: {
     [StateName.IDLE]: {
       frameCount: 4,

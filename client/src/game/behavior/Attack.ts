@@ -1,10 +1,4 @@
-import {
-  BehaviorName,
-  Input,
-  StateName,
-  Stuck,
-  Waypoint,
-} from "@server/types";
+import { BehaviorName, Input, StateName, Stuck, Waypoint } from "@server/types";
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
@@ -19,6 +13,9 @@ export class AttackBehavior extends Behavior {
   private recalculation = { last: 0, interval: 300 };
   private lostSightTime: number = 0;
   private lostSightThreshold: number = 3000;
+  private lastAttackTime: number = 0;
+  private frustrationThreshold: number = 3000;
+  private cooldowns = new Map<StateName, number>();
   private stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
@@ -39,6 +36,8 @@ export class AttackBehavior extends Behavior {
     this.target.lastPosition = null;
     this.lostSightTime = 0;
     this.recalculation.last = 0;
+    this.lastAttackTime = 0;
+    this.cooldowns.clear();
   }
 
   update(entity: Entity): Partial<Input> {
@@ -74,24 +73,30 @@ export class AttackBehavior extends Behavior {
       );
 
       const definition = configs.entities[entity.name];
-      const config = definition?.attacks?.[0];
+      const attacks = definition?.attacks;
 
-      if (!config) {
+      if (!attacks?.length) {
         this.completed = true;
         return {};
       }
 
-      const range = config.range ?? 40;
+      const frustrated =
+        Date.now() - this.lastAttackTime > this.frustrationThreshold;
 
-      if (distance <= range) {
-        const angle = Phaser.Math.Angle.Between(
-          entity.x,
-          entity.y,
-          target.x,
-          target.y,
-        );
+      const angle = Phaser.Math.Angle.Between(
+        entity.x,
+        entity.y,
+        target.x,
+        target.y,
+      );
+      const facing = handlers.direction.fromAngle(angle);
 
-        const facing = handlers.direction.fromAngle(angle);
+      for (const config of attacks) {
+        const range = config.range ?? 40;
+        const minRange = frustrated ? 0 : (config.minRange ?? 0);
+
+        if (distance < minRange || distance > range) continue;
+        if (Date.now() < (this.cooldowns.get(config.state) ?? 0)) continue;
 
         if (config.weapon) {
           const weapon = configs.weapons[config.weapon];
@@ -108,20 +113,21 @@ export class AttackBehavior extends Behavior {
             target.y >= hitboxY - halfH &&
             target.y <= hitboxY + halfH;
 
-          if (within)
-            return {
-              facing,
-              moving: [],
-              isRunning: false,
-              state: config.state,
-            };
-        } else
-          return {
-            facing,
-            moving: [],
-            isRunning: false,
-            state: config.state,
-          };
+          if (!within) continue;
+        }
+
+        this.lastAttackTime = Date.now();
+        this.cooldowns.set(
+          config.state,
+          Date.now() + (config.cooldown ?? 1000),
+        );
+
+        return {
+          facing,
+          moving: [],
+          isRunning: false,
+          state: config.state,
+        };
       }
 
       if (handlers.path.stuck(entity, this.stuck, now, 2)) {
@@ -152,13 +158,13 @@ export class AttackBehavior extends Behavior {
         if (input) return input;
       }
 
-      const angle = Phaser.Math.Angle.Between(
+      const chaseAngle = Phaser.Math.Angle.Between(
         entity.x,
         entity.y,
         target.x,
         target.y,
       );
-      const direction = handlers.direction.fromAngle(angle);
+      const direction = handlers.direction.fromAngle(chaseAngle);
 
       return {
         facing: direction,

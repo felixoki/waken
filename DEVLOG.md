@@ -415,20 +415,30 @@
 
 - Add crafting system ✅
 - Add tier updates ✅
+- Add health and mana regen ✅
+
+#### 25.4.2026
+
+- Add effects, resistances and weaknesses ✅
+- Add troll ✅
+- Refactor entity spawn generation ✅
 
 ### In progress
 
-- Add effects, resistances and weaknesses
+- Add fishing
 
 ### Bugs
+
+- Clicking multiple times multiplies harvesting
+- Multiplayer healthbar sync is broken
 
 ### Backlog
 
 - Electron wrapper ⭐
 
 - Magic ⭐
-  - Catch animal spell
-  - Absorb life
+  - Add catch animal spell
+  - Add absorb life spell
   - Add reflect damage spell
 
 - Animal taming ⭐
@@ -437,7 +447,7 @@
   - Add music, sound effects and ambience
 
 - Refactoring and improvement ⭐
-  - Add throttling network updates and change detection
+  - Add throttle network updates and change detection
   - Update interpolation system
   - Depth sorting for fences
 

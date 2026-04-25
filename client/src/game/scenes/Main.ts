@@ -19,6 +19,8 @@ import {
   TimePhase,
   StateName,
   Death,
+  Effect as ActiveEffect,
+  EffectName,
   Event,
   SpellName,
 } from "@server/types";
@@ -30,6 +32,7 @@ import { DamageableComponent } from "../components/Damageable";
 import { effects } from "../effects";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
+import { EffectFactory } from "../factory/Effect";
 import { Player } from "../Player";
 import type RealmScene from "./Realm";
 
@@ -259,6 +262,34 @@ export class MainScene extends Phaser.Scene {
     });
 
     this.socketManager.on(
+      Event.EFFECT_APPLY,
+      (data: { id: string; effect: ActiveEffect }) => {
+        const target =
+          this.entityManager.entities.get(data.id) ||
+          this.playerManager.others.get(data.id) ||
+          (this.playerManager.player?.id === data.id ? this.playerManager.player : undefined);
+        if (!target) return;
+        target.addEffect(EffectFactory.create(data.effect.name as EffectName, target));
+        if (this.playerManager.player?.id === data.id)
+          EventBus.emit(Event.EFFECT_APPLY, data.effect);
+      },
+    );
+
+    this.socketManager.on(
+      Event.EFFECT_REMOVE,
+      (data: { id: string; name: EffectName }) => {
+        const target =
+          this.entityManager.entities.get(data.id) ||
+          this.playerManager.others.get(data.id) ||
+          (this.playerManager.player?.id === data.id ? this.playerManager.player : undefined);
+        if (!target) return;
+        target.removeEffect(data.name);
+        if (this.playerManager.player?.id === data.id)
+          EventBus.emit(Event.EFFECT_REMOVE, data.name);
+      },
+    );
+
+    this.socketManager.on(
       Event.ENTITY_DIALOGUE_RESPONSE,
       (data: DialogueResponse) => {
         handlers.dialogue.start(data);
@@ -481,6 +512,10 @@ export class MainScene extends Phaser.Scene {
       this.socketManager.emit(Event.HIT, data);
     });
 
+    this.game.events.on(Event.PLAYER_CAST, (spell: string) => {
+      this.socketManager.emit(Event.PLAYER_CAST, spell);
+    });
+
     /**
      * Party
      */
@@ -618,6 +653,14 @@ export class MainScene extends Phaser.Scene {
         EventBus.emit(Event.PLAYER_REVIVE, data);
       },
     );
+
+    this.socketManager.on(Event.PLAYER_HEALTH, (health: number) => {
+      const player = this.playerManager.player;
+      if (!player) return;
+
+      player.health = health;
+      EventBus.emit(Event.PLAYER_HEALTH, health);
+    });
 
     this.socketManager.on(Event.PLAYER_MANA, (mana: number) => {
       const player = this.playerManager.player;

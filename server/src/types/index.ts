@@ -1,5 +1,7 @@
 export * from "./ambience.js";
+export * from "./damage.js";
 export * from "./animations.js";
+export * from "./effects.js";
 export * from "./behaviors.js";
 export * from "./collectors.js";
 export * from "./combat.js";

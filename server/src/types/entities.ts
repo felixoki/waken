@@ -6,12 +6,15 @@ import { BehaviorConfig } from './behaviors';
 import { Dialogue } from './dialogue';
 import { SpellName } from './spells';
 import { WeaponName } from './weapons';
+import { Effect, EffectName } from './effects.js';
 
 export interface AttackConfig {
   state: StateName;
   spell?: SpellName;
   weapon?: WeaponName;
   range?: number;
+  minRange?: number;
+  cooldown?: number;
 }
 
 export interface EntityConfig {
@@ -26,6 +29,13 @@ export interface EntityConfig {
   lockedBy?: string;
   facing?: Direction;
   storing?: (Item | null)[];
+  effects?: Effect[];
+}
+
+export interface ItemBonus {
+  spell?: SpellName;
+  weapon?: WeaponName;
+  effects: [EffectName, number][];
 }
 
 export interface EntityDefinition {
@@ -35,6 +45,7 @@ export interface EntityDefinition {
   states: StateName[];
   behaviors?: BehaviorConfig[];
   attacks?: AttackConfig[];
+  bonuses?: ItemBonus[];
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
   offset?: { x?: number; y?: number };
@@ -56,6 +67,7 @@ export interface EntityMetadata {
 export enum EntityName {
   APPLETREE2 = "appletree2",
   AXE = "axe",
+  AMULET1 = "amulet1",
   BAKER = "baker",
   BARN = "barn",
   BARREL1 = "barrel1",
@@ -125,7 +137,6 @@ export enum EntityName {
   HOUSE1 = "house1",
   HOUSE1_EXIT = "house1_exit",
   HOUSE2 = "house2",
-  IRON_ORE = "iron_ore",
   IRON1 = "iron1",
   LANTERN = "lantern",
   MARKET_STAND1 = "market_stand1",
@@ -154,6 +165,7 @@ export enum EntityName {
   TAVERN = "tavern",
   TAVERN_EXIT = "tavern_exit",
   TOMATO = "tomato",
+  TROLL = "troll",
   TOMATO_SEED = "tomato_seed",
   TORCH1 = "torch1",
   TREE1 = "tree1",

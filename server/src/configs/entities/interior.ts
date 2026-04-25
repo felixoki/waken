@@ -328,7 +328,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Chest",
-      description: "A sturdy wooden chest.",
+      description: "A sturdy wooden chest used to store valuables.",
     },
   },
 };

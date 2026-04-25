@@ -33,6 +33,11 @@ export class EntitySpawner {
     for (let r = 0; r < this.config.objects.length; r++) {
       const rule = this.config.objects[r];
 
+      if (rule.count) {
+        this._spawnCount(r, rule, terrain, entities, occupied);
+        continue;
+      }
+
       let noise: NoiseGenerator | null = null;
       if (rule.cluster)
         noise = new NoiseGenerator({
@@ -109,6 +114,59 @@ export class EntitySpawner {
     }
   }
 
+  private _spawnCount(
+    r: number,
+    rule: SpawnRule,
+    terrain: TerrainName[],
+    entities: Entity[],
+    occupied: Set<number>,
+  ) {
+    const { width, height, tileWidth, tileHeight } = this.config;
+    const gen = handlers.generation;
+    const rng = gen.seededRandom(gen.hash(`${this.seed}-${r}`));
+
+    const candidates: { x: number; y: number }[] = [];
+    
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++) {
+        const index = gen.toIndex(x, y, width);
+        if (occupied.has(index)) continue;
+        if (!rule.terrain.includes(terrain[index])) continue;
+        candidates.push({ x, y });
+      }
+
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+
+    const { min, max } = rule.count!;
+    const target = min + Math.floor(rng() * (max - min + 1));
+
+    let placed = 0;
+    for (const { x, y } of candidates) {
+      if (placed >= target) break;
+      if (occupied.has(gen.toIndex(x, y, width))) continue;
+
+      const hash = gen.spatialHash(x, y, r);
+      const name = rule.entities[hash % rule.entities.length];
+      const pos = gen.tileToWorld(x, y, tileWidth, tileHeight);
+      const offset = configs.entities[name]?.offset;
+
+      entities.push({
+        name,
+        x: pos.x + (offset?.x ?? 0),
+        y: pos.y + (offset?.y ?? 0),
+      });
+      placed++;
+
+      if (rule.group)
+        this._spawnGroup(x, y, r, hash, rule, terrain, entities, occupied);
+
+      this._reserve(occupied, x, y, rule.spacing);
+    }
+  }
+
   private _reserve(
     occupied: Set<number>,
     cx: number,
@@ -136,10 +194,10 @@ export class EntitySpawner {
   ): boolean {
     if (noise) {
       const value = (noise.generate(x, y) + 1) / 2;
-      return value * rule.density >= 0.25;
+      return value * (rule.density ?? 0) >= 0.25;
     }
 
     const hash = handlers.generation.spatialHash(x, y, r + 1000);
-    return handlers.generation.hashToUnit(hash) < rule.density;
+    return handlers.generation.hashToUnit(hash) < (rule.density ?? 0);
   }
 }

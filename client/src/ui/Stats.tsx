@@ -21,13 +21,13 @@ export function Stats() {
       <div className="w-75 h-6 bg-gray-800 rounded-md overflow-hidden">
         <div
           className="h-full bg-green-600 rounded"
-          style={{ width: `${health}%` }}
+          style={{ width: `${health}%`, transition: "width 0.4s ease" }}
         />
       </div>
       <div className="w-75 h-6 bg-gray-800 rounded-md overflow-hidden">
         <div
           className="h-full bg-blue-600 rounded"
-          style={{ width: `${mana}%` }}
+          style={{ width: `${mana}%`, transition: "width 0.4s ease" }}
         />
       </div>
     </div>

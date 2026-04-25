@@ -14,6 +14,7 @@ import { Seeds } from "./ui/Seeds";
 import { Spells } from "./ui/Spells";
 import { Storage } from "./ui/Storage";
 import { Collector } from "./ui/Collector";
+import { Effects } from "./ui/Effects";
 
 function App() {
   const game = useRef<Phaser.Game | null>(null);
@@ -41,6 +42,7 @@ function App() {
         <Party />
       </div>
       <Stats />
+      <Effects />
       <Economy />
       <div className="fixed top-4 left-4 flex flex-row gap-4">
         <div className="flex flex-col gap-4">

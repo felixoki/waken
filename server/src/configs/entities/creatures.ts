@@ -8,6 +8,7 @@ import {
   StateName,
   WeaponName,
 } from "../../types";
+import { DamageType } from "../../types/damage.js";
 
 export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.ORC1]: {
@@ -32,6 +33,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               chance: 0.5,
             },
           ],
+          weaknesses: [DamageType.BURNING],
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
@@ -95,6 +97,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               chance: 0.5,
             },
           ],
+          resistances: [DamageType.COLD],
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
@@ -120,6 +123,76 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
         range: 40,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+    ],
+  },
+  [EntityName.TROLL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.WOOD,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+            {
+              name: EntityName.IRON1,
+              quantity: 1,
+              stackable: true,
+              chance: 0.3,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 20,
+          offsetX: 32,
+          offsetY: 30,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+      StateName.THROWING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        range: 40,
+      },
+      {
+        state: StateName.THROWING,
+        range: 200,
+        minRange: 50,
+        cooldown: 4000,
       },
     ],
     behaviors: [

@@ -27,6 +27,11 @@ export const state = {
         needsUpdate: false,
       },
       {
+        condition: () => input.state === StateName.THROWING,
+        state: () => StateName.THROWING,
+        needsUpdate: false,
+      },
+      {
         condition: () =>
           input.target && input.equipped?.type === HotbarSlotType.SPELL,
         state: () => StateName.CASTING,

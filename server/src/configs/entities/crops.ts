@@ -46,7 +46,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Carrot Seed",
-      description: "Plant to grow a carrot.",
+      description: "A humble seed that grows into a crunchy carrot.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 1 },
     },
@@ -118,7 +118,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Carrot",
-      description: "A crunchy orange root vegetable.",
+      description: "A crunchy orange root vegetable grown from seed.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 1 },
     },
@@ -131,7 +131,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Tomato Seed",
-      description: "Plant to grow a tomato.",
+      description: "A small seed that ripens into a plump red tomato.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 2 },
     },
@@ -204,7 +204,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Tomato",
-      description: "A plump red fruit.",
+      description: "A plump red fruit grown on a low-lying vine.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 2 },
     },
@@ -217,7 +217,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Cabbage Seed",
-      description: "Plant to grow a cabbage.",
+      description: "A seed that grows into a full head of cabbage.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 3 },
     },
@@ -293,7 +293,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Cabbage",
-      description: "A leafy green vegetable.",
+      description: "A dense leafy green vegetable grown in rows.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 3 },
     },

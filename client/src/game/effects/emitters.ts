@@ -2,6 +2,54 @@ import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
 
 export const emitters = {
+  burning: (entity: Entity): () => void => {
+    const emitter = entity.scene.add.particles(0, 0, "particle_circle", {
+      tint: [0xff4400, 0xff8800, 0xffcc00],
+      alpha: { start: 0.8, end: 0 },
+      scale: { start: 0.3, end: 0.05 },
+      speed: { min: 10, max: 30 },
+      lifespan: 600,
+      frequency: 40,
+      quantity: 2,
+      blendMode: "ADD",
+      follow: entity,
+    });
+    emitter.setDepth(999);
+    return () => emitter.destroy();
+  },
+
+  cold: (entity: Entity): () => void => {
+    const emitter = entity.scene.add.particles(0, 0, "particle_circle", {
+      tint: [0xaaddff, 0xeeffff, 0xffffff],
+      alpha: { start: 0.6, end: 0 },
+      scale: { start: 0.2, end: 0.04 },
+      speed: { min: 5, max: 15 },
+      lifespan: 800,
+      frequency: 80,
+      quantity: 1,
+      blendMode: "ADD",
+      follow: entity,
+    });
+    emitter.setDepth(999);
+    return () => emitter.destroy();
+  },
+
+  poisoned: (entity: Entity): () => void => {
+    const emitter = entity.scene.add.particles(0, 0, "particle_circle", {
+      tint: [0x44cc44, 0x88ff44, 0x226622],
+      alpha: { start: 0.7, end: 0 },
+      scale: { start: 0.15, end: 0.03 },
+      speed: { min: 5, max: 20 },
+      lifespan: 700,
+      frequency: 100,
+      quantity: 1,
+      gravityY: 20,
+      follow: entity,
+    });
+    emitter.setDepth(999);
+    return () => emitter.destroy();
+  },
+
   shard: (scene: Scene, x: number, y: number, chargePercent?: number) => {
     const power = chargePercent ?? 1;
     const emitter = scene.add.particles(x, y, "particle_circle", {
@@ -580,6 +628,43 @@ export const emitters = {
       burst.destroy();
       debris.destroy();
       embers.destroy();
+    });
+  },
+
+  dust: (scene: Scene, x: number, y: number) => {
+    const puff = scene.add.particles(x, y, "particle_circle", {
+      tint: [0xb89a6a, 0xd4b87a, 0xc8a96e, 0xe8d0a0, 0x9a7a50],
+      alpha: { start: 0.6, end: 0 },
+      scale: { start: 0.5, end: 0.08 },
+      speed: { min: 25, max: 70 },
+      angle: { min: 190, max: 350 },
+      gravityY: 40,
+      lifespan: 700,
+      quantity: 22,
+      frequency: -1,
+      blendMode: "NORMAL",
+    });
+    puff.setDepth(2000);
+    puff.explode();
+
+    const grit = scene.add.particles(x, y, "particle_square", {
+      tint: [0x8a6a40, 0xaa8850, 0xc8a060],
+      alpha: { start: 0.8, end: 0 },
+      scale: { start: 0.18, end: 0.03 },
+      speed: { min: 40, max: 100 },
+      angle: { min: 180, max: 360 },
+      gravityY: 80,
+      lifespan: 500,
+      quantity: 14,
+      frequency: -1,
+      blendMode: "NORMAL",
+    });
+    grit.setDepth(2001);
+    grit.explode();
+
+    scene.time.delayedCall(700, () => {
+      puff.destroy();
+      grit.destroy();
     });
   },
 

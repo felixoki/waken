@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="3">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="4">
  <editorsettings>
-  <export target="../../waking/client/public/assets/maps/home.json" format="json"/>
+  <export target="../client/public/assets/maps/home.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="village_home_walls_floor" tilewidth="16" tileheight="16" tilecount="176" columns="11">
   <image source="../client/public/assets/sprites/village_home_walls_floor.png" width="176" height="256"/>
@@ -96,5 +96,6 @@
  </layer>
  <objectgroup id="7" name="objects">
   <object id="1" name="House1_Exit" x="184" y="192" width="1" height="1"/>
+  <object id="3" name="Chest1" x="174" y="140" width="1" height="1"/>
  </objectgroup>
 </map>

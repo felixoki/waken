@@ -480,6 +480,12 @@ const creatures: Spritesheet[] = [
     key: "shadow_wanderer-casting",
     file: "shadow_wanderer_casting_with_shadow.png",
   },
+  { key: "troll-idle", file: "troll_idle_with_shadow.png", frameWidth: 80, frameHeight: 80 },
+  { key: "troll-walking", file: "troll_walking_with_shadow.png", frameWidth: 80, frameHeight: 80 },
+  { key: "troll-running", file: "troll_running_with_shadow.png", frameWidth: 80, frameHeight: 80 },
+  { key: "troll-slashing", file: "troll_slashing_with_shadow.png", frameWidth: 80, frameHeight: 80 },
+  { key: "troll-throwing", file: "troll_throwing_with_shadow.png", frameWidth: 112, frameHeight: 112 },
+  { key: "troll_throwing_rock", file: "troll_throwing_rock.png" },
 ];
 
 export const maps: Record<MapName, MapConfig> = {
@@ -761,6 +767,7 @@ export const maps: Record<MapName, MapConfig> = {
     isIndoor: true,
     spritesheets: [
       ...player,
+      ...interior,
       {
         key: "village_home_interior",
         file: "village_home_interior.png",

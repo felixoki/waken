@@ -7,6 +7,7 @@ export enum StateName {
   SLASHING = "slashing",
   ROLLING = "rolling",
   DASHING = "dashing",
+  THROWING = "throwing",
   DEAD = "dead",
 }
 

@@ -12,9 +12,18 @@ import {
   SpellConfig,
   WeaponConfig,
 } from "../types";
+import { Effect, EffectName } from "../types/effects.js";
+import { DamageType } from "../types/damage.js";
 import { World } from "../World";
 import { configs } from "../configs";
-import { REVIVE_MANA } from "../globals";
+import {
+  REVIVE_MANA,
+  MISS_CHANCE,
+  CRIT_CHANCE,
+  CRIT_MULTIPLIER,
+  RESISTANCE_MULTIPLIER,
+  WEAKNESS_MULTIPLIER,
+} from "../globals";
 import { handlers } from ".";
 
 export const combat = {
@@ -32,6 +41,43 @@ export const combat = {
     const y = (dy / distance) * config.knockback;
 
     return { x, y };
+  },
+
+  calculateDamage: (
+    target: PlayerConfig | EntityConfig,
+    config: SpellConfig | WeaponConfig,
+    isEntity: boolean,
+  ): { damage: number; isMiss: boolean; isCritical: boolean } => {
+    if (Math.random() < MISS_CHANCE)
+      return { damage: 0, isMiss: true, isCritical: false };
+
+    let damage = config.damage.amount;
+    const damageType: DamageType = config.damage.type;
+
+    if (isEntity) {
+      const definition = configs.entities[(target as EntityConfig).name];
+      const damageable = definition?.components.find(
+        (c: ComponentConfig) => c.name === ComponentName.DAMAGEABLE,
+      );
+
+      if (damageable && damageable.config) {
+        const { resistances, weaknesses } = damageable.config;
+        if (resistances?.includes(damageType)) damage *= RESISTANCE_MULTIPLIER;
+        if (weaknesses?.includes(damageType)) damage *= WEAKNESS_MULTIPLIER;
+      }
+    }
+
+    const activeEffects: Effect[] = target.effects ?? [];
+
+    for (const effect of activeEffects) {
+      const multiplier = configs.interactions[effect.name]?.[damageType];
+      if (multiplier !== undefined) damage *= multiplier;
+    }
+
+    const isCritical = Math.random() < CRIT_CHANCE;
+    if (isCritical) damage *= CRIT_MULTIPLIER;
+
+    return { damage: Math.floor(damage), isMiss: false, isCritical };
   },
 
   kill: {
@@ -129,7 +175,12 @@ export const combat = {
 
     if (!attacker || !target || !config || (player && player.isDead)) return;
 
-    const health = target.health - config.damage;
+    const { damage, isMiss, isCritical } = combat.calculateDamage(
+      target,
+      config,
+      !!entity,
+    );
+    const health = target.health - damage;
 
     if (player && health <= 0) {
       combat.kill.player(player, attacker, config, socket, io, world);
@@ -146,15 +197,6 @@ export const combat = {
     if (player) players.update(target.id, { health });
     if (entity) entities.update(target.id, { health });
 
-    const event = {
-      id: target.id,
-      health,
-      knockback,
-      attackerId: attacker.id,
-    };
-
-    const emit = entity ? Event.ENTITY_HURT : Event.PLAYER_HURT;
-
     const key = entity
       ? world.chunks.getChunkByEntity(target.id)
       : (() => {
@@ -165,8 +207,155 @@ export const combat = {
           return world.chunks.toChunkKey(map, target.x, target.y, partyId);
         })();
 
+    const event = {
+      id: target.id,
+      health,
+      knockback,
+      attackerId: attacker.id,
+      isMiss,
+      isCritical,
+    };
+
+    const emit = entity ? Event.ENTITY_HURT : Event.PLAYER_HURT;
+
     if (key) socket.to(`chunk:${key}`).emit(emit, event);
     socket.emit(emit, event);
+
+    if (!isMiss)
+      combat.effects.apply(
+        target.id,
+        !!entity,
+        config,
+        world,
+        Date.now(),
+        key,
+        socket,
+        attacker.id,
+      );
+  },
+
+  effects: {
+    apply: (
+      targetId: string,
+      isEntity: boolean,
+      config: SpellConfig | WeaponConfig,
+      world: World,
+      now: number,
+      key: string | undefined,
+      socket: Socket,
+      attackerId?: string,
+    ) => {
+      const store = isEntity ? world.entities : world.players;
+      const target = store.get(targetId);
+      
+      if (!target) return;
+
+      const effects: [EffectName, number][] = [...(config.effects ?? [])];
+
+      if (attackerId) {
+        const inventory = world.players.get(attackerId)?.inventory ?? [];
+        for (const slot of inventory) {
+          if (!slot) continue;
+
+          for (const bonus of configs.entities[slot.name]?.bonuses ?? [])
+            if (
+              bonus.spell === (config as SpellConfig).name ||
+              bonus.weapon === (config as WeaponConfig).name
+            )
+              effects.push(...bonus.effects);
+        }
+      }
+
+      if (!effects.length) return;
+
+      const existing: Effect[] = target.effects ?? [];
+
+      for (const [name, duration] of effects) {
+        const effect: Effect = {
+          name,
+          expiresAt: now + duration,
+          lastTickAt: now,
+        };
+        existing.push(effect);
+
+        const applyEvent = { id: targetId, effect };
+        if (key) socket.to(`chunk:${key}`).emit(Event.EFFECT_APPLY, applyEvent);
+        socket.emit(Event.EFFECT_APPLY, applyEvent);
+      }
+
+      store.update(targetId, { effects: existing });
+    },
+
+    tick: (world: World, io: Server, now: number) => {
+      const targets: Array<{
+        id: string;
+        isEntity: boolean;
+        config:
+          | ReturnType<typeof world.entities.get>
+          | ReturnType<typeof world.players.get>;
+      }> = [
+        ...world.entities.all.map((e) => ({
+          id: e.id,
+          isEntity: true,
+          config: e,
+        })),
+        ...world.players.all.map((p) => ({
+          id: p.id,
+          isEntity: false,
+          config: p,
+        })),
+      ];
+
+      for (const { id, isEntity, config: target } of targets) {
+        if (!target?.effects?.length) continue;
+
+        const store = isEntity ? world.entities : world.players;
+        const chunkKey = isEntity
+          ? world.chunks.getChunkByEntity(id)
+          : undefined;
+        const playerSocketId = !isEntity
+          ? (target as ReturnType<typeof world.players.get>)?.socketId
+          : undefined;
+
+        const emit = (event: Event, data: object) => {
+          if (chunkKey) io.to(`chunk:${chunkKey}`).emit(event, data);
+          if (playerSocketId) io.to(playerSocketId).emit(event, data);
+        };
+
+        const remaining: Effect[] = [];
+
+        for (const effect of target.effects) {
+          if (now >= effect.expiresAt) {
+            emit(Event.EFFECT_REMOVE, { id, name: effect.name });
+            continue;
+          }
+
+          const definition = configs.effects[effect.name];
+          if (
+            definition.interval &&
+            definition.damage &&
+            effect.lastTickAt !== undefined &&
+            now - effect.lastTickAt >= definition.interval
+          ) {
+            const newHealth = Math.max(0, target.health - definition.damage);
+            store.update(id, { health: newHealth });
+            effect.lastTickAt = now;
+
+            const hurtEvent = isEntity ? Event.ENTITY_HURT : Event.PLAYER_HURT;
+            emit(hurtEvent, {
+              id,
+              health: newHealth,
+              knockback: { x: 0, y: 0 },
+              attackerId: id,
+            });
+          }
+
+          remaining.push(effect);
+        }
+
+        store.update(id, { effects: remaining });
+      }
+    },
   },
 
   revive: (data: Revive, socket: Socket, io: Server, world: World) => {

@@ -138,7 +138,8 @@ export interface GroupConfig {
 export interface SpawnRule {
   entities: EntityName[];
   terrain: TerrainName[];
-  density: number;
+  density?: number;
+  count?: { min: number; max: number };
   spacing: number;
   cluster?: boolean;
   group?: GroupConfig;

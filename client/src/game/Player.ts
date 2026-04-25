@@ -72,10 +72,10 @@ export class Player extends Entity {
       new HotbarComponent(this, [
         { type: HotbarSlotType.SPELL, name: SpellName.SHARD },
         { type: HotbarSlotType.SPELL, name: SpellName.SLASH },
+        { type: HotbarSlotType.SPELL, name: SpellName.LIGHTNING_STRIKE },
         { type: HotbarSlotType.ENTITY, name: EntityName.AXE },
         { type: HotbarSlotType.ENTITY, name: EntityName.LANTERN },
         { type: HotbarSlotType.ENTITY, name: EntityName.HOE },
-        null,
         null,
         null,
       ]),

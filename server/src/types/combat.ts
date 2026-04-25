@@ -12,6 +12,8 @@ export interface Hurt {
   health: number;
   knockback: { x: number; y: number };
   attackerId: string;
+  isMiss?: boolean;
+  isCritical?: boolean;
 }
 
 export interface Spot {

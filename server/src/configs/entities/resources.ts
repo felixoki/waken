@@ -27,7 +27,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Quartz",
-      description: "A small, delicate crystal with a pale glow.",
+      description: "A small translucent crystal with a faint pale glow.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 14, col: 19 },
     },
@@ -56,7 +56,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Wood",
-      description: "A piece of chopped wood.",
+      description: "A rough-cut log split from a felled tree.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 2, col: 28 },
     },
@@ -85,9 +85,9 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Bone",
-      description: "A cracked bone left behind by a fallen goblin.",
+      description: "A cracked bone stripped clean by tooth and claw.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 1, col: 13 },
+      icon: { spritesheet: "icons3", row: 2, col: 13 },
     },
   },
   [EntityName.IRON1]: {
@@ -97,9 +97,12 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "crystals",
+          spritesheet: "icons2",
           tileSize: 16,
-          tiles: [{ row: 8, start: 13, end: 13 }],
+          tiles: [
+            { row: 9, start: 20, end: 21 },
+            { row: 10, start: 20, end: 21 },
+          ],
         },
         key: "iron1_texture",
       },
@@ -111,7 +114,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Iron",
-      description: "A rough chunk of iron ore.",
+      description: "A rough chunk of iron ore pulled from the earth.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 10, col: 19 },
     },
@@ -128,9 +131,9 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Glass",
-      description: "A piece of refined glass, smooth and transparent.",
+      description: "A shard of refined glass, smooth and transparent.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 6, col: 19 },
+      icon: { spritesheet: "icons3", row: 4, col: 4 },
     },
   },
   [EntityName.VIAL]: {
@@ -145,9 +148,9 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Vial",
-      description: "A small glass vial, useful for storing liquids.",
+      description: "A slender glass vial used for storing liquids.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 4, col: 19 },
+      icon: { spritesheet: "icons2", row: 6, col: 28 },
     },
   },
 };

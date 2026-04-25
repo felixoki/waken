@@ -26,7 +26,7 @@ export function Economy() {
     <div className="fixed bottom-4 right-4 p-4 flex flex-col gap-2 max-w-135 bg-black/10 rounded-lg">
       <h3 className="text-white">Economy</h3>
       {snapshot.needs.map((need, i) => (
-        <ul key={i} className="flex flex-wrap gap-1">
+        <ul key={i} className="grid grid-cols-4 gap-1">
           {need.items.map((entry, j) => (
             <Item key={j} name={entry.item} bar={entry.quantity} />
           ))}

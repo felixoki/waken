@@ -151,6 +151,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.PARTY_START,
       handler: () => handlers.party.start(socket, io, world),
     },
+    {
+      event: Event.PLAYER_CAST,
+      handler: (spell: SpellName) =>
+        handlers.spell.cast(spell, socket, io, world),
+    },
     /**
      * Spells
      */

@@ -17,7 +17,14 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.DAMAGEABLE,
         config: {
-          loot: [],
+          loot: [
+            {
+              name: EntityName.BOAR_MEAT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },

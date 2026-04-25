@@ -1,5 +1,6 @@
 import { animations } from "./animations.js";
 import { COMMON_CHOICES, COMMON_NODES } from "./dialogue.js";
+import { effects, interactions } from "./effects.js";
 import { entities } from "./entities/index.js";
 import { maps } from "./maps.js";
 import { needs } from "./needs.js";
@@ -10,6 +11,8 @@ import { weapons } from "./weapons.js";
 
 export const configs = {
   animations,
+  effects,
+  interactions,
   entities,
   maps,
   spells,

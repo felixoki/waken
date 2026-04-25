@@ -14,7 +14,6 @@ import { HotbarComponent } from "../components/Hotbar";
 import { configs } from "@server/configs";
 import { DURATION_COMBO_LOCK, DURATION_FINISHER_LOCK } from "@server/globals";
 import { handlers } from ".";
-import EventBus from "../EventBus";
 
 export const combat = {
   resolve: (entity: Entity): SpellConfig | null => {
@@ -42,8 +41,7 @@ export const combat = {
     if (player.mana < config.mana) return false;
 
     if (player.isControllable) {
-      player.mana -= config.mana;
-      EventBus.emit(Event.PLAYER_MANA, player.mana);
+      entity.scene.game.events.emit(Event.PLAYER_CAST, config.name);
     }
 
     return true;
@@ -67,7 +65,7 @@ export const combat = {
       const comboStep = config.combo[step - 1];
       stepConfig = {
         ...config,
-        damage: comboStep.damage,
+        damage: { ...config.damage, amount: comboStep.damage },
         knockback: comboStep.knockback,
         duration: comboStep.duration ?? config.duration,
         hitbox: comboStep.hitbox,
