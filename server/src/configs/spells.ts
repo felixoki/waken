@@ -5,7 +5,7 @@ import { EffectName } from "../types/effects.js";
 export const spells: Record<SpellName, SpellConfig> = {
   [SpellName.SHARD]: {
     name: SpellName.SHARD,
-    damage: { type: DamageType.PHYSICAL, amount: 15 },
+    damage: { type: DamageType.PHYSICAL, amount: 35 },
     knockback: 50,
     mana: 10,
     speed: 300,
@@ -27,7 +27,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.SLASH]: {
     name: SpellName.SLASH,
-    damage: { type: DamageType.PHYSICAL, amount: 25 },
+    damage: { type: DamageType.PHYSICAL, amount: 30 },
     knockback: 100,
     mana: 15,
     duration: 300,
@@ -37,14 +37,14 @@ export const spells: Record<SpellName, SpellConfig> = {
     },
     combo: [
       {
-        damage: 30,
+        damage: 40,
         knockback: 100,
         duration: 300,
         offset: 20,
         hitbox: { width: 40, height: 40 },
       },
       {
-        damage: 40,
+        damage: 60,
         knockback: 160,
         duration: 300,
         offset: 28,
@@ -70,7 +70,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.HURT_SHADOWS]: {
     name: SpellName.HURT_SHADOWS,
-    damage: { type: DamageType.ILLUMINATED, amount: 75 },
+    damage: { type: DamageType.ILLUMINATED, amount: 90 },
     knockback: 0,
     mana: 30,
     duration: 300,
@@ -119,13 +119,13 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.LIGHTNING_STRIKE]: {
     name: SpellName.LIGHTNING_STRIKE,
-    damage: { type: DamageType.PHYSICAL, amount: 50 },
+    damage: { type: DamageType.PHYSICAL, amount: 150 },
     knockback: 120,
     mana: 90,
     duration: 300,
     hitbox: {
-      width: 30,
-      height: 30,
+      width: 40,
+      height: 40,
     },
     metadata: {
       description: "Strikes a single target with a bolt of high damage lightning.",

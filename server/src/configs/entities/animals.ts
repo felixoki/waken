@@ -12,6 +12,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BOAR]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 80,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -69,6 +70,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.DRAKE]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 20,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -95,6 +97,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.DUCK]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 20,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -121,6 +124,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.FOX]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 40,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -150,6 +154,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.DEER]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 50,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -191,6 +196,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.GOOSE]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 20,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },

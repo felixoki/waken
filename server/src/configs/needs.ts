@@ -2,6 +2,18 @@ import { EntityName, NeedConfig, NeedName } from "../types";
 
 export const needs: NeedConfig[] = [
   {
+    name: NeedName.CLOTHS,
+    items: [
+      { item: EntityName.DEER_HIDE, tier: 1 },
+    ],
+    consumption: {
+      1: 0.5,
+    },
+    threshold: {
+      1: 0.3,
+    },
+  },
+  {
     name: NeedName.FOOD,
     items: [
       { item: EntityName.VENISON_MEAT, tier: 1 },

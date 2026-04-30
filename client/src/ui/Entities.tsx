@@ -7,6 +7,7 @@ interface Entity {
   x: number;
   y: number;
   health: number;
+  maxHealth: number;
 }
 
 export function Entities() {
@@ -26,18 +27,21 @@ export function Entities() {
 
   return (
     <div className="fixed inset-0 pointer-events-none">
-      {entities.map((e) => (
-        <div
-          key={e.id}
-          className="w-12 h-2 bg-gray-800 rounded-xs overflow-hidden absolute"
-          style={{ left: e.x - 20, top: e.y - 40 }}
-        >
+      {entities.map((e) => {
+        const pct = (e.health / e.maxHealth) * 100;
+        return (
           <div
-            className={`h-full rounded-xs ${e.health < 30 ? "bg-red-600" : e.health < 70 ? "bg-yellow-600" : "bg-green-600"}`}
-            style={{ width: `${e.health}%` }}
-          />
-        </div>
-      ))}
+            key={e.id}
+            className="w-12 h-2 bg-gray-800 rounded-xs overflow-hidden absolute"
+            style={{ left: e.x - 20, top: e.y - 40 }}
+          >
+            <div
+              className={`h-full rounded-xs ${pct < 30 ? "bg-red-600" : pct < 70 ? "bg-yellow-600" : "bg-green-600"}`}
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

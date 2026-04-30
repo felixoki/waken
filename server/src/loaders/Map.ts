@@ -3,6 +3,8 @@ import { join } from "path";
 import { fileURLToPath } from "url";
 import { EntityConfig, EntityName, MapName, TiledMap } from "../types/index.js";
 import { randomUUID } from "crypto";
+import { configs } from "../configs/index.js";
+import { MAX_HEALTH } from "../globals.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, "..");
@@ -37,10 +39,13 @@ export class MapLoader {
 
     if (!name) return null;
 
+    const maxHealth = configs.entities[name]?.maxHealth ?? MAX_HEALTH;
+
     return {
       id: randomUUID(),
       name,
-      health: 100,
+      health: maxHealth,
+      maxHealth,
       map: id,
       x: obj.x,
       y: obj.y,

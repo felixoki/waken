@@ -37,16 +37,18 @@ export class InterfaceManager {
   ): Array<{
     id: string;
     health: number;
+    maxHealth: number;
     x: number;
     y: number;
   }> {
     const camera = this.scene.cameraManager;
 
     return entities
-      .filter((e) => e.active && e.health < 100)
+      .filter((e) => e.active && e.health < e.maxHealth)
       .map((e) => ({
         id: e.id,
         health: e.health,
+        maxHealth: e.maxHealth,
         ...camera.getScreenPosition(e.x, e.y, center),
       }));
   }

@@ -170,6 +170,7 @@ export const entity = {
       x: data.x,
       y: data.y,
       health: 1,
+      maxHealth: 1,
       isLocked: false,
     };
 

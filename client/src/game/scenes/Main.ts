@@ -74,6 +74,7 @@ export class MainScene extends Phaser.Scene {
       MapName.TAVERN,
       MapName.GLASSBLOWER_HOUSE,
       MapName.FISHING_HUT,
+      MapName.FARM_HOUSE,
     ];
     const ready = new Set<string>();
 
@@ -152,6 +153,7 @@ export class MainScene extends Phaser.Scene {
 
       EventBus.emit(Event.PLAYER_CREATE_LOCAL, data.id);
       EventBus.emit(Event.PLAYER_HEALTH, player.health);
+      EventBus.emit(Event.PLAYER_MAX_HEALTH, player.maxHealth);
       EventBus.emit(Event.PLAYER_MANA, player.mana);
 
       const inventory = player.getComponent<InventoryComponent>(
@@ -267,9 +269,15 @@ export class MainScene extends Phaser.Scene {
         const target =
           this.entityManager.entities.get(data.id) ||
           this.playerManager.others.get(data.id) ||
-          (this.playerManager.player?.id === data.id ? this.playerManager.player : undefined);
+          (this.playerManager.player?.id === data.id
+            ? this.playerManager.player
+            : undefined);
         if (!target) return;
-        target.addEffect(EffectFactory.create(data.effect.name as EffectName, target));
+
+        target.addEffect(
+          EffectFactory.create(data.effect.name as EffectName, target),
+        );
+
         if (this.playerManager.player?.id === data.id)
           EventBus.emit(Event.EFFECT_APPLY, data.effect);
       },
@@ -281,9 +289,14 @@ export class MainScene extends Phaser.Scene {
         const target =
           this.entityManager.entities.get(data.id) ||
           this.playerManager.others.get(data.id) ||
-          (this.playerManager.player?.id === data.id ? this.playerManager.player : undefined);
+          (this.playerManager.player?.id === data.id
+            ? this.playerManager.player
+            : undefined);
+
         if (!target) return;
+
         target.removeEffect(data.name);
+
         if (this.playerManager.player?.id === data.id)
           EventBus.emit(Event.EFFECT_REMOVE, data.name);
       },

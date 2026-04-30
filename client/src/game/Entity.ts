@@ -23,6 +23,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public isLocked: boolean = false;
   public isStatic: boolean = false;
   public health: number = 100;
+  public maxHealth: number = 100;
   public mana: number = 100;
   public createdAt: number = 0;
   public target?: { x: number; y: number };

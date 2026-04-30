@@ -153,4 +153,33 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons2", row: 6, col: 28 },
     },
   },
+  [EntityName.DEER_HIDE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 11, end: 12 },
+            { row: 10, start: 11, end: 12 },
+          ],
+        },
+        key: "deer_hide_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Deer hide",
+      description: "A supple hide stripped from a forest deer.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 10, col: 10 },
+    },
+  },
 };

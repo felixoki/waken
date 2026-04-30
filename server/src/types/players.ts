@@ -12,6 +12,7 @@ export interface PlayerConfig {
   y: number;
   facing: Direction;
   health: number;
+  maxHealth: number;
   mana: number;
   isAuthority: boolean;
   isDead: boolean;

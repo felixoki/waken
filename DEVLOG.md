@@ -433,16 +433,19 @@
 
 - Add fishing ✅
 
+#### 30.4.2026
+
+- Add max health ✅
+- Add farm house scene ✅
+- Returning from realm is too close to home entrance ✅
 
 ### In progress
 
 - Damage on hits ui
-- Add individual health
 
 ### Bugs
 
 - Multiplayer healthbar sync is broken
-- Returning from realm is too close to home entrance
 - Outer borders are off in generation
 
 ### Backlog

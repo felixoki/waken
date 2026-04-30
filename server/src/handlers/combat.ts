@@ -23,6 +23,7 @@ import {
   CRIT_MULTIPLIER,
   RESISTANCE_MULTIPLIER,
   WEAKNESS_MULTIPLIER,
+  MAX_HEALTH,
 } from "../globals";
 import { handlers } from ".";
 
@@ -149,7 +150,8 @@ export const combat = {
               map: target.map,
               x: target.x + (Math.random() - 0.5) * 32,
               y: target.y + (Math.random() - 0.5) * 32,
-              health: 100,
+              health: MAX_HEALTH,
+              maxHealth: MAX_HEALTH,
               isLocked: false,
             },
             socket,
@@ -376,7 +378,7 @@ export const combat = {
 
     world.players.update(target.id, {
       isDead: false,
-      health: 100,
+      health: target.maxHealth ?? MAX_HEALTH,
       x: reviver.x,
       y: reviver.y,
     });
@@ -387,7 +389,7 @@ export const combat = {
       id: target.id,
       x: reviver.x,
       y: reviver.y,
-      health: 100,
+      health: target.maxHealth ?? MAX_HEALTH,
     };
 
     io.to(`party:${party.id}`).emit(Event.PLAYER_REVIVE, reviveEvent);

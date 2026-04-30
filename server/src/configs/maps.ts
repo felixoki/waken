@@ -791,6 +791,36 @@ export const maps: Record<MapName, MapConfig> = {
       },
     ],
   },
+  [MapName.FARM_HOUSE]: {
+    id: MapName.FARM_HOUSE,
+    spawn: { x: 128, y: 168 },
+    json: "farm_house.json",
+    isIndoor: true,
+    spritesheets: [
+      ...player,
+      {
+        key: "fireplace",
+        file: "fireplace.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_farm_walls_floor",
+        file: "village_farm_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_farm_interior",
+        file: "village_farm_interior.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+    ],
+  },
   [MapName.HOME]: {
     id: MapName.HOME,
     spawn: { x: 184, y: 168 },

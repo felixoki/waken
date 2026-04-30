@@ -24,6 +24,7 @@ export interface EntityConfig {
   y: number;
   name: EntityName;
   health: number;
+  maxHealth: number;
   createdAt: number;
   isLocked: boolean;
   lockedBy?: string;
@@ -43,6 +44,7 @@ export interface EntityDefinition {
   moving: Direction[];
   components: ComponentConfig[];
   states: StateName[];
+  maxHealth?: number;
   behaviors?: BehaviorConfig[];
   attacks?: AttackConfig[];
   bonuses?: ItemBonus[];
@@ -112,9 +114,12 @@ export enum EntityName {
   CITIZEN13 = "citizen13",
   CLARY_SAGE = "clary_sage",
   DEER = "deer",
+  DEER_HIDE = "deer_hide",
   DAFFODIL = "daffodil",
   DRAKE = "drake",
   DUCK = "duck",
+  FARM_HOUSE = "farm_house",
+  FARM_HOUSE_EXIT = "farm_house_exit",
   FARMPLOT = "farmplot",
   FISHING_HUT = "fishing_hut",
   FISHING_HUT_EXIT = "fishing_hut_exit",

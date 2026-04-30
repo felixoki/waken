@@ -14,6 +14,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.ORC1]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 150,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -78,6 +79,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.GOBLIN1]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 60,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -142,6 +144,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.TROLL]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 300,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -212,6 +215,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.SHADOW_WANDERER]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 250,
     components: [
       { name: ComponentName.ANIMATION },
       {

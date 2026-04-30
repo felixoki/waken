@@ -29,6 +29,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.CLARY_SAGE,
             EntityName.BELLADONNA,
             EntityName.VIAL,
+            EntityName.BEARDED_TOOTH_FUNGUS,
           ],
           recipes: [
             {
@@ -105,11 +106,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [
-            EntityName.WOOD,
-            EntityName.IRON1,
-            EntityName.GLASS,
-          ],
+          accepts: [EntityName.WOOD, EntityName.IRON1, EntityName.GLASS],
           recipes: [
             {
               tier: 1,
@@ -270,7 +267,16 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [EntityName.VENISON_MEAT],
+          accepts: [
+            EntityName.VENISON_MEAT,
+            EntityName.BOAR_MEAT,
+            EntityName.CABBAGE,
+            EntityName.CARROT,
+            EntityName.TOMATO,
+            EntityName.PERCH,
+            EntityName.CARP,
+            EntityName.TROUT,
+          ],
           recipes: [],
         },
       },
@@ -291,20 +297,21 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [{ name: BehaviorName.STAY }],
     metadata: {
       displayName: "Greengrocer",
-      description: "A trader who collects and supplies fresh produce to villagers.",
+      description:
+        "A trader who collects and supplies fresh produce to villagers.",
     },
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What is your role in this village?",
+            text: "Where do you get your goods from?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I am the village greengrocer. I collect venison meat and provide fresh produce to the villagers. If you find any, please bring them to me.",
+        text: "I've got a farm up north, but someone's got to mind the shop. You're welcome to use the plots yourself if you fancy growing something to sell.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -399,7 +406,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [{ name: BehaviorName.STAY }],
     metadata: {
       displayName: "Beverage Saler",
-      description: "A vendor who mixes and sells refreshing drinks for villagers.",
+      description:
+        "A vendor who mixes and sells refreshing drinks for villagers.",
     },
     dialogue: {
       [NodeId.GREETING]: {

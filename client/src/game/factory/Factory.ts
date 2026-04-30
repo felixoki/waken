@@ -33,6 +33,7 @@ export class Factory {
     );
 
     entity.createdAt = definition.createdAt;
+    entity.maxHealth = definition.maxHealth;
 
     const components = ComponentFactory.create(definition.components, entity);
 

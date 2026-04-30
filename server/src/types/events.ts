@@ -18,6 +18,7 @@ export enum Event {
   PLAYER_REVIVE_REQUEST = "player_revive_request",
   PLAYER_SPECTATE_REQUEST = "player_spectate_request",
   PLAYER_HEALTH = "player_health",
+  PLAYER_MAX_HEALTH = "player_max_health",
   PLAYER_MANA = "player_mana",
   PLAYER_INVENTORY_WIPE = "player_inventory_wipe",
 

@@ -4,6 +4,7 @@ export enum NeedName {
   FOOD = 'food',
   RESOURCES = 'resources',
   INGREDIENTS = 'ingredients',
+  CLOTHS = 'cloths',
 }
 
 export interface Tier {

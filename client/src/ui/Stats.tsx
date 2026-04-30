@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { Event } from "@server/types";
+import { MAX_HEALTH } from "@server/globals";
 
 export function Stats() {
-  const [health, setHealth] = useState(100);
+  const [health, setHealth] = useState(MAX_HEALTH);
+  const [maxHealth, setMaxHealth] = useState(MAX_HEALTH);
   const [mana, setMana] = useState(100);
 
   useEffect(() => {
     EventBus.on(Event.PLAYER_HEALTH, setHealth);
+    EventBus.on(Event.PLAYER_MAX_HEALTH, setMaxHealth);
     EventBus.on(Event.PLAYER_MANA, setMana);
 
     return () => {
       EventBus.off(Event.PLAYER_HEALTH, setHealth);
+      EventBus.off(Event.PLAYER_MAX_HEALTH, setMaxHealth);
       EventBus.off(Event.PLAYER_MANA, setMana);
     };
   }, []);
@@ -21,7 +25,7 @@ export function Stats() {
       <div className="w-75 h-6 bg-gray-800 rounded-md overflow-hidden">
         <div
           className="h-full bg-green-600 rounded"
-          style={{ width: `${health}%`, transition: "width 0.4s ease" }}
+          style={{ width: `${(health / maxHealth) * 100}%`, transition: "width 0.4s ease" }}
         />
       </div>
       <div className="w-75 h-6 bg-gray-800 rounded-md overflow-hidden">

@@ -15,6 +15,7 @@ import { handlers } from "./index.js";
 import { WORLD_ID } from "../server.js";
 import { save } from "../db/save.js";
 import { load } from "../db/load.js";
+import { MAX_HEALTH } from "../globals.js";
 
 export const player = {
   create: async (socket: Socket, world: World, playerId?: string) => {
@@ -39,7 +40,8 @@ export const player = {
         x: isRealmSave ? map.spawn.x : saved?.position?.x || map.spawn.x,
         y: isRealmSave ? map.spawn.y : saved?.position?.y || map.spawn.y,
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
-        health: saved?.health || 100,
+        health: saved?.health || MAX_HEALTH,
+        maxHealth: MAX_HEALTH,
         mana: saved?.mana || 100,
         isAuthority,
         isDead: false,

@@ -5,6 +5,7 @@ import { EntityConfig, Event, MapName, PartyStatus } from "../types";
 import { BiomeName } from "../types/generation";
 import { configs } from "../configs/index.js";
 import { handlers } from ".";
+import { MAX_HEALTH } from "../globals.js";
 
 export const party = {
   lives: (id: string, world: World): boolean => {
@@ -41,7 +42,7 @@ export const party = {
         village.spawn.x,
         village.spawn.y,
         {
-          health: 100,
+          health: MAX_HEALTH,
           isDead: false,
           inventory: new Array(20).fill(null),
         },
@@ -157,7 +158,7 @@ export const party = {
         village.spawn.y,
         {
           isDead: false,
-          health: 100,
+          health: MAX_HEALTH,
         },
         undefined,
         data.id,
@@ -201,13 +202,15 @@ export const party = {
 
     const entities: EntityConfig[] = biome.entities.map((biomeEntity) => {
       const id = randomUUID();
+      const maxHealth = configs.entities[biomeEntity.name]?.maxHealth ?? MAX_HEALTH;
       const config: EntityConfig = {
         id,
         map: MapName.REALM,
         name: biomeEntity.name,
         x: biomeEntity.x,
         y: biomeEntity.y,
-        health: 100,
+        health: maxHealth,
+        maxHealth,
         createdAt: Date.now(),
         isLocked: false,
       };

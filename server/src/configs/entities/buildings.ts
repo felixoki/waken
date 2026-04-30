@@ -104,6 +104,54 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.FARM_HOUSE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_farm_house",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 18, end: 25 },
+            { row: 3, start: 18, end: 25 },
+            { row: 4, start: 18, end: 25 },
+            { row: 5, start: 18, end: 25 },
+            { row: 6, start: 18, end: 25 },
+            { row: 7, start: 18, end: 25 },
+            { row: 8, start: 18, end: 25 },
+            { row: 9, start: 18, end: 25 },
+          ],
+        },
+        key: "farm_house_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 112,
+          height: 48,
+          offsetX: 8,
+          offsetY: 48,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.FARM_HOUSE,
+          x: 128,
+          y: 168,
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 32,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.WINDMILL]: {
     facing: Direction.DOWN,
     moving: [],
@@ -129,7 +177,7 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
+        config: { width: 56, height: 56, offsetX: 40, offsetY: 72, static: true },
       },
     ],
     states: [],
@@ -156,7 +204,7 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
+        config: { width: 80, height: 32, offsetX: 0, offsetY: 32, static: true },
       },
     ],
     states: [],
@@ -182,7 +230,7 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 64, height: 64, offsetX: 0, offsetY: 0, static: true },
+        config: { width: 32, height: 24, offsetX: 8, offsetY: 2, static: true },
       },
     ],
     states: [],
@@ -492,10 +540,10 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 104,
-          height: 56,
+          width: 94,
+          height: 48,
           offsetX: 18,
-          offsetY: 0,
+          offsetY: 48,
           static: true,
         },
       },
@@ -503,12 +551,12 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.TRANSITION,
         config: {
           to: MapName.FISHING_HUT,
-          x: 144,
-          y: 260,
+          x: 87,
+          y: 120,
           width: 16,
           height: 16,
           offsetX: 0,
-          offsetY: 64,
+          offsetY: 48,
         },
       },
     ],

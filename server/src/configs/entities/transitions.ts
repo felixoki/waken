@@ -79,7 +79,7 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           to: MapName.VILLAGE,
           x: 432,
-          y: 608,
+          y: 632,
           width: 32,
           height: 16,
           offsetX: 0,
@@ -140,6 +140,46 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
           to: MapName.VILLAGE,
           x: 376,
           y: 1407,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.FARM_HOUSE_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 944,
+          y: 142,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.FISHING_HUT_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 856,
+          y: 1396,
           width: 32,
           height: 16,
           offsetX: 0,

@@ -149,6 +149,7 @@ export const player = {
         y: p.y,
         name: EntityName.LANTERN,
         health: 1,
+        maxHealth: 1,
         createdAt: 0,
         isLocked: false,
         facing: p.facing,

@@ -89,7 +89,7 @@ export class World {
 
         const health = Math.min(
           player.health + REGEN_HEALTH_PER_SECOND,
-          MAX_HEALTH,
+          player.maxHealth ?? MAX_HEALTH,
         );
         const mana = Math.min(player.mana + REGEN_MANA_PER_SECOND, MAX_MANA);
 
