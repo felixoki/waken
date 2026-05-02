@@ -15,6 +15,7 @@ import { Spells } from "./ui/Spells";
 import { Storage } from "./ui/Storage";
 import { Collector } from "./ui/Collector";
 import { Effects } from "./ui/Effects";
+import { DamageNumbers } from "./ui/DamageNumbers";
 
 function App() {
   const game = useRef<Phaser.Game | null>(null);
@@ -38,6 +39,7 @@ function App() {
       <div id="game" className="w-screen h-screen"></div>
       <Loading />
       <Entities />
+      <DamageNumbers />
       <div className="fixed top-4 right-4 bg-black/25 rounded-lg p-4 min-w-75">
         <Party />
       </div>

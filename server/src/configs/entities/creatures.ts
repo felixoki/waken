@@ -144,7 +144,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.TROLL]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 300,
+    maxHealth: 340,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -152,16 +152,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.WOOD,
+              name: EntityName.AMULET1,
               quantity: 1,
               stackable: true,
-              chance: 0.5,
-            },
-            {
-              name: EntityName.IRON1,
-              quantity: 1,
-              stackable: true,
-              chance: 0.3,
+              chance: 0.25,
             },
           ],
         },

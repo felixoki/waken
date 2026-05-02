@@ -4,6 +4,7 @@ export enum EffectName {
   COLD = "cold",
   POISONED = "poisoned",
   ILLUMINATED = "illuminated",
+  REGAIN = "regain",
 }
 
 export interface Effect {

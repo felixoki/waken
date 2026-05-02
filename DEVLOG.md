@@ -439,14 +439,26 @@
 - Add farm house scene ✅
 - Returning from realm is too close to home entrance ✅
 
+#### 1.5.2026
+
+- Add menu video background ✅
+- Outer borders are off in generation ✅
+- Night time isn't working in realm ✅
+- Add consumable component ✅
+- Add regain effect ✅
+- Add damage hits ui ✅
+
+#### 2.5.2026
+
+- Returning from realm will not fade map back in ✅
+- Add game title to menu ✅
+- Multiplayer healthbar sync is broken ✅
+
 ### In progress
 
-- Damage on hits ui
 
 ### Bugs
 
-- Multiplayer healthbar sync is broken
-- Outer borders are off in generation
 
 ### Backlog
 
@@ -458,6 +470,10 @@
   - Add reflect damage spell
 
 - Animal taming ⭐
+
+- Cooking ⭐
+
+- Building ⭐
 
 - Game sounds ⭐
   - Add music, sound effects and ambience
@@ -490,31 +506,6 @@
 
 - Tier 1: Deer hide
 - Tier 2: Sheep wool, Fox pelt
-
-## Collectors
-
-**Blacksmith**
-
-- Collects: Wood, Iron, Glass
-- Produces: Axe, Lantern, Hoe
-
-**Herbalist**
-
-- Collects:
-  - T1: Sunflower, Mugwort, Daffodil
-  - T2: Blue lotus, Clary sage, Bearded tooth fungus
-  - Vial, Wood
-- Produces: Potions
-
-**Glassblower**
-
-- Collects: Potash (Wood), Quartz, Bone ash (Bones)
-- Produces: Glass, Vial
-
-**Mage**
-
-- Collects: Iron, Glass, Pearls, Gems, Runes
-- Produces: Rings, Amulets, Spells
 
 ## Procedural generation configs
 

@@ -4,6 +4,7 @@ import { CollectorConfig } from "./collectors";
 import { LightConfig } from "./ambience";
 import { GrowthStageConfig } from "./farming";
 import { DamageType } from "./damage.js";
+import { EffectName } from "./effects.js";
 import { SpellName } from "./spells";
 
 export enum ComponentName {
@@ -13,6 +14,7 @@ export enum ComponentName {
   BODY = "body",
   BOUNCE = "bounce",
   COLLECTOR = "collector",
+  CONSUMABLE = "consumable",
   DAMAGEABLE = "damageable",
   FARMABLE = "farmable",
   FELLABLE = "fellable",
@@ -40,6 +42,7 @@ export type ComponentConfig =
   | { name: ComponentName.BODY; config: BodyConfig }
   | { name: ComponentName.BOUNCE }
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
+  | { name: ComponentName.CONSUMABLE; config: ConsumableConfig }
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
   | { name: ComponentName.FARMABLE }
   | { name: ComponentName.FELLABLE }
@@ -146,6 +149,11 @@ export interface GrowableConfig {
   yield: Item[];
   regrows?: boolean;
   needsWater?: boolean;
+}
+
+export interface ConsumableConfig {
+  effect: EffectName;
+  restore: { health?: number; mana?: number };
 }
 
 export interface StorageConfig {

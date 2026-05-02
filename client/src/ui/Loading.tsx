@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import EventBus from "../game/EventBus";
 import { Event } from "@server/types";
 
-type Phase = "hidden" | "fade-in" | "visible" | "fade-out";
-
 const FADE_MS = 300;
 const TIP_MS = 10_000;
 
@@ -20,47 +18,38 @@ function randomTip(exclude?: string) {
 }
 
 export function Loading() {
-  const [phase, setPhase] = useState<Phase>("hidden");
+  const [visible, setVisible] = useState(false);
   const [showTips, setShowTips] = useState(false);
   const [tip, setTip] = useState(randomTip);
   const interval = useRef<ReturnType<typeof setInterval>>();
 
   useEffect(() => {
-    const show = (withTips?: boolean) => {
-      setShowTips(withTips === true);
+    const show = (opts?: { tips?: boolean }) => {
+      const withTips = opts?.tips === true;
+      setShowTips(withTips);
       if (withTips) setTip(randomTip());
-      setPhase((p) => (p === "visible" || p === "fade-in" ? p : "fade-in"));
+      setVisible(true);
     };
 
-    const hide = () => setPhase("fade-out");
+    const hide = () => setVisible(false);
 
-    EventBus.on(Event.TRANSITION_START, show);
-    EventBus.on(Event.TRANSITION_END, hide);
+    EventBus.on(Event.LOADING_SHOW, show);
+    EventBus.on(Event.LOADING_HIDE, hide);
 
     return () => {
-      EventBus.off(Event.TRANSITION_START, show);
-      EventBus.off(Event.TRANSITION_END, hide);
+      EventBus.off(Event.LOADING_SHOW, show);
+      EventBus.off(Event.LOADING_HIDE, hide);
     };
   }, []);
 
   useEffect(() => {
     clearInterval(interval.current);
 
-    if (showTips && (phase === "fade-in" || phase === "visible"))
+    if (showTips && visible)
       interval.current = setInterval(() => setTip(randomTip), TIP_MS);
 
     return () => clearInterval(interval.current);
-  }, [showTips, phase]);
-
-  const onTransitionEnd = () => {
-    if (phase === "fade-in") {
-      setPhase("visible");
-      EventBus.emit(Event.TRANSITION_LOAD);
-    }
-    if (phase === "fade-out") setPhase("hidden");
-  };
-
-  const visible = phase === "fade-in" || phase === "visible";
+  }, [showTips, visible]);
 
   return (
     <div
@@ -68,9 +57,8 @@ export function Loading() {
       style={{
         opacity: visible ? 1 : 0,
         transition: `opacity ${FADE_MS}ms ease-in-out`,
-        pointerEvents: phase === "hidden" ? "none" : "auto",
+        pointerEvents: visible ? "auto" : "none",
       }}
-      onTransitionEnd={onTransitionEnd}
     >
       {showTips && visible && <p className="text-white text-2xl animate-pulse">{tip}</p>}
     </div>

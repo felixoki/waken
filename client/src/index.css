@@ -25,6 +25,7 @@
 body {
   height: 100vh;
   background-color: var(--color-gray-900);
+  font-family: "Pixelify Sans", sans-serif;
 }
 
 @font-face {
@@ -36,4 +37,50 @@ body {
 
 .font-arco {
   font-family: "Arco", sans-serif;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-dream {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dream-glow {
+  0%, 100% {
+    text-shadow:
+      0 0 10px rgba(200, 220, 255, 0.15),
+      0 0 30px rgba(180, 200, 255, 0.08);
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow:
+      0 0 15px rgba(200, 220, 255, 0.25),
+      0 0 40px rgba(180, 200, 255, 0.12);
+    filter: brightness(1.05);
+  }
+}
+
+@keyframes letter-drift {
+  0%, 100% {
+    transform: translateY(0px) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-2px) scale(1.02) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(1px) scale(0.98) rotate(-0.5deg);
+  }
+  75% {
+    transform: translateY(-1px) scale(1.01) rotate(0.3deg);
+  }
 }

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Event, HotbarSlotType, SpellName } from "@server/types";
 import EventBus from "../game/EventBus";
-import { configs } from "@server/configs";
-import { Icon } from "./Icon";
+import { Item } from "./Item";
 
 export function Spells() {
   const [spells, setSpells] = useState<SpellName[]>([]);
@@ -41,30 +40,10 @@ export function Spells() {
       <h3 className="text-white mb-2">Spells</h3>
       <ul className="flex flex-wrap gap-1">
         {spells.map((spell) => (
-          <Spell key={spell} name={spell} onClick={() => equip(spell)} />
+          <Item key={spell} name={spell} onClick={() => equip(spell)} />
         ))}
         {!spells.length && <li className="text-white text-sm">No spells available</li>}
       </ul>
     </div>
-  );
-}
-
-function Spell({ name, onClick }: { name: SpellName; onClick: () => void }) {
-  const config = configs.spells[name];
-
-  return (
-    <li>
-      <button
-        title={config?.metadata?.description || name}
-        className="relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square bg-gray-200"
-        onClick={onClick}
-      >
-        {config?.metadata?.icon ? (
-          <Icon icon={config.metadata.icon} />
-        ) : (
-          config?.metadata?.displayName || name
-        )}
-      </button>
-    </li>
   );
 }

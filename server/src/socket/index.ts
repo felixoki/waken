@@ -106,6 +106,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.ITEM_COLLECT,
       handler: (data: Item) => handlers.item.collect(data, socket, io, world),
     },
+    {
+      event: Event.ITEM_CONSUME,
+      handler: (data: { name: string }) =>
+        handlers.item.consume(data, socket, io, world),
+    },
     /**
      * Farming
      */

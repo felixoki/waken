@@ -84,7 +84,7 @@ export const party = {
       data.status = PartyStatus.LOBBY;
       world.authority.clear(MapName.REALM, data.id);
 
-      socket.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
+      io.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
       party.broadcast(socket, world);
     }
   },

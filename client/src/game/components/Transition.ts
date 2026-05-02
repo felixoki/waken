@@ -7,6 +7,7 @@ export class TransitionComponent extends Component {
   private config: TransitionConfig;
   private zone?: Phaser.GameObjects.Zone;
   private collider?: Phaser.Physics.Arcade.Collider;
+  private fired = false;
 
   public name = ComponentName.TRANSITION;
 
@@ -42,11 +43,12 @@ export class TransitionComponent extends Component {
   }
 
   update(): void {
-    if (this.zone && this.entity)
-      this.zone.setPosition(
-        this.entity.x + this.config.offsetX,
-        this.entity.y + this.config.offsetY,
-      );
+    if (!this.zone || !this.entity) return;
+
+    this.zone.setPosition(
+      this.entity.x + this.config.offsetX,
+      this.entity.y + this.config.offsetY,
+    );
   }
 
   detach(): void {
@@ -55,13 +57,21 @@ export class TransitionComponent extends Component {
   }
 
   private _enter(_zone: any, player: any): void {
+    if (this.fired) return;
+
     const local = player as Entity;
     if (local !== this.entity.scene.managers.players.player) return;
+
+    this.fired = true;
 
     this.entity.scene.game.events.emit(Event.PLAYER_TRANSITION, {
       to: this.config.to,
       x: this.config.x,
       y: this.config.y,
     });
+
+    setTimeout(() => {
+      this.fired = false;
+    }, 1000);
   }
 }

@@ -210,7 +210,42 @@ export function Menu({ ready }: { ready: () => void }) {
 
   return (
     <div className="fixed inset-0 flex flex-col">
-      <div className={`absolute bottom-0 inset-x-0 flex gap-4 px-8 pb-8 transition-opacity duration-200 ${modal || showWorlds ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/assets/videos/mountains.mp4"
+      />
+      <div className="absolute inset-0 bg-black/30" />
+      <div
+        className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-200 ${modal || showWorlds ? "!opacity-0" : ""}`}
+      >
+        <h1 className="font-arco text-white text-[10rem] leading-none animate-[fade-in-dream_3s_ease-out_forwards,dream-glow_4s_ease-in-out_3s_infinite] opacity-0 drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]">
+          <span className="inline-block animate-[letter-drift_14s_ease-in-out_infinite]">
+            w
+          </span>
+          <span className="inline-block animate-[letter-drift_12s_ease-in-out_1s_infinite]">
+            a
+          </span>
+          <span className="inline-block animate-[letter-drift_16s_ease-in-out_2s_infinite]">
+            k
+          </span>
+          <span className="inline-block animate-[letter-drift_13s_ease-in-out_3s_infinite]">
+            e
+          </span>
+          <span className="inline-block animate-[letter-drift_15s_ease-in-out_4s_infinite]">
+            n
+          </span>
+        </h1>
+        <p className="text-white/50 text-lg tracking-widest mt-4 animate-[fade-in_3s_ease-out_1.5s_forwards] opacity-0">
+          by Discount Games
+        </p>
+      </div>
+      <div
+        className={`absolute bottom-0 inset-x-0 flex gap-4 px-8 pb-8 transition-opacity duration-200 ${modal || showWorlds ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+      >
         <button
           onClick={() => openModal("new")}
           className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors"
@@ -236,10 +271,16 @@ export function Menu({ ready }: { ready: () => void }) {
         <MenuOverlay
           closing={closing === "worlds"}
           onClose={closeWorlds}
-          onExited={() => { setShowWorlds(false); setClosing(null); setError(""); }}
+          onExited={() => {
+            setShowWorlds(false);
+            setClosing(null);
+            setError("");
+          }}
         >
           <div className="flex flex-col h-full px-16 py-16">
-            <h2 className="text-white text-3xl font-semibold mb-8">Load game</h2>
+            <h2 className="text-white text-3xl font-semibold mb-8">
+              Load game
+            </h2>
             {worlds.length === 0 ? (
               <p className="text-white/40">No worlds found.</p>
             ) : (
@@ -249,12 +290,17 @@ export function Menu({ ready }: { ready: () => void }) {
                     <tr className="border-b border-white/10 text-white/40 text-sm text-left">
                       <th className="pb-4 px-4 font-normal">Name</th>
                       <th className="pb-4 px-4 font-normal">Created</th>
-                      <th className="pb-4 px-4 font-normal text-right">Actions</th>
+                      <th className="pb-4 px-4 font-normal text-right">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {worlds.map((w) => (
-                      <tr key={w.id} className="border-b border-white/5 hover:bg-white/5">
+                      <tr
+                        key={w.id}
+                        className="border-b border-white/5 hover:bg-white/5"
+                      >
                         <td className="py-4 px-4 text-lg">{w.name}</td>
                         <td className="py-4 px-4 text-white/50">
                           {new Date(w.created_at).toLocaleDateString()}
@@ -295,11 +341,18 @@ export function Menu({ ready }: { ready: () => void }) {
         <MenuOverlay
           closing={closing === "new"}
           onClose={closeModal}
-          onExited={() => { setModal(null); setClosing(null); setError(""); setWorld(""); }}
+          onExited={() => {
+            setModal(null);
+            setClosing(null);
+            setError("");
+            setWorld("");
+          }}
         >
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-4 w-full max-w-xl px-8">
-              <h2 className="text-white text-3xl font-semibold mb-4">New game</h2>
+              <h2 className="text-white text-3xl font-semibold mb-4">
+                New game
+              </h2>
               <div className="flex gap-3 w-full">
                 <input
                   type="text"
@@ -319,7 +372,9 @@ export function Menu({ ready }: { ready: () => void }) {
                   {loading ? "Creating..." : "Create"}
                 </button>
               </div>
-              {error && <p className="text-red-400 text-sm self-start">{error}</p>}
+              {error && (
+                <p className="text-red-400 text-sm self-start">{error}</p>
+              )}
             </div>
           </div>
         </MenuOverlay>
@@ -329,11 +384,18 @@ export function Menu({ ready }: { ready: () => void }) {
         <MenuOverlay
           closing={closing === "join"}
           onClose={closeModal}
-          onExited={() => { setModal(null); setClosing(null); setError(""); setJoinId(""); }}
+          onExited={() => {
+            setModal(null);
+            setClosing(null);
+            setError("");
+            setJoinId("");
+          }}
         >
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-4 w-full max-w-xl px-8">
-              <h2 className="text-white text-3xl font-semibold mb-4">Join Game</h2>
+              <h2 className="text-white text-3xl font-semibold mb-4">
+                Join Game
+              </h2>
               <div className="flex gap-3 w-full">
                 <input
                   type="text"
@@ -353,7 +415,9 @@ export function Menu({ ready }: { ready: () => void }) {
                   {loading ? "Joining..." : "Join"}
                 </button>
               </div>
-              {error && <p className="text-red-400 text-sm self-start">{error}</p>}
+              {error && (
+                <p className="text-red-400 text-sm self-start">{error}</p>
+              )}
             </div>
           </div>
         </MenuOverlay>

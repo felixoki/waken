@@ -23,8 +23,6 @@ import { configs } from "@server/configs";
 import type { Player } from "../Player";
 
 export const player = {
-  _transitioning: false,
-
   nearest: (
     entity: Entity,
     vision?: { distance: number; fov: number; rays?: number },
@@ -179,18 +177,15 @@ export const player = {
 
   transition: (data: PlayerConfig, main: MainScene): void => {
     if (!main.playerManager.player) return;
-    if (player._transitioning) return;
-    player._transitioning = true;
 
-    EventBus.emit(Event.TRANSITION_START);
+    EventBus.emit(Event.LOADING_SHOW);
 
-    const onReady = () => {
-      EventBus.off(Event.TRANSITION_LOAD, onReady);
-      player._transitioning = false;
-      player.swap(data, main);
-      EventBus.emit(Event.TRANSITION_END);
-    };
-
-    EventBus.on(Event.TRANSITION_LOAD, onReady);
+    setTimeout(() => {
+      try {
+        player.swap(data, main);
+      } finally {
+        EventBus.emit(Event.LOADING_HIDE);
+      }
+    }, 300);
   },
 };

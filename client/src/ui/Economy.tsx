@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { EconomySnapshot, Event } from "@server/types";
+import { MAX_STACK } from "@server/globals";
 import { Item } from "./Item";
 
 export function Economy() {
@@ -28,7 +29,7 @@ export function Economy() {
       {snapshot.needs.map((need, i) => (
         <ul key={i} className="grid grid-cols-4 gap-1">
           {need.items.map((entry, j) => (
-            <Item key={j} name={entry.item} bar={entry.quantity} />
+            <Item key={j} name={entry.item} bar={entry.quantity} barLabel={`${entry.quantity}/${MAX_STACK}`} />
           ))}
         </ul>
       ))}

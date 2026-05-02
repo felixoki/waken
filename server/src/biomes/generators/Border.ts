@@ -116,6 +116,19 @@ export class BorderGenerator {
     if (has.east && !has.west)
       return { role: TileRole.BORDER_OUTER, position: BorderPosition.LEFT };
 
+    /** Paired diagonals → straight edge */
+    if (has.northwest && has.northeast && !has.north)
+      return { role: TileRole.BORDER_OUTER, position: BorderPosition.BOTTOM };
+
+    if (has.southwest && has.southeast && !has.south)
+      return { role: TileRole.BORDER_OUTER, position: BorderPosition.TOP };
+
+    if (has.northwest && has.southwest && !has.west)
+      return { role: TileRole.BORDER_OUTER, position: BorderPosition.RIGHT };
+
+    if (has.northeast && has.southeast && !has.east)
+      return { role: TileRole.BORDER_OUTER, position: BorderPosition.LEFT };
+
     /** Outer corners */
     if (has.northwest && !has.north && !has.west)
       return {

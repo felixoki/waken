@@ -14,6 +14,7 @@ import { GlimmerComponent } from "../components/Glimmer";
 
 export class AmbienceManager {
   private scene: MainScene;
+  private current: TimePhase | null = null;
   private ambientColors = new Map<
     string,
     { r: number; g: number; b: number }
@@ -23,7 +24,12 @@ export class AmbienceManager {
     this.scene = scene;
   }
 
+  get phase(): TimePhase | null {
+    return this.current;
+  }
+
   setPhase(phase: TimePhase, animate: boolean) {
+    this.current = phase;
     const preset = configs.time.phases[phase];
 
     const pipelines = this._getPipelines();

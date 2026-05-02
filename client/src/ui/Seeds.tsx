@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { EntityName, Event, seeds } from "@server/types";
 import EventBus from "../game/EventBus";
-import { configs } from "@server/configs";
-import { Icon } from "./Icon";
+import { Item } from "./Item";
 
 const available = Object.keys(seeds) as EntityName[];
 
@@ -34,7 +33,7 @@ export function Seeds() {
       <h3 className="text-white">Seeds</h3>
       <ul className="flex gap-1">
         {available.map((seed) => (
-          <Seed
+          <Item
             key={seed}
             name={seed}
             onClick={() => pick(seed)}
@@ -46,35 +45,5 @@ export function Seeds() {
         )}
       </ul>
     </div>
-  );
-}
-
-function Seed({
-  name,
-  onClick,
-  active,
-}: {
-  name: EntityName;
-  onClick: () => void;
-  active: boolean;
-}) {
-  const config = name ? configs.entities[name] : null;
-
-  return (
-    <li>
-      <button
-        title={config?.metadata?.description || name || ""}
-        className={`relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square ${
-          active ? "text-blue-600 bg-blue-100" : "bg-gray-200"
-        }`}
-        onClick={onClick}
-      >
-        {config?.metadata?.icon ? (
-          <Icon icon={config.metadata.icon} />
-        ) : (
-          config?.metadata?.displayName || name || ""
-        )}
-      </button>
-    </li>
   );
 }

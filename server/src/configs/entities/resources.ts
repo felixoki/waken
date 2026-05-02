@@ -143,6 +143,18 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 27, end: 28 },
+            { row: 6, start: 27, end: 28 },
+          ],
+        },
+        key: "vial_texture",
+      },
     ],
     states: [],
     behaviors: [],

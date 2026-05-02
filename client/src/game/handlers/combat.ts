@@ -14,6 +14,8 @@ import { HotbarComponent } from "../components/Hotbar";
 import { configs } from "@server/configs";
 import { DURATION_COMBO_LOCK, DURATION_FINISHER_LOCK } from "@server/globals";
 import { handlers } from ".";
+import EventBus from "../EventBus";
+import type { Scene } from "../scenes/Scene";
 
 export const combat = {
   resolve: (entity: Entity): SpellConfig | null => {
@@ -108,6 +110,26 @@ export const combat = {
       attackerId: hitbox.ownerId,
       targetId: entity.id,
     });
+  },
+
+  damage: (entity: Entity, health: number, isCritical?: boolean) => {
+    const damage = entity.health - health;
+    const player = entity.scene.managers.players.player;
+
+    if (player && damage > 0) {
+      const camera = (entity.scene as Scene).cameraManager;
+
+      if (camera) {
+        const pos = camera.getScreenPosition(entity.x, entity.y, player);
+        
+        EventBus.emit(Event.DAMAGE_NUMBER, {
+          x: pos.x,
+          y: pos.y - 40,
+          damage,
+          isCritical,
+        });
+      }
+    }
   },
 
   hurt: (entity: Entity, health: number) => {

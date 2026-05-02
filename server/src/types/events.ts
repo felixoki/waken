@@ -47,6 +47,7 @@ export enum Event {
 
   /** Item */
   ITEM_COLLECT = "item_collect",
+  ITEM_CONSUME = "item_consume",
   ITEM_REMOVE = "item_remove",
 
   /** Inventory & Hotbar */
@@ -65,6 +66,7 @@ export enum Event {
 
   /** Entities (UI) */
   ENTITIES_UPDATE = "entities_update",
+  DAMAGE_NUMBER = "damage_number",
 
   /** Chunk */
   CHUNK_DEACTIVATE = "chunk_deactivate",
@@ -114,7 +116,6 @@ export enum Event {
   UI_TOGGLE = "ui_toggle",
 
   /** Transitions */
-  TRANSITION_START = "transition_start",
-  TRANSITION_LOAD = "transition_load",
-  TRANSITION_END = "transition_end",
+  LOADING_SHOW = "loading_show",
+  LOADING_HIDE = "loading_hide",
 }

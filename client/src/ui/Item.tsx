@@ -9,6 +9,7 @@ interface Props {
   name: EntityName | SpellName | null;
   quantity?: number;
   bar?: number;
+  barLabel?: string;
   interactive?: boolean;
   disabled?: boolean;
   active?: boolean;
@@ -21,6 +22,7 @@ export function Item({
   name,
   quantity,
   bar,
+  barLabel,
   interactive = false,
   disabled = false,
   active = false,
@@ -114,6 +116,12 @@ export function Item({
             <p className="font-semibold leading-tight">{displayName}</p>
           </div>
           {description && <p className="text-gray-300 mt-1">{description}</p>}
+          {barLabel && (
+            <div className="mt-1 flex justify-between text-xs">
+              <span className="text-white/50">Stock</span>
+              <span className="text-white">{barLabel}</span>
+            </div>
+          )}
           {configs.spells[name as SpellName] && (() => {
             const spell = configs.spells[name as SpellName] as SpellConfig;
             return (

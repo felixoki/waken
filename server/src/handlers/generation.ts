@@ -146,6 +146,54 @@ export const generation = {
     return result;
   },
 
+  removeProtrusions: (
+    terrain: TerrainName[],
+    width: number,
+    height: number,
+  ): TerrainName[] => {
+    const result = [...terrain];
+
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++) {
+        const index = generation.toIndex(x, y, width);
+        const current = result[index];
+
+        const n = y > 0 ? terrain[index - width] : null;
+        const s = y < height - 1 ? terrain[index + width] : null;
+        const w = x > 0 ? terrain[index - 1] : null;
+        const e = x < width - 1 ? terrain[index + 1] : null;
+
+        const con = {
+          h: w === current || e === current,
+          v: n === current || s === current,
+        };
+
+        if (!con.h && !con.v) {
+          const neighbors = [n, s, w, e].filter(
+            (t): t is TerrainName => t !== null && t !== current,
+          );
+
+          if (neighbors.length) result[index] = neighbors[0];
+        }
+
+        if (con.v && !con.h) {
+          const replacement = w ?? e;
+
+          if (replacement && replacement !== current)
+            result[index] = replacement;
+        }
+
+        if (con.h && !con.v) {
+          const replacement = n ?? s;
+
+          if (replacement && replacement !== current)
+            result[index] = replacement;
+        }
+      }
+
+    return result;
+  },
+
   createLayer: (
     id: number,
     name: string,

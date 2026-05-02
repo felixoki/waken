@@ -67,8 +67,12 @@ export function Inventory() {
     ? getActions(item.name, !!storageEntityId).map((action) => ({
         label: action,
         onClick: () => {
+          if (action === "consume")
+            EventBus.emit(Event.ITEM_CONSUME, { name: item.name });
+
           if (action === "learn") {
             const spell = getSpell(item.name);
+
             if (spell)
               EventBus.emit(Event.SPELL_LEARN, {
                 entityName: item.name,
@@ -76,12 +80,11 @@ export function Inventory() {
               });
           }
 
-          if (action === "deposit" && storageEntityId) {
+          if (action === "deposit" && storageEntityId)
             EventBus.emit(Event.STORAGE_DEPOSIT, {
               entityId: storageEntityId,
               item,
             });
-          }
 
           setMenu(null);
         },
@@ -126,6 +129,8 @@ function getActions(name: EntityName, storageOpen = false): string[] {
 
   const actions: string[] = [];
 
+  if (def.components.some((c) => c.name === ComponentName.CONSUMABLE))
+    actions.push("consume");
   if (def.components.some((c) => c.name === ComponentName.LEARNABLE))
     actions.push("learn");
   if (storageOpen) actions.push("deposit");

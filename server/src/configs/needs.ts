@@ -20,6 +20,9 @@ export const needs: NeedConfig[] = [
       { item: EntityName.CARROT, tier: 1 },
       { item: EntityName.TOMATO, tier: 1 },
       { item: EntityName.CABBAGE, tier: 1 },
+      { item: EntityName.PERCH, tier: 1 },
+      { item: EntityName.CARP, tier: 1 },
+      { item: EntityName.TROUT, tier: 1 },
     ],
     consumption: {
       1: 0.5,
@@ -34,6 +37,8 @@ export const needs: NeedConfig[] = [
       { item: EntityName.WOOD, tier: 1 },
       { item: EntityName.QUARTZ1, tier: 1 },
       { item: EntityName.IRON1, tier: 1 },
+      { item: EntityName.BONE, tier: 1 },
+      { item: EntityName.GLASS, tier: 1 },
     ],
     consumption: {
       1: 0.5,
@@ -51,6 +56,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.CLARY_SAGE, tier: 1 },
       { item: EntityName.BELLADONNA, tier: 1 },
       { item: EntityName.BEARDED_TOOTH_FUNGUS, tier: 1 },
+      { item: EntityName.VIAL, tier: 1 },
     ],
     consumption: {
       1: 0.3,

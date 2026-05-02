@@ -51,8 +51,8 @@ export class TerrainSmoother {
             }
 
           const sameCount = neighbors.get(current) ?? 0;
-          
-          if (sameCount < threshold && max.count >= threshold)
+
+          if (sameCount < threshold && max.count > sameCount)
             updated[index] = max.terrain;
         }
       }
@@ -60,6 +60,10 @@ export class TerrainSmoother {
       result = updated;
     }
 
-    return result;
+    return handlers.generation.removeProtrusions(
+      result,
+      this.width,
+      this.height,
+    );
   }
 }

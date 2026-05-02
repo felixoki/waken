@@ -166,7 +166,7 @@ export class MapBuilder {
     /**
      * Wells
      */
-    const wells = this._findWellPositions(terrain, spawn, 5);
+    const wells = this._findWellPositions(terrain, spawn, 15);
 
     for (const pos of wells)
       entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });

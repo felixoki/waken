@@ -4,6 +4,7 @@ import { DamageType } from "../types/damage.js";
 export interface EffectDefinition {
   interval?: number;
   damage?: number;
+  restore?: { health?: number; mana?: number };
 }
 
 export const effects: Record<EffectName, EffectDefinition> = {
@@ -12,6 +13,7 @@ export const effects: Record<EffectName, EffectDefinition> = {
   [EffectName.COLD]: {},
   [EffectName.POISONED]: { interval: 2000, damage: 3 },
   [EffectName.ILLUMINATED]: {},
+  [EffectName.REGAIN]: {},
 };
 
 export const interactions: Partial<

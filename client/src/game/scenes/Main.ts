@@ -258,6 +258,7 @@ export class MainScene extends Phaser.Scene {
       const entity = this.entityManager.entities.get(data.id);
       if (!entity) return;
 
+      handlers.combat.damage(entity, data.health, data.isCritical);
       handlers.behavior.react(entity, data.attackerId);
       handlers.combat.hurt(entity, data.health);
       handlers.combat.knockback(entity, data.knockback);
@@ -433,6 +434,10 @@ export class MainScene extends Phaser.Scene {
       this.socketManager.emit(Event.ITEM_COLLECT, data);
     });
 
+    EventBus.on(Event.ITEM_CONSUME, (data: { name: string }) => {
+      this.socketManager.emit(Event.ITEM_CONSUME, data);
+    });
+
     /**
      * Spells
      */
@@ -537,7 +542,7 @@ export class MainScene extends Phaser.Scene {
      * Party
      */
     this.socketManager.on(Event.PARTY_START_LOADING, () => {
-      EventBus.emit(Event.TRANSITION_START, true);
+      EventBus.emit(Event.LOADING_SHOW, { tips: true });
     });
 
     this.socketManager.on(
@@ -551,6 +556,9 @@ export class MainScene extends Phaser.Scene {
         const realm = this.scene.get(MapName.REALM) as RealmScene;
 
         const onReady = () => {
+          if (this.ambienceManager.phase)
+            this.ambienceManager.setPhase(this.ambienceManager.phase, false);
+
           this.entityManager.batch(data.entities);
 
           const localId = this.playerManager.player?.id;
@@ -566,7 +574,7 @@ export class MainScene extends Phaser.Scene {
             .forEach((config) => this.playerManager.add(config, false));
 
           EventBus.emit(Event.PARTY_START_READY);
-          EventBus.emit(Event.TRANSITION_END);
+          EventBus.emit(Event.LOADING_HIDE);
         };
 
         if (realm.scene.isActive()) {

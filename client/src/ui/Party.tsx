@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
-import { Event, Party, Death } from "@server/types";
+import { Event, Party, Death, PartyStatus } from "@server/types";
 import { REVIVE_MANA } from "@server/globals";
 
 export const PartyPanel = () => {
@@ -40,7 +40,10 @@ export const PartyPanel = () => {
       [Event.PLAYER_CREATE_LOCAL, (id: string) => setPlayerId(id)],
       [Event.PARTY_LIST, (data: Party[]) => setLobbies(data)],
       [Event.PARTY_CREATE, (data: Party) => setParty(data)],
-      [Event.PARTY_UPDATE, (data: Party) => setParty(data)],
+      [Event.PARTY_UPDATE, (data: Party) => {
+        setParty(data);
+        if (data.status === PartyStatus.LOBBY) setInRealm(false);
+      }],
       [Event.PARTY_LEAVE, onLeave],
       [Event.PARTY_START_READY, () => setInRealm(true)],
       [Event.PLAYER_DEATH, onDeath],

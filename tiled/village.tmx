@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="41" nextobjectid="1446">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="41" nextobjectid="1455">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
