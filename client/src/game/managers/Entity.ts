@@ -93,23 +93,16 @@ export class EntityManager {
   }
 
   private _drain(): void {
-    const start = performance.now();
+    let created = 0;
 
-    while (
-      this.queue.length &&
-      performance.now() - start < CHUNK_ACTIVATION_BUDGET
-    ) {
-      const config = this.queue[0];
-
-      if (this.entities.has(config.id)) {
-        this.queue.shift();
-        this.queued.delete(config.id);
-        continue;
-      }
-
-      this.queue.shift();
+    while (this.queue.length && created < CHUNK_ACTIVATION_BUDGET) {
+      const config = this.queue.shift()!;
       this.queued.delete(config.id);
+
+      if (this.entities.has(config.id)) continue;
+
       this._create(config);
+      created++;
     }
   }
 

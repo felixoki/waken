@@ -464,6 +464,10 @@
 
 - Refactor scene transitions ✅
 
+#### 10.5.2026
+
+- Add item drag and drop
+
 ### In progress
 
 
@@ -471,6 +475,7 @@
 
 - Dialogue ui stays open when leaving a scene
 - Spell pages stay in inventory after learning
+- There is no collector for raspberries
 
 ### Backlog
 
@@ -567,5 +572,3 @@
 - Goblin3 (Spell book)
 - Orc1
 - Orc2 (Iron, Gold)
-
-### Mountains

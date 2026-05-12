@@ -589,8 +589,6 @@ export class MainScene extends Phaser.Scene {
               false,
             );
 
-          this.managers.entities.batch(data.entities);
-
           const localId = this.managers.players.player?.id;
           const config = data.players.find((p) => p.id === localId);
 

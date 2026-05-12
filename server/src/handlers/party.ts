@@ -201,7 +201,7 @@ export const party = {
 
     data.status = PartyStatus.IN_GAME;
 
-    const entities: EntityConfig[] = biome.entities.map((biomeEntity) => {
+    biome.entities.forEach((biomeEntity) => {
       const id = randomUUID();
       const maxHealth =
         configs.entities[biomeEntity.name]?.maxHealth ?? MAX_HEALTH;
@@ -219,7 +219,6 @@ export const party = {
 
       world.entities.add(id, config);
       world.chunks.registerEntity(id, config.map, config.x, config.y, data.id);
-      return config;
     });
 
     for (const id of data.members) {
@@ -270,7 +269,6 @@ export const party = {
     const payload = {
       tilemap: biome.tilemap,
       spawn: biome.spawn,
-      entities,
       players,
     };
 

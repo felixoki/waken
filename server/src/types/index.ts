@@ -17,6 +17,7 @@ export * from "./input.js";
 export * from "./maps.js";
 export * from "./pipelines.js";
 export * from "./players.js";
+export * from "./sounds.js";
 export * from "./spells.js";
 export * from "./states.js";
 export * from "./tiled.js";

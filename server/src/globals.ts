@@ -7,8 +7,8 @@ export const GAME_HEIGHT = 352;
 /** Chunks */
 export const TILE_SIZE = 16;
 export const CHUNK_PIXEL_SIZE = 16 * TILE_SIZE;
-export const CHUNK_ACTIVATION_RADIUS = 2;
-export const CHUNK_ACTIVATION_BUDGET = 4;
+export const CHUNK_ACTIVATION_RADIUS = 1;
+export const CHUNK_ACTIVATION_BUDGET = 2;
 
 /** Movement */
 export const SPEED_WALKING = 80;
@@ -79,6 +79,10 @@ export const FISHING_ARC_HEIGHT = 48;
 export const FISHING_ARC_DURATION = 600;
 export const FISHING_SCAN_TILES = 6;
 export const FISHING_LANDING_DISTANCE = 100;
+
+/** Sounds */
+
+export const CROSSFADE_DURATION = 1000;
 
 /** Stats */
 export const MAX_HEALTH = 100;
