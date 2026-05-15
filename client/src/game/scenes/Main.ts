@@ -39,12 +39,15 @@ import { ChunkManager } from "../managers/Chunk";
 import { EffectFactory } from "../factory/Effect";
 import { Player } from "../Player";
 import type RealmScene from "./Realm";
+import { SoundManager } from "../managers/Sound";
+import { Sound } from "../loaders/Sound";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
   public entityManager!: EntityManager;
   public ambienceManager!: AmbienceManager;
   public chunkManager!: ChunkManager;
+  public soundManager!: SoundManager;
   public socketManager = SocketManager;
   public spectate: Player | null = null;
 
@@ -59,7 +62,12 @@ export class MainScene extends Phaser.Scene {
       ambience: this.ambienceManager,
       socket: this.socketManager,
       chunks: this.chunkManager,
+      sound: this.soundManager,
     };
+  }
+
+  preload(): void {
+    Sound.load(this);
   }
 
   create(): void {
@@ -69,6 +77,7 @@ export class MainScene extends Phaser.Scene {
     this.entityManager = new EntityManager(this);
     this.ambienceManager = new AmbienceManager(this);
     this.chunkManager = new ChunkManager();
+    this.soundManager = new SoundManager(this);
 
     const scenes = [
       MapName.VILLAGE,

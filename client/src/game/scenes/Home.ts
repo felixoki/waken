@@ -1,6 +1,6 @@
 import { MapName } from "@server/types";
 import { Scene } from "./Scene";
-import { Preloader } from "../loaders/Preloader";
+import { Texture } from "../loaders/Texture";
 import { MapFactory } from "../factory/Map";
 import { TileManager } from "../managers/Tile";
 
@@ -10,7 +10,7 @@ export class HomeScene extends Scene {
   }
 
   preload() {
-    Preloader.load(this, MapName.HOME);
+    Texture.load(this, MapName.HOME);
   }
 
   create() {

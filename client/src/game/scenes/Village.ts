@@ -1,7 +1,7 @@
-import { MapName } from "@server/types";
+import { MapName, MusicName } from "@server/types";
 import { Scene } from "./Scene";
 import { MapFactory } from "../factory/Map";
-import { Preloader } from "../loaders/Preloader";
+import { Texture } from "../loaders/Texture";
 import { TileManager } from "../managers/Tile";
 
 export default class VillageScene extends Scene {
@@ -10,7 +10,7 @@ export default class VillageScene extends Scene {
   }
 
   preload() {
-    Preloader.load(this, MapName.VILLAGE);
+    Texture.load(this, MapName.VILLAGE);
   }
 
   create() {
@@ -21,5 +21,7 @@ export default class VillageScene extends Scene {
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.cameraManager.fitZoom();
+
+    this.managers.sound.play.music(MusicName.OBLIVION);
   }
 }
