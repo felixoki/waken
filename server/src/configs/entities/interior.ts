@@ -124,7 +124,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 37, start: 8, end: 10 },
           ],
         },
-        key: "box1_texture",
+        key: "boxes1_texture",
       },
     ],
     states: [],

@@ -223,9 +223,23 @@ export const generation = {
         stdio: ["inherit", "inherit", "inherit", "ipc"],
       });
 
-      worker.on("message", (result: GeneratedMap | null) => resolve(result));
-      worker.on("error", (err) => reject(err));
+      const timeout = setTimeout(() => {
+        worker.kill("SIGTERM");
+        reject(new Error("Worker timed out"));
+      }, 30_000);
+
+      const cleanup = () => clearTimeout(timeout);
+
+      worker.on("message", (result: GeneratedMap | null) => {
+        cleanup();
+        resolve(result);
+      });
+      worker.on("error", (err) => {
+        cleanup();
+        reject(err);
+      });
       worker.on("exit", (code) => {
+        cleanup();
         if (code !== 0) reject(new Error(`Worker exited with code ${code}`));
       });
 

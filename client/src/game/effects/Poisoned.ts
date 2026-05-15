@@ -14,11 +14,11 @@ export class PoisonedEffect extends Effect {
 
   attach(): void {
     this._stop = emitters.poisoned(this.entity);
-    this.entity.setTint(0x44cc44);
+    this.tint = 0x44cc44;
+    this.entity.setTint(this.tint);
   }
 
   detach(): void {
     this._stop?.();
-    this.entity.clearTint();
   }
 }

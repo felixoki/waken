@@ -29,6 +29,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public target?: { x: number; y: number };
   public pointerdown: boolean = false;
   public knockback?: Phaser.Time.TimerEvent;
+  protected lastInput: Partial<Input> | null = null;
 
   protected depthY: number = 0;
 
@@ -108,8 +109,10 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     const scene = this.scene as Scene;
     const isAuthority = scene.managers.players?.player?.isAuthority;
-    if (isAuthority && input)
+    if (isAuthority && input && this._changed(input)) {
+      this.lastInput = input;
       this.scene.game.events.emit(Event.ENTITY_INPUT, input);
+    }
 
     const depthY = Math.round(this.y);
 
@@ -117,6 +120,22 @@ export class Entity extends Phaser.GameObjects.Sprite {
       this.depthY = depthY;
       this.setDepth(1000 + this.y);
     }
+  }
+
+  protected _changed(input: Partial<Input>): boolean {
+    const last = this.lastInput;
+    if (!last) return true;
+
+    return (
+      input.x !== last.x ||
+      input.y !== last.y ||
+      input.facing !== last.facing ||
+      input.state !== last.state ||
+      (input.moving?.length ?? 0) !== (last.moving?.length ?? 0) ||
+      (input.moving?.some((d, i) => d !== last.moving?.[i]) ?? false) ||
+      input.target?.x !== last.target?.x ||
+      input.target?.y !== last.target?.y
+    );
   }
 
   protected _getInput(): Partial<Input> | null {
@@ -206,6 +225,14 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (effect) {
       effect.detach();
       this.effects.delete(name);
+
+      let tint: number | undefined;
+
+      for (const remaining of this.effects.values())
+        if (remaining.tint !== undefined) tint = remaining.tint;
+
+      if (tint !== undefined) this.setTint(tint);
+      else this.clearTint();
     }
   }
 

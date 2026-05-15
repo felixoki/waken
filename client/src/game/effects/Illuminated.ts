@@ -10,10 +10,10 @@ export class IlluminatedEffect extends Effect {
   }
 
   attach(): void {
-    this.entity.setTint(0xffee88);
+    this.tint = 0xffee88;
+    this.entity.setTint(this.tint);
   }
 
   detach(): void {
-    this.entity.clearTint();
   }
 }

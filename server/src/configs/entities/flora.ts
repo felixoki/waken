@@ -94,7 +94,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 39, start: 11, end: 16 },
           ],
         },
-        key: "tree5_texture",
+        key: "tree4_texture",
       },
       {
         name: ComponentName.BODY,

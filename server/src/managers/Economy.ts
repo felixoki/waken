@@ -6,7 +6,7 @@ import { EconomySnapshot, NeedConfig, NeedName } from "../types";
 export class EconomyManager {
   private needs: Map<NeedName, NeedConfig> = new Map();
   private tier: number = 1;
-  private updated: number = Date.now();
+  private updated: number = 0;
   private accumulator: number = 0;
   public dirty: boolean = false;
 
@@ -26,6 +26,12 @@ export class EconomyManager {
     this.accumulator -= 1000;
 
     const now = Date.now();
+
+    if (!this.updated) {
+      this.updated = now;
+      return;
+    }
+
     const elapsed = now - this.updated;
     this.updated = now;
 

@@ -194,6 +194,7 @@ export class MainScene extends Phaser.Scene {
     });
 
     this.managers.socket.on(Event.PLAYER_LEAVE, (data: string) => {
+      if (this.spectate?.id === data) this.spectate = null;
       this.managers.players.remove(data);
     });
 
@@ -202,17 +203,17 @@ export class MainScene extends Phaser.Scene {
     });
 
     this.managers.socket.on(Event.PLAYER_HURT, (data: Hurt) => {
+      const local = this.managers.players.player;
       const player =
         this.managers.players.others.get(data.id) ||
-        this.managers.players.player;
+        (local?.id === data.id ? local : null);
 
       if (!player) return;
 
       handlers.combat.hurt(player, data.health);
       handlers.combat.knockback(player, data.knockback);
 
-      if (player === this.managers.players.player)
-        EventBus.emit(Event.PLAYER_HEALTH, player.health);
+      if (player === local) EventBus.emit(Event.PLAYER_HEALTH, player.health);
     });
 
     this.managers.socket.on(Event.PLAYER_TRANSITION, (data: PlayerConfig) => {

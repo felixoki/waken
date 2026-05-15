@@ -180,7 +180,14 @@ export const combat = {
 
     const config = data.config;
 
-    if (!attacker || !target || !config || (player && player.isDead)) return;
+    if (
+      !attacker ||
+      !target ||
+      !config ||
+      (player && player.isDead) ||
+      attacker.health <= 0
+    )
+      return;
 
     const { damage, isMiss, isCritical } = combat.calculateDamage(
       target,

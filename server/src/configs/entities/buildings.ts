@@ -256,7 +256,7 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 9, start: 18, end: 25 },
           ],
         },
-        key: "windmill_texture",
+        key: "house2_texture",
       },
       {
         name: ComponentName.BODY,

@@ -9,12 +9,19 @@ export const load = {
     const { data: cached } = await tryCatch(redis.get(key));
     if (cached) return JSON.parse(cached);
 
-    const result = await pg.query(
-      `SELECT position_x, position_y, health, data
-       FROM player_data
-       WHERE player_id = $1 AND world_id = $2`,
-      [playerId, worldId],
+    const { data: result, error } = await tryCatch(
+      pg.query(
+        `SELECT position_x, position_y, health, data
+         FROM player_data
+         WHERE player_id = $1 AND world_id = $2`,
+        [playerId, worldId],
+      ),
     );
+
+    if (error) {
+      console.error("load.player pg failed:", error);
+      return null;
+    }
 
     if (!result.rows.length) return null;
 
@@ -37,10 +44,17 @@ export const load = {
     const { data: cached } = await tryCatch(redis.get(key));
     if (cached) return JSON.parse(cached);
 
-    const result = await pg.query(
-      `SELECT entities, chunks, time FROM world_state WHERE world_id = $1`,
-      [worldId],
+    const { data: result, error } = await tryCatch(
+      pg.query(
+        `SELECT entities, chunks, time FROM world_state WHERE world_id = $1`,
+        [worldId],
+      ),
     );
+
+    if (error) {
+      console.error("load.world pg failed:", error);
+      return null;
+    }
 
     if (!result.rows.length) return null;
 

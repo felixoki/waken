@@ -119,24 +119,25 @@ export class Casting implements State {
       }),
 
       duration: entity.scene.time.delayedCall(duration, () => {
-        this.exit(entity);
-
         if (config.combo && !isFinisher) {
           this.step = step + 1;
+          entity.isLocked = false;
 
-          this.timer!.combo = entity.scene.time.delayedCall(
-            DURATION_COMBO_WINDOW,
-            () => {
+          const reset = entity.states?.get(StateName.IDLE);
+          if (reset) reset.enter(entity);
+
+          this.timer = {
+            combo: entity.scene.time.delayedCall(DURATION_COMBO_WINDOW, () => {
               this.step = 0;
               this.timer = null;
-            },
-          );
+            }),
+            duration: null!,
+          };
 
           return;
         }
 
-        this.step = 0;
-        this.timer = null;
+        this.exit(entity);
       }),
     };
   }
@@ -146,7 +147,10 @@ export class Casting implements State {
       this.timer.delay?.destroy();
       this.timer.duration?.destroy();
       this.timer.combo?.destroy();
+      this.timer = null;
     }
+
+    this.step = 0;
 
     if (this.charging) {
       handlers.charge.cleanup(entity);

@@ -155,7 +155,7 @@ export const combat = {
   },
 
   knockback: (entity: Entity, knockback: { x: number; y: number }) => {
-    if (entity.body.immovable) return;
+    if (!entity.body || entity.body.immovable) return;
 
     const body = entity.body as Phaser.Physics.Arcade.Body;
 

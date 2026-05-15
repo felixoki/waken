@@ -14,11 +14,11 @@ export class BurningEffect extends Effect {
 
   attach(): void {
     this._stop = emitters.burning(this.entity);
-    this.entity.setTint(0xff6600);
+    this.tint = 0xff6600;
+    this.entity.setTint(this.tint);
   }
 
   detach(): void {
     this._stop?.();
-    this.entity.clearTint();
   }
 }

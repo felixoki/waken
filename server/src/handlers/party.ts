@@ -6,6 +6,7 @@ import { BiomeName } from "../types/generation";
 import { configs } from "../configs/index.js";
 import { handlers } from ".";
 import { MAX_HEALTH } from "../globals.js";
+import { tryCatch } from "../utils/tryCatch.js";
 
 export const party = {
   lives: (id: string, world: World): boolean => {
@@ -71,7 +72,7 @@ export const party = {
     if (!remaining) {
       const entityIds = world.chunks.getEntitiesByPrefix(`realm:${data.id}`);
 
-      for (const entityId of entityIds) {
+      for (const entityId of entityIds)
         handlers.entity.remove(
           entityId,
           Event.ENTITY_DESTROY,
@@ -79,7 +80,6 @@ export const party = {
           io,
           world,
         );
-      }
 
       data.status = PartyStatus.LOBBY;
       world.authority.clear(MapName.REALM, data.id);
@@ -120,6 +120,9 @@ export const party = {
   join: (id: string, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
+
+    const existing = world.parties.getByPlayerId(player.id);
+    if (existing) return;
 
     const data = world.parties.get(id);
 
@@ -195,7 +198,14 @@ export const party = {
     socket.emit(Event.PARTY_START_LOADING);
     socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING);
 
-    const biome = await handlers.generation.start(BiomeName.FOREST, seed);
+    const { data: biome, error } = await tryCatch(
+      handlers.generation.start(BiomeName.FOREST, seed),
+    );
+
+    if (error) {
+      console.error("Party generation failed:", error);
+      return;
+    }
 
     if (!biome) return;
 

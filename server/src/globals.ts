@@ -11,7 +11,7 @@ export const GAME_HEIGHT = 352;
 /** Chunks */
 export const TILE_SIZE = 16;
 export const CHUNK_PIXEL_SIZE = 16 * TILE_SIZE;
-export const CHUNK_ACTIVATION_RADIUS = 1;
+export const CHUNK_ACTIVATION_RADIUS = 2;
 export const CHUNK_ACTIVATION_BUDGET = 2;
 
 /** Movement */

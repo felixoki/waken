@@ -6,7 +6,7 @@ import { configs } from "../configs/index.js";
 export const spell = {
   learn: (data: { spell: SpellName }, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
-    if (!player) return;
+    if (!player || player.spells.includes(data.spell)) return;
 
     player.spells.push(data.spell);
   },
@@ -20,6 +20,7 @@ export const spell = {
 
     const mana = Math.max(player.mana - config.mana, 0);
     world.players.update(player.id, { mana });
+    
     socket.emit(Event.PLAYER_MANA, mana);
   },
 };

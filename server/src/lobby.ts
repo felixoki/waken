@@ -8,6 +8,7 @@ import { randomUUID } from "crypto";
 import { pg } from "./db/postgres.js";
 import { migrate } from "./db/migrate.js";
 import { HEARTBEAT_INTERVAL, WORLD_INACTIVITY_TIMEOUT } from "./globals.js";
+import { tryCatch } from "./utils/tryCatch.js";
 
 type World = {
   child: ChildProcess;
@@ -34,8 +35,10 @@ app.use((req, res, next) => {
 
 const running = new Map<string, World>();
 
-const next = { port: 3001 };
-const allocate = () => next.port++;
+const ports = { next: 3001, freed: [] as number[] };
+const allocate = () =>
+  ports.freed.length > 0 ? ports.freed.pop()! : ports.next++;
+const release = (port: number) => ports.freed.push(port);
 
 const getEntryPath = () => {
   const __filename = fileURLToPath(import.meta.url);
@@ -81,6 +84,7 @@ const start = (id: string) => {
 
   child.on("exit", () => {
     running.delete(id);
+    release(port);
   });
 
   child.on("error", (error) => {
@@ -100,14 +104,23 @@ app.post("/worlds", async (req, res) => {
 
   const worldId = randomUUID();
 
-  await pg.query(
-    "INSERT INTO worlds (id, name, owner_id) VALUES ($1, $2, $3)",
-    [worldId, name, playerId],
+  const { error } = await tryCatch(
+    (async () => {
+      await pg.query(
+        "INSERT INTO worlds (id, name, owner_id) VALUES ($1, $2, $3)",
+        [worldId, name, playerId],
+      );
+      await pg.query(
+        "INSERT INTO world_members (world_id, player_id) VALUES ($1, $2)",
+        [worldId, playerId],
+      );
+    })(),
   );
-  await pg.query(
-    "INSERT INTO world_members (world_id, player_id) VALUES ($1, $2)",
-    [worldId, playerId],
-  );
+
+  if (error) {
+    console.error("POST /worlds failed:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 
   const world = start(worldId);
 
@@ -118,14 +131,21 @@ app.get("/worlds", async (req, res) => {
   const id = String(req.query.playerId || "");
   if (!id) return res.status(400).json({ error: "Missing playerId" });
 
-  const result = await pg.query(
-    `SELECT w.id, w.name, w.owner_id, w.created_at
-     FROM worlds w
-     JOIN world_members wm ON wm.world_id = w.id
-     WHERE wm.player_id = $1
-     ORDER BY w.created_at DESC`,
-    [id],
+  const { data: result, error } = await tryCatch(
+    pg.query(
+      `SELECT w.id, w.name, w.owner_id, w.created_at
+       FROM worlds w
+       JOIN world_members wm ON wm.world_id = w.id
+       WHERE wm.player_id = $1
+       ORDER BY w.created_at DESC`,
+      [id],
+    ),
   );
+
+  if (error) {
+    console.error("GET /worlds failed:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 
   res.json(result.rows);
 });
@@ -142,12 +162,19 @@ app.post("/worlds/:id/join", async (req, res) => {
   const playerId = String(req.body.playerId || "");
   if (!playerId) return res.status(400).json({ error: "playerId required" });
 
-  await pg.query(
-    `INSERT INTO world_members (world_id, player_id)
-     VALUES ($1, $2)
-     ON CONFLICT DO NOTHING`,
-    [worldId, playerId],
+  const { error } = await tryCatch(
+    pg.query(
+      `INSERT INTO world_members (world_id, player_id)
+       VALUES ($1, $2)
+       ON CONFLICT DO NOTHING`,
+      [worldId, playerId],
+    ),
   );
+
+  if (error) {
+    console.error("POST /worlds/:id/join failed:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 
   const world = start(worldId);
 

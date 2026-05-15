@@ -67,9 +67,7 @@ export class Player extends Entity {
       }),
     );
     this.addComponent(new InventoryComponent());
-    this.addComponent(
-      new HotbarComponent(this, new Array(8).fill(null)),
-    );
+    this.addComponent(new HotbarComponent(this, new Array(8).fill(null)));
     this.addComponent(new DamageableComponent());
   }
 
@@ -94,8 +92,10 @@ export class Player extends Entity {
       } else this.target = input.target;
 
       this.states?.get(this.state)?.update(this);
-      if (this.isControllable)
+      if (this.isControllable && this._changed(input)) {
+        this.lastInput = input;
         this.scene.game.events.emit(Event.PLAYER_INPUT, input);
+      }
 
       return;
     }
@@ -130,8 +130,10 @@ export class Player extends Entity {
       this.setPosition(x, y);
     }
 
-    if (this.isControllable)
+    if (this.isControllable && this._changed(input)) {
+      this.lastInput = input;
       this.scene.game.events.emit(Event.PLAYER_INPUT, input);
+    }
 
     const depthY = Math.round(this.y);
 
@@ -167,6 +169,27 @@ export class Player extends Entity {
       state: this.state,
       equipped: equipped,
     };
+  }
+
+  protected _changed(input: Input): boolean {
+    const last = this.lastInput;
+    if (!last) return true;
+
+    return (
+      input.x !== last.x ||
+      input.y !== last.y ||
+      input.facing !== last.facing ||
+      input.state !== last.state ||
+      input.isRunning !== last.isRunning ||
+      input.isJumping !== last.isJumping ||
+      input.isRolling !== last.isRolling ||
+      input.pointerdown !== last.pointerdown ||
+      input.equipped !== last.equipped ||
+      input.moving.length !== (last.moving?.length ?? 0) ||
+      input.moving.some((d, i) => d !== last.moving?.[i]) ||
+      input.target?.x !== last.target?.x ||
+      input.target?.y !== last.target?.y
+    );
   }
 
   destroy(): void {

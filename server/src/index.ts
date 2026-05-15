@@ -7,6 +7,7 @@ import { SERVER_PORT, WORLD_ID } from "./server.js";
 import { AUTOSAVE_INTERVAL, HEARTBEAT_INTERVAL, TICK_RATE } from "./globals.js";
 import { World } from "./World.js";
 import { handlers } from "./handlers/index.js";
+import { tryCatch } from "./utils/tryCatch.js";
 
 const app = express();
 const server = createServer(app);
@@ -30,22 +31,39 @@ const restored = WORLD_ID
 
 if (!restored) world.load();
 
-setInterval(() => {
-  world.update(TICK_RATE);
-}, TICK_RATE);
+const intervals: NodeJS.Timeout[] = [];
 
-setInterval(() => {
-  if (io.engine.clientsCount > 0) process.send?.({ type: "heartbeat" });
-}, HEARTBEAT_INTERVAL);
+intervals.push(
+  setInterval(() => {
+    world.update(TICK_RATE);
+  }, TICK_RATE),
+);
+
+intervals.push(
+  setInterval(() => {
+    if (io.engine.clientsCount > 0) process.send?.({ type: "heartbeat" });
+  }, HEARTBEAT_INTERVAL),
+);
 
 io.on("connection", (socket) => {
   registerHandlers(io, socket, world);
 });
 
 if (WORLD_ID)
-  setInterval(async () => {
-    await handlers.world.save(WORLD_ID, world);
-  }, AUTOSAVE_INTERVAL);
+  intervals.push(
+    setInterval(async () => {
+      const { error } = await tryCatch(handlers.world.save(WORLD_ID, world));
+      if (error) console.error("Autosave failed:", error);
+    }, AUTOSAVE_INTERVAL),
+  );
+
+const shutdown = () => {
+  intervals.forEach((id) => clearInterval(id));
+  server.close();
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
 
 server.listen(SERVER_PORT, "0.0.0.0", () => {
   console.log(`World ${WORLD_ID} running on port ${SERVER_PORT}`);

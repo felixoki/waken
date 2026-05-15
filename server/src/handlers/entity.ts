@@ -120,14 +120,14 @@ export const entity = {
     const player = world.players.getBySocketId(socket.id);
     const entity = world.entities.get(data);
 
-    if (player && entity) {
-      const stackable =
-        configs.entities[entity.name]?.metadata?.stackable ?? false;
-      const item: Item = { name: entity.name, quantity: 1, stackable };
+    if (!player || !entity) return;
 
-      player.inventory = handlers.storage.add(player.inventory, item);
-      socket.emit(Event.INVENTORY_SYNC, player.inventory);
-    }
+    const stackable =
+      configs.entities[entity.name]?.metadata?.stackable ?? false;
+    const item: Item = { name: entity.name, quantity: 1, stackable };
+
+    player.inventory = handlers.storage.add(player.inventory, item);
+    socket.emit(Event.INVENTORY_SYNC, player.inventory);
 
     handlers.entity.remove(
       data,

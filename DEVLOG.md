@@ -479,6 +479,11 @@
 - Entities drop items only for the authority ✅
 - Item swapping in hotbar deletes the other item ✅
 
+#### 15.5.2026
+
+- Add sound loader and manager ✅
+- Fix bugs, improve performance ✅
+
 ### In progress
 
 

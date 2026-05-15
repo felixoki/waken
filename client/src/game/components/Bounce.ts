@@ -46,6 +46,7 @@ export class BounceComponent extends Component {
   private entity: Entity;
   private isAnimating: boolean = false;
   private activeEntry?: PoolEntry;
+  private timer?: Phaser.Time.TimerEvent;
 
   public name = ComponentName.BOUNCE;
 
@@ -71,7 +72,8 @@ export class BounceComponent extends Component {
     this.activeEntry.pipeline.trigger(0.15, 2.0, 2.5, 10.0);
     this.entity.setPipeline(this.activeEntry.pipeline.name);
 
-    this.entity.scene.time.delayedCall(2000, () => {
+    this.timer = this.entity.scene.time.delayedCall(2000, () => {
+      this.timer = undefined;
       this.entity.resetPipeline();
 
       if (this.activeEntry) {
@@ -87,6 +89,11 @@ export class BounceComponent extends Component {
 
   detach(): void {
     this.entity.scene.game.events.off(Event.ENTITY_OVERLAP, this._bounce, this);
+
+    if (this.timer) {
+      this.timer.destroy();
+      this.timer = undefined;
+    }
 
     if (this.activeEntry) {
       this.entity.resetPipeline();

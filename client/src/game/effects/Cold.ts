@@ -14,11 +14,11 @@ export class ColdEffect extends Effect {
 
   attach(): void {
     this._stop = emitters.cold(this.entity);
-    this.entity.setTint(0xaaddff);
+    this.tint = 0xaaddff;
+    this.entity.setTint(this.tint);
   }
 
   detach(): void {
     this._stop?.();
-    this.entity.clearTint();
   }
 }

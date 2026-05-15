@@ -10,10 +10,9 @@ export class WetEffect extends Effect {
   }
 
   attach(): void {
-    this.entity.setTint(0x88aaff);
+    this.tint = 0x88aaff;
+    this.entity.setTint(this.tint);
   }
 
-  detach(): void {
-    this.entity.clearTint();
-  }
+  detach(): void {}
 }

@@ -10,10 +10,10 @@ export class RegainEffect extends Effect {
   }
 
   attach(): void {
-    this.entity.setTint(0x88ff88);
+    this.tint = 0x88ff88;
+    this.entity.setTint(this.tint);
   }
 
   detach(): void {
-    this.entity.clearTint();
   }
 }

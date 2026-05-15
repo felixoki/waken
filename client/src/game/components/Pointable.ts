@@ -25,8 +25,9 @@ export class PointableComponent extends Component {
     event: Phaser.Types.Input.EventData,
   ): void {
     const player = this.entity.scene.managers.players.player;
-    this.entity.emit("pointed", player);
+    if (!player) return;
 
+    this.entity.emit("pointed", player);
     event.stopPropagation();
   }
 

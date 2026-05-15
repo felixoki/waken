@@ -23,7 +23,9 @@ export class PlayerManager {
   }
 
   get all(): Player[] {
-    return [...this.others.values(), this.player!];
+    const players = [...this.others.values()];
+    if (this.player) players.push(this.player);
+    return players;
   }
 
   get(id: string): Player | undefined {

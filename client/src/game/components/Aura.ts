@@ -12,6 +12,7 @@ export class AuraComponent extends Component {
   private trailTimer: number = 0;
   private trailInterval: number = 80;
   private trails: Set<Phaser.GameObjects.Particles.ParticleEmitter> = new Set();
+  private timers: Set<Phaser.Time.TimerEvent> = new Set();
 
   constructor(entity: Entity, config: AuraConfig) {
     super();
@@ -113,17 +114,22 @@ export class AuraComponent extends Component {
         whiteEmber.explode();
         this.trails.add(whiteEmber);
 
-        this.entity.scene.time.delayedCall(5000, () => {
+        const timer = this.entity.scene.time.delayedCall(5000, () => {
           ember.destroy();
           whiteEmber.destroy();
           this.trails.delete(ember);
           this.trails.delete(whiteEmber);
+          this.timers.delete(timer);
         });
+
+        this.timers.add(timer);
       }
     } else this.trailTimer = 0;
   }
 
   detach(): void {
+    this.timers.forEach((t) => t.destroy());
+    this.timers.clear();
     this.ambient.destroy();
     this.ambientWhite.destroy();
     this.trails.forEach((e) => e.destroy());

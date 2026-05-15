@@ -21,7 +21,15 @@ export class PlayerStore {
 
   update(id: string, updates: Partial<PlayerConfig>): void {
     const player = this.players.get(id);
-    if (player) Object.assign(player, updates);
+    if (!player) return;
+
+    if (updates.socketId && updates.socketId !== player.socketId) {
+      if (player.socketId) this.bySocketId.delete(player.socketId);
+      
+      this.bySocketId.set(updates.socketId, id);
+    }
+
+    Object.assign(player, updates);
   }
 
   get all(): PlayerConfig[] {

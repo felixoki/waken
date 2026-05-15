@@ -14,10 +14,11 @@ export const authority = {
     const id = world.authority.transfer(map, fromId, candidates, partyId);
 
     if (id) {
+      const player = world.players.get(id);
+      if (!player) return undefined;
+
       world.players.update(id, { isAuthority: true });
-      const socket = io.sockets.sockets.get(
-        world.players.get(id)!.socketId,
-      );
+      const socket = io.sockets.sockets.get(player.socketId);
       socket?.emit(Event.PLAYER_AUTHORITY, true);
     }
 
