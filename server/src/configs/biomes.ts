@@ -251,7 +251,7 @@ export const dungeon: BiomeConfig = {
         setpieces: [
           {
             pattern: RoomPattern.CLUSTER,
-            entities: [EntityName.BOAR],
+            entities: [EntityName.RAT],
             count: { min: 3, max: 6 },
           },
           {

@@ -270,7 +270,7 @@ export const combat = {
 
       if (!target) return;
 
-      const effects: [EffectName, number][] = [...(config.effects ?? [])];
+      const effects: [EffectName, number, number?][] = [...(config.effects ?? [])];
 
       if (attackerId) {
         const inventory = world.players.get(attackerId)?.inventory ?? [];
@@ -292,7 +292,9 @@ export const combat = {
 
       const existing: Effect[] = target.effects ?? [];
 
-      for (const [name, duration] of effects) {
+      for (const [name, duration, chance] of effects) {
+        if (chance !== undefined && Math.random() > chance) continue;
+
         const effect: Effect = {
           name,
           expiresAt: now + duration,

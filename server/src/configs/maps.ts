@@ -172,6 +172,30 @@ const animals: Spritesheet[] = [
     frameWidth: 32,
     frameHeight: 32,
   },
+  {
+    key: "rat-idle",
+    file: "rat_idle_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
+  {
+    key: "rat-walking",
+    file: "rat_walking_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
+  {
+    key: "rat-running",
+    file: "rat_running_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
+  {
+    key: "rat-slashing",
+    file: "rat_slashing_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
 ];
 
 const plants: Spritesheet[] = [

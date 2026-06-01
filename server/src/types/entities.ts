@@ -1,17 +1,20 @@
-import { Direction } from './directions';
-import { MapName } from './maps';
-import { ComponentConfig, Item } from './components';
-import { StateName } from './states';
-import { BehaviorConfig } from './behaviors';
-import { Dialogue } from './dialogue';
-import { SpellName } from './spells';
-import { WeaponName } from './weapons';
-import { Effect, EffectName } from './effects.js';
+import { Damage } from "./damage.js";
+import { Direction } from "./directions";
+import { MapName } from "./maps";
+import { ComponentConfig, Item } from "./components";
+import { StateName } from "./states";
+import { BehaviorConfig } from "./behaviors";
+import { Dialogue } from "./dialogue";
+import { SpellName } from "./spells";
+import { WeaponName } from "./weapons";
+import { Effect, EffectName } from "./effects.js";
 
 export interface AttackConfig {
   state: StateName;
   spell?: SpellName;
   weapon?: WeaponName;
+  damage?: Damage;
+  effects?: [EffectName, number, number?][];
   range?: number;
   minRange?: number;
   cooldown?: number;
@@ -36,7 +39,7 @@ export interface EntityConfig {
 export interface ItemBonus {
   spell?: SpellName;
   weapon?: WeaponName;
-  effects: [EffectName, number][];
+  effects: [EffectName, number, number?][];
 }
 
 export interface EntityDefinition {
@@ -45,6 +48,7 @@ export interface EntityDefinition {
   components: ComponentConfig[];
   states: StateName[];
   maxHealth?: number;
+  scale?: number;
   behaviors?: BehaviorConfig[];
   attacks?: AttackConfig[];
   bonuses?: ItemBonus[];
@@ -155,6 +159,8 @@ export enum EntityName {
   ORC1 = "orc1",
   PLAYER = "player",
   QUARTZ1 = "quartz1",
+  RAT = "rat",
+  RAT_CLAWS = "rat_claws",
   RASPBERRY = "raspberry",
   REED1 = "reed1",
   REED2 = "reed2",

@@ -263,6 +263,28 @@ export const animations: Partial<
       repeat: 0,
     },
   },
+  [EntityName.RAT]: {
+    [StateName.IDLE]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.SLASHING]: {
+      frameCount: 8,
+      frameRate: 8,
+      repeat: 0,
+    },
+  },
   [EntityName.CITIZEN1]: {
     [StateName.IDLE]: {
       frameCount: 12,

@@ -1,4 +1,9 @@
-import { ComponentName, StateName, WeaponName } from "@server/types";
+import {
+  ComponentName,
+  StateName,
+  WeaponConfig,
+  WeaponName,
+} from "@server/types";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
@@ -35,9 +40,23 @@ export class Slashing implements State {
           entity.facing,
           24,
         );
-        const config = configs.weapons[WeaponName.SLASH];
 
-        this.hitbox = handlers.weapons[WeaponName.SLASH](entity, config, offset);
+        const weapon = configs.weapons[WeaponName.SLASH];
+        const attack = configs.entities[entity.name]?.attacks?.find(
+          (a) => a.state === StateName.SLASHING,
+        );
+
+        const config: WeaponConfig = {
+          ...weapon,
+          ...(attack?.damage && { damage: attack.damage }),
+          effects: [...(weapon.effects ?? []), ...(attack?.effects ?? [])],
+        };
+
+        this.hitbox = handlers.weapons[WeaponName.SLASH](
+          entity,
+          config,
+          offset,
+        );
       }),
     };
   }

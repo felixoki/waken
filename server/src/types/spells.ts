@@ -35,7 +35,7 @@ export interface SpellConfig {
   damage: Damage;
   knockback: number;
   mana: number;
-  effects?: [EffectName, number][];
+  effects?: [EffectName, number, number?][];
   speed?: number;
   range?: number;
   duration?: number;

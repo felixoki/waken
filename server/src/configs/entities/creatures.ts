@@ -59,6 +59,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 30 },
         range: 40,
       },
     ],
@@ -124,6 +125,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 12 },
         range: 40,
       },
     ],
@@ -183,6 +185,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 45 },
         range: 40,
       },
       {

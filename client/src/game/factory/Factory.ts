@@ -35,6 +35,8 @@ export class Factory {
     entity.createdAt = definition.createdAt;
     entity.maxHealth = definition.maxHealth;
 
+    if (definition.scale) entity.setScale(definition.scale);
+
     const components = ComponentFactory.create(definition.components, entity);
 
     for (const [_, component] of components) entity.addComponent(component);

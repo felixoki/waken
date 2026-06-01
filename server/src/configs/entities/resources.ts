@@ -194,4 +194,33 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons3", row: 10, col: 10 },
     },
   },
+  [EntityName.RAT_CLAWS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 17, start: 14, end: 15 },
+            { row: 18, start: 14, end: 15 },
+          ],
+        },
+        key: "rat_claws_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Rat claws",
+      description: "Jagged claws torn from a filthy sewer rat.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 18, col: 13 },
+    },
+  },
 };
