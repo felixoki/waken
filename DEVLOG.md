@@ -526,13 +526,26 @@
 
 - Add room size system ✅
 
+#### 1.6.2026
+
+- Add rat entity ✅
+
+#### 4.6.2026
+
+- Add ledge generator ✅
+
+#### 6.6.2026
+
+- Add wall and ledge collisions ✅
+
 ### In progress
 
-- Add room setpieces
-- Add rat entity
+- Add stairs
 
 ### Bugs
 
+- Entities can hurt each other
+- Ledge corners render above players
 
 ### Backlog
 
@@ -554,6 +567,7 @@
   - Add absorb life spell
   - Add reflect damage effect
   - Remove among player collisions
+  - Include physical body when jumping
 
 ## Economy
 
@@ -618,12 +632,12 @@
 
 #### Aggro animals
 
-- Rat (Rat meat)
+- Rat (Rat claws)
 
 #### Aggro entities
 
 - Goblin1
-- Goblin2 (Rat meat, Bone)
+- Goblin2 (Rat claws, Bone)
 - Goblin3 (Spell book)
 - Orc1
 - Orc2 (Iron, Gold)

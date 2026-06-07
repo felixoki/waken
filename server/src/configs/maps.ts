@@ -675,6 +675,13 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 16,
         asTileset: true,
       },
+      {
+        key: "dungeon_walls_floor",
+        file: "dungeon_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
     ],
   },
   [MapName.HERBALIST_HOUSE]: {

@@ -10,6 +10,7 @@ import {
   TileRole,
 } from "../../types/generation";
 import { BorderGenerator } from "../generators/Border";
+import { LedgeGenerator } from "../generators/Ledge";
 import { RoomGenerator } from "../generators/Room";
 import { TerrainGenerator } from "../generators/Terrain";
 import { WallGenerator } from "../generators/Wall";
@@ -37,8 +38,15 @@ export class MapBuilder {
       this.config,
       this.seed,
     );
-    const { terrain: genTerrain, entities: roomEntities, spawn: roomSpawn } =
-      generator.generate() as { terrain: TerrainName[]; entities: Entity[]; spawn?: { x: number; y: number } };
+    const {
+      terrain: genTerrain,
+      entities: roomEntities,
+      spawn: roomSpawn,
+    } = generator.generate() as {
+      terrain: TerrainName[];
+      entities: Entity[];
+      spawn?: { x: number; y: number };
+    };
     let terrain = genTerrain;
 
     if (this.config.smoothing) {
@@ -185,6 +193,29 @@ export class MapBuilder {
     }
 
     /**
+     * Build ledge layer
+     */
+    if (this.config.ledge) {
+      const gid = firstgids.get(this.config.ledge)!;
+      const gen = new LedgeGenerator(
+        { width: this.config.width, height: this.config.height },
+        this.loader,
+      );
+      const ledges = gen.generate(terrain, this.config.ledge, gid);
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "ledges",
+          width,
+          height,
+          ledges,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+    }
+
+    /**
      * Build border layers
      */
     const borderGenerator = new BorderGenerator(this.config, this.loader);
@@ -285,6 +316,7 @@ export class MapBuilder {
     for (const border of this.config.borders) names.add(border.tileset);
     for (const detail of this.config.details ?? []) names.add(detail.tileset);
     if (this.config.walls) names.add(this.config.walls);
+    if (this.config.ledge) names.add(this.config.ledge);
 
     return Array.from(names);
   }

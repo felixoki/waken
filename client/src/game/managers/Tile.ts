@@ -10,11 +10,23 @@ interface Animation {
   }>;
 }
 
+export interface Threshold {
+  body: Phaser.GameObjects.Rectangle;
+  tileY: number;
+  rendersAbove: boolean;
+}
+
 export class TileManager {
   private animations = new Map<number, Animation>();
   private grid?: number[][];
 
-  constructor(private tilemap: Phaser.Tilemaps.Tilemap) {
+  public thresholds: Threshold[];
+
+  constructor(
+    private tilemap: Phaser.Tilemaps.Tilemap,
+    thresholds: Threshold[] = [],
+  ) {
+    this.thresholds = thresholds;
     this._getAnimations();
     this._findTiles();
   }
@@ -23,9 +35,18 @@ export class TileManager {
     return this.tilemap;
   }
 
-  update(delta: number): void {
+  update(delta: number, playerY?: number): void {
+    if (playerY !== undefined)
+      for (let i = 0; i < this.thresholds.length; i++) {
+        const threshold = this.thresholds[i];
+        const isAbove = playerY > threshold.tileY;
+        const body = threshold.body.body as Phaser.Physics.Arcade.StaticBody;
+        body.enable = isAbove !== threshold.rendersAbove;
+      }
+
     const cam = this.tilemap.scene.cameras.main;
     const view = cam.worldView;
+
     const tw = this.tilemap.tileWidth;
     const th = this.tilemap.tileHeight;
 

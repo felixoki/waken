@@ -121,7 +121,7 @@ export const player = {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    if (WORLD_ID && configs.maps[player.map].isInstanced)
+    if (WORLD_ID && !configs.maps[player.map].isInstanced)
       await save.player(WORLD_ID, {
         playerId: player.id,
         position: { x: player.x, y: player.y },

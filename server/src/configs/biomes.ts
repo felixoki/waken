@@ -210,15 +210,26 @@ export const dungeon: BiomeConfig = {
       threshold: null,
     },
     {
+      terrain: TerrainName.RECESSED,
+      tileset: "dungeon_walls_floor",
+      threshold: null,
+    },
+    {
       terrain: TerrainName.FLOOR,
+      tileset: "dungeon_walls_floor",
+      threshold: null,
+    },
+    {
+      terrain: TerrainName.ELEVATED,
       tileset: "dungeon_walls_floor",
       threshold: null,
     },
   ],
 
   borders: [],
+  ledge: "dungeon_walls_floor",
   walls: "dungeon_walls_floor",
-  terrain: [TerrainName.FLOOR],
+  terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
   objects: [],
   generator: GeneratorName.ROOM,
   exclusion: 0,
@@ -232,8 +243,8 @@ export const dungeon: BiomeConfig = {
     distribution: {
       large: {
         count: { min: 1, max: 2 },
-        size: { width: { min: 80, max: 100 }, height: { min: 32, max: 40 } },
-        yRange: { min: 0.7, max: 1.0 },
+        size: { width: { min: 80, max: 100 }, height: { min: 16, max: 20 } },
+
       },
       small: {
         count: { min: 8, max: 15 },

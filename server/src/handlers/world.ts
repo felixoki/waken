@@ -28,7 +28,7 @@ export const world = {
 
     await Promise.all(
       world.players.all
-        .filter((player) => configs.maps[player.map].isInstanced)
+        .filter((player) => !configs.maps[player.map].isInstanced)
         .map((player) =>
           save.player(id, {
             playerId: player.id,
@@ -39,6 +39,7 @@ export const world = {
               facing: player.facing,
               spells: player.spells,
               inventory: player.inventory,
+              hotbar: player.hotbar,
             },
           }),
         ),

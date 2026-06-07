@@ -14,10 +14,12 @@ export enum TerrainName {
   WATER = "water",
   GROUND = "ground",
   GRASS = "grass",
+  RECESSED = "recessed",
+  FLOOR = "floor",
+  ELEVATED = "elevated",
   WALL_BASE = "wall_base",
   WALL_MID = "wall_mid",
   WALL_TOP = "wall_top",
-  FLOOR = "floor",
   VOID = "void",
 }
 
@@ -31,7 +33,9 @@ export const TERRAIN_ORDER = [
   TerrainName.WATER,
   TerrainName.GROUND,
   TerrainName.GRASS,
+  TerrainName.RECESSED,
   TerrainName.FLOOR,
+  TerrainName.ELEVATED,
   TerrainName.WALL_BASE,
   TerrainName.WALL_MID,
   TerrainName.WALL_TOP,
@@ -43,6 +47,8 @@ export enum TileRole {
   BORDER_INNER = "border_inner",
   WALL_OUTER = "wall_outer",
   WALL_INNER = "wall_inner",
+  LEDGE_OUTER = "ledge_outer",
+  LEDGE_INNER = "ledge_inner",
 }
 
 export enum BorderPosition {
@@ -173,6 +179,7 @@ export interface BiomeConfig {
   smoothing: { iterations: number; threshold: number } | null;
   details?: DetailConfig[];
   walls?: string;
+  ledge?: string;
   rooms?: RoomConfig;
 }
 

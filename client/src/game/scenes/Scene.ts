@@ -55,7 +55,8 @@ export class Scene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
-    this.tileManager?.update(delta);
+    const playerY = this.managers.players.player?.y;
+    this.tileManager?.update(delta, playerY);
     this.interfaceManager.update();
 
     const { width, height } = this.cameras.main;

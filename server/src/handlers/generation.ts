@@ -14,7 +14,15 @@ import {
   TerrainName,
 } from "../types/generation";
 import { join, dirname } from "path";
-import { CORNERS } from "../globals";
+import {
+  CORNERS,
+  DUNGEON_RECESS_GAP,
+  DUNGEON_RECESS_MARGIN,
+  DUNGEON_RECESS_MAX_H,
+  DUNGEON_RECESS_MAX_W,
+  DUNGEON_RECESS_MIN_H,
+  DUNGEON_RECESS_MIN_W,
+} from "../globals";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -525,12 +533,16 @@ export const generation = {
       range?: Range,
     ) => {
       for (let i = 0; i < count; i++) {
-        const w = size.width.min + Math.floor(rng() * (size.width.max - size.width.min));
-        const h = size.height.min + Math.floor(rng() * (size.height.max - size.height.min));
+        const w =
+          size.width.min +
+          Math.floor(rng() * (size.width.max - size.width.min));
+        const h =
+          size.height.min +
+          Math.floor(rng() * (size.height.max - size.height.min));
         const x = 1 + Math.floor(rng() * (width - w - 2));
 
-        const yMin = range?.min ?? 1;
-        const yMax = range?.max ?? height - h - 2;
+        const yMin = Math.max(range?.min ?? 1, 1);
+        const yMax = Math.min(range?.max ?? height - h - 2, height - h - 2);
 
         const y = yMin + Math.floor(rng() * (yMax - yMin + 1));
 
@@ -620,6 +632,103 @@ export const generation = {
         const ty = cy + Math.round(Math.sin(angle) * radius);
 
         return { x: tx * config.tileWidth, y: ty * config.tileHeight };
+      },
+    },
+
+    recess: {
+      rect: {
+        place: (
+          terrain: TerrainName[],
+          room: Room,
+          innerWidth: number,
+          innerHeight: number,
+          mapWidth: number,
+          mapHeight: number,
+          rng: () => number,
+        ): { x: number; y: number; w: number; h: number } | null => {
+          const maxAttempts = 10;
+
+          for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const rw = Math.min(
+              innerWidth,
+              DUNGEON_RECESS_MIN_W +
+                Math.floor(
+                  rng() * (DUNGEON_RECESS_MAX_W - DUNGEON_RECESS_MIN_W),
+                ),
+            );
+            const rh = Math.min(
+              innerHeight,
+              DUNGEON_RECESS_MIN_H +
+                Math.floor(
+                  rng() * (DUNGEON_RECESS_MAX_H - DUNGEON_RECESS_MIN_H),
+                ),
+            );
+            const rx =
+              room.x +
+              DUNGEON_RECESS_MARGIN +
+              Math.floor(rng() * Math.max(1, innerWidth - rw));
+            const ry =
+              room.y +
+              DUNGEON_RECESS_MARGIN +
+              Math.floor(rng() * Math.max(1, innerHeight - rh));
+
+            let blocked = false;
+
+            for (
+              let dy = -DUNGEON_RECESS_GAP;
+              dy <= rh + DUNGEON_RECESS_GAP - 1 && !blocked;
+              dy++
+            )
+              for (
+                let dx = -DUNGEON_RECESS_GAP;
+                dx <= rw + DUNGEON_RECESS_GAP - 1 && !blocked;
+                dx++
+              ) {
+                if (dy >= 0 && dy < rh && dx >= 0 && dx < rw) continue;
+                const ci = (ry + dy) * mapWidth + (rx + dx);
+
+                if (
+                  ci >= 0 &&
+                  ci < mapWidth * mapHeight &&
+                  terrain[ci] === TerrainName.RECESSED
+                ) {
+                  blocked = true;
+                }
+              }
+
+            if (blocked) continue;
+
+            generation.rooms.recess.rect.fill(
+              terrain,
+              rx,
+              ry,
+              rw,
+              rh,
+              mapWidth,
+            );
+
+            return { x: rx, y: ry, w: rw, h: rh };
+          }
+
+          return null;
+        },
+
+        fill: (
+          terrain: TerrainName[],
+          rx: number,
+          ry: number,
+          rw: number,
+          rh: number,
+          mapWidth: number,
+        ) => {
+          for (let dy = 0; dy < rh; dy++)
+            for (let dx = 0; dx < rw; dx++) {
+              const idx = (ry + dy) * mapWidth + (rx + dx);
+              
+              if (terrain[idx] === TerrainName.FLOOR)
+                terrain[idx] = TerrainName.RECESSED;
+            }
+        },
       },
     },
   },

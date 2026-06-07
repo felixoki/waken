@@ -1,6 +1,14 @@
 import { handlers } from "../../handlers";
 import {
   DUNGEON_LOOP_CHANCE,
+  DUNGEON_RECESS_CLUSTERS,
+  DUNGEON_RECESS_MARGIN,
+  DUNGEON_RECESS_MAX_H,
+  DUNGEON_RECESS_MAX_W,
+  DUNGEON_RECESS_MIN_DIM,
+  DUNGEON_RECESS_MIN_H,
+  DUNGEON_RECESS_MIN_W,
+  DUNGEON_RECESS_RECTS_PER_CLUSTER,
   DUNGEON_ROOM_ATTEMPTS,
   DUNGEON_ROOM_PADDING,
 } from "../../globals";
@@ -16,7 +24,11 @@ export class RoomGenerator {
     this.seed = seed;
   }
 
-  generate(): { terrain: TerrainName[]; entities: Entity[]; spawn?: { x: number; y: number } } {
+  generate(): {
+    terrain: TerrainName[];
+    entities: Entity[];
+    spawn?: { x: number; y: number };
+  } {
     const { width, height } = this.config;
     const { tileWidth, tileHeight } = this.config;
 
@@ -39,6 +51,7 @@ export class RoomGenerator {
     );
     for (let i = 0; i < cleaned.length; i++) terrain[i] = cleaned[i];
 
+    this._carve(terrain);
     this._walls(terrain);
 
     const { rooms: roomConfig } = this.config;
@@ -77,7 +90,10 @@ export class RoomGenerator {
 
     const spawnRoom = this.rooms[0];
     const spawn = spawnRoom
-      ? { x: (spawnRoom.x + 2) * tileWidth, y: (spawnRoom.y + spawnRoom.height - 3) * tileHeight }
+      ? {
+          x: (spawnRoom.x + 2) * tileWidth,
+          y: (spawnRoom.y + spawnRoom.height - 3) * tileHeight,
+        }
       : undefined;
 
     return { terrain, entities, spawn };
@@ -92,7 +108,10 @@ export class RoomGenerator {
     const { large, small } = this.config.rooms.distribution;
 
     const largeRange = large.yRange
-      ? { min: Math.floor(large.yRange.min * height), max: Math.floor(large.yRange.max * height) }
+      ? {
+          min: Math.floor(large.yRange.min * height),
+          max: Math.floor(large.yRange.max * height),
+        }
       : undefined;
 
     handlers.generation.rooms.place(
@@ -267,5 +286,80 @@ export class RoomGenerator {
     }
 
     return depths;
+  }
+
+  private _carve(terrain: TerrainName[]) {
+    const { width } = this.config;
+
+    if (!this.config.rooms) return;
+
+    const { large } = this.config.rooms.distribution;
+
+    const hash = handlers.generation.hash(`${this.seed}-pools`);
+    const rng = handlers.generation.seededRandom(hash);
+
+    for (const room of this.rooms) {
+      if (room.width < large.size.width.min) continue;
+
+      const inner = {
+        width: room.width - 2 * DUNGEON_RECESS_MARGIN,
+        height: room.height - 2 * DUNGEON_RECESS_MARGIN,
+      };
+
+      if (
+        inner.width < DUNGEON_RECESS_MIN_DIM ||
+        inner.height < DUNGEON_RECESS_MIN_DIM
+      )
+        continue;
+
+      for (let c = 0; c < DUNGEON_RECESS_CLUSTERS; c++) {
+        const anchor = handlers.generation.rooms.recess.rect.place(
+          terrain,
+          room,
+          inner.width,
+          inner.height,
+          width,
+          this.config.height,
+          rng,
+        );
+        if (!anchor) continue;
+
+        for (let r = 1; r < DUNGEON_RECESS_RECTS_PER_CLUSTER; r++) {
+          const rw = Math.min(
+            inner.width,
+            DUNGEON_RECESS_MIN_W +
+              Math.floor(rng() * (DUNGEON_RECESS_MAX_W - DUNGEON_RECESS_MIN_W)),
+          );
+          const rh = Math.min(
+            inner.height,
+            DUNGEON_RECESS_MIN_H +
+              Math.floor(rng() * (DUNGEON_RECESS_MAX_H - DUNGEON_RECESS_MIN_H)),
+          );
+
+          let rx =
+            anchor.x + Math.floor(rng() * anchor.w) - Math.floor(rw * 0.3);
+          let ry =
+            anchor.y + Math.floor(rng() * anchor.h) - Math.floor(rh * 0.3);
+
+          rx = Math.max(
+            room.x + DUNGEON_RECESS_MARGIN,
+            Math.min(rx, room.x + room.width - DUNGEON_RECESS_MARGIN - rw),
+          );
+          ry = Math.max(
+            room.y + DUNGEON_RECESS_MARGIN,
+            Math.min(ry, room.y + room.height - DUNGEON_RECESS_MARGIN - rh),
+          );
+
+          handlers.generation.rooms.recess.rect.fill(
+            terrain,
+            rx,
+            ry,
+            rw,
+            rh,
+            width,
+          );
+        }
+      }
+    }
   }
 }
