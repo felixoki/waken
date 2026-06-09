@@ -143,6 +143,7 @@ export const DUNGEON_ROOM_ATTEMPTS = 200;
 export const DUNGEON_ROOM_PADDING = 4;
 export const DUNGEON_ROOM_MIN = 12;
 export const DUNGEON_ROOM_MAX = 24;
+export const DUNGEON_ROOM_FURNISH_CHANCE = 0.9;
 export const DUNGEON_LOOP_CHANCE = 0.01;
 export const DUNGEON_RECESS_MARGIN = 4;
 export const DUNGEON_RECESS_CLUSTERS = 4;

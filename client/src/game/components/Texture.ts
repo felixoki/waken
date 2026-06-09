@@ -68,6 +68,51 @@ export class TextureComponent extends Component {
     this.entity.setTexture(this.key);
   }
 
+  public canvas(): HTMLCanvasElement {
+    const scene = this.entity.scene;
+    const { tileSize, tiles, spritesheet } = this.config;
+
+    const width = tiles.length
+      ? Math.max(...tiles.map((t) => t.end - t.start + 1)) * tileSize
+      : tileSize;
+    const height = tiles.length ? tiles.length * tileSize : tileSize;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d")!;
+    if (!tiles.length) return canvas;
+
+    const texture = scene.textures.get(spritesheet);
+    const image = texture.getSourceImage() as CanvasImageSource;
+    const columns = Math.floor(texture.source[0].width / tileSize);
+
+    tiles.forEach((r, i) => {
+      for (let col = r.start; col <= r.end; col++) {
+        const destX = (col - r.start) * tileSize;
+        const destY = i * tileSize;
+        const frameIndex = (r.row - 1) * columns + (col - 1);
+        const srcCol = frameIndex % columns;
+        const srcRow = Math.floor(frameIndex / columns);
+
+        ctx.drawImage(
+          image,
+          srcCol * tileSize,
+          srcRow * tileSize,
+          tileSize,
+          tileSize,
+          destX,
+          destY,
+          tileSize,
+          tileSize,
+        );
+      }
+    });
+
+    return canvas;
+  }
+
   update(): void {}
 
   detach(): void {}

@@ -11,6 +11,7 @@ import { PickableComponent } from "../components/Pickable";
 import { InventoryComponent } from "../components/Inventory";
 import { HoverableComponent } from "../components/Hoverable";
 import { DamageableComponent } from "../components/Damageable";
+import { DestructibleComponent } from "../components/Destructible";
 import { TransitionComponent } from "../components/Transition";
 import { InteractableComponent } from "../components/Interactable";
 import { CollectorComponent } from "../components/Collector";
@@ -69,6 +70,9 @@ export class ComponentFactory {
           break;
         case ComponentName.DAMAGEABLE:
           comp = new DamageableComponent();
+          break;
+        case ComponentName.DESTRUCTIBLE:
+          comp = new DestructibleComponent();
           break;
         case ComponentName.TRANSITION:
           comp = new TransitionComponent(entity, component.config);

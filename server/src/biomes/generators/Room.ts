@@ -10,9 +10,17 @@ import {
   DUNGEON_RECESS_MIN_W,
   DUNGEON_RECESS_RECTS_PER_CLUSTER,
   DUNGEON_ROOM_ATTEMPTS,
+  DUNGEON_ROOM_FURNISH_CHANCE,
   DUNGEON_ROOM_PADDING,
 } from "../../globals";
-import { BiomeConfig, Entity, Room, TerrainName } from "../../types/generation";
+import {
+  BiomeConfig,
+  Entity,
+  Room,
+  RoomInterior,
+  RoomInteriorOrigin,
+  TerrainName,
+} from "../../types/generation";
 
 export class RoomGenerator {
   private config: BiomeConfig;
@@ -66,23 +74,114 @@ export class RoomGenerator {
         rng,
       );
 
+      const byCorner = new Map<RoomInteriorOrigin, RoomInterior[]>();
+
+      for (const piece of roomConfig.interior) {
+        const list = byCorner.get(piece.origin) ?? [];
+        list.push(piece);
+        byCorner.set(piece.origin, list);
+      }
+
       for (let i = 0; i < this.rooms.length; i++) {
         const room = this.rooms[i];
         const template = assigned[i];
 
         if (!template) continue;
 
-        for (const piece of template.setpieces) {
+        const isLarge =
+          room.width >= roomConfig.distribution.large.size.width.min;
+
+        for (const piece of template.enemies ?? []) {
           const count =
             piece.count.min +
             Math.floor(rng() * (piece.count.max - piece.count.min + 1));
-          const place = handlers.generation.rooms.patterns[piece.pattern];
 
           for (let j = 0; j < count; j++) {
             const entity =
               piece.entities[Math.floor(rng() * piece.entities.length)];
-            const pos = place(room, rng, this.config);
-            entities.push({ name: entity, x: pos.x, y: pos.y });
+            const ox = room.x + 1 + Math.floor(rng() * (room.width - 2));
+            const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
+
+            entities.push({
+              name: entity,
+              x: ox * tileWidth,
+              y: oy * tileHeight,
+            });
+          }
+        }
+
+        if (!isLarge && roomConfig.interior.length) {
+          const corners = handlers.generation.rooms.shuffle(
+            [
+              RoomInteriorOrigin.TOP_RIGHT,
+              RoomInteriorOrigin.TOP_LEFT,
+              RoomInteriorOrigin.BOTTOM_RIGHT,
+              RoomInteriorOrigin.BOTTOM_LEFT,
+            ].filter((c) => byCorner.has(c)),
+            rng,
+          );
+
+          const placed = handlers.generation.rooms.doorBounds(
+            terrain,
+            room,
+            width,
+            height,
+            tileWidth,
+            tileHeight,
+          );
+
+          for (const corner of corners) {
+            if (rng() > DUNGEON_ROOM_FURNISH_CHANCE) continue;
+
+            const pool = byCorner.get(corner)!;
+            const piece = pool[Math.floor(rng() * pool.length)];
+
+            if (
+              !handlers.generation.rooms.isWallIntact(
+                terrain,
+                room,
+                piece,
+                width,
+                height,
+                tileWidth,
+              ) ||
+              !handlers.generation.rooms.fitsInRoom(room, piece, tileWidth)
+            )
+              continue;
+
+            const ref = handlers.generation.rooms.cornerRef(
+              room,
+              corner,
+              tileWidth,
+              tileHeight,
+            );
+
+            const survivors: (Entity & {
+              box: { minX: number; minY: number; maxX: number; maxY: number };
+            })[] = [];
+
+            for (const e of piece.entities) {
+              const ex = ref.x + e.x;
+              const ey = ref.y + e.y;
+              const box = {
+                minX: ex - tileWidth,
+                minY: ey - tileHeight,
+                maxX: ex + tileWidth,
+                maxY: ey + tileHeight,
+              };
+
+              if (
+                placed.some((b) => handlers.generation.rooms.overlaps(b, box))
+              )
+                continue;
+
+              survivors.push({ name: e.name, x: ex, y: ey, box });
+            }
+
+            for (const s of survivors) {
+              placed.push(s.box);
+              entities.push({ name: s.name, x: s.x, y: s.y });
+            }
           }
         }
       }

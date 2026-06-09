@@ -16,6 +16,7 @@ export enum ComponentName {
   COLLECTOR = "collector",
   CONSUMABLE = "consumable",
   DAMAGEABLE = "damageable",
+  DESTRUCTIBLE = "destructible",
   FARMABLE = "farmable",
   FELLABLE = "fellable",
   GROWABLE = "growable",
@@ -44,6 +45,7 @@ export type ComponentConfig =
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
   | { name: ComponentName.CONSUMABLE; config: ConsumableConfig }
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
+  | { name: ComponentName.DESTRUCTIBLE }
   | { name: ComponentName.FARMABLE }
   | { name: ComponentName.FELLABLE }
   | { name: ComponentName.GROWABLE; config: GrowableConfig }

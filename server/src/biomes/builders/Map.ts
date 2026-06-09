@@ -175,10 +175,15 @@ export class MapBuilder {
         { width: this.config.width, height: this.config.height },
         this.loader,
       );
-      const walls = generator.generate(terrain, this.config.walls, gid);
+      const { below, above } = generator.generate(
+        terrain,
+        this.config.walls,
+        gid,
+      );
 
-      for (let i = 0; i < walls.length; i++)
-        if (walls[i] !== 0) for (const layer of tiledLayers) layer.data[i] = 0;
+      for (let i = 0; i < below.length; i++)
+        if (below[i] !== 0 || above[i] !== 0)
+          for (const layer of tiledLayers) layer.data[i] = 0;
 
       tiledLayers.push(
         handlers.generation.createLayer(
@@ -186,10 +191,58 @@ export class MapBuilder {
           "walls",
           width,
           height,
-          walls,
+          below,
           [{ name: "collides", type: "bool", value: true }],
         ),
       );
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "walls_above",
+          width,
+          height,
+          above,
+          [
+            { name: "collides", type: "bool", value: true },
+            { name: "rendersAbove", type: "bool", value: true },
+          ],
+        ),
+      );
+
+      /** Void fill rendered above the player at remaining VOID cells */
+      const voidLayer = layers.find((l) => l.terrain === TerrainName.VOID);
+
+      if (voidLayer) {
+        const voidFills = this.loader.query(voidLayer.tileset, {
+          role: TileRole.FILL,
+          terrain: TerrainName.VOID,
+        });
+
+        if (voidFills.length) {
+          const voidGid = firstgids.get(voidLayer.tileset)!;
+          const voidAbove = new Array(width * height).fill(0);
+
+          for (let i = 0; i < terrain.length; i++)
+            if (
+              terrain[i] === TerrainName.VOID &&
+              below[i] === 0 &&
+              above[i] === 0
+            )
+              voidAbove[i] = voidGid + voidFills[0].id;
+
+          tiledLayers.push(
+            handlers.generation.createLayer(
+              layerId++,
+              "void_above",
+              width,
+              height,
+              voidAbove,
+              [{ name: "rendersAbove", type: "bool", value: true }],
+            ),
+          );
+        }
+      }
     }
 
     /**

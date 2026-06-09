@@ -23,20 +23,22 @@ export class WallGenerator {
     terrain: TerrainName[],
     tileset: string,
     firstgid: number,
-  ): number[] {
-    const data = new Array(this.width * this.height).fill(0);
+  ): { below: number[]; above: number[] } {
+    const below = new Array(this.width * this.height).fill(0);
+    const above = new Array(this.width * this.height).fill(0);
 
-    this._place(terrain, tileset, firstgid, data, true);
-    this._place(terrain, tileset, firstgid, data, false);
+    this._place(terrain, tileset, firstgid, below, above, true);
+    this._place(terrain, tileset, firstgid, below, above, false);
 
-    return data;
+    return { below, above };
   }
 
   private _place(
     terrain: TerrainName[],
     tileset: string,
     firstgid: number,
-    data: number[],
+    below: number[],
+    above: number[],
     cornersOnly: boolean,
   ) {
     const columns = this.loader.load(tileset).columns;
@@ -48,7 +50,7 @@ export class WallGenerator {
 
         if (cell !== TerrainName.VOID && cell !== TerrainName.WALL_BASE)
           continue;
-        if (data[i] !== 0) continue;
+        if (below[i] !== 0 || above[i] !== 0) continue;
 
         const match = this._classify(terrain, cell, x, y);
         if (!match) continue;
@@ -76,6 +78,8 @@ export class WallGenerator {
         };
         const baseTile = tile.id - anchor.y * columns - anchor.x;
 
+        const rendersAbove = this._rendersAbove(match);
+
         for (let by = 0; by < ph; by++)
           for (let bx = 0; bx < pw; bx++) {
             const wx = x - anchor.x + bx;
@@ -85,11 +89,31 @@ export class WallGenerator {
               continue;
 
             const wi = handlers.generation.toIndex(wx, wy, this.width);
-            if (data[wi] !== 0) continue;
+            const target = rendersAbove ? above : below;
+            if (target[wi] !== 0) continue;
 
-            data[wi] = firstgid + baseTile + bx + by * columns;
+            target[wi] = firstgid + baseTile + bx + by * columns;
           }
       }
+  }
+
+  private _rendersAbove(match: WallMatch): boolean {
+    if (
+      match.role === TileRole.WALL_OUTER &&
+      (match.position === BorderPosition.TOP ||
+        match.position === BorderPosition.TOP_LEFT ||
+        match.position === BorderPosition.TOP_RIGHT)
+    )
+      return true;
+
+    if (
+      match.role === TileRole.WALL_INNER &&
+      (match.position === BorderPosition.BOTTOM_LEFT ||
+        match.position === BorderPosition.BOTTOM_RIGHT)
+    )
+      return true;
+
+    return false;
   }
 
   private _classify(

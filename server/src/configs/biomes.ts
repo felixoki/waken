@@ -4,8 +4,8 @@ import {
   BiomeName,
   GeneratorName,
   RoomDifficulty,
+  RoomInteriorOrigin,
   RoomName,
-  RoomPattern,
   RoomType,
   TerrainName,
   TrapName,
@@ -244,11 +244,10 @@ export const dungeon: BiomeConfig = {
       large: {
         count: { min: 1, max: 2 },
         size: { width: { min: 80, max: 100 }, height: { min: 16, max: 20 } },
-
       },
       small: {
         count: { min: 8, max: 15 },
-        size: { width: { min: 10, max: 12 }, height: { min: 10, max: 12 } },
+        size: { width: { min: 14, max: 16 }, height: { min: 14, max: 16 } },
       },
     },
     templates: [
@@ -259,31 +258,15 @@ export const dungeon: BiomeConfig = {
         weight: 10,
         depth: { min: 0, max: 4 },
         water: { coverage: 0.15 },
-        setpieces: [
+        enemies: [
           {
-            pattern: RoomPattern.CLUSTER,
             entities: [EntityName.RAT],
-            count: { min: 3, max: 6 },
-          },
-          {
-            pattern: RoomPattern.WALL,
-            entities: [EntityName.TORCH1],
-            count: { min: 2, max: 4 },
-          },
-          {
-            pattern: RoomPattern.LINE,
-            entities: [EntityName.BARREL1],
             count: { min: 1, max: 3 },
           },
         ],
         traps: [
           { name: TrapName.SPIKE1, density: 0.05, trigger: TrapTrigger.STEP },
         ],
-        loot: {
-          entities: [],
-          count: { min: 0, max: 0 },
-          density: 0,
-        },
       },
       {
         id: RoomName.FEAST1,
@@ -291,31 +274,75 @@ export const dungeon: BiomeConfig = {
         difficulty: RoomDifficulty.HARD,
         weight: 6,
         depth: { min: 3, max: undefined },
-        setpieces: [
+        enemies: [
           {
-            pattern: RoomPattern.CLUSTER,
-            entities: [EntityName.FISH_STAND1],
-            count: { min: 1, max: 2 },
-          },
-          {
-            pattern: RoomPattern.RING,
             entities: [EntityName.ORC1, EntityName.GOBLIN1],
-            count: { min: 4, max: 7 },
-          },
-          {
-            pattern: RoomPattern.WALL,
-            entities: [EntityName.TORCH1],
-            count: { min: 3, max: 6 },
+            count: { min: 1, max: 2 },
           },
         ],
         traps: [
           { name: TrapName.SPIKE1, density: 0.15, trigger: TrapTrigger.STEP },
         ],
-        loot: {
-          entities: [EntityName.CHEST1],
-          count: { min: 1, max: 3 },
-          density: 0.2,
-        },
+      },
+    ],
+    interior: [
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        entities: [
+          { name: EntityName.BOXES2, x: -128, y: -4 },
+          { name: EntityName.CUPBOARD1, x: -88, y: -14 },
+          { name: EntityName.WEAPONRACK1, x: -24, y: -6 },
+          { name: EntityName.TABLE1, x: -136, y: 42 },
+          { name: EntityName.TABLE2, x: -48, y: 100 },
+          { name: EntityName.BOXES3, x: -16, y: 46 },
+          { name: EntityName.FIREBOWL1, x: -74, y: 56 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        entities: [
+          { name: EntityName.BARREL1, x: -106, y: 12 },
+          { name: EntityName.BARREL2, x: -56, y: -2 },
+          { name: EntityName.VASES1, x: -136, y: 12 },
+          { name: EntityName.VASES2, x: -80, y: 12 },
+          { name: EntityName.BOXES4, x: -24, y: -2 },
+          { name: EntityName.BOXES5, x: -52, y: 28 },
+          { name: EntityName.CHEST1, x: -16, y: 52 },
+          { name: EntityName.BANQUET_TABLE, x: -93, y: 82 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_LEFT,
+        entities: [
+          { name: EntityName.WEAPONRACK1, x: 25, y: -4 },
+          { name: EntityName.VASES2, x: 64, y: 8 },
+          { name: EntityName.BARREL2, x: 88, y: 8 },
+          { name: EntityName.TABLE1, x: 104, y: 34 },
+          { name: EntityName.FIREBOWL1, x: 54, y: 56 },
+          { name: EntityName.TABLE3, x: 87, y: 82 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_LEFT,
+        entities: [
+          { name: EntityName.BARREL3, x: 17, y: 12 },
+          { name: EntityName.BARRELS1, x: 55, y: 12 },
+          { name: EntityName.BARREL3, x: 113, y: 12 },
+          { name: EntityName.BARREL2, x: 136, y: 14 },
+          { name: EntityName.TABLE2, x: 39, y: 56 },
+          { name: EntityName.TABLE3, x: 104, y: 66 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.BOTTOM_LEFT,
+        entities: [
+          { name: EntityName.BOXES6, x: 15, y: -24 },
+          { name: EntityName.BARRELS2, x: 51, y: -24 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.BOTTOM_RIGHT,
+        entities: [{ name: EntityName.BOXES7, x: -16, y: -16 }],
       },
     ],
   },

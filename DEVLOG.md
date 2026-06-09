@@ -538,14 +538,26 @@
 
 - Add wall and ledge collisions ✅
 
+#### 8.6.2026
+
+- Add room interior ✅
+- Add wall layering ✅
+- Refactor effect ui ✅
+- Add destructible component ✅
+- Entities can hurt each other ✅
+
+#### 9.6.2026
+
+- Add room interior merging ✅
+
 ### In progress
 
 - Add stairs
 
 ### Bugs
 
-- Entities can hurt each other
 - Ledge corners render above players
+- Entities ignore conditional collisions
 
 ### Backlog
 

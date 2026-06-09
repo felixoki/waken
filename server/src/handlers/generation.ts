@@ -2,14 +2,14 @@ import { fork } from "child_process";
 import { fileURLToPath } from "url";
 import { TiledProperty } from "../types";
 import {
-  BiomeConfig,
   GeneratedMap,
   Neighbors,
   Range,
   Room,
   RoomConfig,
   RoomDifficulty,
-  RoomPattern,
+  RoomInterior,
+  RoomInteriorOrigin,
   TERRAIN_ORDER,
   TerrainName,
 } from "../types/generation";
@@ -559,82 +559,6 @@ export const generation = {
       }
     },
 
-    patterns: {
-      [RoomPattern.CLUSTER]: (
-        room: Room,
-        rng: () => number,
-        config: BiomeConfig,
-      ) => {
-        const cx = room.x + Math.floor(room.width / 2);
-        const cy = room.y + Math.floor(room.height / 2);
-
-        const ox = Math.floor((rng() - 0.5) * room.width * 0.6);
-        const oy = Math.floor((rng() - 0.5) * room.height * 0.6);
-
-        return {
-          x: (cx + ox) * config.tileWidth,
-          y: (cy + oy) * config.tileHeight,
-        };
-      },
-
-      [RoomPattern.WALL]: (
-        room: Room,
-        rng: () => number,
-        config: BiomeConfig,
-      ) => {
-        const side = Math.floor(rng() * 4);
-        const along = rng();
-
-        const tx =
-          side < 2
-            ? room.x + Math.floor(along * room.width)
-            : side === 2
-              ? room.x
-              : room.x + room.width - 1;
-
-        const ty =
-          side >= 2
-            ? room.y + Math.floor(along * room.height)
-            : side === 0
-              ? room.y
-              : room.y + room.height - 1;
-
-        return { x: tx * config.tileWidth, y: ty * config.tileHeight };
-      },
-
-      [RoomPattern.LINE]: (
-        room: Room,
-        rng: () => number,
-        config: BiomeConfig,
-      ) => {
-        const startX = room.x + 1;
-        const y = room.y + Math.floor(rng() * room.height);
-        const offset = Math.floor(rng() * (room.width - 2));
-
-        return {
-          x: (startX + offset) * config.tileWidth,
-          y: y * config.tileHeight,
-        };
-      },
-
-      [RoomPattern.RING]: (
-        room: Room,
-        rng: () => number,
-        config: BiomeConfig,
-      ) => {
-        const cx = room.x + Math.floor(room.width / 2);
-        const cy = room.y + Math.floor(room.height / 2);
-
-        const angle = rng() * Math.PI * 2;
-        const radius = Math.min(room.width, room.height) * 0.35;
-
-        const tx = cx + Math.round(Math.cos(angle) * radius);
-        const ty = cy + Math.round(Math.sin(angle) * radius);
-
-        return { x: tx * config.tileWidth, y: ty * config.tileHeight };
-      },
-    },
-
     recess: {
       rect: {
         place: (
@@ -724,12 +648,176 @@ export const generation = {
           for (let dy = 0; dy < rh; dy++)
             for (let dx = 0; dx < rw; dx++) {
               const idx = (ry + dy) * mapWidth + (rx + dx);
-              
+
               if (terrain[idx] === TerrainName.FLOOR)
                 terrain[idx] = TerrainName.RECESSED;
             }
         },
       },
+    },
+
+    cornerRef: (
+      room: Room,
+      origin: RoomInteriorOrigin,
+      tileWidth: number,
+      tileHeight: number,
+    ) => {
+      const refs = {
+        [RoomInteriorOrigin.TOP_RIGHT]: {
+          x: (room.x + room.width) * tileWidth,
+          y: room.y * tileHeight,
+        },
+        [RoomInteriorOrigin.TOP_LEFT]: {
+          x: room.x * tileWidth,
+          y: room.y * tileHeight,
+        },
+        [RoomInteriorOrigin.BOTTOM_RIGHT]: {
+          x: (room.x + room.width) * tileWidth,
+          y: (room.y + room.height) * tileHeight,
+        },
+        [RoomInteriorOrigin.BOTTOM_LEFT]: {
+          x: room.x * tileWidth,
+          y: (room.y + room.height) * tileHeight,
+        },
+      };
+
+      return refs[origin];
+    },
+
+    isWallIntact: (
+      terrain: TerrainName[],
+      room: Room,
+      piece: RoomInterior,
+      mapWidth: number,
+      mapHeight: number,
+      tileWidth: number,
+    ): boolean => {
+      const furthestX = Math.min(...piece.entities.map((e) => e.x));
+      const span = Math.ceil(Math.abs(furthestX) / tileWidth);
+
+      const walls = {
+        [RoomInteriorOrigin.TOP_RIGHT]: {
+          along: (dx: number) => ({
+            x: room.x + room.width - 1 - dx,
+            y: room.y - 1,
+          }),
+          side: (dy: number) => ({ x: room.x + room.width, y: room.y + dy }),
+          sideRange: [0, 1, 2],
+        },
+        [RoomInteriorOrigin.TOP_LEFT]: {
+          along: (dx: number) => ({ x: room.x + dx, y: room.y - 1 }),
+          side: (dy: number) => ({ x: room.x - 1, y: room.y + dy }),
+          sideRange: [0, 1, 2],
+        },
+        [RoomInteriorOrigin.BOTTOM_RIGHT]: {
+          along: (dx: number) => ({
+            x: room.x + room.width - 1 - dx,
+            y: room.y + room.height,
+          }),
+          side: (dy: number) => ({
+            x: room.x + room.width,
+            y: room.y + room.height - 1 + dy,
+          }),
+          sideRange: [-2, -1, 0],
+        },
+        [RoomInteriorOrigin.BOTTOM_LEFT]: {
+          along: (dx: number) => ({ x: room.x + dx, y: room.y + room.height }),
+          side: (dy: number) => ({
+            x: room.x - 1,
+            y: room.y + room.height - 1 + dy,
+          }),
+          sideRange: [-2, -1, 0],
+        },
+      };
+
+      const { along, side, sideRange } = walls[piece.origin];
+      const checks: { x: number; y: number }[] = [];
+
+      for (let dx = 0; dx < span; dx++) checks.push(along(dx));
+      for (const dy of sideRange) checks.push(side(dy));
+
+      return checks.every(({ x, y }) => {
+        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return true;
+        return terrain[y * mapWidth + x] !== TerrainName.FLOOR;
+      });
+    },
+
+    fitsInRoom: (
+      room: Room,
+      piece: RoomInterior,
+      tileWidth: number,
+    ): boolean => {
+      const furthestX = Math.min(...piece.entities.map((e) => e.x));
+      return Math.abs(furthestX) <= room.width * tileWidth;
+    },
+
+    shuffle: <T>(arr: T[], rng: () => number): T[] => {
+      const a = arr.slice();
+
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+
+      return a;
+    },
+
+    overlaps: (
+      a: { minX: number; minY: number; maxX: number; maxY: number },
+      b: { minX: number; minY: number; maxX: number; maxY: number },
+    ) =>
+      a.minX < b.maxX && a.maxX > b.minX && a.minY < b.maxY && a.maxY > b.minY,
+
+    doorBounds: (
+      terrain: TerrainName[],
+      room: Room,
+      mapWidth: number,
+      mapHeight: number,
+      tileWidth: number,
+      tileHeight: number,
+      clearance = 2,
+    ) => {
+      const boxes: {
+        minX: number;
+        minY: number;
+        maxX: number;
+        maxY: number;
+      }[] = [];
+
+      const open = (tx: number, ty: number) =>
+        tx >= 0 &&
+        ty >= 0 &&
+        tx < mapWidth &&
+        ty < mapHeight &&
+        terrain[ty * mapWidth + tx] === TerrainName.FLOOR;
+
+      const box = (tx: number, ty: number, ex: number, ey: number) => {
+        const x0 = Math.min(tx, tx + ex);
+        const x1 = Math.max(tx, tx + ex);
+        const y0 = Math.min(ty, ty + ey);
+        const y1 = Math.max(ty, ty + ey);
+
+        boxes.push({
+          minX: x0 * tileWidth,
+          minY: y0 * tileHeight,
+          maxX: (x1 + 1) * tileWidth,
+          maxY: (y1 + 1) * tileHeight,
+        });
+      };
+
+      for (let tx = room.x; tx < room.x + room.width; tx++) {
+        if (open(tx, room.y - 1)) box(tx, room.y - 1, 0, clearance);
+        if (open(tx, room.y + room.height))
+          box(tx, room.y + room.height, 0, -clearance);
+      }
+
+      for (let ty = room.y; ty < room.y + room.height; ty++) {
+        if (open(room.x - 1, ty)) box(room.x - 1, ty, clearance, 0);
+        if (open(room.x + room.width, ty))
+          box(room.x + room.width, ty, -clearance, 0);
+      }
+
+      return boxes;
     },
   },
 };

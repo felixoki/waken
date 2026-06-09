@@ -497,6 +497,27 @@ const interior: Spritesheet[] = [
     frameHeight: 16,
     asTileset: true,
   },
+  {
+    key: "dungeon_objects1",
+    file: "dungeon_objects1.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "dungeon_objects2",
+    file: "dungeon_objects2.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "firebowl",
+    file: "firebowl.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
 ];
 
 const creatures: Spritesheet[] = [
@@ -671,13 +692,6 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "road_walls_paving",
         file: "road_walls_paving.png",
-        frameWidth: 16,
-        frameHeight: 16,
-        asTileset: true,
-      },
-      {
-        key: "dungeon_walls_floor",
-        file: "dungeon_walls_floor.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
@@ -969,6 +983,27 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "water_coasts",
         file: "water_coasts.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_market_objects",
+        file: "village_market_objects.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_tavern_house",
+        file: "village_tavern_house.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_tavern_interior",
+        file: "village_tavern_interior.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

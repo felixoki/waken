@@ -33,6 +33,7 @@ import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { DamageableComponent } from "../components/Damageable";
+import { DestructibleComponent } from "../components/Destructible";
 import { vfx } from "../vfx";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
@@ -270,8 +271,12 @@ export class MainScene extends Phaser.Scene {
         const damageable = entity.getComponent<DamageableComponent>(
           ComponentName.DAMAGEABLE,
         );
+        const destructible = entity.getComponent<DestructibleComponent>(
+          ComponentName.DESTRUCTIBLE,
+        );
 
-        if (damageable) vfx.emitters.dissolve(entity);
+        if (destructible) vfx.emitters.break(entity);
+        else if (damageable) vfx.emitters.dissolve(entity);
       }
 
       this.managers.entities.remove(data);

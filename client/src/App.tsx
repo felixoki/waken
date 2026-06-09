@@ -68,8 +68,10 @@ function App() {
       <div className="fixed top-4 right-4 bg-black/25 rounded-lg p-4 min-w-75">
         <Party />
       </div>
-      <Stats />
-      <Effects />
+      <div className="fixed bottom-0 left-0 p-4 flex flex-col gap-4">
+        <Effects />
+        <Stats />
+      </div>
       <Economy />
       <div className="fixed top-4 left-4 flex flex-row gap-4">
         <Provider>

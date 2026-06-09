@@ -37,19 +37,20 @@ export const combat = {
     const attack = definition?.attacks?.find(
       (a) => a.state === StateName.CASTING && a.spell,
     );
+
     if (!attack?.spell) return null;
     return configs.spells[attack.spell] ?? null;
   },
 
   consume: (entity: Entity, config: SpellConfig): boolean => {
     const player = entity.scene.managers.players.get(entity.id);
+
     if (!player) return true;
 
     if (player.mana < config.mana) return false;
 
-    if (player.isControllable) {
+    if (player.isControllable)
       entity.scene.game.events.emit(Event.PLAYER_CAST, config.name);
-    }
 
     return true;
   },
@@ -101,7 +102,8 @@ export const combat = {
       hitbox.ownerId === entity.id ||
       hitbox.hits.has(entity.id) ||
       !isAuthority ||
-      (player.target && player.attacker)
+      (player.target && player.attacker) ||
+      (!player.target && !player.attacker)
     )
       return;
 

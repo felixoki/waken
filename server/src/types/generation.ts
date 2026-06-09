@@ -72,11 +72,11 @@ export enum RoomType {
   FEAST = "feast",
 }
 
-export enum RoomPattern {
-  CLUSTER = "cluster",
-  LINE = "line",
-  WALL = "wall",
-  RING = "ring",
+export enum RoomInteriorOrigin {
+  TOP_RIGHT = "top_right",
+  TOP_LEFT = "top_left",
+  BOTTOM_RIGHT = "bottom_right",
+  BOTTOM_LEFT = "bottom_left",
 }
 
 export enum RoomDifficulty {
@@ -246,10 +246,13 @@ export interface WallMatch {
 }
 
 export interface SetPiece {
-  pattern: RoomPattern;
   entities: EntityName[];
   count: Range;
-  spacing?: number;
+}
+
+export interface RoomInterior {
+  origin: RoomInteriorOrigin;
+  entities: { name: EntityName; x: number; y: number }[];
 }
 
 export interface TrapConfig {
@@ -264,13 +267,8 @@ export interface RoomTemplate {
   difficulty: RoomDifficulty;
   weight: number;
   depth?: { min?: number; max?: number };
-  setpieces: SetPiece[];
+  enemies?: SetPiece[];
   traps: TrapConfig[];
-  loot?: {
-    entities: EntityName[];
-    count: Range;
-    density: number;
-  };
   water?: {
     coverage: number;
   };
@@ -290,6 +288,7 @@ export interface RoomDistribution {
 export interface RoomConfig {
   assignment: RoomAssignment;
   templates: RoomTemplate[];
+  interior: RoomInterior[];
   distribution: {
     large: RoomDistribution;
     small: RoomDistribution;

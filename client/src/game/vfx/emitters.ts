@@ -1,5 +1,6 @@
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
+import { sprites } from "../handlers/sprites";
 
 export const emitters = {
   burning: (entity: Entity): (() => void) => {
@@ -436,41 +437,9 @@ export const emitters = {
 
   dissolve: (entity: Entity) => {
     const scene = entity.scene;
-    const {
-      frame,
-      scaleX: sx,
-      scaleY: sy,
-      depth,
-      x: worldX,
-      y: worldY,
-      originX,
-      originY,
-    } = entity;
+    const { scaleX: sx, scaleY: sy, depth } = entity;
 
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d")!;
-    canvas.width = frame.cutWidth;
-    canvas.height = frame.cutHeight;
-
-    ctx.drawImage(
-      frame.source.image as HTMLImageElement,
-      frame.cutX,
-      frame.cutY,
-      frame.cutWidth,
-      frame.cutHeight,
-      0,
-      0,
-      frame.cutWidth,
-      frame.cutHeight,
-    );
-
-    const { data } = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const pixels: { x: number; y: number }[] = [];
-
-    for (let py = 0; py < canvas.height; py++)
-      for (let px = 0; px < canvas.width; px++)
-        if (data[(py * canvas.width + px) * 4 + 3] > 0)
-          pixels.push({ x: px, y: py });
+    const chunks = sprites.pixels(entity, 1);
 
     const windAngle = -Math.PI / 6;
     const cosW = Math.cos(windAngle);
@@ -479,8 +448,8 @@ export const emitters = {
     let minDot = Infinity;
     let maxDot = -Infinity;
 
-    for (const p of pixels) {
-      const dot = p.x * cosW + p.y * sinW;
+    for (const c of chunks) {
+      const dot = c.tx * cosW + c.ty * sinW;
       if (dot < minDot) minDot = dot;
       if (dot > maxDot) maxDot = dot;
     }
@@ -494,15 +463,12 @@ export const emitters = {
 
     const particles: Phaser.GameObjects.Arc[] = [];
 
-    for (const p of pixels) {
-      const px = worldX + (p.x - frame.cutWidth * originX) * sx;
-      const py = worldY + (p.y - frame.cutHeight * originY) * sy;
-
-      const circle = scene.add.circle(px, py, radius, 0x111111);
+    for (const c of chunks) {
+      const circle = scene.add.circle(c.x, c.y, radius, 0x111111);
       circle.setDepth(depth);
       particles.push(circle);
 
-      const dot = p.x * cosW + p.y * sinW;
+      const dot = c.tx * cosW + c.ty * sinW;
       const delay = ((dot - minDot) / dotRange) * stagger;
 
       const driftX =
@@ -512,8 +478,8 @@ export const emitters = {
 
       scene.tweens.add({
         targets: circle,
-        x: px + driftX,
-        y: py + driftY,
+        x: c.x + driftX,
+        y: c.y + driftY,
         alpha: 0,
         delay,
         duration: duration + Phaser.Math.Between(-100, 100),
@@ -524,6 +490,108 @@ export const emitters = {
 
     scene.time.delayedCall(stagger + duration + 200, () => {
       particles.forEach((p) => {
+        if (p.active) p.destroy();
+      });
+    });
+  },
+
+  break: (entity: Entity) => {
+    const scene = entity.scene;
+    const { scaleX: sx, scaleY: sy, depth, x: cx, y: cy } = entity;
+
+    const block = 4;
+    const chunks = sprites.pixels(entity, block);
+
+    entity.setVisible(false);
+
+    const width = block * sx;
+    const height = block * sy;
+
+    const pieces: Phaser.GameObjects.Rectangle[] = [];
+
+    for (const c of chunks) {
+      const rect = scene.add.rectangle(
+        c.x,
+        c.y,
+        width,
+        height,
+        c.color,
+        c.alpha,
+      );
+      rect.setDepth(depth);
+      pieces.push(rect);
+
+      const dx = c.x - cx;
+      const dy = c.y - cy;
+      const dist = Math.hypot(dx, dy) || 1;
+      const nx = dx / dist;
+      const ny = dy / dist;
+
+      const power = Phaser.Math.Between(6, 16);
+      const gravity = Phaser.Math.Between(12, 24);
+      const duration = Phaser.Math.Between(750, 1150);
+
+      scene.tweens.add({
+        targets: rect,
+        x: c.x + nx * power + Phaser.Math.Between(-3, 3),
+        y: c.y + ny * power + gravity,
+        angle: Phaser.Math.Between(-220, 220),
+        alpha: 0,
+        scale: { from: 1, to: 0.3 },
+        delay: Phaser.Math.Between(0, 40),
+        duration,
+        ease: "Quad.easeOut",
+        onComplete: () => rect.destroy(),
+      });
+    }
+
+    const embers = scene.add.particles(cx, cy, "particle_circle", {
+      tint: [0xffcc88, 0xeebb77, 0xcc9955],
+      alpha: { start: 0.7, end: 0 },
+      scale: { start: 0.12, end: 0.02 },
+      speed: { min: 6, max: 24 },
+      gravityY: 30,
+      lifespan: { min: 600, max: 1000 },
+      blendMode: "ADD",
+      quantity: 14,
+      frequency: -1,
+    });
+    embers.setDepth(depth + 2);
+    embers.explode();
+    scene.time.delayedCall(1100, () => embers.destroy());
+
+    const puffs = 5;
+    const smoke: Phaser.GameObjects.Arc[] = [];
+
+    for (let i = 0; i < puffs; i++) {
+      const ox = Phaser.Math.Between(-10, 10);
+      const oy = Phaser.Math.Between(-10, 10);
+      const puff = scene.add.circle(
+        cx + ox,
+        cy + oy,
+        Phaser.Math.Between(4, 8),
+        0x888888,
+        0.5,
+      );
+      puff.setDepth(depth + 1);
+      smoke.push(puff);
+
+      scene.tweens.add({
+        targets: puff,
+        y: cy + oy - Phaser.Math.Between(10, 20),
+        scale: { from: 0.6, to: 1.8 },
+        alpha: 0,
+        duration: Phaser.Math.Between(500, 850),
+        ease: "Quad.easeOut",
+        onComplete: () => puff.destroy(),
+      });
+    }
+
+    scene.time.delayedCall(1400, () => {
+      pieces.forEach((p) => {
+        if (p.active) p.destroy();
+      });
+      smoke.forEach((p) => {
         if (p.active) p.destroy();
       });
     });
