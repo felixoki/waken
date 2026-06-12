@@ -498,6 +498,13 @@ const interior: Spritesheet[] = [
     asTileset: true,
   },
   {
+    key: "spike_trap",
+    file: "spike_trap.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
     key: "dungeon_objects1",
     file: "dungeon_objects1.png",
     frameWidth: 16,
@@ -692,6 +699,13 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "road_walls_paving",
         file: "road_walls_paving.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "dungeon_walls_floor",
+        file: "dungeon_walls_floor.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

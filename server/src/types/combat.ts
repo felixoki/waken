@@ -1,8 +1,11 @@
 import { SpellConfig } from "./spells";
 import { WeaponConfig } from "./weapons";
+import { TrapConfig } from "./traps";
+
+export type CombatConfig = SpellConfig | WeaponConfig | TrapConfig;
 
 export interface Hit {
-  config: SpellConfig | WeaponConfig;
+  config: CombatConfig;
   attackerId: string;
   targetId: string;
 }

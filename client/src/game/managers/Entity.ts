@@ -18,6 +18,8 @@ export class EntityManager {
   private queue: EntityConfig[] = [];
   private queued: Set<string> = new Set();
   private grid: Map<string, Map<string, Rect>> = new Map();
+  private merged: Map<MapName, number[][]> = new Map();
+  private dirty: Set<MapName> = new Set();
   private groups: Map<
     string,
     {
@@ -150,6 +152,8 @@ export class EntityManager {
       width: Math.ceil((body.x + body.width) / tw) - Math.floor(body.x / tw),
       height: Math.ceil((body.y + body.height) / th) - Math.floor(body.y / th),
     });
+
+    this.dirty.add(config.map);
   }
 
   private _unregisterStatic(id: string, entity: Entity): void {
@@ -162,6 +166,35 @@ export class EntityManager {
       chunk.delete(id);
       if (!chunk.size) this.grid.delete(key);
     }
+
+    this.dirty.add(entity.map);
+  }
+
+  getMergedGrid(scene: Scene, map: MapName): number[][] {
+    const cached = this.merged.get(map);
+    if (cached && !this.dirty.has(map)) return cached;
+
+    const tile = scene.managers.tile;
+    if (!tile) return cached ?? [];
+
+    const base = tile.getCollisionGrid();
+    const grid = base.map((row) => [...row]);
+
+    const prefix = `${map}:`;
+
+    for (const [key, chunk] of this.grid) {
+      if (!key.startsWith(prefix)) continue;
+
+      for (const { x, y, width, height } of chunk.values())
+        for (let dy = 0; dy < height; dy++)
+          for (let dx = 0; dx < width; dx++)
+            if (grid[y + dy]?.[x + dx] !== undefined) grid[y + dy][x + dx] = 1;
+    }
+
+    this.merged.set(map, grid);
+    this.dirty.delete(map);
+
+    return grid;
   }
 
   getStatic(map: MapName, x: number, y: number, radius: number = 2): Rect[] {
@@ -282,6 +315,8 @@ export class EntityManager {
     this.queue.length = 0;
     this.queued.clear();
     this.grid.clear();
+    this.merged.clear();
+    this.dirty.clear();
 
     this.groups.forEach(({ group, collider }) => {
       collider.destroy();

@@ -15,6 +15,7 @@ import {
 } from "../../globals";
 import {
   BiomeConfig,
+  DoorAnchor,
   Entity,
   Room,
   RoomInterior,
@@ -26,6 +27,7 @@ export class RoomGenerator {
   private config: BiomeConfig;
   private seed: string;
   private rooms: Room[] = [];
+  private doors: DoorAnchor[] = [];
 
   constructor(config: BiomeConfig, seed: string) {
     this.config = config;
@@ -36,6 +38,7 @@ export class RoomGenerator {
     terrain: TerrainName[];
     entities: Entity[];
     spawn?: { x: number; y: number };
+    doors: DoorAnchor[];
   } {
     const { width, height } = this.config;
     const { tileWidth, tileHeight } = this.config;
@@ -50,7 +53,11 @@ export class RoomGenerator {
     const { edges, centers } = this._connect();
     const depths = this._depths(edges);
 
-    for (const [a, b] of edges) this._corridor(terrain, centers[a], centers[b]);
+    for (const [a, b] of edges)
+      this._corridor(terrain, centers[a], centers[b], 4);
+
+    for (const [a, b] of edges)
+      this._door(terrain, centers[a], centers[b], this.rooms[a], this.rooms[b]);
 
     const cleaned = handlers.generation.removeProtrusions(
       terrain,
@@ -195,7 +202,7 @@ export class RoomGenerator {
         }
       : undefined;
 
-    return { terrain, entities, spawn };
+    return { terrain, entities, spawn, doors: this.doors };
   }
 
   private _place() {
@@ -315,30 +322,119 @@ export class RoomGenerator {
     terrain: TerrainName[],
     from: { x: number; y: number },
     to: { x: number; y: number },
+    thickness: number,
   ) {
     const { width, height } = this.config;
     const direction = { x: to.x - from.x, y: to.y - from.y };
+    const lo = -Math.floor((thickness - 1) / 2);
+    const hi = lo + thickness - 1;
 
     for (let x = from.x; x !== to.x; x += Math.sign(direction.x))
-      for (let dy = -1; dy <= 1; dy++) {
+      for (let dy = lo; dy <= hi; dy++) {
         const py = from.y + dy;
         if (py >= 0 && py < height) terrain[py * width + x] = TerrainName.FLOOR;
       }
 
     for (let y = from.y; y !== to.y; y += Math.sign(direction.y))
-      for (let dx = -1; dx <= 1; dx++) {
+      for (let dx = lo; dx <= hi; dx++) {
         const px = to.x + dx;
         if (px >= 0 && px < width) terrain[y * width + px] = TerrainName.FLOOR;
       }
 
-    for (let dy = -1; dy <= 1; dy++)
-      for (let dx = -1; dx <= 1; dx++) {
+    for (let dy = lo; dy <= hi; dy++)
+      for (let dx = lo; dx <= hi; dx++) {
         const px = to.x + dx;
         const py = from.y + dy;
 
         if (px >= 0 && px < width && py >= 0 && py < height)
           terrain[py * width + px] = TerrainName.FLOOR;
       }
+  }
+
+  private _door(
+    terrain: TerrainName[],
+    from: { x: number; y: number },
+    to: { x: number; y: number },
+    roomA: Room,
+    roomB: Room,
+  ) {
+    const col = to.x;
+
+    const dirB: "north" | "south" | null =
+      from.y < roomB.y
+        ? "north"
+        : from.y > roomB.y + roomB.height - 1
+          ? "south"
+          : null;
+
+    const dirA: "north" | "south" | null =
+      col >= roomA.x && col <= roomA.x + roomA.width - 1
+        ? to.y < roomA.y
+          ? "north"
+          : to.y > roomA.y + roomA.height - 1
+            ? "south"
+            : null
+        : null;
+
+    if (dirB && dirA) {
+      const edgeYB = dirB === "north" ? roomB.y : roomB.y + roomB.height - 1;
+      const edgeYA = dirA === "north" ? roomA.y : roomA.y + roomA.height - 1;
+
+      if (Math.abs(edgeYB - edgeYA) - 1 < 8) return;
+    }
+
+    this._tryDoor(terrain, col, roomB, dirB);
+    this._tryDoor(terrain, col, roomA, dirA);
+  }
+
+  private _tryDoor(
+    terrain: TerrainName[],
+    col: number,
+    room: Room,
+    dir: "north" | "south" | null,
+  ) {
+    if (!dir) return;
+
+    const { width, height } = this.config;
+    const edgeY = dir === "north" ? room.y : room.y + room.height - 1;
+    const step = dir === "north" ? -1 : 1;
+
+    for (let i = 1; i <= 4; i++) {
+      const y = edgeY + step * i;
+
+      if (y < 0 || y >= height) return;
+      if (terrain[y * width + col] !== TerrainName.FLOOR) return;
+      if (this._inAnyRoom(col, y)) return;
+    }
+
+    const wallRow = edgeY + step;
+    const left = col - 2;
+    const right = col + 3;
+
+    if (left < 0 || right >= width) return;
+
+    if (left < room.x || right > room.x + room.width - 1) return;
+
+    for (let x = col - 1; x <= col + 2; x++)
+      if (terrain[wallRow * width + x] !== TerrainName.FLOOR) return;
+
+    if (terrain[wallRow * width + left] !== TerrainName.VOID) return;
+    if (terrain[wallRow * width + right] !== TerrainName.VOID) return;
+
+    this.doors.push({ x: col, y: edgeY, dir });
+  }
+
+  private _inAnyRoom(x: number, y: number): boolean {
+    for (const room of this.rooms)
+      if (
+        x >= room.x &&
+        x <= room.x + room.width - 1 &&
+        y >= room.y &&
+        y <= room.y + room.height - 1
+      )
+        return true;
+
+    return false;
   }
 
   private _walls(terrain: TerrainName[]) {

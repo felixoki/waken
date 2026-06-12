@@ -2,14 +2,13 @@ import { Server, Socket } from "socket.io";
 import {
   ComponentConfig,
   ComponentName,
+  CombatConfig,
   EntityConfig,
   Event,
   Hit,
   Item,
   PlayerConfig,
   Revive,
-  SpellConfig,
-  WeaponConfig,
 } from "../types";
 import { Effect, EffectName } from "../types/effects.js";
 import { DamageType } from "../types/damage.js";
@@ -30,7 +29,7 @@ export const combat = {
   getKnockback: (
     target: PlayerConfig | EntityConfig,
     attacker: PlayerConfig | EntityConfig,
-    config: SpellConfig | WeaponConfig,
+    config: CombatConfig,
   ) => {
     const dx = target.x - attacker.x;
     const dy = target.y - attacker.y;
@@ -45,7 +44,7 @@ export const combat = {
 
   calculateDamage: (
     target: PlayerConfig | EntityConfig,
-    config: SpellConfig | WeaponConfig,
+    config: CombatConfig,
     isEntity: boolean,
   ): { damage: number; isMiss: boolean; isCritical: boolean } => {
     if (Math.random() < MISS_CHANCE)
@@ -84,7 +83,7 @@ export const combat = {
     player: (
       player: PlayerConfig,
       attacker: PlayerConfig | EntityConfig,
-      config: SpellConfig | WeaponConfig,
+      config: CombatConfig,
       socket: Socket,
       io: Server,
       world: World,
@@ -258,7 +257,7 @@ export const combat = {
     apply: (
       targetId: string,
       isEntity: boolean,
-      config: SpellConfig | WeaponConfig,
+      config: CombatConfig,
       world: World,
       now: number,
       key: string | undefined,

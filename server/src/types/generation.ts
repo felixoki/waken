@@ -84,14 +84,6 @@ export enum RoomDifficulty {
   HARD = "hard",
 }
 
-export enum TrapName {
-  SPIKE1 = "spike1",
-}
-
-export enum TrapTrigger {
-  STEP = "step",
-}
-
 export interface Neighbors<T> {
   north: T;
   south: T;
@@ -235,6 +227,12 @@ export interface Room {
   height: number;
 }
 
+export interface DoorAnchor {
+  x: number;
+  y: number;
+  dir: "north" | "south";
+}
+
 export interface WallMatch {
   role: TileRole;
   position: BorderPosition;
@@ -245,7 +243,7 @@ export interface WallMatch {
   };
 }
 
-export interface SetPiece {
+export interface EntityGroup {
   entities: EntityName[];
   count: Range;
 }
@@ -255,20 +253,13 @@ export interface RoomInterior {
   entities: { name: EntityName; x: number; y: number }[];
 }
 
-export interface TrapConfig {
-  name: TrapName;
-  density: number;
-  trigger: TrapTrigger;
-}
-
 export interface RoomTemplate {
   id: RoomName;
   type: RoomType;
   difficulty: RoomDifficulty;
   weight: number;
   depth?: { min?: number; max?: number };
-  enemies?: SetPiece[];
-  traps: TrapConfig[];
+  enemies?: EntityGroup[];
   water?: {
     coverage: number;
   };

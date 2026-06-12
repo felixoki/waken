@@ -171,6 +171,10 @@ export class MapFactory {
             scene.managers.physics.groups.players,
             rect,
           );
+          scene.physics.add.collider(
+            scene.managers.physics.groups.entities,
+            rect,
+          );
 
           thresholds.push({
             body: rect,

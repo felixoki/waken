@@ -119,7 +119,7 @@ export class TileManager {
   getCollisionGrid(): number[][] {
     if (this.grid) return this.grid;
 
-    const { width, height } = this.tilemap;
+    const { width, height, tileWidth, tileHeight } = this.tilemap;
 
     this.grid = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => {
@@ -131,6 +131,19 @@ export class TileManager {
         return collides ? 1 : 0;
       }),
     );
+
+    for (const threshold of this.thresholds) {
+      const body = threshold.body.body as Phaser.Physics.Arcade.StaticBody;
+
+      const x0 = Math.floor(body.x / tileWidth);
+      const y0 = Math.floor(body.y / tileHeight);
+      const x1 = Math.floor((body.x + body.width) / tileWidth);
+      const y1 = Math.floor((body.y + body.height) / tileHeight);
+
+      for (let ty = y0; ty <= y1; ty++)
+        for (let tx = x0; tx <= x1; tx++)
+          if (this.grid[ty]?.[tx] !== undefined) this.grid[ty][tx] = 1;
+    }
 
     return this.grid;
   }

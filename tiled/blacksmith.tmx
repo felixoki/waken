@@ -1,10 +1,156 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="21" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="13">
+ <editorsettings>
+  <export target="../client/public/assets/maps/blacksmith_house.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="village_blacksmith_walls_floor" tilewidth="16" tileheight="16" tilecount="310" columns="31">
   <image source="../client/public/assets/sprites/village_blacksmith_walls_floor.png" width="496" height="160"/>
+  <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="6" width="16" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="28">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.00251685" y="6" width="13" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="30">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="3" y="6" width="13" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="31">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="33">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="34">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="35">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="37">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="38">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="42">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="43">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="44">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="45">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="46">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="47">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="48">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="49">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="50">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="51">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="54">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="65">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="66">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="96">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="97">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+    <object id="2" x="0" y="7" width="6" height="9"/>
+   </objectgroup>
+  </tile>
+  <tile id="127">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+    <object id="2" x="10" y="6" width="6" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="128">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+    <object id="2" x="0" y="6" width="6" height="10"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="311" name="village_blacksmith_interior" tilewidth="16" tileheight="16" tilecount="507" columns="39">
   <image source="../client/public/assets/sprites/village_blacksmith_interior.png" width="624" height="208"/>
+  <tile id="239">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="240">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="12" height="16"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="818" name="torch" tilewidth="16" tileheight="16" tilecount="162" columns="9">
   <image source="../client/public/assets/sprites/torch.png" width="144" height="288"/>
@@ -12,6 +158,9 @@
  <tileset firstgid="980" name="village_blacksmith_forge" tilewidth="16" tileheight="16" tilecount="72" columns="18">
   <image source="../client/public/assets/sprites/village_blacksmith_forge.png" width="288" height="64"/>
   <tile id="0">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="3" duration="100"/>
@@ -22,6 +171,9 @@
    </animation>
   </tile>
   <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="1" duration="100"/>
     <frame tileid="4" duration="100"/>
@@ -32,6 +184,9 @@
    </animation>
   </tile>
   <tile id="2">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="2" duration="100"/>
     <frame tileid="5" duration="100"/>
@@ -42,6 +197,9 @@
    </animation>
   </tile>
   <tile id="18">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="18" duration="100"/>
     <frame tileid="21" duration="100"/>
@@ -52,6 +210,9 @@
    </animation>
   </tile>
   <tile id="19">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="19" duration="100"/>
     <frame tileid="22" duration="100"/>
@@ -62,6 +223,9 @@
    </animation>
   </tile>
   <tile id="20">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="20" duration="100"/>
     <frame tileid="23" duration="100"/>
@@ -72,6 +236,9 @@
    </animation>
   </tile>
   <tile id="36">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="36" duration="100"/>
     <frame tileid="39" duration="100"/>
@@ -82,6 +249,9 @@
    </animation>
   </tile>
   <tile id="37">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="37" duration="100"/>
     <frame tileid="40" duration="100"/>
@@ -92,6 +262,9 @@
    </animation>
   </tile>
   <tile id="38">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
    <animation>
     <frame tileid="38" duration="100"/>
     <frame tileid="41" duration="100"/>
@@ -151,6 +324,9 @@
 </data>
  </layer>
  <layer id="1" name="walls" width="21" height="14">
+  <properties>
+   <property name="collides" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 57,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,58,59,
 88,4,12,13,19,20,20,20,21,21,18,19,20,21,12,13,14,15,21,5,90,
@@ -205,6 +381,9 @@
 </data>
  </layer>
  <layer id="3" name="interior3" width="21" height="14">
+  <properties>
+   <property name="collides" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,355,356,0,0,0,0,350,351,352,353,354,0,0,0,0,355,356,0,0,
 0,0,394,395,0,0,0,0,389,390,391,392,393,0,0,0,0,394,395,0,0,

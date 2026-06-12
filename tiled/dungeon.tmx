@@ -67,7 +67,7 @@
 74,75,75,75,75,75,75,75,75,75,75,75,75,75,75,76
 </data>
  </layer>
- <group id="9" name="setpiece1" visible="0">
+ <group id="9" name="setpiece1">
   <objectgroup id="3" name="setpiece1">
    <properties>
     <property name="origin" value="top-right"/>

@@ -231,6 +231,26 @@ export const generation = {
     return true;
   },
 
+  straightWallCells: (
+    terrain: TerrainName[],
+    row: TerrainName,
+    width: number,
+    height: number,
+  ): { x: number; y: number }[] => {
+    const cells: { x: number; y: number }[] = [];
+
+    for (let y = 0; y < height; y++)
+      for (let x = 1; x < width - 1; x++) {
+        const i = generation.toIndex(x, y, width);
+        if (terrain[i] !== row) continue;
+        if (terrain[i - 1] !== row || terrain[i + 1] !== row) continue;
+
+        cells.push({ x, y });
+      }
+
+    return cells;
+  },
+
   isInBlock: (
     x: number,
     y: number,

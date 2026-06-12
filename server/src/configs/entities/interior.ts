@@ -1,5 +1,6 @@
 import {
   ComponentName,
+  DamageType,
   Direction,
   EntityDefinition,
   EntityName,
@@ -423,6 +424,57 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Chest",
       description: "A sturdy wooden chest used to store valuables.",
     },
+  },
+  [EntityName.SPIKE_TRAP1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 48,
+          height: 64,
+          offsetX: 0,
+          offsetY: 32,
+          static: true,
+          collides: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "spike_trap",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 6, end: 8 },
+            { row: 2, start: 6, end: 8 },
+            { row: 3, start: 6, end: 8 },
+            { row: 4, start: 6, end: 8 },
+            { row: 5, start: 6, end: 8 },
+            { row: 6, start: 6, end: 8 },
+          ],
+          frames: 5,
+          direction: "vertical",
+          frameRate: 12,
+          repeat: 0,
+          autoplay: false,
+        },
+      },
+      {
+        name: ComponentName.TRAP,
+        config: {
+          name: EntityName.SPIKE_TRAP1,
+          damage: { type: DamageType.PIERCING, amount: 90 },
+          knockback: 0,
+          hitbox: { width: 48, height: 64 },
+          delay: 150,
+          duration: 250,
+          cooldown: 1000,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
   },
   [EntityName.GLIMMER]: {
     facing: Direction.DOWN,

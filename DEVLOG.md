@@ -550,14 +550,30 @@
 
 - Add room interior merging ✅
 
+#### 10.6.2026
+
+- Add stairs and doors ✅
+- Hits during jumps prevent y reset ✅
+
+#### 11.6.2026
+
+- Add spike trap ✅
+- Entities stop attacking when players stand still ✅
+- Entities can see through collisions ✅
+
+#### 12.6.2026
+
+- Add search behavior ✅
+- Entities can move through conditional collisions ✅
+- Add torches and ladders ✅
+
 ### In progress
 
-- Add stairs
+- Dungeon ambience
 
 ### Bugs
 
 - Ledge corners render above players
-- Entities ignore conditional collisions
 
 ### Backlog
 
@@ -580,6 +596,7 @@
   - Add reflect damage effect
   - Remove among player collisions
   - Include physical body when jumping
+  - Add console
 
 ## Economy
 

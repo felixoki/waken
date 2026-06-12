@@ -6,6 +6,7 @@ import { GrowthStageConfig } from "./farming";
 import { DamageType } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { SpellName } from "./spells";
+import { TrapConfig } from "./traps";
 
 export enum ComponentName {
   ANIMATION = "animation",
@@ -34,6 +35,7 @@ export enum ComponentName {
   TEXTURE = "texture",
   TEXTURE_ANIMATION = "textureAnimation",
   TRANSITION = "transition",
+  TRAP = "trap",
 }
 
 export type ComponentConfig =
@@ -62,7 +64,8 @@ export type ComponentConfig =
   | { name: ComponentName.STORAGE; config: StorageConfig }
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
-  | { name: ComponentName.TRANSITION; config: TransitionConfig };
+  | { name: ComponentName.TRANSITION; config: TransitionConfig }
+  | { name: ComponentName.TRAP; config: TrapConfig };
 
 export interface GlimmerConfig {
   radius: number;

@@ -75,6 +75,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.GOBLIN1]: {
@@ -141,6 +142,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.TROLL]: {
@@ -207,6 +209,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.SHADOW_WANDERER]: {

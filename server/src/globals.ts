@@ -58,6 +58,9 @@ export const RANGE_SLASHING = 40;
 export const RANGE_INTERACTING = 100;
 export const RANGE_HITBOX_DETECTION = 100;
 
+/** Vision */
+export const VISION_PROXIMITY = 200;
+
 export const DISTANCE_DASHING = (SPEED_DASHING * DURATION_DASHING) / 1000;
 
 export const DELAY_ATTACK = 150;
@@ -145,6 +148,7 @@ export const DUNGEON_ROOM_MIN = 12;
 export const DUNGEON_ROOM_MAX = 24;
 export const DUNGEON_ROOM_FURNISH_CHANCE = 0.9;
 export const DUNGEON_LOOP_CHANCE = 0.01;
+export const DUNGEON_CORRIDOR_WIDE_CHANCE = 0.5;
 export const DUNGEON_RECESS_MARGIN = 4;
 export const DUNGEON_RECESS_CLUSTERS = 4;
 export const DUNGEON_RECESS_RECTS_PER_CLUSTER = 3;
@@ -154,3 +158,6 @@ export const DUNGEON_RECESS_MIN_H = 5;
 export const DUNGEON_RECESS_MAX_H = 12;
 export const DUNGEON_RECESS_GAP = 2;
 export const DUNGEON_RECESS_MIN_DIM = 7;
+export const DUNGEON_TORCH_STRIDE = 16;
+export const DUNGEON_LADDER_COUNT = 3;
+export const DUNGEON_LADDER_TORCH_CLEARANCE = 4;

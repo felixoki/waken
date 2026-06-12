@@ -20,6 +20,7 @@ export * from "./players.js";
 export * from "./sounds.js";
 export * from "./spells.js";
 export * from "./states.js";
+export * from "./traps.js";
 export * from "./tiled.js";
 export * from "./time.js";
 export * from "./weapons.js";

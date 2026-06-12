@@ -8,8 +8,6 @@ import {
   RoomName,
   RoomType,
   TerrainName,
-  TrapName,
-  TrapTrigger,
 } from "../types/generation";
 import { groundStamps, grassStamps, flowerStamps } from "./details";
 
@@ -264,9 +262,6 @@ export const dungeon: BiomeConfig = {
             count: { min: 1, max: 3 },
           },
         ],
-        traps: [
-          { name: TrapName.SPIKE1, density: 0.05, trigger: TrapTrigger.STEP },
-        ],
       },
       {
         id: RoomName.FEAST1,
@@ -279,9 +274,6 @@ export const dungeon: BiomeConfig = {
             entities: [EntityName.ORC1, EntityName.GOBLIN1],
             count: { min: 1, max: 2 },
           },
-        ],
-        traps: [
-          { name: TrapName.SPIKE1, density: 0.15, trigger: TrapTrigger.STEP },
         ],
       },
     ],

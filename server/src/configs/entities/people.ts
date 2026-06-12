@@ -6,6 +6,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  Mood,
   NodeId,
   Recipe,
   StateName,
@@ -80,13 +81,26 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What is your role in this village?",
+            text: "What do you brew here?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I am the village herbalist. I collect herbs and make potions to help the villagers. I specialize in dream herbs, which can help with sleep and dreams. If you find any, please bring them to me.",
+        text: "Potions, mostly, the dream sort. A drop of the right brew and you'll sleep soft as a cloud, or wake somewhere you've never been. The whole village leans on me when the nights turn restless.",
+        choices: [
+          {
+            text: "Any tips for a forager?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "Gladly. Blue lotus grows where the water sits still, and it loves the moonlight, so search at dusk. Belladonna is a different beast: beautiful, deadly, and it only forgives a careful hand. Bring me a vial and a few sunflowers and I'll show you something golden.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -162,13 +176,26 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What is your role in this village?",
+            text: "What do you make here?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I am the village blacksmith. I collect materials and craft items to help the villagers. If you find any, please bring them to me.",
+        text: "I bend iron to my will, that's the short of it. Axes for the woodcutters, hoes for the farmers, a lantern for anyone fool enough to wander after dark. Hard work, honest work.",
+        choices: [
+          {
+            text: "Any advice for me?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "Aye. Don't bring me rusted scrap and expect a blade. Good iron and seasoned wood is all I ask. Two lengths of wood and a bar of iron, and you'll walk off with an axe that truly bites.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -241,13 +268,26 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What is your role in this village?",
+            text: "What is it you craft?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I am the village glassblower. I collect quartz and craft glass items to help the villagers. If you find any, please bring them to me.",
+        text: "I coax glass out of quartz and a breath of fire. Vials for the herbalist, panes for the windows, little trinkets for the children. There's a quiet magic in watching plain sand turn into something you can see clean through.",
+        choices: [
+          {
+            text: "Where do I find good quartz?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "The cave veins up the mountain are thick with it, if you don't mind the climb. Four good shards and a little bone ash is all I need to make glass. Bring me iron as well and I'll seal you a proper vial.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -315,6 +355,19 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         text: "I've got a farm up north, but someone's got to mind the shop. You're welcome to use the plots yourself if you fancy growing something to sell.",
         choices: [
           {
+            text: "What sells best?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "Anything fresh, really. A ripe tomato or a fat carrot will always find a buyer, and a good cut of venison even faster. Grow it, hunt it, or fish it, I'll take it off your hands at a fair price.",
+        choices: [
+          {
             ref: ChoiceId.GOODBYE,
             effects: [{ name: DialogueEffectName.CONVERSATION_END }],
           },
@@ -360,13 +413,26 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What is your role in this village?",
+            text: "What do you bake?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I am the village baker. I collect wheat and bake bread for the villagers. If you find any, please bring them to me.",
+        text: "Bread, friend. I turn humble grain into something warm enough to make a hard morning bearable. There's no spell quite like the smell of a fresh loaf, I always say.",
+        choices: [
+          {
+            text: "Need anything for it?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "Wheat, and plenty of it. The mill's been far too quiet of late. Bring me grain and I'll see this village never goes to bed hungry. *pats a cloud of flour from her apron*",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -406,7 +472,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     states: [StateName.IDLE],
     behaviors: [{ name: BehaviorName.STAY }],
     metadata: {
-      displayName: "Beverage Saler",
+      displayName: "Beverage saler",
       description:
         "A vendor who mixes and sells refreshing drinks for villagers.",
     },
@@ -415,13 +481,26 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What is your role in this village?",
+            text: "What do you serve?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I am the village beverage saler. I collect ingredients and provide drinks for the villagers. If you find any, please bring them to me.",
+        text: "I mix the drinks that loosen tongues and soften nightmares. A good cup at dusk and the whole village sleeps a little easier. *takes a long sip from his own cup* ...for quality's sake, you understand.",
+        choices: [
+          {
+            text: "Your daughter worries about you.",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "*waves a hand* She worries too much, that one. A drink now and then keeps the bad dreams away, nothing more. Bring me something sweet to ferment and I'll mix you a cup that has you dreaming in colour.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -492,7 +571,36 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "You've got that look about you. The far-off eyes. You're one of them, aren't you? A dream wanderer.",
+        choices: [
+          {
+            text: "How could you tell?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "My grandmother had the same stare. She wandered too deep one night and never quite came back. She was never the same after. They say her mind still drifts somewhere out in the realms.",
+        choices: [
+          {
+            text: "Is she still out there?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "I like to think so. If you ever walk the realms, keep an eye out for her, would you? An old woman who looks like she's forgotten her way home.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -525,7 +633,38 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: {
+          [Mood.HAPPY]: [
+            "I slept like a stone last night. No dreams at all. Bliss.",
+            "Morning. For once my head feels quiet.",
+          ],
+          [Mood.HUNGRY]: [
+            "*rubbing her arms* I can't sit still today. When my stomach's empty, the dreams get... loud.",
+            "Don't mind me pacing. I haven't eaten, and that's always when it comes back.",
+          ],
+        },
+        choices: [
+          {
+            text: "When what comes back?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: {
+          [Mood.HAPPY]:
+            "Oh, nothing today. It only finds me when I'm hungry, isn't that strange? A full belly seems to keep it at bay.",
+          [Mood.HUNGRY]:
+            "There's something lurking in the darkness. Last night a hand reached up through the floor and grabbed for my ankle. I woke with my heart in my throat. *shivers* I really should eat something.",
+        },
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -606,7 +745,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "Some nights I dream in colours that don't have names yet. Then I wake, try to paint them, and they come out... grey.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -638,7 +782,15 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: [
+          "If you find a left boot out in the woods, it's mine. Long story.",
+          "I'd offer you a chair, but the cat has claimed every last one.",
+        ],
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -670,7 +822,17 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: {
+          [Mood.HAPPY]:
+            "Full belly, dry roof, no nightmares. That's a good day in my book.",
+          [Mood.HUNGRY]:
+            "*stomach growls loudly* ...let's both pretend you didn't hear that.",
+        },
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -703,7 +865,24 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "I'm counting my steps today. I was up to four thousand and... *frowns* ...you made me lose count.",
+        choices: [
+          {
+            text: "Sorry. Why count steps?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "A wandering fellow swore the village is exactly ten thousand paces wide. I mean to prove him wrong before supper.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -735,7 +914,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "Shh, listen. *pause* You don't hear it? A lullaby, riding on the wind. My mother used to sing that one. She's three winters gone now.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -804,7 +988,15 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: [
+          "I traded my last coin for a 'lucky' pebble. The fellow vanished right after. Suspicious, that.",
+          "Don't tell the baker, but I'm fairly sure his loaves have been shrinking.",
+        ],
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -836,7 +1028,36 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
+        choices: [
+          {
+            text: "What's wrong?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "He tastes more than he sells these days. Says the dreams go down easier when the world's a little blurry. But every morning he looks a year older. *sighs* I just want my old papa back.",
+        choices: [
+          {
+            text: "Have you talked to him?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. If you're ever passing his stall, would you say something? Gently?",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },
@@ -869,7 +1090,24 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
+        text: "You ever notice how the village looks different at dusk? Like it's holding its breath.",
+        choices: [
+          {
+            text: "Holding its breath for what?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "For nightfall, of course. That's when the real day begins, for some of us anyway. *winks* Sleep well, wanderer.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
       },
     },
   },

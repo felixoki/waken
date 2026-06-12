@@ -68,6 +68,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.DRAKE]: {
@@ -282,6 +283,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
 };

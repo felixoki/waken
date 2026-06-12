@@ -25,6 +25,7 @@ import { FellableComponent } from "../components/Fellable";
 import { AuraComponent } from "../components/Aura";
 import { StorageComponent } from "../components/Storage";
 import { FollowComponent } from "../components/Follow";
+import { TrapComponent } from "../components/Trap";
 
 export class ComponentFactory {
   static create(
@@ -112,6 +113,9 @@ export class ComponentFactory {
           break;
         case ComponentName.FOLLOW:
           comp = new FollowComponent(entity, component.config);
+          break;
+        case ComponentName.TRAP:
+          comp = new TrapComponent(entity, component.config);
           break;
       }
 

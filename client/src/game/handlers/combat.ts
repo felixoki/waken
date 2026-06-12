@@ -144,15 +144,19 @@ export const combat = {
   hurt: (entity: Entity, health: number) => {
     entity.health = health;
 
-    entity.scene.tweens.killTweensOf(entity);
+    entity.flash?.stop();
     entity.setAlpha(1);
 
-    entity.scene.tweens.add({
+    entity.flash = entity.scene.tweens.add({
       targets: entity,
       alpha: 0.1,
       duration: 50,
       yoyo: true,
       repeat: 2,
+      onComplete: () => {
+        entity.setAlpha(1);
+        entity.flash = undefined;
+      },
     });
   },
 

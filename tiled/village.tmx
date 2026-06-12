@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="44" nextobjectid="1467">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="52" nextobjectid="1469">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -5024,6 +5024,130 @@
     </object>
    </objectgroup>
   </tile>
+  <tile id="180">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.00220751" y="4.5" width="7.5" height="11.5"/>
+   </objectgroup>
+  </tile>
+  <tile id="181">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="8.5" y="4.5" width="7.5" height="11.5"/>
+   </objectgroup>
+  </tile>
+  <tile id="299">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-2" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="301">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="8" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="316">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="318">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="324">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="326">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+    <object id="2" x="0.00480288" y="8" width="16" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="388">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+    <object id="2" x="0" y="8" width="16" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="389">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="8" width="16" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="false"/>
+     </properties>
+    </object>
+    <object id="2" x="0.00166309" y="0" width="16" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="405">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-2" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="406">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="8" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="448">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.00125842" y="0" width="7" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+    <object id="2" x="0.00125842" y="8" width="7" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="449">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="9" y="0" width="7" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+    <object id="2" x="9" y="8" width="7" height="8">
+     <properties>
+      <property name="rendersAbove" type="bool" value="false"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="16290" name="desert_objects" tilewidth="16" tileheight="16" tilecount="3172" columns="26">
+  <image source="../client/public/assets/sprites/desert_objects.png" width="416" height="1952"/>
+ </tileset>
+ <tileset firstgid="19462" name="desert_ground_grass" tilewidth="16" tileheight="16" tilecount="846" columns="18">
+  <image source="../client/public/assets/sprites/desert_ground_grass.png" width="288" height="752"/>
+ </tileset>
+ <tileset firstgid="20308" name="forest_ground_grass" tilewidth="16" tileheight="16" tilecount="651" columns="21">
+  <image source="../client/public/assets/sprites/forest_ground_grass.png" width="336" height="496"/>
  </tileset>
  <layer id="19" name="water" width="76" height="104">
   <data encoding="csv">
@@ -6330,7 +6454,7 @@
  <layer id="36" name="wall_front" width="76" height="104">
   <properties>
    <property name="collides" type="bool" value="true"/>
-   <property name="foreground" type="bool" value="true"/>
+   <property name="rendersAbove" type="bool" value="true"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -8361,8 +8485,8 @@
   <object id="466" name="Market_Stand1" x="320" y="1128" width="1" height="1"/>
   <object id="467" name="Market_Stand2" x="464" y="1128" width="1" height="1"/>
   <object id="468" name="Market_Stand3" x="536" y="1168" width="1" height="1"/>
-  <object id="470" name="Market_Table" x="472" y="1220" width="1" height="1"/>
-  <object id="471" name="Market_Table" x="520" y="1233" width="1" height="1"/>
+  <object id="470" name="Table3" x="472" y="1220" width="1" height="1"/>
+  <object id="471" name="Table3" x="520" y="1233" width="1" height="1"/>
   <object id="472" name="Barrel1" x="582" y="1194" width="1" height="1"/>
   <object id="473" name="Barrels1" x="616" y="1198" width="1" height="1"/>
   <object id="474" name="Drake" x="784" y="864" width="1" height="1"/>
@@ -8669,6 +8793,7 @@
   <object id="1433" name="Duck" x="71.6814" y="310.734" width="1" height="1"/>
   <object id="1434" name="Drake" x="31.9879" y="368.06" width="1" height="1"/>
   <object id="1444" name="Glimmer" x="359" y="500" width="1" height="1"/>
+  <object id="1468" name="Spike_Trap1" x="336.386" y="848.277" width="3.81534" height="3.17945"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="104">
   <properties>

@@ -1,8 +1,16 @@
 import { handlers } from "../../handlers";
 import { TilesetLoader } from "../../loaders/Tileset";
 import { EntityName } from "../../types";
+import { configs } from "../../configs";
+import {
+  DUNGEON_LADDER_COUNT,
+  DUNGEON_LADDER_TORCH_CLEARANCE,
+  DUNGEON_TORCH_STRIDE,
+} from "../../globals";
 import {
   BiomeConfig,
+  BiomeName,
+  DoorAnchor,
   Entity,
   GeneratedMap,
   TERRAIN_ORDER,
@@ -10,8 +18,10 @@ import {
   TileRole,
 } from "../../types/generation";
 import { BorderGenerator } from "../generators/Border";
+import { DoorGenerator } from "../generators/Door";
 import { LedgeGenerator } from "../generators/Ledge";
 import { RoomGenerator } from "../generators/Room";
+import { StairGenerator } from "../generators/Stair";
 import { TerrainGenerator } from "../generators/Terrain";
 import { WallGenerator } from "../generators/Wall";
 import { TerrainSmoother } from "../smoothers/Terrain";
@@ -42,10 +52,12 @@ export class MapBuilder {
       terrain: genTerrain,
       entities: roomEntities,
       spawn: roomSpawn,
+      doors: roomDoors,
     } = generator.generate() as {
       terrain: TerrainName[];
       entities: Entity[];
       spawn?: { x: number; y: number };
+      doors?: DoorAnchor[];
     };
     let terrain = genTerrain;
 
@@ -256,6 +268,12 @@ export class MapBuilder {
       );
       const ledges = gen.generate(terrain, this.config.ledge, gid);
 
+      const stairGen = new StairGenerator({
+        width: this.config.width,
+        height: this.config.height,
+      });
+      const stairs = stairGen.generate(terrain, gid, this.seed, ledges);
+
       tiledLayers.push(
         handlers.generation.createLayer(
           layerId++,
@@ -264,6 +282,65 @@ export class MapBuilder {
           height,
           ledges,
           [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "stairs",
+          width,
+          height,
+          stairs,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+    }
+
+    /**
+     * Build door layer
+     */
+    if (roomDoors && roomDoors.length && this.config.walls) {
+      const gid = firstgids.get(this.config.walls)!;
+      const doorGen = new DoorGenerator({
+        width: this.config.width,
+        height: this.config.height,
+      });
+      const { below: doorsBelow, above: doorsAbove } = doorGen.generate(
+        roomDoors,
+        gid,
+      );
+
+      const wallLayers = tiledLayers.filter((l) =>
+        ["walls", "walls_above", "void_above"].includes(l.name),
+      );
+
+      for (let i = 0; i < doorsBelow.length; i++)
+        if (doorsBelow[i] !== 0 || doorsAbove[i] !== 0)
+          for (const layer of wallLayers) layer.data[i] = 0;
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "doors",
+          width,
+          height,
+          doorsBelow,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "doors_above",
+          width,
+          height,
+          doorsAbove,
+          [
+            { name: "collides", type: "bool", value: true },
+            { name: "rendersAbove", type: "bool", value: true },
+          ],
         ),
       );
     }
@@ -306,12 +383,38 @@ export class MapBuilder {
     const entities = [...spawner.spawn(terrain, spawn), ...roomEntities];
 
     /**
-     * Wells
+     * Wells (forest only)
      */
-    const wells = this._findWellPositions(terrain, spawn, 15);
+    if (this.config.id === BiomeName.FOREST) {
+      const wells = this._findWellPositions(terrain, spawn, 10);
 
-    for (const pos of wells)
-      entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });
+      for (const pos of wells)
+        entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });
+    }
+
+    /**
+     * Torches and ladders (dungeon only)
+     */
+    if (this.config.id === BiomeName.DUNGEON) {
+      const torches = this._findTorchPositions(terrain);
+
+      for (const pos of torches)
+        entities.push({ name: EntityName.TORCH1, x: pos.x, y: pos.y });
+
+      const ladders = this._findLadderPositions(
+        terrain,
+        DUNGEON_LADDER_COUNT,
+        torches,
+      );
+      const offset = configs.entities[EntityName.LADDER]?.offset;
+
+      for (const pos of ladders)
+        entities.push({
+          name: EntityName.LADDER,
+          x: pos.x + (offset?.x ?? 0),
+          y: pos.y + (offset?.y ?? 0),
+        });
+    }
 
     /**
      * Assemble final map
@@ -437,6 +540,93 @@ export class MapBuilder {
       const slice = candidates.slice(start, end);
       const hash = gen.spatialHash(slice.length, i, seed.length);
       const pick = slice.length ? slice[hash % slice.length] : fallback;
+
+      positions.push(gen.tileToWorld(pick.x, pick.y, tileWidth, tileHeight));
+    }
+
+    return positions;
+  }
+
+  private _findTorchPositions(
+    terrain: TerrainName[],
+  ): { x: number; y: number }[] {
+    const { width, height, tileWidth, tileHeight } = this.config;
+    const gen = handlers.generation;
+    const cells = gen.straightWallCells(
+      terrain,
+      TerrainName.WALL_MID,
+      width,
+      height,
+    );
+
+    const runs: { x: number; y: number }[][] = [];
+    let run: { x: number; y: number }[] = [];
+
+    for (const cell of cells) {
+      const prev = run[run.length - 1];
+
+      if (prev && (cell.y !== prev.y || cell.x !== prev.x + 1)) {
+        runs.push(run);
+        run = [];
+      }
+
+      run.push(cell);
+    }
+
+    if (run.length) runs.push(run);
+
+    const positions: { x: number; y: number }[] = [];
+
+    for (const r of runs) {
+      const start = Math.floor((r.length % DUNGEON_TORCH_STRIDE) / 2);
+
+      for (let k = start; k < r.length; k += DUNGEON_TORCH_STRIDE)
+        positions.push(gen.tileToWorld(r[k].x, r[k].y, tileWidth, tileHeight));
+    }
+
+    return positions;
+  }
+
+  private _findLadderPositions(
+    terrain: TerrainName[],
+    count: number,
+    torches: { x: number; y: number }[],
+  ): { x: number; y: number }[] {
+    const { width, height, tileWidth, tileHeight } = this.config;
+    const gen = handlers.generation;
+    const all = gen.straightWallCells(
+      terrain,
+      TerrainName.WALL_BASE,
+      width,
+      height,
+    );
+
+    const torchTiles = torches.map((t) => ({
+      x: Math.floor(t.x / tileWidth),
+      y: Math.floor(t.y / tileHeight),
+    }));
+
+    const candidates = all.filter((c) =>
+      torchTiles.every(
+        (t) =>
+          Math.max(Math.abs(c.x - t.x), Math.abs(c.y - t.y)) >=
+          DUNGEON_LADDER_TORCH_CLEARANCE,
+      ),
+    );
+
+    const seed = this.seed;
+    const positions: { x: number; y: number }[] = [];
+    if (!candidates.length) return positions;
+
+    for (let i = 0; i < count; i++) {
+      const start = Math.floor((i * candidates.length) / count);
+      const end = Math.floor(((i + 1) * candidates.length) / count);
+
+      const slice = candidates.slice(start, end);
+      if (!slice.length) continue;
+
+      const hash = gen.spatialHash(slice.length, i, seed.length);
+      const pick = slice[hash % slice.length];
 
       positions.push(gen.tileToWorld(pick.x, pick.y, tileWidth, tileHeight));
     }

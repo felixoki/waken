@@ -179,9 +179,9 @@ export const path = {
     const { tileManager } = entity.scene;
     if (!tileManager) return [];
 
-    return path.mergeObstacles(
-      tileManager.getCollisionGrid(),
-      entity.scene.managers.entities.getStatic(entity.map, entity.x, entity.y),
+    return entity.scene.managers.entities.getMergedGrid(
+      entity.scene,
+      entity.map,
     );
   },
 
