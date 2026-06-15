@@ -58,7 +58,11 @@ export const state = {
       },
       {
         condition: () => input.moving?.length,
-        state: () => (input.isRunning ? StateName.RUNNING : StateName.WALKING),
+        state: () => {
+          if (input.isFlying) return StateName.FLYING;
+          if (input.isRunning) return StateName.RUNNING;
+          return StateName.WALKING;
+        },
         needsUpdate: true,
       },
       {

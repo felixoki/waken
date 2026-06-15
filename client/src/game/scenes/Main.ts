@@ -33,14 +33,15 @@ import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { DamageableComponent } from "../components/Damageable";
+import { DestructibleComponent } from "../components/Destructible";
 import { vfx } from "../vfx";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
 import { EffectFactory } from "../factory/Effect";
 import { Player } from "../Player";
-import type RealmScene from "./Realm";
 import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
+import ForestScene from "./Forest";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -270,8 +271,12 @@ export class MainScene extends Phaser.Scene {
         const damageable = entity.getComponent<DamageableComponent>(
           ComponentName.DAMAGEABLE,
         );
+        const destructible = entity.getComponent<DestructibleComponent>(
+          ComponentName.DESTRUCTIBLE,
+        );
 
-        if (damageable) vfx.emitters.dissolve(entity);
+        if (destructible) vfx.emitters.break(entity);
+        else if (damageable) vfx.emitters.dissolve(entity);
       }
 
       this.managers.entities.remove(data);
@@ -597,12 +602,12 @@ export class MainScene extends Phaser.Scene {
     this.managers.socket.on(
       Event.PARTY_START,
       (data: {
+        map: MapName;
         tilemap: any;
         spawn: { x: number; y: number };
-        entities: EntityConfig[];
         players: PlayerConfig[];
       }) => {
-        const realm = this.scene.get(MapName.REALM) as RealmScene;
+        const scene = this.scene.get(data.map) as ForestScene;
 
         const onReady = () => {
           if (this.managers.ambience.phase)
@@ -615,31 +620,31 @@ export class MainScene extends Phaser.Scene {
           const config = data.players.find((p) => p.id === localId);
 
           if (config) {
-            this.scene.bringToTop(MapName.REALM);
+            this.scene.bringToTop(data.map);
             handlers.player.swap(config, this);
-          } else realm.scene.setVisible(false);
+          } else scene.scene.setVisible(false);
 
           data.players
             .filter((p) => p.id !== localId)
             .forEach((config) => this.managers.players.add(config, false));
 
           EventBus.emit(Event.PARTY_START_READY);
-          handlers.ui.backdrop.hide(this, MapName.REALM);
+          handlers.ui.backdrop.hide(this, data.map);
         };
 
-        if (realm.scene.isActive()) {
-          realm.rebuild(data.tilemap);
+        if (scene.scene.isActive()) {
+          scene.rebuild(data.tilemap);
           onReady();
           return;
         }
 
-        this.cache.tilemap.add(MapName.REALM, {
+        this.cache.tilemap.add(data.map, {
           format: Phaser.Tilemaps.Formats.TILED_JSON,
           data: data.tilemap,
         });
 
-        this.scene.launch(MapName.REALM);
-        realm.events.once(Phaser.Scenes.Events.CREATE, onReady);
+        this.scene.launch(data.map);
+        scene.events.once(Phaser.Scenes.Events.CREATE, onReady);
       },
     );
 

@@ -90,6 +90,73 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.LADDER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    offset: { x: 0, y: -8 },
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 8, end: 8 },
+            { row: 3, start: 8, end: 8 },
+            { row: 4, start: 8, end: 8 },
+            { row: 5, start: 8, end: 8 },
+          ],
+        },
+        key: "ladder_texture",
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 432,
+          y: 632,
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.DUNGEON_ENTRANCE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 6, start: 2, end: 3 },
+            { row: 7, start: 2, end: 3 },
+          ],
+        },
+        key: "dungeon_entrance_texture",
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.DUNGEON,
+          x: 1024,
+          y: 1024,
+          width: 24,
+          height: 24,
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.BLACKSMITH_EXIT]: {
     facing: Direction.DOWN,
     moving: [],

@@ -18,7 +18,10 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           spritesheet: "icons2",
           tileSize: 16,
-          tiles: [{ row: 11, start: 26, end: 27 }, { row: 12, start: 26, end: 27 }],
+          tiles: [
+            { row: 11, start: 26, end: 27 },
+            { row: 12, start: 26, end: 27 },
+          ],
         },
         key: "amulet_texture",
       },
@@ -60,7 +63,8 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Fishing rod",
-      description: "A simple wooden rod strung with line. Stand near water and cast.",
+      description:
+        "A simple wooden rod strung with line. Stand near water and cast.",
       icon: { spritesheet: "icons1", row: 6, col: 19 },
     },
   },
@@ -106,6 +110,35 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Lantern",
       description: "A oil lantern that casts a warm glow in the dark.",
       icon: { spritesheet: "icons6", row: 1, col: 5 },
+    },
+  },
+  [EntityName.HARE_FOOT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 26, end: 27 },
+            { row: 20, start: 26, end: 27 },
+          ],
+        },
+        key: "amulet_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hare Foot",
+      description:
+        "A small, furry foot from a hare. They say it brings good luck if you carry it.",
+      icon: { spritesheet: "icons8", row: 20, col: 25 },
     },
   },
 };

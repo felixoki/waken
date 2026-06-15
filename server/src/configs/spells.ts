@@ -152,4 +152,22 @@ export const spells: Record<SpellName, SpellConfig> = {
       displayName: "Grasp",
     },
   },
+  [SpellName.ABSORB_LIFE]: {
+    name: SpellName.ABSORB_LIFE,
+    damage: { type: DamageType.PHYSICAL, amount: 25 },
+    knockback: 0,
+    mana: 35,
+    lifesteal: 1,
+    duration: 600,
+    radius: 80,
+    hitbox: {
+      width: 160,
+      height: 160,
+    },
+    metadata: {
+      description:
+        "Drains the life from all nearby creatures, healing you for the damage dealt.",
+      displayName: "Absorb Life",
+    },
+  },
 };

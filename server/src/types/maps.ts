@@ -7,7 +7,8 @@ export enum MapName {
   FISHING_HUT = "fishing_hut",
   TAVERN = "tavern",
   HOME = "home",
-  REALM = "realm",
+  FOREST = "forest",
+  DUNGEON = "dungeon",
 }
 
 export interface MapConfig {
@@ -15,6 +16,7 @@ export interface MapConfig {
   spawn: { x: number; y: number };
   json: string;
   isIndoor: boolean;
+  isInstanced: boolean;
   spritesheets: Spritesheet[];
 }
 

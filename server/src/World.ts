@@ -47,7 +47,7 @@ export class World {
     const loader = new MapLoader();
 
     Object.entries(configs.maps)
-      .filter(([name, _]) => name !== MapName.REALM)
+      .filter(([name, _]) => !configs.maps[name as MapName].isInstanced)
       .forEach(([name, config]) => {
         const tilemap = loader.load(config.json);
         const entities = loader.parseEntities(name as MapName, tilemap);

@@ -1,15 +1,26 @@
 import { handlers } from "../../handlers";
 import { TilesetLoader } from "../../loaders/Tileset";
 import { EntityName } from "../../types";
+import { configs } from "../../configs";
+import { DUNGEON_LADDER_COUNT } from "../../globals";
 import {
   BiomeConfig,
+  BiomeName,
+  DoorAnchor,
+  Entity,
   GeneratedMap,
   TERRAIN_ORDER,
   TerrainName,
   TileRole,
 } from "../../types/generation";
 import { BorderGenerator } from "../generators/Border";
+import { DoorGenerator } from "../generators/Door";
+import { EntranceGenerator } from "../generators/Entrance";
+import { LedgeGenerator } from "../generators/Ledge";
+import { RoomGenerator } from "../generators/Room";
+import { StairGenerator } from "../generators/Stair";
 import { TerrainGenerator } from "../generators/Terrain";
+import { WallGenerator } from "../generators/Wall";
 import { TerrainSmoother } from "../smoothers/Terrain";
 import { DetailSpawner } from "../spawners/Detail";
 import { EntitySpawner } from "../spawners/Entity";
@@ -17,38 +28,58 @@ import { EntitySpawner } from "../spawners/Entity";
 export class MapBuilder {
   private config: BiomeConfig;
   private loader: TilesetLoader;
+  private seed: string;
 
-  constructor(config: BiomeConfig, loader: TilesetLoader) {
+  constructor(config: BiomeConfig, loader: TilesetLoader, seed: string) {
     this.config = config;
     this.loader = loader;
+    this.seed = seed;
   }
 
   build(): GeneratedMap {
     const { width, height, tileWidth, tileHeight, layers, borders } =
       this.config;
 
-    const terrainGenerator = new TerrainGenerator(this.config);
-    const rawTerrain = terrainGenerator.generate();
-
-    const smoother = new TerrainSmoother(this.config);
-    const smoothed = smoother.smooth(rawTerrain, 2, 4, "all");
-
-    const enforced = handlers.generation.enforceMinimumWater(
-      smoothed,
-      width,
-      height,
+    const generators = { terrain: TerrainGenerator, room: RoomGenerator };
+    const generator = new generators[this.config.generator](
+      this.config,
+      this.seed,
     );
-    const unified = handlers.generation.unifyShores(enforced, width, height);
-    const terrain = handlers.generation.enforceMinimumBlock(
-      unified,
-      width,
-      height,
-      TerrainName.GROUND,
-      TerrainName.GRASS,
-    );
+    const {
+      terrain: genTerrain,
+      entities: roomEntities,
+      spawn: roomSpawn,
+      doors: roomDoors,
+    } = generator.generate() as {
+      terrain: TerrainName[];
+      entities: Entity[];
+      spawn?: { x: number; y: number };
+      doors?: DoorAnchor[];
+    };
+    let terrain = genTerrain;
+
+    if (this.config.smoothing) {
+      const smoother = new TerrainSmoother(this.config);
+      terrain = smoother.smooth(
+        terrain,
+        this.config.smoothing.iterations,
+        this.config.smoothing.threshold,
+        "all",
+      );
+      terrain = handlers.generation.enforceMinimumWater(terrain, width, height);
+      terrain = handlers.generation.unifyShores(terrain, width, height);
+      terrain = handlers.generation.enforceMinimumBlock(
+        terrain,
+        width,
+        height,
+        TerrainName.GROUND,
+        TerrainName.GRASS,
+      );
+    }
 
     const tilesetOrder = this.collectTilesets();
     const firstgids = new Map<string, number>();
+
     let nextGid = 1;
 
     for (const name of tilesetOrder) {
@@ -61,9 +92,9 @@ export class MapBuilder {
      * Build fill layers, interleaving per-terrain detail layers immediately after
      * each fill so ground details render beneath the grass fill layer.
      */
-    const tiledLayers: any[] = [];
     let layerId = 1;
-    const detailSeed = this.config.noise.seed ?? "default";
+    const tiledLayers: any[] = [];
+    const detailSeed = this.seed;
     const detailSpawner = new DetailSpawner(detailSeed);
 
     for (let i = 0; i < layers.length; i++) {
@@ -80,7 +111,7 @@ export class MapBuilder {
       const data = new Array(width * height).fill(0);
       const isBaseLayer = i === 0;
 
-      for (let y = 0; y < height; y++) {
+      for (let y = 0; y < height; y++)
         for (let x = 0; x < width; x++) {
           const idx = handlers.generation.toIndex(x, y, width);
 
@@ -92,11 +123,13 @@ export class MapBuilder {
             )
           ) {
             const hash = handlers.generation.spatialHash(x, y, 0);
-            const tile = fills[hash % fills.length];
+            const tile =
+              fills.length > 1 && hash % 16 < 2
+                ? fills[1 + (hash % (fills.length - 1))]
+                : fills[0];
             data[idx] = gid + tile.id;
           }
         }
-      }
 
       tiledLayers.push(
         handlers.generation.createLayer(
@@ -110,11 +143,13 @@ export class MapBuilder {
 
       for (const detailConfig of this.config.details ?? []) {
         if (!detailConfig.terrains.includes(layerConfig.terrain)) continue;
+
         const highestTerrain = detailConfig.terrains.reduce((best, t) => {
           const bestIdx = layers.findIndex((l) => l.terrain === best);
           const tIdx = layers.findIndex((l) => l.terrain === t);
           return tIdx > bestIdx ? t : best;
         });
+
         if (highestTerrain !== layerConfig.terrain) continue;
 
         const detailGid = firstgids.get(detailConfig.tileset);
@@ -138,6 +173,173 @@ export class MapBuilder {
           ),
         );
       }
+    }
+
+    /**
+     * Build wall layer
+     */
+    if (this.config.walls) {
+      const gid = firstgids.get(this.config.walls)!;
+      const generator = new WallGenerator(
+        { width: this.config.width, height: this.config.height },
+        this.loader,
+      );
+      const { below, above } = generator.generate(
+        terrain,
+        this.config.walls,
+        gid,
+      );
+
+      for (let i = 0; i < below.length; i++)
+        if (below[i] !== 0 || above[i] !== 0)
+          for (const layer of tiledLayers) layer.data[i] = 0;
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "walls",
+          width,
+          height,
+          below,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "walls_above",
+          width,
+          height,
+          above,
+          [
+            { name: "collides", type: "bool", value: true },
+            { name: "rendersAbove", type: "bool", value: true },
+          ],
+        ),
+      );
+
+      /** Void fill rendered above the player at remaining VOID cells */
+      const voidLayer = layers.find((l) => l.terrain === TerrainName.VOID);
+
+      if (voidLayer) {
+        const voidFills = this.loader.query(voidLayer.tileset, {
+          role: TileRole.FILL,
+          terrain: TerrainName.VOID,
+        });
+
+        if (voidFills.length) {
+          const voidGid = firstgids.get(voidLayer.tileset)!;
+          const voidAbove = new Array(width * height).fill(0);
+
+          for (let i = 0; i < terrain.length; i++)
+            if (
+              terrain[i] === TerrainName.VOID &&
+              below[i] === 0 &&
+              above[i] === 0
+            )
+              voidAbove[i] = voidGid + voidFills[0].id;
+
+          tiledLayers.push(
+            handlers.generation.createLayer(
+              layerId++,
+              "void_above",
+              width,
+              height,
+              voidAbove,
+              [{ name: "rendersAbove", type: "bool", value: true }],
+            ),
+          );
+        }
+      }
+    }
+
+    /**
+     * Build ledge layer
+     */
+    if (this.config.ledge) {
+      const gid = firstgids.get(this.config.ledge)!;
+      const gen = new LedgeGenerator(
+        { width: this.config.width, height: this.config.height },
+        this.loader,
+      );
+      const ledges = gen.generate(terrain, this.config.ledge, gid);
+
+      const stairGen = new StairGenerator({
+        width: this.config.width,
+        height: this.config.height,
+      });
+      const stairs = stairGen.generate(terrain, gid, this.seed, ledges);
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "ledges",
+          width,
+          height,
+          ledges,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "stairs",
+          width,
+          height,
+          stairs,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+    }
+
+    /**
+     * Build door layer
+     */
+    if (roomDoors && roomDoors.length && this.config.walls) {
+      const gid = firstgids.get(this.config.walls)!;
+      const doorGen = new DoorGenerator({
+        width: this.config.width,
+        height: this.config.height,
+      });
+      const { below: doorsBelow, above: doorsAbove } = doorGen.generate(
+        roomDoors,
+        gid,
+      );
+
+      const wallLayers = tiledLayers.filter((l) =>
+        ["walls", "walls_above", "void_above"].includes(l.name),
+      );
+
+      for (let i = 0; i < doorsBelow.length; i++)
+        if (doorsBelow[i] !== 0 || doorsAbove[i] !== 0)
+          for (const layer of wallLayers) layer.data[i] = 0;
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "doors",
+          width,
+          height,
+          doorsBelow,
+          [{ name: "collides", type: "bool", value: true }],
+        ),
+      );
+
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "doors_above",
+          width,
+          height,
+          doorsAbove,
+          [
+            { name: "collides", type: "bool", value: true },
+            { name: "rendersAbove", type: "bool", value: true },
+          ],
+        ),
+      );
     }
 
     /**
@@ -173,18 +375,80 @@ export class MapBuilder {
     /**
      * Spawn entities
      */
-    const seed = this.config.noise.seed ?? "default";
-    const spawner = new EntitySpawner(this.config, seed);
-    const spawn = this._findSpawn(terrain);
-    const entities = spawner.spawn(terrain, spawn);
+    const spawner = new EntitySpawner(this.config, this.seed);
+    const spawn =
+      roomSpawn ?? handlers.generation.find.spawn(this.config, terrain);
+    const entities = [...spawner.spawn(terrain, spawn), ...roomEntities];
 
     /**
-     * Wells
+     * Wells (forest only)
      */
-    const wells = this._findWellPositions(terrain, spawn, 15);
+    if (this.config.id === BiomeName.FOREST) {
+      const wells = handlers.generation.find.positions.well(
+        this.config,
+        terrain,
+        spawn,
+        10,
+        this.seed,
+      );
 
-    for (const pos of wells)
-      entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });
+      for (const pos of wells)
+        entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });
+
+      /**
+       * Dungeon entrance: stamp the facade above the floor, place the doorway
+       * transition entity in the opening, and post orc guards at the base.
+       */
+      const entrance = new EntranceGenerator(this.config, this.seed).generate(
+        terrain,
+        firstgids,
+        spawn,
+      );
+
+      if (entrance) {
+        tiledLayers.push(
+          handlers.generation.createLayer(
+            layerId++,
+            "entrance",
+            width,
+            height,
+            entrance.layer,
+            [{ name: "collides", type: "bool", value: true }],
+          ),
+        );
+
+        entities.push(...entrance.entities);
+      }
+    }
+
+    /**
+     * Torches and ladders (dungeon only)
+     */
+    if (this.config.id === BiomeName.DUNGEON) {
+      const torches = handlers.generation.find.positions.torch(
+        this.config,
+        terrain,
+      );
+
+      for (const pos of torches)
+        entities.push({ name: EntityName.TORCH1, x: pos.x, y: pos.y });
+
+      const ladders = handlers.generation.find.positions.ladder(
+        this.config,
+        terrain,
+        DUNGEON_LADDER_COUNT,
+        torches,
+        this.seed,
+      );
+      const offset = configs.entities[EntityName.LADDER]?.offset;
+
+      for (const pos of ladders)
+        entities.push({
+          name: EntityName.LADDER,
+          x: pos.x + (offset?.x ?? 0),
+          y: pos.y + (offset?.y ?? 0),
+        });
+    }
 
     /**
      * Assemble final map
@@ -241,76 +505,10 @@ export class MapBuilder {
     for (const layer of this.config.layers) names.add(layer.tileset);
     for (const border of this.config.borders) names.add(border.tileset);
     for (const detail of this.config.details ?? []) names.add(detail.tileset);
+    if (this.config.walls) names.add(this.config.walls);
+    if (this.config.ledge) names.add(this.config.ledge);
+    for (const name of this.config.tilesets ?? []) names.add(name);
 
     return Array.from(names);
-  }
-
-  private _findSpawn(terrain: TerrainName[]): { x: number; y: number } {
-    const { width, height, tileWidth, tileHeight } = this.config;
-
-    const centerX = Math.floor(width / 2);
-    const centerY = Math.floor(height / 2);
-
-    const found = handlers.generation.spiralSearch(
-      centerX,
-      centerY,
-      width,
-      height,
-      (x, y) =>
-        this.config.terrain.includes(
-          terrain[handlers.generation.toIndex(x, y, width)],
-        ),
-    );
-
-    const tile = found ?? { x: centerX, y: centerY };
-    return handlers.generation.tileToWorld(
-      tile.x,
-      tile.y,
-      tileWidth,
-      tileHeight,
-    );
-  }
-
-  private _findWellPositions(
-    terrain: TerrainName[],
-    spawn: { x: number; y: number },
-    count: number,
-  ): { x: number; y: number }[] {
-    const { width, height, tileWidth, tileHeight } = this.config;
-    const gen = handlers.generation;
-
-    const tile = {
-      x: Math.floor(spawn.x / tileWidth),
-      y: Math.floor(spawn.y / tileHeight),
-    };
-    const min = 40;
-    const candidates: { x: number; y: number }[] = [];
-
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        const index = gen.toIndex(x, y, width);
-        if (!this.config.terrain.includes(terrain[index])) continue;
-
-        const distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
-        if (distance < min) continue;
-
-        candidates.push({ x, y });
-      }
-    }
-
-    const seed = this.config.noise.seed ?? "default";
-    const fallback = { x: tile.x + min, y: tile.y + min };
-    const positions: { x: number; y: number }[] = [];
-
-    for (let i = 0; i < count; i++) {
-      const start = Math.floor((i * candidates.length) / count);
-      const end = Math.floor(((i + 1) * candidates.length) / count);
-      const slice = candidates.slice(start, end);
-      const hash = gen.spatialHash(slice.length, i, seed.length);
-      const pick = slice.length ? slice[hash % slice.length] : fallback;
-      positions.push(gen.tileToWorld(pick.x, pick.y, tileWidth, tileHeight));
-    }
-
-    return positions;
   }
 }

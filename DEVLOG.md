@@ -508,16 +508,87 @@
 - Shadow wanderer should attack consistently ✅
 - Fishing distance to water is too far ✅
 
+#### 24.5.2026
+
+- Add room and wall generators ✅
+
+#### 25.5.2026
+
+- Add dungeon tileset ✅
+- Add cavern tileset ✅
+
+#### 27.5.2026
+
+- Add room configs ✅
+- Add room templates ✅
+
+#### 29.5.2026
+
+- Add room size system ✅
+
+#### 1.6.2026
+
+- Add rat entity ✅
+
+#### 4.6.2026
+
+- Add ledge generator ✅
+
+#### 6.6.2026
+
+- Add wall and ledge collisions ✅
+
+#### 8.6.2026
+
+- Add room interior ✅
+- Add wall layering ✅
+- Refactor effect ui ✅
+- Add destructible component ✅
+- Entities can hurt each other ✅
+
+#### 9.6.2026
+
+- Add room interior merging ✅
+
+#### 10.6.2026
+
+- Add stairs and doors ✅
+- Hits during jumps prevent y reset ✅
+
+#### 11.6.2026
+
+- Add spike trap ✅
+- Entities stop attacking when players stand still ✅
+- Entities can see through collisions ✅
+
+#### 12.6.2026
+
+- Add search behavior ✅
+- Entities can move through conditional collisions ✅
+- Add torches and ladders ✅
+- Add z-axis for jumping ✅
+
+#### 13.6.2026
+
+- Add absorb life spell ✅
+
+#### 15.6.2026
+
+- Add dungeon entrance ✅
+- Add party descend ✅
+- Add grouse, goat, orc2, goblin2 and hare ✅
+- Add flying state ✅
 
 ### In progress
 
-
 ### Bugs
 
+- Ledge corners render above players
+- Dialogue ui stays open when leaving scene
+- Same item stacks don't stack
+- Projectiles don't respect collisions
 
 ### Backlog
-
-- Procedural dungeon generation ⭐
 
 - Animal taming ⭐
 
@@ -534,9 +605,9 @@
 - Character customization ⭐
 
 - Ideas ⭐
-  - Add absorb life spell
   - Add reflect damage effect
   - Remove among player collisions
+  - Add console
 
 ## Economy
 
@@ -601,12 +672,12 @@
 
 #### Aggro animals
 
-- Rat (Rat meat)
+- Rat (Rat claws)
 
 #### Aggro entities
 
 - Goblin1
-- Goblin2 (Rat meat, Bone)
+- Goblin2 (Rat claws, Bone)
 - Goblin3 (Spell book)
 - Orc1
 - Orc2 (Iron, Gold)

@@ -2,15 +2,13 @@ import { Server, Socket } from "socket.io";
 import {
   ComponentConfig,
   ComponentName,
+  CombatConfig,
   EntityConfig,
   Event,
   Hit,
   Item,
-  MapName,
   PlayerConfig,
   Revive,
-  SpellConfig,
-  WeaponConfig,
 } from "../types";
 import { Effect, EffectName } from "../types/effects.js";
 import { DamageType } from "../types/damage.js";
@@ -31,7 +29,7 @@ export const combat = {
   getKnockback: (
     target: PlayerConfig | EntityConfig,
     attacker: PlayerConfig | EntityConfig,
-    config: SpellConfig | WeaponConfig,
+    config: CombatConfig,
   ) => {
     const dx = target.x - attacker.x;
     const dy = target.y - attacker.y;
@@ -46,7 +44,7 @@ export const combat = {
 
   calculateDamage: (
     target: PlayerConfig | EntityConfig,
-    config: SpellConfig | WeaponConfig,
+    config: CombatConfig,
     isEntity: boolean,
   ): { damage: number; isMiss: boolean; isCritical: boolean } => {
     if (Math.random() < MISS_CHANCE)
@@ -85,7 +83,7 @@ export const combat = {
     player: (
       player: PlayerConfig,
       attacker: PlayerConfig | EntityConfig,
-      config: SpellConfig | WeaponConfig,
+      config: CombatConfig,
       socket: Socket,
       io: Server,
       world: World,
@@ -101,7 +99,9 @@ export const combat = {
       };
 
       const party = world.parties.getByPlayerId(player.id);
-      const partyId = player.map === MapName.REALM ? party?.id : undefined;
+      const partyId = configs.maps[player.map].isInstanced
+        ? party?.id
+        : undefined;
 
       const key = world.chunks.toChunkKey(
         player.map,
@@ -135,7 +135,9 @@ export const combat = {
 
       const player = world.players.getBySocketId(socket.id);
       const party = player && world.parties.getByPlayerId(player.id);
-      const partyId = target.map === MapName.REALM ? party?.id : undefined;
+      const partyId = configs.maps[target.map].isInstanced
+        ? party?.id
+        : undefined;
 
       const definition = configs.entities[target.name];
       const damagable = definition?.components.find(
@@ -196,6 +198,26 @@ export const combat = {
     );
     const health = target.health - damage;
 
+    if (!isMiss && "lifesteal" in config && config.lifesteal) {
+      const caster = players.get(data.attackerId);
+
+      if (caster && !caster.isDead) {
+        const drained = Math.min(damage, target.health) * config.lifesteal;
+        const healed = Math.min(
+          caster.health + drained,
+          caster.maxHealth || MAX_HEALTH,
+        );
+
+        if (healed !== caster.health) {
+          players.update(caster.id, { health: healed });
+          io.to(caster.socketId).emit(Event.PLAYER_HEALTH, healed);
+          io.to(`map:${caster.map}`)
+            .except(caster.socketId)
+            .emit(Event.PLAYER_HEALTH_SYNC, { id: caster.id, health: healed });
+        }
+      }
+    }
+
     if (player && health <= 0) {
       combat.kill.player(player, attacker, config, socket, io, world);
       return;
@@ -215,9 +237,12 @@ export const combat = {
       ? world.chunks.getChunkByEntity(target.id)
       : (() => {
           const map = player?.map;
+
           if (!map) return undefined;
+
           const party = world.parties.getByPlayerId(player!.id);
-          const partyId = map === MapName.REALM ? party?.id : undefined;
+          const partyId = configs.maps[map].isInstanced ? party?.id : undefined;
+
           return world.chunks.toChunkKey(map, target.x, target.y, partyId);
         })();
 
@@ -252,7 +277,7 @@ export const combat = {
     apply: (
       targetId: string,
       isEntity: boolean,
-      config: SpellConfig | WeaponConfig,
+      config: CombatConfig,
       world: World,
       now: number,
       key: string | undefined,
@@ -264,7 +289,9 @@ export const combat = {
 
       if (!target) return;
 
-      const effects: [EffectName, number][] = [...(config.effects ?? [])];
+      const effects: [EffectName, number, number?][] = [
+        ...(config.effects ?? []),
+      ];
 
       if (attackerId) {
         const inventory = world.players.get(attackerId)?.inventory ?? [];
@@ -286,7 +313,9 @@ export const combat = {
 
       const existing: Effect[] = target.effects ?? [];
 
-      for (const [name, duration] of effects) {
+      for (const [name, duration, chance] of effects) {
+        if (chance !== undefined && Math.random() > chance) continue;
+
         const effect: Effect = {
           name,
           expiresAt: now + duration,

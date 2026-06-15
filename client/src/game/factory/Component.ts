@@ -11,6 +11,7 @@ import { PickableComponent } from "../components/Pickable";
 import { InventoryComponent } from "../components/Inventory";
 import { HoverableComponent } from "../components/Hoverable";
 import { DamageableComponent } from "../components/Damageable";
+import { DestructibleComponent } from "../components/Destructible";
 import { TransitionComponent } from "../components/Transition";
 import { InteractableComponent } from "../components/Interactable";
 import { CollectorComponent } from "../components/Collector";
@@ -24,6 +25,8 @@ import { FellableComponent } from "../components/Fellable";
 import { AuraComponent } from "../components/Aura";
 import { StorageComponent } from "../components/Storage";
 import { FollowComponent } from "../components/Follow";
+import { TrapComponent } from "../components/Trap";
+import { JumpableComponent } from "../components/Jumpable";
 
 export class ComponentFactory {
   static create(
@@ -70,6 +73,9 @@ export class ComponentFactory {
         case ComponentName.DAMAGEABLE:
           comp = new DamageableComponent();
           break;
+        case ComponentName.DESTRUCTIBLE:
+          comp = new DestructibleComponent();
+          break;
         case ComponentName.TRANSITION:
           comp = new TransitionComponent(entity, component.config);
           break;
@@ -108,6 +114,12 @@ export class ComponentFactory {
           break;
         case ComponentName.FOLLOW:
           comp = new FollowComponent(entity, component.config);
+          break;
+        case ComponentName.TRAP:
+          comp = new TrapComponent(entity, component.config);
+          break;
+        case ComponentName.JUMPABLE:
+          comp = new JumpableComponent(entity, component.config);
           break;
       }
 

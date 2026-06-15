@@ -50,10 +50,8 @@ export class BorderGenerator {
         const query: TileQuery = {
           role: position.role,
           position: position.position,
+          terrain: border.from,
         };
-
-        if (border.queryProperty === "terrain") query.terrain = border.from;
-        else query.from = border.from;
 
         const tile = this.loader.queryOne(border.tileset, query);
         if (tile) data[index] = firstgid + tile.id;

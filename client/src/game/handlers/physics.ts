@@ -6,6 +6,8 @@ export const physics = {
     const entity = obj1 as Entity;
     const other = obj2 as Entity;
 
+    if (other.clearance !== undefined && entity.z > other.clearance) return;
+
     entity.scene.game.events.emit(Event.ENTITY_OVERLAP, entity, other);
   },
 };

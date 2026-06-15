@@ -13,6 +13,7 @@ import { vision } from "./vision";
 import { weapons } from "./weapons";
 import { behavior } from "./behavior";
 import { charge } from "./charge";
+import { sprites } from "./sprites";
 
 export const handlers = {
   state,
@@ -30,4 +31,5 @@ export const handlers = {
   path,
   behavior,
   ui,
+  sprites,
 };

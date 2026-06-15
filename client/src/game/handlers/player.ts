@@ -14,13 +14,13 @@ import { AnimationComponent } from "../components/Animation";
 import { FollowComponent } from "../components/Follow";
 import { LightComponent } from "../components/Light";
 import type { MainScene } from "../scenes/Main";
-import type RealmScene from "../scenes/Realm";
 import { Entity } from "../Entity";
 import { Factory } from "../factory/Factory";
 import { handlers } from ".";
 import EventBus from "../EventBus";
 import { configs } from "@server/configs";
 import type { Player } from "../Player";
+import ForestScene from "../scenes/Forest";
 
 export const player = {
   nearest: (
@@ -109,9 +109,9 @@ export const player = {
 
     main.managers.entities.removeByMap(prev.map as MapName);
 
-    if (prev.map === MapName.REALM && data.map !== MapName.REALM)
+    if (configs.maps[prev.map].isInstanced)
       main.time.delayedCall(0, () => {
-        (main.scene.get(MapName.REALM) as RealmScene).teardown();
+        (main.scene.get(prev.map) as ForestScene).teardown();
       });
   },
 

@@ -12,13 +12,21 @@ function useNow(active: boolean, interval = 100) {
   return now;
 }
 
+interface TrackedEffect extends Effect {
+  appliedAt: number;
+}
+
 export function Effects() {
-  const [effects, setEffects] = useState<Map<EffectName, Effect>>(new Map());
+  const [effects, setEffects] = useState<Map<EffectName, TrackedEffect>>(new Map());
   const now = useNow(effects.size > 0);
 
   useEffect(() => {
     const onApply = (effect: Effect) => {
-      setEffects((prev) => new Map(prev).set(effect.name, effect));
+      setEffects((prev) => {
+        const existing = prev.get(effect.name);
+        const appliedAt = existing && existing.expiresAt === effect.expiresAt ? existing.appliedAt : Date.now();
+        return new Map(prev).set(effect.name, { ...effect, appliedAt });
+      });
     };
 
     const onRemove = (name: EffectName) => {
@@ -42,16 +50,16 @@ export function Effects() {
   if (!active.length) return null;
 
   return (
-    <div className="fixed bottom-20 right-4 flex flex-col gap-1">
+    <div className="flex flex-wrap gap-2">
       {active.map((effect) => {
         const remaining = Math.ceil((effect.expiresAt - now) / 1000);
         return (
           <div
             key={effect.name}
-            className="flex items-center gap-2 bg-black/50 rounded px-2 py-1 text-xs text-white font-mono"
+            className="flex items-center gap-3 bg-black/60 backdrop-blur-sm rounded-md px-3 py-2 text-base text-white font-mono border border-white/10"
           >
-            <span className="capitalize">{effect.name}</span>
-            <span className="text-white/50">{remaining}s</span>
+            <span className="capitalize font-semibold">{effect.name}</span>
+            <span className="text-white/60">{remaining}s</span>
           </div>
         );
       })}

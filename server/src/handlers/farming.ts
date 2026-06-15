@@ -1,7 +1,8 @@
 import { Server, Socket } from "socket.io";
-import { EntityName, Event, Item, MapName, seeds } from "../types";
+import { EntityName, Event, Item, seeds } from "../types";
 import { World } from "../World";
 import { handlers } from ".";
+import { configs } from "../configs";
 
 export const farming = {
   plant: (
@@ -17,7 +18,7 @@ export const farming = {
     if (!crop) return;
 
     const party = world.parties.getByPlayerId(player.id);
-    const partyId = player.map === MapName.REALM ? party?.id : undefined;
+    const partyId = configs.maps[player.map].isInstanced ? party?.id : undefined;
 
     handlers.entity.create(
       {

@@ -1,9 +1,10 @@
-import { BehaviorName, ComponentName } from "@server/types";
+import { BehaviorName, ComponentName, Waypoint } from "@server/types";
 import { BehaviorQueue } from "../components/BehaviorQueue";
 import { Entity } from "../Entity";
 import { FleeBehavior } from "../behavior/Flee";
 import { AttackBehavior } from "../behavior/Attack";
 import { DefendBehavior } from "../behavior/Defend";
+import { SearchBehavior } from "../behavior/Search";
 
 export const behavior = {
   react: (entity: Entity, targetId: string) => {
@@ -33,5 +34,20 @@ export const behavior = {
       attack.start(targetId);
       queue.shiftTo(BehaviorName.ATTACK);
     }
+  },
+
+  search: (entity: Entity, position: Waypoint | null) => {
+    if (!position) return;
+
+    const queue = entity.getComponent<BehaviorQueue>(
+      ComponentName.BEHAVIOR_QUEUE,
+    );
+    if (!queue) return;
+
+    const search = queue.get<SearchBehavior>(BehaviorName.SEARCH);
+    if (!search) return;
+
+    search.start();
+    queue.shiftTo(BehaviorName.SEARCH);
   },
 };

@@ -1,6 +1,7 @@
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
 import { handlers } from "./index";
+import { VISION_PROXIMITY } from "@server/globals";
 
 interface RayHit {
   x: number;
@@ -19,6 +20,7 @@ export const vision = {
     y: number,
     angle: number,
     maxDistance: number,
+    grid: number[][],
   ): RayHit => {
     const map = scene.tileManager.map;
     const cos = Math.cos(angle);
@@ -37,9 +39,9 @@ export const vision = {
       const yo = step * tan;
 
       for (let i = 0; i < map.width; i++) {
-        const tile = map.getTileAtWorldXY(rx, ry);
-        if (tile && tile.collides)
-          return Phaser.Math.Distance.Between(x, y, rx, ry);
+        const tx = Math.floor(rx / map.tileWidth);
+        const ty = Math.floor(ry / map.tileHeight);
+        if (grid[ty]?.[tx]) return Phaser.Math.Distance.Between(x, y, rx, ry);
 
         rx += step;
         ry += yo;
@@ -60,9 +62,9 @@ export const vision = {
       const xo = step / tan;
 
       for (let i = 0; i < map.height; i++) {
-        const tile = map.getTileAtWorldXY(rx, ry);
-        if (tile && tile.collides)
-          return Phaser.Math.Distance.Between(x, y, rx, ry);
+        const tx = Math.floor(rx / map.tileWidth);
+        const ty = Math.floor(ry / map.tileHeight);
+        if (grid[ty]?.[tx]) return Phaser.Math.Distance.Between(x, y, rx, ry);
 
         rx += xo;
         ry += step;
@@ -107,12 +109,18 @@ export const vision = {
     distance: number,
     angle: number = Math.PI / 2,
     count: number = 5,
-    proximity: number = 80,
   ): boolean => {
     if (!vision.inRange(from, to, distance)) return false;
 
+    const grid = handlers.path.getGrid(from);
     const actualDist = Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y);
-    if (actualDist <= proximity) return true;
+
+    if (actualDist <= VISION_PROXIMITY) {
+      const angleTo = Phaser.Math.Angle.Between(from.x, from.y, to.x, to.y);
+      const hit = vision.raycast(scene, from.x, from.y, angleTo, distance, grid);
+
+      return vision.intersects({ x: from.x, y: from.y }, hit, to);
+    }
 
     const facing = handlers.direction.toAngle(from.facing);
     const target = Phaser.Math.Angle.Between(from.x, from.y, to.x, to.y);
@@ -125,10 +133,9 @@ export const vision = {
 
     for (let i = 0; i < count; i++) {
       const rayAngle = start + step * i;
-      const hit = vision.raycast(scene, from.x, from.y, rayAngle, distance);
+      const hit = vision.raycast(scene, from.x, from.y, rayAngle, distance, grid);
 
-      if (vision.intersects({ x: from.x, y: from.y }, hit, to))
-        return true;
+      if (vision.intersects({ x: from.x, y: from.y }, hit, to)) return true;
     }
 
     return false;

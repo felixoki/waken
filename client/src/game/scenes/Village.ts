@@ -16,9 +16,9 @@ export default class VillageScene extends Scene {
   create() {
     super.create();
 
-    const map = MapFactory.create(this, MapName.VILLAGE);
-    this.tileManager = new TileManager(map);
-    this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    const { tilemap, thresholds } = MapFactory.create(this, MapName.VILLAGE);
+    this.tileManager = new TileManager(tilemap, thresholds);
+    this.physics.world.setBounds(0, 0, tilemap.widthInPixels, tilemap.heightInPixels);
 
     this.cameraManager.fitZoom();
 

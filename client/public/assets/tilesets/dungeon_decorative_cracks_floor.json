@@ -1,0 +1,688 @@
+{
+  "columns": 8,
+  "image": "../sprites/dungeon_decorative_cracks_floor.png",
+  "imageheight": 240,
+  "imagewidth": 128,
+  "margin": 0,
+  "name": "dungeon_decorative_cracks_floor",
+  "spacing": 0,
+  "tilecount": 120,
+  "tileheight": 16,
+  "tilewidth": 16,
+  "tiles": [
+    {
+      "id": 2,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 8
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": -8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 3,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 8
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": -8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 4,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 11.5,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 4.5
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 5,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 11.5,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 4.5
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 8,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": -2,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 10,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": -2,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 12,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 8,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 15,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 8,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 30,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 18,
+            "x": 0,
+            "y": 8
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 8,
+            "x": -0.00471286822732075,
+            "y": -8
+          },
+          {
+            "height": 24,
+            "id": 3,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 8,
+            "y": -8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 33,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 8,
+            "x": 8,
+            "y": -8
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 18,
+            "x": -2,
+            "y": 8
+          },
+          {
+            "height": 24,
+            "id": 3,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": -2,
+            "y": -8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 41,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": -2,
+            "y": 0
+          },
+          {
+            "height": 11.5,
+            "id": 2,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 8,
+            "x": 8,
+            "y": 4.5
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 47,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 11.5,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 8,
+            "x": 0,
+            "y": 4.5
+          },
+          {
+            "height": 16,
+            "id": 2,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 8,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "columns": 29,
+  "image": "../sprites/dungeon_coasts.png",
+  "imageheight": 512,
+  "imagewidth": 464,
+  "margin": 0,
+  "name": "dungeon_coasts",
+  "spacing": 0,
+  "tilecount": 928,
+  "tileheight": 16,
+  "tilewidth": 16
+}

@@ -1,4 +1,4 @@
-import { SpellConfig, SpellName } from "@server/types";
+import { ComponentName, SpellConfig, SpellName } from "@server/types";
 import { Entity } from "../Entity";
 import { Projectile } from "../Projectile";
 import { Hitbox } from "../Hitbox";
@@ -261,5 +261,40 @@ export const spells: Record<SpellName, SpellHandler> = {
         config,
       );
     });
+  },
+
+  [SpellName.ABSORB_LIFE]: (
+    entity: Entity,
+    config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    const scene = entity.scene;
+    const radius = config.radius!;
+    const radiusSq = radius * radius;
+
+    new Hitbox(
+      scene,
+      target.x,
+      target.y,
+      config.hitbox!.width,
+      config.hitbox!.height,
+      entity.id,
+      config,
+    );
+
+    const stream = (victim: Entity) => {
+      if (victim.id === entity.id) return;
+      if (!victim.hasComponent(ComponentName.DAMAGEABLE)) return;
+
+      const dx = victim.x - target.x;
+      const dy = victim.y - target.y;
+      if (dx * dx + dy * dy > radiusSq) return;
+
+      vfx.emitters.absorb(victim, entity);
+    };
+
+    scene.managers.entities.entities.forEach(stream);
+    scene.managers.players.others.forEach(stream);
   },
 };

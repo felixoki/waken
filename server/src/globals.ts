@@ -17,11 +17,13 @@ export const CHUNK_ACTIVATION_BUDGET = 2;
 /** Movement */
 export const SPEED_WALKING = 80;
 export const SPEED_RUNNING = 120;
+export const SPEED_FLYING = 150;
 export const SPEED_JUMPING = 100;
 export const SPEED_ROLLING = 120;
 export const SPEED_DASHING = 1200;
 
 export const HEIGHT_JUMPING = 40;
+export const HEIGHT_FLYING = 32;
 
 /** Time */
 export const DAY = 30 * 60 * 1000;
@@ -40,6 +42,7 @@ export const PHASE_STARTS = [
 
 /** Actions */
 export const DURATION_JUMPING = 800;
+export const DURATION_LIFT = 250;
 export const DURATION_ROLLING = 600;
 export const DURATION_DASHING = 50;
 export const DURATION_SLASHING = 800;
@@ -57,6 +60,9 @@ export const ROCK_INACCURACY_SCALE = 0.1;
 export const RANGE_SLASHING = 40;
 export const RANGE_INTERACTING = 100;
 export const RANGE_HITBOX_DETECTION = 100;
+
+/** Vision */
+export const VISION_PROXIMITY = 200;
 
 export const DISTANCE_DASHING = (SPEED_DASHING * DURATION_DASHING) / 1000;
 
@@ -113,3 +119,48 @@ export const DIRECTIONS = [
   { dx: -1, dy: 1 },
   { dx: -1, dy: -1 },
 ];
+
+/** Corners */
+export const CORNERS: [number, number][][] = [
+  [
+    [1, 0],
+    [0, 1],
+    [1, 1],
+  ],
+  [
+    [-1, 0],
+    [0, 1],
+    [-1, 1],
+  ],
+  [
+    [1, 0],
+    [0, -1],
+    [1, -1],
+  ],
+  [
+    [-1, 0],
+    [0, -1],
+    [-1, -1],
+  ],
+];
+
+/** Dungeon */
+export const DUNGEON_ROOM_ATTEMPTS = 200;
+export const DUNGEON_ROOM_PADDING = 4;
+export const DUNGEON_ROOM_MIN = 12;
+export const DUNGEON_ROOM_MAX = 24;
+export const DUNGEON_ROOM_FURNISH_CHANCE = 0.9;
+export const DUNGEON_LOOP_CHANCE = 0.01;
+export const DUNGEON_CORRIDOR_WIDE_CHANCE = 0.5;
+export const DUNGEON_RECESS_MARGIN = 4;
+export const DUNGEON_RECESS_CLUSTERS = 4;
+export const DUNGEON_RECESS_RECTS_PER_CLUSTER = 3;
+export const DUNGEON_RECESS_MIN_W = 6;
+export const DUNGEON_RECESS_MAX_W = 18;
+export const DUNGEON_RECESS_MIN_H = 5;
+export const DUNGEON_RECESS_MAX_H = 12;
+export const DUNGEON_RECESS_GAP = 2;
+export const DUNGEON_RECESS_MIN_DIM = 7;
+export const DUNGEON_TORCH_STRIDE = 16;
+export const DUNGEON_LADDER_COUNT = 3;
+export const DUNGEON_LADDER_TORCH_CLEARANCE = 4;

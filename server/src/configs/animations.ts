@@ -100,6 +100,28 @@ export const animations: Partial<
       repeat: 0,
     },
   },
+  [EntityName.ORC2]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 4,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 8,
+      frameRate: 8,
+      repeat: -1,
+    },
+    [StateName.SLASHING]: {
+      frameCount: 8,
+      frameRate: 8,
+      repeat: 0,
+    },
+  },
   [EntityName.GOBLIN1]: {
     [StateName.IDLE]: {
       frameCount: 4,
@@ -119,6 +141,28 @@ export const animations: Partial<
     [StateName.SLASHING]: {
       frameCount: 6,
       frameRate: 6,
+      repeat: 0,
+    },
+  },
+  [EntityName.GOBLIN2]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 4,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 8,
+      frameRate: 8,
+      repeat: -1,
+    },
+    [StateName.SLASHING]: {
+      frameCount: 5,
+      frameRate: 5,
       repeat: 0,
     },
   },
@@ -207,6 +251,18 @@ export const animations: Partial<
       repeat: -1,
     },
   },
+  [EntityName.GOAT]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 4,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+  },
   [EntityName.FOX]: {
     [StateName.IDLE]: {
       frameCount: 4,
@@ -221,6 +277,40 @@ export const animations: Partial<
     [StateName.RUNNING]: {
       frameCount: 6,
       frameRate: 6,
+      repeat: -1,
+    },
+  },
+  [EntityName.HARE]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 4,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 5,
+      frameRate: 5,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+  },
+  [EntityName.GROUSE]: {
+    [StateName.IDLE]: {
+      frameCount: 4,
+      frameRate: 4,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.FLYING]: {
+      frameCount: 6,
+      frameRate: 8,
       repeat: -1,
     },
   },
@@ -260,6 +350,28 @@ export const animations: Partial<
     [StateName.SLASHING]: {
       frameCount: 5,
       frameRate: 5,
+      repeat: 0,
+    },
+  },
+  [EntityName.RAT]: {
+    [StateName.IDLE]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.WALKING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.RUNNING]: {
+      frameCount: 6,
+      frameRate: 6,
+      repeat: -1,
+    },
+    [StateName.SLASHING]: {
+      frameCount: 8,
+      frameRate: 8,
       repeat: 0,
     },
   },

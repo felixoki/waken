@@ -62,7 +62,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -131,7 +131,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -200,7 +200,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -269,7 +269,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -338,7 +338,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -771,7 +771,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -840,7 +840,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -909,7 +909,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -978,7 +978,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -1359,7 +1359,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -1428,7 +1428,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -1497,7 +1497,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "ground"
         },
@@ -1832,7 +1832,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -1901,7 +1901,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -1970,7 +1970,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -2039,7 +2039,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -2108,7 +2108,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -2605,7 +2605,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -2674,7 +2674,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -2743,7 +2743,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -2812,7 +2812,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -3205,7 +3205,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -3274,7 +3274,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },
@@ -3343,7 +3343,7 @@
       },
       "properties": [
         {
-          "name": "from",
+          "name": "terrain",
           "type": "string",
           "value": "grass"
         },

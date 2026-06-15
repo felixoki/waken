@@ -6,6 +6,7 @@ import { GrowthStageConfig } from "./farming";
 import { DamageType } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { SpellName } from "./spells";
+import { TrapConfig } from "./traps";
 
 export enum ComponentName {
   ANIMATION = "animation",
@@ -16,6 +17,7 @@ export enum ComponentName {
   COLLECTOR = "collector",
   CONSUMABLE = "consumable",
   DAMAGEABLE = "damageable",
+  DESTRUCTIBLE = "destructible",
   FARMABLE = "farmable",
   FELLABLE = "fellable",
   GROWABLE = "growable",
@@ -24,6 +26,7 @@ export enum ComponentName {
   FOLLOW = "follow",
   INTERACTABLE = "interactable",
   INVENTORY = "inventory",
+  JUMPABLE = "jumpable",
   LEARNABLE = "learnable",
   GLIMMER = "glimmer",
   LIGHT = "light",
@@ -33,6 +36,7 @@ export enum ComponentName {
   TEXTURE = "texture",
   TEXTURE_ANIMATION = "textureAnimation",
   TRANSITION = "transition",
+  TRAP = "trap",
 }
 
 export type ComponentConfig =
@@ -44,6 +48,7 @@ export type ComponentConfig =
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
   | { name: ComponentName.CONSUMABLE; config: ConsumableConfig }
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
+  | { name: ComponentName.DESTRUCTIBLE }
   | { name: ComponentName.FARMABLE }
   | { name: ComponentName.FELLABLE }
   | { name: ComponentName.GROWABLE; config: GrowableConfig }
@@ -52,6 +57,7 @@ export type ComponentConfig =
   | { name: ComponentName.FOLLOW; config: FollowConfig }
   | { name: ComponentName.INTERACTABLE }
   | { name: ComponentName.INVENTORY }
+  | { name: ComponentName.JUMPABLE; config: JumpableConfig }
   | { name: ComponentName.LEARNABLE; config: LearnableConfig }
   | { name: ComponentName.GLIMMER; config: GlimmerConfig }
   | { name: ComponentName.LIGHT; config: LightConfig }
@@ -60,7 +66,8 @@ export type ComponentConfig =
   | { name: ComponentName.STORAGE; config: StorageConfig }
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
-  | { name: ComponentName.TRANSITION; config: TransitionConfig };
+  | { name: ComponentName.TRANSITION; config: TransitionConfig }
+  | { name: ComponentName.TRAP; config: TrapConfig };
 
 export interface GlimmerConfig {
   radius: number;
@@ -82,6 +89,10 @@ export interface FollowConfig {
 
 export interface LearnableConfig {
   spell: SpellName;
+}
+
+export interface JumpableConfig {
+  clearance: number;
 }
 
 export interface BodyConfig {

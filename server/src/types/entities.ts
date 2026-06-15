@@ -1,17 +1,20 @@
-import { Direction } from './directions';
-import { MapName } from './maps';
-import { ComponentConfig, Item } from './components';
-import { StateName } from './states';
-import { BehaviorConfig } from './behaviors';
-import { Dialogue } from './dialogue';
-import { SpellName } from './spells';
-import { WeaponName } from './weapons';
-import { Effect, EffectName } from './effects.js';
+import { Damage } from "./damage.js";
+import { Direction } from "./directions";
+import { MapName } from "./maps";
+import { ComponentConfig, Item } from "./components";
+import { StateName } from "./states";
+import { BehaviorConfig } from "./behaviors";
+import { Dialogue } from "./dialogue";
+import { SpellName } from "./spells";
+import { WeaponName } from "./weapons";
+import { Effect, EffectName } from "./effects.js";
 
 export interface AttackConfig {
   state: StateName;
   spell?: SpellName;
   weapon?: WeaponName;
+  damage?: Damage;
+  effects?: [EffectName, number, number?][];
   range?: number;
   minRange?: number;
   cooldown?: number;
@@ -30,13 +33,14 @@ export interface EntityConfig {
   lockedBy?: string;
   facing?: Direction;
   storing?: (Item | null)[];
+  loot?: (Item & { chance: number })[];
   effects?: Effect[];
 }
 
 export interface ItemBonus {
   spell?: SpellName;
   weapon?: WeaponName;
-  effects: [EffectName, number][];
+  effects: [EffectName, number, number?][];
 }
 
 export interface EntityDefinition {
@@ -45,6 +49,7 @@ export interface EntityDefinition {
   components: ComponentConfig[];
   states: StateName[];
   maxHealth?: number;
+  scale?: number;
   behaviors?: BehaviorConfig[];
   attacks?: AttackConfig[];
   bonuses?: ItemBonus[];
@@ -71,9 +76,13 @@ export enum EntityName {
   AXE = "axe",
   AMULET1 = "amulet1",
   BAKER = "baker",
+  BANQUET_TABLE = "banquet_table",
   BARN = "barn",
   BARREL1 = "barrel1",
+  BARREL2 = "barrel2",
+  BARREL3 = "barrel3",
   BARRELS1 = "barrels1",
+  BARRELS2 = "barrels2",
   BASKETFERN = "basketfern",
   BEARDED_TOOTH_FUNGUS = "bearded_tooth_fungus",
   BELLADONNA = "belladonna",
@@ -85,8 +94,16 @@ export enum EntityName {
   BOAR = "boar",
   BOAR_MEAT = "boar_meat",
   BONE = "bone",
+  BOWL1 = "bowl1",
   BOX1 = "box1",
   BOXES1 = "boxes1",
+  BOXES2 = "boxes2",
+  BOXES3 = "boxes3",
+  BOXES4 = "boxes4",
+  BOXES5 = "boxes5",
+  BOXES6 = "boxes6",
+  BOXES7 = "boxes7",
+  BOXES8 = "boxes8",
   BOXES_FISH1 = "boxes_fish1",
   BOXES_FISH2 = "boxes_fish2",
   BOXES_FISH3 = "boxes_fish3",
@@ -113,14 +130,18 @@ export enum EntityName {
   CITIZEN12 = "citizen12",
   CITIZEN13 = "citizen13",
   CLARY_SAGE = "clary_sage",
+  CUPBOARD1 = "cupboard1",
+  CUPBOARD2 = "cupboard2",
   DEER = "deer",
   DEER_HIDE = "deer_hide",
   DAFFODIL = "daffodil",
   DRAKE = "drake",
   DUCK = "duck",
+  DUNGEON_ENTRANCE = "dungeon_entrance",
   FARM_HOUSE = "farm_house",
   FARM_HOUSE_EXIT = "farm_house_exit",
   FARMPLOT = "farmplot",
+  FIREBOWL1 = "firebowl1",
   FISHING_HUT = "fishing_hut",
   FISHING_HUT_EXIT = "fishing_hut_exit",
   FISHING_ROD = "fishing_rod",
@@ -130,14 +151,19 @@ export enum EntityName {
   TROUT = "trout",
   FLYAMINATA1 = "flyaminata1",
   FOX = "fox",
+  GOAT = "goat",
   GOBLIN1 = "goblin1",
+  GOBLIN2 = "goblin2",
   GOOSE = "goose",
+  GROUSE = "grouse",
   GLASS = "glass",
   GLASSBLOWER = "glassblower",
   GLASSBLOWER_EXIT = "glassblower_exit",
   GLASSBLOWER_HOUSE = "glassblower_house",
   GLIMMER = "glimmer",
   GREENGROCER = "greengrocer",
+  HARE = "hare",
+  HARE_FOOT = "hare_foot",
   HENHOUSE = "henhouse",
   HERBALIST = "herbalist",
   HERBALIST_EXIT = "herbalist_exit",
@@ -148,13 +174,17 @@ export enum EntityName {
   HOUSE1_EXIT = "house1_exit",
   HOUSE2 = "house2",
   IRON1 = "iron1",
+  LADDER = "ladder",
   LANTERN = "lantern",
   MARKET_STAND1 = "market_stand1",
   MARKET_STAND2 = "market_stand2",
   MARKET_STAND3 = "market_stand3",
   ORC1 = "orc1",
+  ORC2 = "orc2",
   PLAYER = "player",
   QUARTZ1 = "quartz1",
+  RAT = "rat",
+  RAT_CLAWS = "rat_claws",
   RASPBERRY = "raspberry",
   REED1 = "reed1",
   REED2 = "reed2",
@@ -174,10 +204,14 @@ export enum EntityName {
   SUNFLOWER = "sunflower",
   TAVERN = "tavern",
   TAVERN_EXIT = "tavern_exit",
+  TABLE1 = "table1",
+  TABLE2 = "table2",
+  TABLE3 = "table3",
   TOMATO = "tomato",
   TROLL = "troll",
   TOMATO_SEED = "tomato_seed",
   TORCH1 = "torch1",
+  SPIKE_TRAP1 = "spike_trap1",
   TREE1 = "tree1",
   TREE2 = "tree2",
   TREE4 = "tree4",
@@ -189,10 +223,14 @@ export enum EntityName {
   SPELL_PAGE_METEOR_SHOWER = "spell_page_meteor_shower",
   SPELL_PAGE_BUTTERFLY_EFFIGY = "spell_page_butterfly_effigy",
   SPELL_PAGE_LIGHTNING_STRIKE = "spell_page_lightning_strike",
+  SPELL_PAGE_ABSORB_LIFE = "spell_page_absorb_life",
   VENISON_MEAT = "venison_meat",
   VIAL = "vial",
-  DROP_OF_THE_BELLAN_TRAIL = "drop_of_the_bellan_trail",
-  SUNGOLD_POTION = "sungold_potion",
+  POTION1 = "potion1",
+  POTION2 = "potion2",
+  VASES1 = "vases1",
+  VASES2 = "vases2",
+  WEAPONRACK1 = "weaponrack1",
   WELL = "well",
   WINDMILL = "windmill",
   WOOD = "wood",

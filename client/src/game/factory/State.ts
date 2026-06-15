@@ -3,6 +3,7 @@ import { State } from "../state/State";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
 import { Running } from "../state/Running";
+import { Flying } from "../state/Flying";
 import { Jumping } from "../state/Jumping";
 import { Casting } from "../state/Casting";
 import { Slashing } from "../state/Slashing";
@@ -18,6 +19,7 @@ export class StateFactory {
         [StateName.IDLE]: new Idle(),
         [StateName.WALKING]: new Walking(),
         [StateName.RUNNING]: new Running(),
+        [StateName.FLYING]: new Flying(),
         [StateName.JUMPING]: new Jumping(),
         [StateName.CASTING]: new Casting(),
         [StateName.SLASHING]: new Slashing(),

@@ -8,4 +8,5 @@ export interface Party {
   leader: string;
   members: string[];
   status: PartyStatus;
+  depth: number;
 }

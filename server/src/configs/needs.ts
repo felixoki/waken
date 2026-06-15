@@ -17,6 +17,7 @@ export const needs: NeedConfig[] = [
     name: NeedName.FOOD,
     items: [
       { item: EntityName.VENISON_MEAT, tier: 1 },
+      { item: EntityName.BOAR_MEAT, tier: 1 },
       { item: EntityName.CARROT, tier: 1 },
       { item: EntityName.TOMATO, tier: 1 },
       { item: EntityName.CABBAGE, tier: 1 },
@@ -39,6 +40,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.IRON1, tier: 1 },
       { item: EntityName.BONE, tier: 1 },
       { item: EntityName.GLASS, tier: 1 },
+      { item: EntityName.RAT_CLAWS, tier: 1 },
     ],
     consumption: {
       1: 0.5,

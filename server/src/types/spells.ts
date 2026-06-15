@@ -11,6 +11,7 @@ export enum SpellName {
   BUTTERFLY_EFFIGY = "butterfly_effigy",
   LIGHTNING_STRIKE = "lightning_strike",
   GRASP = "grasp",
+  ABSORB_LIFE = "absorb_life",
 }
 
 export interface ComboStep {
@@ -35,7 +36,8 @@ export interface SpellConfig {
   damage: Damage;
   knockback: number;
   mana: number;
-  effects?: [EffectName, number][];
+  lifesteal?: number;
+  effects?: [EffectName, number, number?][];
   speed?: number;
   range?: number;
   duration?: number;

@@ -4,13 +4,13 @@ import { MapFactory } from "../factory/Map";
 import { TileManager } from "../managers/Tile";
 import { configs } from "@server/configs";
 
-export default class RealmScene extends Scene {
+export default class ForestScene extends Scene {
   constructor() {
-    super(MapName.REALM);
+    super(MapName.FOREST);
   }
 
   preload() {
-    const config = configs.maps[MapName.REALM];
+    const config = configs.maps[MapName.FOREST];
 
     config.spritesheets.forEach((sheet) => {
       if (!this.textures.exists(sheet.key)) {
@@ -25,9 +25,9 @@ export default class RealmScene extends Scene {
   create() {
     super.create();
 
-    const map = MapFactory.create(this, MapName.REALM);
-    this.tileManager = new TileManager(map);
-    this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    const { tilemap, thresholds } = MapFactory.create(this, MapName.FOREST);
+    this.tileManager = new TileManager(tilemap, thresholds);
+    this.physics.world.setBounds(0, 0, tilemap.widthInPixels, tilemap.heightInPixels);
 
     this.cameraManager.fitZoom();
   }
@@ -36,19 +36,19 @@ export default class RealmScene extends Scene {
     this.children.removeAll(true);
     this.tileManager?.destroy();
     this.tileManager = undefined!;
-    this.cache.tilemap.remove(MapName.REALM);
+    this.cache.tilemap.remove(MapName.FOREST);
   }
 
   rebuild(tilemap: any): void {
     super.create();
 
-    this.cache.tilemap.add(MapName.REALM, {
+    this.cache.tilemap.add(MapName.FOREST, {
       format: Phaser.Tilemaps.Formats.TILED_JSON,
       data: tilemap,
     });
 
-    const map = MapFactory.create(this, MapName.REALM);
-    this.tileManager = new TileManager(map);
+    const { tilemap: map, thresholds } = MapFactory.create(this, MapName.FOREST);
+    this.tileManager = new TileManager(map, thresholds);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.cameraManager.fitZoom();

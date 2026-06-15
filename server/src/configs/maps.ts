@@ -131,6 +131,54 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "hare-idle",
+    file: "hare_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "hare-walking",
+    file: "hare_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "hare-running",
+    file: "hare_running_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "goat-idle",
+    file: "goat_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "goat-walking",
+    file: "goat_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "grouse-idle",
+    file: "grouse_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "grouse-walking",
+    file: "grouse_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "grouse-flying",
+    file: "grouse_flying_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
     key: "deer-idle",
     file: "deer_idle_with_shadow.png",
     frameWidth: 32,
@@ -171,6 +219,30 @@ const animals: Spritesheet[] = [
     file: "boar_slashing_with_shadow.png",
     frameWidth: 32,
     frameHeight: 32,
+  },
+  {
+    key: "rat-idle",
+    file: "rat_idle_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
+  {
+    key: "rat-walking",
+    file: "rat_walking_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
+  {
+    key: "rat-running",
+    file: "rat_running_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
+  },
+  {
+    key: "rat-slashing",
+    file: "rat_slashing_with_shadow.png",
+    frameWidth: 128,
+    frameHeight: 128,
   },
 ];
 
@@ -463,12 +535,47 @@ const icons: Spritesheet[] = [
     frameHeight: 16,
     asTileset: true,
   },
+  {
+    key: "icons8",
+    file: "icons8.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
 ];
 
 const interior: Spritesheet[] = [
   {
     key: "chests",
     file: "chests.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "spike_trap",
+    file: "spike_trap.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "dungeon_objects1",
+    file: "dungeon_objects1.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "dungeon_objects2",
+    file: "dungeon_objects2.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "firebowl",
+    file: "firebowl.png",
     frameWidth: 16,
     frameHeight: 16,
     asTileset: true,
@@ -480,10 +587,18 @@ const creatures: Spritesheet[] = [
   { key: "orc1-walking", file: "orc1_walking_with_shadow.png" },
   { key: "orc1-running", file: "orc1_running_with_shadow.png" },
   { key: "orc1-slashing", file: "orc1_slashing_with_shadow.png" },
+  { key: "orc2-idle", file: "orc2_idle_with_shadow.png" },
+  { key: "orc2-walking", file: "orc2_walking_with_shadow.png" },
+  { key: "orc2-running", file: "orc2_running_with_shadow.png" },
+  { key: "orc2-slashing", file: "orc2_slashing_with_shadow.png" },
   { key: "goblin1-idle", file: "goblin1_idle_with_shadow.png" },
   { key: "goblin1-walking", file: "goblin1_walking_with_shadow.png" },
   { key: "goblin1-running", file: "goblin1_running_with_shadow.png" },
   { key: "goblin1-slashing", file: "goblin1_slashing_with_shadow.png" },
+  { key: "goblin2-idle", file: "goblin2_idle_with_shadow.png" },
+  { key: "goblin2-walking", file: "goblin2_walking_with_shadow.png" },
+  { key: "goblin2-running", file: "goblin2_running_with_shadow.png" },
+  { key: "goblin2-slashing", file: "goblin2_slashing_with_shadow.png" },
   { key: "shadow_wanderer-idle", file: "shadow_wanderer_idle_with_shadow.png" },
   {
     key: "shadow_wanderer-walking",
@@ -497,11 +612,36 @@ const creatures: Spritesheet[] = [
     key: "shadow_wanderer-casting",
     file: "shadow_wanderer_casting_with_shadow.png",
   },
-  { key: "troll-idle", file: "troll_idle_with_shadow.png", frameWidth: 80, frameHeight: 80 },
-  { key: "troll-walking", file: "troll_walking_with_shadow.png", frameWidth: 80, frameHeight: 80 },
-  { key: "troll-running", file: "troll_running_with_shadow.png", frameWidth: 80, frameHeight: 80 },
-  { key: "troll-slashing", file: "troll_slashing_with_shadow.png", frameWidth: 80, frameHeight: 80 },
-  { key: "troll-throwing", file: "troll_throwing_with_shadow.png", frameWidth: 112, frameHeight: 112 },
+  {
+    key: "troll-idle",
+    file: "troll_idle_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "troll-walking",
+    file: "troll_walking_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "troll-running",
+    file: "troll_running_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "troll-slashing",
+    file: "troll_slashing_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "troll-throwing",
+    file: "troll_throwing_with_shadow.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
   { key: "troll_throwing_rock", file: "troll_throwing_rock.png" },
 ];
 
@@ -511,6 +651,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 434, y: 608 },
     json: "village.json",
     isIndoor: false,
+    isInstanced: false,
     spritesheets: [
       ...player,
       ...animals,
@@ -625,6 +766,13 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 16,
         asTileset: true,
       },
+      {
+        key: "dungeon_objects1",
+        file: "dungeon_objects1.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
     ],
   },
   [MapName.HERBALIST_HOUSE]: {
@@ -632,6 +780,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 128, y: 168 },
     json: "herbalist_house.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       {
@@ -674,6 +823,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 128, y: 168 },
     json: "blacksmith_house.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       {
@@ -723,6 +873,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 144, y: 272 },
     json: "glassblower_house.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       {
@@ -766,6 +917,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 144, y: 272 },
     json: "fishing_hut.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       {
@@ -789,6 +941,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 128, y: 168 },
     json: "farm_house.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       {
@@ -819,6 +972,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 184, y: 168 },
     json: "home.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       ...interior,
@@ -835,7 +989,7 @@ export const maps: Record<MapName, MapConfig> = {
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
-      }
+      },
     ],
   },
   [MapName.TAVERN]: {
@@ -843,6 +997,7 @@ export const maps: Record<MapName, MapConfig> = {
     spawn: { x: 128, y: 168 },
     json: "tavern.json",
     isIndoor: true,
+    isInstanced: false,
     spritesheets: [
       ...player,
       ...citizens,
@@ -862,11 +1017,12 @@ export const maps: Record<MapName, MapConfig> = {
       },
     ],
   },
-  [MapName.REALM]: {
-    id: MapName.REALM,
+  [MapName.FOREST]: {
+    id: MapName.FOREST,
     spawn: { x: 434, y: 608 },
     json: "",
     isIndoor: false,
+    isInstanced: true,
     spritesheets: [
       ...player,
       ...animals,
@@ -904,6 +1060,96 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "water_coasts",
         file: "water_coasts.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_market_objects",
+        file: "village_market_objects.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_tavern_house",
+        file: "village_tavern_house.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_tavern_interior",
+        file: "village_tavern_interior.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "dungeon_walls_floor",
+        file: "dungeon_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "dungeon_decorative_cracks_floor",
+        file: "dungeon_decorative_cracks_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cavern_walls_floor",
+        file: "cavern_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "dungeon_coasts",
+        file: "dungeon_coasts.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+    ],
+  },
+
+  [MapName.DUNGEON]: {
+    id: MapName.DUNGEON,
+    spawn: { x: 1024, y: 1024 },
+    json: "",
+    isIndoor: false,
+    isInstanced: true,
+    spritesheets: [
+      ...player,
+      ...creatures,
+      ...interior,
+      {
+        key: "dungeon_walls_floor",
+        file: "dungeon_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "dungeon_decorative_cracks_floor",
+        file: "dungeon_decorative_cracks_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cavern_walls_floor",
+        file: "cavern_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "dungeon_coasts",
+        file: "dungeon_coasts.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

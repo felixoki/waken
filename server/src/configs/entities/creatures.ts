@@ -59,6 +59,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 30 },
         range: 40,
       },
     ],
@@ -74,6 +75,74 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.ORC2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 280,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.QUARTZ1,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+            {
+              name: EntityName.IRON1,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+          ],
+          weaknesses: [DamageType.BURNING],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 16,
+          offsetX: 24,
+          offsetY: 20,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 50 },
+        range: 40,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.GOBLIN1]: {
@@ -124,6 +193,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 12 },
         range: 40,
       },
     ],
@@ -139,6 +209,74 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.GOBLIN2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 120,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.QUARTZ1,
+              quantity: 1,
+              stackable: true,
+              chance: 0.4,
+            },
+            {
+              name: EntityName.BONE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+          ],
+          resistances: [DamageType.COLD],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 12,
+          offsetX: 26,
+          offsetY: 22,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 24 },
+        range: 40,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.TROLL]: {
@@ -183,6 +321,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 45 },
         range: 40,
       },
       {
@@ -204,6 +343,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
     ],
   },
   [EntityName.SHADOW_WANDERER]: {

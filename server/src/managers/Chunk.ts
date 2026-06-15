@@ -1,3 +1,4 @@
+import { configs } from "../configs";
 import { CHUNK_ACTIVATION_RADIUS, CHUNK_PIXEL_SIZE } from "../globals";
 import { ChunkKey, MapName } from "../types";
 
@@ -10,7 +11,8 @@ export class ChunkManager {
   toChunkKey(map: MapName, x: number, y: number, partyId?: string): ChunkKey {
     const cx = Math.floor(x / CHUNK_PIXEL_SIZE);
     const cy = Math.floor(y / CHUNK_PIXEL_SIZE);
-    const prefix = map === MapName.REALM && partyId ? `realm:${partyId}` : map;
+    const prefix =
+      configs.maps[map].isInstanced && partyId ? `${map}:${partyId}` : map;
     return `${prefix}:${cx}:${cy}`;
   }
 
@@ -49,7 +51,9 @@ export class ChunkManager {
 
     if (!partyId && prev) {
       const parts = prev.split(":");
-      if (parts[0] === "realm" && parts.length === 4) partyId = parts[1];
+      
+      if (parts.length === 4 && configs.maps[parts[0] as MapName]?.isInstanced)
+        partyId = parts[1];
     }
 
     const next = this.toChunkKey(map, x, y, partyId);
@@ -83,9 +87,11 @@ export class ChunkManager {
   ): { activated: ChunkKey[]; deactivated: ChunkKey[] } {
     const cx = Math.floor(x / CHUNK_PIXEL_SIZE);
     const cy = Math.floor(y / CHUNK_PIXEL_SIZE);
-    const prefix = map === MapName.REALM && partyId ? `realm:${partyId}` : map;
+    const prefix =
+      configs.maps[map].isInstanced && partyId ? `${map}:${partyId}` : map;
 
     const next = new Set<ChunkKey>();
+
     for (let dx = -CHUNK_ACTIVATION_RADIUS; dx <= CHUNK_ACTIVATION_RADIUS; dx++)
       for (
         let dy = -CHUNK_ACTIVATION_RADIUS;
@@ -105,6 +111,7 @@ export class ChunkManager {
 
     for (const key of deactivated) {
       const count = (this.chunkRefCount.get(key) ?? 1) - 1;
+
       if (count <= 0) this.chunkRefCount.delete(key);
       else this.chunkRefCount.set(key, count);
     }
@@ -119,6 +126,7 @@ export class ChunkManager {
     if (chunks)
       for (const key of chunks) {
         const count = (this.chunkRefCount.get(key) ?? 1) - 1;
+
         if (count <= 0) this.chunkRefCount.delete(key);
         else this.chunkRefCount.set(key, count);
       }

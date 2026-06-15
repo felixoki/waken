@@ -5,7 +5,6 @@ import {
   Event,
   Input,
   Item,
-  MapName,
   Spot,
 } from "../types";
 import { randomUUID } from "crypto";
@@ -76,7 +75,7 @@ export const entity = {
     const player = world.players.getBySocketId(socket.id);
     const party = player && world.parties.getByPlayerId(player.id);
 
-    if (party && player.map === MapName.REALM) {
+    if (party && configs.maps[player.map].isInstanced) {
       handlers.broadcast.toParty(
         socket,
         io,

@@ -2,12 +2,30 @@ import { fork } from "child_process";
 import { fileURLToPath } from "url";
 import { TiledProperty } from "../types";
 import {
+  BiomeConfig,
   GeneratedMap,
   Neighbors,
+  Range,
+  Room,
+  RoomConfig,
+  RoomDifficulty,
+  RoomInterior,
+  RoomInteriorOrigin,
   TERRAIN_ORDER,
   TerrainName,
 } from "../types/generation";
 import { join, dirname } from "path";
+import {
+  CORNERS,
+  DUNGEON_LADDER_TORCH_CLEARANCE,
+  DUNGEON_RECESS_GAP,
+  DUNGEON_RECESS_MARGIN,
+  DUNGEON_RECESS_MAX_H,
+  DUNGEON_RECESS_MAX_W,
+  DUNGEON_RECESS_MIN_H,
+  DUNGEON_RECESS_MIN_W,
+  DUNGEON_TORCH_STRIDE,
+} from "../globals";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -75,8 +93,8 @@ export const generation = {
     height: number,
     predicate: (x: number, y: number) => boolean,
   ): { x: number; y: number } | null => {
-    for (let radius = 0; radius < Math.max(width, height); radius++) {
-      for (let dy = -radius; dy <= radius; dy++) {
+    for (let radius = 0; radius < Math.max(width, height); radius++)
+      for (let dy = -radius; dy <= radius; dy++)
         for (let dx = -radius; dx <= radius; dx++) {
           if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;
 
@@ -86,8 +104,6 @@ export const generation = {
           if (generation.inBounds(x, y, width, height) && predicate(x, y))
             return { x, y };
         }
-      }
-    }
 
     return null;
   },
@@ -160,18 +176,18 @@ export const generation = {
         const index = generation.toIndex(x, y, width);
         const current = result[index];
 
-        const n = y > 0 ? terrain[index - width] : null;
-        const s = y < height - 1 ? terrain[index + width] : null;
-        const w = x > 0 ? terrain[index - 1] : null;
-        const e = x < width - 1 ? terrain[index + 1] : null;
+        const north = y > 0 ? terrain[index - width] : null;
+        const south = y < height - 1 ? terrain[index + width] : null;
+        const west = x > 0 ? terrain[index - 1] : null;
+        const east = x < width - 1 ? terrain[index + 1] : null;
 
         const con = {
-          h: w === current || e === current,
-          v: n === current || s === current,
+          h: west === current || east === current,
+          v: north === current || south === current,
         };
 
         if (!con.h && !con.v) {
-          const neighbors = [n, s, w, e].filter(
+          const neighbors = [north, south, west, east].filter(
             (t): t is TerrainName => t !== null && t !== current,
           );
 
@@ -179,14 +195,14 @@ export const generation = {
         }
 
         if (con.v && !con.h) {
-          const replacement = w ?? e;
+          const replacement = west ?? east;
 
           if (replacement && replacement !== current)
             result[index] = replacement;
         }
 
         if (con.h && !con.v) {
-          const replacement = n ?? s;
+          const replacement = north ?? south;
 
           if (replacement && replacement !== current)
             result[index] = replacement;
@@ -218,6 +234,47 @@ export const generation = {
     return true;
   },
 
+  straightWallCells: (
+    terrain: TerrainName[],
+    row: TerrainName,
+    width: number,
+    height: number,
+  ): { x: number; y: number }[] => {
+    const cells: { x: number; y: number }[] = [];
+
+    for (let y = 0; y < height; y++)
+      for (let x = 1; x < width - 1; x++) {
+        const i = generation.toIndex(x, y, width);
+        if (terrain[i] !== row) continue;
+        if (terrain[i - 1] !== row || terrain[i + 1] !== row) continue;
+
+        cells.push({ x, y });
+      }
+
+    return cells;
+  },
+
+  isInBlock: (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    grid: TerrainName[],
+    target: TerrainName,
+  ) => {
+    return CORNERS.some((corners) =>
+      corners.every(([dx, dy]) => {
+        const nx = x + dx;
+        const ny = y + dy;
+
+        return (
+          generation.inBounds(nx, ny, width, height) &&
+          grid[generation.toIndex(nx, ny, width)] === target
+        );
+      }),
+    );
+  },
+
   enforceMinimumWater: (
     terrain: TerrainName[],
     width: number,
@@ -230,31 +287,14 @@ export const generation = {
         const idx = generation.toIndex(x, y, width);
         if (result[idx] !== TerrainName.WATER) continue;
 
-        const inBlock =
-          (x + 1 < width &&
-            y + 1 < height &&
-            result[generation.toIndex(x + 1, y, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x, y + 1, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x + 1, y + 1, width)] ===
-              TerrainName.WATER) ||
-          (x - 1 >= 0 &&
-            y + 1 < height &&
-            result[generation.toIndex(x - 1, y, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x, y + 1, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x - 1, y + 1, width)] ===
-              TerrainName.WATER) ||
-          (x + 1 < width &&
-            y - 1 >= 0 &&
-            result[generation.toIndex(x + 1, y, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x, y - 1, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x + 1, y - 1, width)] ===
-              TerrainName.WATER) ||
-          (x - 1 >= 0 &&
-            y - 1 >= 0 &&
-            result[generation.toIndex(x - 1, y, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x, y - 1, width)] === TerrainName.WATER &&
-            result[generation.toIndex(x - 1, y - 1, width)] ===
-              TerrainName.WATER);
+        const inBlock = generation.isInBlock(
+          x,
+          y,
+          width,
+          height,
+          terrain,
+          TerrainName.WATER,
+        );
 
         if (!inBlock) {
           const neighbors: TerrainName[] = [];
@@ -295,27 +335,14 @@ export const generation = {
         const idx = generation.toIndex(x, y, width);
         if (result[idx] !== target) continue;
 
-        const inBlock =
-          (x + 1 < width &&
-            y + 1 < height &&
-            result[generation.toIndex(x + 1, y, width)] === target &&
-            result[generation.toIndex(x, y + 1, width)] === target &&
-            result[generation.toIndex(x + 1, y + 1, width)] === target) ||
-          (x - 1 >= 0 &&
-            y + 1 < height &&
-            result[generation.toIndex(x - 1, y, width)] === target &&
-            result[generation.toIndex(x, y + 1, width)] === target &&
-            result[generation.toIndex(x - 1, y + 1, width)] === target) ||
-          (x + 1 < width &&
-            y - 1 >= 0 &&
-            result[generation.toIndex(x + 1, y, width)] === target &&
-            result[generation.toIndex(x, y - 1, width)] === target &&
-            result[generation.toIndex(x + 1, y - 1, width)] === target) ||
-          (x - 1 >= 0 &&
-            y - 1 >= 0 &&
-            result[generation.toIndex(x - 1, y, width)] === target &&
-            result[generation.toIndex(x, y - 1, width)] === target &&
-            result[generation.toIndex(x - 1, y - 1, width)] === target);
+        const inBlock = generation.isInBlock(
+          x,
+          y,
+          width,
+          height,
+          terrain,
+          target,
+        );
 
         if (!inBlock) result[idx] = replacement;
       }
@@ -376,10 +403,14 @@ export const generation = {
           ]) {
             const nx = rx + dx;
             const ny = ry + dy;
+
             if (!generation.inBounds(nx, ny, width, height)) continue;
+
             const nIdx = generation.toIndex(nx, ny, width);
             const t = result[nIdx];
+
             if (t === TerrainName.WATER) continue;
+
             adjacent.add(nIdx);
             counts.set(t, (counts.get(t) ?? 0) + 1);
           }
@@ -396,7 +427,6 @@ export const generation = {
             dominant = t;
           }
 
-        /** Convert all non-water tiles within 3 of the water body to dominant */
         const buffer = 3;
         const converted = new Set<number>();
 
@@ -408,10 +438,13 @@ export const generation = {
             for (let dx = -buffer; dx <= buffer; dx++) {
               const nx = rx + dx;
               const ny = ry + dy;
+
               if (!generation.inBounds(nx, ny, width, height)) continue;
               const nIdx = generation.toIndex(nx, ny, width);
+
               if (result[nIdx] === TerrainName.WATER) continue;
               if (result[nIdx] === dominant) continue;
+
               converted.add(nIdx);
             }
         }
@@ -460,10 +493,12 @@ export const generation = {
         cleanup();
         resolve(result);
       });
+
       worker.on("error", (err) => {
         cleanup();
         reject(err);
       });
+
       worker.on("exit", (code) => {
         cleanup();
         if (code !== 0) reject(new Error(`Worker exited with code ${code}`));
@@ -471,5 +506,504 @@ export const generation = {
 
       worker.send({ biome, seed });
     });
+  },
+
+  rooms: {
+    assign: (
+      rooms: Room[],
+      depths: number[],
+      config: RoomConfig,
+      rng: () => number,
+    ) => {
+      const { assignment, templates } = config;
+
+      return rooms.map((_, i) => {
+        const depth = depths[i];
+
+        const eligible = templates.filter((t) => {
+          if (
+            depth <= assignment.easyDepth &&
+            t.difficulty !== RoomDifficulty.EASY
+          )
+            return false;
+
+          if (t.depth?.min !== undefined && depth < t.depth.min) return false;
+          if (t.depth?.max !== undefined && depth > t.depth.max) return false;
+
+          return true;
+        });
+
+        const weight = eligible.reduce((sum, t) => sum + (t.weight ?? 1), 0);
+        let roll = rng() * weight;
+
+        for (const t of eligible) {
+          roll -= t.weight ?? 1;
+          if (roll <= 0) return t;
+        }
+
+        return eligible[eligible.length - 1];
+      });
+    },
+
+    place: (
+      width: number,
+      height: number,
+      size: { width: Range; height: Range },
+      count: number,
+      padding: number,
+      rooms: Room[],
+      rng: () => number,
+      range?: Range,
+    ) => {
+      for (let i = 0; i < count; i++) {
+        const w =
+          size.width.min +
+          Math.floor(rng() * (size.width.max - size.width.min));
+        const h =
+          size.height.min +
+          Math.floor(rng() * (size.height.max - size.height.min));
+        const x = 1 + Math.floor(rng() * (width - w - 2));
+
+        const yMin = Math.max(range?.min ?? 1, 1);
+        const yMax = Math.min(range?.max ?? height - h - 2, height - h - 2);
+
+        const y = yMin + Math.floor(rng() * (yMax - yMin + 1));
+
+        const candidate: Room = { x, y, width: w, height: h };
+        const overlaps = rooms.some(
+          (r) =>
+            candidate.x - padding < r.x + r.width &&
+            candidate.x + candidate.width + padding > r.x &&
+            candidate.y - padding < r.y + r.height &&
+            candidate.y + candidate.height + padding > r.y,
+        );
+
+        if (!overlaps) rooms.push(candidate);
+      }
+    },
+
+    recess: {
+      rect: {
+        place: (
+          terrain: TerrainName[],
+          room: Room,
+          innerWidth: number,
+          innerHeight: number,
+          mapWidth: number,
+          mapHeight: number,
+          rng: () => number,
+        ): { x: number; y: number; w: number; h: number } | null => {
+          const maxAttempts = 10;
+
+          for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const rw = Math.min(
+              innerWidth,
+              DUNGEON_RECESS_MIN_W +
+                Math.floor(
+                  rng() * (DUNGEON_RECESS_MAX_W - DUNGEON_RECESS_MIN_W),
+                ),
+            );
+            const rh = Math.min(
+              innerHeight,
+              DUNGEON_RECESS_MIN_H +
+                Math.floor(
+                  rng() * (DUNGEON_RECESS_MAX_H - DUNGEON_RECESS_MIN_H),
+                ),
+            );
+            const rx =
+              room.x +
+              DUNGEON_RECESS_MARGIN +
+              Math.floor(rng() * Math.max(1, innerWidth - rw));
+            const ry =
+              room.y +
+              DUNGEON_RECESS_MARGIN +
+              Math.floor(rng() * Math.max(1, innerHeight - rh));
+
+            let blocked = false;
+
+            for (
+              let dy = -DUNGEON_RECESS_GAP;
+              dy <= rh + DUNGEON_RECESS_GAP - 1 && !blocked;
+              dy++
+            )
+              for (
+                let dx = -DUNGEON_RECESS_GAP;
+                dx <= rw + DUNGEON_RECESS_GAP - 1 && !blocked;
+                dx++
+              ) {
+                if (dy >= 0 && dy < rh && dx >= 0 && dx < rw) continue;
+                const ci = (ry + dy) * mapWidth + (rx + dx);
+
+                if (
+                  ci >= 0 &&
+                  ci < mapWidth * mapHeight &&
+                  terrain[ci] === TerrainName.RECESSED
+                ) {
+                  blocked = true;
+                }
+              }
+
+            if (blocked) continue;
+
+            generation.rooms.recess.rect.fill(
+              terrain,
+              rx,
+              ry,
+              rw,
+              rh,
+              mapWidth,
+            );
+
+            return { x: rx, y: ry, w: rw, h: rh };
+          }
+
+          return null;
+        },
+
+        fill: (
+          terrain: TerrainName[],
+          rx: number,
+          ry: number,
+          rw: number,
+          rh: number,
+          mapWidth: number,
+        ) => {
+          for (let dy = 0; dy < rh; dy++)
+            for (let dx = 0; dx < rw; dx++) {
+              const idx = (ry + dy) * mapWidth + (rx + dx);
+
+              if (terrain[idx] === TerrainName.FLOOR)
+                terrain[idx] = TerrainName.RECESSED;
+            }
+        },
+      },
+    },
+
+    cornerRef: (
+      room: Room,
+      origin: RoomInteriorOrigin,
+      tileWidth: number,
+      tileHeight: number,
+    ) => {
+      const refs = {
+        [RoomInteriorOrigin.TOP_RIGHT]: {
+          x: (room.x + room.width) * tileWidth,
+          y: room.y * tileHeight,
+        },
+        [RoomInteriorOrigin.TOP_LEFT]: {
+          x: room.x * tileWidth,
+          y: room.y * tileHeight,
+        },
+        [RoomInteriorOrigin.BOTTOM_RIGHT]: {
+          x: (room.x + room.width) * tileWidth,
+          y: (room.y + room.height) * tileHeight,
+        },
+        [RoomInteriorOrigin.BOTTOM_LEFT]: {
+          x: room.x * tileWidth,
+          y: (room.y + room.height) * tileHeight,
+        },
+      };
+
+      return refs[origin];
+    },
+
+    isWallIntact: (
+      terrain: TerrainName[],
+      room: Room,
+      piece: RoomInterior,
+      mapWidth: number,
+      mapHeight: number,
+      tileWidth: number,
+    ): boolean => {
+      const furthestX = Math.min(...piece.entities.map((e) => e.x));
+      const span = Math.ceil(Math.abs(furthestX) / tileWidth);
+
+      const walls = {
+        [RoomInteriorOrigin.TOP_RIGHT]: {
+          along: (dx: number) => ({
+            x: room.x + room.width - 1 - dx,
+            y: room.y - 1,
+          }),
+          side: (dy: number) => ({ x: room.x + room.width, y: room.y + dy }),
+          sideRange: [0, 1, 2],
+        },
+        [RoomInteriorOrigin.TOP_LEFT]: {
+          along: (dx: number) => ({ x: room.x + dx, y: room.y - 1 }),
+          side: (dy: number) => ({ x: room.x - 1, y: room.y + dy }),
+          sideRange: [0, 1, 2],
+        },
+        [RoomInteriorOrigin.BOTTOM_RIGHT]: {
+          along: (dx: number) => ({
+            x: room.x + room.width - 1 - dx,
+            y: room.y + room.height,
+          }),
+          side: (dy: number) => ({
+            x: room.x + room.width,
+            y: room.y + room.height - 1 + dy,
+          }),
+          sideRange: [-2, -1, 0],
+        },
+        [RoomInteriorOrigin.BOTTOM_LEFT]: {
+          along: (dx: number) => ({ x: room.x + dx, y: room.y + room.height }),
+          side: (dy: number) => ({
+            x: room.x - 1,
+            y: room.y + room.height - 1 + dy,
+          }),
+          sideRange: [-2, -1, 0],
+        },
+      };
+
+      const { along, side, sideRange } = walls[piece.origin];
+      const checks: { x: number; y: number }[] = [];
+
+      for (let dx = 0; dx < span; dx++) checks.push(along(dx));
+      for (const dy of sideRange) checks.push(side(dy));
+
+      return checks.every(({ x, y }) => {
+        if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return true;
+        return terrain[y * mapWidth + x] !== TerrainName.FLOOR;
+      });
+    },
+
+    fitsInRoom: (
+      room: Room,
+      piece: RoomInterior,
+      tileWidth: number,
+    ): boolean => {
+      const furthestX = Math.min(...piece.entities.map((e) => e.x));
+      return Math.abs(furthestX) <= room.width * tileWidth;
+    },
+
+    shuffle: <T>(arr: T[], rng: () => number): T[] => {
+      const a = arr.slice();
+
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+
+      return a;
+    },
+
+    overlaps: (
+      a: { minX: number; minY: number; maxX: number; maxY: number },
+      b: { minX: number; minY: number; maxX: number; maxY: number },
+    ) =>
+      a.minX < b.maxX && a.maxX > b.minX && a.minY < b.maxY && a.maxY > b.minY,
+
+    doorBounds: (
+      terrain: TerrainName[],
+      room: Room,
+      mapWidth: number,
+      mapHeight: number,
+      tileWidth: number,
+      tileHeight: number,
+      clearance = 2,
+    ) => {
+      const boxes: {
+        minX: number;
+        minY: number;
+        maxX: number;
+        maxY: number;
+      }[] = [];
+
+      const open = (tx: number, ty: number) =>
+        tx >= 0 &&
+        ty >= 0 &&
+        tx < mapWidth &&
+        ty < mapHeight &&
+        terrain[ty * mapWidth + tx] === TerrainName.FLOOR;
+
+      const box = (tx: number, ty: number, ex: number, ey: number) => {
+        const x0 = Math.min(tx, tx + ex);
+        const x1 = Math.max(tx, tx + ex);
+        const y0 = Math.min(ty, ty + ey);
+        const y1 = Math.max(ty, ty + ey);
+
+        boxes.push({
+          minX: x0 * tileWidth,
+          minY: y0 * tileHeight,
+          maxX: (x1 + 1) * tileWidth,
+          maxY: (y1 + 1) * tileHeight,
+        });
+      };
+
+      for (let tx = room.x; tx < room.x + room.width; tx++) {
+        if (open(tx, room.y - 1)) box(tx, room.y - 1, 0, clearance);
+        if (open(tx, room.y + room.height))
+          box(tx, room.y + room.height, 0, -clearance);
+      }
+
+      for (let ty = room.y; ty < room.y + room.height; ty++) {
+        if (open(room.x - 1, ty)) box(room.x - 1, ty, clearance, 0);
+        if (open(room.x + room.width, ty))
+          box(room.x + room.width, ty, -clearance, 0);
+      }
+
+      return boxes;
+    },
+  },
+
+  find: {
+    spawn: (
+      config: BiomeConfig,
+      terrain: TerrainName[],
+    ): { x: number; y: number } => {
+      const { width, height, tileWidth, tileHeight } = config;
+
+      const centerX = Math.floor(width / 2);
+      const centerY = Math.floor(height / 2);
+
+      const found = generation.spiralSearch(
+        centerX,
+        centerY,
+        width,
+        height,
+        (x, y) =>
+          config.terrain.includes(terrain[generation.toIndex(x, y, width)]),
+      );
+
+      const tile = found ?? { x: centerX, y: centerY };
+      return generation.tileToWorld(tile.x, tile.y, tileWidth, tileHeight);
+    },
+
+    positions: {
+      well: (
+        config: BiomeConfig,
+        terrain: TerrainName[],
+        spawn: { x: number; y: number },
+        count: number,
+        seed: string,
+      ): { x: number; y: number }[] => {
+        const { width, height, tileWidth, tileHeight } = config;
+
+        const tile = {
+          x: Math.floor(spawn.x / tileWidth),
+          y: Math.floor(spawn.y / tileHeight),
+        };
+        const min = 40;
+        const candidates: { x: number; y: number }[] = [];
+
+        for (let y = 0; y < height; y++)
+          for (let x = 0; x < width; x++) {
+            const index = generation.toIndex(x, y, width);
+            if (!config.terrain.includes(terrain[index])) continue;
+
+            const distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
+            if (distance < min) continue;
+
+            candidates.push({ x, y });
+          }
+
+        const fallback = { x: tile.x + min, y: tile.y + min };
+        const positions: { x: number; y: number }[] = [];
+
+        for (let i = 0; i < count; i++) {
+          const start = Math.floor((i * candidates.length) / count);
+          const end = Math.floor(((i + 1) * candidates.length) / count);
+
+          const slice = candidates.slice(start, end);
+          const hash = generation.spatialHash(slice.length, i, seed.length);
+          const pick = slice.length ? slice[hash % slice.length] : fallback;
+
+          positions.push(
+            generation.tileToWorld(pick.x, pick.y, tileWidth, tileHeight),
+          );
+        }
+
+        return positions;
+      },
+
+      torch: (
+        config: BiomeConfig,
+        terrain: TerrainName[],
+      ): { x: number; y: number }[] => {
+        const { width, height, tileWidth, tileHeight } = config;
+        const cells = generation.straightWallCells(
+          terrain,
+          TerrainName.WALL_MID,
+          width,
+          height,
+        );
+
+        const runs: { x: number; y: number }[][] = [];
+        let run: { x: number; y: number }[] = [];
+
+        for (const cell of cells) {
+          const prev = run[run.length - 1];
+
+          if (prev && (cell.y !== prev.y || cell.x !== prev.x + 1)) {
+            runs.push(run);
+            run = [];
+          }
+
+          run.push(cell);
+        }
+
+        if (run.length) runs.push(run);
+
+        const positions: { x: number; y: number }[] = [];
+
+        for (const r of runs) {
+          const start = Math.floor((r.length % DUNGEON_TORCH_STRIDE) / 2);
+
+          for (let k = start; k < r.length; k += DUNGEON_TORCH_STRIDE)
+            positions.push(
+              generation.tileToWorld(r[k].x, r[k].y, tileWidth, tileHeight),
+            );
+        }
+
+        return positions;
+      },
+
+      ladder: (
+        config: BiomeConfig,
+        terrain: TerrainName[],
+        count: number,
+        torches: { x: number; y: number }[],
+        seed: string,
+      ): { x: number; y: number }[] => {
+        const { width, height, tileWidth, tileHeight } = config;
+        const all = generation.straightWallCells(
+          terrain,
+          TerrainName.WALL_BASE,
+          width,
+          height,
+        );
+
+        const torchTiles = torches.map((t) => ({
+          x: Math.floor(t.x / tileWidth),
+          y: Math.floor(t.y / tileHeight),
+        }));
+
+        const candidates = all.filter((c) =>
+          torchTiles.every(
+            (t) =>
+              Math.max(Math.abs(c.x - t.x), Math.abs(c.y - t.y)) >=
+              DUNGEON_LADDER_TORCH_CLEARANCE,
+          ),
+        );
+
+        const positions: { x: number; y: number }[] = [];
+        if (!candidates.length) return positions;
+
+        for (let i = 0; i < count; i++) {
+          const start = Math.floor((i * candidates.length) / count);
+          const end = Math.floor(((i + 1) * candidates.length) / count);
+
+          const slice = candidates.slice(start, end);
+          if (!slice.length) continue;
+
+          const hash = generation.spatialHash(slice.length, i, seed.length);
+          const pick = slice[hash % slice.length];
+
+          positions.push(
+            generation.tileToWorld(pick.x, pick.y, tileWidth, tileHeight),
+          );
+        }
+
+        return positions;
+      },
+    },
   },
 };

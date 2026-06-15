@@ -7,7 +7,6 @@ import {
   SpellConfig,
   StateName,
 } from "@server/types";
-import { DamageableComponent } from "../components/Damageable";
 import { Entity } from "../Entity";
 import { Hitbox } from "../Hitbox";
 import { HotbarComponent } from "../components/Hotbar";
@@ -37,19 +36,20 @@ export const combat = {
     const attack = definition?.attacks?.find(
       (a) => a.state === StateName.CASTING && a.spell,
     );
+
     if (!attack?.spell) return null;
     return configs.spells[attack.spell] ?? null;
   },
 
   consume: (entity: Entity, config: SpellConfig): boolean => {
     const player = entity.scene.managers.players.get(entity.id);
+
     if (!player) return true;
 
     if (player.mana < config.mana) return false;
 
-    if (player.isControllable) {
+    if (player.isControllable)
       entity.scene.game.events.emit(Event.PLAYER_CAST, config.name);
-    }
 
     return true;
   },
@@ -90,6 +90,8 @@ export const combat = {
     const entity = obj1 as Entity;
     const hitbox = obj2 as Hitbox;
 
+    if (hitbox.clearance !== undefined && entity.z > hitbox.clearance) return;
+
     const isAuthority = entity.scene.managers.players?.player?.isAuthority;
 
     const player = {
@@ -101,14 +103,11 @@ export const combat = {
       hitbox.ownerId === entity.id ||
       hitbox.hits.has(entity.id) ||
       !isAuthority ||
-      (player.target && player.attacker)
+      (player.target && player.attacker) ||
+      (!hitbox.hazard && !player.target && !player.attacker) ||
+      !entity.hasComponent(ComponentName.DAMAGEABLE)
     )
       return;
-
-    const damageable = entity.getComponent<DamageableComponent>(
-      ComponentName.DAMAGEABLE,
-    );
-    if (!damageable) return;
 
     hitbox.hits.add(entity.id);
 
@@ -142,15 +141,19 @@ export const combat = {
   hurt: (entity: Entity, health: number) => {
     entity.health = health;
 
-    entity.scene.tweens.killTweensOf(entity);
+    entity.flash?.stop();
     entity.setAlpha(1);
 
-    entity.scene.tweens.add({
+    entity.flash = entity.scene.tweens.add({
       targets: entity,
       alpha: 0.1,
       duration: 50,
       yoyo: true,
       repeat: 2,
+      onComplete: () => {
+        entity.setAlpha(1);
+        entity.flash = undefined;
+      },
     });
   },
 

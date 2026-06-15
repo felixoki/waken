@@ -12,6 +12,9 @@ import {
 export class Jumping implements State {
   private timer: Phaser.Time.TimerEvent | null = null;
   private tween: Phaser.Tweens.Tween | null = null;
+  private baseOriginY: number = 0;
+  private baseOffsetY: number = 0;
+
   public name: StateName = StateName.JUMPING;
 
   enter(entity: Entity): void {
@@ -25,14 +28,14 @@ export class Jumping implements State {
 
     handlers.move.getVelocity(entity, SPEED_JUMPING);
 
-    const baseOriginY = entity.displayOriginY;
-    const baseOffsetY = entity.body
+    this.baseOriginY = entity.displayOriginY;
+    this.baseOffsetY = entity.body
       ? (entity.body as Phaser.Physics.Arcade.Body).offset.y
       : 0;
 
     this.tween = entity.scene.tweens.add({
       targets: entity,
-      displayOriginY: baseOriginY + HEIGHT_JUMPING,
+      z: HEIGHT_JUMPING,
       duration: DURATION_JUMPING / 2,
       yoyo: true,
       ease: "Sine.easeOut",
@@ -40,14 +43,9 @@ export class Jumping implements State {
       onUpdate: () => {
         if (!entity.body) return;
         const body = entity.body as Phaser.Physics.Arcade.Body;
-        const delta = entity.displayOriginY - baseOriginY;
-        body.offset.y = baseOffsetY + delta;
-      },
-      
-      onComplete: () => {
-        if (!entity.body) return;
-        const body = entity.body as Phaser.Physics.Arcade.Body;
-        body.offset.y = baseOffsetY;
+        entity.displayOriginY = this.baseOriginY + entity.z;
+        body.offset.y = this.baseOffsetY + entity.z;
+        entity.setDepth(1000 + entity.y);
       },
     });
 
@@ -70,6 +68,12 @@ export class Jumping implements State {
       this.tween.stop();
       this.tween = null;
     }
+
+    entity.z = 0;
+    entity.displayOriginY = this.baseOriginY;
+
+    if (entity.body)
+      (entity.body as Phaser.Physics.Arcade.Body).offset.y = this.baseOffsetY;
 
     if (!entity.body) return;
 

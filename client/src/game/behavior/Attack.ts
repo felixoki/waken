@@ -107,11 +107,15 @@ export class AttackBehavior extends Behavior {
           const halfW = (weapon.hitbox?.width || 16) / 2;
           const halfH = (weapon.hitbox?.height || 16) / 2;
 
+          const body = target.body as Phaser.Physics.Arcade.Body;
+          const padX = body ? body.halfWidth : 8;
+          const padY = body ? body.halfHeight : 8;
+
           const within =
-            target.x >= hitboxX - halfW &&
-            target.x <= hitboxX + halfW &&
-            target.y >= hitboxY - halfH &&
-            target.y <= hitboxY + halfH;
+            target.x >= hitboxX - halfW - padX &&
+            target.x <= hitboxX + halfW + padX &&
+            target.y >= hitboxY - halfH - padY &&
+            target.y <= hitboxY + halfH + padY;
 
           if (!within) continue;
         }
@@ -177,6 +181,8 @@ export class AttackBehavior extends Behavior {
 
     if (this.lostSightTime > this.lostSightThreshold) {
       this.completed = true;
+      
+      handlers.behavior.search(entity, this.target.lastPosition);
 
       return {
         facing: entity.facing,
@@ -224,6 +230,7 @@ export class AttackBehavior extends Behavior {
 
         if (!input) {
           this.completed = true;
+          handlers.behavior.search(entity, this.target.lastPosition);
           return { facing: entity.facing, moving: [], isRunning: false };
         }
 
