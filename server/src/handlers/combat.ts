@@ -198,6 +198,26 @@ export const combat = {
     );
     const health = target.health - damage;
 
+    if (!isMiss && "lifesteal" in config && config.lifesteal) {
+      const caster = players.get(data.attackerId);
+
+      if (caster && !caster.isDead) {
+        const drained = Math.min(damage, target.health) * config.lifesteal;
+        const healed = Math.min(
+          caster.health + drained,
+          caster.maxHealth || MAX_HEALTH,
+        );
+
+        if (healed !== caster.health) {
+          players.update(caster.id, { health: healed });
+          io.to(caster.socketId).emit(Event.PLAYER_HEALTH, healed);
+          io.to(`map:${caster.map}`)
+            .except(caster.socketId)
+            .emit(Event.PLAYER_HEALTH_SYNC, { id: caster.id, health: healed });
+        }
+      }
+    }
+
     if (player && health <= 0) {
       combat.kill.player(player, attacker, config, socket, io, world);
       return;
@@ -269,7 +289,9 @@ export const combat = {
 
       if (!target) return;
 
-      const effects: [EffectName, number, number?][] = [...(config.effects ?? [])];
+      const effects: [EffectName, number, number?][] = [
+        ...(config.effects ?? []),
+      ];
 
       if (attackerId) {
         const inventory = world.players.get(attackerId)?.inventory ?? [];

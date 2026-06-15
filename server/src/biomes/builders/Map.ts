@@ -2,11 +2,7 @@ import { handlers } from "../../handlers";
 import { TilesetLoader } from "../../loaders/Tileset";
 import { EntityName } from "../../types";
 import { configs } from "../../configs";
-import {
-  DUNGEON_LADDER_COUNT,
-  DUNGEON_LADDER_TORCH_CLEARANCE,
-  DUNGEON_TORCH_STRIDE,
-} from "../../globals";
+import { DUNGEON_LADDER_COUNT } from "../../globals";
 import {
   BiomeConfig,
   BiomeName,
@@ -19,6 +15,7 @@ import {
 } from "../../types/generation";
 import { BorderGenerator } from "../generators/Border";
 import { DoorGenerator } from "../generators/Door";
+import { EntranceGenerator } from "../generators/Entrance";
 import { LedgeGenerator } from "../generators/Ledge";
 import { RoomGenerator } from "../generators/Room";
 import { StairGenerator } from "../generators/Stair";
@@ -379,32 +376,69 @@ export class MapBuilder {
      * Spawn entities
      */
     const spawner = new EntitySpawner(this.config, this.seed);
-    const spawn = roomSpawn ?? this._findSpawn(terrain);
+    const spawn =
+      roomSpawn ?? handlers.generation.find.spawn(this.config, terrain);
     const entities = [...spawner.spawn(terrain, spawn), ...roomEntities];
 
     /**
      * Wells (forest only)
      */
     if (this.config.id === BiomeName.FOREST) {
-      const wells = this._findWellPositions(terrain, spawn, 10);
+      const wells = handlers.generation.find.positions.well(
+        this.config,
+        terrain,
+        spawn,
+        10,
+        this.seed,
+      );
 
       for (const pos of wells)
         entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });
+
+      /**
+       * Dungeon entrance: stamp the facade above the floor, place the doorway
+       * transition entity in the opening, and post orc guards at the base.
+       */
+      const entrance = new EntranceGenerator(this.config, this.seed).generate(
+        terrain,
+        firstgids,
+        spawn,
+      );
+
+      if (entrance) {
+        tiledLayers.push(
+          handlers.generation.createLayer(
+            layerId++,
+            "entrance",
+            width,
+            height,
+            entrance.layer,
+            [{ name: "collides", type: "bool", value: true }],
+          ),
+        );
+
+        entities.push(...entrance.entities);
+      }
     }
 
     /**
      * Torches and ladders (dungeon only)
      */
     if (this.config.id === BiomeName.DUNGEON) {
-      const torches = this._findTorchPositions(terrain);
+      const torches = handlers.generation.find.positions.torch(
+        this.config,
+        terrain,
+      );
 
       for (const pos of torches)
         entities.push({ name: EntityName.TORCH1, x: pos.x, y: pos.y });
 
-      const ladders = this._findLadderPositions(
+      const ladders = handlers.generation.find.positions.ladder(
+        this.config,
         terrain,
         DUNGEON_LADDER_COUNT,
         torches,
+        this.seed,
       );
       const offset = configs.entities[EntityName.LADDER]?.offset;
 
@@ -473,164 +507,8 @@ export class MapBuilder {
     for (const detail of this.config.details ?? []) names.add(detail.tileset);
     if (this.config.walls) names.add(this.config.walls);
     if (this.config.ledge) names.add(this.config.ledge);
+    for (const name of this.config.tilesets ?? []) names.add(name);
 
     return Array.from(names);
-  }
-
-  private _findSpawn(terrain: TerrainName[]): { x: number; y: number } {
-    const { width, height, tileWidth, tileHeight } = this.config;
-
-    const centerX = Math.floor(width / 2);
-    const centerY = Math.floor(height / 2);
-
-    const found = handlers.generation.spiralSearch(
-      centerX,
-      centerY,
-      width,
-      height,
-      (x, y) =>
-        this.config.terrain.includes(
-          terrain[handlers.generation.toIndex(x, y, width)],
-        ),
-    );
-
-    const tile = found ?? { x: centerX, y: centerY };
-    return handlers.generation.tileToWorld(
-      tile.x,
-      tile.y,
-      tileWidth,
-      tileHeight,
-    );
-  }
-
-  private _findWellPositions(
-    terrain: TerrainName[],
-    spawn: { x: number; y: number },
-    count: number,
-  ): { x: number; y: number }[] {
-    const { width, height, tileWidth, tileHeight } = this.config;
-    const gen = handlers.generation;
-
-    const tile = {
-      x: Math.floor(spawn.x / tileWidth),
-      y: Math.floor(spawn.y / tileHeight),
-    };
-    const min = 40;
-    const candidates: { x: number; y: number }[] = [];
-
-    for (let y = 0; y < height; y++)
-      for (let x = 0; x < width; x++) {
-        const index = gen.toIndex(x, y, width);
-        if (!this.config.terrain.includes(terrain[index])) continue;
-
-        const distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
-        if (distance < min) continue;
-
-        candidates.push({ x, y });
-      }
-
-    const seed = this.seed;
-    const fallback = { x: tile.x + min, y: tile.y + min };
-    const positions: { x: number; y: number }[] = [];
-
-    for (let i = 0; i < count; i++) {
-      const start = Math.floor((i * candidates.length) / count);
-      const end = Math.floor(((i + 1) * candidates.length) / count);
-
-      const slice = candidates.slice(start, end);
-      const hash = gen.spatialHash(slice.length, i, seed.length);
-      const pick = slice.length ? slice[hash % slice.length] : fallback;
-
-      positions.push(gen.tileToWorld(pick.x, pick.y, tileWidth, tileHeight));
-    }
-
-    return positions;
-  }
-
-  private _findTorchPositions(
-    terrain: TerrainName[],
-  ): { x: number; y: number }[] {
-    const { width, height, tileWidth, tileHeight } = this.config;
-    const gen = handlers.generation;
-    const cells = gen.straightWallCells(
-      terrain,
-      TerrainName.WALL_MID,
-      width,
-      height,
-    );
-
-    const runs: { x: number; y: number }[][] = [];
-    let run: { x: number; y: number }[] = [];
-
-    for (const cell of cells) {
-      const prev = run[run.length - 1];
-
-      if (prev && (cell.y !== prev.y || cell.x !== prev.x + 1)) {
-        runs.push(run);
-        run = [];
-      }
-
-      run.push(cell);
-    }
-
-    if (run.length) runs.push(run);
-
-    const positions: { x: number; y: number }[] = [];
-
-    for (const r of runs) {
-      const start = Math.floor((r.length % DUNGEON_TORCH_STRIDE) / 2);
-
-      for (let k = start; k < r.length; k += DUNGEON_TORCH_STRIDE)
-        positions.push(gen.tileToWorld(r[k].x, r[k].y, tileWidth, tileHeight));
-    }
-
-    return positions;
-  }
-
-  private _findLadderPositions(
-    terrain: TerrainName[],
-    count: number,
-    torches: { x: number; y: number }[],
-  ): { x: number; y: number }[] {
-    const { width, height, tileWidth, tileHeight } = this.config;
-    const gen = handlers.generation;
-    const all = gen.straightWallCells(
-      terrain,
-      TerrainName.WALL_BASE,
-      width,
-      height,
-    );
-
-    const torchTiles = torches.map((t) => ({
-      x: Math.floor(t.x / tileWidth),
-      y: Math.floor(t.y / tileHeight),
-    }));
-
-    const candidates = all.filter((c) =>
-      torchTiles.every(
-        (t) =>
-          Math.max(Math.abs(c.x - t.x), Math.abs(c.y - t.y)) >=
-          DUNGEON_LADDER_TORCH_CLEARANCE,
-      ),
-    );
-
-    const seed = this.seed;
-    const positions: { x: number; y: number }[] = [];
-    if (!candidates.length) return positions;
-
-    for (let i = 0; i < count; i++) {
-      const start = Math.floor((i * candidates.length) / count);
-      const end = Math.floor(((i + 1) * candidates.length) / count);
-
-      const slice = candidates.slice(start, end);
-      if (!slice.length) continue;
-
-      const hash = gen.spatialHash(slice.length, i, seed.length);
-      const pick = slice[hash % slice.length];
-
-      positions.push(gen.tileToWorld(pick.x, pick.y, tileWidth, tileHeight));
-    }
-
-    return positions;
   }
 }

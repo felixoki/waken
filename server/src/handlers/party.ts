@@ -1,8 +1,15 @@
 import { Server, Socket } from "socket.io";
 import { World } from "../World";
 import { randomUUID } from "crypto";
-import { EntityConfig, Event, MapName, PartyStatus } from "../types";
-import { BiomeName } from "../types/generation";
+import {
+  EntityConfig,
+  Event,
+  MapName,
+  Party,
+  PartyStatus,
+  Transition,
+} from "../types";
+import { levels } from "../configs/biomes.js";
 import { configs } from "../configs/index.js";
 import { handlers } from ".";
 import { MAX_HEALTH } from "../globals.js";
@@ -70,8 +77,9 @@ export const party = {
     });
 
     if (!remaining) {
+      const map = levels[data.depth]?.map ?? MapName.FOREST;
       const entityIds = world.chunks.getEntitiesByPrefix(
-        `${MapName.FOREST}:${data.id}`,
+        `${map}:${data.id}`,
       );
 
       for (const entityId of entityIds)
@@ -84,7 +92,7 @@ export const party = {
         );
 
       data.status = PartyStatus.LOBBY;
-      world.authority.clear(MapName.FOREST, data.id);
+      world.authority.clear(map, data.id);
 
       io.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
       party.broadcast(socket, world);
@@ -193,31 +201,24 @@ export const party = {
     party.broadcast(socket, world);
   },
 
-  start: async (socket: Socket, io: Server, world: World) => {
-    const player = world.players.getBySocketId(socket.id);
-    if (!player) return;
+  enter: async (
+    io: Server,
+    world: World,
+    data: Party,
+  ): Promise<boolean> => {
+    const level = levels[data.depth];
+    if (!level) return false;
 
-    const data = world.parties.getByPlayerId(player.id);
-    if (!data || data.leader !== player.id || data.status !== PartyStatus.LOBBY)
-      return;
-
-    const seed = `${data.id}-${Date.now()}`;
-
-    socket.emit(Event.PARTY_START_LOADING);
-    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING);
+    const seed = `${data.id}-${data.depth}-${Date.now()}`;
 
     const { data: biome, error } = await tryCatch(
-      handlers.generation.start(BiomeName.DUNGEON, seed),
+      handlers.generation.start(level.biome, seed),
     );
 
-    if (error) {
-      console.error("Party generation failed:", error);
-      return;
+    if (error || !biome) {
+      console.error("Level generation failed:", error);
+      return false;
     }
-
-    if (!biome) return;
-
-    data.status = PartyStatus.IN_GAME;
 
     biome.entities.forEach((biomeEntity) => {
       const id = randomUUID();
@@ -225,7 +226,7 @@ export const party = {
         configs.entities[biomeEntity.name]?.maxHealth ?? MAX_HEALTH;
       const config: EntityConfig = {
         id,
-        map: MapName.FOREST,
+        map: level.map,
         name: biomeEntity.name,
         x: biomeEntity.x,
         y: biomeEntity.y,
@@ -233,6 +234,7 @@ export const party = {
         maxHealth,
         createdAt: Date.now(),
         isLocked: false,
+        loot: biomeEntity.loot,
       };
 
       world.entities.add(id, config);
@@ -255,21 +257,21 @@ export const party = {
       handlers.authority.transfer(io, world, prev, id, candidates);
 
       world.players.update(id, {
-        map: MapName.FOREST,
+        map: level.map,
         x: biome.spawn.x,
         y: biome.spawn.y,
         isAuthority: false,
       });
 
       memberSocket.leave(`map:${prev}`);
-      memberSocket.join(`map:${MapName.FOREST}`);
+      memberSocket.join(`map:${level.map}`);
       memberSocket.to(`map:${prev}`).emit(Event.PLAYER_LEAVE, member.id);
 
       handlers.chunks.sync.player(
         memberSocket,
         world,
         id,
-        MapName.FOREST,
+        level.map,
         biome.spawn.x,
         biome.spawn.y,
         io,
@@ -277,7 +279,7 @@ export const party = {
       );
     }
 
-    world.authority.set(MapName.FOREST, data.members[0], data.id);
+    world.authority.set(level.map, data.members[0], data.id);
     world.players.update(data.members[0], { isAuthority: true });
 
     const players = data.members
@@ -285,14 +287,87 @@ export const party = {
       .filter(Boolean);
 
     const payload = {
+      map: level.map,
       tilemap: biome.tilemap,
       spawn: biome.spawn,
       players,
     };
 
-    socket.emit(Event.PARTY_START, payload);
-    socket.to(`party:${data.id}`).emit(Event.PARTY_START, payload);
+    io.to(`party:${data.id}`).emit(Event.PARTY_START, payload);
+
+    return true;
+  },
+
+  start: async (socket: Socket, io: Server, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
+    if (!player) return;
+
+    const data = world.parties.getByPlayerId(player.id);
+    if (!data || data.leader !== player.id || data.status !== PartyStatus.LOBBY)
+      return;
+
+    data.depth = 0;
+    data.status = PartyStatus.IN_GAME;
+
+    socket.emit(Event.PARTY_START_LOADING);
+    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING);
+
+    const ok = await party.enter(io, world, data);
+
+    if (!ok) {
+      data.status = PartyStatus.LOBBY;
+      return;
+    }
 
     party.broadcast(socket, world);
+  },
+
+  descend: async (
+    transition: Transition,
+    io: Server,
+    socket: Socket,
+    world: World,
+  ): Promise<boolean> => {
+    const player = world.players.getBySocketId(socket.id);
+    if (!player) return false;
+
+    const data = world.parties.getByPlayerId(player.id);
+    if (!data || data.status !== PartyStatus.IN_GAME) return false;
+
+    const next = levels[data.depth + 1];
+    if (!next || transition.to !== next.map) return false;
+
+    const prevMap = levels[data.depth].map;
+    data.depth += 1;
+
+    socket.emit(Event.PARTY_START_LOADING);
+    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING);
+
+    const ok = await party.enter(io, world, data);
+
+    if (!ok) {
+      data.depth -= 1;
+      return false;
+    }
+
+    if (configs.maps[prevMap].isInstanced) {
+      const entityIds = world.chunks.getEntitiesByPrefix(
+        `${prevMap}:${data.id}`,
+      );
+
+      for (const entityId of entityIds)
+        handlers.entity.remove(
+          entityId,
+          Event.ENTITY_DESTROY,
+          socket,
+          io,
+          world,
+        );
+
+      world.authority.clear(prevMap, data.id);
+    }
+
+    party.broadcast(socket, world);
+    return true;
   },
 };

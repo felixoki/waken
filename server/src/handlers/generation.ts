@@ -2,6 +2,7 @@ import { fork } from "child_process";
 import { fileURLToPath } from "url";
 import { TiledProperty } from "../types";
 import {
+  BiomeConfig,
   GeneratedMap,
   Neighbors,
   Range,
@@ -16,12 +17,14 @@ import {
 import { join, dirname } from "path";
 import {
   CORNERS,
+  DUNGEON_LADDER_TORCH_CLEARANCE,
   DUNGEON_RECESS_GAP,
   DUNGEON_RECESS_MARGIN,
   DUNGEON_RECESS_MAX_H,
   DUNGEON_RECESS_MAX_W,
   DUNGEON_RECESS_MIN_H,
   DUNGEON_RECESS_MIN_W,
+  DUNGEON_TORCH_STRIDE,
 } from "../globals";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -838,6 +841,169 @@ export const generation = {
       }
 
       return boxes;
+    },
+  },
+
+  find: {
+    spawn: (
+      config: BiomeConfig,
+      terrain: TerrainName[],
+    ): { x: number; y: number } => {
+      const { width, height, tileWidth, tileHeight } = config;
+
+      const centerX = Math.floor(width / 2);
+      const centerY = Math.floor(height / 2);
+
+      const found = generation.spiralSearch(
+        centerX,
+        centerY,
+        width,
+        height,
+        (x, y) =>
+          config.terrain.includes(terrain[generation.toIndex(x, y, width)]),
+      );
+
+      const tile = found ?? { x: centerX, y: centerY };
+      return generation.tileToWorld(tile.x, tile.y, tileWidth, tileHeight);
+    },
+
+    positions: {
+      well: (
+        config: BiomeConfig,
+        terrain: TerrainName[],
+        spawn: { x: number; y: number },
+        count: number,
+        seed: string,
+      ): { x: number; y: number }[] => {
+        const { width, height, tileWidth, tileHeight } = config;
+
+        const tile = {
+          x: Math.floor(spawn.x / tileWidth),
+          y: Math.floor(spawn.y / tileHeight),
+        };
+        const min = 40;
+        const candidates: { x: number; y: number }[] = [];
+
+        for (let y = 0; y < height; y++)
+          for (let x = 0; x < width; x++) {
+            const index = generation.toIndex(x, y, width);
+            if (!config.terrain.includes(terrain[index])) continue;
+
+            const distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
+            if (distance < min) continue;
+
+            candidates.push({ x, y });
+          }
+
+        const fallback = { x: tile.x + min, y: tile.y + min };
+        const positions: { x: number; y: number }[] = [];
+
+        for (let i = 0; i < count; i++) {
+          const start = Math.floor((i * candidates.length) / count);
+          const end = Math.floor(((i + 1) * candidates.length) / count);
+
+          const slice = candidates.slice(start, end);
+          const hash = generation.spatialHash(slice.length, i, seed.length);
+          const pick = slice.length ? slice[hash % slice.length] : fallback;
+
+          positions.push(
+            generation.tileToWorld(pick.x, pick.y, tileWidth, tileHeight),
+          );
+        }
+
+        return positions;
+      },
+
+      torch: (
+        config: BiomeConfig,
+        terrain: TerrainName[],
+      ): { x: number; y: number }[] => {
+        const { width, height, tileWidth, tileHeight } = config;
+        const cells = generation.straightWallCells(
+          terrain,
+          TerrainName.WALL_MID,
+          width,
+          height,
+        );
+
+        const runs: { x: number; y: number }[][] = [];
+        let run: { x: number; y: number }[] = [];
+
+        for (const cell of cells) {
+          const prev = run[run.length - 1];
+
+          if (prev && (cell.y !== prev.y || cell.x !== prev.x + 1)) {
+            runs.push(run);
+            run = [];
+          }
+
+          run.push(cell);
+        }
+
+        if (run.length) runs.push(run);
+
+        const positions: { x: number; y: number }[] = [];
+
+        for (const r of runs) {
+          const start = Math.floor((r.length % DUNGEON_TORCH_STRIDE) / 2);
+
+          for (let k = start; k < r.length; k += DUNGEON_TORCH_STRIDE)
+            positions.push(
+              generation.tileToWorld(r[k].x, r[k].y, tileWidth, tileHeight),
+            );
+        }
+
+        return positions;
+      },
+
+      ladder: (
+        config: BiomeConfig,
+        terrain: TerrainName[],
+        count: number,
+        torches: { x: number; y: number }[],
+        seed: string,
+      ): { x: number; y: number }[] => {
+        const { width, height, tileWidth, tileHeight } = config;
+        const all = generation.straightWallCells(
+          terrain,
+          TerrainName.WALL_BASE,
+          width,
+          height,
+        );
+
+        const torchTiles = torches.map((t) => ({
+          x: Math.floor(t.x / tileWidth),
+          y: Math.floor(t.y / tileHeight),
+        }));
+
+        const candidates = all.filter((c) =>
+          torchTiles.every(
+            (t) =>
+              Math.max(Math.abs(c.x - t.x), Math.abs(c.y - t.y)) >=
+              DUNGEON_LADDER_TORCH_CLEARANCE,
+          ),
+        );
+
+        const positions: { x: number; y: number }[] = [];
+        if (!candidates.length) return positions;
+
+        for (let i = 0; i < count; i++) {
+          const start = Math.floor((i * candidates.length) / count);
+          const end = Math.floor(((i + 1) * candidates.length) / count);
+
+          const slice = candidates.slice(start, end);
+          if (!slice.length) continue;
+
+          const hash = generation.spatialHash(slice.length, i, seed.length);
+          const pick = slice[hash % slice.length];
+
+          positions.push(
+            generation.tileToWorld(pick.x, pick.y, tileWidth, tileHeight),
+          );
+        }
+
+        return positions;
+      },
     },
   },
 };

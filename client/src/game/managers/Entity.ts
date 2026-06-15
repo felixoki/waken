@@ -94,6 +94,19 @@ export class EntityManager {
     );
   }
 
+  private _blocksPathing(name: EntityName): boolean {
+    const def = configs.entities[name];
+
+    return (
+      def?.components.some(
+        (c) =>
+          c.name === ComponentName.BODY &&
+          c.config?.static &&
+          (c.config?.collides ?? true),
+      ) ?? false
+    );
+  }
+
   private _drain(): void {
     let created = 0;
 
@@ -139,6 +152,7 @@ export class EntityManager {
     group.add(entity);
 
     if (!entity.body || !scene.managers.tile) return;
+    if (!this._blocksPathing(config.name)) return;
 
     const body = entity.body;
     const tw = scene.managers.tile.map.tileWidth;

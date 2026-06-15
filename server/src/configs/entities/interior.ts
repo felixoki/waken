@@ -21,6 +21,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
         config: {
@@ -53,6 +54,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
         config: {
@@ -83,6 +85,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
         config: {
@@ -114,6 +117,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
         config: {
@@ -145,6 +149,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
         config: {
@@ -472,6 +477,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           cooldown: 1000,
         },
       },
+      {
+        name: ComponentName.JUMPABLE,
+        config: { clearance: 8 },
+      },
     ],
     states: [],
     behaviors: [],
@@ -557,6 +566,42 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           ],
         },
         key: "cupboard1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+
+  [EntityName.CUPBOARD2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    components: [
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects2",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 11, end: 12 },
+            { row: 6, start: 11, end: 12 },
+            { row: 7, start: 11, end: 12 },
+            { row: 8, start: 11, end: 12 },
+          ],
+        },
+        key: "cupboard2_texture",
       },
     ],
     states: [],
@@ -802,6 +847,72 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           ],
         },
         key: "boxes7_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+
+  [EntityName.BOXES8]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    components: [
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects2",
+          tileSize: 16,
+          tiles: [
+            { row: 18, start: 13, end: 14 },
+            { row: 19, start: 13, end: 14 },
+            { row: 20, start: 13, end: 14 },
+          ],
+        },
+        key: "boxes8_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+
+  [EntityName.BOWL1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 10,
+          offsetX: 4,
+          offsetY: 18,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects2",
+          tileSize: 16,
+          tiles: [
+            { row: 11, start: 5, end: 5 },
+            { row: 12, start: 5, end: 5 },
+          ],
+        },
+        key: "bowl1_texture",
       },
     ],
     states: [],

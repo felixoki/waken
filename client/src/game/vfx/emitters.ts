@@ -1240,4 +1240,86 @@ export const emitters = {
       });
     });
   },
+
+  absorb: (victim: Entity, caster: Entity) => {
+    const scene = victim.scene;
+    const { scaleX: sx, scaleY: sy, depth } = victim;
+
+    const block = 1;
+    const chunks = sprites.pixels(victim, block);
+    const radius = Math.max(sx, sy) * block * 0.55;
+
+    const embers = scene.add.particles(0, 0, "particle_circle", {
+      color: [0xcc0000, 0x660000, 0x1a0000],
+      colorEase: "quad.out",
+      alpha: { start: 0.9, end: 0 },
+      scale: { start: 0.055, end: 0.006 },
+      speed: { min: 2, max: 8 },
+      gravityY: -4,
+      lifespan: { min: 2400, max: 4200 },
+      blendMode: "ADD",
+      frequency: -1,
+    });
+    embers.setDepth(depth + 2);
+
+    const pieces = chunks.map((c) => {
+      const circle = scene.add.circle(c.x, c.y, radius, 0x000000, c.alpha);
+      circle.setDepth(depth + 1);
+
+      return {
+        circle,
+        sx: c.x,
+        sy: c.y,
+        alpha: c.alpha,
+        delay: Math.random() * 0.3,
+        ember: Math.random() < 0.025,
+        lastEmit: -1,
+      };
+    });
+
+    const progress = { t: 0 };
+
+    scene.tweens.add({
+      targets: progress,
+      t: 1,
+      duration: 650,
+      ease: "Linear",
+      onUpdate: () => {
+        const cx = caster.body.center.x;
+        const cy = caster.body.center.y;
+
+        for (const p of pieces) {
+          const local = Phaser.Math.Clamp(
+            (progress.t - p.delay) / (1 - p.delay),
+            0,
+            1,
+          );
+          const e = local * local;
+
+          p.circle.x = Phaser.Math.Linear(p.sx, cx, e);
+          p.circle.y = Phaser.Math.Linear(p.sy, cy, e);
+          p.circle.setScale(1 - e * 0.7);
+          p.circle.setAlpha(p.alpha * (1 - e * 0.4));
+
+          if (p.ember && e > 0) {
+            if (p.lastEmit < 0) p.lastEmit = 0;
+
+            while (e - p.lastEmit >= 0.1) {
+              p.lastEmit += 0.1;
+              embers.emitParticleAt(
+                Phaser.Math.Linear(p.sx, cx, p.lastEmit),
+                Phaser.Math.Linear(p.sy, cy, p.lastEmit),
+                1,
+              );
+            }
+          }
+        }
+      },
+      onComplete: () => {
+        pieces.forEach((p) => p.circle.destroy());
+        embers.stop();
+        scene.time.delayedCall(4400, () => embers.destroy());
+      },
+    });
+  },
 };

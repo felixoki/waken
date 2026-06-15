@@ -1,4 +1,5 @@
 import { EntityName } from "./entities";
+import { Item } from "./components";
 
 export interface Range {
   min: number;
@@ -65,6 +66,8 @@ export enum BorderPosition {
 export enum RoomName {
   SEWER1 = "sewer1",
   FEAST1 = "feast1",
+  FEAST2 = "feast2",
+  FEAST3 = "feast3",
 }
 
 export enum RoomType {
@@ -172,6 +175,7 @@ export interface BiomeConfig {
   details?: DetailConfig[];
   walls?: string;
   ledge?: string;
+  tilesets?: string[];
   rooms?: RoomConfig;
 }
 
@@ -218,6 +222,7 @@ export interface Entity {
   name: EntityName;
   x: number;
   y: number;
+  loot?: (Item & { chance: number })[];
 }
 
 export interface Room {
@@ -250,7 +255,12 @@ export interface EntityGroup {
 
 export interface RoomInterior {
   origin: RoomInteriorOrigin;
-  entities: { name: EntityName; x: number; y: number }[];
+  entities: {
+    name: EntityName;
+    x: number;
+    y: number;
+    loot?: (Item & { chance: number })[];
+  }[];
 }
 
 export interface RoomTemplate {
@@ -260,6 +270,7 @@ export interface RoomTemplate {
   weight: number;
   depth?: { min?: number; max?: number };
   enemies?: EntityGroup[];
+  traps?: EntityGroup[];
   water?: {
     coverage: number;
   };

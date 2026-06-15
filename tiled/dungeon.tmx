@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="23" nextobjectid="35">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="26" nextobjectid="41">
  <editorsettings>
   <export target="dungeon.json" format="json"/>
  </editorsettings>
@@ -67,7 +67,7 @@
 74,75,75,75,75,75,75,75,75,75,75,75,75,75,75,76
 </data>
  </layer>
- <group id="9" name="setpiece1">
+ <group id="9" name="setpiece1" visible="0">
   <objectgroup id="3" name="setpiece1">
    <properties>
     <property name="origin" value="top-right"/>
@@ -213,7 +213,7 @@
    <object id="25" name="Table3" x="103" y="130" width="1" height="1"/>
   </objectgroup>
  </group>
- <group id="16" name="setpiece4" visible="0">
+ <group id="16" name="setpiece4">
   <layer id="14" name="setpiece4" width="16" height="16">
    <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -246,7 +246,7 @@
    <object id="31" name="Barrel2" x="152" y="62" width="1" height="1"/>
   </objectgroup>
  </group>
- <group id="19" name="setpiece5">
+ <group id="19" name="setpiece5" visible="0">
   <layer id="17" name="setpiece5" width="16" height="16">
    <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -275,8 +275,8 @@
    <object id="33" name="Barrels2" x="67" y="223" width="1" height="1"/>
   </objectgroup>
  </group>
- <group id="22" name="setpiece7">
-  <layer id="20" name="setpiece6" width="16" height="16">
+ <group id="22" name="setpiece7" visible="0">
+  <layer id="20" name="setpiece7" width="16" height="16">
    <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -301,6 +301,39 @@
     <property name="origin" value="bottom-right"/>
    </properties>
    <object id="34" name="Boxes7" x="224" y="215" width="1" height="1"/>
+  </objectgroup>
+ </group>
+ <group id="25" name="setpiece8" visible="0">
+  <properties>
+   <property name="origin" value="top-right"/>
+  </properties>
+  <layer id="23" name="setpiece8" width="16" height="16">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,780,781,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,795,796,0,0,0,0,
+0,0,0,0,0,0,0,0,975,976,810,811,0,977,978,0,
+0,0,0,0,0,0,0,0,990,991,825,826,864,992,993,0,
+0,0,0,0,0,0,0,0,1005,1006,0,0,879,1007,1008,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <objectgroup id="24" name="setpiece8">
+   <object id="35" name="Boxes6" x="144" y="56" width="1" height="1"/>
+   <object id="36" name="Boxes8" x="222" y="60" width="1" height="1"/>
+   <object id="37" name="Cupboard2" x="176" y="34" width="1" height="1"/>
+   <object id="38" name="Bowl1" x="200" y="60" width="1" height="1"/>
+   <object id="39" name="Goat" x="208" y="96" width="1" height="1"/>
+   <object id="40" name="Goat" x="176" y="80" width="1" height="1"/>
   </objectgroup>
  </group>
 </map>

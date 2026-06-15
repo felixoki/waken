@@ -13,6 +13,7 @@ import { GlassblowerScene } from "./scenes/Glassblower";
 import { FishingHutScene } from "./scenes/FishingHut";
 import { FarmScene } from "./scenes/Farm";
 import ForestScene from "./scenes/Forest";
+import DungeonScene from "./scenes/Dungeon";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -34,11 +35,12 @@ export const config: Phaser.Types.Core.GameConfig = {
     GlassblowerScene,
     FishingHutScene,
     FarmScene,
+    DungeonScene,
   ],
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
   backgroundColor: "302929",

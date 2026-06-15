@@ -20,12 +20,18 @@ export class FleeBehavior extends Behavior {
     interval: 200,
   };
   private attempts: number = 0;
+  private flying: boolean = false;
 
   public name = BehaviorName.FLEE;
 
   constructor(config?: FleeBehaviorConfig) {
     super();
     this.repeat = config?.repeat ?? false;
+    this.flying = config?.flying ?? false;
+  }
+
+  private _move(): Partial<Input> {
+    return this.flying ? { isFlying: true } : { isRunning: true };
   }
 
   start(targetId: string): void {
@@ -57,6 +63,8 @@ export class FleeBehavior extends Behavior {
       this.path = [];
     }
 
+    if (this.flying) return this._flyToExit(entity, mapW, mapH);
+
     if (this.exit && !this.path.length) {
       const grid = handlers.path.getGrid(entity);
       if (!grid.length) return {};
@@ -81,7 +89,7 @@ export class FleeBehavior extends Behavior {
           return {};
         }
 
-        return { facing: entity.facing, moving: [], isRunning: true };
+        return { facing: entity.facing, moving: [], ...this._move() };
       }
     }
 
@@ -97,7 +105,7 @@ export class FleeBehavior extends Behavior {
         return {};
       }
 
-      return { facing: entity.facing, moving: [], isRunning: true };
+      return { facing: entity.facing, moving: [], ...this._move() };
     }
 
     if (this.path.length) {
@@ -108,10 +116,10 @@ export class FleeBehavior extends Behavior {
         return {};
       }
 
-      return { ...input, isRunning: true };
+      return { ...input, ...this._move() };
     }
 
-    return { facing: entity.facing, moving: [], isRunning: true };
+    return { facing: entity.facing, moving: [], ...this._move() };
   }
 
   reset(): void {
@@ -119,6 +127,43 @@ export class FleeBehavior extends Behavior {
     this.exit = null;
     this.targetId = "";
     this.attempts = 0;
+  }
+
+  private _flyToExit(
+    entity: Entity,
+    width: number,
+    height: number,
+  ): Partial<Input> {
+    const exit = this.exit!;
+
+    const distance = Phaser.Math.Distance.Between(
+      entity.x,
+      entity.y,
+      exit.x,
+      exit.y,
+    );
+
+    const margin = 16;
+    const offMap =
+      entity.x <= margin ||
+      entity.y <= margin ||
+      entity.x >= width - margin ||
+      entity.y >= height - margin;
+
+    if (distance < 8 || offMap) {
+      this._despawn(entity);
+      return {};
+    }
+
+    const angle = Phaser.Math.Angle.Between(
+      entity.x,
+      entity.y,
+      exit.x,
+      exit.y,
+    );
+    const facing = handlers.direction.fromAngle(angle, entity.facing);
+
+    return { facing, moving: [facing], ...this._move() };
   }
 
   private _getExitPoint(

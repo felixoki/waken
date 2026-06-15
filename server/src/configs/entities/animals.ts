@@ -155,6 +155,79 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
   },
+  [EntityName.HARE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 30,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.HARE_FOOT,
+              quantity: 1,
+              stackable: true,
+              chance: 0.1,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 10,
+          offsetX: 10,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.RUNNING],
+    behaviors: [
+      {
+        name: BehaviorName.WANDER,
+        config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+      {
+        name: BehaviorName.FLEE,
+      },
+    ],
+  },
+  [EntityName.GROUSE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 25,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 10,
+          offsetX: 10,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.FLYING],
+    behaviors: [
+      {
+        name: BehaviorName.WANDER,
+        config: { radius: 80, idle: { range: [6000, 12000] } },
+      },
+      {
+        name: BehaviorName.FLEE,
+        config: { flying: true },
+      },
+    ],
+  },
   [EntityName.DEER]: {
     facing: Direction.DOWN,
     moving: [],
@@ -201,6 +274,33 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 10,
+          offsetX: 10,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.GOAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 30,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },

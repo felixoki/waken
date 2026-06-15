@@ -76,4 +76,9 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Lightning strike",
     "A charred page that crackles with residual static energy.",
   ),
+  [EntityName.SPELL_PAGE_ABSORB_LIFE]: page(
+    SpellName.ABSORB_LIFE,
+    "Spell page: Absorb life",
+    "A page steeped in dark matter that teaches one to drain the life of others.",
+  ),
 };

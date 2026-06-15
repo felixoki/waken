@@ -125,6 +125,38 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.DUNGEON_ENTRANCE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 6, start: 2, end: 3 },
+            { row: 7, start: 2, end: 3 },
+          ],
+        },
+        key: "dungeon_entrance_texture",
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.DUNGEON,
+          x: 1024,
+          y: 1024,
+          width: 24,
+          height: 24,
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.BLACKSMITH_EXIT]: {
     facing: Direction.DOWN,
     moving: [],

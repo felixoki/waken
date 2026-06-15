@@ -79,7 +79,17 @@ export const storage = {
       );
       const slots =
         comp && comp.name === ComponentName.STORAGE ? comp.config.slots : 16;
-      entity.storing = new Array(slots).fill(null);
+
+      let storing: (Item | null)[] = new Array(slots).fill(null);
+
+      if (entity.loot)
+        for (const entry of entity.loot) {
+          if (Math.random() > entry.chance) continue;
+          const { chance, ...item } = entry;
+          storing = storage.add(storing, item);
+        }
+
+      entity.storing = storing;
     }
 
     entity.isLocked = true;

@@ -17,11 +17,13 @@ export const CHUNK_ACTIVATION_BUDGET = 2;
 /** Movement */
 export const SPEED_WALKING = 80;
 export const SPEED_RUNNING = 120;
+export const SPEED_FLYING = 150;
 export const SPEED_JUMPING = 100;
 export const SPEED_ROLLING = 120;
 export const SPEED_DASHING = 1200;
 
 export const HEIGHT_JUMPING = 40;
+export const HEIGHT_FLYING = 32;
 
 /** Time */
 export const DAY = 30 * 60 * 1000;
@@ -40,6 +42,7 @@ export const PHASE_STARTS = [
 
 /** Actions */
 export const DURATION_JUMPING = 800;
+export const DURATION_LIFT = 250;
 export const DURATION_ROLLING = 600;
 export const DURATION_DASHING = 50;
 export const DURATION_SLASHING = 800;

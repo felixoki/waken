@@ -9,6 +9,7 @@ export interface Input {
   facing: Direction | null | undefined;
   moving: Direction[];
   isRunning: boolean;
+  isFlying?: boolean;
   isJumping: boolean;
   isRolling: boolean;
   pointerdown: boolean;

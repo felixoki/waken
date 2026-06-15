@@ -13,6 +13,7 @@ import { groundStamps, grassStamps, flowerStamps } from "./details";
 
 export const levels = [
   { depth: 0, map: MapName.FOREST, biome: BiomeName.FOREST },
+  { depth: 1, map: MapName.DUNGEON, biome: BiomeName.DUNGEON },
 ];
 
 export const forest: BiomeConfig = {
@@ -21,6 +22,8 @@ export const forest: BiomeConfig = {
   height: 256,
   tileWidth: 16,
   tileHeight: 16,
+
+  tilesets: ["dungeon_walls_floor", "dungeon_decorative_cracks_floor"],
 
   noise: {
     octaves: 4,
@@ -128,10 +131,17 @@ export const forest: BiomeConfig = {
       group: { min: 0, max: 2, radius: 2 },
     },
     {
-      entities: [EntityName.FOX],
+      entities: [EntityName.FOX, EntityName.HARE],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 5, max: 10 },
       spacing: 5,
+    },
+    {
+      entities: [EntityName.GROUSE],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 2, max: 6 },
+      spacing: 4,
+      group: { min: 0, max: 1, radius: 2 },
     },
     {
       entities: [EntityName.BOAR],
@@ -145,7 +155,7 @@ export const forest: BiomeConfig = {
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 7, max: 15 },
       spacing: 5,
-      group: { min: 1, max: 3, radius: 3 },
+      group: { min: 1, max: 2, radius: 3 },
     },
     {
       entities: [EntityName.TROLL],
@@ -259,7 +269,13 @@ export const dungeon: BiomeConfig = {
         enemies: [
           {
             entities: [EntityName.RAT],
-            count: { min: 1, max: 3 },
+            count: { min: 4, max: 6 },
+          },
+        ],
+        traps: [
+          {
+            entities: [EntityName.SPIKE_TRAP1],
+            count: { min: 2, max: 4 },
           },
         ],
       },
@@ -268,11 +284,46 @@ export const dungeon: BiomeConfig = {
         type: RoomType.FEAST,
         difficulty: RoomDifficulty.HARD,
         weight: 6,
+        depth: { min: 2, max: undefined },
+        enemies: [
+          {
+            entities: [
+              EntityName.ORC1,
+              EntityName.GOBLIN1,
+            ],
+            count: { min: 1, max: 3 },
+          },
+        ],
+      },
+      {
+        id: RoomName.FEAST2,
+        type: RoomType.FEAST,
+        difficulty: RoomDifficulty.HARD,
+        weight: 6,
         depth: { min: 3, max: undefined },
         enemies: [
           {
-            entities: [EntityName.ORC1, EntityName.GOBLIN1],
-            count: { min: 1, max: 2 },
+            entities: [
+              EntityName.GOBLIN1,
+              EntityName.GOBLIN2,
+            ],
+            count: { min: 2, max: 4 },
+          },
+        ],
+      },
+      {
+        id: RoomName.FEAST3,
+        type: RoomType.FEAST,
+        difficulty: RoomDifficulty.HARD,
+        weight: 6,
+        depth: { min: 4, max: undefined },
+        enemies: [
+          {
+            entities: [
+              EntityName.ORC1,
+              EntityName.ORC2,
+            ],
+            count: { min: 2, max: 4 },
           },
         ],
       },
@@ -299,7 +350,31 @@ export const dungeon: BiomeConfig = {
           { name: EntityName.VASES2, x: -80, y: 12 },
           { name: EntityName.BOXES4, x: -24, y: -2 },
           { name: EntityName.BOXES5, x: -52, y: 28 },
-          { name: EntityName.CHEST1, x: -16, y: 52 },
+          {
+            name: EntityName.CHEST1,
+            x: -16,
+            y: 52,
+            loot: [
+              {
+                name: EntityName.IRON1,
+                quantity: 3,
+                stackable: true,
+                chance: 0.8,
+              },
+              {
+                name: EntityName.QUARTZ1,
+                quantity: 2,
+                stackable: true,
+                chance: 0.5,
+              },
+              {
+                name: EntityName.POTION1,
+                quantity: 1,
+                stackable: true,
+                chance: 0.3,
+              },
+            ],
+          },
           { name: EntityName.BANQUET_TABLE, x: -93, y: 82 },
         ],
       },
@@ -335,6 +410,17 @@ export const dungeon: BiomeConfig = {
       {
         origin: RoomInteriorOrigin.BOTTOM_RIGHT,
         entities: [{ name: EntityName.BOXES7, x: -16, y: -16 }],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        entities: [
+          { name: EntityName.BOXES6, x: -96, y: 8 },
+          { name: EntityName.CUPBOARD2, x: -64, y: -14 },
+          { name: EntityName.BOWL1, x: -40, y: 12 },
+          { name: EntityName.BOXES8, x: -18, y: 12 },
+          { name: EntityName.GOAT, x: -64, y: 32 },
+          { name: EntityName.GOAT, x: -32, y: 48 },
+        ],
       },
     ],
   },

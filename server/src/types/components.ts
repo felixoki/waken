@@ -26,6 +26,7 @@ export enum ComponentName {
   FOLLOW = "follow",
   INTERACTABLE = "interactable",
   INVENTORY = "inventory",
+  JUMPABLE = "jumpable",
   LEARNABLE = "learnable",
   GLIMMER = "glimmer",
   LIGHT = "light",
@@ -56,6 +57,7 @@ export type ComponentConfig =
   | { name: ComponentName.FOLLOW; config: FollowConfig }
   | { name: ComponentName.INTERACTABLE }
   | { name: ComponentName.INVENTORY }
+  | { name: ComponentName.JUMPABLE; config: JumpableConfig }
   | { name: ComponentName.LEARNABLE; config: LearnableConfig }
   | { name: ComponentName.GLIMMER; config: GlimmerConfig }
   | { name: ComponentName.LIGHT; config: LightConfig }
@@ -87,6 +89,10 @@ export interface FollowConfig {
 
 export interface LearnableConfig {
   spell: SpellName;
+}
+
+export interface JumpableConfig {
+  clearance: number;
 }
 
 export interface BodyConfig {

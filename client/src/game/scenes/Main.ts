@@ -602,12 +602,12 @@ export class MainScene extends Phaser.Scene {
     this.managers.socket.on(
       Event.PARTY_START,
       (data: {
+        map: MapName;
         tilemap: any;
         spawn: { x: number; y: number };
-        entities: EntityConfig[];
         players: PlayerConfig[];
       }) => {
-        const forest = this.scene.get(MapName.FOREST) as ForestScene;
+        const scene = this.scene.get(data.map) as ForestScene;
 
         const onReady = () => {
           if (this.managers.ambience.phase)
@@ -620,31 +620,31 @@ export class MainScene extends Phaser.Scene {
           const config = data.players.find((p) => p.id === localId);
 
           if (config) {
-            this.scene.bringToTop(MapName.FOREST);
+            this.scene.bringToTop(data.map);
             handlers.player.swap(config, this);
-          } else forest.scene.setVisible(false);
+          } else scene.scene.setVisible(false);
 
           data.players
             .filter((p) => p.id !== localId)
             .forEach((config) => this.managers.players.add(config, false));
 
           EventBus.emit(Event.PARTY_START_READY);
-          handlers.ui.backdrop.hide(this, MapName.FOREST);
+          handlers.ui.backdrop.hide(this, data.map);
         };
 
-        if (forest.scene.isActive()) {
-          forest.rebuild(data.tilemap);
+        if (scene.scene.isActive()) {
+          scene.rebuild(data.tilemap);
           onReady();
           return;
         }
 
-        this.cache.tilemap.add(MapName.FOREST, {
+        this.cache.tilemap.add(data.map, {
           format: Phaser.Tilemaps.Formats.TILED_JSON,
           data: data.tilemap,
         });
 
-        this.scene.launch(MapName.FOREST);
-        forest.events.once(Phaser.Scenes.Events.CREATE, onReady);
+        this.scene.launch(data.map);
+        scene.events.once(Phaser.Scenes.Events.CREATE, onReady);
       },
     );
 

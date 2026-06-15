@@ -49,6 +49,8 @@ export class TrapComponent extends Component {
           config.hitbox.height,
           this.entity.id,
           config,
+          this.entity.clearance,
+          true,
         );
       }),
     );

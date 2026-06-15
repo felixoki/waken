@@ -13,9 +13,9 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "icons8",
           tileSize: 16,
-          tiles: [{ row: 6, start: 16, end: 16 }],
+          tiles: [{ row: 11, start: 35, end: 36 }, { row: 12, start: 35, end: 36 }],
         },
         key: "venison_meat_texture",
       },
@@ -30,10 +30,10 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Venison meat",
+      displayName: "Venison",
       description: "A cut of fresh venison taken from wild game.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 6, col: 16 },
+      icon: { spritesheet: "icons8", row: 12, col: 34 },
     },
   },
   [EntityName.BOAR_MEAT]: {
@@ -43,9 +43,9 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "icons8",
           tileSize: 16,
-          tiles: [{ row: 6, start: 16, end: 16 }],
+          tiles: [{ row: 11, start: 32, end: 33 }, { row: 12, start: 32, end: 33 }],
         },
         key: "boar_meat_texture",
       },
@@ -59,7 +59,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Boar meat",
       description: "A cut of tough meat taken from a wild boar.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 6, col: 16 },
+      icon: { spritesheet: "icons8", row: 12, col: 31 },
     },
   },
   [EntityName.CARP]: {

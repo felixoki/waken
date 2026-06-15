@@ -117,6 +117,26 @@ export class RoomGenerator {
           }
         }
 
+        if (isLarge)
+          for (const piece of template.traps ?? []) {
+            const count =
+              piece.count.min +
+              Math.floor(rng() * (piece.count.max - piece.count.min + 1));
+
+            for (let j = 0; j < count; j++) {
+              const entity =
+                piece.entities[Math.floor(rng() * piece.entities.length)];
+              const ox = room.x + 1 + Math.floor(rng() * (room.width - 2));
+              const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
+
+              entities.push({
+                name: entity,
+                x: ox * tileWidth,
+                y: oy * tileHeight,
+              });
+            }
+          }
+
         if (!isLarge && roomConfig.interior.length) {
           const corners = handlers.generation.rooms.shuffle(
             [
@@ -182,12 +202,12 @@ export class RoomGenerator {
               )
                 continue;
 
-              survivors.push({ name: e.name, x: ex, y: ey, box });
+              survivors.push({ name: e.name, x: ex, y: ey, loot: e.loot, box });
             }
 
             for (const s of survivors) {
               placed.push(s.box);
-              entities.push({ name: s.name, x: s.x, y: s.y });
+              entities.push({ name: s.name, x: s.x, y: s.y, loot: s.loot });
             }
           }
         }

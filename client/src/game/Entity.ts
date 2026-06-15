@@ -30,8 +30,10 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public pointerdown: boolean = false;
   public knockback?: Phaser.Time.TimerEvent;
   public flash?: Phaser.Tweens.Tween;
+  public z: number = 0;
+  public clearance?: number;
+  
   protected lastInput: Partial<Input> | null = null;
-
   protected depthY: number = 0;
 
   public components = new Map<ComponentName, Component>();

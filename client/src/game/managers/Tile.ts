@@ -11,9 +11,12 @@ interface Animation {
 }
 
 export interface Threshold {
-  body: Phaser.GameObjects.Rectangle;
+  body?: Phaser.GameObjects.Rectangle;
   tileY: number;
   rendersAbove: boolean;
+  clearance?: number;
+  image?: Phaser.GameObjects.Image;
+  depth?: number;
 }
 
 export class TileManager {
@@ -35,13 +38,23 @@ export class TileManager {
     return this.tilemap;
   }
 
-  update(delta: number, playerY?: number): void {
-    if (playerY !== undefined)
+  update(delta: number, player?: { y: number; z: number }): void {
+    if (player)
       for (let i = 0; i < this.thresholds.length; i++) {
         const threshold = this.thresholds[i];
-        const isAbove = playerY > threshold.tileY;
-        const body = threshold.body.body as Phaser.Physics.Arcade.StaticBody;
-        body.enable = isAbove !== threshold.rendersAbove;
+
+        if (threshold.body) {
+          const isAbove = player.y > threshold.tileY;
+          const body = threshold.body.body as Phaser.Physics.Arcade.StaticBody;
+          body.enable = isAbove !== threshold.rendersAbove;
+        }
+
+        if (threshold.image && threshold.clearance !== undefined)
+          threshold.image.setDepth(
+            player.z > threshold.clearance
+              ? (threshold.depth ?? 0)
+              : 1000 + threshold.tileY,
+          );
       }
 
     const cam = this.tilemap.scene.cameras.main;
@@ -133,6 +146,7 @@ export class TileManager {
     );
 
     for (const threshold of this.thresholds) {
+      if (!threshold.body) continue;
       const body = threshold.body.body as Phaser.Physics.Arcade.StaticBody;
 
       const x0 = Math.floor(body.x / tileWidth);

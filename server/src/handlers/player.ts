@@ -58,6 +58,7 @@ export const player = {
           SpellName.SHARD,
           SpellName.SLASH,
           SpellName.LIGHTNING_STRIKE,
+          SpellName.ABSORB_LIFE
         ],
         inventory: saved?.data?.inventory ?? new Array(20).fill(null),
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [
@@ -282,12 +283,23 @@ export const player = {
     socket.to(`map:${to}`).emit(Event.PLAYER_CREATE, updated);
   },
 
-  transition: (data: Transition, io: Server, socket: Socket, world: World) => {
+  transition: async (
+    data: Transition,
+    io: Server,
+    socket: Socket,
+    world: World,
+  ) => {
     const p = world.players.getBySocketId(socket.id);
     if (!p) return;
 
-    const prev = p.map;
     const partyData = world.parties.getByPlayerId(p.id);
+
+    if (partyData && configs.maps[data.to].isInstanced) {
+      await handlers.party.descend(data, io, socket, world);
+      return;
+    }
+
+    const prev = p.map;
     const partyId = configs.maps[prev].isInstanced ? partyData?.id : undefined;
 
     player.transfer(

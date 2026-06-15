@@ -419,7 +419,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons1", row: 18, col: 13 },
     },
   },
-  [EntityName.DROP_OF_THE_BELLAN_TRAIL]: {
+  [EntityName.POTION1]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -441,7 +441,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons2", row: 4, col: 28 },
     },
   },
-  [EntityName.SUNGOLD_POTION]: {
+  [EntityName.POTION2]: {
     facing: Direction.DOWN,
     moving: [],
     components: [

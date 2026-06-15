@@ -34,6 +34,7 @@ export interface WanderBehaviorConfig {
 }
 
 export interface FleeBehaviorConfig {
+  flying?: boolean;
   repeat?: boolean;
 }
 

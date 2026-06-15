@@ -35,7 +35,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           recipes: [
             {
               tier: 1,
-              output: EntityName.DROP_OF_THE_BELLAN_TRAIL,
+              output: EntityName.POTION1,
               quantity: 1,
               ingredients: [
                 { item: EntityName.VIAL, quantity: 1 },
@@ -46,7 +46,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               tier: 1,
-              output: EntityName.SUNGOLD_POTION,
+              output: EntityName.POTION2,
               quantity: 1,
               ingredients: [
                 { item: EntityName.VIAL, quantity: 1 },

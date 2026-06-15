@@ -566,14 +566,27 @@
 - Add search behavior ✅
 - Entities can move through conditional collisions ✅
 - Add torches and ladders ✅
+- Add z-axis for jumping ✅
+
+#### 13.6.2026
+
+- Add absorb life spell ✅
+
+#### 15.6.2026
+
+- Add dungeon entrance ✅
+- Add party descend ✅
+- Add grouse, goat, orc2, goblin2 and hare ✅
+- Add flying state ✅
 
 ### In progress
-
-- Dungeon ambience
 
 ### Bugs
 
 - Ledge corners render above players
+- Dialogue ui stays open when leaving scene
+- Same item stacks don't stack
+- Projectiles don't respect collisions
 
 ### Backlog
 
@@ -592,10 +605,8 @@
 - Character customization ⭐
 
 - Ideas ⭐
-  - Add absorb life spell
   - Add reflect damage effect
   - Remove among player collisions
-  - Include physical body when jumping
   - Add console
 
 ## Economy

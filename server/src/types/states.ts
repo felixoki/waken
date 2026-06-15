@@ -2,6 +2,7 @@ export enum StateName {
   IDLE = "idle",
   WALKING = "walking",
   RUNNING = "running",
+  FLYING = "flying",
   JUMPING = "jumping",
   CASTING = "casting",
   SLASHING = "slashing",

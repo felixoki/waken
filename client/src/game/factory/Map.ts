@@ -2,6 +2,7 @@ import { MapName, TiledProperty } from "@server/types";
 import { Scene } from "../scenes/Scene";
 import { configs } from "@server/configs";
 import { Threshold } from "../managers/Tile";
+import { Entity } from "../Entity";
 
 export class MapFactory {
   static create(
@@ -50,6 +51,14 @@ export class MapFactory {
           (prop) => prop.name === "collides" && prop.value === true,
         );
 
+        const clearanceProp = properties?.find(
+          (prop) => prop.name === "clearance",
+        );
+        const layerClearance =
+          typeof clearanceProp?.value === "number"
+            ? clearanceProp.value
+            : undefined;
+
         const rendersAbove = properties?.some(
           (prop) => prop.name === "rendersAbove" && prop.value === true,
         );
@@ -60,10 +69,11 @@ export class MapFactory {
 
         if (hasCollision) {
           layer.setCollisionByExclusion([-1, 0]);
-          this.createCollisions(scene, layer, thresholds);
+          this.createCollisions(scene, layer, thresholds, depth, layerClearance);
         }
 
-        layer.setDepth(rendersAbove ? 10000 + depth : depth);
+        if (rendersAbove) layer.setDepth(10000 + depth);
+        else layer.setDepth(depth);
       }
 
       if (rawLayer.type === "objectgroup") {
@@ -129,9 +139,23 @@ export class MapFactory {
     scene: Scene,
     layer: Phaser.Tilemaps.TilemapLayer,
     thresholds: Threshold[],
+    depth: number,
+    layerClearance?: number,
   ): void {
     const tiles = layer.getTilesWithin().filter((t) => t.collides);
     let bodies = 0;
+
+    const process = (a: any, b: any): boolean => {
+      const entity = (a instanceof Entity ? a : b) as Entity;
+      const rect = (
+        a instanceof Entity ? b : a
+      ) as Phaser.GameObjects.Rectangle;
+      const clearance = rect.getData("clearance");
+
+      if (typeof clearance !== "number") return true;
+      
+      return entity.z <= clearance;
+    };
 
     tiles.forEach((tile) => {
       const tileset = tile.tileset;
@@ -143,6 +167,7 @@ export class MapFactory {
       if (!data?.objectgroup?.objects) return;
 
       let isThreshold = false;
+      const tileThresholds: Threshold[] = [];
 
       data.objectgroup.objects.forEach((obj: any) => {
         const worldX = tile.pixelX + (obj.x || 0);
@@ -164,31 +189,54 @@ export class MapFactory {
         rect.setVisible(false);
         scene.physics.add.existing(rect, true);
 
+        const clearance = obj.properties?.find(
+          (p: any) => p.name === "clearance",
+        );
+        const tileClearance =
+          clearance !== undefined ? clearance.value : layerClearance;
+        if (typeof tileClearance === "number")
+          rect.setData("clearance", tileClearance);
+
         if (rendersAbove !== undefined) {
           isThreshold = true;
 
           scene.physics.add.collider(
             scene.managers.physics.groups.players,
             rect,
+            undefined,
+            process,
           );
           scene.physics.add.collider(
             scene.managers.physics.groups.entities,
             rect,
+            undefined,
+            process,
           );
 
           thresholds.push({
             body: rect,
             tileY: tile.pixelY,
             rendersAbove: rendersAbove.value,
+            clearance:
+              typeof tileClearance === "number" ? tileClearance : undefined,
           });
+
+          tileThresholds.push(thresholds[thresholds.length - 1]);
 
           return;
         }
 
-        scene.physics.add.collider(scene.managers.physics.groups.players, rect);
+        scene.physics.add.collider(
+          scene.managers.physics.groups.players,
+          rect,
+          undefined,
+          process,
+        );
         scene.physics.add.collider(
           scene.managers.physics.groups.entities,
           rect,
+          undefined,
+          process,
         );
 
         bodies++;
@@ -207,6 +255,11 @@ export class MapFactory {
         image.setOrigin(0, 0);
         image.setDepth(1000 + tile.pixelY);
         tile.setVisible(false);
+
+        for (const t of tileThresholds) {
+          t.image = image;
+          t.depth = depth;
+        }
       }
     });
   }
