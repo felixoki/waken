@@ -92,8 +92,9 @@ export const generation = {
     width: number,
     height: number,
     predicate: (x: number, y: number) => boolean,
+    maxRadius: number = Math.max(width, height),
   ): { x: number; y: number } | null => {
-    for (let radius = 0; radius < Math.max(width, height); radius++)
+    for (let radius = 0; radius <= maxRadius; radius++)
       for (let dy = -radius; dy <= radius; dy++)
         for (let dx = -radius; dx <= radius; dx++) {
           if (Math.abs(dx) !== radius && Math.abs(dy) !== radius) continue;

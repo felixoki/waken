@@ -104,12 +104,19 @@ export class EntitySpawner {
     const count = min + (hash % (max - min + 1));
 
     for (let i = 0; i < count; i++) {
-      const spot = gen.spiralSearch(x, y, width, height, (sx, sy) => {
-        if (Math.abs(sx - x) + Math.abs(sy - y) > radius) return false;
-        const index = gen.toIndex(sx, sy, width);
-        if (occupied.has(index)) return false;
-        return rule.terrain.includes(terrain[index]);
-      });
+      const spot = gen.spiralSearch(
+        x,
+        y,
+        width,
+        height,
+        (sx, sy) => {
+          if (Math.abs(sx - x) + Math.abs(sy - y) > radius) return false;
+          const index = gen.toIndex(sx, sy, width);
+          if (occupied.has(index)) return false;
+          return rule.terrain.includes(terrain[index]);
+        },
+        radius,
+      );
 
       if (!spot) break;
 
@@ -139,7 +146,7 @@ export class EntitySpawner {
     const rng = gen.seededRandom(gen.hash(`${this.seed}-${r}`));
 
     const candidates: { x: number; y: number }[] = [];
-    
+
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++) {
         const index = gen.toIndex(x, y, width);
