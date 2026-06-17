@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import EventBus from "../game/EventBus";
-import { Event } from "@server/types";
+import { Event, MapName } from "@server/types";
 
 const FADE_MS = 300;
 const TIP_MS = 10_000;
+
+const backdrops: Partial<Record<MapName, string>> = {
+  [MapName.FOREST]: "forest_glade.png",
+  [MapName.DUNGEON]: "dungeon_corridor.png",
+};
 
 const tips = [
   "Shadow wanderers will only strike if you attack first.",
@@ -23,13 +28,15 @@ export function Loading() {
   const [visible, setVisible] = useState(true);
   const [showTips, setShowTips] = useState(false);
   const [tip, setTip] = useState(randomTip);
+  const [map, setMap] = useState<MapName>(MapName.FOREST);
   const interval = useRef<ReturnType<typeof setInterval>>();
 
   useEffect(() => {
-    const show = (opts?: { tips?: boolean }) => {
+    const show = (opts?: { tips?: boolean; map?: MapName }) => {
       const hasTips = opts?.tips === true;
       setShowTips(hasTips);
       if (hasTips) setTip(randomTip());
+      if (opts?.map) setMap(opts.map);
       setVisible(true);
     };
 
@@ -61,7 +68,7 @@ export function Loading() {
         transition: `opacity ${FADE_MS}ms ease-in-out`,
         pointerEvents: visible ? "auto" : "none",
         backgroundImage: showTips
-          ? "url('./assets/images/forest_glade.png')"
+          ? `url('./assets/images/${backdrops[map] ?? "forest_glade.png"}')`
           : undefined,
       }}
     >

@@ -645,7 +645,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         choices: [
           {
-            text: "When what comes back?",
+            text: {
+              [Mood.HAPPY]: "Long may it last.",
+              [Mood.HUNGRY]: "When what comes back?",
+            },
             next: NodeId.STORY,
           },
           {
@@ -656,7 +659,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.STORY]: {
         text: {
           [Mood.HAPPY]:
-            "Oh, nothing today. It only finds me when I'm hungry, isn't that strange? A full belly seems to keep it at bay.",
+            "That would be almost too much to ask for.",
           [Mood.HUNGRY]:
             "There's something lurking in the darkness. Last night a hand reached up through the floor and grabbed for my ankle. I woke with my heart in my throat. *shivers* I really should eat something.",
         },

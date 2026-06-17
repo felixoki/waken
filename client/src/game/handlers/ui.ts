@@ -1,10 +1,10 @@
-import { Event } from "@server/types";
+import { Event, MapName } from "@server/types";
 import EventBus from "../EventBus";
 import type { MainScene } from "../scenes/Main";
 
 export const ui = {
   backdrop: {
-    show: (opts?: { tips?: boolean }): void => {
+    show: (opts?: { tips?: boolean; map?: MapName }): void => {
       EventBus.emit(Event.LOADING_SHOW, opts);
     },
 

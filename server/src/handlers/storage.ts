@@ -237,6 +237,40 @@ export const storage = {
       return;
     }
 
+    if (!zone.source.readonly && value.target !== null) {
+      const from = storage.unwrap(source.zone, value.source);
+      const into = storage.unwrap(target.zone, value.target);
+
+      if (from.type === SlotType.ENTITY && into.type === SlotType.ENTITY) {
+        const fromItem = from.core as Item;
+        const intoItem = into.core as Item;
+
+        if (
+          fromItem.name === intoItem.name &&
+          fromItem.stackable &&
+          intoItem.stackable &&
+          intoItem.quantity < MAX_STACK
+        ) {
+          const moved = Math.min(MAX_STACK - intoItem.quantity, fromItem.quantity);
+
+          intoItem.quantity += moved;
+          fromItem.quantity -= moved;
+
+          if (fromItem.quantity === 0) src.slots[src.index] = null;
+
+          zone.source.sync(socket, player, source, world);
+
+          const same =
+            source.zone === target.zone && source.entityId === target.entityId;
+
+          if (!zone.target.readonly && !same)
+            zone.target.sync(socket, player, target, world);
+
+          return;
+        }
+      }
+    }
+
     const core = storage.unwrap(source.zone, value.source).core;
     const wrapped = storage.wrap(target.zone, core, type);
 

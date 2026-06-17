@@ -579,13 +579,22 @@
 - Add grouse, goat, orc2, goblin2 and hare ✅
 - Add flying state ✅
 
+#### 17.6.2026
+
+- Add sounds ✅
+- Dialogue choices don't depend on mood ✅
+- Dialogue ui stays open when leaving scene ✅
+- Same item stacks don't stack ✅
+- Add dungeon loading screen ✅
+
 ### In progress
+
+- Refine cutting trees
+- Refine farming
 
 ### Bugs
 
 - Ledge corners render above players
-- Dialogue ui stays open when leaving scene
-- Same item stacks don't stack
 - Projectiles don't respect collisions
 
 ### Backlog

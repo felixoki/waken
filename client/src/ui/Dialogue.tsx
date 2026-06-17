@@ -59,8 +59,8 @@ export const Dialogue = () => {
   }, []);
 
   useEffect(() => {
-    const handler = (entityId: string) => {
-      if (data?.entityId === entityId) {
+    const handler = (entityId?: string) => {
+      if (!entityId || data?.entityId === entityId) {
         setIsOpen(false);
         setData(null);
       }

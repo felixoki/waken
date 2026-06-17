@@ -4,6 +4,7 @@ import { World } from "../World";
 import { handlers } from ".";
 import {
   BehaviorName,
+  ChoiceId,
   ComponentName,
   Direction,
   DialogueEffectName,
@@ -150,13 +151,21 @@ export const dialogue = {
 
     const text = dialogue.resolve.text(node.text, mood);
 
-    const choices = (node.choices || [])
-      .map((choice) => dialogue.resolve.choice(choice))
-      .filter((choice) => choice !== null)
+    const resolved = (node.choices || [])
       .map((choice) => ({
-        text: choice!.text,
-        next: choice!.next,
-        effects: choice!.effects,
+        isGoodbye: "ref" in choice && choice.ref === ChoiceId.GOODBYE,
+        choice: dialogue.resolve.choice(choice),
+      }))
+      .filter((entry) => entry.choice !== null);
+
+    const goodbye = resolved.find((entry) => entry.isGoodbye)?.choice ?? null;
+
+    const choices = resolved
+      .filter((entry) => !entry.isGoodbye)
+      .map((entry) => ({
+        text: dialogue.resolve.text(entry.choice!.text, mood),
+        next: entry.choice!.next,
+        effects: entry.choice!.effects,
       }));
 
     const collectorConfig = definition.components?.find(
@@ -202,6 +211,13 @@ export const dialogue = {
           ],
         });
     }
+
+    if (goodbye)
+      choices.push({
+        text: dialogue.resolve.text(goodbye.text, mood),
+        next: goodbye.next,
+        effects: goodbye.effects,
+      });
 
     socket.emit(Event.ENTITY_DIALOGUE_RESPONSE, {
       entityId,

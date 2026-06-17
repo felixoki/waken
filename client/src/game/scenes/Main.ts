@@ -610,8 +610,8 @@ export class MainScene extends Phaser.Scene {
     /**
      * Party
      */
-    this.managers.socket.on(Event.PARTY_START_LOADING, () => {
-      handlers.ui.backdrop.show({ tips: true });
+    this.managers.socket.on(Event.PARTY_START_LOADING, (map: MapName) => {
+      handlers.ui.backdrop.show({ tips: true, map });
     });
 
     this.managers.socket.on(

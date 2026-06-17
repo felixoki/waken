@@ -309,8 +309,9 @@ export const party = {
     data.depth = 0;
     data.status = PartyStatus.IN_GAME;
 
-    socket.emit(Event.PARTY_START_LOADING);
-    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING);
+    const map = levels[data.depth].map;
+    socket.emit(Event.PARTY_START_LOADING, map);
+    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING, map);
 
     const ok = await party.enter(io, world, data);
 
@@ -340,8 +341,9 @@ export const party = {
     const prevMap = levels[data.depth].map;
     data.depth += 1;
 
-    socket.emit(Event.PARTY_START_LOADING);
-    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING);
+    const map = levels[data.depth].map;
+    socket.emit(Event.PARTY_START_LOADING, map);
+    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING, map);
 
     const ok = await party.enter(io, world, data);
 
