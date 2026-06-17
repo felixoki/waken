@@ -8,6 +8,7 @@ import { Dialogue } from "./dialogue";
 import { SpellName } from "./spells";
 import { WeaponName } from "./weapons";
 import { Effect, EffectName } from "./effects.js";
+import { SoundName } from "./sounds";
 
 export interface AttackConfig {
   state: StateName;
@@ -18,6 +19,7 @@ export interface AttackConfig {
   range?: number;
   minRange?: number;
   cooldown?: number;
+  sound?: SoundName;
 }
 
 export interface EntityConfig {

@@ -1,4 +1,4 @@
-import { SpellConfig, SpellName } from "../types";
+import { SpellConfig, SpellName, SoundName } from "../types";
 import { DamageType } from "../types/damage.js";
 import { EffectName } from "../types/effects.js";
 
@@ -10,6 +10,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     mana: 10,
     speed: 300,
     range: 300,
+    sounds: { impact: SoundName.SHARD_HIT },
     hitbox: {
       width: 10,
       height: 10,
@@ -18,6 +19,10 @@ export const spells: Record<SpellName, SpellConfig> = {
       duration: 1000,
       min: 0.25,
       max: 1,
+      sounds: {
+        charge: SoundName.SHARD_CHARGE,
+        hold: SoundName.SHARD_HOLD,
+      },
     },
     metadata: {
       description:
@@ -28,6 +33,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.SLASH]: {
     name: SpellName.SLASH,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.PHYSICAL, amount: 30 },
     knockback: 100,
     mana: 15,
@@ -60,6 +66,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.ILLUMINATE]: {
     name: SpellName.ILLUMINATE,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 5,
@@ -71,6 +78,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.HURT_SHADOWS]: {
     name: SpellName.HURT_SHADOWS,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.ILLUMINATED, amount: 90 },
     knockback: 0,
     mana: 30,
@@ -86,6 +94,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.METEOR_SHOWER]: {
     name: SpellName.METEOR_SHOWER,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.BURNING, amount: 35 },
     knockback: 80,
     mana: 25,
@@ -104,6 +113,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.BUTTERFLY_EFFIGY]: {
     name: SpellName.BUTTERFLY_EFFIGY,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.PHYSICAL, amount: 10 },
     knockback: 15,
     mana: 20,
@@ -120,6 +130,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.LIGHTNING_STRIKE]: {
     name: SpellName.LIGHTNING_STRIKE,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.PHYSICAL, amount: 150 },
     knockback: 120,
     mana: 90,
@@ -137,6 +148,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.GRASP]: {
     name: SpellName.GRASP,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.PHYSICAL, amount: 60 },
     knockback: 0,
     mana: 1,
@@ -154,6 +166,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.ABSORB_LIFE]: {
     name: SpellName.ABSORB_LIFE,
+    sounds: { cast: SoundName.SLASH },
     damage: { type: DamageType.PHYSICAL, amount: 25 },
     knockback: 0,
     mana: 35,

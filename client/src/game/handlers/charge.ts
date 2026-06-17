@@ -12,6 +12,7 @@ interface ChargeState {
   entity: Entity;
   active: boolean;
   updateListener: () => void;
+  sound: Phaser.Sound.WebAudioSound | null;
 }
 
 const charges = new Map<string, ChargeState>();
@@ -121,6 +122,12 @@ export const charge = {
       if (s?.active) updateCharge(s);
     };
 
+    const sound = entity.scene.managers.sound;
+    const position = { x: entity.x, y: entity.y };
+
+    if (config.charge)
+      sound.play.sfx(config.charge.sounds.charge, { position });
+
     const state: ChargeState = {
       startTime: entity.scene.time.now,
       config,
@@ -131,6 +138,9 @@ export const charge = {
       entity,
       active: true,
       updateListener,
+      sound: config.charge
+        ? sound.play.loop(config.charge.sounds.hold, { position })
+        : null,
     };
 
     charges.set(entity.id, state);
@@ -155,8 +165,13 @@ export const charge = {
 
     state.active = false;
     entity.scene.events.off("update", state.updateListener);
+
     state.emitter.stop();
     state.emberEmitter.stop();
+
+    state.sound?.stop();
+    state.sound?.destroy();
+    
     entity.scene.time.delayedCall(400, () => {
       state.emitter.destroy();
       state.emberEmitter.destroy();

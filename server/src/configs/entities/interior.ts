@@ -4,6 +4,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  SoundName,
 } from "../../types";
 
 export const interior: Partial<Record<EntityName, EntityDefinition>> = {
@@ -384,6 +385,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           autoplay: true,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.FIRE, loop: true },
+      },
     ],
     states: [],
     behaviors: [],
@@ -530,6 +535,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           repeat: -1,
           autoplay: true,
         },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.FIRE, loop: true },
       },
     ],
     states: [],

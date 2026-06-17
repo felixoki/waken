@@ -1,4 +1,9 @@
-import { ComponentName, SpellConfig, SpellName } from "@server/types";
+import {
+  ComponentName,
+  SpellConfig,
+  SpellName,
+  SoundName,
+} from "@server/types";
 import { Entity } from "../Entity";
 import { Projectile } from "../Projectile";
 import { Hitbox } from "../Hitbox";
@@ -27,6 +32,10 @@ export const spells: Record<SpellName, SpellHandler> = {
       direction,
       config,
     );
+
+    entity.scene.managers.sound.play.sfx(SoundName.SHARD_LAUNCH, {
+      position: { x: projectile.x, y: projectile.y },
+    });
 
     const { main, embers } = vfx.emitters.shard(
       entity.scene,

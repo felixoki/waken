@@ -7,9 +7,11 @@ import { DamageType } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { SpellName } from "./spells";
 import { TrapConfig } from "./traps";
+import { AmbientSoundConfig } from "./sounds";
 
 export enum ComponentName {
   ANIMATION = "animation",
+  AMBIENT_SOUND = "ambientSound",
   AURA = "aura",
   BEHAVIOR_QUEUE = "behaviorQueue",
   BODY = "body",
@@ -41,6 +43,7 @@ export enum ComponentName {
 
 export type ComponentConfig =
   | { name: ComponentName.ANIMATION }
+  | { name: ComponentName.AMBIENT_SOUND; config: AmbientSoundConfig }
   | { name: ComponentName.AURA; config: AuraConfig }
   | { name: ComponentName.BEHAVIOR_QUEUE }
   | { name: ComponentName.BODY; config: BodyConfig }

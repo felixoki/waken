@@ -7,6 +7,7 @@ import {
   SpellName,
   StateName,
   WeaponName,
+  SoundName,
 } from "../../types";
 import { DamageType } from "../../types/damage.js";
 
@@ -48,6 +49,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.ORC_IDLE, interval: [5000, 12000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -61,6 +66,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 30 },
         range: 40,
+        sound: SoundName.ORC_SLASH,
       },
     ],
     behaviors: [
@@ -115,6 +121,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.ORC_IDLE, interval: [5000, 12000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -128,6 +138,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 50 },
         range: 40,
+        sound: SoundName.ORC_SLASH,
       },
     ],
     behaviors: [
@@ -182,6 +193,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GOBLIN_IDLE, interval: [4000, 9000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -195,6 +210,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 12 },
         range: 40,
+        sound: SoundName.GOBLIN_SLASH,
       },
     ],
     behaviors: [
@@ -249,6 +265,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GOBLIN_IDLE, interval: [4000, 9000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -262,6 +282,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 24 },
         range: 40,
+        sound: SoundName.GOBLIN_SLASH,
       },
     ],
     behaviors: [
@@ -381,6 +402,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           offsetY: 22,
           pushable: false,
         },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.SHADOW_WANDERER_IDLE, interval: [5000, 12000] },
       },
     ],
     states: [

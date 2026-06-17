@@ -27,6 +27,7 @@ import { StorageComponent } from "../components/Storage";
 import { FollowComponent } from "../components/Follow";
 import { TrapComponent } from "../components/Trap";
 import { JumpableComponent } from "../components/Jumpable";
+import { AmbientSoundComponent } from "../components/AmbientSound";
 
 export class ComponentFactory {
   static create(
@@ -120,6 +121,9 @@ export class ComponentFactory {
           break;
         case ComponentName.JUMPABLE:
           comp = new JumpableComponent(entity, component.config);
+          break;
+        case ComponentName.AMBIENT_SOUND:
+          comp = new AmbientSoundComponent(entity, component.config);
           break;
       }
 

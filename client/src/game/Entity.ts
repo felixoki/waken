@@ -32,7 +32,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public flash?: Phaser.Tweens.Tween;
   public z: number = 0;
   public clearance?: number;
-  
+
   protected lastInput: Partial<Input> | null = null;
   protected depthY: number = 0;
 

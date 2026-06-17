@@ -8,6 +8,7 @@ import {
   EntityName,
   StateName,
   WeaponName,
+  SoundName,
 } from "../../types";
 
 export const animals: Partial<Record<EntityName, EntityDefinition>> = {
@@ -41,6 +42,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.BOAR_IDLE, interval: [4000, 9000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -54,6 +59,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 15 },
         range: 40,
+        sound: SoundName.BOAR_SLASH,
       },
     ],
     behaviors: [
@@ -89,6 +95,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.DUCK_IDLE, interval: [5000, 12000] },
+      },
     ],
     states: [StateName.IDLE, StateName.WALKING],
     behaviors: [
@@ -115,6 +125,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           offsetY: 12,
           pushable: false,
         },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.DUCK_IDLE, interval: [5000, 12000] },
       },
     ],
     states: [StateName.IDLE, StateName.WALKING],
@@ -215,6 +229,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GROUSE_IDLE, interval: [6000, 14000] },
+      },
     ],
     states: [StateName.IDLE, StateName.WALKING, StateName.FLYING],
     behaviors: [
@@ -258,6 +276,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.DEER_IDLE, interval: [6000, 14000] },
+      },
     ],
     states: [StateName.IDLE, StateName.WALKING, StateName.RUNNING],
     behaviors: [
@@ -288,6 +310,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GOOSE_IDLE, interval: [5000, 12000] },
+      },
     ],
     states: [StateName.IDLE, StateName.WALKING],
     behaviors: [
@@ -314,6 +340,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           offsetY: 12,
           pushable: false,
         },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GOAT_IDLE, interval: [5000, 12000] },
       },
     ],
     states: [StateName.IDLE, StateName.WALKING],

@@ -1,6 +1,7 @@
-import { Damage } from './damage.js';
-import { EffectName } from './effects.js';
-import { Icon } from './entities.js';
+import { Damage } from "./damage.js";
+import { EffectName } from "./effects.js";
+import { Icon } from "./entities.js";
+import { SoundName } from "./sounds.js";
 
 export enum SpellName {
   SHARD = "shard",
@@ -29,6 +30,7 @@ export interface ChargeConfig {
   duration: number;
   min: number;
   max: number;
+  sounds: { charge: SoundName; hold: SoundName };
 }
 
 export interface SpellConfig {
@@ -49,6 +51,7 @@ export interface SpellConfig {
   combo?: ComboStep[];
   charge?: ChargeConfig;
   chargePercent?: number;
+  sounds: { cast?: SoundName; impact?: SoundName };
   metadata?: SpellMetadata;
 }
 

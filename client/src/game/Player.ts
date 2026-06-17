@@ -5,6 +5,7 @@ import {
   StateName,
   EntityName,
   ComponentName,
+  SoundName,
 } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
@@ -17,6 +18,7 @@ import { BodyComponent } from "./components/Body";
 import { InventoryComponent } from "./components/Inventory";
 import { HotbarComponent } from "./components/Hotbar";
 import { DamageableComponent } from "./components/Damageable";
+import { FOOTSTEP_DISTANCE } from "@server/globals";
 
 export class Player extends Entity {
   public socketId: string;
@@ -24,6 +26,8 @@ export class Player extends Entity {
   public isControllable: boolean;
   public isTransitioning: boolean = false;
   public inputManager?: InputManager;
+
+  private stepAccumulator: number = 0;
 
   constructor(
     scene: Scene,
@@ -75,6 +79,8 @@ export class Player extends Entity {
     this.components.forEach((component) => component.update());
 
     this.inputManager?.update();
+
+    if (this.isControllable) this._footsteps();
 
     const input = remoteInput || this._getInput();
 
@@ -141,6 +147,29 @@ export class Player extends Entity {
     if (depthY !== this.depthY) {
       this.depthY = depthY;
       this.setDepth(1000 + this.y);
+    }
+  }
+
+  private _footsteps(): void {
+    if (
+      this.state !== StateName.WALKING &&
+      this.state !== StateName.RUNNING
+    ) {
+      this.stepAccumulator = 0;
+      return;
+    }
+
+    const body = this.body as Phaser.Physics.Arcade.Body;
+    if (!body) return;
+
+    const speed = body.velocity.length();
+    if (speed < 1) return;
+
+    this.stepAccumulator += speed * (this.scene.game.loop.delta / 1000);
+
+    if (this.stepAccumulator >= FOOTSTEP_DISTANCE) {
+      this.stepAccumulator -= FOOTSTEP_DISTANCE;
+      this.scene.managers.sound.play.sfx(SoundName.FOOTSTEP);
     }
   }
 

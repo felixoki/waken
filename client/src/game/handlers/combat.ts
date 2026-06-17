@@ -99,15 +99,25 @@ export const combat = {
       attacker: entity.scene.managers.players?.get(hitbox.ownerId),
     };
 
-    if (
-      hitbox.ownerId === entity.id ||
-      hitbox.hits.has(entity.id) ||
-      !isAuthority ||
-      (player.target && player.attacker) ||
-      (!hitbox.hazard && !player.target && !player.attacker) ||
-      !entity.hasComponent(ComponentName.DAMAGEABLE)
-    )
-      return;
+    const valid =
+      hitbox.ownerId !== entity.id &&
+      !(player.target && player.attacker) &&
+      (hitbox.hazard || !!player.target || !!player.attacker) &&
+      entity.hasComponent(ComponentName.DAMAGEABLE);
+
+    if (!valid) return;
+
+    const sound = (hitbox.config as SpellConfig).sounds?.impact;
+
+    if (sound && !hitbox.impacts.has(entity.id)) {
+      hitbox.impacts.add(entity.id);
+    
+      entity.scene.managers.sound.play.sfx(sound, {
+        position: { x: hitbox.x, y: hitbox.y },
+      });
+    }
+
+    if (!isAuthority || hitbox.hits.has(entity.id)) return;
 
     hitbox.hits.add(entity.id);
 

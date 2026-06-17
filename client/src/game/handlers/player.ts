@@ -7,6 +7,7 @@ import {
   MapName,
   PlayerConfig,
   StateName,
+  SoundName,
 } from "@server/types";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
@@ -181,6 +182,8 @@ export const player = {
 
     main.managers.players.player.isLocked = true;
     main.managers.players.player.isTransitioning = true;
+
+    main.managers.sound.play.sfx(SoundName.DOOR);
 
     handlers.ui.backdrop.show();
 

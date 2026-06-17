@@ -46,6 +46,11 @@ export class Slashing implements State {
           (a) => a.state === StateName.SLASHING,
         );
 
+        if (attack?.sound)
+          entity.scene.managers.sound.play.sfx(attack.sound, {
+            position: { x: entity.x, y: entity.y },
+          });
+
         const config: WeaponConfig = {
           ...weapon,
           ...(attack?.damage && { damage: attack.damage }),

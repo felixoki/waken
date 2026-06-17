@@ -94,6 +94,11 @@ export const FISHING_LANDING_DISTANCE = 16;
 /** Sounds */
 
 export const CROSSFADE_DURATION = 1000;
+export const FOOTSTEP_DISTANCE = 30;
+
+export const SFX_FALLOFF_NEAR = 80;
+export const SFX_FALLOFF_FAR = 480;
+export const SFX_MAX_PAN = 0.6;
 
 /** Stats */
 export const MAX_HEALTH = 100;

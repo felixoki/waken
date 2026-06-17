@@ -26,9 +26,12 @@ import {
   Slot,
   SlotType,
   SlotReference,
+  SlotZone,
+  SoundName,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
+import { configs } from "@server/configs";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
@@ -385,6 +388,7 @@ export class MainScene extends Phaser.Scene {
 
     this.game.events.on(Event.ENTITY_PICKUP, (data: string) => {
       this.managers.socket.emit(Event.ENTITY_PICKUP, data);
+      this.managers.sound.play.sfx(SoundName.PICKUP);
     });
 
     this.game.events.on(Event.ENTITY_PLANT, (data: any) => {
@@ -486,6 +490,7 @@ export class MainScene extends Phaser.Scene {
 
     EventBus.on(Event.ITEM_CONSUME, (data: { name: string }) => {
       this.managers.socket.emit(Event.ITEM_CONSUME, data);
+      this.managers.sound.play.sfx(SoundName.DRINK);
     });
 
     EventBus.on(
@@ -496,6 +501,12 @@ export class MainScene extends Phaser.Scene {
         type: SlotType;
       }) => {
         this.managers.socket.emit(Event.SLOT_MOVE, data);
+
+        if (
+          data.target.zone === SlotZone.HOTBAR &&
+          data.source.zone !== SlotZone.HOTBAR
+        )
+          this.managers.sound.play.sfx(SoundName.EQUIP);
       },
     );
 
@@ -548,6 +559,7 @@ export class MainScene extends Phaser.Scene {
       Event.COLLECTOR_CRAFT,
       (data: { entityId: string; output: string }) => {
         this.managers.socket.emit(Event.COLLECTOR_CRAFT, data);
+        this.managers.sound.play.sfx(SoundName.COLLECT);
       },
     );
 
@@ -590,6 +602,9 @@ export class MainScene extends Phaser.Scene {
 
     this.game.events.on(Event.PLAYER_CAST, (spell: string) => {
       this.managers.socket.emit(Event.PLAYER_CAST, spell);
+
+      const sound = configs.spells[spell as SpellName]?.sounds?.cast;
+      if (sound) this.managers.sound.play.sfx(sound);
     });
 
     /**

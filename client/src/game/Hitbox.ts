@@ -3,6 +3,7 @@ import { Scene } from "./scenes/Scene";
 
 export class Hitbox extends Phaser.GameObjects.Rectangle {
   public hits = new Set<string>();
+  public impacts = new Set<string>();
   public ownerId: string;
   public config: CombatConfig;
   public clearance?: number;

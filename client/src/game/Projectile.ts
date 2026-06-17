@@ -1,7 +1,6 @@
 import { SpellConfig } from "@server/types";
 import { Hitbox } from "./Hitbox";
 import { Scene } from "./scenes/Scene";
-
 export class Projectile extends Hitbox {
   private start: { x: number; y: number };
   private range: number;

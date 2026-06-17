@@ -22,6 +22,6 @@ export default class VillageScene extends Scene {
 
     this.cameraManager.fitZoom();
 
-    this.managers.sound.play.music(MusicName.OBLIVION);
+    this.managers.sound.play.music(MusicName.SWEET_VILLAGE);
   }
 }
