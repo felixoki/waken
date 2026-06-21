@@ -14,6 +14,7 @@ import { FishingHutScene } from "./scenes/FishingHut";
 import { FarmScene } from "./scenes/Farm";
 import ForestScene from "./scenes/Forest";
 import DungeonScene from "./scenes/Dungeon";
+import IslesScene from "./scenes/Isles";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -36,6 +37,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     FishingHutScene,
     FarmScene,
     DungeonScene,
+    IslesScene,
   ],
   physics: {
     default: "arcade",

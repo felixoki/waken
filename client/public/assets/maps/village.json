@@ -11158,70 +11158,37 @@
                  "y":64
                 }, 
                 {
-                 "height":3.50646504492659,
-                 "id":1479,
-                 "name":"Goblin1",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":3.06815691431075,
-                 "x":608.809993425378,
-                 "y":944.554021477098
-                }, 
-                {
-                 "height":3.50646504492659,
-                 "id":1480,
-                 "name":"Goblin2",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":3.06815691431075,
-                 "x":624.589086127548,
-                 "y":944.554021477098
-                }, 
-                {
-                 "height":3.69776901269563,
-                 "id":1481,
-                 "name":"Boar",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":3.08147417724649,
-                 "x":785.159620362381,
-                 "y":494.884752865771
-                }, 
-                {
-                 "height":4.314063848145,
-                 "id":1482,
-                 "name":"Boar",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":3.08147417724638,
-                 "x":848.637988413657,
-                 "y":528.780968815481
-                }, 
-                {
-                 "height":3.08147417724638,
+                 "height":3.08147,
                  "id":1483,
                  "name":"Goat",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":3.08147417724638,
-                 "x":592.875631702206,
-                 "y":528.164673980032
+                 "width":3.08147,
+                 "x":592.876,
+                 "y":528.165
                 }, 
                 {
-                 "height":3.08147417724638,
+                 "height":3.08147,
                  "id":1484,
                  "name":"Goat",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":7.39553802539137,
-                 "x":255.146061876001,
-                 "y":449.278935042524
+                 "width":7.39554,
+                 "x":255.146,
+                 "y":449.279
+                }, 
+                {
+                 "height":2.58933195235636,
+                 "id":1485,
+                 "name":"Quartz_ore",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":3.62506473329881,
+                 "x":545.313309166235,
+                 "y":753.495598135681
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -11351,7 +11318,7 @@
          "y":0
         }],
  "nextlayerid":60,
- "nextobjectid":1485,
+ "nextobjectid":1486,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

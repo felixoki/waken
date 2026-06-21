@@ -6,6 +6,47 @@ import {
 } from "../../types";
 
 export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
+  [EntityName.QUARTZ_ORE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "crystals",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 22, end: 24 },
+            { row: 6, start: 22, end: 24 },
+            { row: 7, start: 22, end: 24 },
+          ],
+        },
+        key: "quartz_ore_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 16,
+          offsetX: 8,
+          offsetY: 28,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.MINEABLE,
+        config: { drop: { name: EntityName.QUARTZ1, quantity: 2 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Quartz Ore",
+      description: "A jagged outcrop studded with raw quartz.",
+    },
+  },
   [EntityName.ROCK1]: {
     facing: Direction.DOWN,
     moving: [],

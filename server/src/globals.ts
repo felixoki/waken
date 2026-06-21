@@ -47,6 +47,17 @@ export const DURATION_ROLLING = 600;
 export const DURATION_DASHING = 50;
 export const DURATION_SLASHING = 800;
 export const DURATION_THROWING = 1000;
+export const DURATION_FELLING = 600;
+export const RANGE_FELLING = 48;
+export const DURATION_MINING = 600;
+export const RANGE_MINING = 48;
+export const EXTRACTION_DAMAGE = 35;
+export const DURATION_EXTRACTION_BOUNCE = 800;
+export const RANGE_WATERING = 48;
+export const RANGE_PLANTING = 48;
+export const DURATION_RAKING = 600;
+export const DURATION_WATERING = 1500;
+export const DURATION_CROP_DEHYDRATION = 86_400_000;
 
 export const THROW_FRAME = 5;
 export const THROW_FRAMES_TOTAL = 10;

@@ -1,15 +1,21 @@
-import { ComponentName, EntityName, Event, SlotType, StateName } from "@server/types";
-import { RANGE_FELLING } from "@server/globals";
+import {
+  ComponentName,
+  EntityName,
+  Event,
+  SlotType,
+  StateName,
+} from "@server/types";
+import { RANGE_MINING } from "@server/globals";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
 import { HotbarComponent } from "./Hotbar";
 import { handlers } from "../handlers";
 import EventBus from "../EventBus";
 
-export class FellableComponent extends Component {
+export class MineableComponent extends Component {
   private entity: Entity;
 
-  public name = ComponentName.FELLABLE;
+  public name = ComponentName.MINEABLE;
 
   constructor(entity: Entity) {
     super();
@@ -17,7 +23,7 @@ export class FellableComponent extends Component {
   }
 
   attach(): void {
-    this.entity.on("pointed", this._fell, this);
+    this.entity.on("pointed", this._mine, this);
     EventBus.on(Event.HOTBAR_UPDATE, this._onHotbarUpdate, this);
 
     this._sync();
@@ -26,7 +32,7 @@ export class FellableComponent extends Component {
   update(): void {}
 
   detach(): void {
-    this.entity.off("pointed", this._fell, this);
+    this.entity.off("pointed", this._mine, this);
     EventBus.off(Event.HOTBAR_UPDATE, this._onHotbarUpdate, this);
   }
 
@@ -35,7 +41,7 @@ export class FellableComponent extends Component {
   };
 
   private _sync(): void {
-    if (this._isAxeEquipped()) {
+    if (this._isToolEquipped()) {
       this.entity.setInteractive();
       return;
     }
@@ -43,7 +49,7 @@ export class FellableComponent extends Component {
     this.entity.disableInteractive();
   }
 
-  private _isAxeEquipped(): boolean {
+  private _isToolEquipped(): boolean {
     const player = this.entity.scene.managers.players.player;
     if (!player) return false;
 
@@ -53,17 +59,17 @@ export class FellableComponent extends Component {
     return (
       !!slot &&
       slot.type === SlotType.ENTITY &&
-      slot.item.name === EntityName.AXE
+      slot.item.name === EntityName.PICKAXE
     );
   }
 
-  private _fell(): void {
+  private _mine(): void {
     const player = this.entity.scene.managers.players.player;
-    if (!player || player.isLocked || !this._isAxeEquipped()) return;
+    if (!player || player.isLocked || !this._isToolEquipped()) return;
 
     const dx = this.entity.x - player.x;
     const dy = this.entity.y - player.y;
-    if (Math.hypot(dx, dy) > RANGE_FELLING) return;
+    if (Math.hypot(dx, dy) > RANGE_MINING) return;
 
     const direction = handlers.direction.getDirectionToPoint(player, {
       x: this.entity.x,
@@ -79,6 +85,6 @@ export class FellableComponent extends Component {
       id: this.entity.id,
     };
 
-    player.transitionTo(StateName.FELLING);
+    player.transitionTo(StateName.MINING);
   }
 }

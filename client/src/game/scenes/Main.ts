@@ -37,6 +37,7 @@ import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
+import { GrowableComponent } from "../components/Growable";
 import { vfx } from "../vfx";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
@@ -92,6 +93,7 @@ export class MainScene extends Phaser.Scene {
       MapName.GLASSBLOWER_HOUSE,
       MapName.FISHING_HUT,
       MapName.FARM_HOUSE,
+      MapName.ISLES,
     ];
     const ready = new Set<string>();
 
@@ -289,6 +291,30 @@ export class MainScene extends Phaser.Scene {
       this.managers.entities.remove(data);
     });
 
+    this.managers.socket.on(
+      Event.EXTRACT_MATERIAL,
+      (data: { id: string; felled?: boolean }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (!entity) return;
+
+        if (data.felled)
+          vfx.shaders.bounce(entity, () =>
+            this.managers.entities.remove(data.id),
+          );
+        else vfx.shaders.bounce(entity);
+      },
+    );
+
+    this.managers.socket.on(Event.ENTITY_WATER, (data: { id: string }) => {
+      const entity = this.managers.entities.entities.get(data.id);
+      if (!entity) return;
+
+      const growable = entity.getComponent<GrowableComponent>(
+        ComponentName.GROWABLE,
+      );
+      growable?.water();
+    });
+
     this.managers.socket.on(Event.ENTITY_INPUT, (data: Partial<Input>) => {
       const entity = this.managers.entities.get(data.id!);
       entity?.update(data);
@@ -403,12 +429,24 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.ENTITY_FISH, data);
     });
 
+    this.game.events.on(Event.EXTRACT_MATERIAL, (data: { id: string }) => {
+      this.managers.socket.emit(Event.EXTRACT_MATERIAL, data);
+    });
+
+    this.game.events.on(Event.ENTITY_WATER, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_WATER, data);
+    });
+
     this.game.events.on(
-      Event.ENTITY_FELL,
-      (data: { id: string; x: number; y: number }) => {
-        this.managers.socket.emit(Event.ENTITY_FELL, data);
+      Event.ENTITY_GROW,
+      (data: { id: string; stage: number }) => {
+        this.managers.socket.emit(Event.ENTITY_GROW, data);
       },
     );
+
+    this.game.events.on(Event.ENTITY_WITHER, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_WITHER, data);
+    });
 
     this.game.events.on(
       Event.ENTITY_DIALOGUE_START,

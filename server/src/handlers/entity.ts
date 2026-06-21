@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
 import {
+  ComponentName,
   EntityConfig,
-  EntityName,
   Event,
   Input,
   Item,
@@ -11,6 +11,7 @@ import { randomUUID } from "crypto";
 import { World } from "../World";
 import { handlers } from ".";
 import { configs } from "../configs";
+import { DURATION_EXTRACTION_BOUNCE, EXTRACTION_DAMAGE } from "../globals";
 
 export const entity = {
   create: (
@@ -153,27 +154,63 @@ export const entity = {
     entity.remove(data, Event.ENTITY_DESPAWN, socket, io, world);
   },
 
-  fell: (
-    data: { id: string; x: number; y: number },
-    socket: Socket,
-    io: Server,
-    world: World,
-  ) => {
+  extract: (data: { id: string }, socket: Socket, io: Server, world: World) => {
     const target = world.entities.get(data.id);
     if (!target) return;
 
-    entity.remove(data.id, Event.ENTITY_DESTROY, socket, io, world, false);
+    const definition = configs.entities[target.name];
+    const extractable = definition?.components.find(
+      (component) =>
+        component.name === ComponentName.FELLABLE ||
+        component.name === ComponentName.MINEABLE,
+    );
+    if (!extractable) return;
 
-    const wood: Omit<EntityConfig, "id" | "createdAt"> = {
-      name: EntityName.WOOD,
-      map: target.map,
-      x: data.x,
-      y: data.y,
-      health: 1,
-      maxHealth: 1,
-      isLocked: false,
+    const health = target.health - EXTRACTION_DAMAGE;
+
+    if (health > 0) {
+      world.entities.update(data.id, { health });
+
+      handlers.broadcast.toChunk(
+        socket,
+        world,
+        Event.EXTRACT_MATERIAL,
+        data,
+        target.map,
+        target.x,
+        target.y,
+        false,
+      );
+
+      return;
+    }
+
+    entity.remove(data.id, Event.ENTITY_DESTROY, socket, io, world, false);
+    socket.emit(Event.EXTRACT_MATERIAL, { id: data.id, felled: true });
+
+    const drop = extractable.config.drop;
+
+    const spawn = () => {
+      for (let i = 0; i < drop.quantity; i++) {
+        const jitter = drop.quantity > 1 ? 10 : 0;
+
+        entity.create(
+          {
+            name: drop.name,
+            map: target.map,
+            x: target.x + (Math.random() * 2 - 1) * jitter,
+            y: target.y + (Math.random() * 2 - 1) * jitter,
+            health: 1,
+            maxHealth: 1,
+            isLocked: false,
+          },
+          socket,
+          io,
+          world,
+        );
+      }
     };
 
-    entity.create(wood, socket, io, world);
+    setTimeout(spawn, DURATION_EXTRACTION_BOUNCE);
   },
 };

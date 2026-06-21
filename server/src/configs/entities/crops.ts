@@ -5,6 +5,7 @@ import {
   EntityName,
   GrowthStage,
 } from "../../types";
+import { DAY } from "../../globals";
 
 export const crops: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.FARMPLOT]: {
@@ -88,7 +89,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               stage: GrowthStage.SPROUT,
-              at: 0.33,
+              at: 0.5,
               tiles: [
                 { row: 6, start: 2, end: 2 },
                 { row: 7, start: 2, end: 2 },
@@ -97,7 +98,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               stage: GrowthStage.MATURE,
-              at: 0.66,
+              at: 1.0,
               tiles: [
                 { row: 6, start: 3, end: 3 },
                 { row: 7, start: 3, end: 3 },
@@ -105,13 +106,12 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               offsetY: -8,
             },
           ],
-          duration: 9_000,
+          duration: 2 * DAY,
           yield: [{ name: EntityName.CARROT, quantity: 1, stackable: true }],
           regrows: false,
-          needsWater: false,
+          needsWater: true,
         },
       },
-      { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },
     ],
     states: [],
@@ -173,7 +173,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               stage: GrowthStage.SPROUT,
-              at: 0.33,
+              at: 0.5,
               tiles: [
                 { row: 2, start: 19, end: 20 },
                 { row: 3, start: 19, end: 20 },
@@ -182,7 +182,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               stage: GrowthStage.MATURE,
-              at: 0.66,
+              at: 1.0,
               tiles: [
                 { row: 1, start: 23, end: 24 },
                 { row: 2, start: 23, end: 24 },
@@ -191,13 +191,12 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               offsetY: -16,
             },
           ],
-          duration: 9_000,
+          duration: 2 * DAY,
           yield: [{ name: EntityName.TOMATO, quantity: 1, stackable: true }],
           regrows: false,
-          needsWater: false,
+          needsWater: true,
         },
       },
-      { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },
     ],
     states: [],
@@ -263,7 +262,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               stage: GrowthStage.SPROUT,
-              at: 0.33,
+              at: 0.5,
               tiles: [
                 { row: 4, start: 3, end: 4 },
                 { row: 5, start: 3, end: 4 },
@@ -272,7 +271,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               stage: GrowthStage.MATURE,
-              at: 0.66,
+              at: 1.0,
               tiles: [
                 { row: 4, start: 5, end: 6 },
                 { row: 5, start: 5, end: 6 },
@@ -280,13 +279,12 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               offsetY: -4,
             },
           ],
-          duration: 9_000,
+          duration: 2 * DAY,
           yield: [{ name: EntityName.CABBAGE, quantity: 1, stackable: true }],
           regrows: false,
-          needsWater: false,
+          needsWater: true,
         },
       },
-      { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },
     ],
     states: [],

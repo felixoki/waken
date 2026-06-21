@@ -10,6 +10,10 @@ import { Jumping } from "../state/Jumping";
 import { Rolling } from "../state/Rolling";
 import { Dead } from "../state/Dead";
 import { Fishing } from "../state/Fishing";
+import { Felling } from "../state/Felling";
+import { Mining } from "../state/Mining";
+import { Raking } from "../state/Raking";
+import { Watering } from "../state/Watering";
 import { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
 
@@ -68,6 +72,10 @@ export class PlayerManager {
         [StateName.CASTING, new Casting()],
         [StateName.ROLLING, new Rolling()],
         [StateName.FISHING, new Fishing()],
+        [StateName.FELLING, new Felling()],
+        [StateName.MINING, new Mining()],
+        [StateName.RAKING, new Raking()],
+        [StateName.WATERING, new Watering()],
         [StateName.DEAD, new Dead()],
       ]),
       config.socketId,

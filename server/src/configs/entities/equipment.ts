@@ -52,7 +52,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Hoe",
       description: "A worn iron hoe well-suited for breaking up soil.",
-      icon: { spritesheet: "icons2", row: 12, col: 10 },
+      icon: { spritesheet: "icons8", row: 10, col: 28 },
     },
   },
   [EntityName.FISHING_ROD]: {
@@ -68,6 +68,19 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons1", row: 6, col: 19 },
     },
   },
+  [EntityName.WATERING_CAN]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Watering can",
+      description:
+        "A tin watering can. Equip it to water young crops as they grow.",
+      icon: { spritesheet: "icons6", row: 1, col: 6 },
+    },
+  },
   [EntityName.AXE]: {
     facing: Direction.DOWN,
     moving: [],
@@ -78,6 +91,34 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Axe",
       description: "A heavy iron axe good for chopping wood.",
       icon: { spritesheet: "icons7", row: 20, col: 1 },
+    },
+  },
+  [EntityName.PICKAXE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 14, end: 15 },
+            { row: 10, start: 14, end: 15 },
+          ],
+        },
+        key: "pickaxe_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Pickaxe",
+      description: "A sturdy iron pickaxe for breaking rock and ore.",
+      icon: { spritesheet: "icons8", row: 10, col: 13 },
     },
   },
   [EntityName.LANTERN]: {

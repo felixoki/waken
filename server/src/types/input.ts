@@ -13,7 +13,7 @@ export interface Input {
   isJumping: boolean;
   isRolling: boolean;
   pointerdown: boolean;
-  target?: { x: number; y: number };
+  target?: { x: number; y: number; id?: string };
   state: StateName;
   equipped: Slot | null | undefined;
 }

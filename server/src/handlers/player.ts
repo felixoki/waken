@@ -82,8 +82,18 @@ export const player = {
               stackable: false,
             },
           },
-          null,
-          null,
+          {
+            type: SlotType.ENTITY,
+            item: { name: EntityName.PICKAXE, quantity: 1, stackable: false },
+          },
+          {
+            type: SlotType.ENTITY,
+            item: {
+              name: EntityName.WATERING_CAN,
+              quantity: 1,
+              stackable: false,
+            },
+          },
           null,
           null,
         ],

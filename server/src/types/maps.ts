@@ -9,6 +9,7 @@ export enum MapName {
   HOME = "home",
   FOREST = "forest",
   DUNGEON = "dungeon",
+  ISLES = "isles",
 }
 
 export interface MapConfig {

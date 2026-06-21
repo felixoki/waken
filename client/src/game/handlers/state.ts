@@ -33,6 +33,26 @@ export const state = {
         needsUpdate: false,
       },
       {
+        condition: () => input.state === StateName.FELLING,
+        state: () => StateName.FELLING,
+        needsUpdate: false,
+      },
+      {
+        condition: () => input.state === StateName.MINING,
+        state: () => StateName.MINING,
+        needsUpdate: false,
+      },
+      {
+        condition: () => input.state === StateName.RAKING,
+        state: () => StateName.RAKING,
+        needsUpdate: false,
+      },
+      {
+        condition: () => input.state === StateName.WATERING,
+        state: () => StateName.WATERING,
+        needsUpdate: false,
+      },
+      {
         condition: () =>
           !!input.target &&
           input.equipped?.type === SlotType.ENTITY &&

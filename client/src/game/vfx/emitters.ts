@@ -51,6 +51,32 @@ export const emitters = {
     return () => emitter.destroy();
   },
 
+  water: (
+    entity: Entity,
+    offset: { x: number; y: number },
+    angle: { min: number; max: number },
+  ): (() => void) => {
+    const emitter = entity.scene.add.particles(0, 0, "particle_circle", {
+      tint: [0x4aa6ff, 0x88ccff, 0xcdeeff],
+      alpha: { start: 0.85, end: 0 },
+      scale: { start: 0.18, end: 0.08 },
+      speed: { min: 12, max: 28 },
+      angle,
+      gravityY: 60,
+      lifespan: 900,
+      frequency: 220,
+      quantity: 1,
+      follow: entity,
+      followOffset: offset,
+    });
+    emitter.setDepth(entity.depth + 1);
+
+    return () => {
+      emitter.stop();
+      entity.scene.time.delayedCall(600, () => emitter.destroy());
+    };
+  },
+
   shard: (scene: Scene, x: number, y: number, chargePercent?: number) => {
     const power = chargePercent ?? 1;
     const emitter = scene.add.particles(x, y, "particle_circle", {

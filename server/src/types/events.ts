@@ -33,7 +33,7 @@ export enum Event {
   ENTITY_HURT = "entity_hurt",
   ENTITY_SPOTTED_PLAYER = "entity_spotted_player",
   ENTITY_FLEE = "entity_flee",
-  ENTITY_FELL = "entity_fell",
+  EXTRACT_MATERIAL = "extract_material",
   ENTITY_DIALOGUE_ITERATE = "entity_dialogue_iterate",
   ENTITY_DIALOGUE_RESPONSE = "entity_dialogue_response",
   ENTITY_DIALOGUE_START = "entity_dialogue_start",
@@ -43,6 +43,9 @@ export enum Event {
   ENTITY_UNLOCK = "entity_unlock",
   ENTITY_PLANT = "entity_plant",
   ENTITY_HARVEST = "entity_harvest",
+  ENTITY_WATER = "entity_water",
+  ENTITY_GROW = "entity_grow",
+  ENTITY_WITHER = "entity_wither",
   ENTITY_FISH = "entity:fish",
   ENTITY_OVERLAP = "entity_overlap",
 
@@ -119,6 +122,7 @@ export enum Event {
   /** UI */
   UI_TOGGLE = "ui_toggle",
   MENU_TOGGLE = "menu_toggle",
+  TOOLTIP_TOGGLE = "tooltip_toggle",
 
   /** Transitions */
   LOADING_SHOW = "loading_show",

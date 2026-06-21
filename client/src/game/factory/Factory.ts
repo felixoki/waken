@@ -37,7 +37,11 @@ export class Factory {
 
     if (definition.scale) entity.setScale(definition.scale);
 
-    const components = ComponentFactory.create(definition.components, entity);
+    const components = ComponentFactory.create(
+      definition.components,
+      entity,
+      definition,
+    );
 
     for (const [_, component] of components) entity.addComponent(component);
 

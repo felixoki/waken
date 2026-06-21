@@ -22,6 +22,7 @@ export enum ComponentName {
   DESTRUCTIBLE = "destructible",
   FARMABLE = "farmable",
   FELLABLE = "fellable",
+  MINEABLE = "mineable",
   GROWABLE = "growable",
   HOTBAR = "hotbar",
   HOVERABLE = "hoverable",
@@ -53,7 +54,8 @@ export type ComponentConfig =
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
   | { name: ComponentName.DESTRUCTIBLE }
   | { name: ComponentName.FARMABLE }
-  | { name: ComponentName.FELLABLE }
+  | { name: ComponentName.FELLABLE; config: ExtractableConfig }
+  | { name: ComponentName.MINEABLE; config: ExtractableConfig }
   | { name: ComponentName.GROWABLE; config: GrowableConfig }
   | { name: ComponentName.HOTBAR }
   | { name: ComponentName.HOVERABLE }
@@ -71,6 +73,10 @@ export type ComponentConfig =
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.TRAP; config: TrapConfig };
+
+export interface ExtractableConfig {
+  drop: { name: EntityName; quantity: number };
+}
 
 export interface GlimmerConfig {
   radius: number;

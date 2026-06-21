@@ -587,10 +587,12 @@
 - Same item stacks don't stack ✅
 - Add dungeon loading screen ✅
 
-### In progress
+#### 21.6.2026
 
-- Refine cutting trees
-- Refine farming
+- Refactor farming and felling trees ✅
+- Add mining ✅
+
+### In progress
 
 ### Bugs
 
@@ -602,8 +604,6 @@
 - Animal taming ⭐
 
 - Weather ⭐
-
-- Mining ⭐
 
 - Cooking ⭐
 
@@ -641,52 +641,3 @@
 
 - Tier 1: Deer hide
 - Tier 2: Sheep wool, Fox pelt
-
-## Procedural generation configs
-
-### Forest
-
-#### Non-aggro animals
-
-- Fox (Fox pelt)
-- Deer (Venison meat, deer hide)
-
-#### Aggro animals
-
-- Boar (Boar meat)
-
-#### Aggro entities
-
-- Goblin1 (Quartz, Bone)
-- Orc1 (Quartz, Iron)
-- Shadow wanderer (Spell book: Hurt shadows)
-- Troll (Amulet: Kro Dai)
-
-#### Plants
-
-- Sunflower
-- Carrot
-- Mugwort
-- Daffodil
-- Blue lotus
-- Bearded tooth fungus
-- Clary sage
-- Belladonna
-
-### Dungeon
-
-#### Non-aggro animals
-
-- Goat (Goat meat)
-
-#### Aggro animals
-
-- Rat (Rat claws)
-
-#### Aggro entities
-
-- Goblin1
-- Goblin2 (Rat claws, Bone)
-- Goblin3 (Spell book)
-- Orc1
-- Orc2 (Iron, Gold)

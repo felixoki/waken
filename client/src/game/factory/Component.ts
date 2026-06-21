@@ -1,4 +1,9 @@
-import { ComponentConfig, ComponentName } from "@server/types";
+import {
+  ComponentConfig,
+  ComponentName,
+  EntityConfig,
+  EntityDefinition,
+} from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "../components/Component";
 import { PointableComponent } from "../components/Pointable";
@@ -22,6 +27,7 @@ import { TextureAnimationComponent } from "../components/TextureAnimation";
 import { GrowableComponent } from "../components/Growable";
 import { FarmableComponent } from "../components/Farmable";
 import { FellableComponent } from "../components/Fellable";
+import { MineableComponent } from "../components/Mineable";
 import { AuraComponent } from "../components/Aura";
 import { StorageComponent } from "../components/Storage";
 import { FollowComponent } from "../components/Follow";
@@ -33,6 +39,7 @@ export class ComponentFactory {
   static create(
     components: ComponentConfig[],
     entity: Entity,
+    definition: EntityConfig & EntityDefinition,
   ): Map<ComponentName, Component> {
     const map = new Map<ComponentName, Component>();
 
@@ -102,10 +109,13 @@ export class ComponentFactory {
           comp = new FarmableComponent(entity);
           break;
         case ComponentName.GROWABLE:
-          comp = new GrowableComponent(entity, component.config);
+          comp = new GrowableComponent(entity, component.config, definition.crop);
           break;
         case ComponentName.FELLABLE:
           comp = new FellableComponent(entity);
+          break;
+        case ComponentName.MINEABLE:
+          comp = new MineableComponent(entity);
           break;
         case ComponentName.AURA:
           comp = new AuraComponent(entity, component.config);

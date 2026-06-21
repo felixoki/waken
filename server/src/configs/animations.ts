@@ -6,17 +6,17 @@ export const animations: Partial<
   [EntityName.PLAYER]: {
     [StateName.IDLE]: {
       frameCount: 8,
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1,
     },
     [StateName.WALKING]: {
       frameCount: 8,
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1,
     },
     [StateName.RUNNING]: {
       frameCount: 8,
-      frameRate: 10,
+      frameRate: 8,
       repeat: -1,
     },
     [StateName.JUMPING]: {
@@ -26,18 +26,38 @@ export const animations: Partial<
     },
     [StateName.CASTING]: {
       frameCount: 8,
-      frameRate: 10,
+      frameRate: 20,
       repeat: 0,
     },
     [StateName.ROLLING]: {
       frameCount: 8,
-      frameRate: 16,
+      frameRate: 13.33,
       repeat: 0,
     },
     [StateName.FISHING]: {
       frameCount: 11,
       frameRate: 10,
       repeat: -1,
+    },
+    [StateName.FELLING]: {
+      frameCount: 6,
+      frameRate: 10,
+      repeat: 0,
+    },
+    [StateName.MINING]: {
+      frameCount: 6,
+      frameRate: 10,
+      repeat: 0,
+    },
+    [StateName.RAKING]: {
+      frameCount: 6,
+      frameRate: 10,
+      repeat: 0,
+    },
+    [StateName.WATERING]: {
+      frameCount: 21,
+      frameRate: 14,
+      repeat: 0,
     },
   },
   [EntityName.HERBALIST]: {
@@ -169,22 +189,22 @@ export const animations: Partial<
   [EntityName.SHADOW_WANDERER]: {
     [StateName.IDLE]: {
       frameCount: 6,
-      frameRate: 8,
+      frameRate: 6,
       repeat: -1,
     },
     [StateName.WALKING]: {
       frameCount: 4,
-      frameRate: 6,
+      frameRate: 4,
       repeat: -1,
     },
     [StateName.DASHING]: {
       frameCount: 5,
-      frameRate: 7,
+      frameRate: 5,
       repeat: 0,
     },
     [StateName.CASTING]: {
       frameCount: 6,
-      frameRate: 8,
+      frameRate: 6,
       repeat: 0,
     },
   },

@@ -10,6 +10,10 @@ export enum StateName {
   DASHING = "dashing",
   THROWING = "throwing",
   FISHING = "fishing",
+  FELLING = "felling",
+  MINING = "mining",
+  RAKING = "raking",
+  WATERING = "watering",
   DEAD = "dead",
 }
 

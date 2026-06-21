@@ -11,6 +11,7 @@ import {
   Spot,
   EntityConfig,
   SpellName,
+  EntityName,
   Revive,
   SlotReference,
   SlotType,
@@ -78,9 +79,9 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: string) => handlers.entity.flee(data, socket, io, world),
     },
     {
-      event: Event.ENTITY_FELL,
-      handler: (data: { id: string; x: number; y: number }) =>
-        handlers.entity.fell(data, socket, io, world),
+      event: Event.EXTRACT_MATERIAL,
+      handler: (data: { id: string }) =>
+        handlers.entity.extract(data, socket, io, world),
     },
     {
       event: Event.ENTITY_DIALOGUE_ITERATE,
@@ -123,6 +124,21 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     {
       event: Event.ENTITY_HARVEST,
       handler: (data: any) => handlers.farming.harvest(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_WATER,
+      handler: (data: { id: string }) =>
+        handlers.farming.water(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_GROW,
+      handler: (data: { id: string; stage: number }) =>
+        handlers.farming.grow(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_WITHER,
+      handler: (data: { id: string }) =>
+        handlers.farming.wither(data, socket, io, world),
     },
     {
       event: Event.ENTITY_FISH,
@@ -172,7 +188,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      */
     {
       event: Event.SPELL_LEARN,
-      handler: (data: { spell: SpellName }) =>
+      handler: (data: { spell: SpellName; entity: EntityName }) =>
         handlers.spell.learn(data, socket, world),
     },
     /**

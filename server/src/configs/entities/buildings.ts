@@ -43,7 +43,7 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TRANSITION,
         config: {
-          to: MapName.HOME,
+          to: MapName.ISLES,
           x: 184,
           y: 168,
           width: 16,

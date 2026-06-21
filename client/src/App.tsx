@@ -19,6 +19,7 @@ import { Effects } from "./ui/Effects";
 import { DamageNumbers } from "./ui/DamageNumbers";
 import { Settings } from "./ui/Settings";
 import { Provider } from "./ui/Provider";
+import { Tooltip } from "./ui/Tooltip";
 
 function FPS({ game }: { game: React.RefObject<Phaser.Game | null> }) {
   const [fps, setFps] = useState(0);
@@ -65,6 +66,7 @@ function App() {
       <Loading />
       <Entities />
       <DamageNumbers />
+      <Tooltip />
       <div className="fixed top-4 right-4 bg-black/25 rounded-lg p-4 min-w-75">
         <Party />
       </div>

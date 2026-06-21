@@ -26,12 +26,13 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public maxHealth: number = 100;
   public mana: number = 100;
   public createdAt: number = 0;
-  public target?: { x: number; y: number };
+  public target?: { x: number; y: number; id?: string };
   public pointerdown: boolean = false;
   public knockback?: Phaser.Time.TimerEvent;
   public flash?: Phaser.Tweens.Tween;
   public z: number = 0;
   public clearance?: number;
+  public depthOffset: number = 0;
 
   protected lastInput: Partial<Input> | null = null;
   protected depthY: number = 0;
@@ -73,7 +74,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   private _init() {
     this.scene.add.existing(this);
     this.depthY = this.y;
-    this.setDepth(1000 + this.y);
+    this.setDepth(1000 + this.y + this.depthOffset);
   }
 
   update(remoteInput?: Partial<Input>): void {
@@ -119,7 +120,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     if (depthY !== this.depthY) {
       this.depthY = depthY;
-      this.setDepth(1000 + this.y);
+      this.setDepth(1000 + this.y + this.depthOffset);
     }
   }
 

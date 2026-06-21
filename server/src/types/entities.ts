@@ -22,6 +22,12 @@ export interface AttackConfig {
   sound?: SoundName;
 }
 
+export interface CropState {
+  growth?: number;
+  watered?: boolean;
+  wateredAt?: number;
+}
+
 export interface EntityConfig {
   id: string;
   map: MapName;
@@ -37,6 +43,7 @@ export interface EntityConfig {
   storing?: (Item | null)[];
   loot?: (Item & { chance: number })[];
   effects?: Effect[];
+  crop?: CropState;
 }
 
 export interface ItemBonus {
@@ -184,7 +191,9 @@ export enum EntityName {
   ORC1 = "orc1",
   ORC2 = "orc2",
   PLAYER = "player",
+  PICKAXE = "pickaxe",
   QUARTZ1 = "quartz1",
+  QUARTZ_ORE = "quartz_ore",
   RAT = "rat",
   RAT_CLAWS = "rat_claws",
   RASPBERRY = "raspberry",
@@ -232,6 +241,7 @@ export enum EntityName {
   POTION2 = "potion2",
   VASES1 = "vases1",
   VASES2 = "vases2",
+  WATERING_CAN = "watering_can",
   WEAPONRACK1 = "weaponrack1",
   WELL = "well",
   WINDMILL = "windmill",

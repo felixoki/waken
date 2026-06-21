@@ -60,4 +60,48 @@ export const farming = {
 
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
   },
+
+  water: (data: { id: string }, socket: Socket, _io: Server, world: World) => {
+    const target = world.entities.get(data.id);
+    if (!target) return;
+
+    world.entities.update(data.id, {
+      crop: { ...target.crop, watered: true, wateredAt: Date.now() },
+    });
+
+    handlers.broadcast.toChunk(
+      socket,
+      world,
+      Event.ENTITY_WATER,
+      data,
+      target.map,
+      target.x,
+      target.y,
+    );
+  },
+
+  grow: (
+    data: { id: string; stage: number },
+    _socket: Socket,
+    _io: Server,
+    world: World,
+  ) => {
+    const target = world.entities.get(data.id);
+    if (!target) return;
+
+    world.entities.update(data.id, {
+      crop: { ...target.crop, growth: data.stage, watered: false },
+    });
+  },
+
+  wither: (data: { id: string }, socket: Socket, io: Server, world: World) => {
+    handlers.entity.remove(
+      data.id,
+      Event.ENTITY_DESPAWN,
+      socket,
+      io,
+      world,
+      true,
+    );
+  },
 };
