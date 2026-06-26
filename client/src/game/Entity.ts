@@ -5,6 +5,7 @@ import {
   Event,
   Input,
   MapName,
+  SpellName,
   StateName,
 } from "@server/types";
 import { State } from "./state/State";
@@ -96,7 +97,11 @@ export class Entity extends Phaser.GameObjects.Sprite {
     const { state, needsUpdate } = handlers.state.resolve(prepared, prev);
 
     if (input.facing) this.setFacing(input.facing);
-    if (input.moving) this.moving = input.moving;
+    if (input.moving) this.setMoving(input.moving);
+    if (input.target) this.setTarget(input.target);
+
+    if (input.spell !== undefined)
+      (this as unknown as { spell: SpellName | null }).spell = input.spell;
 
     if (state !== this.state) this.transitionTo(state);
     if (needsUpdate) this.states?.get(this.state)?.update(this);
@@ -109,8 +114,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
       this.setPosition(x, y);
     }
 
-    const scene = this.scene as Scene;
-    const isAuthority = scene.managers.players?.player?.isAuthority;
+    const isAuthority = this.scene.managers.players?.player?.isAuthority;
+
     if (isAuthority && input && this._changed(input)) {
       this.lastInput = input;
       this.scene.game.events.emit(Event.ENTITY_INPUT, input);
@@ -243,5 +248,13 @@ export class Entity extends Phaser.GameObjects.Sprite {
    */
   setFacing(facing: Direction | null | undefined): void {
     this.facing = facing || this.facing;
+  }
+
+  setMoving(moving: Direction[]): void {
+    this.moving = moving;
+  }
+
+  setTarget(target: { x: number; y: number; id?: string }): void {
+    this.target = target;
   }
 }

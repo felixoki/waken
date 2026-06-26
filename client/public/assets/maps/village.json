@@ -11180,15 +11180,26 @@
                  "y":449.279
                 }, 
                 {
-                 "height":2.58933195235636,
+                 "height":2.58933,
                  "id":1485,
                  "name":"Quartz_ore",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":3.62506473329881,
-                 "x":545.313309166235,
-                 "y":753.495598135681
+                 "width":3.62506,
+                 "x":545.313,
+                 "y":753.496
+                }, 
+                {
+                 "height":3.9281705948373,
+                 "id":1486,
+                 "name":"Villain",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":5.61167227833892,
+                 "x":705.387205387205,
+                 "y":480.359147025814
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -11318,7 +11329,7 @@
          "y":0
         }],
  "nextlayerid":60,
- "nextobjectid":1486,
+ "nextobjectid":1487,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

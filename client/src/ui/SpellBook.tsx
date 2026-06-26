@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { Event, SlotZone, SpellName } from "@server/types";
 import EventBus from "../game/EventBus";
@@ -8,6 +8,7 @@ import type { DragData } from "./Provider";
 export function SpellBook() {
   const [spells, setSpells] = useState<SpellName[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const transformed = useRef(false);
 
   const { setNodeRef, isOver } = useDroppable({
     id: `${SlotZone.SPELLBOOK}-zone`,
@@ -19,18 +20,28 @@ export function SpellBook() {
     const confirm = (spell: SpellName) =>
       setSpells((prev) => (prev.includes(spell) ? prev : [...prev, spell]));
 
-    const toggle = () => setIsOpen((prev) => !prev);
+    const toggle = () => {
+      if (transformed.current) return;
+      setIsOpen((prev) => !prev);
+    };
+
+    const transform = (active: boolean) => {
+      transformed.current = active;
+      if (active) setIsOpen(false);
+    };
 
     EventBus.on(Event.SPELLS_SYNC, sync);
     EventBus.on(Event.SPELLBOOK_SYNC, sync);
     EventBus.on(Event.SPELL_LEARN_CONFIRM, confirm);
     EventBus.on(Event.UI_TOGGLE, toggle);
+    EventBus.on(Event.TRANSFORM_TOGGLE, transform);
 
     return () => {
       EventBus.off(Event.SPELLS_SYNC, sync);
       EventBus.off(Event.SPELLBOOK_SYNC, sync);
       EventBus.off(Event.SPELL_LEARN_CONFIRM, confirm);
       EventBus.off(Event.UI_TOGGLE, toggle);
+      EventBus.off(Event.TRANSFORM_TOGGLE, transform);
     };
   }, []);
 

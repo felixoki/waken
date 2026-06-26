@@ -123,6 +123,7 @@ export enum Event {
   UI_TOGGLE = "ui_toggle",
   MENU_TOGGLE = "menu_toggle",
   TOOLTIP_TOGGLE = "tooltip_toggle",
+  TRANSFORM_TOGGLE = "transform_toggle",
 
   /** Transitions */
   LOADING_SHOW = "loading_show",

@@ -12,6 +12,7 @@ import { resources } from "./resources";
 import { rocks } from "./rocks";
 import { spellPages } from "./spellpages";
 import { transitions } from "./transitions";
+import { villain } from "./villain";
 
 export const entities = {
   ...animals,
@@ -28,4 +29,5 @@ export const entities = {
   ...spellPages,
   ...transitions,
   ...interior,
+  ...villain,
 };

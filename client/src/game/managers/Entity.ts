@@ -10,6 +10,7 @@ import { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
 import { configs } from "@server/configs";
 import { CHUNK_ACTIVATION_BUDGET, CHUNK_PIXEL_SIZE } from "@server/globals";
+import { Villain } from "../Villain";
 
 type Rect = { x: number; y: number; width: number; height: number };
 
@@ -128,11 +129,14 @@ export class EntityManager {
     if (!scene?.managers?.physics) return;
 
     const definition = configs.entities[config.name];
-    
+
     const merged = { ...definition!, ...config };
     if (!config.facing) merged.facing = definition!.facing;
 
-    const entity = Factory.create(scene, merged);
+    const entity =
+      config.name === EntityName.VILLAIN
+        ? new Villain(scene, merged)
+        : Factory.create(scene, merged);
 
     entity.map = config.map;
     entity.isLocked = config.isLocked;

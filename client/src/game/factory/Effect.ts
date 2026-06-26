@@ -7,6 +7,7 @@ import { ColdEffect } from "../effects/Cold";
 import { PoisonedEffect } from "../effects/Poisoned";
 import { IlluminatedEffect } from "../effects/Illuminated";
 import { RegainEffect } from "../effects/Regain";
+import { DragonEffect } from "../effects/Dragon";
 
 export class EffectFactory {
   static create(name: EffectName, entity: Entity): Effect {
@@ -23,6 +24,8 @@ export class EffectFactory {
         return new IlluminatedEffect(entity);
       case EffectName.REGAIN:
         return new RegainEffect(entity);
+      case EffectName.DRAGON:
+        return new DragonEffect(entity);
     }
   }
 }

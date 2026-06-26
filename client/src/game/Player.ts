@@ -6,6 +6,7 @@ import {
   EntityName,
   ComponentName,
   SoundName,
+  EffectName,
 } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
@@ -192,6 +193,7 @@ export class Player extends Entity {
       facing: facing,
       moving: moving || [],
       isRunning: isRunning || false,
+      isFlying: this.hasEffect(EffectName.DRAGON) && (isRunning || false),
       isJumping: isJumping || false,
       isRolling: isRolling || false,
       pointerdown: pointerdown || false,
@@ -211,6 +213,7 @@ export class Player extends Entity {
       input.facing !== last.facing ||
       input.state !== last.state ||
       input.isRunning !== last.isRunning ||
+      input.isFlying !== last.isFlying ||
       input.isJumping !== last.isJumping ||
       input.isRolling !== last.isRolling ||
       input.pointerdown !== last.pointerdown ||

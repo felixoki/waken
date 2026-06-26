@@ -21,6 +21,7 @@ export function Inventory() {
   const [isOpen, setIsOpen] = useState(false);
   const [storageEntityId, setStorageEntityId] = useState<string | null>(null);
   const isOpenRef = useRef(false);
+  const transformedRef = useRef(false);
   const [menu, setMenu] = useState<{
     index: number;
     x: number;
@@ -31,9 +32,20 @@ export function Inventory() {
     const add = (items: (ItemInterface | null)[]) => setItems(items);
 
     const toggle = () => {
+      if (transformedRef.current) return;
       isOpenRef.current = !isOpenRef.current;
       setIsOpen(isOpenRef.current);
       setMenu(null);
+    };
+
+    const transform = (active: boolean) => {
+      transformedRef.current = active;
+
+      if (active && isOpenRef.current) {
+        isOpenRef.current = false;
+        setIsOpen(false);
+        setMenu(null);
+      }
     };
 
     const onStorageOpen = (data: { entityId: string }) => {
@@ -52,6 +64,7 @@ export function Inventory() {
     EventBus.on(Event.STORAGE_OPEN, onStorageOpen);
     EventBus.on(Event.STORAGE_CLOSE, onStorageClose);
     EventBus.on(Event.COLLECTOR_OPEN, onCollectorOpen);
+    EventBus.on(Event.TRANSFORM_TOGGLE, transform);
 
     return () => {
       EventBus.off(Event.INVENTORY_UPDATE, add);
@@ -59,6 +72,7 @@ export function Inventory() {
       EventBus.off(Event.STORAGE_OPEN, onStorageOpen);
       EventBus.off(Event.STORAGE_CLOSE, onStorageClose);
       EventBus.off(Event.COLLECTOR_OPEN, onCollectorOpen);
+      EventBus.off(Event.TRANSFORM_TOGGLE, transform);
     };
   }, []);
 
@@ -146,7 +160,7 @@ function getActions(name: EntityName, storageOpen = false): Action[] {
 
   if (def.components.some((c) => c.name === ComponentName.CONSUMABLE))
     actions.push(Action.CONSUME);
-  
+
   if (def.components.some((c) => c.name === ComponentName.LEARNABLE))
     actions.push(Action.LEARN);
 

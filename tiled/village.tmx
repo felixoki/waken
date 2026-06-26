@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="60" nextobjectid="1486">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="60" nextobjectid="1487">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -5202,6 +5202,12 @@
  <tileset firstgid="17913" name="dungeon_decorative_cracks_floor" tilewidth="16" tileheight="16" tilecount="120" columns="8">
   <image source="../client/public/assets/sprites/dungeon_decorative_cracks_floor.png" width="128" height="240"/>
  </tileset>
+ <tileset firstgid="18033" name="icons5" tilewidth="16" tileheight="16" tilecount="360" columns="18">
+  <image source="../client/public/assets/sprites/icons5.png" width="288" height="320"/>
+ </tileset>
+ <tileset firstgid="18393" name="icons8" tilewidth="16" tileheight="16" tilecount="756" columns="36">
+  <image source="../client/public/assets/sprites/icons8.png" width="576" height="336"/>
+ </tileset>
  <layer id="19" name="water" width="76" height="104">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4838,4838,4838,4838,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -8850,6 +8856,7 @@
   <object id="1483" name="Goat" x="592.876" y="528.165" width="3.08147" height="3.08147"/>
   <object id="1484" name="Goat" x="255.146" y="449.279" width="7.39554" height="3.08147"/>
   <object id="1485" name="Quartz_ore" x="545.313" y="753.496" width="3.62506" height="2.58933"/>
+  <object id="1486" name="Villain" x="705.387" y="480.359" width="5.61167" height="3.92817"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="104">
   <properties>

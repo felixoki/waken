@@ -1,6 +1,7 @@
 import { MapName } from "@server/types";
 import { Scene } from "../scenes/Scene";
 import { configs } from "@server/configs";
+import { handlers } from "../handlers";
 
 export class Texture {
   static load(scene: Scene, map: MapName) {
@@ -20,6 +21,18 @@ export class Texture {
       g.destroy();
     }
 
+    if (!scene.textures.exists("particle_glow")) {
+      const g = scene.add.graphics();
+
+      const steps = 8;
+      for (let i = steps; i > 0; i--) {
+        g.fillStyle(0xffffff, 0.16);
+        g.fillCircle(16, 16, (16 * i) / steps);
+      }
+      g.generateTexture("particle_glow", 32, 32);
+      g.destroy();
+    }
+
     if (!scene.textures.exists("particle_diamond")) {
       const g = scene.add.graphics();
 
@@ -34,6 +47,8 @@ export class Texture {
       g.generateTexture("particle_diamond", 16, 24);
       g.destroy();
     }
+
+    handlers.textures.fangs(scene);
 
     if (!scene.textures.exists("particle_square")) {
       const g = scene.add.graphics();
@@ -79,3 +94,4 @@ export class Texture {
     });
   }
 }
+

@@ -5,6 +5,7 @@ export enum EffectName {
   POISONED = "poisoned",
   ILLUMINATED = "illuminated",
   REGAIN = "regain",
+  DRAGON = "dragon",
 }
 
 export interface Effect {

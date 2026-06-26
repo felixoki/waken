@@ -592,12 +592,21 @@
 - Refactor farming and felling trees ✅
 - Add mining ✅
 
+#### 26.6.2026
+
+- Add villain ✅
+- Add isles ✅
+- Add transform spell ✅
+
 ### In progress
+
+- Add troll caves
 
 ### Bugs
 
 - Ledge corners render above players
 - Projectiles don't respect collisions
+- Party members are transitioned to dungeon even after leaving forest
 
 ### Backlog
 

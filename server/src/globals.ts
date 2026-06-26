@@ -180,3 +180,8 @@ export const DUNGEON_RECESS_MIN_DIM = 7;
 export const DUNGEON_TORCH_STRIDE = 16;
 export const DUNGEON_LADDER_COUNT = 3;
 export const DUNGEON_LADDER_TORCH_CLEARANCE = 4;
+
+/** Villain */
+
+export const TRANSFORM_RANGE = 50;
+export const DRAGON_FORM_DURATION = 10000;

@@ -37,7 +37,10 @@ export class Casting implements State {
     const anim = entity.getComponent<AnimationComponent>(
       ComponentName.ANIMATION,
     );
-    anim?.play(this.name, entity.facing);
+
+    if (config.animation)
+      anim?.playKey(config.animation.key, entity.facing, config.animation);
+    else anim?.play(this.name, entity.facing);
 
     if (config.charge) {
       this.charging = true;

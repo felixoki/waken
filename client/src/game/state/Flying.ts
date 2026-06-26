@@ -20,6 +20,8 @@ export class Flying implements State {
     );
     anim?.play(this.name, entity.facing);
 
+    if (this.tween) this.tween.stop();
+
     this.baseOriginY = entity.displayOriginY;
     this.baseOffsetY = entity.body
       ? (entity.body as Phaser.Physics.Arcade.Body).offset.y
@@ -27,8 +29,6 @@ export class Flying implements State {
 
     if (entity.body)
       (entity.body as Phaser.Physics.Arcade.Body).checkCollision.none = true;
-
-    if (this.tween) this.tween.stop();
 
     this.tween = entity.scene.tweens.add({
       targets: entity,
@@ -39,10 +39,9 @@ export class Flying implements State {
       onUpdate: () => {
         entity.displayOriginY = this.baseOriginY + entity.z;
 
-        if (entity.body) {
-          const body = entity.body as Phaser.Physics.Arcade.Body;
-          body.offset.y = this.baseOffsetY + entity.z;
-        }
+        if (entity.body)
+          (entity.body as Phaser.Physics.Arcade.Body).offset.y =
+            this.baseOffsetY + entity.z;
       },
     });
 
@@ -64,33 +63,14 @@ export class Flying implements State {
       this.tween = null;
     }
 
-    const body = entity.body as Phaser.Physics.Arcade.Body;
-    body.setVelocity(0, 0);
+    entity.z = 0;
+    entity.displayOriginY = this.baseOriginY;
 
-    entity.scene.tweens.add({
-      targets: entity,
-      z: 0,
-      duration: DURATION_LIFT,
-      ease: "Sine.easeIn",
-
-      onUpdate: () => {
-        entity.displayOriginY = this.baseOriginY + entity.z;
-        if (entity.body) {
-          (entity.body as Phaser.Physics.Arcade.Body).offset.y =
-            this.baseOffsetY + entity.z;
-        }
-      },
-
-      onComplete: () => {
-        entity.z = 0;
-        entity.displayOriginY = this.baseOriginY;
-
-        if (entity.body) {
-          const body = entity.body as Phaser.Physics.Arcade.Body;
-          body.offset.y = this.baseOffsetY;
-          body.checkCollision.none = false;
-        }
-      },
-    });
+    if (entity.body) {
+      const body = entity.body as Phaser.Physics.Arcade.Body;
+      body.offset.y = this.baseOffsetY;
+      body.checkCollision.none = false;
+      body.setVelocity(0, 0);
+    }
   }
 }

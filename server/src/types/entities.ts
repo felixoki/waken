@@ -144,6 +144,7 @@ export enum EntityName {
   DEER = "deer",
   DEER_HIDE = "deer_hide",
   DAFFODIL = "daffodil",
+  DRAGON = "dragon",
   DRAKE = "drake",
   DUCK = "duck",
   DUNGEON_ENTRANCE = "dungeon_entrance",
@@ -246,6 +247,7 @@ export enum EntityName {
   WELL = "well",
   WINDMILL = "windmill",
   WOOD = "wood",
+  VILLAIN = "villain",
 }
 
 export enum FishName {

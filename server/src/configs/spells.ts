@@ -95,12 +95,18 @@ export const spells: Record<SpellName, SpellConfig> = {
   [SpellName.METEOR_SHOWER]: {
     name: SpellName.METEOR_SHOWER,
     sounds: { cast: SoundName.SLASH },
-    damage: { type: DamageType.BURNING, amount: 35 },
+    damage: { type: DamageType.BURNING, amount: 45 },
     knockback: 80,
     mana: 25,
-    duration: 300,
+    duration: 1500,
     radius: 40,
     effects: [[EffectName.BURNING, 5000]],
+    animation: {
+      key: "growling",
+      frameCount: 19,
+      frameRate: 14,
+      repeat: 0,
+    },
     hitbox: {
       width: 40,
       height: 40,
@@ -125,7 +131,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     },
     metadata: {
       description: "Summons a butterfly that heals allies and harms enemies.",
-      displayName: "Butterfly Effigy",
+      displayName: "Butterfly effigy",
     },
   },
   [SpellName.LIGHTNING_STRIKE]: {
@@ -180,7 +186,69 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description:
         "Drains the life from all nearby creatures, healing you for the damage dealt.",
-      displayName: "Absorb Life",
+      displayName: "Absorb life",
+    },
+  },
+  [SpellName.DRAGON_FORM]: {
+    name: SpellName.DRAGON_FORM,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 0,
+    duration: 1500,
+    animation: { key: "transforming", frameCount: 18, frameRate: 12, repeat: 0 },
+    metadata: {
+      description:
+        "Transform into a sinuous river dragon, coiling weightless through the air.",
+      displayName: "Dragon form",
+      icon: { spritesheet: "icons5", row: 4, col: 9 },
+    },
+  },
+  [SpellName.FIRE_BREATH]: {
+    name: SpellName.FIRE_BREATH,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.BURNING, amount: 25 },
+    knockback: 40,
+    mana: 0,
+    duration: 2000,
+    effects: [[EffectName.BURNING, 3000]],
+    animation: {
+      key: "breathing_fire",
+      frameCount: 24,
+      frameRate: 12,
+      repeat: 0,
+    },
+    hitbox: {
+      width: 120,
+      height: 60,
+    },
+    metadata: {
+      description: "Exhale a torrent of flame, scorching all before it.",
+      displayName: "Fire breath",
+      icon: { spritesheet: "icons5", row: 2, col: 9 },
+    },
+  },
+  [SpellName.BITE]: {
+    name: SpellName.BITE,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 45 },
+    knockback: 120,
+    mana: 0,
+    duration: 1300,
+    animation: {
+      key: "biting",
+      frameCount: 17,
+      frameRate: 14,
+      repeat: 0,
+    },
+    hitbox: {
+      width: 64,
+      height: 56,
+    },
+    metadata: {
+      description: "Clamp down with crushing jaws.",
+      displayName: "Bite",
+      icon: { spritesheet: "icons8", row: 21, col: 11 },
     },
   },
 };

@@ -2,6 +2,8 @@ import {
   ComponentName,
   Direction,
   DirectionVectors,
+  EffectName,
+  EntityName,
   Event,
   SlotType,
   SpellConfig,
@@ -15,6 +17,7 @@ import { DURATION_COMBO_LOCK, DURATION_FINISHER_LOCK } from "@server/globals";
 import { handlers } from ".";
 import EventBus from "../EventBus";
 import type { Scene } from "../scenes/Scene";
+import type { Villain } from "../Villain";
 
 export const combat = {
   resolve: (entity: Entity): SpellConfig | null => {
@@ -32,7 +35,14 @@ export const combat = {
       return null;
     }
 
-    const definition = configs.entities[entity.name];
+    const name = entity.hasEffect(EffectName.DRAGON)
+      ? EntityName.DRAGON
+      : entity.name;
+
+    const pending = (entity as Villain).spell;
+    if (pending) return configs.spells[pending] ?? null;
+
+    const definition = configs.entities[name];
     const attack = definition?.attacks?.find(
       (a) => a.state === StateName.CASTING && a.spell,
     );
@@ -62,7 +72,9 @@ export const combat = {
       return {
         stepConfig: config,
         isFinisher: false,
-        duration: DURATION_COMBO_LOCK,
+        duration: config.animation
+          ? (config.duration ?? DURATION_COMBO_LOCK)
+          : DURATION_COMBO_LOCK,
       };
 
     const isFinisher = step >= config.combo.length;

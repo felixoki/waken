@@ -58,7 +58,8 @@ export const player = {
           SpellName.SHARD,
           SpellName.SLASH,
           SpellName.LIGHTNING_STRIKE,
-          SpellName.ABSORB_LIFE
+          SpellName.ABSORB_LIFE,
+          SpellName.DRAGON_FORM
         ],
         inventory: saved?.data?.inventory ?? new Array(20).fill(null),
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [

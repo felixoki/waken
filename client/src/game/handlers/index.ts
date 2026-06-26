@@ -14,6 +14,8 @@ import { weapons } from "./weapons";
 import { behavior } from "./behavior";
 import { charge } from "./charge";
 import { sprites } from "./sprites";
+import { villain } from "./villain";
+import { textures } from "./textures";
 
 export const handlers = {
   state,
@@ -32,4 +34,6 @@ export const handlers = {
   behavior,
   ui,
   sprites,
+  villain,
+  textures,
 };

@@ -1,13 +1,24 @@
 import {
   ComponentName,
+  Direction,
   SpellConfig,
   SpellName,
   SoundName,
+  EffectName,
 } from "@server/types";
 import { Entity } from "../Entity";
 import { Projectile } from "../Projectile";
 import { Hitbox } from "../Hitbox";
 import { vfx } from "../vfx";
+import { EffectFactory } from "../factory/Effect";
+import { DELAY_ATTACK } from "@server/globals";
+
+const FIRE_BREATH_MOUTH: Record<Direction, { x: number; y: number }> = {
+  [Direction.DOWN]: { x: 0, y: 20 },
+  [Direction.UP]: { x: 0, y: -8 },
+  [Direction.LEFT]: { x: -50, y: -12 },
+  [Direction.RIGHT]: { x: 50, y: -12 },
+};
 
 type SpellHandler = (
   entity: Entity,
@@ -305,5 +316,95 @@ export const spells: Record<SpellName, SpellHandler> = {
 
     scene.managers.entities.entities.forEach(stream);
     scene.managers.players.others.forEach(stream);
+  },
+
+  [SpellName.DRAGON_FORM]: (entity: Entity) => {
+    entity.addEffect(EffectFactory.create(EffectName.DRAGON, entity));
+  },
+
+  [SpellName.FIRE_BREATH]: (
+    entity: Entity,
+    config: SpellConfig,
+    _target: { x: number; y: number },
+    direction: { x: number; y: number },
+  ) => {
+    const reach = config.hitbox!.width;
+    const girth = config.hitbox!.height;
+    const horizontal = direction.x !== 0;
+
+    const w = horizontal ? reach : girth;
+    const h = horizontal ? girth : reach;
+
+    const startFrame = 10;
+    const frameRate = config.animation?.frameRate ?? 12;
+    const delay = Math.max(0, (startFrame / frameRate) * 1000 - DELAY_ATTACK);
+
+    entity.scene.time.delayedCall(delay, () => {
+      if (!entity.scene) return;
+
+      new Hitbox(
+        entity.scene,
+        entity.x + direction.x * (reach / 2 + 12),
+        entity.y + direction.y * (reach / 2 + 12),
+        w,
+        h,
+        entity.id,
+        config,
+      );
+
+      const mouth = FIRE_BREATH_MOUTH[entity.facing];
+
+      const depth =
+        entity.facing === Direction.DOWN ? entity.depth : entity.depth - 10;
+
+      vfx.emitters.fireBreath(
+        entity.scene,
+        entity.x + mouth.x,
+        entity.y + mouth.y,
+        direction,
+        reach,
+        600,
+        depth,
+      );
+    });
+  },
+
+  [SpellName.BITE]: (
+    entity: Entity,
+    config: SpellConfig,
+    _target: { x: number; y: number },
+    direction: { x: number; y: number },
+  ) => {
+    const reach = config.hitbox!.width;
+
+    const bx = entity.x + direction.x * (reach * 0.5 + 8);
+    const by = entity.y + direction.y * (reach * 0.5 + 8);
+
+    const biteFrame = 8;
+    const chompMs = 120;
+    const frameRate = config.animation?.frameRate ?? 14;
+    const impactMs = (biteFrame / frameRate) * 1000;
+    const spawnDelay = Math.max(0, impactMs - chompMs - DELAY_ATTACK);
+    const hitDelay = Math.max(0, impactMs - DELAY_ATTACK);
+
+    const depth = entity.depth + 4;
+
+    entity.scene.time.delayedCall(spawnDelay, () => {
+      if (!entity.scene) return;
+      vfx.emitters.bite(entity.scene, bx, by, reach, depth);
+    });
+
+    entity.scene.time.delayedCall(hitDelay, () => {
+      if (!entity.scene) return;
+      new Hitbox(
+        entity.scene,
+        bx,
+        by,
+        config.hitbox!.width,
+        config.hitbox!.height,
+        entity.id,
+        config,
+      );
+    });
   },
 };

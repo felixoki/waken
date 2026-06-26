@@ -13,6 +13,9 @@ export enum SpellName {
   LIGHTNING_STRIKE = "lightning_strike",
   GRASP = "grasp",
   ABSORB_LIFE = "absorb_life",
+  DRAGON_FORM = "dragon_form",
+  FIRE_BREATH = "fire_breath",
+  BITE = "bite",
 }
 
 export interface ComboStep {
@@ -51,6 +54,12 @@ export interface SpellConfig {
   combo?: ComboStep[];
   charge?: ChargeConfig;
   chargePercent?: number;
+  animation?: {
+    key: string;
+    frameCount: number;
+    frameRate: number;
+    repeat: number;
+  };
   sounds: { cast?: SoundName; impact?: SoundName };
   metadata?: SpellMetadata;
 }

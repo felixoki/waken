@@ -5,6 +5,7 @@ import { HotbarComponent } from "../components/Hotbar";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
 import { Running } from "../state/Running";
+import { Flying } from "../state/Flying";
 import { Casting } from "../state/Casting";
 import { Jumping } from "../state/Jumping";
 import { Rolling } from "../state/Rolling";
@@ -68,6 +69,8 @@ export class PlayerManager {
         [StateName.IDLE, new Idle()],
         [StateName.WALKING, new Walking()],
         [StateName.RUNNING, new Running()],
+        [StateName.RUNNING, new Running()],
+        [StateName.FLYING, new Flying()],
         [StateName.JUMPING, new Jumping()],
         [StateName.CASTING, new Casting()],
         [StateName.ROLLING, new Rolling()],

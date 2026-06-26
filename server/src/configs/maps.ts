@@ -97,6 +97,69 @@ const player: Spritesheet[] = [
     frameWidth: 32,
     frameHeight: 32,
   },
+  {
+    key: "player-transforming",
+    file: "tornado.png",
+    frameWidth: 144,
+    frameHeight: 109,
+  },
+  {
+    key: "villain-transforming",
+    file: "tornado.png",
+    frameWidth: 144,
+    frameHeight: 109,
+  },
+  {
+    key: "dragon-idle",
+    file: "dragon_idle.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
+  {
+    key: "dragon-walking",
+    file: "dragon_walking.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
+  {
+    key: "dragon-flying",
+    file: "dragon_flying.png",
+    frameWidth: 160,
+    frameHeight: 144,
+  },
+  {
+    key: "dragon-growling",
+    file: "dragon_growling.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
+  {
+    key: "dragon-breathing_fire",
+    file: "dragon_breathing_fire.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
+  {
+    key: "dragon-biting",
+    file: "dragon_biting.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
+];
+
+const villain: Spritesheet[] = [
+  {
+    key: "villain-idle",
+    file: "villain_idle.png",
+    frameWidth: 32,
+    frameHeight: 42,
+  },
+  {
+    key: "villain-walking",
+    file: "villain_walking.png",
+    frameWidth: 32,
+    frameHeight: 42,
+  },
 ];
 
 const animals: Spritesheet[] = [
@@ -1188,6 +1251,7 @@ export const maps: Record<MapName, MapConfig> = {
     isInstanced: false,
     spritesheets: [
       ...player,
+      ...villain,
       ...creatures,
       {
         key: "isles_ground_grass",

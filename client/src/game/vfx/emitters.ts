@@ -77,6 +77,221 @@ export const emitters = {
     };
   },
 
+  fireBreath: (
+    scene: Scene,
+    x: number,
+    y: number,
+    direction: { x: number; y: number },
+    length: number = 120,
+    duration: number = 700,
+    depth: number = 10000,
+  ): (() => void) => {
+    const base = Phaser.Math.RadToDeg(Math.atan2(direction.y, direction.x));
+    const spread = 16;
+    const lifespan = 450;
+
+    const flame = scene.add.particles(x, y, "particle_glow", {
+      color: [0xffffff, 0xffe070, 0xff8c1a, 0xd92b00, 0x7a1500],
+      colorEase: "quad.out",
+      alpha: { start: 1, end: 0 },
+      lifespan,
+      angle: { min: base - spread, max: base + spread },
+      scale: { start: 0.25, end: 0.9, ease: "sine.out" },
+      speed: { min: 220, max: 340 },
+      quantity: 4,
+      frequency: 16,
+      blendMode: "ADD",
+      duration,
+    });
+    flame.setDepth(depth + 2);
+
+    const smoke = scene.add.particles(x, y, "particle_glow", {
+      color: [0x553322, 0x2a2522, 0x111111],
+      alpha: { start: 0.35, end: 0 },
+      lifespan: lifespan + 300,
+      angle: { min: base - spread - 6, max: base + spread + 6 },
+      scale: { start: 0.4, end: 1.3, ease: "sine.out" },
+      speed: { min: 120, max: 200 },
+      quantity: 1,
+      frequency: 28,
+      duration,
+    });
+    smoke.setDepth(depth + 1);
+
+    const rad = Phaser.Math.DegToRad(base);
+    const halfWidth = length * Math.tan(Phaser.Math.DegToRad(spread));
+
+    const rotate = (px: number, py: number) => ({
+      x: px * Math.cos(rad) - py * Math.sin(rad),
+      y: px * Math.sin(rad) + py * Math.cos(rad),
+    });
+
+    const apex = { x: 0, y: 0 };
+    const left = rotate(length, -halfWidth);
+    const right = rotate(length, halfWidth);
+
+    const cone = new Phaser.Geom.Triangle(
+      apex.x,
+      apex.y,
+      left.x,
+      left.y,
+      right.x,
+      right.y,
+    );
+
+    const embers = scene.add.particles(x, y, "particle_circle", {
+      tint: [0xffdd66, 0xff8800, 0xff5500],
+      alpha: { start: 0.9, end: 0 },
+      scale: { start: 0.12, end: 0.01 },
+      angle: { min: base - spread, max: base + spread },
+      speed: { min: 30, max: 90 },
+      gravityY: -50,
+      lifespan: { min: 900, max: 1400 },
+      quantity: 3,
+      frequency: 24,
+      blendMode: "ADD",
+      duration,
+      emitZone: {
+        type: "random",
+        source: cone,
+      } as Phaser.Types.GameObjects.Particles.EmitZoneData,
+    });
+    embers.setDepth(depth + 3);
+    embers.stop();
+    const emberDelay = scene.time.delayedCall(160, () => embers.start());
+
+    const cleanup = () => {
+      emberDelay.destroy();
+      flame.destroy();
+      smoke.destroy();
+      embers.destroy();
+    };
+    scene.time.delayedCall(duration + 1400 + 160, cleanup);
+
+    return cleanup;
+  },
+
+  bite: (
+    scene: Scene,
+    x: number,
+    y: number,
+    size: number = 70,
+    depth: number = 10000,
+  ): (() => void) => {
+    const count = 5;
+    const span = size;
+    const slot = span / count;
+    const open = size * 0.75;
+    const close = size * 0.05;
+    const chompMs = 120;
+
+    const teeth: Phaser.GameObjects.Image[] = [];
+    const tweens: Phaser.Tweens.Tween[] = [];
+    const props: Phaser.GameObjects.GameObject[] = [];
+
+    const noise = (n: number) => {
+      const s = Math.sin(n * 127.1) * 43758.5453;
+      return (s - Math.floor(s)) * 2 - 1;
+    };
+
+    const buildRow = (top: boolean) => {
+      for (let i = 0; i < count; i++) {
+        const seed = i + (top ? 0 : 37);
+        const t = i / (count - 1);
+        const tx = x - span / 2 + span * t + noise(i * 1.3) * slot * 0.12;
+        const arc = Math.sin(t * Math.PI) * size * 0.16;
+
+        const variant = Math.min(
+          3,
+          Math.floor(((noise(seed * 7.9) + 1) / 2) * 4),
+        );
+        const sJit = 1 + noise(seed * 2.1) * 0.14;
+        const yJit = noise(seed * 5.3) * size * 0.03;
+
+        const tooth = scene.add.image(
+          tx,
+          top ? y - open : y + open,
+          `particle_fang_${variant}`,
+        );
+        tooth.setScale(((size * 0.5) / tooth.height) * sJit);
+        tooth.setFlipX(i >= count / 2);
+        tooth.setFlipY(top);
+        tooth.setTint(0xfdfcf2);
+        tooth.setDepth(depth);
+        tooth.setData(
+          "closed",
+          (top ? y - close - arc : y + close + arc) + yJit,
+        );
+        teeth.push(tooth);
+      }
+    };
+
+    buildRow(true);
+    buildRow(false);
+
+    teeth.forEach((tooth) => {
+      tweens.push(
+        scene.tweens.add({
+          targets: tooth,
+          y: tooth.getData("closed"),
+          duration: chompMs,
+          ease: "Back.easeIn",
+        }),
+      );
+    });
+
+    const impact = scene.time.delayedCall(chompMs, () => {
+      const flash = scene.add.image(x, y, "particle_glow");
+      flash.setDepth(depth + 2);
+      flash.setBlendMode("ADD");
+      flash.setTint(0xfff4c2);
+      flash.setScale(0.25);
+      props.push(flash);
+      tweens.push(
+        scene.tweens.add({
+          targets: flash,
+          scale: 2.6,
+          alpha: 0,
+          duration: 200,
+          ease: "Quad.easeOut",
+          onComplete: () => flash.destroy(),
+        }),
+      );
+
+      teeth.forEach((tooth) => {
+        scene.tweens.add({
+          targets: tooth,
+          scaleX: tooth.scaleX * 1.14,
+          duration: 55,
+          yoyo: true,
+          ease: "Quad.easeOut",
+        });
+      });
+    });
+
+    const fade = scene.time.delayedCall(chompMs + 200, () => {
+      teeth.forEach((tooth) => {
+        scene.tweens.add({
+          targets: tooth,
+          alpha: 0,
+          duration: 220,
+          ease: "Quad.easeIn",
+        });
+      });
+    });
+
+    const cleanup = () => {
+      impact.destroy();
+      fade.destroy();
+      tweens.forEach((t) => t.stop());
+      props.forEach((o) => o.scene && o.destroy());
+      teeth.forEach((o) => o.destroy());
+    };
+    scene.time.delayedCall(chompMs + 200 + 400, cleanup);
+
+    return cleanup;
+  },
+
   shard: (scene: Scene, x: number, y: number, chargePercent?: number) => {
     const power = chargePercent ?? 1;
     const emitter = scene.add.particles(x, y, "particle_circle", {

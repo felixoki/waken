@@ -40,6 +40,7 @@ export enum ComponentName {
   TEXTURE_ANIMATION = "textureAnimation",
   TRANSITION = "transition",
   TRAP = "trap",
+  SKIN = "skin",
 }
 
 export type ComponentConfig =
