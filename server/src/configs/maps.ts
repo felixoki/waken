@@ -1,4 +1,5 @@
 import { MapConfig, MapName, Spritesheet } from "../types";
+import { BiomeName } from "../types/generation";
 
 const player: Spritesheet[] = [
   {
@@ -860,6 +861,20 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 16,
         asTileset: true,
       },
+      {
+        key: "cave_walls_floor",
+        file: "cave_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cave_objects",
+        file: "cave_objects.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
     ],
   },
   [MapName.HERBALIST_HOUSE]: {
@@ -1110,6 +1125,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "",
     isIndoor: false,
     isInstanced: true,
+    isPartyInstance: true,
     spritesheets: [
       ...player,
       ...animals,
@@ -1187,8 +1203,15 @@ export const maps: Record<MapName, MapConfig> = {
         asTileset: true,
       },
       {
-        key: "cavern_walls_floor",
-        file: "cavern_walls_floor.png",
+        key: "cave_walls_floor",
+        file: "cave_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cave_objects",
+        file: "cave_objects.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
@@ -1202,13 +1225,13 @@ export const maps: Record<MapName, MapConfig> = {
       },
     ],
   },
-
   [MapName.DUNGEON]: {
     id: MapName.DUNGEON,
     spawn: { x: 1024, y: 1024 },
     json: "",
     isIndoor: true,
     isInstanced: true,
+    isPartyInstance: true,
     spritesheets: [
       ...player,
       ...creatures,
@@ -1228,8 +1251,8 @@ export const maps: Record<MapName, MapConfig> = {
         asTileset: true,
       },
       {
-        key: "cavern_walls_floor",
-        file: "cavern_walls_floor.png",
+        key: "cave_walls_floor",
+        file: "cave_walls_floor.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
@@ -1237,6 +1260,33 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "dungeon_coasts",
         file: "dungeon_coasts.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+    ],
+  },
+  [MapName.CAVE]: {
+    id: MapName.CAVE,
+    biome: BiomeName.CAVE,
+    spawn: { x: 256, y: 256 },
+    json: "",
+    isIndoor: true,
+    isInstanced: true,
+    spritesheets: [
+      ...player,
+      ...creatures,
+      ...interior,
+      {
+        key: "cave_walls_floor",
+        file: "cave_walls_floor.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cave_objects",
+        file: "cave_objects.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

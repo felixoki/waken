@@ -124,6 +124,8 @@ export enum EntityName {
   CABBAGE_SEED = "cabbage_seed",
   CARROT = "carrot",
   CARROT_SEED = "carrot_seed",
+  CAVE_ENTRANCE = "cave_entrance",
+  CAVE_EXIT = "cave_exit",
   CHEST1 = "chest1",
   CITIZEN1 = "citizen1",
   CITIZEN2 = "citizen2",

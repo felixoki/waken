@@ -3,6 +3,7 @@ import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
 import { handlers } from "../handlers";
+import { vfx } from "../vfx";
 import { DELAY_ATTACK, DURATION_COMBO_WINDOW } from "@server/globals";
 
 export class Casting implements State {
@@ -13,6 +14,7 @@ export class Casting implements State {
   } | null = null;
   private step: number = 0;
   private charging: boolean = false;
+  private hidden: boolean = false;
 
   public name: StateName = StateName.CASTING;
 
@@ -38,7 +40,12 @@ export class Casting implements State {
       ComponentName.ANIMATION,
     );
 
-    if (config.animation)
+    /** @todo We should refactor this later on */
+    if (config.name === SpellName.DRAGON_FORM) {
+      vfx.emitters.transform(entity);
+      entity.setAlpha(0);
+      this.hidden = true;
+    } else if (config.animation)
       anim?.playKey(config.animation.key, entity.facing, config.animation);
     else anim?.play(this.name, entity.facing);
 
@@ -146,6 +153,11 @@ export class Casting implements State {
   }
 
   exit(entity: Entity): void {
+    if (this.hidden) {
+      entity.setAlpha(1);
+      this.hidden = false;
+    }
+
     if (this.timer) {
       this.timer.delay?.destroy();
       this.timer.duration?.destroy();

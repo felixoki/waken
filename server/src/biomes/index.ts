@@ -1,4 +1,4 @@
-import { forest, dungeon } from "../configs/biomes";
+import { forest, dungeon, cave } from "../configs/biomes";
 import { TilesetLoader } from "../loaders/Tileset";
 import { BiomeConfig } from "../types/generation";
 import { MapBuilder } from "./builders/Map";
@@ -8,6 +8,7 @@ const loader = new TilesetLoader();
 const biomes: Record<string, BiomeConfig> = {
   forest,
   dungeon,
+  cave
 };
 
 export function generateBiome(id: string, seed?: string) {

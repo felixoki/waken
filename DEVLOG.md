@@ -598,34 +598,39 @@
 - Add isles ✅
 - Add transform spell ✅
 
-### In progress
+#### 27.6.2026
 
-- Add troll caves
+- Finetune farming, felling and mining ✅
+
+#### 29.6.2026
+
+- Add caves ✅
+- Add wind pipeline and sway component ✅
+
+### In progress
 
 ### Bugs
 
 - Ledge corners render above players
 - Projectiles don't respect collisions
 - Party members are transitioned to dungeon even after leaving forest
+- Entities can't be killed by effects
+- Hotbar doesn't reset after transition in dragon form
+- Spectate and revive are broken when player in cave
 
 ### Backlog
 
 - Animal taming ⭐
-
 - Weather ⭐
-
 - Cooking ⭐
-
 - Building ⭐
-
 - Relationships ⭐
-
 - Character customization ⭐
-
-- Ideas ⭐
+- Ideas
   - Add reflect damage effect
   - Remove among player collisions
   - Add console
+  - Hidden rooms in dungeons
 
 ## Economy
 
@@ -650,3 +655,4 @@
 
 - Tier 1: Deer hide
 - Tier 2: Sheep wool, Fox pelt
+- Tier 3: Troll hide, Bear pelt

@@ -12,9 +12,12 @@ export interface SpriteChunk {
 }
 
 export const sprites = {
-  pixels: (entity: Entity, block: number = 1): SpriteChunk[] => {
+  pixels: (
+    entity: Entity,
+    block: number = 1,
+    frame: Phaser.Textures.Frame = entity.frame,
+  ): SpriteChunk[] => {
     const {
-      frame,
       scaleX: sx,
       scaleY: sy,
       x: worldX,

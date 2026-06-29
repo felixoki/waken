@@ -95,6 +95,10 @@ export enum Event {
   PARTY_LIST = "party_list",
   PARTY_WIPE = "party_wipe",
 
+  /** Sublevel */
+  SUBLEVEL_START_LOADING = "sublevel_start_loading",
+  SUBLEVEL_START = "sublevel_start",
+
   /** Combat */
   HIT = "hit",
 

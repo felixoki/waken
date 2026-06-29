@@ -38,6 +38,7 @@ export class RoomGenerator {
     terrain: TerrainName[];
     entities: Entity[];
     spawn?: { x: number; y: number };
+    exit?: { x: number; y: number };
     doors: DoorAnchor[];
   } {
     const { width, height } = this.config;
@@ -222,7 +223,14 @@ export class RoomGenerator {
         }
       : undefined;
 
-    return { terrain, entities, spawn, doors: this.doors };
+    const exit = spawnRoom
+      ? {
+          x: (spawnRoom.x + spawnRoom.width / 2) * tileWidth,
+          y: spawnRoom.y * tileHeight,
+        }
+      : undefined;
+
+    return { terrain, entities, spawn, exit, doors: this.doors };
   }
 
   private _place() {
@@ -507,6 +515,7 @@ export class RoomGenerator {
     const { width } = this.config;
 
     if (!this.config.rooms) return;
+    if (!this.config.rooms.hasRecesses) return;
 
     const { large } = this.config.rooms.distribution;
 

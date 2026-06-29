@@ -186,6 +186,8 @@ export const party = {
 
       socket.emit(Event.PLAYER_INVENTORY_WIPE);
 
+      world.sublevels.takeReturn(player.id);
+
       party.cleanup(socket, io, world, data.id);
     }
 
@@ -241,6 +243,7 @@ export const party = {
       world.chunks.registerEntity(id, config.map, config.x, config.y, data.id);
     });
 
+
     for (const id of data.members) {
       const member = world.players.get(id);
       if (!member) continue;
@@ -250,6 +253,7 @@ export const party = {
 
       const prev = member.map;
       handlers.chunks.clear(memberSocket, world, id);
+      world.sublevels.takeReturn(id);
 
       const candidates = world.players
         .getByMap(prev)

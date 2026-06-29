@@ -23,6 +23,11 @@ export enum SoundName {
   EQUIP = "equip",
   PICKUP = "pickup",
   FIRE = "fire",
+  RUSTLE = "rustle",
+  SOW = "sow",
+  WATER = "water",
+  CHOP = "chop",
+  MINE = "mine",
 }
 
 export enum MusicName {

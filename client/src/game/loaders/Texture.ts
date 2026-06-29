@@ -49,6 +49,7 @@ export class Texture {
     }
 
     handlers.textures.fangs(scene);
+    handlers.textures.clouds(scene);
 
     if (!scene.textures.exists("particle_square")) {
       const g = scene.add.graphics();

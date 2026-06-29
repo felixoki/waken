@@ -25,6 +25,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "tree1_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -63,6 +64,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "tree2_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -102,6 +104,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "tree4_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -141,6 +144,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "tree5_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -179,6 +183,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "appletree2_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -264,6 +269,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "bush1_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -298,6 +304,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "bush2_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -333,6 +340,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "bush3_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -367,6 +375,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "bush4_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -398,6 +407,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "reed1_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -429,6 +439,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "reed2_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {
@@ -464,6 +475,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "reed3_texture",
       },
+      { name: ComponentName.WINDSWAY },
       {
         name: ComponentName.BODY,
         config: {

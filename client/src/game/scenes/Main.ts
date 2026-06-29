@@ -32,6 +32,7 @@ import {
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
 import { configs } from "@server/configs";
+import { DURATION_EXTRACTION_BOUNCE } from "@server/globals";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
@@ -46,6 +47,7 @@ import { Player } from "../Player";
 import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
 import ForestScene from "./Forest";
+import SublevelScene from "./Sublevel";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -279,9 +281,14 @@ export class MainScene extends Phaser.Scene {
         const destructible = entity.getComponent<DestructibleComponent>(
           ComponentName.DESTRUCTIBLE,
         );
+        const extractable =
+          entity.getComponent(ComponentName.FELLABLE) ??
+          entity.getComponent(ComponentName.MINEABLE);
 
         if (destructible) vfx.emitters.break(entity);
         else if (damageable) vfx.emitters.dissolve(entity);
+        else if (extractable)
+          vfx.emitters.puff(entity.scene, entity.x, entity.y);
       }
 
       this.managers.entities.remove(data);
@@ -297,11 +304,15 @@ export class MainScene extends Phaser.Scene {
         const entity = this.managers.entities.entities.get(data.id);
         if (!entity) return;
 
-        if (data.felled)
-          vfx.shaders.bounce(entity, () =>
-            this.managers.entities.remove(data.id),
-          );
-        else vfx.shaders.bounce(entity);
+        /** @todo Introduce a handler */
+        if (data.felled) {
+          const { scene, x, y } = entity;
+          vfx.shaders.bounce(entity);
+          scene.time.delayedCall(DURATION_EXTRACTION_BOUNCE, () => {
+            vfx.emitters.puff(scene, x, y);
+            this.managers.entities.remove(data.id);
+          });
+        } else vfx.shaders.bounce(entity);
       },
     );
 
@@ -732,6 +743,55 @@ export class MainScene extends Phaser.Scene {
     EventBus.on(Event.PARTY_START_REQUEST, () => {
       this.managers.socket.emit(Event.PARTY_START);
     });
+
+    /**
+     * Sublevels
+     */
+    this.managers.socket.on(Event.SUBLEVEL_START_LOADING, (map: MapName) => {
+      handlers.ui.backdrop.show({ tips: true, map });
+    });
+
+    this.managers.socket.on(
+      Event.SUBLEVEL_START,
+      (data: {
+        map: MapName;
+        tilemap: any;
+        spawn: { x: number; y: number };
+        players: PlayerConfig[];
+      }) => {
+        const scene = this.scene.get(data.map) as SublevelScene;
+
+        const onReady = () => {
+          const localId = this.managers.players.player?.id;
+          const config = data.players.find((p) => p.id === localId);
+
+          if (config) {
+            this.scene.bringToTop(data.map);
+            handlers.player.swap(config, this);
+          } else scene.scene.setVisible(false);
+
+          data.players
+            .filter((p) => p.id !== localId)
+            .forEach((config) => this.managers.players.add(config, false));
+
+          handlers.ui.backdrop.hide(this, data.map);
+        };
+
+        if (scene.scene.isActive()) {
+          scene.rebuild(data.tilemap);
+          onReady();
+          return;
+        }
+
+        this.cache.tilemap.add(data.map, {
+          format: Phaser.Tilemaps.Formats.TILED_JSON,
+          data: data.tilemap,
+        });
+
+        this.scene.launch(data.map);
+        scene.events.once(Phaser.Scenes.Events.CREATE, onReady);
+      },
+    );
 
     /**
      * Death

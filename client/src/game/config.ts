@@ -5,7 +5,9 @@ import VillageScene from "./scenes/Village";
 import { HerbalistScene } from "./scenes/Herbalist";
 import { IlluminatePipeline } from "./pipelines/Illuminate";
 import { AmbiencePipeline } from "./pipelines/Ambience";
-import { PipelineName } from "@server/types";
+import { VortexPipeline } from "./pipelines/Vortex";
+import { WindPipeline } from "./pipelines/Wind";
+import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
 import { BlacksmithScene } from "./scenes/Blacksmith";
 import { TavernScene } from "./scenes/Tavern";
@@ -15,6 +17,7 @@ import { FarmScene } from "./scenes/Farm";
 import ForestScene from "./scenes/Forest";
 import DungeonScene from "./scenes/Dungeon";
 import IslesScene from "./scenes/Isles";
+import SublevelScene from "./scenes/Sublevel";
 
 export const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -37,6 +40,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     FishingHutScene,
     FarmScene,
     DungeonScene,
+    new SublevelScene(MapName.CAVE),
     IslesScene,
   ],
   physics: {
@@ -69,6 +73,8 @@ export const config: Phaser.Types.Core.GameConfig = {
         PipelineName.AMBIENCE,
         AmbiencePipeline,
       );
+      renderer.pipelines.addPostPipeline(PipelineName.VORTEX, VortexPipeline);
+      renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
     },
   },
 };

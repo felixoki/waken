@@ -110,10 +110,31 @@ export const player = {
 
     main.managers.entities.removeByMap(prev.map as MapName);
 
-    if (configs.maps[prev.map].isInstanced)
+    main.managers.players.others.forEach((other) => {
+      if (other.map === prev.map) main.managers.players.remove(other.id);
+    });
+
+    const enteringSublevel =
+      configs.maps[data.map].isInstanced &&
+      !configs.maps[data.map].isPartyInstance;
+
+    const leavingSublevel =
+      configs.maps[prev.map].isInstanced &&
+      !configs.maps[prev.map].isPartyInstance &&
+      data.map !== MapName.FOREST;
+
+    if (configs.maps[prev.map].isInstanced && !enteringSublevel)
       main.time.delayedCall(0, () => {
         (main.scene.get(prev.map) as ForestScene).teardown();
       });
+
+    if (leavingSublevel) {
+      main.managers.entities.removeByMap(MapName.FOREST);
+
+      main.time.delayedCall(0, () => {
+        (main.scene.get(MapName.FOREST) as ForestScene).teardown();
+      });
+    }
   },
 
   lantern: {

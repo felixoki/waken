@@ -23,7 +23,11 @@ export const forest: BiomeConfig = {
   tileWidth: 16,
   tileHeight: 16,
 
-  tilesets: ["dungeon_walls_floor", "dungeon_decorative_cracks_floor"],
+  tilesets: [
+    "dungeon_walls_floor",
+    "dungeon_decorative_cracks_floor",
+    "cave_walls_floor",
+  ],
 
   noise: {
     octaves: 4,
@@ -248,6 +252,7 @@ export const dungeon: BiomeConfig = {
       easyDepth: 2,
       chance: { hidden: 0.1, puzzle: 0.12 },
     },
+    hasRecesses: true,
     distribution: {
       large: {
         count: { min: 1, max: 2 },
@@ -423,5 +428,64 @@ export const dungeon: BiomeConfig = {
         ],
       },
     ],
+  },
+};
+
+export const cave: BiomeConfig = {
+  id: BiomeName.CAVE,
+  width: 40,
+  height: 40,
+  tileWidth: 16,
+  tileHeight: 16,
+
+  noise: {
+    octaves: 4,
+    persistence: 0.5,
+    lacunarity: 2.0,
+    scale: 0.05,
+  },
+
+  layers: [
+    { terrain: TerrainName.VOID, tileset: "cave_walls_floor", threshold: null },
+    { terrain: TerrainName.RECESSED, tileset: "cave_walls_floor", threshold: null },
+    { terrain: TerrainName.FLOOR, tileset: "cave_walls_floor", threshold: null },
+    { terrain: TerrainName.ELEVATED, tileset: "cave_walls_floor", threshold: null },
+  ],
+
+  borders: [],
+  ledge: "cave_walls_floor",
+  walls: "cave_walls_floor",
+  terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
+  objects: [],
+  generator: GeneratorName.ROOM,
+  exclusion: 0,
+  smoothing: null,
+
+  rooms: {
+    assignment: {
+      easyDepth: 1,
+      chance: { hidden: 0, puzzle: 0 },
+    },
+    distribution: {
+      large: {
+        count: { min: 1, max: 2 },
+        size: { width: { min: 18, max: 26 }, height: { min: 14, max: 20 } },
+      },
+      small: {
+        count: { min: 0, max: 0 },
+        size: { width: { min: 999, max: 999 }, height: { min: 999, max: 999 } },
+      },
+    },
+    templates: [
+      {
+        id: RoomName.CAVE1,
+        type: RoomType.CAVE,
+        difficulty: RoomDifficulty.EASY,
+        weight: 10,
+        depth: { min: 0, max: undefined },
+        enemies: [],
+      },
+    ],
+    interior: [],
   },
 };

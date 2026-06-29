@@ -1,4 +1,4 @@
-import { ComponentName, Direction, Event, StateName } from "@server/types";
+import { ComponentName, Direction, Event, SoundName, StateName } from "@server/types";
 import { DURATION_WATERING } from "@server/globals";
 import { State } from "./State";
 import { Entity } from "../Entity";
@@ -41,6 +41,10 @@ export class Watering implements State {
       { x: spout.x, y: spout.y },
       spout.angle,
     );
+
+    entity.scene.managers.sound.play.sfx(SoundName.WATER, {
+      position: { x: entity.x, y: entity.y },
+    });
 
     this.timer = entity.scene.time.delayedCall(DURATION_WATERING, () => {
       this._water(entity);

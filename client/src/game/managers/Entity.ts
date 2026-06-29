@@ -11,6 +11,7 @@ import type { MainScene } from "../scenes/Main";
 import { configs } from "@server/configs";
 import { CHUNK_ACTIVATION_BUDGET, CHUNK_PIXEL_SIZE } from "@server/globals";
 import { Villain } from "../Villain";
+import { vfx } from "../vfx";
 
 type Rect = { x: number; y: number; width: number; height: number };
 
@@ -18,6 +19,7 @@ export class EntityManager {
   private main: MainScene;
   private queue: EntityConfig[] = [];
   private queued: Set<string> = new Set();
+  private fresh: Set<string> = new Set();
   private grid: Map<string, Map<string, Rect>> = new Map();
   private merged: Map<MapName, number[][]> = new Map();
   private dirty: Set<MapName> = new Set();
@@ -55,15 +57,16 @@ export class EntityManager {
     });
   }
 
-  add(config: EntityConfig): void {
+  add(config: EntityConfig, fresh = true): void {
     if (this.entities.has(config.id) || this.queued.has(config.id)) return;
 
     this.queue.push(config);
     this.queued.add(config.id);
+    if (fresh) this.fresh.add(config.id);
   }
 
   batch(configs: EntityConfig[]): void {
-    for (const config of configs) this.add(config);
+    for (const config of configs) this.add(config, false);
     this._sort();
   }
 
@@ -141,6 +144,9 @@ export class EntityManager {
     entity.map = config.map;
     entity.isLocked = config.isLocked;
     this.entities.set(config.id, entity);
+
+    if (this.fresh.delete(config.id) && entity.getComponent(ComponentName.PICKABLE))
+      vfx.shaders.jump(entity);
 
     if (entity.isStatic) this._registerStatic(entity, config, scene);
   }
@@ -252,6 +258,7 @@ export class EntityManager {
 
   remove(id: string): void {
     this.queued.delete(id);
+    this.fresh.delete(id);
 
     const entity = this.entities.get(id);
 
@@ -266,6 +273,7 @@ export class EntityManager {
     this.queue = this.queue.filter((c) => {
       if (c.map === map) {
         this.queued.delete(c.id);
+        this.fresh.delete(c.id);
         return false;
       }
 

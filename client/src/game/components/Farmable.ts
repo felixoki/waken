@@ -22,6 +22,7 @@ EventBus.on(Event.SEEDS_SELECT, (seed: EntityName | null) => {
 export class FarmableComponent extends Component {
   private entity: Entity;
   private preview: Phaser.GameObjects.Graphics | null = null;
+  private pulse: Phaser.Tweens.Tween | null = null;
   private hovered = false;
   private outlined: Entity | null = null;
 
@@ -51,6 +52,8 @@ export class FarmableComponent extends Component {
 
     this._clearOutline();
 
+    this.pulse?.remove();
+    this.pulse = null;
     this.preview?.destroy();
     this.preview = null;
   }
@@ -119,11 +122,32 @@ export class FarmableComponent extends Component {
     if (!this.preview) {
       this.preview = this.entity.scene.add.graphics();
       this.preview.setDepth(2000 + this.entity.y);
+
+      this.pulse = this.entity.scene.tweens.add({
+        targets: this.preview,
+        scale: { from: 0.96, to: 1.04 },
+        duration: 600,
+        ease: "Sine.InOut",
+        yoyo: true,
+        repeat: -1,
+      });
     }
 
+    const S = 7;
+    const L = 4;
+
     this.preview.clear();
-    this.preview.fillStyle(0xffffff, 0.35);
-    this.preview.fillRoundedRect(-8, -8, 16, 16, 3);
+    this.preview.lineStyle(1.5, 0xffffff, 0.9);
+
+    this.preview.lineBetween(-S, -S, -S + L, -S);
+    this.preview.lineBetween(-S, -S, -S, -S + L);
+    this.preview.lineBetween(S, -S, S - L, -S);
+    this.preview.lineBetween(S, -S, S, -S + L);
+    this.preview.lineBetween(-S, S, -S + L, S);
+    this.preview.lineBetween(-S, S, -S, S - L);
+    this.preview.lineBetween(S, S, S - L, S);
+    this.preview.lineBetween(S, S, S, S - L);
+
     this.preview.setPosition(this.entity.x, this.entity.y);
     this.preview.setVisible(true);
   }

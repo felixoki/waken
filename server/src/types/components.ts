@@ -41,6 +41,7 @@ export enum ComponentName {
   TRANSITION = "transition",
   TRAP = "trap",
   SKIN = "skin",
+  WINDSWAY = "windsway",
 }
 
 export type ComponentConfig =
@@ -73,7 +74,8 @@ export type ComponentConfig =
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
-  | { name: ComponentName.TRAP; config: TrapConfig };
+  | { name: ComponentName.TRAP; config: TrapConfig }
+  | { name: ComponentName.WINDSWAY };
 
 export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };
@@ -132,6 +134,7 @@ export interface Transition {
   to: MapName;
   x: number;
   y: number;
+  from?: string;
 }
 
 export interface TransitionConfig {

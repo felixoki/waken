@@ -128,4 +128,46 @@ export const textures = {
       g.destroy();
     });
   },
+
+  clouds: (scene: Scene) => {
+    if (scene.textures.exists("particle_cloud_0")) return;
+
+    const VARIANTS: Array<Array<[number, number, number]>> = [
+      [
+        [32, 30, 13],
+        [18, 28, 10],
+        [46, 28, 10],
+        [24, 20, 9],
+        [34, 16, 11],
+        [44, 22, 8],
+      ],
+      [
+        [20, 30, 11],
+        [34, 31, 12],
+        [48, 30, 11],
+        [27, 22, 10],
+        [41, 22, 10],
+        [34, 17, 9],
+      ],
+      [
+        [32, 32, 12],
+        [20, 30, 10],
+        [44, 30, 10],
+        [26, 21, 10],
+        [38, 20, 10],
+        [32, 14, 10],
+      ],
+    ];
+
+    const W = 64;
+    const H = 48;
+
+    VARIANTS.forEach((lobes, i) => {
+      const g = scene.add.graphics();
+      g.fillStyle(0xffffff, 1);
+      for (const [cx, cy, r] of lobes) g.fillCircle(cx, cy, r);
+      g.generateTexture(`particle_cloud_${i}`, W, H);
+      g.destroy();
+    });
+  },
 };

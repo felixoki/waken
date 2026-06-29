@@ -205,7 +205,7 @@ export const player = {
 
     const party = world.parties.getByPlayerId(player.id);
     const partyId = configs.maps[player.map].isInstanced
-      ? party?.id
+      ? world.sublevels.entranceOf(player.id) ?? party?.id
       : undefined;
 
     const key = world.chunks.toChunkKey(player.map, data.x, data.y, partyId);
@@ -267,7 +267,11 @@ export const player = {
       fromPartyId,
     );
 
-    const isAuthority = !world.authority.get(to);
+    const toPartyId = configs.maps[to].isInstanced
+      ? world.parties.getByPlayerId(playerId)?.id
+      : undefined;
+
+    const isAuthority = !world.authority.get(to, toPartyId);
 
     world.players.update(playerId, {
       map: to,
@@ -277,7 +281,7 @@ export const player = {
       ...updates,
     });
 
-    if (isAuthority) world.authority.set(to, playerId);
+    if (isAuthority) world.authority.set(to, playerId, toPartyId);
 
     socket.leave(`map:${from}`);
     socket.join(`map:${to}`);
@@ -289,7 +293,7 @@ export const player = {
     socket.emit(Event.PLAYER_TRANSITION, updated);
     socket.emit(Event.PLAYER_CREATE_OTHERS, others);
 
-    handlers.chunks.sync.player(socket, world, playerId, to, x, y);
+    handlers.chunks.sync.player(socket, world, playerId, to, x, y, io, toPartyId);
 
     socket.to(`map:${to}`).emit(Event.PLAYER_CREATE, updated);
   },
@@ -303,15 +307,27 @@ export const player = {
     const p = world.players.getBySocketId(socket.id);
     if (!p) return;
 
-    const partyData = world.parties.getByPlayerId(p.id);
+    const party = world.parties.getByPlayerId(p.id);
+    const from = configs.maps[p.map];
+    const to = configs.maps[data.to];
 
-    if (partyData && configs.maps[data.to].isInstanced) {
+    if (from.isInstanced && !from.isPartyInstance) {
+      await handlers.sublevel.exit(data, io, socket, world);
+      return;
+    }
+
+    if (to.isInstanced && !to.isPartyInstance) {
+      await handlers.sublevel.enter(data, io, socket, world);
+      return;
+    }
+
+    if (party && to.isInstanced) {
       await handlers.party.descend(data, io, socket, world);
       return;
     }
 
     const prev = p.map;
-    const partyId = configs.maps[prev].isInstanced ? partyData?.id : undefined;
+    const partyId = configs.maps[prev].isInstanced ? party?.id : undefined;
 
     player.transfer(
       socket,
@@ -326,8 +342,8 @@ export const player = {
       partyId,
     );
 
-    if (partyData && configs.maps[prev].isInstanced)
-      handlers.party.cleanup(socket, io, world, partyData.id);
+    if (party && configs.maps[prev].isInstanced)
+      handlers.party.cleanup(socket, io, world, party.id);
   },
 
   spectate: (data: { targetId: string }, socket: Socket, world: World) => {

@@ -157,6 +157,76 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+    [EntityName.CAVE_ENTRANCE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 26, start: 33, end: 36 },
+            { row: 27, start: 33, end: 36 },
+            { row: 28, start: 33, end: 36 },
+            { row: 29, start: 33, end: 36 },
+            { row: 30, start: 33, end: 36 },
+          ],
+        },
+        key: "cave_entrance_texture",
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.CAVE,
+          x: 256,
+          y: 256,
+          width: 24,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 26, start: 33, end: 36 },
+            { row: 27, start: 33, end: 36 },
+            { row: 28, start: 33, end: 36 },
+            { row: 29, start: 33, end: 36 },
+            { row: 30, start: 33, end: 36 },
+          ],
+        },
+        key: "cave_exit_texture",
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 434,
+          y: 608,
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.BLACKSMITH_EXIT]: {
     facing: Direction.DOWN,
     moving: [],

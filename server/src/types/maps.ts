@@ -1,3 +1,5 @@
+import { BiomeName } from "./generation";
+
 export enum MapName {
   VILLAGE = "village",
   HERBALIST_HOUSE = "herbalist_house",
@@ -9,15 +11,18 @@ export enum MapName {
   HOME = "home",
   FOREST = "forest",
   DUNGEON = "dungeon",
+  CAVE = "cave",
   ISLES = "isles",
 }
 
 export interface MapConfig {
   id: MapName;
+  biome?: BiomeName;
   spawn: { x: number; y: number };
   json: string;
   isIndoor: boolean;
   isInstanced: boolean;
+  isPartyInstance?: boolean;
   spritesheets: Spritesheet[];
 }
 

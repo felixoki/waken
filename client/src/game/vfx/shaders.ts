@@ -5,6 +5,8 @@ import { Entity } from "../Entity";
 import { StretchPipeline } from "../pipelines/Stretch";
 import { BouncePipeline } from "../pipelines/Bounce";
 
+const timers = new Map<string, Phaser.Time.TimerEvent>();
+
 export const shaders = {
   illuminate: (scene: Scene, duration: number) => {
     const camera = scene.cameras.main;
@@ -60,13 +62,48 @@ export const shaders = {
       renderer.pipelines.add(name, pipeline);
     }
 
-    pipeline.trigger(0.12, 2.0, 1.5, 18.0);
+    pipeline.trigger(0.06, 2.0, 3.0, 18.0);
     entity.setPipeline(name);
 
-    entity.scene.time.delayedCall(DURATION_EXTRACTION_BOUNCE, () => {
-      renderer.pipelines.remove(name);
-      if (entity.active) entity.resetPipeline();
-      onComplete?.();
+    timers.get(name)?.remove(false);
+
+    const timer = entity.scene.time.delayedCall(
+      DURATION_EXTRACTION_BOUNCE,
+      () => {
+        timers.delete(name);
+        renderer.pipelines.remove(name);
+        if (entity.active) entity.resetPipeline();
+        onComplete?.();
+      },
+    );
+
+    timers.set(name, timer);
+  },
+
+  jump: (entity: Entity) => {
+    const scene = entity.scene;
+    const baseY = entity.y;
+    const sx = entity.scaleX;
+    const sy = entity.scaleY;
+
+    scene.tweens.add({
+      targets: entity,
+      y: baseY - 12,
+      duration: 150,
+      ease: "Sine.easeOut",
+      yoyo: true,
+      onComplete: () => {
+        if (entity.active) entity.y = baseY;
+      },
+    });
+
+    entity.setScale(sx * 0.4, sy * 0.4);
+    scene.tweens.add({
+      targets: entity,
+      scaleX: sx,
+      scaleY: sy,
+      duration: 300,
+      ease: "Back.easeOut",
     });
   },
 };

@@ -1,4 +1,4 @@
-import { ComponentName, Event } from "@server/types";
+import { ComponentName, Event, PipelineName, SoundName } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
 import { BouncePipeline } from "../pipelines/Bounce";
@@ -65,6 +65,10 @@ export class BounceComponent extends Component {
 
     this.isAnimating = true;
 
+    this.entity.scene.managers.sound.play.sfx(SoundName.RUSTLE, {
+      position: { x: this.entity.x, y: this.entity.y },
+    });
+
     const game = this.entity.scene.game;
     const now = game.loop.time;
 
@@ -74,7 +78,7 @@ export class BounceComponent extends Component {
 
     this.timer = this.entity.scene.time.delayedCall(2000, () => {
       this.timer = undefined;
-      this.entity.resetPipeline();
+      this.entity.setPipeline(PipelineName.WIND);
 
       if (this.activeEntry) {
         pool.release(this.activeEntry, game);

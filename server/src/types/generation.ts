@@ -9,6 +9,7 @@ export interface Range {
 export enum BiomeName {
   FOREST = "forest",
   DUNGEON = "dungeon",
+  CAVE = "cave",
 }
 
 export enum TerrainName {
@@ -68,11 +69,13 @@ export enum RoomName {
   FEAST1 = "feast1",
   FEAST2 = "feast2",
   FEAST3 = "feast3",
+  CAVE1 = "cave1",
 }
 
 export enum RoomType {
   SEWER = "sewer",
   FEAST = "feast",
+  CAVE = "cave",
 }
 
 export enum RoomInteriorOrigin {
@@ -291,8 +294,21 @@ export interface RoomConfig {
   assignment: RoomAssignment;
   templates: RoomTemplate[];
   interior: RoomInterior[];
+  hasRecesses?: boolean;
   distribution: {
     large: RoomDistribution;
     small: RoomDistribution;
   };
+}
+
+export type FacadeCell = readonly [string, number] | null;
+
+export interface EntranceDef {
+  facade: readonly (readonly FacadeCell[])[];
+  door: { col: number; row: number };
+  entity: EntityName;
+  guards?: EntityName;
+  minDistance?: number;
+  count?: number;
+  spacing?: number;
 }

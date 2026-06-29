@@ -1,6 +1,9 @@
 import { Entity } from "../Entity";
 import { Scene } from "../scenes/Scene";
 import { sprites } from "../handlers/sprites";
+import { VortexPipeline } from "../pipelines/Vortex";
+import { configs } from "@server/configs";
+import { Direction, EntityName, PipelineName, StateName } from "@server/types";
 
 export const emitters = {
   burning: (entity: Entity): (() => void) => {
@@ -838,6 +841,54 @@ export const emitters = {
     });
   },
 
+  puff: (scene: Scene, x: number, y: number) => {
+    const clouds = 6;
+    const created: Phaser.GameObjects.Image[] = [];
+
+    for (let i = 0; i < clouds; i++) {
+      const angle =
+        (i / clouds) * Math.PI * 2 + Phaser.Math.FloatBetween(-0.4, 0.4);
+      const dist = Phaser.Math.Between(2, 12);
+      const ox = Math.cos(angle) * dist;
+      const oy = Math.sin(angle) * dist - 4;
+
+      const tint = Phaser.Utils.Array.GetRandom([
+        0xf6f2e9, 0xeae4d6, 0xdcd5c5, 0xcfc7b4,
+      ]);
+
+      const variant = Phaser.Math.Between(0, 2);
+      const cloud = scene.add.image(
+        x + ox,
+        y + oy,
+        `particle_cloud_${variant}`,
+      );
+      cloud.setDepth(2000);
+      cloud.setTint(tint);
+      cloud.setFlipX(Math.random() < 0.5);
+
+      const startScale = Phaser.Math.FloatBetween(0.18, 0.28);
+      cloud.setScale(startScale);
+      cloud.setAngle(Phaser.Math.Between(-14, 14));
+      created.push(cloud);
+
+      scene.tweens.add({
+        targets: cloud,
+        x: x + ox * 1.9,
+        y: y + oy * 1.9 - Phaser.Math.Between(2, 10),
+        scale: startScale * Phaser.Math.FloatBetween(2.2, 3.0),
+        alpha: { from: 0.9, to: 0 },
+        angle: cloud.angle + Phaser.Math.Between(-12, 12),
+        duration: Phaser.Math.Between(400, 580),
+        ease: "Sine.easeOut",
+        onComplete: () => cloud.destroy(),
+      });
+    }
+
+    scene.time.delayedCall(650, () => {
+      created.forEach((c) => c.active && c.destroy());
+    });
+  },
+
   fall: (
     scene: Scene,
     impact: { x: number; y: number },
@@ -1560,6 +1611,234 @@ export const emitters = {
         pieces.forEach((p) => p.circle.destroy());
         embers.stop();
         scene.time.delayedCall(4400, () => embers.destroy());
+      },
+    });
+  },
+
+  transform: (entity: Entity) => {
+    const scene = entity.scene;
+    const { scaleX: sx, scaleY: sy } = entity;
+    const cx = entity.x;
+    const cy = entity.y;
+
+    const sourceChunks = sprites.pixels(entity, 1);
+
+    const dirIndex = Math.max(
+      0,
+      Object.values(Direction).indexOf(entity.facing),
+    );
+    const dragonFrames =
+      configs.animations[EntityName.DRAGON]?.[StateName.IDLE]?.frameCount ?? 1;
+    const dragonFrame = scene.textures.getFrame(
+      `${EntityName.DRAGON}-idle`,
+      dirIndex * dragonFrames,
+    );
+    const dragonChunks = sprites.pixels(entity, 1, dragonFrame);
+
+    if (sourceChunks.length === 0 && dragonChunks.length === 0) return;
+
+    const LIGHT = [0x9fa8d2, 0xc9cde9, 0xced0eb];
+
+    type P = {
+      solidify: boolean;
+      spark: boolean;
+      color: number;
+      alpha: number;
+      hx: number;
+      hy: number;
+      peel: number;
+      jx: number;
+      jy: number;
+      appear: number;
+    };
+
+    const particles: P[] = [];
+
+    const TOTAL = 3800;
+    const HOLD = 70;
+    const SWEEP = 300;
+    const SOLID_START = 920;
+    const SOLID_SWEEP = 240;
+    const SETTLE = 340;
+    const DRAGON_HOLD = 1550;
+
+    const cosW = Math.cos(-Math.PI / 6);
+    const sinW = Math.sin(-Math.PI / 6);
+    let minDot = Infinity;
+    let maxDot = -Infinity;
+
+    for (const c of sourceChunks) {
+      const d = (c.x - cx) * cosW + (c.y - cy) * sinW;
+      if (d < minDot) minDot = d;
+      if (d > maxDot) maxDot = d;
+    }
+
+    const dotRange = maxDot - minDot || 1;
+
+    for (const c of sourceChunks) {
+      const d = (c.x - cx) * cosW + (c.y - cy) * sinW;
+      const sweep = (d - minDot) / dotRange;
+
+      particles.push({
+        solidify: false,
+        spark: false,
+        color: c.color,
+        alpha: c.alpha,
+        hx: c.x,
+        hy: c.y,
+        peel: HOLD + sweep * SWEEP + Math.random() * 40,
+        jx: (Math.random() - 0.5) * 0.6,
+        jy: (Math.random() - 0.5) * 0.6,
+        appear: 0,
+      });
+
+      if (Math.random() < 0.6) {
+        particles.push({
+          solidify: false,
+          spark: true,
+          color: LIGHT[(Math.random() * LIGHT.length) | 0],
+          alpha: c.alpha * (0.6 + Math.random() * 0.35),
+          hx: c.x,
+          hy: c.y,
+          peel: HOLD + sweep * SWEEP + Math.random() * 70,
+          jx: (Math.random() - 0.5) * 0.85,
+          jy: (Math.random() - 0.5) * 0.85,
+          appear: 0,
+        });
+      }
+    }
+
+    const SW_FROM = -Math.PI / 2 - 0.5;
+    const SW_EXIT = 260;
+    const swDirX = Math.cos(SW_FROM);
+    const swDirY = Math.sin(SW_FROM);
+    const swPerpX = -swDirY;
+    const swPerpY = swDirX;
+
+    let pMin = Infinity;
+    let pMax = -Infinity;
+    for (const c of dragonChunks) {
+      const pr = (c.x - cx) * swPerpX + (c.y - cy) * swPerpY;
+      if (pr < pMin) pMin = pr;
+      if (pr > pMax) pMax = pr;
+    }
+    const pRange = pMax - pMin || 1;
+
+    for (const c of dragonChunks) {
+      const ord = ((c.x - cx) * swPerpX + (c.y - cy) * swPerpY - pMin) / pRange;
+      particles.push({
+        solidify: true,
+        spark: false,
+        color: c.color,
+        alpha: c.alpha,
+        hx: c.x,
+        hy: c.y,
+        peel: 0,
+        jx: Math.random() - 0.5,
+        jy: Math.random() - 0.5,
+        appear: SOLID_START + ord * SOLID_SWEEP,
+      });
+    }
+
+    const size = Math.max(sx, sy) * 1.05;
+
+    const g = scene.add.graphics();
+    g.setDepth(entity.depth + 1);
+
+    const VORTEX_PEAK = 720;
+    const VORTEX_END = 1600;
+    const VORTEX_RADIUS = 95;
+    const vortexX = entity.x - 2.5 * sx;
+    const vortexY = entity.y - 15 * sy;
+
+    const cam = scene.cameras.main;
+    cam.setPostPipeline(PipelineName.VORTEX);
+    const vortex = cam.getPostPipeline(PipelineName.VORTEX) as VortexPipeline;
+
+    const smooth = (t: number) => t * t * (3 - 2 * t);
+
+    const draw = (
+      color: number,
+      alpha: number,
+      x: number,
+      y: number,
+      sz: number = size,
+    ) => {
+      if (alpha <= 0.01) return;
+      g.fillStyle(color, alpha);
+      g.fillRect(x - sz * 0.5, y - sz * 0.5, sz, sz);
+    };
+
+    const progress = { t: 0 };
+
+    scene.tweens.add({
+      targets: progress,
+      t: 1,
+      duration: TOTAL,
+      ease: "Linear",
+      onUpdate: () => {
+        const ms = progress.t * TOTAL;
+
+        let venv;
+        if (ms < VORTEX_PEAK) venv = smooth(Math.min(1, ms / VORTEX_PEAK));
+        else if (ms < VORTEX_END)
+          venv = 1 - smooth((ms - VORTEX_PEAK) / (VORTEX_END - VORTEX_PEAK));
+        else venv = 0;
+
+        if (vortex) {
+          const zoom = cam.zoom;
+          const scrX = (vortexX - cam.worldView.x) * zoom;
+          const scrY = (vortexY - cam.worldView.y) * zoom;
+          vortex.progress = venv;
+          vortex.time = ms * 0.001;
+          vortex.centerX = scrX / cam.width;
+          vortex.centerY = 1 - scrY / cam.height;
+          vortex.radius = (VORTEX_RADIUS * zoom) / cam.height;
+        }
+
+        g.clear();
+
+        for (const p of particles) {
+          if (!p.solidify) {
+            if (ms <= p.peel) {
+              if (!p.spark) draw(p.color, p.alpha, p.hx, p.hy);
+              continue;
+            }
+
+            const s = (ms - p.peel) / SW_EXIT;
+            if (s >= 1) continue;
+
+            const e = s * s;
+
+            const x = p.hx + (vortexX - p.hx) * e + p.jx * 6 * sx * (1 - e);
+            const y = p.hy + (vortexY - p.hy) * e + p.jy * 6 * sx * (1 - e);
+
+            const fade = 1 - e;
+            draw(p.color, p.alpha * fade, x, y);
+          } else {
+            if (ms < p.appear) continue;
+
+            const s = (ms - p.appear) / SETTLE;
+
+            if (s >= 1) {
+              if (ms < DRAGON_HOLD) draw(p.color, p.alpha, p.hx, p.hy);
+              continue;
+            }
+
+            const e = 1 - (1 - s) * (1 - s) * (1 - s);
+
+            const x = vortexX + (p.hx - vortexX) * e;
+            const y = vortexY + (p.hy - vortexY) * e;
+
+            const fade = s < 0.25 ? s / 0.25 : 1;
+
+            draw(p.color, p.alpha * fade, x, y);
+          }
+        }
+      },
+      onComplete: () => {
+        g.destroy();
+        cam.removePostPipeline(PipelineName.VORTEX);
       },
     });
   },

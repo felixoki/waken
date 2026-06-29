@@ -15,6 +15,7 @@ import { ChunkManager } from "./managers/Chunk";
 import { AuthorityManager } from "./managers/Authority";
 import { combat } from "./handlers/combat.js";
 import { handlers } from "./handlers/index.js";
+import { SublevelStore } from "./stores/Sublevel.js";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
@@ -23,6 +24,7 @@ export class World {
   public readonly entities: EntityStore;
   public readonly items: ItemsStore;
   public readonly parties: PartyStore;
+  public readonly sublevels: SublevelStore;
   public readonly chunks: ChunkManager;
   public readonly authority: AuthorityManager;
   public readonly affected: Set<string> = new Set();
@@ -37,6 +39,7 @@ export class World {
     this.entities = new EntityStore();
     this.items = new ItemsStore();
     this.parties = new PartyStore();
+    this.sublevels = new SublevelStore();
     this.chunks = new ChunkManager();
     this.authority = new AuthorityManager();
 

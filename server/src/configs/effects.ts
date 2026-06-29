@@ -1,5 +1,6 @@
 import { EffectName } from "../types/index.js";
 import { DamageType } from "../types/damage.js";
+import { DRAGON_FORM_DURATION } from "../globals.js";
 
 export interface EffectDefinition {
   interval?: number;
@@ -14,6 +15,7 @@ export const effects: Record<EffectName, EffectDefinition> = {
   [EffectName.POISONED]: { interval: 2000, damage: 3 },
   [EffectName.ILLUMINATED]: {},
   [EffectName.REGAIN]: {},
+  [EffectName.DRAGON]: { interval: DRAGON_FORM_DURATION },
 };
 
 export const interactions: Partial<

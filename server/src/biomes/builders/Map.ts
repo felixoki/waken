@@ -16,6 +16,7 @@ import {
 import { BorderGenerator } from "../generators/Border";
 import { DoorGenerator } from "../generators/Door";
 import { EntranceGenerator } from "../generators/Entrance";
+import { entrances } from "../../configs/entrances";
 import { LedgeGenerator } from "../generators/Ledge";
 import { RoomGenerator } from "../generators/Room";
 import { StairGenerator } from "../generators/Stair";
@@ -49,11 +50,13 @@ export class MapBuilder {
       terrain: genTerrain,
       entities: roomEntities,
       spawn: roomSpawn,
+      exit: roomExit,
       doors: roomDoors,
     } = generator.generate() as {
       terrain: TerrainName[];
       entities: Entity[];
       spawn?: { x: number; y: number };
+      exit?: { x: number; y: number };
       doors?: DoorAnchor[];
     };
     let terrain = genTerrain;
@@ -396,28 +399,53 @@ export class MapBuilder {
         entities.push({ name: EntityName.WELL, x: pos.x, y: pos.y });
 
       /**
-       * Dungeon entrance: stamp the facade above the floor, place the doorway
-       * transition entity in the opening, and post orc guards at the base.
+       * Entrances
        */
-      const entrance = new EntranceGenerator(this.config, this.seed).generate(
-        terrain,
-        firstgids,
-        spawn,
-      );
+      const taken: { x: number; y: number }[] = [];
 
-      if (entrance) {
-        tiledLayers.push(
-          handlers.generation.createLayer(
-            layerId++,
-            "entrance",
-            width,
-            height,
-            entrance.layer,
-            [{ name: "collides", type: "bool", value: true }],
-          ),
-        );
+      for (const def of entrances) {
+        const generator = new EntranceGenerator(this.config, this.seed, def);
 
-        entities.push(...entrance.entities);
+        for (let n = 0; n < (def.count ?? 1); n++) {
+          const entrance = generator.generate(
+            terrain,
+            firstgids,
+            spawn,
+            n,
+            taken,
+          );
+
+          if (!entrance) continue;
+
+          taken.push(entrance.origin);
+
+          const pad = 1;
+          const fw = def.facade[0].length;
+          const fh = def.facade.length;
+          const minX = (entrance.origin.x - pad) * tileWidth;
+          const maxX = (entrance.origin.x + fw + pad) * tileWidth;
+          const minY = (entrance.origin.y - pad) * tileHeight;
+          const maxY = (entrance.origin.y + fh + pad) * tileHeight;
+
+          for (let i = entities.length - 1; i >= 0; i--) {
+            const e = entities[i];
+            if (e.x >= minX && e.x < maxX && e.y >= minY && e.y < maxY)
+              entities.splice(i, 1);
+          }
+
+          tiledLayers.push(
+            handlers.generation.createLayer(
+              layerId++,
+              "entrance",
+              width,
+              height,
+              entrance.layer,
+              [{ name: "collides", type: "bool", value: true }],
+            ),
+          );
+
+          entities.push(...entrance.entities);
+        }
       }
     }
 
@@ -448,6 +476,17 @@ export class MapBuilder {
           x: pos.x + (offset?.x ?? 0),
           y: pos.y + (offset?.y ?? 0),
         });
+    }
+
+    /**
+     * Cave exit
+     */
+    if (this.config.id === BiomeName.CAVE && roomExit) {
+      entities.push({
+        name: EntityName.CAVE_EXIT,
+        x: roomExit.x,
+        y: roomExit.y,
+      });
     }
 
     /**

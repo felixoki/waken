@@ -1,4 +1,4 @@
-import { ComponentName, Event, EntityName, StateName } from "@server/types";
+import { ComponentName, Event, EntityName, SoundName, StateName } from "@server/types";
 import { DURATION_RAKING } from "@server/globals";
 import { State } from "./State";
 import { Entity } from "../Entity";
@@ -26,6 +26,10 @@ export class Raking implements State {
       ComponentName.ANIMATION,
     );
     anim?.play(this.name, entity.facing);
+
+    entity.scene.managers.sound.play.sfx(SoundName.SOW, {
+      position: { x: entity.x, y: entity.y },
+    });
 
     this.timer = entity.scene.time.delayedCall(DURATION_RAKING, () => {
       this._plant(entity);

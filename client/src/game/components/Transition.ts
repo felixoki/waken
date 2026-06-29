@@ -68,6 +68,7 @@ export class TransitionComponent extends Component {
       to: this.config.to,
       x: this.config.x,
       y: this.config.y,
+      from: this.entity.id,
     });
 
     this.entity.scene.time.delayedCall(1000, () => {

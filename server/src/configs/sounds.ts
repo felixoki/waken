@@ -2,8 +2,53 @@ import { AmbienceName, MusicName, SoundName } from "../types/sounds";
 
 export const sounds = {
   sfx: {
+    [SoundName.RUSTLE]: {
+      volume: 0.1,
+      folder: "misc",
+      variants: [
+        "rustle1",
+        "rustle2",
+        "rustle3",
+        "rustle4",
+        "rustle5",
+        "rustle6",
+        "rustle7",
+        "rustle8",
+        "rustle9",
+        "rustle10",
+        "rustle11",
+        "rustle12",
+        "rustle13",
+        "rustle14",
+        "rustle15",
+        "rustle16",
+        "rustle17",
+        "rustle18",
+        "rustle19",
+        "rustle20",
+      ],
+    },
+    [SoundName.SOW]: {
+      volume: 0.15,
+      folder: "misc",
+    },
+    [SoundName.WATER]: {
+      volume: 0.15,
+      folder: "misc",
+      variants: ["watering"],
+    },
+    [SoundName.CHOP]: {
+      volume: 1,
+      folder: "misc",
+      variants: ["chop"],
+    },
+    [SoundName.MINE]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["mine"],
+    },
     [SoundName.FOOTSTEP]: {
-      volume: 0.25,
+      volume: 0.1,
       folder: "footsteps",
       variants: [
         "stepdirt1",
@@ -145,11 +190,12 @@ export const sounds = {
       folder: "misc",
     },
     [SoundName.PICKUP]: {
-      volume: 0.6,
+      volume: 0.5,
       folder: "misc",
+      variants: ["pop"],
     },
     [SoundName.FIRE]: {
-      volume: 0.2,
+      volume: 0.1,
       folder: "misc",
     },
   },

@@ -4,4 +4,6 @@ export enum PipelineName {
   AMBIENCE = "ambience",
   BOUNCE = "bounce",
   STRETCH = "stretch",
+  VORTEX = "vortex",
+  WIND = "wind",
 }
