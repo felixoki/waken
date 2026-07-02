@@ -155,6 +155,12 @@ export const forest: BiomeConfig = {
       group: { min: 0, max: 2, radius: 3 },
     },
     {
+      entities: [EntityName.BEAR],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 2, max: 4 },
+      spacing: 8,
+    },
+    {
       entities: [EntityName.GOBLIN1, EntityName.ORC1],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 7, max: 15 },
@@ -292,10 +298,7 @@ export const dungeon: BiomeConfig = {
         depth: { min: 2, max: undefined },
         enemies: [
           {
-            entities: [
-              EntityName.ORC1,
-              EntityName.GOBLIN1,
-            ],
+            entities: [EntityName.ORC1, EntityName.GOBLIN1],
             count: { min: 1, max: 3 },
           },
         ],
@@ -308,10 +311,7 @@ export const dungeon: BiomeConfig = {
         depth: { min: 3, max: undefined },
         enemies: [
           {
-            entities: [
-              EntityName.GOBLIN1,
-              EntityName.GOBLIN2,
-            ],
+            entities: [EntityName.GOBLIN1, EntityName.GOBLIN2],
             count: { min: 2, max: 4 },
           },
         ],
@@ -324,10 +324,7 @@ export const dungeon: BiomeConfig = {
         depth: { min: 4, max: undefined },
         enemies: [
           {
-            entities: [
-              EntityName.ORC1,
-              EntityName.ORC2,
-            ],
+            entities: [EntityName.ORC1, EntityName.ORC2],
             count: { min: 2, max: 4 },
           },
         ],
@@ -447,9 +444,21 @@ export const cave: BiomeConfig = {
 
   layers: [
     { terrain: TerrainName.VOID, tileset: "cave_walls_floor", threshold: null },
-    { terrain: TerrainName.RECESSED, tileset: "cave_walls_floor", threshold: null },
-    { terrain: TerrainName.FLOOR, tileset: "cave_walls_floor", threshold: null },
-    { terrain: TerrainName.ELEVATED, tileset: "cave_walls_floor", threshold: null },
+    {
+      terrain: TerrainName.RECESSED,
+      tileset: "cave_walls_floor",
+      threshold: null,
+    },
+    {
+      terrain: TerrainName.FLOOR,
+      tileset: "cave_walls_floor",
+      threshold: null,
+    },
+    {
+      terrain: TerrainName.ELEVATED,
+      tileset: "cave_walls_floor",
+      threshold: null,
+    },
   ],
 
   borders: [],
@@ -483,7 +492,12 @@ export const cave: BiomeConfig = {
         difficulty: RoomDifficulty.EASY,
         weight: 10,
         depth: { min: 0, max: undefined },
-        enemies: [],
+        enemies: [
+          {
+            entities: [EntityName.BEAR],
+            count: { min: 1, max: 1 },
+          },
+        ],
       },
     ],
     interior: [],

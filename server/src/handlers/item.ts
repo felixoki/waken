@@ -74,6 +74,7 @@ export const item = {
       name: config.effect,
       expiresAt: Date.now() + config.duration,
       lastTickAt: Date.now(),
+      ownerId: player.id,
     };
 
     const existing = player.effects ?? [];

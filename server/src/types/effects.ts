@@ -12,4 +12,5 @@ export interface Effect {
   name: EffectName;
   expiresAt: number;
   lastTickAt?: number;
+  ownerId: string;
 }

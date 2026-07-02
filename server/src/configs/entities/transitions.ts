@@ -125,6 +125,41 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.CLOUDLADDER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    offset: { x: 0, y: -8 },
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 8, end: 8 },
+            { row: 3, start: 8, end: 8 },
+            { row: 4, start: 8, end: 8 },
+            { row: 5, start: 8, end: 8 },
+          ],
+        },
+        key: "cloudladder_texture",
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.ISLES,
+          x: 184,
+          y: 168,
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.DUNGEON_ENTRANCE]: {
     facing: Direction.DOWN,
     moving: [],
@@ -202,7 +237,6 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
           spritesheet: "cave_objects",
           tileSize: 16,
           tiles: [
-            { row: 26, start: 33, end: 36 },
             { row: 27, start: 33, end: 36 },
             { row: 28, start: 33, end: 36 },
             { row: 29, start: 33, end: 36 },

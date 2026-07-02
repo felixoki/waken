@@ -208,10 +208,20 @@ export const player = {
 
     handlers.ui.backdrop.show();
 
-    main.time.delayedCall(300, () => {
+    let torn = false;
+
+    const proceed = () => {
+      if (torn) return;
+      torn = true;
+
+      EventBus.off(Event.FADE_OUT_DONE, proceed);
+
       main.managers.players.player!.isTransitioning = false;
       player.swap(data, main);
       handlers.ui.backdrop.hide(main, data.map);
-    });
+    };
+
+    EventBus.once(Event.FADE_OUT_DONE, proceed);
+    main.time.delayedCall(1500, proceed);
   },
 };

@@ -342,8 +342,10 @@ export const player = {
       partyId,
     );
 
-    if (party && configs.maps[prev].isInstanced)
+    if (party && configs.maps[prev].isInstanced) {
       handlers.party.cleanup(socket, io, world, party.id);
+      handlers.party.leave(socket, io, world);
+    }
   },
 
   spectate: (data: { targetId: string }, socket: Socket, world: World) => {

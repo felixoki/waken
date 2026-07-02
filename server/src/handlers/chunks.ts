@@ -49,6 +49,8 @@ export const chunks = {
             }
           }
         }
+
+        socket.emit(Event.MAP_READY);
       }
 
       if (deactivated.length) {

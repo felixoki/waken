@@ -130,6 +130,8 @@ export enum Event {
   TRANSFORM_TOGGLE = "transform_toggle",
 
   /** Transitions */
-  LOADING_SHOW = "loading_show",
-  LOADING_HIDE = "loading_hide",
+  FADE_OUT = "fade_out",
+  FADE_OUT_DONE = "fade_out_done",
+  FADE_IN = "fade_in",
+  MAP_READY = "map_ready",
 }

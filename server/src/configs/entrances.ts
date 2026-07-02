@@ -128,7 +128,7 @@ export const DUNGEON_ENTRANCE_DEF: EntranceDef = {
   door: { col: 2, row: 1 },
   entity: EntityName.DUNGEON_ENTRANCE,
   guards: EntityName.ORC1,
-  count: 1,
+  count: 20,
   spacing: 20,
 };
 
@@ -136,7 +136,7 @@ export const CAVE_ENTRANCE_DEF: EntranceDef = {
   facade: CAVE_FACADE,
   door: { col: 4, row: 6 },
   entity: EntityName.CAVE_ENTRANCE,
-  count: 3,
+  count: 20,
   spacing: 20,
 };
 

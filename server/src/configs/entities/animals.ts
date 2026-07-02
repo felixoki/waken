@@ -12,6 +12,54 @@ import {
 } from "../../types";
 
 export const animals: Partial<Record<EntityName, EntityDefinition>> = {
+  [EntityName.BEAR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 300,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 18,
+          offsetX: 20,
+          offsetY: 32,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 40 },
+        range: 45,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
   [EntityName.BOAR]: {
     facing: Direction.DOWN,
     moving: [],

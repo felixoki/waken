@@ -5,7 +5,7 @@ import type { MainScene } from "../scenes/Main";
 export const ui = {
   backdrop: {
     show: (opts?: { tips?: boolean; map?: MapName }): void => {
-      EventBus.emit(Event.LOADING_SHOW, opts);
+      EventBus.emit(Event.FADE_OUT, opts);
     },
 
     hide: (main: MainScene, mapKey: string): void => {
@@ -17,15 +17,17 @@ export const ui = {
         resolved = true;
 
         scene.events.off(Phaser.Scenes.Events.POST_UPDATE, check);
-        EventBus.emit(Event.LOADING_HIDE);
+        EventBus.emit(Event.FADE_IN);
       };
 
       const check = () => {
-        if (!main.managers.entities.isPending) resolve();
+        const em = main.managers.entities;
+        const loaderIdle = !scene.load.isLoading();
+        if (em.snapshotReady && !em.isPending && loaderIdle) resolve();
       };
 
       scene.events.on(Phaser.Scenes.Events.POST_UPDATE, check);
-      setTimeout(resolve, 2000);
+      setTimeout(() => resolve(), 15000);
     },
   },
 };

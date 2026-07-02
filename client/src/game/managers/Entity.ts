@@ -32,6 +32,7 @@ export class EntityManager {
   > = new Map();
 
   public entities: Map<string, Entity> = new Map();
+  public snapshotReady = false;
 
   constructor(main: MainScene) {
     this.main = main;

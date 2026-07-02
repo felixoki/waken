@@ -3,6 +3,20 @@ import { Event, MapName } from "../types";
 import { World } from "../World";
 
 export const broadcast = {
+  room: (
+    socket: Socket | null,
+    io: Server,
+    room: string,
+    event: Event,
+    data: any,
+    includeSender = true,
+  ) => {
+    if (socket) {
+      socket.to(room).emit(event, data);
+      if (includeSender) socket.emit(event, data);
+    } else io.to(room).emit(event, data);
+  },
+
   toChunk: (
     socket: Socket,
     world: World,

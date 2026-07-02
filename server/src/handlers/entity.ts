@@ -16,7 +16,7 @@ import { DURATION_EXTRACTION_BOUNCE, EXTRACTION_DAMAGE } from "../globals";
 export const entity = {
   create: (
     data: Omit<EntityConfig, "id" | "createdAt">,
-    socket: Socket,
+    socket: Socket | null,
     io: Server,
     world: World,
     partyId?: string,
@@ -38,31 +38,31 @@ export const entity = {
     );
 
     if (partyId) {
-      handlers.broadcast.toParty(
+      handlers.broadcast.room(
         socket,
         io,
-        partyId,
+        `party:${partyId}`,
         Event.ENTITY_CREATE,
         config,
       );
       return;
     }
 
-    handlers.broadcast.toChunk(
-      socket,
-      world,
-      Event.ENTITY_CREATE,
-      config,
-      config.map,
-      config.x,
-      config.y,
-    );
+    const key = world.chunks.toChunkKey(config.map, config.x, config.y);
+    if (key)
+      handlers.broadcast.room(
+        socket,
+        io,
+        `chunk:${key}`,
+        Event.ENTITY_CREATE,
+        config,
+      );
   },
 
   remove: (
     id: string,
     event: Event.ENTITY_DESTROY | Event.ENTITY_DESPAWN,
-    socket: Socket,
+    socket: Socket | null,
     io: Server,
     world: World,
     includeSender = true,
@@ -70,35 +70,21 @@ export const entity = {
     const target = world.entities.get(id);
     if (!target) return;
 
+    const partyId = world.chunks.getPartyByEntity(id);
+    const chunk = world.chunks.getChunkByEntity(id);
+
     world.chunks.removeEntity(id);
     world.entities.remove(id);
 
-    const player = world.players.getBySocketId(socket.id);
-    const party = player && world.parties.getByPlayerId(player.id);
+    const room =
+      partyId && configs.maps[target.map].isInstanced
+        ? `party:${partyId}`
+        : chunk
+          ? `chunk:${chunk}`
+          : null;
 
-    if (party && configs.maps[player.map].isInstanced) {
-      handlers.broadcast.toParty(
-        socket,
-        io,
-        party.id,
-        event,
-        id,
-        includeSender,
-      );
-
-      return;
-    }
-
-    handlers.broadcast.toChunk(
-      socket,
-      world,
-      event,
-      id,
-      target.map,
-      target.x,
-      target.y,
-      includeSender,
-    );
+    if (room)
+      handlers.broadcast.room(socket, io, room, event, id, includeSender);
   },
 
   input: (data: Partial<Input>, socket: Socket, world: World) => {
@@ -129,14 +115,19 @@ export const entity = {
     player.inventory = handlers.storage.add(player.inventory, item);
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
 
-    handlers.entity.remove(
-      data,
-      Event.ENTITY_DESTROY,
-      socket,
-      io,
-      world,
-      false,
-    );
+    const room = world.chunks.getChunkByEntity(data);
+
+    world.chunks.removeEntity(data);
+    world.entities.remove(data);
+
+    if (room)
+      handlers.broadcast.room(
+        socket,
+        io,
+        `chunk:${room}`,
+        Event.ENTITY_PICKUP,
+        data,
+      );
   },
 
   spot: (data: Spot, socket: Socket, world: World) => {
@@ -185,8 +176,21 @@ export const entity = {
       return;
     }
 
-    entity.remove(data.id, Event.ENTITY_DESTROY, socket, io, world, false);
-    socket.emit(Event.EXTRACT_MATERIAL, { id: data.id, felled: true });
+    const room = world.chunks.getChunkByEntity(data.id);
+
+    world.chunks.removeEntity(data.id);
+    world.entities.remove(data.id);
+
+    const felled = { id: data.id, felled: true };
+    if (room)
+      handlers.broadcast.room(
+        socket,
+        io,
+        `chunk:${room}`,
+        Event.EXTRACT_MATERIAL,
+        felled,
+      );
+    else socket.emit(Event.EXTRACT_MATERIAL, felled);
 
     const drop = extractable.config.drop;
 

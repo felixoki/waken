@@ -271,7 +271,17 @@ export class MainScene extends Phaser.Scene {
       this.managers.entities.batch(data);
     });
 
+    this.managers.socket.on(Event.MAP_READY, () => {
+      this.managers.entities.snapshotReady = true;
+    });
+
+    EventBus.on(Event.FADE_OUT, () => {
+      this.managers.entities.snapshotReady = false;
+    });
+
     this.managers.socket.on(Event.ENTITY_DESTROY, (data: string) => {
+      if (this.managers.players.player?.isTransitioning) return;
+
       const entity = this.managers.entities.entities.get(data);
 
       if (entity) {
@@ -294,7 +304,20 @@ export class MainScene extends Phaser.Scene {
       this.managers.entities.remove(data);
     });
 
+    this.managers.socket.on(Event.ENTITY_PICKUP, (data: string) => {
+      if (this.managers.players.player?.isTransitioning) return;
+
+      const entity = this.managers.entities.entities.get(data);
+      if (!entity) return;
+
+      vfx.shaders.stretch(entity, () => {
+        this.managers.entities.remove(data);
+      });
+    });
+
     this.managers.socket.on(Event.ENTITY_DESPAWN, (data: string) => {
+      if (this.managers.players.player?.isTransitioning) return;
+
       this.managers.entities.remove(data);
     });
 
@@ -493,6 +516,10 @@ export class MainScene extends Phaser.Scene {
      * Chunks
      */
     this.managers.socket.on(Event.CHUNK_DEACTIVATE, (data: string[]) => {
+      const transitioning = !!this.managers.players.player?.isTransitioning;
+
+      if (transitioning) return;
+
       this.managers.entities.deactivate(data);
     });
 

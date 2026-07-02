@@ -671,6 +671,10 @@ const interior: Spritesheet[] = [
 ];
 
 const creatures: Spritesheet[] = [
+  { key: "bear-idle", file: "bear_idle_with_shadow.png" },
+  { key: "bear-walking", file: "bear_walking_with_shadow.png" },
+  { key: "bear-running", file: "bear_running_with_shadow.png" },
+  { key: "bear-slashing", file: "bear_slashing_with_shadow.png" },
   { key: "orc1-idle", file: "orc1_idle_with_shadow.png" },
   { key: "orc1-walking", file: "orc1_walking_with_shadow.png" },
   { key: "orc1-running", file: "orc1_running_with_shadow.png" },

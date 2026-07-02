@@ -82,20 +82,18 @@ export const combat = {
   kill: {
     player: (
       player: PlayerConfig,
-      attacker: PlayerConfig | EntityConfig,
-      config: CombatConfig,
-      socket: Socket,
+      attackerId: string,
+      knockback: { x: number; y: number },
       io: Server,
       world: World,
     ) => {
       world.players.update(player.id, { health: 0, isDead: true });
 
-      const knockback = combat.getKnockback(player, attacker, config);
       const event = {
         id: player.id,
         health: 0,
         knockback,
-        attackerId: attacker.id,
+        attackerId,
       };
 
       const party = world.parties.getByPlayerId(player.id);
@@ -109,22 +107,31 @@ export const combat = {
         player.y,
         partyId,
       );
-      if (key) socket.to(`chunk:${key}`).emit(Event.PLAYER_HURT, event);
-      socket.emit(Event.PLAYER_HURT, event);
+
+      const room = key ? `chunk:${key}` : player.socketId;
+      handlers.broadcast.room(null, io, room, Event.PLAYER_HURT, event);
 
       if (party) {
         const event = { id: player.id, x: player.x, y: player.y };
-        io.to(`party:${party.id}`).emit(Event.PLAYER_DEATH, event);
+        handlers.broadcast.room(
+          null,
+          io,
+          `party:${party.id}`,
+          Event.PLAYER_DEATH,
+          event,
+        );
         handlers.party.wipe(party.id, io, world);
       }
     },
 
     entity: (
       target: EntityConfig,
-      socket: Socket,
+      socket: Socket | null,
       io: Server,
       world: World,
     ) => {
+      const partyId = world.chunks.getPartyByEntity(target.id);
+
       handlers.entity.remove(
         target.id,
         Event.ENTITY_DESTROY,
@@ -132,12 +139,6 @@ export const combat = {
         io,
         world,
       );
-
-      const player = world.players.getBySocketId(socket.id);
-      const party = player && world.parties.getByPlayerId(player.id);
-      const partyId = configs.maps[target.map].isInstanced
-        ? party?.id
-        : undefined;
 
       const definition = configs.entities[target.name];
       const damagable = definition?.components.find(
@@ -219,7 +220,13 @@ export const combat = {
     }
 
     if (player && health <= 0) {
-      combat.kill.player(player, attacker, config, socket, io, world);
+      combat.kill.player(
+        player,
+        attacker.id,
+        combat.getKnockback(player, attacker, config),
+        io,
+        world,
+      );
       return;
     }
 
@@ -320,6 +327,7 @@ export const combat = {
           name,
           expiresAt: now + duration,
           lastTickAt: now,
+          ownerId: attackerId || "",
         };
         existing.push(effect);
 
@@ -351,11 +359,14 @@ export const combat = {
           : undefined;
 
         const emit = (event: Event, data: object) => {
-          if (chunkKey) io.to(`chunk:${chunkKey}`).emit(event, data);
-          if (playerSocketId) io.to(playerSocketId).emit(event, data);
+          if (chunkKey)
+            handlers.broadcast.room(null, io, `chunk:${chunkKey}`, event, data);
+          if (playerSocketId)
+            handlers.broadcast.room(null, io, playerSocketId, event, data);
         };
 
         const remaining: Effect[] = [];
+        let killed = false;
 
         for (const effect of target.effects) {
           if (now >= effect.expiresAt) {
@@ -364,6 +375,7 @@ export const combat = {
           }
 
           const definition = configs.effects[effect.name];
+
           if (
             definition.interval &&
             definition.damage &&
@@ -371,19 +383,42 @@ export const combat = {
             now - effect.lastTickAt >= definition.interval
           ) {
             const newHealth = Math.max(0, target.health - definition.damage);
-            store.update(id, { health: newHealth });
             effect.lastTickAt = now;
 
+            if (newHealth <= 0) {
+              if (isEntity)
+                combat.kill.entity(target as EntityConfig, null, io, world);
+              else
+                combat.kill.player(
+                  target as PlayerConfig,
+                  effect.ownerId || id,
+                  { x: 0, y: 0 },
+                  io,
+                  world,
+                );
+
+              killed = true;
+              break;
+            }
+
+            store.update(id, { health: newHealth });
+
             const hurtEvent = isEntity ? Event.ENTITY_HURT : Event.PLAYER_HURT;
+
             emit(hurtEvent, {
               id,
               health: newHealth,
               knockback: { x: 0, y: 0 },
-              attackerId: id,
+              attackerId: effect.ownerId || id,
             });
           }
 
           remaining.push(effect);
+        }
+
+        if (killed) {
+          world.affected.delete(id);
+          continue;
         }
 
         store.update(id, { effects: remaining });
@@ -425,6 +460,12 @@ export const combat = {
       health: target.maxHealth ?? MAX_HEALTH,
     };
 
-    io.to(`party:${party.id}`).emit(Event.PLAYER_REVIVE, reviveEvent);
+    handlers.broadcast.room(
+      null,
+      io,
+      `party:${party.id}`,
+      Event.PLAYER_REVIVE,
+      reviveEvent,
+    );
   },
 };

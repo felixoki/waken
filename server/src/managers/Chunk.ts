@@ -51,7 +51,7 @@ export class ChunkManager {
 
     if (!partyId && prev) {
       const parts = prev.split(":");
-      
+
       if (parts.length === 4 && configs.maps[parts[0] as MapName]?.isInstanced)
         partyId = parts[1];
     }
@@ -72,6 +72,17 @@ export class ChunkManager {
 
   getChunkByEntity(id: string): ChunkKey | undefined {
     return this.chunkByEntity.get(id);
+  }
+
+  getPartyByEntity(id: string): string | undefined {
+    const key = this.chunkByEntity.get(id);
+    if (!key) return undefined;
+
+    const parts = key.split(":");
+    if (parts.length === 4 && configs.maps[parts[0] as MapName]?.isInstanced)
+      return parts[1];
+
+    return undefined;
   }
 
   getEntitiesInChunk(keys: ChunkKey[]): string[] {

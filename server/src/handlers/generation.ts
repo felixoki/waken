@@ -25,6 +25,7 @@ import {
   DUNGEON_RECESS_MIN_H,
   DUNGEON_RECESS_MIN_W,
   DUNGEON_TORCH_STRIDE,
+  DUNGEON_WALL_HEADROOM,
 } from "../globals";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -565,7 +566,7 @@ export const generation = {
           Math.floor(rng() * (size.height.max - size.height.min));
         const x = 1 + Math.floor(rng() * (width - w - 2));
 
-        const yMin = Math.max(range?.min ?? 1, 1);
+        const yMin = Math.max(range?.min ?? 1, DUNGEON_WALL_HEADROOM);
         const yMax = Math.min(range?.max ?? height - h - 2, height - h - 2);
 
         const y = yMin + Math.floor(rng() * (yMax - yMin + 1));

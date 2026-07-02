@@ -606,6 +606,14 @@
 
 - Add caves ✅
 - Add wind pipeline and sway component ✅
+- Party members are transitioned to dungeon even after leaving forest ✅
+
+#### 2.7.2026
+
+- Add cloudladder and multiplayer animations ✅
+- Entities can't be killed by effects ✅
+- Fix fade in and fade out timing on transitions ✅
+- Add bear ✅
 
 ### In progress
 
@@ -613,10 +621,10 @@
 
 - Ledge corners render above players
 - Projectiles don't respect collisions
-- Party members are transitioned to dungeon even after leaving forest
-- Entities can't be killed by effects
 - Hotbar doesn't reset after transition in dragon form
 - Spectate and revive are broken when player in cave
+- Fishing is broken in multiplayer
+- Effect tint doesn't reset for other clients
 
 ### Backlog
 
@@ -628,6 +636,7 @@
 - Character customization ⭐
 - Ideas
   - Add reflect damage effect
+  - Add gain momentum spell
   - Remove among player collisions
   - Add console
   - Hidden rooms in dungeons

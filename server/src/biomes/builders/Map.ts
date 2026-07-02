@@ -51,12 +51,14 @@ export class MapBuilder {
       entities: roomEntities,
       spawn: roomSpawn,
       exit: roomExit,
+      descent: roomDescent,
       doors: roomDoors,
     } = generator.generate() as {
       terrain: TerrainName[];
       entities: Entity[];
       spawn?: { x: number; y: number };
       exit?: { x: number; y: number };
+      descent?: { x: number; y: number };
       doors?: DoorAnchor[];
     };
     let terrain = genTerrain;
@@ -99,6 +101,7 @@ export class MapBuilder {
     const tiledLayers: any[] = [];
     const detailSeed = this.seed;
     const detailSpawner = new DetailSpawner(detailSeed);
+    const fillSeed = handlers.generation.hash(`${this.seed}-fill`);
 
     for (let i = 0; i < layers.length; i++) {
       const layerConfig = layers[i];
@@ -125,11 +128,17 @@ export class MapBuilder {
               layerConfig.terrain,
             )
           ) {
-            const hash = handlers.generation.spatialHash(x, y, 0);
-            const tile =
-              fills.length > 1 && hash % 16 < 2
-                ? fills[1 + (hash % (fills.length - 1))]
-                : fills[0];
+            let tile = fills[0];
+
+            if (fills.length > 1) {
+              const rng = handlers.generation.seededRandom(
+                handlers.generation.spatialHash(x, y, fillSeed),
+              );
+
+              if (rng() < 0.125)
+                tile = fills[1 + Math.floor(rng() * (fills.length - 1))];
+            }
+
             data[idx] = gid + tile.id;
           }
         }
@@ -196,6 +205,32 @@ export class MapBuilder {
       for (let i = 0; i < below.length; i++)
         if (below[i] !== 0 || above[i] !== 0)
           for (const layer of tiledLayers) layer.data[i] = 0;
+
+      /**
+       * Floor underlay
+       */
+      const floorFills = this.loader.query(this.config.walls, {
+        role: TileRole.FILL,
+        terrain: TerrainName.FLOOR,
+      });
+      const floorTile = floorFills.length ? gid + floorFills[0].id : 0;
+
+      if (floorTile) {
+        const underlay = new Array(width * height).fill(0);
+
+        for (let i = 0; i < below.length; i++)
+          if (below[i] !== 0 || above[i] !== 0) underlay[i] = floorTile;
+
+        tiledLayers.push(
+          handlers.generation.createLayer(
+            layerId++,
+            "walls_floor",
+            width,
+            height,
+            underlay,
+          ),
+        );
+      }
 
       tiledLayers.push(
         handlers.generation.createLayer(
@@ -476,6 +511,16 @@ export class MapBuilder {
           x: pos.x + (offset?.x ?? 0),
           y: pos.y + (offset?.y ?? 0),
         });
+
+      if (roomDescent) {
+        const descentOffset = configs.entities[EntityName.CLOUDLADDER]?.offset;
+
+        entities.push({
+          name: EntityName.CLOUDLADDER,
+          x: roomDescent.x + (descentOffset?.x ?? 0),
+          y: roomDescent.y + (descentOffset?.y ?? 0),
+        });
+      }
     }
 
     /**

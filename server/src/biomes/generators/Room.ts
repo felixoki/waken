@@ -39,6 +39,7 @@ export class RoomGenerator {
     entities: Entity[];
     spawn?: { x: number; y: number };
     exit?: { x: number; y: number };
+    descent?: { x: number; y: number };
     doors: DoorAnchor[];
   } {
     const { width, height } = this.config;
@@ -127,8 +128,32 @@ export class RoomGenerator {
             for (let j = 0; j < count; j++) {
               const entity =
                 piece.entities[Math.floor(rng() * piece.entities.length)];
-              const ox = room.x + 1 + Math.floor(rng() * (room.width - 2));
-              const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
+
+              let ox = -1;
+              let oy = -1;
+
+              for (let attempt = 0; attempt < 12; attempt++) {
+                const tx = room.x + 1 + Math.floor(rng() * (room.width - 2));
+                const ty = room.y + 1 + Math.floor(rng() * (room.height - 2));
+
+                let clear = true;
+
+                for (let dy = -1; dy <= 1 && clear; dy++)
+                  for (let dx = -1; dx <= 1 && clear; dx++)
+                    if (
+                      terrain[(ty + dy) * width + (tx + dx)] !==
+                      TerrainName.FLOOR
+                    )
+                      clear = false;
+
+                if (clear) {
+                  ox = tx;
+                  oy = ty;
+                  break;
+                }
+              }
+
+              if (ox < 0) continue;
 
               entities.push({
                 name: entity,
@@ -226,11 +251,23 @@ export class RoomGenerator {
     const exit = spawnRoom
       ? {
           x: (spawnRoom.x + spawnRoom.width / 2) * tileWidth,
-          y: spawnRoom.y * tileHeight,
+          y: (spawnRoom.y - 1) * tileHeight,
         }
       : undefined;
 
-    return { terrain, entities, spawn, exit, doors: this.doors };
+    let deepest = 0;
+    for (let i = 1; i < depths.length; i++)
+      if (depths[i] > depths[deepest]) deepest = i;
+
+    const deepRoom = this.rooms[deepest];
+    const descent = deepRoom
+      ? {
+          x: (deepRoom.x + Math.floor(deepRoom.width / 2)) * tileWidth,
+          y: (deepRoom.y + Math.floor(deepRoom.height / 2)) * tileHeight,
+        }
+      : undefined;
+
+    return { terrain, entities, spawn, exit, descent, doors: this.doors };
   }
 
   private _place() {

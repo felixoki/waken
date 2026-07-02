@@ -40,14 +40,16 @@ export function Loading() {
       setVisible(true);
     };
 
-    const hide = () => setVisible(false);
+    const hide = () => {
+      setVisible(false);
+    };
 
-    EventBus.on(Event.LOADING_SHOW, show);
-    EventBus.on(Event.LOADING_HIDE, hide);
+    EventBus.on(Event.FADE_OUT, show);
+    EventBus.on(Event.FADE_IN, hide);
 
     return () => {
-      EventBus.off(Event.LOADING_SHOW, show);
-      EventBus.off(Event.LOADING_HIDE, hide);
+      EventBus.off(Event.FADE_OUT, show);
+      EventBus.off(Event.FADE_IN, hide);
     };
   }, []);
 
@@ -70,6 +72,10 @@ export function Loading() {
         backgroundImage: showTips
           ? `url('./assets/images/${backdrops[map] ?? "forest_glade.png"}')`
           : undefined,
+      }}
+      onTransitionEnd={(e) => {
+        if (e.propertyName !== "opacity") return;
+        if (visible) EventBus.emit(Event.FADE_OUT_DONE);
       }}
     >
       {showTips && visible && (
