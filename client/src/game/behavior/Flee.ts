@@ -93,7 +93,7 @@ export class FleeBehavior extends Behavior {
       }
     }
 
-    const now = Date.now();
+    const now = entity.scene.time.now;
 
     if (this.path.length && handlers.path.stuck(entity, this.stuck, now, 4)) {
       this.attempts++;

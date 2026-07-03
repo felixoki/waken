@@ -107,18 +107,12 @@ export class Player extends Entity {
       return;
     }
 
-    const prev = {
-      state: this.state,
-      facing: this.facing,
-      movingCount: this.moving.length,
-    };
-
     this.target = input.target;
     this.setFacing(input.facing);
     this.moving = input.moving;
     this.pointerdown = input.pointerdown;
 
-    const { state, needsUpdate } = handlers.state.resolve(input, prev);
+    const { state } = handlers.state.resolve(input);
 
     if (remoteInput) {
       const hotbar = this.getComponent<HotbarComponent>(ComponentName.HOTBAR);
@@ -126,7 +120,7 @@ export class Player extends Entity {
     }
 
     if (state !== this.state) this.transitionTo(state);
-    if (needsUpdate) this.states?.get(this.state)?.update(this);
+    else this.states?.get(this.state)?.update(this);
 
     handlers.player.lantern.sync(this, input.equipped);
 

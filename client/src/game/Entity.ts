@@ -87,14 +87,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     if (!input || this.isLocked) return;
 
-    const prev = {
-      state: this.state,
-      facing: this.facing,
-      movingCount: this.moving.length,
-    };
-
     const prepared = { ...input, id: this.id, x: this.x, y: this.y };
-    const { state, needsUpdate } = handlers.state.resolve(prepared, prev);
+    const { state } = handlers.state.resolve(prepared);
 
     if (input.facing) this.setFacing(input.facing);
     if (input.moving) this.setMoving(input.moving);
@@ -104,7 +98,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
       (this as unknown as { spell: SpellName | null }).spell = input.spell;
 
     if (state !== this.state) this.transitionTo(state);
-    if (needsUpdate) this.states?.get(this.state)?.update(this);
+    else this.states?.get(this.state)?.update(this);
 
     if (remoteInput) {
       const delta = this.scene.game.loop.delta;

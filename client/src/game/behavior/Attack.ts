@@ -55,7 +55,7 @@ export class AttackBehavior extends Behavior {
     if (!this.target.lastPosition)
       this.target.lastPosition = { x: target.x, y: target.y };
 
-    const now = Date.now();
+    const now = entity.scene.time.now;
 
     const canSee =
       !dead &&
@@ -81,7 +81,7 @@ export class AttackBehavior extends Behavior {
       }
 
       const frustrated =
-        Date.now() - this.lastAttackTime > this.frustrationThreshold;
+        now - this.lastAttackTime > this.frustrationThreshold;
 
       const angle = Phaser.Math.Angle.Between(
         entity.x,
@@ -96,7 +96,7 @@ export class AttackBehavior extends Behavior {
         const minRange = frustrated ? 0 : (config.minRange ?? 0);
 
         if (distance < minRange || distance > range) continue;
-        if (Date.now() < (this.cooldowns.get(config.state) ?? 0)) continue;
+        if (now < (this.cooldowns.get(config.state) ?? 0)) continue;
 
         if (config.weapon) {
           const weapon = configs.weapons[config.weapon];
@@ -120,10 +120,10 @@ export class AttackBehavior extends Behavior {
           if (!within) continue;
         }
 
-        this.lastAttackTime = Date.now();
+        this.lastAttackTime = now;
         this.cooldowns.set(
           config.state,
-          Date.now() + (config.cooldown ?? 1000),
+          now + (config.cooldown ?? 1000),
         );
 
         return {
@@ -140,14 +140,17 @@ export class AttackBehavior extends Behavior {
         if (grid.length) {
           const { tileManager } = entity.scene;
 
+          const from = handlers.path.position(entity);
+          const to = handlers.path.position(target);
+
           const start = {
-            x: Math.floor(entity.x / tileManager.map.tileWidth),
-            y: Math.floor(entity.y / tileManager.map.tileHeight),
+            x: Math.floor(from.x / tileManager.map.tileWidth),
+            y: Math.floor(from.y / tileManager.map.tileHeight),
           };
 
           const end = {
-            x: Math.floor(target.x / tileManager.map.tileWidth),
-            y: Math.floor(target.y / tileManager.map.tileHeight),
+            x: Math.floor(to.x / tileManager.map.tileWidth),
+            y: Math.floor(to.y / tileManager.map.tileHeight),
           };
 
           this.path =
@@ -203,9 +206,11 @@ export class AttackBehavior extends Behavior {
         if (grid.length) {
           const { tileManager } = entity.scene;
 
+          const from = handlers.path.position(entity);
+
           const start = {
-            x: Math.floor(entity.x / tileManager.map.tileWidth),
-            y: Math.floor(entity.y / tileManager.map.tileHeight),
+            x: Math.floor(from.x / tileManager.map.tileWidth),
+            y: Math.floor(from.y / tileManager.map.tileHeight),
           };
 
           const end = {

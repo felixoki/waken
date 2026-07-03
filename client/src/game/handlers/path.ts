@@ -185,6 +185,13 @@ export const path = {
     );
   },
 
+  position: (entity: Entity): { x: number; y: number } => {
+    const body = entity.body as Phaser.Physics.Arcade.Body | undefined;
+    return body
+      ? { x: body.center.x, y: body.center.y }
+      : { x: entity.x, y: entity.y };
+  },
+
   stuck: (
     entity: Entity,
     stuck: Stuck,
@@ -195,12 +202,13 @@ export const path = {
 
     stuck.lastCheck = now;
 
-    const deltaX = Math.abs(entity.x - stuck.lastPosition.x);
-    const deltaY = Math.abs(entity.y - stuck.lastPosition.y);
-
+    const moved = Math.hypot(
+      entity.x - stuck.lastPosition.x,
+      entity.y - stuck.lastPosition.y,
+    );
     stuck.lastPosition = { x: entity.x, y: entity.y };
 
-    return deltaX < threshold && deltaY < threshold;
+    return moved < threshold;
   },
 
   follow: (
@@ -211,13 +219,12 @@ export const path = {
   ): Partial<Input> | null => {
     if (!path.length) return null;
 
+    const body = entity.body as Phaser.Physics.Arcade.Body | undefined;
+    const ox = body ? body.center.x : entity.x;
+    const oy = body ? body.center.y : entity.y;
+
     const next = path[0];
-    const distance = Phaser.Math.Distance.Between(
-      entity.x,
-      entity.y,
-      next.x,
-      next.y,
-    );
+    const distance = Phaser.Math.Distance.Between(ox, oy, next.x, next.y);
 
     if (distance < threshold) {
       path.shift();
@@ -225,12 +232,7 @@ export const path = {
     }
 
     if (path.length) {
-      const angle = Phaser.Math.Angle.Between(
-        entity.x,
-        entity.y,
-        path[0].x,
-        path[0].y,
-      );
+      const angle = Phaser.Math.Angle.Between(ox, oy, path[0].x, path[0].y);
       const direction = handlers.direction.fromAngle(angle, entity.facing);
 
       return {
@@ -258,7 +260,7 @@ export const path = {
 
       if (tile && tile.collides) return false;
     }
-    
+
     return true;
   },
 };

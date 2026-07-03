@@ -44,7 +44,7 @@ export class PatrolBehavior extends Behavior {
   update(entity: Entity): Partial<Input> {
     if (this.spawn.x === 0) this.spawn = { x: entity.x, y: entity.y };
 
-    const now = Date.now();
+    const now = entity.scene.time.now;
 
     if (now - this.scan.last > this.scan.interval) {
       this.scan.last = now;
