@@ -21,5 +21,6 @@ export interface PlayerConfig {
   spells: SpellName[];
   inventory: (Item | null)[];
   hotbar: (Slot | null)[];
+  active: number;
   effects?: Effect[];
 }

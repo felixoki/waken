@@ -17,5 +17,6 @@ export interface Input {
   target?: { x: number; y: number; id?: string };
   state: StateName;
   equipped: Slot | null | undefined;
+  active: number;
   spell?: SpellName | null;
 }

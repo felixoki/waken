@@ -40,6 +40,7 @@ export const world = {
               spells: player.spells,
               inventory: player.inventory,
               hotbar: player.hotbar,
+              active: player.active,
             },
           }),
         ),

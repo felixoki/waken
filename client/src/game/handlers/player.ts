@@ -75,6 +75,9 @@ export const player = {
       hotbar: current
         .getComponent<HotbarComponent>(ComponentName.HOTBAR)
         ?.getSlots(),
+      active: current
+        .getComponent<HotbarComponent>(ComponentName.HOTBAR)
+        ?.getActive(),
       map: current.map,
       scene: current.scene,
     };
@@ -91,6 +94,9 @@ export const player = {
     updated
       .getComponent<HotbarComponent>(ComponentName.HOTBAR)
       ?.setSlots(prev.hotbar!);
+    updated
+      .getComponent<HotbarComponent>(ComponentName.HOTBAR)
+      ?.setActive(prev.active ?? 0);
 
     const scene = main.scene.get(data.map);
 

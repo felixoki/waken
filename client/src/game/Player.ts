@@ -194,6 +194,7 @@ export class Player extends Entity {
       target: target,
       state: this.state,
       equipped: equipped,
+      active: hotbar?.getActive() ?? 0,
     };
   }
 
@@ -212,6 +213,7 @@ export class Player extends Entity {
       input.isRolling !== last.isRolling ||
       input.pointerdown !== last.pointerdown ||
       input.equipped !== last.equipped ||
+      input.active !== last.active ||
       input.moving.length !== (last.moving?.length ?? 0) ||
       input.moving.some((d, i) => d !== last.moving?.[i]) ||
       input.target?.x !== last.target?.x ||

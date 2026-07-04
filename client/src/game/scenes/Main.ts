@@ -176,6 +176,7 @@ export class MainScene extends Phaser.Scene {
 
       const hotbar = player.getComponent<HotbarComponent>(ComponentName.HOTBAR);
       if (hotbar && data.hotbar?.length) hotbar.setSlots(data.hotbar);
+      if (hotbar) hotbar.setActive(data.active ?? 0);
 
       handlers.ui.backdrop.hide(this, data.map);
     });

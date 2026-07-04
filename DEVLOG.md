@@ -622,20 +622,26 @@
 #### 4.7.2026
 
 - Dead players can be transitioned to dungeon ✅
-- Projectiles don't respect collisions ✅
+- Revive and spectate don't work across scenes ✅
+- Hotbar isn't persistent ✅
 
 ### In progress
 
 - Add dungeon and cave objects
+- Add tiers
 
 ### Bugs
 
-- Ledge corners render above players
+🔴 High
+
+- Projectiles don't respect collisions
 - Hotbar doesn't reset after transition in dragon form
-- Revive and spectate don't work across scenes
+
+🔵 Low
+
 - Fishing is broken in multiplayer
 - Effect tint doesn't reset for other clients
-- Hotbar isn't persistent
+- Ledge corners render above players
 
 ### Backlog
 
@@ -644,7 +650,6 @@
 - Cooking ⭐
 - Building ⭐
 - Relationships ⭐
-- Character customization ⭐
 - Ideas
   - Add reflect damage effect
   - Add gain momentum spell

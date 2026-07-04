@@ -68,6 +68,15 @@ export class HotbarComponent extends Component {
     return this.slots[this.active];
   }
 
+  getActive(): number {
+    return this.active;
+  }
+
+  setActive(index: number): void {
+    this.active = index;
+    this.emit();
+  }
+
   getSlots(): (Slot | null)[] {
     return [...this.slots];
   }

@@ -99,6 +99,7 @@ export const player = {
           null,
           null,
         ],
+        active: (saved?.data?.active as number) ?? 0,
       };
 
       world.players.add(player.id, player);
@@ -145,6 +146,7 @@ export const player = {
           spells: player.spells,
           inventory: player.inventory,
           hotbar: player.hotbar,
+          active: player.active,
         },
       });
 
@@ -201,6 +203,7 @@ export const player = {
         state: data.state,
         ...(data.facing && { facing: data.facing }),
         isRunning: data.isRunning,
+        active: data.active,
       },
     });
 
