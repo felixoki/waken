@@ -12,9 +12,16 @@ export class InterfaceManager {
   }
 
   update(): void {
-
     const player = this.scene.managers.players.player;
-    if (!player || player.map !== this.scene.scene.key) return;
+
+    if (!player || player.map !== this.scene.scene.key) {
+      if (this.last !== "[]") {
+        this.last = "[]";
+        EventBus.emit(Event.ENTITIES_UPDATE, []);
+      }
+
+      return;
+    }
 
     const key = this.scene.scene.key;
     const entities: Entity[] = [];
@@ -31,8 +38,10 @@ export class InterfaceManager {
 
     const data = this._getScreenData(entities, player);
     const key2 = JSON.stringify(data);
+
     if (key2 === this.last) return;
     this.last = key2;
+
     EventBus.emit(Event.ENTITIES_UPDATE, data);
   }
 

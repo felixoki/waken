@@ -35,6 +35,7 @@ export enum ComponentName {
   LIGHT = "light",
   PICKABLE = "pickable",
   POINTABLE = "pointable",
+  REVIVEABLE = "reviveable",
   STORAGE = "storage",
   TEXTURE = "texture",
   TEXTURE_ANIMATION = "textureAnimation",
@@ -70,6 +71,7 @@ export type ComponentConfig =
   | { name: ComponentName.LIGHT; config: LightConfig }
   | { name: ComponentName.PICKABLE }
   | { name: ComponentName.POINTABLE }
+  | { name: ComponentName.REVIVEABLE }
   | { name: ComponentName.STORAGE; config: StorageConfig }
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }

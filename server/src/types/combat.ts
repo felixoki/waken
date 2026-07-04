@@ -29,7 +29,3 @@ export interface Death {
   x: number;
   y: number;
 }
-
-export interface Revive {
-  id: string;
-}

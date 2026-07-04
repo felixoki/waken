@@ -5,6 +5,88 @@
  </editorsettings>
  <tileset firstgid="1" name="isles_ground_grass" tilewidth="16" tileheight="16" tilecount="1820" columns="28">
   <image source="../client/public/assets/sprites/isles_ground_grass.png" width="448" height="1040"/>
+  <tile id="703">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="-0.0370222" y="0.00465288" width="10" height="16.0003"/>
+   </objectgroup>
+  </tile>
+  <tile id="1066">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="3" width="16" height="7">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1067">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.00480288" y="2.9999" width="16" height="7">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+    <object id="2" x="9" y="10" width="7.0026" height="6">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1093">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.0221133" y="0.0366721" width="7" height="16.0003">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1095">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="9" y="0" width="7" height="16.0003">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1121">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="-3" width="16" height="7">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1122">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="-3" width="16" height="7">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1123">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="-3" width="16" height="7">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
+  <tile id="1125">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="9" y="0" width="7.0026" height="10">
+     <properties>
+      <property name="clearance" type="int" value="10"/>
+     </properties>
+    </object>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="1821" name="isles_rocks" tilewidth="16" tileheight="16" tilecount="288" columns="24">
   <image source="../client/public/assets/sprites/isles_rocks.png" width="384" height="192"/>
@@ -916,6 +998,9 @@
 </data>
  </layer>
  <layer id="1" name="ground1" width="41" height="56">
+  <properties>
+   <property name="collides" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

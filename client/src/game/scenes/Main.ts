@@ -43,7 +43,6 @@ import { vfx } from "../vfx";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
 import { EffectFactory } from "../factory/Effect";
-import { Player } from "../Player";
 import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
 import ForestScene from "./Forest";
@@ -56,7 +55,6 @@ export class MainScene extends Phaser.Scene {
   public chunkManager!: ChunkManager;
   public soundManager!: SoundManager;
   public socketManager = SocketManager;
-  public spectate: Player | null = null;
 
   constructor() {
     super("main");
@@ -124,22 +122,16 @@ export class MainScene extends Phaser.Scene {
 
   update(_time: number, _delta: number): void {
     const player = this.managers.players.player;
-    const target = this.spectate || player;
 
-    if (target) {
-      const positions = [{ map: target.map, x: target.x, y: target.y }];
+    if (player) {
+      const positions = [{ map: player.map, x: player.x, y: player.y }];
 
-      if (player?.isAuthority)
+      if (player.isAuthority)
         for (const other of this.managers.players.others.values())
-          if (other.map === target.map)
+          if (other.map === player.map)
             positions.push({ map: other.map, x: other.x, y: other.y });
 
-      const changed = this.managers.chunks.updateFromPositions(positions);
-
-      if (changed && this.spectate)
-        this.managers.socket.emit(Event.PLAYER_SPECTATE, {
-          targetId: this.spectate.id,
-        });
+      this.managers.chunks.updateFromPositions(positions);
     }
 
     this.managers.players.update();
@@ -202,7 +194,6 @@ export class MainScene extends Phaser.Scene {
     });
 
     this.managers.socket.on(Event.PLAYER_LEAVE, (data: string) => {
-      if (this.spectate?.id === data) this.spectate = null;
       this.managers.players.remove(data);
     });
 
@@ -676,12 +667,15 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.HIT, data);
     });
 
-    this.game.events.on(Event.PLAYER_CAST, (spell: string) => {
-      this.managers.socket.emit(Event.PLAYER_CAST, spell);
+    this.game.events.on(
+      Event.PLAYER_CAST,
+      (data: { name: SpellName; targetId?: string }) => {
+        this.managers.socket.emit(Event.PLAYER_CAST, data);
 
-      const sound = configs.spells[spell as SpellName]?.sounds?.cast;
-      if (sound) this.managers.sound.play.sfx(sound);
-    });
+        const sound = configs.spells[data.name]?.sounds?.cast;
+        if (sound) this.managers.sound.play.sfx(sound);
+      },
+    );
 
     /**
      * Party
@@ -862,8 +856,6 @@ export class MainScene extends Phaser.Scene {
         if (isLocal) {
           EventBus.emit(Event.PLAYER_HEALTH, data.health);
 
-          this.spectate = null;
-
           this.game.events.emit(Event.CAMERA_FOLLOW, {
             key: this.managers.players.player!.map,
             player: this.managers.players.player!,
@@ -904,32 +896,12 @@ export class MainScene extends Phaser.Scene {
       const player = this.managers.players.player;
       if (!player) return;
 
-      this.spectate = null;
-
       const inventory = player.getComponent<InventoryComponent>(
         ComponentName.INVENTORY,
       );
       inventory?.set(new Array(20).fill(null));
 
       EventBus.emit(Event.PARTY_WIPE);
-    });
-
-    EventBus.on(Event.PLAYER_REVIVE_REQUEST, (id: string) => {
-      this.managers.socket.emit(Event.PLAYER_REVIVE, { id });
-    });
-
-    EventBus.on(Event.PLAYER_SPECTATE_REQUEST, (targetId: string) => {
-      const target = this.managers.players.others.get(targetId);
-      if (!target) return;
-
-      this.spectate = target;
-
-      this.game.events.emit(Event.CAMERA_FOLLOW, {
-        key: target.map,
-        player: target,
-      });
-
-      this.managers.socket.emit(Event.PLAYER_SPECTATE, { targetId });
     });
   }
 

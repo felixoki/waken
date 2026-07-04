@@ -615,16 +615,27 @@
 - Fix fade in and fade out timing on transitions ✅
 - Add bear ✅
 
+#### 3.7.2026
+
+- Refactor stuck detection ✅
+
+#### 4.7.2026
+
+- Dead players can be transitioned to dungeon ✅
+- Projectiles don't respect collisions ✅
+
 ### In progress
+
+- Add dungeon and cave objects
 
 ### Bugs
 
 - Ledge corners render above players
-- Projectiles don't respect collisions
 - Hotbar doesn't reset after transition in dragon form
-- Spectate and revive are broken when player in cave
+- Revive and spectate don't work across scenes
 - Fishing is broken in multiplayer
 - Effect tint doesn't reset for other clients
+- Hotbar isn't persistent
 
 ### Backlog
 

@@ -16,6 +16,7 @@ export enum SpellName {
   DRAGON_FORM = "dragon_form",
   FIRE_BREATH = "fire_breath",
   BITE = "bite",
+  REVIVE = "revive",
 }
 
 export interface ComboStep {

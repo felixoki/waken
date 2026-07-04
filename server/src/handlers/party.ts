@@ -252,6 +252,8 @@ export const party = {
       if (!memberSocket) continue;
 
       const prev = member.map;
+      const wasDead = member.isDead;
+      
       handlers.chunks.clear(memberSocket, world, id);
       world.sublevels.takeReturn(id);
 
@@ -265,6 +267,10 @@ export const party = {
         x: biome.spawn.x,
         y: biome.spawn.y,
         isAuthority: false,
+        ...(wasDead && {
+          isDead: false,
+          health: member.maxHealth ?? MAX_HEALTH,
+        }),
       });
 
       memberSocket.leave(`map:${prev}`);
@@ -281,6 +287,14 @@ export const party = {
         io,
         data.id,
       );
+
+      if (wasDead)
+        handlers.broadcast.room(null, io, `party:${data.id}`, Event.PLAYER_REVIVE, {
+          id,
+          x: biome.spawn.x,
+          y: biome.spawn.y,
+          health: member.maxHealth ?? MAX_HEALTH,
+        });
     }
 
     world.authority.set(level.map, data.members[0], data.id);

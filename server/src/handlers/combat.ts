@@ -8,14 +8,12 @@ import {
   Hit,
   Item,
   PlayerConfig,
-  Revive,
 } from "../types";
 import { Effect, EffectName } from "../types/effects.js";
 import { DamageType } from "../types/damage.js";
 import { World } from "../World";
 import { configs } from "../configs";
 import {
-  REVIVE_MANA,
   MISS_CHANCE,
   CRIT_CHANCE,
   CRIT_MULTIPLIER,
@@ -426,46 +424,5 @@ export const combat = {
         if (!remaining.length) world.affected.delete(id);
       }
     },
-  },
-
-  revive: (data: Revive, socket: Socket, io: Server, world: World) => {
-    const reviver = world.players.getBySocketId(socket.id);
-    if (!reviver || reviver.isDead) return;
-
-    const target = world.players.get(data.id);
-    if (!target || !target.isDead) return;
-
-    const party = world.parties.getByPlayerId(reviver.id);
-    if (!party || !party.members.includes(target.id)) return;
-
-    if (reviver.mana < REVIVE_MANA) return;
-
-    world.players.update(reviver.id, {
-      mana: reviver.mana - REVIVE_MANA,
-    });
-
-    world.players.update(target.id, {
-      isDead: false,
-      health: target.maxHealth ?? MAX_HEALTH,
-      x: reviver.x,
-      y: reviver.y,
-    });
-
-    socket.emit(Event.PLAYER_MANA, reviver.mana - REVIVE_MANA);
-
-    const reviveEvent = {
-      id: target.id,
-      x: reviver.x,
-      y: reviver.y,
-      health: target.maxHealth ?? MAX_HEALTH,
-    };
-
-    handlers.broadcast.room(
-      null,
-      io,
-      `party:${party.id}`,
-      Event.PLAYER_REVIVE,
-      reviveEvent,
-    );
   },
 };

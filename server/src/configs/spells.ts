@@ -64,6 +64,21 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons5", row: 2, col: 9 },
     },
   },
+  [SpellName.REVIVE]: {
+    name: SpellName.REVIVE,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 30,
+    range: 80,
+    duration: 600,
+    metadata: {
+      description:
+        "Channel life into a fallen ally, reviving them where they fell.",
+      displayName: "Revive",
+      icon: { spritesheet: "icons5", row: 8, col: 9 },
+    },
+  },
   [SpellName.ILLUMINATE]: {
     name: SpellName.ILLUMINATE,
     sounds: { cast: SoundName.SLASH },
@@ -196,7 +211,12 @@ export const spells: Record<SpellName, SpellConfig> = {
     knockback: 0,
     mana: 0,
     duration: 1500,
-    animation: { key: "transforming", frameCount: 18, frameRate: 12, repeat: 0 },
+    animation: {
+      key: "transforming",
+      frameCount: 18,
+      frameRate: 12,
+      repeat: 0,
+    },
     metadata: {
       description:
         "Transform into a sinuous river dragon, coiling weightless through the air.",

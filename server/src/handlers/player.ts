@@ -57,6 +57,7 @@ export const player = {
         spells: (saved?.data?.spells as SpellName[]) || [
           SpellName.SHARD,
           SpellName.SLASH,
+          SpellName.REVIVE,
           SpellName.LIGHTNING_STRIKE,
           SpellName.ABSORB_LIFE,
           SpellName.DRAGON_FORM
@@ -346,26 +347,6 @@ export const player = {
       handlers.party.cleanup(socket, io, world, party.id);
       handlers.party.leave(socket, io, world);
     }
-  },
-
-  spectate: (data: { targetId: string }, socket: Socket, world: World) => {
-    const player = world.players.getBySocketId(socket.id);
-    if (!player || !player.isDead) return;
-
-    const target = world.players.get(data.targetId);
-    if (!target || target.map !== player.map) return;
-
-    const party = world.parties.getByPlayerId(player.id);
-    if (!party || !party.members.includes(target.id)) return;
-
-    handlers.chunks.sync.player(
-      socket,
-      world,
-      player.id,
-      target.map,
-      target.x,
-      target.y,
-    );
   },
 
   regen: (delta: number, world: World) => {

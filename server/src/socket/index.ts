@@ -12,7 +12,6 @@ import {
   EntityConfig,
   SpellName,
   EntityName,
-  Revive,
   SlotReference,
   SlotType,
 } from "../types/index.js";
@@ -46,11 +45,6 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.PLAYER_TRANSITION,
       handler: (data: Transition) =>
         handlers.player.transition(data, io, socket, world),
-    },
-    {
-      event: Event.PLAYER_SPECTATE,
-      handler: (data: { targetId: string }) =>
-        handlers.player.spectate(data, socket, world),
     },
     /**
      * Entity
@@ -152,14 +146,6 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: Hit) => handlers.combat.hit(data, socket, io, world),
     },
     /**
-     * Death
-     */
-    {
-      event: Event.PLAYER_REVIVE,
-      handler: (data: Revive) =>
-        handlers.combat.revive(data, socket, io, world),
-    },
-    /**
      * Party
      */
     {
@@ -180,8 +166,8 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     },
     {
       event: Event.PLAYER_CAST,
-      handler: (spell: SpellName) =>
-        handlers.spell.cast(spell, socket, io, world),
+      handler: (data: { name: SpellName; targetId?: string }) =>
+        handlers.spell.cast(data, socket, io, world),
     },
     /**
      * Spells

@@ -85,8 +85,6 @@ export const DURATION_FINISHER_LOCK = 600;
 export const DURATION_COMBO_WINDOW = 400;
 
 /** Combat */
-export const REVIVE_MANA = 30;
-
 export const MISS_CHANCE = 0.05;
 export const CRIT_CHANCE = 0.05;
 export const CRIT_MULTIPLIER = 2;

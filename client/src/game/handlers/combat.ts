@@ -59,7 +59,10 @@ export const combat = {
     if (player.mana < config.mana) return false;
 
     if (player.isControllable)
-      entity.scene.game.events.emit(Event.PLAYER_CAST, config.name);
+      entity.scene.game.events.emit(Event.PLAYER_CAST, {
+        name: config.name,
+        targetId: entity.target?.id,
+      });
 
     return true;
   },

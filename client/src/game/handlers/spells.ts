@@ -87,6 +87,15 @@ export const spells: Record<SpellName, SpellHandler> = {
     emitters[step]?.();
   },
 
+  [SpellName.REVIVE]: (
+    entity: Entity,
+    _config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    vfx.emitters.puff(entity.scene, target.x, target.y);
+  },
+
   [SpellName.ILLUMINATE]: (
     entity: Entity,
     config: SpellConfig,
