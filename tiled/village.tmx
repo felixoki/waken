@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="62" nextobjectid="1489">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="62" nextobjectid="1492">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -4849,6 +4849,18 @@
  <tileset firstgid="15797" name="forest_ground_grass" tilewidth="16" tileheight="16" tilecount="651" columns="21">
   <image source="../client/public/assets/sprites/forest_ground_grass.png" width="336" height="496"/>
  </tileset>
+ <tileset firstgid="16448" name="icons2" tilewidth="16" tileheight="16" tilecount="756" columns="36">
+  <image source="../client/public/assets/sprites/icons2.png" width="576" height="336"/>
+ </tileset>
+ <tileset firstgid="17204" name="icons3" tilewidth="16" tileheight="16" tilecount="600" columns="30">
+  <image source="../client/public/assets/sprites/icons3.png" width="480" height="320"/>
+ </tileset>
+ <tileset firstgid="17804" name="icons1" tilewidth="16" tileheight="16" tilecount="600" columns="30">
+  <image source="../client/public/assets/sprites/icons1.png" width="480" height="320"/>
+ </tileset>
+ <tileset firstgid="18404" name="icons5" tilewidth="16" tileheight="16" tilecount="360" columns="18">
+  <image source="../client/public/assets/sprites/icons5.png" width="288" height="320"/>
+ </tileset>
  <layer id="19" name="water" width="76" height="104">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4838,4838,4838,4838,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -8496,8 +8508,6 @@
   <object id="1478" name="Grouse" x="270" y="64" width="1" height="1"/>
   <object id="1483" name="Goat" x="592.876" y="528.165" width="3.08147" height="3.08147"/>
   <object id="1484" name="Goat" x="255.146" y="449.279" width="7.39554" height="3.08147"/>
-  <object id="1485" name="Quartz_ore" x="545.313" y="753.496" width="3.62506" height="2.58933"/>
-  <object id="1487" name="Cave_Entrance" x="528" y="890" width="1" height="1"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="104">
   <properties>

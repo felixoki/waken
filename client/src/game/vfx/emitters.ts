@@ -325,6 +325,54 @@ export const emitters = {
     return { main: emitter, embers };
   },
 
+  leaf: (scene: Scene, x: number, y: number) => {
+    const emitter = scene.add.particles(x, y, "particle_leaf", {
+      tint: [0x4caf50, 0x81c784, 0xa5d6a7],
+      alpha: { start: 0.9, end: 0 },
+      scale: { start: 0.5, end: 0.15 },
+      speed: { min: 20, max: 40 },
+      rotate: { min: 0, max: 360 },
+      lifespan: 450,
+      frequency: 15,
+      quantity: 2,
+    });
+    emitter.setDepth(1000);
+
+    const embers = scene.add.particles(x, y, "particle_leaf", {
+      tint: [0x2e7d32, 0x66bb6a, 0xa5d6a7],
+      alpha: { start: 0.6, end: 0 },
+      scale: { start: 0.15, end: 0.03 },
+      speed: { min: 1, max: 6 },
+      rotate: { min: 0, max: 360 },
+      lifespan: 500,
+      frequency: 30,
+      quantity: 2,
+    });
+    embers.setDepth(1001);
+    embers.startFollow(emitter);
+
+    return { main: emitter, embers };
+  },
+
+  hearts: (scene: Scene, x: number, y: number) => {
+    const emitter = scene.add.particles(x, y - 8, "particle_heart", {
+      tint: [0xff4d6d, 0xff8095, 0xffb3c0],
+      alpha: { start: 1, end: 0 },
+      scale: { start: 0.35, end: 0.12 },
+      speed: { min: 4, max: 12 },
+      angle: { min: 250, max: 290 },
+      gravityY: -12,
+      rotate: { min: -12, max: 12 },
+      lifespan: 1100,
+      frequency: 170,
+      quantity: 1,
+    });
+    emitter.setDepth(2000);
+
+    scene.time.delayedCall(700, () => emitter.stop());
+    scene.time.delayedCall(2000, () => emitter.destroy());
+  },
+
   slash: (
     scene: Scene,
     entity: Entity,

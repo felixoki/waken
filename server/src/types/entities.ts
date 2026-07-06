@@ -28,6 +28,13 @@ export interface CropState {
   wateredAt?: number;
 }
 
+export interface TameState {
+  isPacified?: boolean;
+  isTamed?: boolean;
+  fedAt?: number;
+  bredAt?: number;
+}
+
 export interface EntityConfig {
   id: string;
   map: MapName;
@@ -44,6 +51,7 @@ export interface EntityConfig {
   loot?: (Item & { chance: number })[];
   effects?: Effect[];
   crop?: CropState;
+  tame?: TameState;
 }
 
 export interface ItemBonus {
@@ -166,6 +174,9 @@ export enum EntityName {
   FLYAMINATA1 = "flyaminata1",
   FOX = "fox",
   GOAT = "goat",
+  GOATLING = "goatling",
+  GOAT_MILK = "goat_milk",
+  SOULSTONE = "soulstone",
   GOBLIN1 = "goblin1",
   GOBLIN2 = "goblin2",
   GOOSE = "goose",

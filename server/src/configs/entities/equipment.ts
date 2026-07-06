@@ -55,6 +55,35 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons8", row: 10, col: 28 },
     },
   },
+  [EntityName.SOULSTONE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 26, end: 27 },
+            { row: 6, start: 26, end: 27 },
+          ],
+        },
+        key: "soulstone_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Soulstone",
+      description:
+        "A hollow stone that cradles a tamed creature's soul until you solidify it.",
+      icon: { spritesheet: "icons3", row: 6, col: 25 },
+    },
+  },
   [EntityName.FISHING_ROD]: {
     facing: Direction.DOWN,
     moving: [],

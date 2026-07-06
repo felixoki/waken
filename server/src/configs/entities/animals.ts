@@ -377,8 +377,39 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     maxHealth: 30,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.GOAT_MILK,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.TAMABLE,
+        config: { entity: EntityName.GOAT },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.CARROT, EntityName.CABBAGE],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.BREEDABLE,
+        config: {
+          child: EntityName.GOATLING,
+          cooldown: 300000,
+          range: 96,
+        },
+      },
       {
         name: ComponentName.BODY,
         config: {
@@ -386,6 +417,42 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           height: 10,
           offsetX: 10,
           offsetY: 12,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GOAT_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.GOATLING]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 15,
+    scale: 0.7,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.GOAT, duration: 30000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 8,
+          offsetX: 10,
+          offsetY: 14,
           pushable: false,
         },
       },

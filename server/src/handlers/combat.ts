@@ -8,6 +8,7 @@ import {
   Hit,
   Item,
   PlayerConfig,
+  SpellName,
 } from "../types";
 import { Effect, EffectName } from "../types/effects.js";
 import { DamageType } from "../types/damage.js";
@@ -169,6 +170,9 @@ export const combat = {
     },
   },
 
+  /**
+   * @todo We should refactor this and split it up
+   */
   hit: (data: Hit, socket: Socket, io: Server, world: World) => {
     const players = world.players;
     const entities = world.entities;
@@ -189,6 +193,19 @@ export const combat = {
       attacker.health <= 0
     )
       return;
+
+    if ("mana" in config && config.name === SpellName.TAME) {
+      if (entity) {
+        const definition = configs.entities[entity.name];
+        const tamable = definition?.components.find(
+          (c: ComponentConfig) => c.name === ComponentName.TAMABLE,
+        );
+
+        if (tamable) handlers.taming.pacify(entity, socket, io, world);
+      }
+
+      return;
+    }
 
     const { damage, isMiss, isCritical } = combat.calculateDamage(
       target,

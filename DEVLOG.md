@@ -625,6 +625,10 @@
 - Revive and spectate don't work across scenes ✅
 - Hotbar isn't persistent ✅
 
+#### 5.7.2026
+
+- Aadd animal taming and breeding ✅
+
 ### In progress
 
 - Add dungeon and cave objects
@@ -645,7 +649,6 @@
 
 ### Backlog
 
-- Animal taming ⭐
 - Weather ⭐
 - Cooking ⭐
 - Building ⭐
@@ -661,7 +664,7 @@
 
 **Meat**
 
-- Tier 1: Venison, Boar
+- Tier 1: Venison
 - Tier 2: Pork
 - Tier 3: Beef
 

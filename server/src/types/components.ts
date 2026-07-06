@@ -21,6 +21,9 @@ export enum ComponentName {
   DAMAGEABLE = "damageable",
   DESTRUCTIBLE = "destructible",
   FARMABLE = "farmable",
+  FEEDABLE = "feedable",
+  BREEDABLE = "breedable",
+  MATURABLE = "maturable",
   FELLABLE = "fellable",
   MINEABLE = "mineable",
   GROWABLE = "growable",
@@ -41,6 +44,7 @@ export enum ComponentName {
   TEXTURE_ANIMATION = "textureAnimation",
   TRANSITION = "transition",
   TRAP = "trap",
+  TAMABLE = "tamable",
   SKIN = "skin",
   WINDSWAY = "windsway",
 }
@@ -57,6 +61,9 @@ export type ComponentConfig =
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
   | { name: ComponentName.DESTRUCTIBLE }
   | { name: ComponentName.FARMABLE }
+  | { name: ComponentName.FEEDABLE; config: FeedableConfig }
+  | { name: ComponentName.BREEDABLE; config: BreedableConfig }
+  | { name: ComponentName.MATURABLE; config: MaturableConfig }
   | { name: ComponentName.FELLABLE; config: ExtractableConfig }
   | { name: ComponentName.MINEABLE; config: ExtractableConfig }
   | { name: ComponentName.GROWABLE; config: GrowableConfig }
@@ -77,10 +84,31 @@ export type ComponentConfig =
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.TRAP; config: TrapConfig }
+  | { name: ComponentName.TAMABLE; config: TamableConfig }
   | { name: ComponentName.WINDSWAY };
 
 export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };
+}
+
+export interface TamableConfig {
+  entity: EntityName;
+}
+
+export interface FeedableConfig {
+  foods: EntityName[];
+  duration: number;
+}
+
+export interface BreedableConfig {
+  child: EntityName;
+  cooldown: number;
+  range: number;
+}
+
+export interface MaturableConfig {
+  adult: EntityName;
+  duration: number;
 }
 
 export interface GlimmerConfig {
@@ -130,6 +158,7 @@ export interface Item {
   name: EntityName;
   quantity: number;
   stackable: boolean;
+  soul?: EntityName;
 }
 
 export interface Transition {
@@ -191,4 +220,5 @@ export enum Action {
   CONSUME = "consume",
   LEARN = "learn",
   DEPOSIT = "deposit",
+  SOLIDIFY = "solidify",
 }

@@ -43,12 +43,17 @@ export enum Event {
   ENTITY_WATER = "entity_water",
   ENTITY_GROW = "entity_grow",
   ENTITY_WITHER = "entity_wither",
+  ENTITY_PACIFIED = "entity_pacified",
+  ENTITY_CAPTURE = "entity_capture",
+  ENTITY_FEED = "entity_feed",
+  ENTITY_MATURE = "entity_mature",
   ENTITY_FISH = "entity:fish",
   ENTITY_OVERLAP = "entity_overlap",
 
   /** Item */
   ITEM_COLLECT = "item_collect",
   ITEM_CONSUME = "item_consume",
+  ITEM_SOLIDIFY = "item_solidify",
   ITEM_REMOVE = "item_remove",
 
   /** Inventory & Hotbar */

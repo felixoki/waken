@@ -37,6 +37,8 @@ export class AmbleBehavior extends Behavior {
   }
 
   update(entity: Entity): Partial<Input> {
+    if (entity.tame?.isPacified) return {};
+
     if (this.spawn.x === 0) this.spawn = { x: entity.x, y: entity.y };
 
     if (this.idle.time > 0) {

@@ -39,6 +39,7 @@ import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
 import { GrowableComponent } from "../components/Growable";
+import { TamableComponent } from "../components/Tamable";
 import { vfx } from "../vfx";
 import { AmbienceManager } from "../managers/Ambience";
 import { ChunkManager } from "../managers/Chunk";
@@ -47,6 +48,7 @@ import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
 import ForestScene from "./Forest";
 import SublevelScene from "./Sublevel";
+import { Scene } from "./Scene";
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -341,6 +343,54 @@ export class MainScene extends Phaser.Scene {
       growable?.water();
     });
 
+    this.managers.socket.on(
+      Event.ENTITY_FEED,
+      (data: { id: string; fedAt: number }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (!entity) return;
+
+        entity.tame.fedAt = data.fedAt;
+        vfx.emitters.hearts(entity.scene, entity.x, entity.y);
+      },
+    );
+
+    this.managers.socket.on(
+      Event.ENTITY_MATURE,
+      (data: { map: MapName; x: number; y: number }) => {
+        const scene = this.scene.get(data.map) as Scene;
+        vfx.emitters.puff(scene, data.x, data.y);
+      },
+    );
+
+    this.managers.socket.on(
+      Event.ENTITY_CAPTURE,
+      (data: { id: string; x: number; y: number }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (!entity) return;
+
+        this.tweens.add({
+          targets: entity,
+          x: data.x,
+          y: data.y,
+          scale: 0,
+          alpha: 0,
+          duration: 350,
+          ease: "Cubic.easeIn",
+          onComplete: () => this.managers.entities.remove(data.id),
+        });
+      },
+    );
+
+    this.managers.socket.on(Event.ENTITY_PACIFIED, (data: { id: string }) => {
+      const entity = this.managers.entities.entities.get(data.id);
+      if (!entity) return;
+
+      const tamable = entity.getComponent<TamableComponent>(
+        ComponentName.TAMABLE,
+      );
+      tamable?.pacify();
+    });
+
     this.managers.socket.on(Event.ENTITY_INPUT, (data: Partial<Input>) => {
       const entity = this.managers.entities.get(data.id!);
       entity?.update(data);
@@ -463,12 +513,27 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.ENTITY_WATER, data);
     });
 
+    this.game.events.on(Event.ENTITY_CAPTURE, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_CAPTURE, data);
+    });
+
+    this.game.events.on(
+      Event.ENTITY_FEED,
+      (data: { id: string; food: string }) => {
+        this.managers.socket.emit(Event.ENTITY_FEED, data);
+      },
+    );
+
     this.game.events.on(
       Event.ENTITY_GROW,
       (data: { id: string; stage: number }) => {
         this.managers.socket.emit(Event.ENTITY_GROW, data);
       },
     );
+
+    this.game.events.on(Event.ENTITY_MATURE, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_MATURE, data);
+    });
 
     this.game.events.on(Event.ENTITY_WITHER, (data: { id: string }) => {
       this.managers.socket.emit(Event.ENTITY_WITHER, data);
@@ -559,6 +624,10 @@ export class MainScene extends Phaser.Scene {
     EventBus.on(Event.ITEM_CONSUME, (data: { name: string }) => {
       this.managers.socket.emit(Event.ITEM_CONSUME, data);
       this.managers.sound.play.sfx(SoundName.DRINK);
+    });
+
+    EventBus.on(Event.ITEM_SOLIDIFY, (data: { index: number }) => {
+      this.managers.socket.emit(Event.ITEM_SOLIDIFY, data);
     });
 
     EventBus.on(

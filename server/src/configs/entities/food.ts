@@ -62,6 +62,35 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons8", row: 12, col: 31 },
     },
   },
+  [EntityName.GOAT_MILK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 23, end: 24 },
+            { row: 20, start: 23, end: 24 },
+          ],
+        },
+        key: "goat_milk_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Goat milk",
+      description: "A pail of fresh, creamy milk from a well-fed goat.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 20, col: 22 },
+    },
+  },
   [EntityName.CARP]: {
     facing: Direction.DOWN,
     moving: [],

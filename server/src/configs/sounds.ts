@@ -202,7 +202,10 @@ export const sounds = {
 
   music: {
     [MusicName.SWEET_VILLAGE]: {
-      volume: 0.3,
+      volume: 0.5,
+    },
+    [MusicName.AFTER_RAIN]: {
+      volume: 0.5,
     },
   },
 

@@ -12,6 +12,7 @@ interface Props {
   quantity?: number;
   bar?: number;
   barLabel?: string;
+  soul?: EntityName | null;
   interactive?: boolean;
   disabled?: boolean;
   active?: boolean;
@@ -28,6 +29,7 @@ export function Item({
   quantity,
   bar,
   barLabel,
+  soul,
   interactive = false,
   disabled = false,
   active = false,
@@ -186,6 +188,14 @@ export function Item({
             <div className="mt-1 flex justify-between text-xs">
               <span className="text-white/50">Stock</span>
               <span className="text-white">{barLabel}</span>
+            </div>
+          )}
+          {soul && (
+            <div className="mt-1 flex justify-between text-xs">
+              <span className="text-white/50">Soul</span>
+              <span className="text-white capitalize">
+                {configs.entities[soul]?.metadata?.displayName ?? soul}
+              </span>
             </div>
           )}
           {configs.spells[name as SpellName] &&

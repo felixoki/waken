@@ -108,6 +108,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: { name: string }) =>
         handlers.item.consume(data, socket, io, world),
     },
+    {
+      event: Event.ITEM_SOLIDIFY,
+      handler: (data: { index: number }) =>
+        handlers.taming.solidify(data, socket, io, world),
+    },
     /**
      * Farming
      */
@@ -137,6 +142,21 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     {
       event: Event.ENTITY_FISH,
       handler: (data: any) => handlers.fishing.catch(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_CAPTURE,
+      handler: (data: { id: string }) =>
+        handlers.taming.capture(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_FEED,
+      handler: (data: { id: string; food: EntityName }) =>
+        handlers.taming.feed(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_MATURE,
+      handler: (data: { id: string }) =>
+        handlers.taming.mature(data, socket, io, world),
     },
     /**
      * Shared

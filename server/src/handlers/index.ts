@@ -14,6 +14,7 @@ import { player } from "./player.js";
 import { spell } from "./spell.js";
 import { storage } from "./storage.js";
 import { sublevel } from "./sublevel.js";
+import { taming } from "./taming.js";
 import { world } from "./world.js";
 
 export const handlers = {
@@ -33,5 +34,6 @@ export const handlers = {
   spell,
   storage,
   sublevel,
+  taming,
   world,
 };

@@ -56,6 +56,7 @@ export const DURATION_EXTRACTION_BOUNCE = 800;
 export const EXTRACTION_IMPACT_FRAME = 4;
 export const RANGE_WATERING = 48;
 export const RANGE_PLANTING = 48;
+export const RANGE_CAPTURE = 64;
 export const DURATION_RAKING = 600;
 export const DURATION_WATERING = 1500;
 export const DURATION_CROP_DEHYDRATION = 86_400_000;

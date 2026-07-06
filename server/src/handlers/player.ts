@@ -60,7 +60,8 @@ export const player = {
           SpellName.REVIVE,
           SpellName.LIGHTNING_STRIKE,
           SpellName.ABSORB_LIFE,
-          SpellName.DRAGON_FORM
+          SpellName.DRAGON_FORM,
+          SpellName.TAME
         ],
         inventory: saved?.data?.inventory ?? new Array(20).fill(null),
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [
@@ -96,8 +97,22 @@ export const player = {
               stackable: false,
             },
           },
-          null,
-          null,
+          {
+            type: SlotType.ENTITY,
+            item: {
+              name: EntityName.SOULSTONE,
+              quantity: 2,
+              stackable: false,
+            },
+          },
+          {
+            type: SlotType.ENTITY,
+            item: {
+              name: EntityName.CARROT,
+              quantity: 10,
+              stackable: true,
+            },
+          },
         ],
         active: (saved?.data?.active as number) ?? 0,
       };

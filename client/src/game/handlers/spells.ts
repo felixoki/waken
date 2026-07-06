@@ -58,6 +58,34 @@ export const spells: Record<SpellName, SpellHandler> = {
     projectile.setEmitter(embers);
   },
 
+  [SpellName.TAME]: (
+    entity: Entity,
+    config: SpellConfig,
+    _target: { x: number; y: number },
+    direction: { x: number; y: number },
+  ) => {
+    const projectile = new Projectile(
+      entity.scene,
+      entity.x + direction.x * 16,
+      entity.y + direction.y * 16,
+      entity.id,
+      direction,
+      config,
+    );
+
+    entity.scene.managers.sound.play.sfx(SoundName.SHARD_LAUNCH, {
+      position: { x: projectile.x, y: projectile.y },
+    });
+
+    const { main, embers } = vfx.emitters.leaf(
+      entity.scene,
+      projectile.x,
+      projectile.y,
+    );
+    projectile.setEmitter(main);
+    projectile.setEmitter(embers);
+  },
+
   [SpellName.SLASH]: (
     entity: Entity,
     config: SpellConfig,

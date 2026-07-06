@@ -7,6 +7,7 @@ import {
   MapName,
   SpellName,
   StateName,
+  TameState,
 } from "@server/types";
 import { State } from "./state/State";
 import { Component } from "./components/Component";
@@ -34,6 +35,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public z: number = 0;
   public clearance?: number;
   public depthOffset: number = 0;
+  public tame: TameState = {};
 
   protected lastInput: Partial<Input> | null = null;
   protected depthY: number = 0;

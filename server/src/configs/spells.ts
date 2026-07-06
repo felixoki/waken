@@ -271,4 +271,23 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons8", row: 21, col: 11 },
     },
   },
+  [SpellName.TAME]: {
+    name: SpellName.TAME,
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 15,
+    speed: 250,
+    range: 300,
+    sounds: { impact: SoundName.SHARD_HIT },
+    hitbox: {
+      width: 10,
+      height: 10,
+    },
+    metadata: {
+      description:
+        "A soothing bolt that pacifies a wild animal so its soul can be caught.",
+      displayName: "Tame Animal",
+      icon: { spritesheet: "icons5", row: 4, col: 18 },
+    },
+  },
 };

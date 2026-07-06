@@ -32,6 +32,7 @@ export enum SoundName {
 
 export enum MusicName {
   SWEET_VILLAGE = "sweet_village",
+  AFTER_RAIN = "after_rain",
 }
 
 export enum AmbienceName {

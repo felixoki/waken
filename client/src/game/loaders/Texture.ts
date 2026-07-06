@@ -60,6 +60,36 @@ export class Texture {
       g.destroy();
     }
 
+    if (!scene.textures.exists("particle_leaf")) {
+      const g = scene.add.graphics();
+
+      g.fillStyle(0xffffff);
+      g.fillPoints(
+        [
+          { x: 8, y: 0 },
+          { x: 12, y: 5 },
+          { x: 11, y: 11 },
+          { x: 8, y: 16 },
+          { x: 5, y: 11 },
+          { x: 4, y: 5 },
+        ],
+        true,
+      );
+      g.generateTexture("particle_leaf", 16, 16);
+      g.destroy();
+    }
+
+    if (!scene.textures.exists("particle_heart")) {
+      const g = scene.add.graphics();
+
+      g.fillStyle(0xffffff);
+      g.fillCircle(5, 5, 4);
+      g.fillCircle(11, 5, 4);
+      g.fillTriangle(1, 6, 15, 6, 8, 15);
+      g.generateTexture("particle_heart", 16, 16);
+      g.destroy();
+    }
+
     if (!scene.textures.exists("particle_butterfly")) {
       const g = scene.add.graphics();
       g.fillStyle(0xffffff);

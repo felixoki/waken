@@ -34,6 +34,7 @@ export class Factory {
 
     entity.createdAt = definition.createdAt;
     entity.maxHealth = definition.maxHealth;
+    entity.tame = definition.tame ? { ...definition.tame } : {};
 
     if (definition.scale) entity.setScale(definition.scale);
 

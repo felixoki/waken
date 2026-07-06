@@ -249,6 +249,18 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "goatling-idle",
+    file: "goatling_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "goatling-walking",
+    file: "goatling_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
     key: "grouse-idle",
     file: "grouse_idle_with_shadow.png",
     frameWidth: 32,

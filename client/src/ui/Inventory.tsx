@@ -81,7 +81,7 @@ export function Inventory() {
   const item = menu !== null ? items[menu.index] : null;
 
   const actions: ContextMenuAction[] = item
-    ? getActions(item.name, !!storageEntityId).map((action) => ({
+    ? getActions(item.name, !!storageEntityId, !!item.soul).map((action) => ({
         label: action,
         onClick: () => {
           if (action === Action.CONSUME)
@@ -107,6 +107,9 @@ export function Inventory() {
               },
             });
 
+          if (action === Action.SOLIDIFY)
+            EventBus.emit(Event.ITEM_SOLIDIFY, { index: menu!.index });
+
           setMenu(null);
         },
       }))
@@ -124,6 +127,7 @@ export function Inventory() {
               key={i}
               name={item?.name ?? null}
               quantity={item?.quantity}
+              soul={item?.soul}
               interactive
               dragId={item ? `inventory-${i}` : undefined}
               dropId={`inventory-${i}`}
@@ -131,7 +135,11 @@ export function Inventory() {
               onContextMenu={(e) => {
                 e.preventDefault();
                 if (!item) return;
-                const actions = getActions(item.name, !!storageEntityId);
+                const actions = getActions(
+                  item.name,
+                  !!storageEntityId,
+                  !!item.soul,
+                );
                 if (actions.length === 0) return;
                 setMenu({ index: i, x: e.clientX, y: e.clientY });
               }}
@@ -152,7 +160,11 @@ export function Inventory() {
   );
 }
 
-function getActions(name: EntityName, storageOpen = false): Action[] {
+function getActions(
+  name: EntityName,
+  storageOpen = false,
+  hasSoul = false,
+): Action[] {
   const def = configs.entities[name];
   if (!def) return [];
 
@@ -163,6 +175,8 @@ function getActions(name: EntityName, storageOpen = false): Action[] {
 
   if (def.components.some((c) => c.name === ComponentName.LEARNABLE))
     actions.push(Action.LEARN);
+
+  if (name === EntityName.SOULSTONE && hasSoul) actions.push(Action.SOLIDIFY);
 
   if (storageOpen) actions.push(Action.DEPOSIT);
 
