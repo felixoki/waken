@@ -627,12 +627,23 @@
 
 #### 5.7.2026
 
-- Aadd animal taming and breeding ✅
+- Add animal taming and breeding ✅
+
+#### 9.7.2026
+
+- Add village theme ✅
+- Add forest theme ✅
+- Add tiers ✅
+
+#### 12.7.2026
+
+- Add dungeon theme ✅
+- Add sunrise theme ✅
 
 ### In progress
 
 - Add dungeon and cave objects
-- Add tiers
+- Add damagable to villain and transition on defeat
 
 ### Bugs
 
@@ -649,9 +660,9 @@
 
 ### Backlog
 
+- Building ⭐
 - Weather ⭐
 - Cooking ⭐
-- Building ⭐
 - Relationships ⭐
 - Ideas
   - Add reflect damage effect
@@ -659,28 +670,3 @@
   - Remove among player collisions
   - Add console
   - Hidden rooms in dungeons
-
-## Economy
-
-**Meat**
-
-- Tier 1: Venison
-- Tier 2: Pork
-- Tier 3: Beef
-
-**Vegetables**
-
-- Tier 1: Raspberry
-- Tier 2: Carrot, Tomato, Cabbage
-- Tier 3: Bread
-
-**Drinks**
-
-- Tier 2: Milk
-- Tier 3: Wine
-
-**Cloths**
-
-- Tier 1: Deer hide
-- Tier 2: Sheep wool, Fox pelt
-- Tier 3: Troll hide, Bear pelt

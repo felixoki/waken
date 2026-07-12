@@ -27,6 +27,8 @@ export const Dialogue = () => {
         }
       },
       [DialogueEffectName.COLLECTOR_OPEN]: (effect: DialogueEffect) => {
+        if (data?.entityId)
+          EventBus.emit(Event.ENTITY_DIALOGUE_END, data.entityId);
         if (effect.params) EventBus.emit(Event.COLLECTOR_OPEN, effect.params);
       },
     };

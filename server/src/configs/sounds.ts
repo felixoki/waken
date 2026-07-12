@@ -172,6 +172,11 @@ export const sounds = {
       folder: "animals",
       variants: ["grouse_idle1", "grouse_idle2"],
     },
+    [SoundName.BIRDS]: {
+      volume: 0.35,
+      folder: "ambience",
+      variants: ["birds1", "birds2", "birds3"],
+    },
 
     [SoundName.COLLECT]: {
       volume: 0.6,
@@ -205,6 +210,9 @@ export const sounds = {
       volume: 0.5,
     },
     [MusicName.AFTER_RAIN]: {
+      volume: 0.5,
+    },
+    [MusicName.INTO_THE_MIST]: {
       volume: 0.5,
     },
   },

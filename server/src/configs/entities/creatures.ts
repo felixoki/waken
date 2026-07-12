@@ -329,6 +329,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               chance: 0.25,
             },
             {
+              name: EntityName.TROLL_HIDE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+            {
               name: EntityName.PERCH,
               quantity: 2,
               stackable: true,

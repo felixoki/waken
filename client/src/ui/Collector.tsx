@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { EntityName, EconomySnapshot, Event } from "@server/types";
 import { Recipe } from "@server/types/collectors";
-import { TierUpgrade } from "@server/configs/tiers";
 import { configs } from "@server/configs";
 import EventBus from "../game/EventBus";
 import { Item } from "./Item";
@@ -72,11 +71,8 @@ export function Collector() {
 
   const maxTier = Math.max(
     1,
+    tier,
     ...recipes.map((r) => r.tier),
-    ...configs.tiers.map((t) => t.tier),
-  );
-  const upgradeConfig: TierUpgrade | undefined = configs.tiers.find(
-    (t) => t.tier === tier + 1,
   );
 
   const canAffordIngredients = (ingredients: Recipe["ingredients"]): boolean =>
@@ -91,10 +87,6 @@ export function Collector() {
       entityId: data.entityId,
       output: recipe.output,
     });
-  };
-
-  const upgradeEconomy = () => {
-    EventBus.emit(Event.COLLECTOR_TIER_UPGRADE);
   };
 
   const tabs = Array.from({ length: maxTier }, (_, i) => i + 1);
@@ -148,31 +140,6 @@ export function Collector() {
           <p className="text-white/50 text-sm">No recipes at this tier</p>
         )}
       </ul>
-
-      {activeTab === tier + 1 && upgradeConfig && (
-        <div className="mt-4 pt-3">
-          <p className="text-white/70 text-sm mb-2">
-            Unlock tier {tier + 1}:
-          </p>
-          <ul className="flex flex-wrap gap-1 mb-3">
-            {upgradeConfig.requirements.map((req, i) => (
-              <Item
-                key={i}
-                name={req.item}
-                quantity={req.quantity}
-                disabled={(store[req.item] ?? 0) < req.quantity}
-              />
-            ))}
-          </ul>
-          <button
-            disabled={!canAffordIngredients(upgradeConfig.requirements)}
-            onClick={upgradeEconomy}
-            className="px-4 py-2 rounded bg-blue-600 text-white text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-blue-500"
-          >
-            Upgrade to Tier {tier + 1}
-          </button>
-        </div>
-      )}
     </div>
   );
 }

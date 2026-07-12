@@ -1,4 +1,4 @@
-import { MapName } from "@server/types";
+import { MapName, MusicName } from "@server/types";
 import { Scene } from "./Scene";
 import { MapFactory } from "../factory/Map";
 import { TileManager } from "../managers/Tile";
@@ -27,9 +27,16 @@ export default class ForestScene extends Scene {
 
     const { tilemap, thresholds } = MapFactory.create(this, MapName.FOREST);
     this.tileManager = new TileManager(tilemap, thresholds);
-    this.physics.world.setBounds(0, 0, tilemap.widthInPixels, tilemap.heightInPixels);
+    this.physics.world.setBounds(
+      0,
+      0,
+      tilemap.widthInPixels,
+      tilemap.heightInPixels,
+    );
 
     this.cameraManager.fitZoom();
+
+    this.managers.sound.play.music(MusicName.INTO_THE_MIST);
   }
 
   teardown(): void {
@@ -47,7 +54,10 @@ export default class ForestScene extends Scene {
       data: tilemap,
     });
 
-    const { tilemap: map, thresholds } = MapFactory.create(this, MapName.FOREST);
+    const { tilemap: map, thresholds } = MapFactory.create(
+      this,
+      MapName.FOREST,
+    );
     this.tileManager = new TileManager(map, thresholds);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 

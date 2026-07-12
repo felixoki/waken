@@ -9,7 +9,6 @@ import {
   Direction,
   DialogueEffectName,
   Event,
-  NeedName,
   DialogueChoice,
   DialogueContext,
   DialogueNode,
@@ -21,8 +20,7 @@ import {
 
 export const dialogue = {
   getMood: (context: DialogueContext): Mood => {
-    if (context.world.economy.isLow(NeedName.FOOD)) return Mood.HUNGRY;
-    return Mood.HAPPY;
+    return context.world.economy.getMood();
   },
 
   resolve: {
@@ -32,7 +30,7 @@ export const dialogue = {
       if (Array.isArray(text))
         return text[Math.floor(Math.random() * text.length)];
 
-      const selected = text[mood] || text[Mood.HAPPY];
+      const selected = text[mood] || text[Mood.HAPPY] || "";
 
       if (Array.isArray(selected))
         return selected[Math.floor(Math.random() * selected.length)];
@@ -110,6 +108,28 @@ export const dialogue = {
     if (!player) return;
 
     if (nodeId === NodeId.GREETING) {
+      if (player.locked && player.locked !== entityId) {
+        const previous = world.entities.get(player.locked);
+
+        if (previous) {
+          previous.isLocked = false;
+          previous.facing = undefined;
+
+          handlers.broadcast.toChunk(
+            socket,
+            world,
+            Event.ENTITY_UNLOCK,
+            previous.id,
+            previous.map,
+            previous.x,
+            previous.y,
+            true,
+          );
+        }
+
+        player.locked = undefined;
+      }
+
       if (entity.isLocked && player.locked !== entityId) return;
 
       entity.isLocked = true;
@@ -175,12 +195,20 @@ export const dialogue = {
       | undefined;
 
     if (collectorConfig) {
+      const currentTier = world.economy.getTier();
+      const itemTiers = new Map(
+        configs.needs
+          .flatMap((need) => need.items)
+          .map((entry) => [entry.item, entry.tier]),
+      );
+
       const giveChoices = player.inventory
         .filter(
           (item) =>
             item &&
             item.quantity > 0 &&
-            collectorConfig.accepts.includes(item.name),
+            collectorConfig.accepts.includes(item.name) &&
+            (itemTiers.get(item.name) ?? 1) <= currentTier,
         )
         .map((item) => {
           const displayName =

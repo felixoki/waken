@@ -194,6 +194,35 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons3", row: 10, col: 10 },
     },
   },
+  [EntityName.TROLL_HIDE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 11, end: 12 },
+            { row: 10, start: 11, end: 12 },
+          ],
+        },
+        key: "troll_hide_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Troll hide",
+      description: "A thick, warty hide peeled from a fallen troll.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 10, col: 10 },
+    },
+  },
   [EntityName.RAT_CLAWS]: {
     facing: Direction.DOWN,
     moving: [],

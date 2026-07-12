@@ -1,10 +1,12 @@
 import { EntityName } from './entities';
+import { Mood } from './dialogue';
 
 export enum NeedName {
   FOOD = 'food',
   RESOURCES = 'resources',
   INGREDIENTS = 'ingredients',
   CLOTHS = 'cloths',
+  DRINKS = 'drinks',
 }
 
 export interface Tier {
@@ -14,9 +16,11 @@ export interface Tier {
 
 export interface NeedConfig {
   name: NeedName;
+  tier: number;
   items: Tier[];
-  consumption: Record<number, number>;
-  threshold: Record<number, number>;
+  consumption: number;
+  low: number;
+  mood?: Mood;
 }
 
 export type EconomySnapshot = {

@@ -28,11 +28,13 @@ export enum SoundName {
   WATER = "water",
   CHOP = "chop",
   MINE = "mine",
+  BIRDS = "birds",
 }
 
 export enum MusicName {
   SWEET_VILLAGE = "sweet_village",
   AFTER_RAIN = "after_rain",
+  INTO_THE_MIST = "into_the_mist",
 }
 
 export enum AmbienceName {

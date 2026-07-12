@@ -463,4 +463,26 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons2", row: 14, col: 28 },
     },
   },
+  [EntityName.POTION3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { effect: EffectName.REGAIN, duration: 5000, restore: { health: 120 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Troll blood",
+      description:
+        "A thick, potent brew rendered from troll hide and deadly herbs.",
+      stackable: true,
+      icon: { spritesheet: "icons2", row: 14, col: 28 },
+    },
+  },
 };

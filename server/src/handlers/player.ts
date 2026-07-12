@@ -63,7 +63,21 @@ export const player = {
           SpellName.DRAGON_FORM,
           SpellName.TAME
         ],
-        inventory: saved?.data?.inventory ?? new Array(20).fill(null),
+        inventory: saved?.data?.inventory ?? [
+          { name: EntityName.IRON1, quantity: 50, stackable: true },
+          { name: EntityName.IRON1, quantity: 50, stackable: true },
+          { name: EntityName.WOOD, quantity: 50, stackable: true },
+          { name: EntityName.WOOD, quantity: 50, stackable: true },
+          { name: EntityName.VENISON_MEAT, quantity: 50, stackable: true },
+          { name: EntityName.BOAR_MEAT, quantity: 50, stackable: true },
+          { name: EntityName.RASPBERRY, quantity: 50, stackable: true },
+          { name: EntityName.CARROT, quantity: 50, stackable: true },
+          { name: EntityName.TOMATO, quantity: 50, stackable: true },
+          { name: EntityName.CABBAGE, quantity: 50, stackable: true },
+          { name: EntityName.DEER_HIDE, quantity: 50, stackable: true },
+          { name: EntityName.GOAT_MILK, quantity: 50, stackable: true },
+          ...new Array(8).fill(null),
+        ],
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [
           {
             type: SlotType.ENTITY,

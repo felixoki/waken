@@ -11,6 +11,7 @@ interface Props {
   name: EntityName | SpellName | null;
   quantity?: number;
   bar?: number;
+  barMax?: number;
   barLabel?: string;
   soul?: EntityName | null;
   interactive?: boolean;
@@ -28,6 +29,7 @@ export function Item({
   name,
   quantity,
   bar,
+  barMax = 100,
   barLabel,
   soul,
   interactive = false,
@@ -124,12 +126,11 @@ export function Item({
           )}
         {bar !== undefined &&
           (() => {
-            const MAX = 100;
-            const fill = Math.min(Math.max(bar, 0), MAX) / MAX;
+            const fill = Math.min(Math.max(bar, 0), barMax) / barMax;
             const barColor =
-              bar > 50
+              fill > 0.5
                 ? "bg-green-500"
-                : bar > 20
+                : fill > 0.2
                   ? "bg-yellow-400"
                   : "bg-red-500";
             return (

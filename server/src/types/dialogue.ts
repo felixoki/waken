@@ -2,6 +2,8 @@ import { World } from "../World";
 
 export enum Mood {
   HUNGRY = "HUNGRY",
+  COLD = "COLD",
+  THIRSTY = "THIRSTY",
   HAPPY = "HAPPY",
 }
 
@@ -15,7 +17,10 @@ export enum ChoiceId {
   GOODBYE = "goodbye",
 }
 
-export type DialogueText = string | string[] | Record<Mood, string | string[]>;
+export type DialogueText =
+  | string
+  | string[]
+  | Partial<Record<Mood, string | string[]>>;
 
 export interface DialogueReference {
   ref: NodeId | ChoiceId;

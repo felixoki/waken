@@ -17,6 +17,12 @@ export const farming = {
     const crop = seeds[data.seed];
     if (!crop) return;
 
+    const seed: Item = { name: data.seed, quantity: 1, stackable: true };
+    if (!handlers.storage.has(player.inventory, seed)) return;
+
+    player.inventory = handlers.storage.remove(player.inventory, seed);
+    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+
     const party = world.parties.getByPlayerId(player.id);
     const partyId = configs.maps[player.map].isInstanced ? party?.id : undefined;
 

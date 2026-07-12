@@ -31,6 +31,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.BELLADONNA,
             EntityName.VIAL,
             EntityName.BEARDED_TOOTH_FUNGUS,
+            EntityName.TROLL_HIDE,
           ],
           recipes: [
             {
@@ -52,6 +53,16 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
                 { item: EntityName.VIAL, quantity: 1 },
                 { item: EntityName.SUNFLOWER, quantity: 3 },
                 { item: EntityName.BELLADONNA, quantity: 1 },
+              ],
+            },
+            {
+              tier: 2,
+              output: EntityName.POTION3,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.TROLL_HIDE, quantity: 1 },
+                { item: EntityName.BELLADONNA, quantity: 1 },
+                { item: EntityName.CLARY_SAGE, quantity: 2 },
               ],
             },
           ] satisfies Recipe[],
@@ -120,7 +131,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [EntityName.WOOD, EntityName.IRON1, EntityName.GLASS],
+          accepts: [
+            EntityName.WOOD,
+            EntityName.IRON1,
+            EntityName.GLASS,
+            EntityName.DEER_HIDE,
+          ],
           recipes: [
             {
               tier: 1,
@@ -132,7 +148,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
-              tier: 1,
+              tier: 2,
               output: EntityName.LANTERN,
               quantity: 1,
               ingredients: [
@@ -150,7 +166,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
-              tier: 1,
+              tier: 2,
               output: EntityName.PICKAXE,
               quantity: 1,
               ingredients: [
@@ -159,7 +175,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
-              tier: 1,
+              tier: 2,
               output: EntityName.WATERING_CAN,
               quantity: 1,
               ingredients: [{ item: EntityName.IRON1, quantity: 2 }],
@@ -332,8 +348,28 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.PERCH,
             EntityName.CARP,
             EntityName.TROUT,
+            EntityName.GOAT_MILK,
           ],
-          recipes: [],
+          recipes: [
+            {
+              tier: 2,
+              output: EntityName.CARROT_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.CARROT, quantity: 1 }],
+            },
+            {
+              tier: 2,
+              output: EntityName.TOMATO_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.TOMATO, quantity: 1 }],
+            },
+            {
+              tier: 2,
+              output: EntityName.CABBAGE_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.CABBAGE, quantity: 1 }],
+            },
+          ] satisfies Recipe[],
         },
       },
       { name: ComponentName.ANIMATION },
@@ -656,6 +692,14 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           [Mood.HUNGRY]: [
             "*rubbing her arms* I can't sit still today. When my stomach's empty, the dreams get... loud.",
             "Don't mind me pacing. I haven't eaten, and that's always when it comes back.",
+          ],
+          [Mood.COLD]: [
+            "*teeth chattering* There's a chill in my bones no fire seems to reach.",
+            "Cold as the grave lately. I'd kill for a proper hide to wrap up in.",
+          ],
+          [Mood.THIRSTY]: [
+            "My mouth's gone dry as chalk. Is there nothing left to drink in this village?",
+            "*swallows hard* I keep dreaming of cool water. Even awake, now.",
           ],
         },
         choices: [

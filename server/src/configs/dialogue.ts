@@ -26,6 +26,16 @@ export const COMMON_NODES: Record<string, DialogueNode[]> = {
           "Oh, hello there...",
           "*sighs*",
         ],
+        [Mood.COLD]: [
+          "H-hello... *shivering*",
+          "Oh, hello... can't seem to get warm.",
+          "*rubs hands together* Cold one today.",
+        ],
+        [Mood.THIRSTY]: [
+          "Hello... *licks dry lips*",
+          "Oh... hello. Throat's like sand.",
+          "Good day... I could murder a drink.",
+        ],
         [Mood.HAPPY]: ["Hello there!", "Greetings, friend!", "Good day!"],
       },
       choices: [{ ref: ChoiceId.GOODBYE }],

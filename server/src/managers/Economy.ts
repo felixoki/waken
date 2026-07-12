@@ -1,7 +1,7 @@
 import { configs } from "../configs";
 import { DAY } from "../globals";
 import { ItemsStore } from "../stores/Items";
-import { EconomySnapshot, NeedConfig, NeedName } from "../types";
+import { EconomySnapshot, Mood, NeedConfig, NeedName } from "../types";
 
 export class EconomyManager {
   private needs: Map<NeedName, NeedConfig> = new Map();
@@ -38,13 +38,15 @@ export class EconomyManager {
     const days = elapsed / DAY;
 
     this.needs.forEach((need) => {
-      const available = this.getSupply(need);
+      if (need.tier > this.tier) return;
+      if (need.consumption <= 0) return;
 
-      if (available > 0) {
-        const consumption = need.consumption[this.tier] * days;
-        this._consume(need, consumption);
-        this.dirty = true;
-      }
+      const available = this.getSupply(need);
+      if (available <= 0) return;
+
+      const rate = need.consumption * 2 ** (this.tier - need.tier);
+      this._consume(need, rate * days);
+      this.dirty = true;
     });
   }
 
@@ -55,23 +57,33 @@ export class EconomyManager {
   }
 
   private _consume(need: NeedConfig, amount: number) {
-    let remaining = amount;
-
     const items = need.items
       .filter((item) => item.tier <= this.tier)
-      .sort((a, b) => a.tier - b.tier);
+      .map((item) => ({
+        name: item.item,
+        available: this.supply.get(item.item),
+      }))
+      .filter((item) => item.available > 0);
 
-    for (const item of items) {
-      if (remaining <= 0) break;
+    if (!items.length) return;
 
-      const available = this.supply.get(item.item);
+    const total = items.reduce((sum, item) => sum + item.available, 0);
+    if (total <= 0) return;
 
-      if (available > 0) {
-        const consumed = Math.min(available, remaining);
-        this.supply.remove(item.item, consumed);
-        remaining -= consumed;
-      }
-    }
+    const target = Math.min(amount, total);
+    let consumedTotal = 0;
+
+    items.forEach((item, index) => {
+      const isLast = index === items.length - 1;
+      const share = isLast
+        ? Math.max(0, target - consumedTotal)
+        : Math.min(item.available, (item.available / total) * target);
+
+      if (share <= 0) return;
+
+      this.supply.remove(item.name, share);
+      consumedTotal += share;
+    });
   }
 
   getTier(): number {
@@ -85,16 +97,37 @@ export class EconomyManager {
 
   isLow(name: NeedName): boolean {
     const need = this.needs.get(name);
-    if (!need) return false;
+    if (!need || need.tier > this.tier) return false;
 
-    const threshold = need.threshold[this.tier];
-    return this.getSupply(need) < threshold * 0.3;
+    return this.getSupply(need) < need.low;
+  }
+
+  getMood(): Mood {
+    let mood = Mood.HAPPY;
+    let lowest = Infinity;
+
+    this.needs.forEach((need) => {
+      if (!need.mood || need.tier > this.tier || need.low <= 0) return;
+
+      const supply = this.getSupply(need);
+      if (supply >= need.low) return;
+
+      const ratio = supply / need.low;
+      if (ratio < lowest) {
+        lowest = ratio;
+        mood = need.mood;
+      }
+    });
+
+    return mood;
   }
 
   getSnapshot(): EconomySnapshot {
     const needs: EconomySnapshot["needs"] = [];
 
     this.needs.forEach((need) => {
+      if (need.tier > this.tier) return;
+
       const items = need.items
         .filter((tier) => tier.tier <= this.tier)
         .map((tier) => ({

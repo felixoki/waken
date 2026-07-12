@@ -16,6 +16,11 @@ function slotName(slot: Slot | null): EntityName | SpellName | null {
   return slot.type === SlotType.SPELL ? slot.name : slot.item.name;
 }
 
+function slotQuantity(slot: Slot | null): number | undefined {
+  if (!slot || slot.type === SlotType.SPELL) return undefined;
+  return slot.item.quantity;
+}
+
 export function Hotbar() {
   const [slots, setSlots] = useState<(Slot | null)[]>(() =>
     Array(8).fill(null),
@@ -49,6 +54,7 @@ export function Hotbar() {
           <Item
             key={i}
             name={name}
+            quantity={slotQuantity(slot)}
             active={i === active}
             dragId={name ? `hotbar-${i}` : undefined}
             dropId={`hotbar-${i}`}
