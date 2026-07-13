@@ -219,6 +219,7 @@ export interface SpawnRule {
   margin?: number;
   cluster?: boolean;
   group?: GroupConfig;
+  loot?: (Item & { chance: number })[];
 }
 
 export interface Entity {

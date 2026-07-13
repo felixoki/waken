@@ -640,6 +640,10 @@
 - Add dungeon theme ✅
 - Add sunrise theme ✅
 
+#### 13.7.2026
+
+- Refactor sound manager ✅
+
 ### In progress
 
 - Add dungeon and cave objects

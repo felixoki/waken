@@ -141,6 +141,8 @@ export const player = {
         (main.scene.get(MapName.FOREST) as ForestScene).teardown();
       });
     }
+
+    handlers.sound.sync(main, data.map as MapName);
   },
 
   lantern: {

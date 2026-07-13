@@ -10,6 +10,8 @@ export enum SoundName {
   SHARD_HOLD = "shard_hold",
   SHARD_LAUNCH = "shard_launch",
   SHARD_HIT = "shard_hit",
+  BEAR_IDLE = "bear_idle",
+  BEAR_SLASH = "bear_slash",
   BOAR_IDLE = "boar_idle",
   BOAR_SLASH = "boar_slash",
   GOAT_IDLE = "goat_idle",
@@ -21,6 +23,7 @@ export enum SoundName {
   DOOR = "door",
   DRINK = "drink",
   EQUIP = "equip",
+  GRAB = "grab",
   PICKUP = "pickup",
   FIRE = "fire",
   RUSTLE = "rustle",
@@ -28,23 +31,37 @@ export enum SoundName {
   WATER = "water",
   CHOP = "chop",
   MINE = "mine",
-  BIRDS = "birds",
+  REVIVE = "revive",
 }
 
 export enum MusicName {
   SWEET_VILLAGE = "sweet_village",
   AFTER_RAIN = "after_rain",
   INTO_THE_MIST = "into_the_mist",
+  AT_DAYBREAK = "at_daybreak",
+  THE_DEPTHS = "the_depths",
 }
 
 export enum AmbienceName {
   RAIN = "rain",
+  BIRDS = "birds",
+  CANALS = "canals",
+}
+
+export enum AmbienceDomain {
+  MAP = "map",
+  WEATHER = "weather",
 }
 
 export enum ChannelName {
   SFX = "sfx",
   MUSIC = "music",
   AMBIENCE = "ambience",
+}
+
+export interface SoundConfig {
+  music?: MusicName[];
+  ambience?: AmbienceName[];
 }
 
 export interface SfxConfig {
@@ -61,4 +78,5 @@ export interface AmbientSoundConfig {
 
 export interface AudioConfig {
   volume: number;
+  variants?: string[];
 }

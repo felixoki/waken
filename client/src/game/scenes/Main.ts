@@ -181,6 +181,7 @@ export class MainScene extends Phaser.Scene {
       if (hotbar) hotbar.setActive(data.active ?? 0);
 
       handlers.ui.backdrop.hide(this, data.map);
+      handlers.sound.sync(this, data.map);
     });
 
     this.managers.socket.on(
@@ -638,6 +639,14 @@ export class MainScene extends Phaser.Scene {
         type: SlotType;
       }) => {
         this.managers.socket.emit(Event.SLOT_MOVE, data);
+
+        if (
+          (data.source.zone === SlotZone.INVENTORY &&
+            data.target.zone === SlotZone.INVENTORY) ||
+          (data.source.zone !== SlotZone.INVENTORY &&
+            data.target.zone === SlotZone.INVENTORY)
+        )
+          this.managers.sound.play.sfx(SoundName.GRAB);
 
         if (
           data.target.zone === SlotZone.HOTBAR &&

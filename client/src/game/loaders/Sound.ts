@@ -1,4 +1,4 @@
-import { AmbienceName, MusicName, SfxConfig, SoundName } from "@server/types";
+import { AmbienceName, AudioConfig, MusicName, SfxConfig, SoundName } from "@server/types";
 import { configs } from "@server/configs";
 
 const SFX_PATH = "assets/sounds";
@@ -20,7 +20,11 @@ export class Sound {
     for (const name of Object.keys(configs.sounds.music) as MusicName[])
       scene.load.audio(name, `${MUSIC_PATH}/${name}.ogg`);
 
-    for (const name of Object.keys(configs.sounds.ambience) as AmbienceName[])
-      scene.load.audio(name, `${AMBIENCE_PATH}/${name}.ogg`);
+    for (const [name, config] of Object.entries(configs.sounds.ambience) as [AmbienceName, AudioConfig][]) {
+      if (config.variants)
+        config.variants.forEach((key) => scene.load.audio(key, `${AMBIENCE_PATH}/${key}.ogg`));
+      else
+        scene.load.audio(name, `${AMBIENCE_PATH}/${name}.ogg`);
+    }
   }
 }

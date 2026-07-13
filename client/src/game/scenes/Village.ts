@@ -1,4 +1,4 @@
-import { MapName, MusicName } from "@server/types";
+import { MapName } from "@server/types";
 import { Scene } from "./Scene";
 import { MapFactory } from "../factory/Map";
 import { Texture } from "../loaders/Texture";
@@ -21,7 +21,5 @@ export default class VillageScene extends Scene {
     this.physics.world.setBounds(0, 0, tilemap.widthInPixels, tilemap.heightInPixels);
 
     this.cameraManager.fitZoom();
-
-    this.managers.sound.play.music(MusicName.AFTER_RAIN);
   }
 }

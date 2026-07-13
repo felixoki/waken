@@ -58,10 +58,6 @@ export const player = {
           SpellName.SHARD,
           SpellName.SLASH,
           SpellName.REVIVE,
-          SpellName.LIGHTNING_STRIKE,
-          SpellName.ABSORB_LIFE,
-          SpellName.DRAGON_FORM,
-          SpellName.TAME
         ],
         inventory: saved?.data?.inventory ?? [
           { name: EntityName.IRON1, quantity: 50, stackable: true },

@@ -30,6 +30,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.BEAR_IDLE, interval: [4000, 9000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -43,6 +47,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 40 },
         range: 45,
+        sound: SoundName.BEAR_SLASH,
       },
     ],
     behaviors: [
@@ -74,7 +79,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.BOAR_MEAT,
               quantity: 1,
               stackable: true,
-              chance: 1,
+              chance: 0.9,
             },
           ],
         },
@@ -231,7 +236,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.HARE_FOOT,
               quantity: 1,
               stackable: true,
-              chance: 0.1,
+              chance: 0.25,
             },
           ],
         },
@@ -297,7 +302,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.DEER]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 50,
+    maxHealth: 35,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -309,6 +314,12 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               quantity: 1,
               stackable: true,
               chance: 1,
+            },
+            {
+              name: EntityName.DEER_HIDE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.75,
             },
           ],
         },
@@ -484,7 +495,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.RAT_CLAWS,
               quantity: 1,
               stackable: true,
-              chance: 0.6,
+              chance: 0.75,
             },
           ],
         },

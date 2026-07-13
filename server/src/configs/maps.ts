@@ -1,4 +1,10 @@
-import { MapConfig, MapName, Spritesheet } from "../types";
+import {
+  AmbienceName,
+  MapConfig,
+  MapName,
+  MusicName,
+  Spritesheet,
+} from "../types";
 import { BiomeName } from "../types/generation";
 
 const player: Spritesheet[] = [
@@ -344,6 +350,10 @@ const animals: Spritesheet[] = [
     frameWidth: 128,
     frameHeight: 128,
   },
+  { key: "bear-idle", file: "bear_idle_with_shadow.png" },
+  { key: "bear-walking", file: "bear_walking_with_shadow.png" },
+  { key: "bear-running", file: "bear_running_with_shadow.png" },
+  { key: "bear-slashing", file: "bear_slashing_with_shadow.png" },
 ];
 
 const plants: Spritesheet[] = [
@@ -683,10 +693,6 @@ const interior: Spritesheet[] = [
 ];
 
 const creatures: Spritesheet[] = [
-  { key: "bear-idle", file: "bear_idle_with_shadow.png" },
-  { key: "bear-walking", file: "bear_walking_with_shadow.png" },
-  { key: "bear-running", file: "bear_running_with_shadow.png" },
-  { key: "bear-slashing", file: "bear_slashing_with_shadow.png" },
   { key: "orc1-idle", file: "orc1_idle_with_shadow.png" },
   { key: "orc1-walking", file: "orc1_walking_with_shadow.png" },
   { key: "orc1-running", file: "orc1_running_with_shadow.png" },
@@ -756,6 +762,14 @@ export const maps: Record<MapName, MapConfig> = {
     json: "village.json",
     isIndoor: false,
     isInstanced: false,
+    sound: {
+      music: [
+        MusicName.AFTER_RAIN,
+        MusicName.SWEET_VILLAGE,
+        MusicName.AT_DAYBREAK,
+      ],
+      ambience: [AmbienceName.BIRDS],
+    },
     spritesheets: [
       ...player,
       ...animals,
@@ -1142,6 +1156,10 @@ export const maps: Record<MapName, MapConfig> = {
     isIndoor: false,
     isInstanced: true,
     isPartyInstance: true,
+    sound: {
+      music: [MusicName.INTO_THE_MIST],
+      ambience: [AmbienceName.BIRDS],
+    },
     spritesheets: [
       ...player,
       ...animals,
@@ -1248,6 +1266,10 @@ export const maps: Record<MapName, MapConfig> = {
     isIndoor: true,
     isInstanced: true,
     isPartyInstance: true,
+    sound: {
+      music: [MusicName.THE_DEPTHS],
+      ambience: [AmbienceName.CANALS],
+    },
     spritesheets: [
       ...player,
       ...creatures,
@@ -1292,6 +1314,7 @@ export const maps: Record<MapName, MapConfig> = {
     spritesheets: [
       ...player,
       ...creatures,
+      ...animals,
       ...interior,
       {
         key: "cave_walls_floor",

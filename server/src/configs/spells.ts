@@ -66,7 +66,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.REVIVE]: {
     name: SpellName.REVIVE,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.REVIVE },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 30,
@@ -76,7 +76,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Channel life into a fallen ally, reviving them where they fell.",
       displayName: "Revive",
-      icon: { spritesheet: "icons5", row: 8, col: 9 },
+      icon: { spritesheet: "icons5", row: 8, col: 18 },
     },
   },
   [SpellName.ILLUMINATE]: {

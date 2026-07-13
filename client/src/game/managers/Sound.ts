@@ -1,7 +1,9 @@
 import { configs } from "@server/configs";
 import { MainScene } from "../scenes/Main";
 import {
+  AmbienceDomain,
   AmbienceName,
+  AudioConfig,
   ChannelName,
   MusicName,
   SfxConfig,
@@ -20,7 +22,12 @@ export class SoundManager {
   private scene: MainScene;
   private current: { name: MusicName; sound: Sound } | null = null;
   private layers: Map<AmbienceName, Sound> = new Map();
+  private domains: Map<AmbienceName, AmbienceDomain> = new Map();
   private volume: { music: number; ambience: number; sfx: number };
+  private queue: { music: MusicName[]; index: number } = {
+    music: [],
+    index: 0,
+  };
 
   constructor(scene: MainScene) {
     this.scene = scene;
@@ -97,36 +104,27 @@ export class SoundManager {
       return sound;
     },
 
-    music: (name: MusicName) => {
-      if (this.current?.name === name) return;
-
-      const config = configs.sounds.music[name];
+    music: (names: MusicName[]) => {
+      const config = configs.sounds.music[names[0]];
       if (!config) return;
 
-      const target = config.volume * this.volume.music;
-      const next = this.scene.sound.add(name, {
-        volume: 0,
-        loop: true,
-      }) as Sound;
-      next.play();
-
-      this.scene.tweens.add({
-        targets: next,
-        volume: target,
-        duration: CROSSFADE_DURATION,
-      });
+      this.queue.music = names;
+      this.queue.index = 0;
       this.stop.music();
-      this.current = { name, sound: next };
+      this.play.queue(0);
     },
 
-    ambience: (name: AmbienceName) => {
+    ambience: (name: AmbienceName, domain: AmbienceDomain) => {
       if (this.layers.has(name)) return;
 
-      const config = configs.sounds.ambience[name];
+      const config = configs.sounds.ambience[name] as AudioConfig;
       if (!config) return;
 
+      const key = config.variants
+        ? config.variants[Math.floor(Math.random() * config.variants.length)]
+        : name;
       const target = config.volume * this.volume.ambience;
-      const sound = this.scene.sound.add(name, {
+      const sound = this.scene.sound.add(key, {
         volume: 0,
         loop: true,
       }) as Sound;
@@ -138,6 +136,35 @@ export class SoundManager {
         duration: CROSSFADE_DURATION,
       });
       this.layers.set(name, sound);
+      this.domains.set(name, domain);
+    },
+
+    queue: (index: number) => {
+      const name = this.queue.music[index];
+      const config = configs.sounds.music[name];
+      if (!config) return;
+
+      const target = config.volume * this.volume.music;
+      const next = this.scene.sound.add(name, {
+        volume: 0,
+        loop: false,
+      }) as Sound;
+
+      next.play();
+
+      this.scene.tweens.add({
+        targets: next,
+        volume: target,
+        duration: CROSSFADE_DURATION,
+      });
+
+      next.once("complete", () => {
+        this.current = null;
+        this.queue.index = (index + 1) % this.queue.music.length;
+        this.play.queue(this.queue.index);
+      });
+
+      this.current = { name, sound: next };
     },
   };
 
@@ -146,13 +173,16 @@ export class SoundManager {
       if (!this.current) return;
       const current = this.current.sound;
       this.current = null;
+      current.off("complete");
       this._fade(current);
     },
 
     ambience: (name: AmbienceName) => {
       const sound = this.layers.get(name);
       if (!sound) return;
+
       this.layers.delete(name);
+      this.domains.delete(name);
       this._fade(sound);
     },
 
@@ -175,6 +205,23 @@ export class SoundManager {
       this.layers.forEach((sound, name) => {
         sound.setVolume(configs.sounds.ambience[name].volume * value);
       });
+  }
+
+  getActiveAmbience(domain?: AmbienceDomain): AmbienceName[] {
+    const keys = [...this.layers.keys()];
+
+    return domain
+      ? keys.filter((name) => this.domains.get(name) === domain)
+      : keys;
+  }
+
+  hasAmbience(name: AmbienceName): boolean {
+    return this.layers.has(name);
+  }
+
+  getActiveMusic(): MusicName[] | null {
+    if (!this.current) return null;
+    return this.queue.music.length ? [...this.queue.music] : null;
   }
 
   private _fade(sound: Sound) {

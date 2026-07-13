@@ -1,4 +1,5 @@
 import { BiomeName } from "./generation";
+import { SoundConfig } from "./sounds";
 
 export enum MapName {
   VILLAGE = "village",
@@ -24,6 +25,7 @@ export interface MapConfig {
   isInstanced: boolean;
   isPartyInstance?: boolean;
   spritesheets: Spritesheet[];
+  sound?: SoundConfig;
 }
 
 export interface Spritesheet {

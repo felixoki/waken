@@ -96,6 +96,11 @@ export const sounds = {
       folder: "spells",
       variants: ["slash1", "slash2", "slash3"],
     },
+    [SoundName.REVIVE]: {
+      volume: 2,
+      folder: "spells",
+      variants: ["revive1", "revive2"],
+    },
 
     [SoundName.SHARD_CHARGE]: {
       volume: 0.6,
@@ -117,12 +122,12 @@ export const sounds = {
     },
 
     [SoundName.ORC_IDLE]: {
-      volume: 0.7,
+      volume: 0.5,
       folder: "creatures",
       variants: ["orc_idle1"],
     },
     [SoundName.ORC_SLASH]: {
-      volume: 0.7,
+      volume: 0.5,
       folder: "creatures",
       variants: ["orc_slash1", "orc_slash2"],
     },
@@ -131,14 +136,21 @@ export const sounds = {
       folder: "creatures",
       variants: ["shadow_wanderer_idle1"],
     },
-
+    [SoundName.BEAR_IDLE]: {
+      volume: 0.5,
+      folder: "animals",
+    },
+    [SoundName.BEAR_SLASH]: {
+      volume: 0.5,
+      folder: "animals",
+    },
     [SoundName.BOAR_IDLE]: {
       volume: 0.5,
       folder: "animals",
       variants: ["boar_idle1", "boar_idle2"],
     },
     [SoundName.BOAR_SLASH]: {
-      volume: 0.7,
+      volume: 0.5,
       folder: "animals",
     },
     [SoundName.GOAT_IDLE]: {
@@ -172,54 +184,29 @@ export const sounds = {
       folder: "animals",
       variants: ["grouse_idle1", "grouse_idle2"],
     },
-    [SoundName.BIRDS]: {
-      volume: 0.35,
-      folder: "ambience",
-      variants: ["birds1", "birds2", "birds3"],
-    },
-
-    [SoundName.COLLECT]: {
-      volume: 0.6,
-      folder: "misc",
-    },
-    [SoundName.DOOR]: {
-      volume: 0.6,
-      folder: "misc",
-    },
-    [SoundName.DRINK]: {
-      volume: 0.6,
-      folder: "misc",
-    },
-    [SoundName.EQUIP]: {
-      volume: 0.6,
-      folder: "misc",
-    },
-    [SoundName.PICKUP]: {
-      volume: 0.5,
-      folder: "misc",
-      variants: ["pop"],
-    },
-    [SoundName.FIRE]: {
-      volume: 0.1,
-      folder: "misc",
-    },
+    [SoundName.COLLECT]: { volume: 0.6, folder: "misc" },
+    [SoundName.DOOR]: { volume: 0.6, folder: "misc" },
+    [SoundName.DRINK]: { volume: 0.6, folder: "misc" },
+    [SoundName.EQUIP]: { volume: 0.1, folder: "misc" },
+    [SoundName.GRAB]: { volume: 0.05, folder: "misc" },
+    [SoundName.PICKUP]: { volume: 0.5, folder: "misc", variants: ["pop"] },
+    [SoundName.FIRE]: { volume: 0.05, folder: "misc" },
   },
 
   music: {
-    [MusicName.SWEET_VILLAGE]: {
-      volume: 0.5,
-    },
-    [MusicName.AFTER_RAIN]: {
-      volume: 0.5,
-    },
-    [MusicName.INTO_THE_MIST]: {
-      volume: 0.5,
-    },
+    [MusicName.SWEET_VILLAGE]: { volume: 0.5 },
+    [MusicName.AFTER_RAIN]: { volume: 0.5 },
+    [MusicName.INTO_THE_MIST]: { volume: 0.5 },
+    [MusicName.AT_DAYBREAK]: { volume: 0.5 },
+    [MusicName.THE_DEPTHS]: { volume: 0.5 },
   },
 
   ambience: {
-    [AmbienceName.RAIN]: {
-      volume: 0.4,
+    [AmbienceName.RAIN]: { volume: 0.4 },
+    [AmbienceName.BIRDS]: {
+      volume: 0.1,
+      variants: ["birds1", "birds2", "birds3"],
     },
+    [AmbienceName.CANALS]: { volume: 0.8 },
   },
 };

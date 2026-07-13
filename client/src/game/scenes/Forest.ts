@@ -1,4 +1,4 @@
-import { MapName, MusicName } from "@server/types";
+import { MapName } from "@server/types";
 import { Scene } from "./Scene";
 import { MapFactory } from "../factory/Map";
 import { TileManager } from "../managers/Tile";
@@ -35,8 +35,6 @@ export default class ForestScene extends Scene {
     );
 
     this.cameraManager.fitZoom();
-
-    this.managers.sound.play.music(MusicName.INTO_THE_MIST);
   }
 
   teardown(): void {

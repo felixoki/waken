@@ -1,3 +1,4 @@
+import { configs } from "../../configs";
 import { handlers } from "../../handlers";
 import {
   BiomeConfig,
@@ -51,10 +52,15 @@ export class EntranceGenerator {
 
     const entities: Entity[] = [];
 
+    const offset = configs.entities[this.def.entity]?.offset;
     const doorX = (origin.x + door.col + 1) * tileWidth;
     const doorY = (origin.y + door.row + 1) * tileHeight;
 
-    entities.push({ name: this.def.entity, x: doorX, y: doorY });
+    entities.push({
+      name: this.def.entity,
+      x: doorX + (offset?.x ?? 0),
+      y: doorY + (offset?.y ?? 0),
+    });
 
     if (this.def.guards) {
       const guardY = (origin.y + facade.length) * tileHeight;
@@ -101,7 +107,7 @@ export class EntranceGenerator {
           if (!this.config.terrain.includes(terrain[gen.toIndex(x, y, width)]))
             return false;
         }
-        
+
       return true;
     };
 

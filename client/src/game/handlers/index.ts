@@ -16,6 +16,7 @@ import { charge } from "./charge";
 import { sprites } from "./sprites";
 import { villain } from "./villain";
 import { textures } from "./textures";
+import { sound } from "./sound";
 
 export const handlers = {
   state,
@@ -36,4 +37,5 @@ export const handlers = {
   sprites,
   villain,
   textures,
+  sound,
 };
