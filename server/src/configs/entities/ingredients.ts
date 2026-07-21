@@ -472,7 +472,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.CONSUMABLE,
-        config: { effect: EffectName.REGAIN, duration: 5000, restore: { health: 120 } },
+        config: { effect: EffectName.REGAIN, duration: 5000, restore: { health: 100 } },
       },
     ],
     states: [],
@@ -482,7 +482,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A thick, potent brew rendered from troll hide and deadly herbs.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 14, col: 28 },
+      icon: { spritesheet: "icons2", row: 2, col: 28 },
     },
   },
 };

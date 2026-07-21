@@ -358,6 +358,12 @@ export const dungeon: BiomeConfig = {
             y: 52,
             loot: [
               {
+                name: EntityName.WOOD,
+                quantity: 3,
+                stackable: true,
+                chance: 0.75,
+              },
+              {
                 name: EntityName.IRON1,
                 quantity: 3,
                 stackable: true,
@@ -383,6 +389,12 @@ export const dungeon: BiomeConfig = {
               },
               {
                 name: EntityName.AMULET1,
+                quantity: 1,
+                stackable: true,
+                chance: 0.25,
+              },
+              {
+                name: EntityName.RING1,
                 quantity: 1,
                 stackable: true,
                 chance: 0.25,
@@ -492,6 +504,7 @@ export const cave: BiomeConfig = {
       spacing: 4,
       margin: 1,
       loot: [
+        { name: EntityName.WOOD, quantity: 3, stackable: true, chance: 0.75 },
         { name: EntityName.QUARTZ1, quantity: 3, stackable: true, chance: 0.8 },
         { name: EntityName.IRON1, quantity: 2, stackable: true, chance: 0.5 },
         { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.3 },

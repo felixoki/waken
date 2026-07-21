@@ -207,6 +207,6 @@ export const sounds = {
       volume: 0.1,
       variants: ["birds1", "birds2", "birds3"],
     },
-    [AmbienceName.CANALS]: { volume: 0.8 },
+    [AmbienceName.CANALS]: { volume: 1.2 },
   },
 };

@@ -13,7 +13,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.TOMATO, tier: 2 },
       { item: EntityName.CABBAGE, tier: 2 },
     ],
-    consumption: 500,
+    consumption: 0.5,
     low: 5,
   },
   {

@@ -165,6 +165,35 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons2", row: 6, col: 28 },
     },
   },
+  [EntityName.FISHING_HOOK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 29, end: 30 },
+            { row: 6, start: 29, end: 30 },
+          ],
+        },
+        key: "fishing_hook_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Fishing hook",
+      description: "A sharp metal hook for rigging a fishing line.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 6, col: 28 },
+    },
+  },
   [EntityName.DEER_HIDE]: {
     facing: Direction.DOWN,
     moving: [],

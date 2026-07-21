@@ -643,10 +643,14 @@
 #### 13.7.2026
 
 - Refactor sound manager ✅
+- Add fishing hook ✅
+
+#### 14.7.2026
+
+- Add ring ✅
 
 ### In progress
 
-- Add dungeon and cave objects
 - Add damagable to villain and transition on defeat
 
 ### Bugs
@@ -655,6 +659,7 @@
 
 - Projectiles don't respect collisions
 - Hotbar doesn't reset after transition in dragon form
+- Ambience sound queue doesn't reset
 
 🔵 Low
 
@@ -672,5 +677,4 @@
   - Add reflect damage effect
   - Add gain momentum spell
   - Remove among player collisions
-  - Add console
   - Hidden rooms in dungeons

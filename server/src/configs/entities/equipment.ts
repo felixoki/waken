@@ -43,6 +43,40 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons2", row: 12, col: 25 },
     },
   },
+  [EntityName.RING1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 23, end: 24 },
+            { row: 2, start: 23, end: 24 },
+          ],
+        },
+        key: "ring_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    bonuses: [
+      {
+        spell: SpellName.SHARD,
+        effects: [[EffectName.COLD, 4000]],
+      },
+    ],
+    metadata: {
+      displayName: "Mir Hul",
+      description: "A pale ring that infuses Shard with freezing cold.",
+      icon: { spritesheet: "icons2", row: 2, col: 22 },
+    },
+  },
   [EntityName.HOE]: {
     facing: Direction.DOWN,
     moving: [],

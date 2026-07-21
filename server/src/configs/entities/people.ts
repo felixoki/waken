@@ -136,6 +136,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.IRON1,
             EntityName.GLASS,
             EntityName.DEER_HIDE,
+            EntityName.FISHING_HOOK,
           ],
           recipes: [
             {
@@ -179,6 +180,15 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               output: EntityName.WATERING_CAN,
               quantity: 1,
               ingredients: [{ item: EntityName.IRON1, quantity: 2 }],
+            },
+            {
+              tier: 3,
+              output: EntityName.FISHING_ROD,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.WOOD, quantity: 2 },
+                { item: EntityName.FISHING_HOOK, quantity: 1 },
+              ],
             },
           ] satisfies Recipe[],
         },

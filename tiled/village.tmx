@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="62" nextobjectid="1492">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="62" nextobjectid="1494">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -8506,8 +8506,6 @@
   <object id="1434" name="Drake" x="31.9879" y="368.06" width="1" height="1"/>
   <object id="1444" name="Glimmer" x="359" y="500" width="1" height="1"/>
   <object id="1478" name="Grouse" x="270" y="64" width="1" height="1"/>
-  <object id="1483" name="Goat" x="592.876" y="528.165" width="3.08147" height="3.08147"/>
-  <object id="1484" name="Goat" x="255.146" y="449.279" width="7.39554" height="3.08147"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="104">
   <properties>

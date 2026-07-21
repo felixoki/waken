@@ -11156,28 +11156,6 @@
                  "width":1,
                  "x":270,
                  "y":64
-                }, 
-                {
-                 "height":3.08147,
-                 "id":1483,
-                 "name":"Goat",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":3.08147,
-                 "x":592.876,
-                 "y":528.165
-                }, 
-                {
-                 "height":3.08147,
-                 "id":1484,
-                 "name":"Goat",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":7.39554,
-                 "x":255.146,
-                 "y":449.279
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -11307,7 +11285,7 @@
          "y":0
         }],
  "nextlayerid":62,
- "nextobjectid":1492,
+ "nextobjectid":1494,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

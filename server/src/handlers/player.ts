@@ -2,10 +2,8 @@ import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
 import {
   Direction,
-  EntityName,
   Event,
   Slot,
-  SlotType,
   Input,
   MapName,
   PlayerConfig,
@@ -59,71 +57,8 @@ export const player = {
           SpellName.SLASH,
           SpellName.REVIVE,
         ],
-        inventory: saved?.data?.inventory ?? [
-          { name: EntityName.IRON1, quantity: 50, stackable: true },
-          { name: EntityName.IRON1, quantity: 50, stackable: true },
-          { name: EntityName.WOOD, quantity: 50, stackable: true },
-          { name: EntityName.WOOD, quantity: 50, stackable: true },
-          { name: EntityName.VENISON_MEAT, quantity: 50, stackable: true },
-          { name: EntityName.BOAR_MEAT, quantity: 50, stackable: true },
-          { name: EntityName.RASPBERRY, quantity: 50, stackable: true },
-          { name: EntityName.CARROT, quantity: 50, stackable: true },
-          { name: EntityName.TOMATO, quantity: 50, stackable: true },
-          { name: EntityName.CABBAGE, quantity: 50, stackable: true },
-          { name: EntityName.DEER_HIDE, quantity: 50, stackable: true },
-          { name: EntityName.GOAT_MILK, quantity: 50, stackable: true },
-          ...new Array(8).fill(null),
-        ],
-        hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [
-          {
-            type: SlotType.ENTITY,
-            item: { name: EntityName.AXE, quantity: 1, stackable: false },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: { name: EntityName.LANTERN, quantity: 1, stackable: false },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: { name: EntityName.HOE, quantity: 1, stackable: false },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: {
-              name: EntityName.FISHING_ROD,
-              quantity: 1,
-              stackable: false,
-            },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: { name: EntityName.PICKAXE, quantity: 1, stackable: false },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: {
-              name: EntityName.WATERING_CAN,
-              quantity: 1,
-              stackable: false,
-            },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: {
-              name: EntityName.SOULSTONE,
-              quantity: 2,
-              stackable: false,
-            },
-          },
-          {
-            type: SlotType.ENTITY,
-            item: {
-              name: EntityName.CARROT,
-              quantity: 10,
-              stackable: true,
-            },
-          },
-        ],
+        inventory: saved?.data?.inventory ?? [...new Array(20).fill(null)],
+        hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [...new Array(8).fill(null)],
         active: (saved?.data?.active as number) ?? 0,
       };
 
@@ -234,7 +169,7 @@ export const player = {
 
     const party = world.parties.getByPlayerId(player.id);
     const partyId = configs.maps[player.map].isInstanced
-      ? world.sublevels.entranceOf(player.id) ?? party?.id
+      ? (world.sublevels.entranceOf(player.id) ?? party?.id)
       : undefined;
 
     const key = world.chunks.toChunkKey(player.map, data.x, data.y, partyId);
@@ -322,7 +257,16 @@ export const player = {
     socket.emit(Event.PLAYER_TRANSITION, updated);
     socket.emit(Event.PLAYER_CREATE_OTHERS, others);
 
-    handlers.chunks.sync.player(socket, world, playerId, to, x, y, io, toPartyId);
+    handlers.chunks.sync.player(
+      socket,
+      world,
+      playerId,
+      to,
+      x,
+      y,
+      io,
+      toPartyId,
+    );
 
     socket.to(`map:${to}`).emit(Event.PLAYER_CREATE, updated);
   },
