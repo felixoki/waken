@@ -797,6 +797,7 @@ export class MainScene extends Phaser.Scene {
         };
 
         if (scene.scene.isActive()) {
+          scene.teardown();
           scene.rebuild(data.tilemap);
           onReady();
           return;
@@ -878,6 +879,7 @@ export class MainScene extends Phaser.Scene {
         };
 
         if (scene.scene.isActive()) {
+          scene.teardown();
           scene.rebuild(data.tilemap);
           onReady();
           return;

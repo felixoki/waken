@@ -49,4 +49,9 @@ export class CameraManager {
       y: this.camera.centerY + (y - entity.y) * this.camera.zoom,
     };
   }
+
+  destroy(): void {
+    if (this.resize) this.scene.scale.off("resize", this.resize);
+    this.resize = undefined;
+  }
 }

@@ -31,7 +31,10 @@ export class PhysicsManager {
 
     this.colliders.push(
       this.scene.physics.add.collider(this.groups.players, this.groups.players),
-      this.scene.physics.add.collider(this.groups.players, this.groups.entities),
+      this.scene.physics.add.collider(
+        this.groups.players,
+        this.groups.entities,
+      ),
       this.scene.physics.add.overlap(
         this.groups.entities,
         this.groups.hits,
@@ -59,6 +62,6 @@ export class PhysicsManager {
   destroy(): void {
     this.colliders.forEach((c) => c.destroy());
     this.colliders.length = 0;
-    Object.values(this.groups).forEach((g) => g.destroy(true));
+    Object.values(this.groups).forEach((g) => g.destroy(false));
   }
 }

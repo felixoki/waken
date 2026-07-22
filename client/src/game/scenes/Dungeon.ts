@@ -33,9 +33,7 @@ export default class DungeonScene extends Scene {
   }
 
   teardown(): void {
-    this.children.removeAll(true);
-    this.tileManager?.destroy();
-    this.tileManager = undefined!;
+    super.teardown();
     this.cache.tilemap.remove(MapName.DUNGEON);
   }
 

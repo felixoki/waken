@@ -38,9 +38,7 @@ export default class SublevelScene extends Scene {
   }
 
   teardown(): void {
-    this.children.removeAll(true);
-    this.tileManager?.destroy();
-    this.tileManager = undefined!;
+    super.teardown();
     this.cache.tilemap.remove(this.map);
   }
 

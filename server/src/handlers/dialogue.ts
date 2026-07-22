@@ -195,20 +195,12 @@ export const dialogue = {
       | undefined;
 
     if (collectorConfig) {
-      const currentTier = world.economy.getTier();
-      const itemTiers = new Map(
-        configs.needs
-          .flatMap((need) => need.items)
-          .map((entry) => [entry.item, entry.tier]),
-      );
-
       const giveChoices = player.inventory
         .filter(
           (item) =>
             item &&
             item.quantity > 0 &&
-            collectorConfig.accepts.includes(item.name) &&
-            (itemTiers.get(item.name) ?? 1) <= currentTier,
+            collectorConfig.accepts.includes(item.name),
         )
         .map((item) => {
           const displayName =

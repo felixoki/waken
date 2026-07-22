@@ -129,7 +129,11 @@ export const player = {
       !configs.maps[prev.map].isPartyInstance &&
       data.map !== MapName.FOREST;
 
-    if (configs.maps[prev.map].isInstanced && !enteringSublevel)
+    if (
+      configs.maps[prev.map].isInstanced &&
+      !enteringSublevel &&
+      prev.map !== data.map
+    )
       main.time.delayedCall(0, () => {
         (main.scene.get(prev.map) as ForestScene).teardown();
       });

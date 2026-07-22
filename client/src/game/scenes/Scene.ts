@@ -44,19 +44,29 @@ export class Scene extends Phaser.Scene {
     this.light.setPipeline("Light2D");
     this.light.setScrollFactor(0);
 
-    this.cameras.main.setPostPipeline(PipelineName.AMBIENCE);
+    if (!this.cameras.main.hasPostPipeline)
+      this.cameras.main.setPostPipeline(PipelineName.AMBIENCE);
 
-    this.game.events.on(
-      Event.CAMERA_FOLLOW,
-      (data: { key: string; player: Player }) => {
-        if (data.key === this.scene.key) this.cameraManager.follow(data.player);
-      },
-    );
+    this.game.events.off(Event.CAMERA_FOLLOW, this._follow, this);
+    this.game.events.on(Event.CAMERA_FOLLOW, this._follow, this);
+  }
+
+  private _follow(data: { key: string; player: Player }): void {
+    if (data.key === this.scene.key) this.cameraManager.follow(data.player);
+  }
+
+  teardown(): void {
+    [...this.children.list].forEach((child) => child.destroy());
+
+    this.tileManager?.destroy();
+    this.tileManager = undefined!;
   }
 
   update(_time: number, delta: number): void {
+    if (!this.tileManager) return;
+
     const player = this.managers.players.player;
-    this.tileManager?.update(delta, player);
+    this.tileManager.update(delta, player);
     this.interfaceManager.update();
 
     const { width, height } = this.cameras.main;
@@ -64,7 +74,9 @@ export class Scene extends Phaser.Scene {
   }
 
   shutdown(): void {
+    this.game.events.off(Event.CAMERA_FOLLOW, this._follow, this);
     this.physicsManager.destroy();
+    this.cameraManager.destroy();
     this.tileManager?.destroy();
   }
 }
