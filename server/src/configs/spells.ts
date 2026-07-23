@@ -239,8 +239,8 @@ export const spells: Record<SpellName, SpellConfig> = {
       repeat: 0,
     },
     hitbox: {
-      width: 120,
-      height: 60,
+      width: 130,
+      height: 130,
     },
     metadata: {
       description: "Exhale a torrent of flame, scorching all before it.",

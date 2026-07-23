@@ -40,6 +40,7 @@ export class RoomGenerator {
     spawn?: { x: number; y: number };
     exit?: { x: number; y: number };
     descent?: { x: number; y: number };
+    descents?: { x: number; y: number }[];
     doors: DoorAnchor[];
   } {
     const { width, height } = this.config;

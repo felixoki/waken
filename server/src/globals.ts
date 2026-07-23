@@ -114,8 +114,8 @@ export const SFX_MAX_PAN = 0.6;
 /** Stats */
 export const MAX_HEALTH = 100;
 export const MAX_MANA = 100;
-export const REGEN_HEALTH_PER_SECOND = 1;
-export const REGEN_MANA_PER_SECOND = 2;
+export const REGEN_HEALTH_PER_SECOND = 2;
+export const REGEN_MANA_PER_SECOND = 3;
 export const REGEN_INTERVAL = 1000;
 
 export const MAX_STACK = 50;

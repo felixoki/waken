@@ -796,8 +796,12 @@ export class MainScene extends Phaser.Scene {
           handlers.ui.backdrop.hide(this, data.map);
         };
 
+        if (!data.tilemap) {
+          onReady();
+          return;
+        }
+
         if (scene.scene.isActive()) {
-          scene.teardown();
           scene.rebuild(data.tilemap);
           onReady();
           return;
@@ -879,7 +883,6 @@ export class MainScene extends Phaser.Scene {
         };
 
         if (scene.scene.isActive()) {
-          scene.teardown();
           scene.rebuild(data.tilemap);
           onReady();
           return;

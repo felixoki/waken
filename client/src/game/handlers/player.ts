@@ -131,6 +131,7 @@ export const player = {
 
     if (
       configs.maps[prev.map].isInstanced &&
+      configs.maps[prev.map].json === "" &&
       !enteringSublevel &&
       prev.map !== data.map
     )

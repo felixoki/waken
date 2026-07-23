@@ -16,10 +16,29 @@ export const villain: Partial<Record<EntityName, EntityDefinition>> = {
     components: [
       { name: ComponentName.ANIMATION },
       {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.SPELL_PAGE_DRAGON_FORM,
+              quantity: 1,
+              stackable: false,
+              chance: 1,
+            },
+            {
+              name: EntityName.VILLAGE_PORTAL,
+              quantity: 1,
+              stackable: false,
+              chance: 1,
+            },
+          ],
+        },
+      },
+      {
         name: ComponentName.BODY,
         config: {
-          width: 12,
-          height: 16,
+          width: 64,
+          height: 48,
           offsetX: 24,
           offsetY: 20,
           pushable: false,

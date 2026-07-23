@@ -14,6 +14,7 @@ import { configs } from "../configs/index.js";
 import { handlers } from ".";
 import { MAX_HEALTH } from "../globals.js";
 import { tryCatch } from "../utils/tryCatch.js";
+import { MapLoader } from "../loaders/Map.js";
 
 export const party = {
   lives: (id: string, world: World): boolean => {
@@ -92,7 +93,7 @@ export const party = {
         );
 
       data.status = PartyStatus.LOBBY;
-      world.authority.clear(map, data.id);
+      handlers.authority.release(io, world, map, data.id);
 
       io.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
       party.broadcast(socket, world);
@@ -211,37 +212,63 @@ export const party = {
     const level = levels[data.depth];
     if (!level) return false;
 
-    const seed = `${data.id}-${data.depth}-${Date.now()}`;
+    let spawn: { x: number; y: number };
+    let tilemap: unknown = null;
 
-    const { data: biome, error } = await tryCatch(
-      handlers.generation.start(level.biome, seed),
-    );
+    if (level.biome) {
+      const seed = `${data.id}-${data.depth}-${Date.now()}`;
 
-    if (error || !biome) {
-      console.error("Level generation failed:", error);
-      return false;
+      const { data: biome, error } = await tryCatch(
+        handlers.generation.start(level.biome, seed),
+      );
+
+      if (error || !biome) {
+        console.error("Level generation failed:", error);
+        return false;
+      }
+
+      spawn = biome.spawn;
+      tilemap = biome.tilemap;
+
+      biome.entities.forEach((biomeEntity) => {
+        const id = randomUUID();
+        const maxHealth =
+          configs.entities[biomeEntity.name]?.maxHealth ?? MAX_HEALTH;
+        const config: EntityConfig = {
+          id,
+          map: level.map,
+          name: biomeEntity.name,
+          x: biomeEntity.x,
+          y: biomeEntity.y,
+          health: maxHealth,
+          maxHealth,
+          createdAt: Date.now(),
+          isLocked: false,
+          loot: biomeEntity.loot,
+        };
+
+        world.entities.add(id, config);
+        world.chunks.registerEntity(id, config.map, config.x, config.y, data.id);
+      });
+    } else {
+      const config = configs.maps[level.map];
+      spawn = config.spawn;
+
+      const loader = new MapLoader();
+      const tiled = loader.load(config.json);
+      const entities = loader.parseEntities(level.map, tiled);
+
+      entities.forEach((entity) => {
+        world.entities.add(entity.id, entity);
+        world.chunks.registerEntity(
+          entity.id,
+          entity.map,
+          entity.x,
+          entity.y,
+          data.id,
+        );
+      });
     }
-
-    biome.entities.forEach((biomeEntity) => {
-      const id = randomUUID();
-      const maxHealth =
-        configs.entities[biomeEntity.name]?.maxHealth ?? MAX_HEALTH;
-      const config: EntityConfig = {
-        id,
-        map: level.map,
-        name: biomeEntity.name,
-        x: biomeEntity.x,
-        y: biomeEntity.y,
-        health: maxHealth,
-        maxHealth,
-        createdAt: Date.now(),
-        isLocked: false,
-        loot: biomeEntity.loot,
-      };
-
-      world.entities.add(id, config);
-      world.chunks.registerEntity(id, config.map, config.x, config.y, data.id);
-    });
 
 
     for (const id of data.members) {
@@ -264,8 +291,8 @@ export const party = {
 
       world.players.update(id, {
         map: level.map,
-        x: biome.spawn.x,
-        y: biome.spawn.y,
+        x: spawn.x,
+        y: spawn.y,
         isAuthority: false,
         ...(wasDead && {
           isDead: false,
@@ -282,8 +309,8 @@ export const party = {
         world,
         id,
         level.map,
-        biome.spawn.x,
-        biome.spawn.y,
+        spawn.x,
+        spawn.y,
         io,
         data.id,
       );
@@ -291,14 +318,13 @@ export const party = {
       if (wasDead)
         handlers.broadcast.room(null, io, `party:${data.id}`, Event.PLAYER_REVIVE, {
           id,
-          x: biome.spawn.x,
-          y: biome.spawn.y,
+          x: spawn.x,
+          y: spawn.y,
           health: member.maxHealth ?? MAX_HEALTH,
         });
     }
 
-    world.authority.set(level.map, data.members[0], data.id);
-    world.players.update(data.members[0], { isAuthority: true });
+    handlers.authority.assign(io, world, level.map, data.members[0], data.id);
 
     const players = data.members
       .map((id) => world.players.get(id))
@@ -306,8 +332,8 @@ export const party = {
 
     const payload = {
       map: level.map,
-      tilemap: biome.tilemap,
-      spawn: biome.spawn,
+      tilemap,
+      spawn,
       players,
     };
 
@@ -384,7 +410,7 @@ export const party = {
           world,
         );
 
-      world.authority.clear(prevMap, data.id);
+      handlers.authority.release(io, world, prevMap, data.id);
     }
 
     party.broadcast(socket, world);

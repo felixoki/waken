@@ -3,6 +3,48 @@ import { Event, MapName, PlayerConfig } from "../types";
 import { World } from "../World";
 
 export const authority = {
+  assign: (
+    io: Server,
+    world: World,
+    map: MapName,
+    playerId: string,
+    partyId?: string,
+  ) => {
+    const prevId = world.authority.get(map, partyId);
+    if (prevId === playerId) return;
+
+    const room = world.authority.room(map, partyId);
+
+    if (prevId) {
+      const prev = world.players.get(prevId);
+
+      if (prev) {
+        io.sockets.sockets.get(prev.socketId)?.leave(room);
+        world.players.update(prevId, { isAuthority: false });
+      }
+    }
+
+    world.authority.set(map, playerId, partyId);
+
+    const next = world.players.get(playerId);
+    if (!next) return;
+
+    world.players.update(playerId, { isAuthority: true });
+
+    const socket = io.sockets.sockets.get(next.socketId);
+    if (!socket) return;
+
+    socket.join(room);
+    socket.emit(Event.PLAYER_AUTHORITY, true);
+
+    const entities = world.chunks
+      .getActiveEntities(world.authority.key(map, partyId))
+      .map((id) => world.entities.get(id))
+      .filter(Boolean);
+
+    if (entities.length) socket.emit(Event.ENTITY_CREATE_ALL, entities);
+  },
+
   transfer: (
     io: Server,
     world: World,
@@ -11,17 +53,29 @@ export const authority = {
     candidates: PlayerConfig[],
     partyId?: string,
   ): string | undefined => {
-    const id = world.authority.transfer(map, fromId, candidates, partyId);
+    const next = world.authority.successor(map, fromId, candidates, partyId);
 
-    if (id) {
-      const player = world.players.get(id);
-      if (!player) return undefined;
-
-      world.players.update(id, { isAuthority: true });
-      const socket = io.sockets.sockets.get(player.socketId);
-      socket?.emit(Event.PLAYER_AUTHORITY, true);
+    if (next) {
+      authority.assign(io, world, map, next, partyId);
+      return next;
     }
 
-    return id;
+    authority.release(io, world, map, partyId);
+    return undefined;
+  },
+
+  release: (io: Server, world: World, map: MapName, partyId?: string) => {
+    const holderId = world.authority.get(map, partyId);
+
+    if (holderId) {
+      const holder = world.players.get(holderId);
+
+      if (holder)
+        io.sockets.sockets
+          .get(holder.socketId)
+          ?.leave(world.authority.room(map, partyId));
+    }
+
+    world.authority.clear(map, partyId);
   },
 };

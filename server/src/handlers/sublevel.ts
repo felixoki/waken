@@ -115,10 +115,8 @@ export const sublevel = {
 
     const size = world.sublevels.join(entranceId, player.id);
 
-    if (size === 1) {
-      world.authority.set(map, player.id, entranceId);
-      world.players.update(player.id, { isAuthority: true });
-    }
+    if (size === 1)
+      handlers.authority.assign(io, world, map, player.id, entranceId);
 
     const updated = world.players.get(player.id);
     const occupants = world.sublevels.occupants(entranceId);

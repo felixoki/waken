@@ -25,7 +25,12 @@ import {
 } from "../globals.js";
 
 export const player = {
-  create: async (socket: Socket, world: World, playerId?: string) => {
+  create: async (
+    socket: Socket,
+    io: Server,
+    world: World,
+    playerId?: string,
+  ) => {
     let player = world.players.getBySocketId(socket.id);
 
     if (!player) {
@@ -65,7 +70,7 @@ export const player = {
       world.players.add(player.id, player);
       socket.join(`map:${player.map}`);
 
-      if (isAuthority) world.authority.set(player.map, player.id);
+      if (isAuthority) handlers.authority.assign(io, world, player.map, player.id);
     }
 
     socket.emit(Event.PLAYER_CREATE_LOCAL, player);
@@ -245,7 +250,7 @@ export const player = {
       ...updates,
     });
 
-    if (isAuthority) world.authority.set(to, playerId, toPartyId);
+    if (isAuthority) handlers.authority.assign(io, world, to, playerId, toPartyId);
 
     socket.leave(`map:${from}`);
     socket.join(`map:${to}`);

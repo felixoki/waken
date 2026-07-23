@@ -1334,10 +1334,11 @@ export const maps: Record<MapName, MapConfig> = {
   },
   [MapName.ISLES]: {
     id: MapName.ISLES,
-    spawn: { x: 328, y: 448 },
+    spawn: { x: 262, y: 773 },
     json: "isles.json",
     isIndoor: false,
-    isInstanced: false,
+    isInstanced: true,
+    isPartyInstance: true,
     spritesheets: [
       ...player,
       ...villain,
@@ -1366,6 +1367,13 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "isles_clouds_animated",
         file: "isles_clouds_animated.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "isles_tree",
+        file: "isles_tree.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

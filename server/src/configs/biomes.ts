@@ -11,9 +11,10 @@ import {
 } from "../types/generation";
 import { groundStamps, grassStamps, flowerStamps } from "./details";
 
-export const levels = [
+export const levels: { depth: number; map: MapName; biome?: BiomeName }[] = [
   { depth: 0, map: MapName.FOREST, biome: BiomeName.FOREST },
   { depth: 1, map: MapName.DUNGEON, biome: BiomeName.DUNGEON },
+  { depth: 2, map: MapName.ISLES },
 ];
 
 export const forest: BiomeConfig = {

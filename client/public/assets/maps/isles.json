@@ -701,7 +701,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":2,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -735,8 +735,8 @@
                              "type":"",
                              "visible":true,
                              "width":10,
-                             "x":-0.0370222133279956,
-                             "y":0.00465288172903744
+                             "x":-0.0370222,
+                             "y":0.00465288
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -799,8 +799,8 @@
                              "type":"",
                              "visible":true,
                              "width":16,
-                             "x":0.0048028817290362,
-                             "y":2.99989993996398
+                             "x":0.00480288,
+                             "y":2.9999
                             }, 
                             {
                              "height":6,
@@ -815,7 +815,7 @@
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":7.00260156093656,
+                             "width":7.0026,
                              "x":9,
                              "y":10
                             }],
@@ -848,8 +848,8 @@
                              "type":"",
                              "visible":true,
                              "width":7,
-                             "x":0.0221132679607776,
-                             "y":0.0366720932559534
+                             "x":0.0221133,
+                             "y":0.0366721
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -2571,6 +2571,19 @@
                         }],
                  "id":43
                 }],
+         "tilewidth":16
+        }, 
+        {
+         "columns":60,
+         "firstgid":2834,
+         "image":"..\/sprites\/isles_tree.png",
+         "imageheight":160,
+         "imagewidth":960,
+         "margin":0,
+         "name":"isles_tree",
+         "spacing":0,
+         "tilecount":600,
+         "tileheight":16,
          "tilewidth":16
         }],
  "tilewidth":16,

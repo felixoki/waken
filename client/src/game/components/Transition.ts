@@ -8,6 +8,7 @@ export class TransitionComponent extends Component {
   private zone?: Phaser.GameObjects.Zone;
   private collider?: Phaser.Physics.Arcade.Collider;
   private fired = false;
+  private armed = false;
 
   public name = ComponentName.TRANSITION;
 
@@ -40,6 +41,8 @@ export class TransitionComponent extends Component {
       undefined,
       this,
     );
+
+    scene.events.on(Phaser.Scenes.Events.UPDATE, this._arm, this);
   }
 
   update(): void {
@@ -52,12 +55,38 @@ export class TransitionComponent extends Component {
   }
 
   detach(): void {
+    this.entity.scene.events.off(Phaser.Scenes.Events.UPDATE, this._arm, this);
     this.zone?.destroy();
     this.collider?.destroy();
   }
 
+  private _arm(): void {
+    if (this.armed || !this.zone) return;
+
+    const player = this.entity.scene.managers.players.player;
+    if (!player?.body) return;
+
+    const a = this.zone.body as Phaser.Physics.Arcade.Body;
+    const b = player.body as Phaser.Physics.Arcade.Body;
+
+    const clear =
+      a.right <= b.left ||
+      a.left >= b.right ||
+      a.bottom <= b.top ||
+      a.top >= b.bottom;
+
+    if (clear) {
+      this.armed = true;
+      this.entity.scene.events.off(
+        Phaser.Scenes.Events.UPDATE,
+        this._arm,
+        this,
+      );
+    }
+  }
+
   private _enter(_zone: any, player: any): void {
-    if (this.fired) return;
+    if (this.fired || !this.armed) return;
 
     const local = player as Entity;
     if (local !== this.entity.scene.managers.players.player) return;

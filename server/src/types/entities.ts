@@ -254,6 +254,7 @@ export enum EntityName {
   SPELL_PAGE_BUTTERFLY_EFFIGY = "spell_page_butterfly_effigy",
   SPELL_PAGE_LIGHTNING_STRIKE = "spell_page_lightning_strike",
   SPELL_PAGE_ABSORB_LIFE = "spell_page_absorb_life",
+  SPELL_PAGE_DRAGON_FORM = "spell_page_dragon_form",
   VENISON_MEAT = "venison_meat",
   VIAL = "vial",
   POTION1 = "potion1",
@@ -266,6 +267,7 @@ export enum EntityName {
   WELL = "well",
   WINDMILL = "windmill",
   WOOD = "wood",
+  VILLAGE_PORTAL = "village_portal",
   VILLAIN = "villain",
 }
 

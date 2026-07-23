@@ -652,23 +652,26 @@
 #### 22.7.2026
 
 - Destroy detached entities on scene transitions ✅
+- Create centralized authority room ✅
+- Ambience is broken when returning to forest ✅
+- Add damagable to villain and transition on defeat ✅
+
+#### 23.7.2026
+
+- Add isles full circle ✅
 
 ### In progress
 
-- Add damagable to villain and transition on defeat
 - Add dungeon entrance tiles
 - Add voices ambience sound
-- Add dungeon ambience
 
 ### Bugs
 
 🔴 High
 
-- Ambience is broken when returning to forest
 - Projectiles don't respect collisions
 - Hotbar doesn't reset after transition in dragon form
 - Ambience sound queue doesn't reset
-- Picked up items in foreign chunks still spawn
 
 🔵 Low
 

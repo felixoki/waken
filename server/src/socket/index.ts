@@ -31,7 +31,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     {
       event: Event.PLAYER_CREATE,
       handler: (playerId?: string) =>
-        handlers.player.create(socket, world, playerId),
+        handlers.player.create(socket, io, world, playerId),
     },
     {
       event: "disconnect",

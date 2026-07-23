@@ -7,6 +7,50 @@ import {
 } from "../../types";
 
 export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
+  [EntityName.VILLAGE_PORTAL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "isles_tree",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 1, end: 10 },
+            { row: 2, start: 1, end: 10 },
+            { row: 3, start: 1, end: 10 },
+            { row: 4, start: 1, end: 10 },
+            { row: 5, start: 1, end: 10 },
+            { row: 6, start: 1, end: 10 },
+            { row: 7, start: 1, end: 10 },
+            { row: 8, start: 1, end: 10 },
+            { row: 9, start: 1, end: 10 },
+            { row: 10, start: 1, end: 10 },
+          ],
+          frames: 6,
+          direction: "horizontal",
+          frameRate: 8,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 434,
+          y: 608,
+          width: 32,
+          height: 32,
+          offsetX: 0,
+          offsetY: 0,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.HOUSE1_EXIT]: {
     facing: Direction.DOWN,
     moving: [],

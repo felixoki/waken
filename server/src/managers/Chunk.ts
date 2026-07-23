@@ -157,4 +157,12 @@ export class ChunkManager {
 
     return result;
   }
+
+  getActiveEntities(prefix: string): string[] {
+    const keys = [...this.chunkRefCount.keys()].filter((key) =>
+      key.startsWith(`${prefix}:`),
+    );
+
+    return this.getEntitiesInChunk(keys);
+  }
 }

@@ -81,4 +81,9 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Absorb life",
     "A page steeped in dark matter that teaches one to drain the life of others.",
   ),
+  [EntityName.SPELL_PAGE_DRAGON_FORM]: page(
+    SpellName.DRAGON_FORM,
+    "Spell page: Dragon form",
+    "A scorched page pulsing with the will of a greater river dragon.",
+  ),
 };
