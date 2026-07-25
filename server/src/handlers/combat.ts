@@ -41,16 +41,131 @@ export const combat = {
     return { x, y };
   },
 
+  reflect: (
+    target: PlayerConfig | EntityConfig,
+    attacker: PlayerConfig | EntityConfig,
+    damage: number,
+    socket: Socket,
+    io: Server,
+    world: World,
+  ) => {
+    const now = Date.now();
+
+    const ward = (target.effects ?? []).find(
+      (e) =>
+        e.expiresAt > now && configs.effects[e.name]?.reflect !== undefined,
+    );
+
+    if (!ward) return;
+
+    const amount = Math.floor(damage * configs.effects[ward.name]!.reflect!);
+
+    if (amount <= 0) return;
+
+    const isEntity = !!world.entities.get(attacker.id);
+    const store = isEntity ? world.entities : world.players;
+    const health = attacker.health - amount;
+
+    const key = isEntity
+      ? world.chunks.getChunkByEntity(attacker.id)
+      : (() => {
+          const map = (attacker as PlayerConfig).map;
+          const party = world.parties.getByPlayerId(attacker.id);
+          const partyId = configs.maps[map].isInstanced ? party?.id : undefined;
+          return world.chunks.toChunkKey(map, attacker.x, attacker.y, partyId);
+        })();
+
+    if (health <= 0) {
+      if (isEntity)
+        combat.kill.entity(attacker as EntityConfig, socket, io, world);
+      else
+        combat.kill.player(
+          attacker as PlayerConfig,
+          target.id,
+          { x: 0, y: 0 },
+          io,
+          world,
+        );
+
+      return;
+    }
+
+    store.update(attacker.id, { health });
+
+    const event = {
+      id: attacker.id,
+      health,
+      knockback: { x: 0, y: 0 },
+      attackerId: target.id,
+      isMiss: false,
+      isCritical: false,
+      reflected: true,
+    };
+
+    const emit = isEntity ? Event.ENTITY_HURT : Event.PLAYER_HURT;
+
+    if (key) socket.to(`chunk:${key}`).emit(emit, event);
+    socket.emit(emit, event);
+  },
+
+  absorb: (
+    target: PlayerConfig | EntityConfig,
+    damage: number,
+    socket: Socket,
+    _io: Server,
+    world: World,
+  ): number => {
+    if (damage <= 0) return damage;
+
+    const now = Date.now();
+    const shield = (target.effects ?? []).find(
+      (e) => e.expiresAt > now && e.absorb !== undefined && e.absorb > 0,
+    );
+
+    if (!shield || shield.absorb === undefined) return damage;
+
+    const soaked = Math.min(damage, shield.absorb);
+    shield.absorb -= soaked;
+
+    const isEntity = !!world.entities.get(target.id);
+    const store = isEntity ? world.entities : world.players;
+
+    if (shield.absorb <= 0) {
+      const remaining = (target.effects ?? []).filter((e) => e !== shield);
+      store.update(target.id, { effects: remaining });
+
+      const key = isEntity
+        ? world.chunks.getChunkByEntity(target.id)
+        : (() => {
+            const map = (target as PlayerConfig).map;
+            const party = world.parties.getByPlayerId(target.id);
+            const partyId = configs.maps[map].isInstanced
+              ? party?.id
+              : undefined;
+            return world.chunks.toChunkKey(map, target.x, target.y, partyId);
+          })();
+
+      const event = { id: target.id, name: shield.name };
+      if (key) socket.to(`chunk:${key}`).emit(Event.EFFECT_REMOVE, event);
+      socket.emit(Event.EFFECT_REMOVE, event);
+    } else store.update(target.id, { effects: target.effects });
+
+    return damage - soaked;
+  },
+
   calculateDamage: (
     target: PlayerConfig | EntityConfig,
     config: CombatConfig,
     isEntity: boolean,
+    mods?: { damage?: number; crit?: number; defense?: number },
   ): { damage: number; isMiss: boolean; isCritical: boolean } => {
     if (Math.random() < MISS_CHANCE)
       return { damage: 0, isMiss: true, isCritical: false };
 
     let damage = config.damage.amount;
     const damageType: DamageType = config.damage.type;
+
+    damage *= mods?.damage ?? 1;
 
     if (isEntity) {
       const definition = configs.entities[(target as EntityConfig).name];
@@ -73,7 +188,9 @@ export const combat = {
     }
 
     const isCritical = Math.random() < CRIT_CHANCE;
-    if (isCritical) damage *= CRIT_MULTIPLIER;
+    if (isCritical) damage *= mods?.crit ?? CRIT_MULTIPLIER;
+
+    damage *= mods?.defense ?? 1;
 
     return { damage: Math.floor(damage), isMiss: false, isCritical };
   },
@@ -207,18 +324,44 @@ export const combat = {
       return;
     }
 
+    const attackerStats = players.get(data.attackerId)
+      ? handlers.player.stats(players.get(data.attackerId)!)
+      : undefined;
+    const targetStats = player ? handlers.player.stats(player) : undefined;
+
     const { damage, isMiss, isCritical } = combat.calculateDamage(
       target,
       config,
       !!entity,
+      {
+        damage: attackerStats?.multipliers.damage,
+        crit: attackerStats?.multipliers.crit,
+        defense: targetStats?.multipliers.defense,
+      },
     );
-    const health = target.health - damage;
+
+    const zoneMultiplier = world.zones
+      .at(target.map, target.x, target.y, Date.now())
+      .reduce((m, zone) => {
+        const mult =
+          configs.zones[zone.type].interactions?.[config.damage.type];
+        return mult !== undefined ? m * mult : m;
+      }, 1);
+
+    const amplified =
+      zoneMultiplier === 1 ? damage : Math.floor(damage * zoneMultiplier);
+
+    const net = isMiss
+      ? amplified
+      : combat.absorb(target, amplified, socket, io, world);
+
+    const health = target.health - net;
 
     if (!isMiss && "lifesteal" in config && config.lifesteal) {
       const caster = players.get(data.attackerId);
 
       if (caster && !caster.isDead) {
-        const drained = Math.min(damage, target.health) * config.lifesteal;
+        const drained = Math.min(net, target.health) * config.lifesteal;
         const healed = Math.min(
           caster.health + drained,
           caster.maxHealth || MAX_HEALTH,
@@ -233,6 +376,9 @@ export const combat = {
         }
       }
     }
+
+    if (!isMiss && net > 0)
+      combat.reflect(target, attacker, net, socket, io, world);
 
     if (player && health <= 0) {
       combat.kill.player(
@@ -426,6 +572,37 @@ export const combat = {
               knockback: { x: 0, y: 0 },
               attackerId: effect.ownerId || id,
             });
+          }
+
+          if (
+            !isEntity &&
+            definition.interval &&
+            definition.restore?.health &&
+            effect.lastTickAt !== undefined &&
+            now - effect.lastTickAt >= definition.interval
+          ) {
+            const player = target as PlayerConfig;
+            const max = player.maxHealth || MAX_HEALTH;
+            const newHealth = Math.min(
+              max,
+              player.health + definition.restore.health,
+            );
+            effect.lastTickAt = now;
+
+            if (newHealth !== player.health) {
+              store.update(id, { health: newHealth });
+
+              handlers.broadcast.room(
+                null,
+                io,
+                player.socketId,
+                Event.PLAYER_HEALTH,
+                newHealth,
+              );
+              io.to(`map:${player.map}`)
+                .except(player.socketId)
+                .emit(Event.PLAYER_HEALTH_SYNC, { id, health: newHealth });
+            }
           }
 
           remaining.push(effect);

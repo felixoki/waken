@@ -18,7 +18,7 @@ export class Rolling implements State {
     );
     anim?.play(this.name, entity.facing);
 
-    handlers.move.getVelocity(entity, SPEED_ROLLING);
+    handlers.move.getVelocity(entity, SPEED_ROLLING * entity.speed);
 
     this.timer = entity.scene.time.delayedCall(DURATION_ROLLING, () => {
       this.exit(entity);

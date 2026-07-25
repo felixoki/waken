@@ -1,5 +1,14 @@
 import { Server, Socket } from "socket.io";
-import { EntityName, Event, SpellName } from "../types/index.js";
+import {
+  Effect,
+  EffectName,
+  EntityName,
+  Event,
+  PlayerConfig,
+  Buff,
+  SpellName,
+  Target,
+} from "../types/index.js";
 import { World } from "../World.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
@@ -41,8 +50,83 @@ export const spell = {
 
     socket.emit(Event.PLAYER_MANA, mana);
 
+    if (config.buff) spell.buff(player, config.buff, io, world);
+
+    if (config.zone)
+      world.zones.add({
+        type: config.zone.type,
+        map: player.map,
+        x: player.x,
+        y: player.y,
+        radius: config.zone.radius,
+        expiresAt: Date.now() + config.zone.duration,
+        casterId: player.id,
+      });
+
     if (data.name === SpellName.REVIVE && data.targetId)
       spell.revive(data.targetId, socket, io, world);
+  },
+
+  buff: (
+    caster: PlayerConfig,
+    buff: Buff,
+    io: Server,
+    world: World,
+  ) => {
+    const recipients: PlayerConfig[] =
+      buff.target === Target.PARTY
+        ? (world.parties.getByPlayerId(caster.id)?.members ?? [caster.id])
+            .map((id) => world.players.get(id))
+            .filter((p): p is PlayerConfig => !!p)
+        : [caster];
+
+    const now = Date.now();
+
+    for (const recipient of recipients)
+      spell.apply(recipient, buff.effects, now, io, world);
+  },
+
+  apply: (
+    recipient: PlayerConfig,
+    effects: [EffectName, number, number?][],
+    now: number,
+    io: Server,
+    world: World,
+  ) => {
+    const existing: Effect[] = recipient.effects ?? [];
+
+    const party = world.parties.getByPlayerId(recipient.id);
+    const partyId = configs.maps[recipient.map].isInstanced
+      ? party?.id
+      : undefined;
+    const key = world.chunks.toChunkKey(
+      recipient.map,
+      recipient.x,
+      recipient.y,
+      partyId,
+    );
+    const room = key ? `chunk:${key}` : recipient.socketId;
+
+    for (const [name, duration, chance] of effects) {
+      if (chance !== undefined && Math.random() > chance) continue;
+
+      const effect: Effect = {
+        name,
+        expiresAt: now + duration,
+        lastTickAt: now,
+        ownerId: recipient.id,
+        absorb: configs.effects[name].absorb,
+      };
+      existing.push(effect);
+
+      handlers.broadcast.room(null, io, room, Event.EFFECT_APPLY, {
+        id: recipient.id,
+        effect,
+      });
+    }
+
+    world.players.update(recipient.id, { effects: existing });
+    world.affected.add(recipient.id);
   },
 
   revive: (targetId: string, socket: Socket, io: Server, world: World) => {

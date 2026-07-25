@@ -267,6 +267,48 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "chicken-idle",
+    file: "chicken_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "chicken-walking",
+    file: "chicken_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "rooster-idle",
+    file: "rooster_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "rooster-walking",
+    file: "rooster_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "chick-idle",
+    file: "chick_idle_with_shadow.png",
+    frameWidth: 16,
+    frameHeight: 16,
+  },
+  {
+    key: "chick-walking",
+    file: "chick_walking_with_shadow.png",
+    frameWidth: 16,
+    frameHeight: 16,
+  },
+  {
+    key: "egg-idle",
+    file: "egg_idle_with_shadow.png",
+    frameWidth: 16,
+    frameHeight: 16,
+  },
+  {
     key: "grouse-idle",
     file: "grouse_idle_with_shadow.png",
     frameWidth: 32,

@@ -9,7 +9,6 @@ import {
 import { World } from "../World";
 import { handlers } from ".";
 import { configs } from "../configs/index.js";
-import { MAX_MANA } from "../globals.js";
 
 export const item = {
   collect: (data: Item, socket: Socket, io: Server, world: World) => {
@@ -65,7 +64,7 @@ export const item = {
     }
 
     if (restore.mana) {
-      const mana = Math.min(player.mana + restore.mana, MAX_MANA);
+      const mana = Math.min(player.mana + restore.mana, player.maxMana);
       world.players.update(player.id, { mana });
       socket.emit(Event.PLAYER_MANA, mana);
     }

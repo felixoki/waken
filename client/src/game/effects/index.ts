@@ -5,3 +5,7 @@ export { IlluminatedEffect } from "./Illuminated";
 export { PoisonedEffect } from "./Poisoned";
 export { RegainEffect } from "./Regain";
 export { WetEffect } from "./Wet";
+export { MomentumEffect } from "./Momentum";
+export { ReflectEffect } from "./Reflect";
+export { ShieldEffect } from "./Shield";
+export { GreaseEffect } from "./Grease";

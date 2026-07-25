@@ -480,6 +480,141 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
   },
+  [EntityName.CHICKEN]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 20,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.TAMABLE,
+        config: { entity: EntityName.CHICKEN },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.CARROT, EntityName.CABBAGE],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.LAYABLE,
+        config: { egg: EntityName.EGG, cooldown: 30000, range: 128 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 8,
+          offsetX: 10,
+          offsetY: 16,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 48, idle: { range: [8000, 16000] } },
+      },
+    ],
+  },
+  [EntityName.ROOSTER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 25,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.TAMABLE,
+        config: { entity: EntityName.ROOSTER },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.CARROT, EntityName.CABBAGE],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 8,
+          offsetX: 10,
+          offsetY: 16,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 48, idle: { range: [8000, 16000] } },
+      },
+    ],
+  },
+  [EntityName.CHICK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 8,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.CHICKEN, duration: 120000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 6,
+          height: 5,
+          offsetX: 5,
+          offsetY: 9,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 32, idle: { range: [6000, 12000] } },
+      },
+    ],
+  },
+  [EntityName.EGG]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 1,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.CHICK, duration: 60000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 6,
+          height: 5,
+          offsetX: 5,
+          offsetY: 9,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [],
+  },
   [EntityName.RAT]: {
     facing: Direction.DOWN,
     moving: [],

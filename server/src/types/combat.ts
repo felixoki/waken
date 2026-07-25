@@ -17,6 +17,7 @@ export interface Hurt {
   attackerId: string;
   isMiss?: boolean;
   isCritical?: boolean;
+  reflected?: boolean;
 }
 
 export interface Spot {

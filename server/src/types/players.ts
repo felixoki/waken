@@ -15,6 +15,7 @@ export interface PlayerConfig {
   health: number;
   maxHealth: number;
   mana: number;
+  maxMana: number;
   isAuthority: boolean;
   isDead: boolean;
   locked?: string;

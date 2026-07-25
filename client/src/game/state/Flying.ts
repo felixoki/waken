@@ -54,7 +54,7 @@ export class Flying implements State {
     );
     anim?.play(this.name, entity.facing);
 
-    handlers.move.getVelocity(entity, SPEED_FLYING);
+    handlers.move.getVelocity(entity, SPEED_FLYING * entity.speed);
   }
 
   exit(entity: Entity): void {

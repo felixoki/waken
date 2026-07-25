@@ -87,6 +87,9 @@ export class Player extends Entity {
 
     if (!input) return;
 
+    if (remoteInput && remoteInput.speed !== undefined)
+      this.speed = remoteInput.speed;
+
     if (this.isLocked) {
       if (input.moving) this.moving = input.moving;
       if (input.facing) this.setFacing(input.facing);
@@ -195,6 +198,7 @@ export class Player extends Entity {
       state: this.state,
       equipped: equipped,
       active: hotbar?.getActive() ?? 0,
+      speed: this.speed,
     };
   }
 

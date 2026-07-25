@@ -1,4 +1,9 @@
-import { ComponentName, SpellName, StateName } from "@server/types";
+import {
+  ComponentName,
+  SpellConfig,
+  SpellName,
+  StateName,
+} from "@server/types";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
@@ -14,6 +19,8 @@ export class Casting implements State {
   } | null = null;
   private step: number = 0;
   private charging: boolean = false;
+  private channeling: boolean = false;
+  private config: SpellConfig | null = null;
   private hidden: boolean = false;
 
   public name: StateName = StateName.CASTING;
@@ -55,10 +62,27 @@ export class Casting implements State {
       return;
     }
 
+    if (config.channel) {
+      this.channeling = true;
+      this.config = config;
+      handlers.beam.start(entity, config);
+      return;
+    }
+
     this._executeSpell(entity, config);
   }
 
   update(entity: Entity): void {
+    if (this.channeling) {
+      if (!entity.pointerdown) return this.exit(entity);
+
+      const player = entity.scene.managers.players.get(entity.id);
+      if (player?.isControllable && player.mana < (this.config?.mana ?? 0))
+        this.exit(entity);
+
+      return;
+    }
+
     if (!this.charging) return;
 
     if (!entity.pointerdown) this._releaseCharge(entity);
@@ -170,6 +194,12 @@ export class Casting implements State {
     if (this.charging) {
       handlers.charge.cleanup(entity);
       this.charging = false;
+    }
+
+    if (this.channeling) {
+      handlers.beam.stop(entity);
+      this.channeling = false;
+      this.config = null;
     }
 
     entity.isLocked = false;

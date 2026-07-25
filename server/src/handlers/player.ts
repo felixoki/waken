@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import {
   Direction,
   Event,
+  Modifier,
   Slot,
   Input,
   MapName,
@@ -19,6 +20,7 @@ import { load } from "../db/load.js";
 import {
   MAX_HEALTH,
   MAX_MANA,
+  CRIT_MULTIPLIER,
   REGEN_HEALTH_PER_SECOND,
   REGEN_INTERVAL,
   REGEN_MANA_PER_SECOND,
@@ -55,12 +57,14 @@ export const player = {
         health: saved?.health || MAX_HEALTH,
         maxHealth: MAX_HEALTH,
         mana: saved?.mana || 100,
+        maxMana: MAX_MANA,
         isAuthority,
         isDead: false,
         spells: (saved?.data?.spells as SpellName[]) || [
           SpellName.SHARD,
           SpellName.SLASH,
           SpellName.REVIVE,
+          SpellName.HYPERBEAM,
         ],
         inventory: saved?.data?.inventory ?? [...new Array(20).fill(null)],
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [...new Array(8).fill(null)],
@@ -326,6 +330,54 @@ export const player = {
     }
   },
 
+  stats: (player: PlayerConfig) => {
+    const stats = {
+      multipliers: { damage: 1, crit: CRIT_MULTIPLIER, defense: 1, speed: 1 },
+      regen: { health: REGEN_HEALTH_PER_SECOND, mana: REGEN_MANA_PER_SECOND },
+      max: { health: MAX_HEALTH, mana: MAX_MANA },
+    };
+
+    const apply = (modifier: Modifier | null | undefined) => {
+      if (!modifier) return;
+
+      const { multipliers, regen, max } = modifier;
+
+      if (multipliers) {
+        if (multipliers.damage) stats.multipliers.damage *= multipliers.damage;
+        if (multipliers.crit) stats.multipliers.crit *= multipliers.crit;
+        if (multipliers.defense)
+          stats.multipliers.defense *= multipliers.defense;
+        if (multipliers.speed) stats.multipliers.speed *= multipliers.speed;
+      }
+
+      if (regen) {
+        if (regen.health)
+          stats.regen.health = Math.max(stats.regen.health, regen.health);
+        if (regen.mana)
+          stats.regen.mana = Math.max(stats.regen.mana, regen.mana);
+      }
+
+      if (max) {
+        if (max.health)
+          stats.max.health = Math.max(stats.max.health, max.health);
+        if (max.mana) stats.max.mana = Math.max(stats.max.mana, max.mana);
+      }
+    };
+
+    for (const slot of player.inventory)
+      apply(slot && configs.entities[slot.name]?.modifier);
+
+    if (player.effects) {
+      const now = Date.now();
+
+      for (const effect of player.effects)
+        if (effect.expiresAt > now)
+          apply(configs.effects[effect.name]?.modifier);
+    }
+
+    return stats;
+  },
+
   regen: (delta: number, world: World) => {
     world.players.regen += delta;
     if (world.players.regen < REGEN_INTERVAL) return;
@@ -334,11 +386,27 @@ export const player = {
     for (const player of world.players.all) {
       if (player.isDead) continue;
 
+      const stats = handlers.player.stats(player);
+
+      if (stats.max.health !== player.maxHealth) {
+        world.players.update(player.id, { maxHealth: stats.max.health });
+        world.server
+          .to(player.socketId)
+          .emit(Event.PLAYER_MAX_HEALTH, stats.max.health);
+      }
+
+      if (stats.max.mana !== player.maxMana) {
+        world.players.update(player.id, { maxMana: stats.max.mana });
+        world.server
+          .to(player.socketId)
+          .emit(Event.PLAYER_MAX_MANA, stats.max.mana);
+      }
+
       const health = Math.min(
-        player.health + REGEN_HEALTH_PER_SECOND,
-        player.maxHealth || MAX_HEALTH,
+        player.health + stats.regen.health,
+        stats.max.health,
       );
-      const mana = Math.min(player.mana + REGEN_MANA_PER_SECOND, MAX_MANA);
+      const mana = Math.min(player.mana + stats.regen.mana, stats.max.mana);
 
       if (health !== player.health) {
         world.players.update(player.id, { health });

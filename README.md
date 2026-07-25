@@ -145,6 +145,38 @@ classDiagram
   BehaviorQueue ..> StateResolver : AI input
 ```
 
+### Authority
+
+Every client runs the full simulation, but only one decides what non-player entities do. The first player to join a world becomes the **host** and holds authority: their client generates AI input, resolves combat hits, and keeps the broad view of active chunks. Everyone else is an **observer**. They still render and physically simulate those entities, but they don't think for them. Instead they receive the host's entity input over the network and replay it, so an orc lunges at the same moment on every screen. If the host disconnects, authority transfers to another player automatically.
+
+Players are the exception: each client always drives its own player and broadcasts that input to the rest. Nobody has authority over your character but you.
+
+```mermaid
+graph TD
+  subgraph Host["Host client"]
+    HP["Own player → input"]
+    HE["Entities → AI input"]
+  end
+
+  subgraph Obs["Observer client"]
+    OP["Own player → input"]
+    OE["Entities → replay host input"]
+  end
+
+  Server["World server"]
+
+  HP -- "player:input" --> Server
+  OP -- "player:input" --> Server
+  HE -- "entity:input" --> Server
+  Server -- "broadcast player input" --> OP
+  Server -- "broadcast player input" --> HP
+  Server -- "entity:input" --> OE
+```
+
+### Chunks
+
+The world is diced into fixed-size **chunks**, and each chunk is a socket room. A client joins the `chunk:key` room for every chunk near its player and leaves it when the player moves away, so entity events only reach the clients who can actually see them. The host additionally tracks the full set of active chunks across the world, giving authority a god view for driving entities that no single observer is close enough to receive. When a chunk goes unused (no player nearby), it deactivates and its **stale entities** are cleaned up on the clients that were subscribed, so observers don't keep simulating orcs in a region nobody occupies.
+
 ### Handlers
 
 Handlers are stateless plain objects grouping pure functions by domain (`combat`, `move`, `state`, `player`, etc.). No classes, no instantiation, just `handlers.combat.resolve()`. Both client and server export a single `handlers` object; each handler operates on data passed in and calls sibling handlers as needed. This keeps game logic flat, composable, and free of hidden state.

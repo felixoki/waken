@@ -88,6 +88,7 @@ export class PlayerManager {
 
     player.map = config.map;
     player.maxHealth = config.maxHealth;
+    player.maxMana = config.maxMana;
 
     scene.physicsManager.groups.players.add(player);
 

@@ -170,11 +170,17 @@ export class MainScene extends Phaser.Scene {
       EventBus.emit(Event.PLAYER_HEALTH, player.health);
       EventBus.emit(Event.PLAYER_MAX_HEALTH, player.maxHealth);
       EventBus.emit(Event.PLAYER_MANA, player.mana);
+      EventBus.emit(Event.PLAYER_MAX_MANA, player.maxMana);
 
       const inventory = player.getComponent<InventoryComponent>(
         ComponentName.INVENTORY,
       );
       if (inventory && data.inventory?.length) inventory.set(data.inventory);
+      if (data.inventory)
+        player.speed = handlers.move.speed(
+          data.inventory,
+          data.effects?.map((effect) => effect.name),
+        );
 
       const hotbar = player.getComponent<HotbarComponent>(ComponentName.HOTBAR);
       if (hotbar && data.hotbar?.length) hotbar.setSlots(data.hotbar);
@@ -215,6 +221,8 @@ export class MainScene extends Phaser.Scene {
 
       handlers.combat.hurt(player, data.health);
       handlers.combat.knockback(player, data.knockback);
+
+      if (data.reflected) handlers.combat.reflect(player, data.attackerId);
 
       if (player === local) EventBus.emit(Event.PLAYER_HEALTH, player.health);
     });
@@ -364,6 +372,16 @@ export class MainScene extends Phaser.Scene {
     );
 
     this.managers.socket.on(
+      Event.ENTITY_LAY,
+      (data: { id: string; bredAt: number }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (!entity) return;
+
+        entity.tame.bredAt = data.bredAt;
+      },
+    );
+
+    this.managers.socket.on(
       Event.ENTITY_CAPTURE,
       (data: { id: string; x: number; y: number }) => {
         const entity = this.managers.entities.entities.get(data.id);
@@ -405,6 +423,8 @@ export class MainScene extends Phaser.Scene {
       handlers.behavior.react(entity, data.attackerId);
       handlers.combat.hurt(entity, data.health);
       handlers.combat.knockback(entity, data.knockback);
+
+      if (data.reflected) handlers.combat.reflect(entity, data.attackerId);
     });
 
     this.managers.socket.on(
@@ -423,8 +443,18 @@ export class MainScene extends Phaser.Scene {
           EffectFactory.create(data.effect.name as EffectName, target),
         );
 
-        if (this.managers.players.player?.id === data.id)
+        if (this.managers.players.player?.id === data.id) {
+          const inventory = target.getComponent<InventoryComponent>(
+            ComponentName.INVENTORY,
+          );
+          if (inventory)
+            target.speed = handlers.move.speed(
+              inventory.get(),
+              target.effects.keys(),
+            );
+
           EventBus.emit(Event.EFFECT_APPLY, data.effect);
+        }
       },
     );
 
@@ -442,8 +472,18 @@ export class MainScene extends Phaser.Scene {
 
         target.removeEffect(data.name);
 
-        if (this.managers.players.player?.id === data.id)
+        if (this.managers.players.player?.id === data.id) {
+          const inventory = target.getComponent<InventoryComponent>(
+            ComponentName.INVENTORY,
+          );
+          if (inventory)
+            target.speed = handlers.move.speed(
+              inventory.get(),
+              target.effects.keys(),
+            );
+
           EventBus.emit(Event.EFFECT_REMOVE, data.name);
+        }
       },
     );
 
@@ -536,6 +576,10 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.ENTITY_MATURE, data);
     });
 
+    this.game.events.on(Event.ENTITY_LAY, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_LAY, data);
+    });
+
     this.game.events.on(Event.ENTITY_WITHER, (data: { id: string }) => {
       this.managers.socket.emit(Event.ENTITY_WITHER, data);
     });
@@ -604,6 +648,7 @@ export class MainScene extends Phaser.Scene {
         ComponentName.INVENTORY,
       );
       inventory?.set(data);
+      player.speed = handlers.move.speed(data, player.effects.keys());
     });
 
     this.managers.socket.on(Event.HOTBAR_SYNC, (data: (Slot | null)[]) => {
@@ -958,12 +1003,28 @@ export class MainScene extends Phaser.Scene {
       EventBus.emit(Event.PLAYER_HEALTH, health);
     });
 
+    this.managers.socket.on(Event.PLAYER_MAX_HEALTH, (maxHealth: number) => {
+      const player = this.managers.players.player;
+      if (!player) return;
+
+      player.maxHealth = maxHealth;
+      EventBus.emit(Event.PLAYER_MAX_HEALTH, maxHealth);
+    });
+
     this.managers.socket.on(Event.PLAYER_MANA, (mana: number) => {
       const player = this.managers.players.player;
       if (!player) return;
 
       player.mana = mana;
       EventBus.emit(Event.PLAYER_MANA, mana);
+    });
+
+    this.managers.socket.on(Event.PLAYER_MAX_MANA, (maxMana: number) => {
+      const player = this.managers.players.player;
+      if (!player) return;
+
+      player.maxMana = maxMana;
+      EventBus.emit(Event.PLAYER_MAX_MANA, maxMana);
     });
 
     this.managers.socket.on(Event.PLAYER_INVENTORY_WIPE, () => {

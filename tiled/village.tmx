@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="62" nextobjectid="1496">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="104" tilewidth="16" tileheight="16" infinite="0" nextlayerid="62" nextobjectid="1516">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -4861,6 +4861,12 @@
  <tileset firstgid="18404" name="icons5" tilewidth="16" tileheight="16" tilecount="360" columns="18">
   <image source="../client/public/assets/sprites/icons5.png" width="288" height="320"/>
  </tileset>
+ <tileset firstgid="18764" name="icons4" tilewidth="16" tileheight="16" tilecount="210" columns="21">
+  <image source="../client/public/assets/sprites/icons4.png" width="336" height="160"/>
+ </tileset>
+ <tileset firstgid="18974" name="icons8" tilewidth="16" tileheight="16" tilecount="756" columns="36">
+  <image source="../client/public/assets/sprites/icons8.png" width="576" height="336"/>
+ </tileset>
  <layer id="19" name="water" width="76" height="104">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4838,4838,4838,4838,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -8506,6 +8512,14 @@
   <object id="1434" name="Drake" x="31.9879" y="368.06" width="1" height="1"/>
   <object id="1444" name="Glimmer" x="359" y="500" width="1" height="1"/>
   <object id="1478" name="Grouse" x="270" y="64" width="1" height="1"/>
+  <object id="1496" name="Hare_foot" x="592.472" y="480.607" width="2.23093" height="2.23093"/>
+  <object id="1497" name="Boots1" x="610.087" y="494.138" width="2.23093" height="2.23093"/>
+  <object id="1498" name="Feather" x="593.866" y="505.564" width="2.23093" height="2.23093"/>
+  <object id="1499" name="Bell" x="615.024" y="518.823" width="2.23093" height="2.23093"/>
+  <object id="1500" name="Ring2" x="586.108" y="519.246" width="2.23093" height="2.23093"/>
+  <object id="1501" name="Ring3" x="574.541" y="503.871" width="2.23093" height="2.23093"/>
+  <object id="1502" name="Amulet2" x="563.256" y="488.637" width="2.23093" height="2.23093"/>
+  <object id="1503" name="Hat1" x="573.553" y="472.274" width="2.23093" height="2.23093"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="104">
   <properties>

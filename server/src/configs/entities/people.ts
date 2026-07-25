@@ -98,7 +98,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "Potions, mostly, the dream sort. A drop of the right brew and you'll sleep soft as a cloud, or wake somewhere you've never been. The whole village leans on me when the nights turn restless.",
+        text: "Potions, mostly. A drop of the right brew and you'll sleep softly, or wake somewhere you've never been.",
         choices: [
           {
             text: "Any tips for a forager?",
@@ -111,7 +111,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "Gladly. Blue lotus grows where the water sits still, and it loves the moonlight, so search at dusk. Belladonna is a different beast: beautiful, deadly, and it only forgives a careful hand. Bring me a vial and a few sunflowers and I'll show you something golden.",
+        text: "Blue lotus grows where the water sits still, and it loves the moonlight, so search at dusk. Belladonna is different: beautiful, deadly, and it only forgives a careful hand.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -223,7 +223,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "I bend iron to my will, that's the short of it. Axes for the woodcutters, hoes for the farmers, a lantern for anyone fool enough to wander after dark. Hard work, honest work.",
+        text: "I bend iron, that's the short of it. Axes for the woodcutters, hoes for the farmers, a lantern for anyone fool enough to wander after dark.",
         choices: [
           {
             text: "Any advice for me?",
@@ -236,7 +236,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "Aye. Don't bring me rusted scrap and expect a blade. Good iron and seasoned wood is all I ask. Two lengths of wood and a bar of iron, and you'll walk off with an axe that truly bites.",
+        text: "Don't bring me rusted scrap and expect a blade. Good iron and seasoned wood is all I ask. Two lengths of wood and a bar of iron, and you'll walk off with an axe that truly bites.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -315,7 +315,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "I coax glass out of quartz and a breath of fire. Vials for the herbalist, panes for the windows, little trinkets for the children. There's a quiet magic in watching plain sand turn into something you can see clean through.",
+        text: "I coax glass out of quartz. There's a quiet magic in watching plain sand turn into something you can see clean through.",
         choices: [
           {
             text: "Where do I find good quartz?",
@@ -328,7 +328,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "The cave veins up the mountain are thick with it, if you don't mind the climb. Four good shards and a little bone ash is all I need to make glass. Bring me iron as well and I'll seal you a proper vial.",
+        text: "You'll find veins in caves surely, but those are rarely uninhabited so tread carefully. Don't forget to bring a pickaxe.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -413,7 +413,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "I've got a farm up north, but someone's got to mind the shop. You're welcome to use the plots yourself if you fancy growing something to sell.",
+        text: "I've got a farm up north, but I haven't been there a lot lately. Someone's got to mind the shop... You're welcome to use the plots yourself if you fancy growing something.",
         choices: [
           {
             text: "What sells best?",
@@ -426,7 +426,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "Anything fresh, really. A ripe tomato or a fat carrot will always find a buyer, and a good cut of venison even faster. Grow it, hunt it, or fish it, I'll take it off your hands at a fair price.",
+        text: "A ripe tomato or a fat carrot will always find a buyer, and a good cut of venison even faster. Grow it, gather it, or hunt it, I'll take it off your hands.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -472,34 +472,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     dialogue: {
       [NodeId.GREETING]: {
         ref: NodeId.GREETING,
-        individual: [
-          {
-            text: "What do you bake?",
-            next: NodeId.STORY,
-          },
-        ],
-      },
-      [NodeId.STORY]: {
-        text: "Bread, friend. I turn humble grain into something warm enough to make a hard morning bearable. There's no spell quite like the smell of a fresh loaf, I always say.",
-        choices: [
-          {
-            text: "Need anything for it?",
-            next: NodeId.QUEST,
-          },
-          {
-            ref: ChoiceId.GOODBYE,
-            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
-          },
-        ],
-      },
-      [NodeId.QUEST]: {
-        text: "Wheat, and plenty of it. The mill's been far too quiet of late. Bring me grain and I'll see this village never goes to bed hungry. *pats a cloud of flour from her apron*",
-        choices: [
-          {
-            ref: ChoiceId.GOODBYE,
-            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
-          },
-        ],
       },
     },
   },
@@ -542,13 +514,13 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ref: NodeId.GREETING,
         individual: [
           {
-            text: "What do you serve?",
+            text: "Are you drinking all of this on your own?",
             next: NodeId.STORY,
           },
         ],
       },
       [NodeId.STORY]: {
-        text: "I mix the drinks that loosen tongues and soften nightmares. A good cup at dusk and the whole village sleeps a little easier. *takes a long sip from his own cup* ...for quality's sake, you understand.",
+        text: "*takes a long sip from his cup* ... *quiet burp*",
         choices: [
           {
             text: "Your daughter worries about you.",
@@ -561,7 +533,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "*waves a hand* She worries too much, that one. A drink now and then keeps the bad dreams away, nothing more. Bring me something sweet to ferment and I'll mix you a cup that has you dreaming in colour.",
+        text: "*waves a hand* She worries too much, that one.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -632,7 +604,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "You've got that look about you. The far-off eyes. You're one of them, aren't you? A dream wanderer.",
+        text: "You've got that look about you. You're one of them, aren't you ... a dream wanderer?",
         choices: [
           {
             text: "How could you tell?",
@@ -640,14 +612,14 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           },
           {
             ref: ChoiceId.GOODBYE,
-          },
+          },  
         ],
       },
       [NodeId.STORY]: {
-        text: "My grandmother had the same stare. She wandered too deep one night and never quite came back. She was never the same after. They say her mind still drifts somewhere out in the realms.",
+        text: "My grandmother had the same stare. But she wandered too deep one time and never quite came back. Like she was never the same after. They say her mind still drifts somewhere out there.",
         choices: [
           {
-            text: "Is she still out there?",
+            text: "You think she's still wandering the realm?",
             next: NodeId.QUEST,
           },
           {
@@ -656,7 +628,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "I like to think so. If you ever walk the realms, keep an eye out for her, would you? An old woman who looks like she's forgotten her way home.",
+        text: "I mean, I don't know of course. I like to think so. Keep an eye out for her, would you? Maybe she's just forgotten her way home.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -696,27 +668,27 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         text: {
           [Mood.HAPPY]: [
-            "I slept like a stone last night. No dreams at all. Bliss.",
+            "I slept like a stone last night. Bliss.",
             "Morning. For once my head feels quiet.",
           ],
           [Mood.HUNGRY]: [
-            "*rubbing her arms* I can't sit still today. When my stomach's empty, the dreams get... loud.",
-            "Don't mind me pacing. I haven't eaten, and that's always when it comes back.",
+            "*rubbing her arms* I can't sit still today. I haven't eaten.",
+            "Don't mind me pacing. I haven't eaten.",
           ],
           [Mood.COLD]: [
-            "*teeth chattering* There's a chill in my bones no fire seems to reach.",
-            "Cold as the grave lately. I'd kill for a proper hide to wrap up in.",
+            "*teeth chattering* There's a chill in me no fire seems to reach.",
+            "I can't remember the last time I felt warm.",
           ],
           [Mood.THIRSTY]: [
             "My mouth's gone dry as chalk. Is there nothing left to drink in this village?",
-            "*swallows hard* I keep dreaming of cool water. Even awake, now.",
+            "*swallows hard* I keep dreaming of a cool cup of iced tea.",
           ],
         },
         choices: [
           {
             text: {
               [Mood.HAPPY]: "Long may it last.",
-              [Mood.HUNGRY]: "When what comes back?",
+              [Mood.HUNGRY]: "Is it just the hunger, or something more?",
             },
             next: NodeId.STORY,
           },
@@ -727,8 +699,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
       [NodeId.STORY]: {
         text: {
-          [Mood.HAPPY]:
-            "That would be almost too much to ask for.",
+          [Mood.HAPPY]: "That would be almost too much to ask for.",
           [Mood.HUNGRY]:
             "There's something lurking in the darkness. Last night a hand reached up through the floor and grabbed for my ankle. I woke with my heart in my throat. *shivers* I really should eat something.",
         },
@@ -780,7 +751,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "I remember the first time I set foot on a ship, I was feverish with excitement at the crackling atmosphere in the air. In the coming months, I could already picture us sailing to distant shores.",
+        text: "I remember the first time I set foot on a ship, I was feverish with excitement at the crackling atmosphere in the air. In the coming months, I could already picture us sailing to distant shores...",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -817,7 +788,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "Some nights I dream in colours that don't have names yet. Then I wake, try to paint them, and they come out... grey.",
+        text: "*grumbles annoyed* ...I'm kind of busy here. Can't you see that?",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -856,7 +827,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         text: [
           "If you find a left boot out in the woods, it's mine. Long story.",
-          "I'd offer you a chair, but the cat has claimed every last one.",
+          "I'd offer you a chair, but ... oh, no reason. I just don't want to.",
         ],
         choices: [
           {
@@ -896,7 +867,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         text: {
           [Mood.HAPPY]:
-            "Full belly, dry roof, no nightmares. That's a good day in my book.",
+            "I saw a bear in the woods once. I think I prefer it over a stranger. It didn't see me though, of course.",
           [Mood.HUNGRY]:
             "*stomach growls loudly* ...let's both pretend you didn't hear that.",
         },
@@ -986,7 +957,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "Shh, listen. *pause* You don't hear it? A lullaby, riding on the wind. My mother used to sing that one. She's three winters gone now.",
+        text: "Shh, listen. *pause* I practiced all week for this.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1062,7 +1033,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: {
         text: [
           "I traded my last coin for a 'lucky' pebble. The fellow vanished right after. Suspicious, that.",
-          "Don't tell the baker, but I'm fairly sure his loaves have been shrinking.",
+          "I once owned a ring that made me feel invincible. But I lost it in the river. *shakes head*",
         ],
         choices: [
           {
@@ -1115,7 +1086,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         text: "He tastes more than he sells these days. Says the dreams go down easier when the world's a little blurry. But every morning he looks a year older. *sighs* I just want my old papa back.",
         choices: [
           {
-            text: "Have you talked to him?",
+            text: "Have you talked to him yet?",
             next: NodeId.QUEST,
           },
           {
@@ -1124,7 +1095,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. If you're ever passing his stall, would you say something? Gently?",
+        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. Would you say something? Gently?",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1162,10 +1133,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "You ever notice how the village looks different at dusk? Like it's holding its breath.",
+        text: "You ever notice how the village looks different at dusk? *shivers*.",
         choices: [
           {
-            text: "Holding its breath for what?",
+            text: "I never thought about it. Why is that?",
             next: NodeId.STORY,
           },
           {
@@ -1174,7 +1145,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "For nightfall, of course. That's when the real day begins, for some of us anyway. *winks* Sleep well, wanderer.",
+        text: "It's the nightfall. That's when the real day begins, for some of us anyway. *winks* Sleep well, wanderer.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,

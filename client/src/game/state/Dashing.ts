@@ -18,7 +18,7 @@ export class Dashing implements State {
     );
     anim?.play(this.name, entity.facing);
 
-    handlers.move.getVelocity(entity, SPEED_DASHING);
+    handlers.move.getVelocity(entity, SPEED_DASHING * entity.speed);
 
     this.timer = entity.scene.time.delayedCall(DURATION_DASHING, () => {
       this.exit(entity);

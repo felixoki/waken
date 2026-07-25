@@ -98,6 +98,11 @@ export const player = {
       .getComponent<HotbarComponent>(ComponentName.HOTBAR)
       ?.setActive(prev.active ?? 0);
 
+    updated.speed = handlers.move.speed(
+      prev.inventory ?? [],
+      updated.effects.keys(),
+    );
+
     const scene = main.scene.get(data.map);
 
     prev.scene.scene.setVisible(false);

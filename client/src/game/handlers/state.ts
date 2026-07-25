@@ -8,6 +8,14 @@ export const state = {
         state: () => StateName.DASHING,
       },
       {
+        condition: () => input.state === StateName.JUMPING,
+        state: () => StateName.JUMPING,
+      },
+      {
+        condition: () => input.state === StateName.ROLLING,
+        state: () => StateName.ROLLING,
+      },
+      {
         condition: () => input.state === StateName.CASTING,
         state: () => StateName.CASTING,
       },

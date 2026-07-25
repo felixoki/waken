@@ -6,6 +6,10 @@ export enum EffectName {
   ILLUMINATED = "illuminated",
   REGAIN = "regain",
   DRAGON = "dragon",
+  MOMENTUM = "momentum",
+  REFLECT = "reflect",
+  SHIELD = "shield",
+  GREASE = "grease",
 }
 
 export interface Effect {
@@ -13,4 +17,5 @@ export interface Effect {
   expiresAt: number;
   lastTickAt?: number;
   ownerId: string;
+  absorb?: number;
 }

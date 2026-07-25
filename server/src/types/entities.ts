@@ -54,10 +54,27 @@ export interface EntityConfig {
   tame?: TameState;
 }
 
-export interface ItemBonus {
+export interface Bonus {
   spell?: SpellName;
   weapon?: WeaponName;
   effects: [EffectName, number, number?][];
+}
+
+export interface Modifier {
+  multipliers?: {
+    damage?: number;
+    crit?: number;
+    defense?: number;
+    speed?: number;
+  };
+  regen?: {
+    health?: number;
+    mana?: number;
+  };
+  max?: {
+    health?: number;
+    mana?: number;
+  };
 }
 
 export interface EntityDefinition {
@@ -69,7 +86,8 @@ export interface EntityDefinition {
   scale?: number;
   behaviors?: BehaviorConfig[];
   attacks?: AttackConfig[];
-  bonuses?: ItemBonus[];
+  bonuses?: Bonus[];
+  modifier?: Modifier;
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
   offset?: { x?: number; y?: number };
@@ -92,6 +110,7 @@ export enum EntityName {
   APPLETREE2 = "appletree2",
   AXE = "axe",
   AMULET1 = "amulet1",
+  AMULET2 = "amulet2",
   BAKER = "baker",
   BANQUET_TABLE = "banquet_table",
   BARN = "barn",
@@ -103,6 +122,7 @@ export enum EntityName {
   BASKETFERN = "basketfern",
   BEAR = "bear",
   BEARDED_TOOTH_FUNGUS = "bearded_tooth_fungus",
+  BELL = "bell",
   BELLADONNA = "belladonna",
   BEVERAGE_SALER = "beverage_saler",
   BLACKSMITH = "blacksmith",
@@ -112,6 +132,7 @@ export enum EntityName {
   BOAR = "boar",
   BOAR_MEAT = "boar_meat",
   BONE = "bone",
+  BOOTS1 = "boots1",
   BOWL1 = "bowl1",
   BOX1 = "box1",
   BOXES1 = "boxes1",
@@ -163,6 +184,7 @@ export enum EntityName {
   FARM_HOUSE = "farm_house",
   FARM_HOUSE_EXIT = "farm_house_exit",
   FARMPLOT = "farmplot",
+  FEATHER = "feather",
   FIREBOWL1 = "firebowl1",
   FISHING_HUT = "fishing_hut",
   FISHING_HUT_EXIT = "fishing_hut_exit",
@@ -177,6 +199,10 @@ export enum EntityName {
   GOAT = "goat",
   GOATLING = "goatling",
   GOAT_MILK = "goat_milk",
+  CHICKEN = "chicken",
+  ROOSTER = "rooster",
+  CHICK = "chick",
+  EGG = "egg",
   SOULSTONE = "soulstone",
   GOBLIN1 = "goblin1",
   GOBLIN2 = "goblin2",
@@ -190,6 +216,7 @@ export enum EntityName {
   GREENGROCER = "greengrocer",
   HARE = "hare",
   HARE_FOOT = "hare_foot",
+  HAT1 = "hat1",
   HENHOUSE = "henhouse",
   HERBALIST = "herbalist",
   HERBALIST_EXIT = "herbalist_exit",
@@ -218,6 +245,8 @@ export enum EntityName {
   REED2 = "reed2",
   REED3 = "reed3",
   RING1 = "ring1",
+  RING2 = "ring2",
+  RING3 = "ring3",
   ROCK1 = "rock1",
   ROCK2 = "rock2",
   ROCK3 = "rock3",
@@ -255,6 +284,15 @@ export enum EntityName {
   SPELL_PAGE_LIGHTNING_STRIKE = "spell_page_lightning_strike",
   SPELL_PAGE_ABSORB_LIFE = "spell_page_absorb_life",
   SPELL_PAGE_DRAGON_FORM = "spell_page_dragon_form",
+  SPELL_PAGE_REVIVE = "spell_page_revive",
+  SPELL_PAGE_TAME = "spell_page_tame",
+  SPELL_PAGE_GAIN_MOMENTUM = "spell_page_gain_momentum",
+  SPELL_PAGE_REFLECT_DAMAGE = "spell_page_reflect_damage",
+  SPELL_PAGE_HEAL_PARTY = "spell_page_heal_party",
+  SPELL_PAGE_SHIELD = "spell_page_shield",
+  SPELL_PAGE_GREASE = "spell_page_grease",
+  SPELL_PAGE_BLINK = "spell_page_blink",
+  SPELL_PAGE_HYPERBEAM = "spell_page_hyperbeam",
   VENISON_MEAT = "venison_meat",
   VIAL = "vial",
   POTION1 = "potion1",

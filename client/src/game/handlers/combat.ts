@@ -16,6 +16,7 @@ import { configs } from "@server/configs";
 import { DURATION_COMBO_LOCK, DURATION_FINISHER_LOCK } from "@server/globals";
 import { handlers } from ".";
 import EventBus from "../EventBus";
+import { vfx } from "../vfx";
 import type { Scene } from "../scenes/Scene";
 import type { Villain } from "../Villain";
 
@@ -126,7 +127,7 @@ export const combat = {
 
     if (sound && !hitbox.impacts.has(entity.id)) {
       hitbox.impacts.add(entity.id);
-    
+
       entity.scene.managers.sound.play.sfx(sound, {
         position: { x: hitbox.x, y: hitbox.y },
       });
@@ -202,6 +203,19 @@ export const combat = {
       entity.states?.get(entity.state)?.update(entity);
       entity.knockback = undefined;
     });
+  },
+
+  reflect: (entity: Entity, sourceId: string) => {
+    const managers = entity.scene.managers;
+    const local = managers.players.player;
+    const source =
+      managers.entities.entities.get(sourceId) ||
+      managers.players.others.get(sourceId) ||
+      (local?.id === sourceId ? local : null);
+
+    if (!source) return;
+
+    vfx.emitters.reflect(entity.scene, source.x, source.y, entity.x, entity.y);
   },
 
   dodge: (

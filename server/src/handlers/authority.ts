@@ -53,7 +53,9 @@ export const authority = {
     candidates: PlayerConfig[],
     partyId?: string,
   ): string | undefined => {
-    const next = world.authority.successor(map, fromId, candidates, partyId);
+    if (world.authority.get(map, partyId) !== fromId) return undefined;
+
+    const next = candidates.find((p) => p.id !== fromId)?.id;
 
     if (next) {
       authority.assign(io, world, map, next, partyId);

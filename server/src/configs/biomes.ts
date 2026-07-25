@@ -1,4 +1,4 @@
-import { EntityName, MapName } from "../types";
+import { EntityName, Item, MapName } from "../types";
 import {
   BiomeConfig,
   BiomeName,
@@ -10,6 +10,42 @@ import {
   TerrainName,
 } from "../types/generation";
 import { groundStamps, grassStamps, flowerStamps } from "./details";
+
+/**
+ * Shared chest loot pool. Rolled per-entry by `chance` when a chest is first
+ * opened. Features resources, consumables, the new equipment and spell pages.
+ * Equipment and spell pages are non-stackable so they never merge in a slot.
+ */
+const CHEST_LOOT: (Item & { chance: number })[] = [
+  /** Resources & consumables */
+  { name: EntityName.WOOD, quantity: 3, stackable: true, chance: 0.6 },
+  { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.5 },
+  { name: EntityName.QUARTZ1, quantity: 5, stackable: true, chance: 0.5 },
+  { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.4 },
+  { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.4 },
+
+  /** Equipment */
+  { name: EntityName.AMULET1, quantity: 1, stackable: false, chance: 0.14 },
+  { name: EntityName.RING1, quantity: 1, stackable: false, chance: 0.14 },
+  { name: EntityName.RING2, quantity: 1, stackable: false, chance: 0.12 },
+  { name: EntityName.RING3, quantity: 1, stackable: false, chance: 0.12 },
+  { name: EntityName.AMULET2, quantity: 1, stackable: false, chance: 0.12 },
+  { name: EntityName.BOOTS1, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.HARE_FOOT, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.08 },
+  { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.08 },
+
+  /** Spell pages */
+  { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.06 },
+  { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.06 },
+  { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.05 },
+  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.06 },
+  { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.06 },
+  { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.06 },
+  { name: EntityName.SPELL_PAGE_ABSORB_LIFE, quantity: 1, stackable: false, chance: 0.05 },
+  { name: EntityName.SPELL_PAGE_DRAGON_FORM, quantity: 1, stackable: false, chance: 0.03 },
+];
 
 export const levels: { depth: number; map: MapName; biome?: BiomeName }[] = [
   { depth: 0, map: MapName.FOREST, biome: BiomeName.FOREST },
@@ -342,6 +378,7 @@ export const dungeon: BiomeConfig = {
           { name: EntityName.TABLE2, x: -48, y: 100 },
           { name: EntityName.BOXES3, x: -16, y: 46 },
           { name: EntityName.FIREBOWL1, x: -74, y: 56 },
+          { name: EntityName.CHEST1, x: -20, y: 100, loot: CHEST_LOOT },
         ],
       },
       {
@@ -353,55 +390,7 @@ export const dungeon: BiomeConfig = {
           { name: EntityName.VASES2, x: -80, y: 12 },
           { name: EntityName.BOXES4, x: -24, y: -2 },
           { name: EntityName.BOXES5, x: -52, y: 28 },
-          {
-            name: EntityName.CHEST1,
-            x: -16,
-            y: 52,
-            loot: [
-              {
-                name: EntityName.WOOD,
-                quantity: 3,
-                stackable: true,
-                chance: 0.75,
-              },
-              {
-                name: EntityName.IRON1,
-                quantity: 3,
-                stackable: true,
-                chance: 0.75,
-              },
-              {
-                name: EntityName.QUARTZ1,
-                quantity: 5,
-                stackable: true,
-                chance: 0.75,
-              },
-              {
-                name: EntityName.POTION1,
-                quantity: 1,
-                stackable: true,
-                chance: 0.5,
-              },
-              {
-                name: EntityName.POTION2,
-                quantity: 1,
-                stackable: true,
-                chance: 0.5,
-              },
-              {
-                name: EntityName.AMULET1,
-                quantity: 1,
-                stackable: true,
-                chance: 0.25,
-              },
-              {
-                name: EntityName.RING1,
-                quantity: 1,
-                stackable: true,
-                chance: 0.25,
-              },
-            ],
-          },
+          { name: EntityName.CHEST1, x: -16, y: 52, loot: CHEST_LOOT },
           { name: EntityName.BANQUET_TABLE, x: -93, y: 82 },
         ],
       },
@@ -414,6 +403,8 @@ export const dungeon: BiomeConfig = {
           { name: EntityName.TABLE1, x: 104, y: 34 },
           { name: EntityName.FIREBOWL1, x: 54, y: 56 },
           { name: EntityName.TABLE3, x: 87, y: 82 },
+          { name: EntityName.CHICKEN, x: 64, y: 100 },
+          { name: EntityName.CHEST1, x: 24, y: 46, loot: CHEST_LOOT },
         ],
       },
       {
@@ -425,6 +416,8 @@ export const dungeon: BiomeConfig = {
           { name: EntityName.BARREL2, x: 136, y: 14 },
           { name: EntityName.TABLE2, x: 39, y: 56 },
           { name: EntityName.TABLE3, x: 104, y: 66 },
+          { name: EntityName.CHICKEN, x: 64, y: 100 },
+          { name: EntityName.CHEST1, x: 20, y: 100, loot: CHEST_LOOT },
         ],
       },
       {
@@ -432,11 +425,16 @@ export const dungeon: BiomeConfig = {
         entities: [
           { name: EntityName.BOXES6, x: 15, y: -24 },
           { name: EntityName.BARRELS2, x: 51, y: -24 },
+          { name: EntityName.ROOSTER, x: 64, y: -8 },
+          { name: EntityName.CHEST1, x: 96, y: -24, loot: CHEST_LOOT },
         ],
       },
       {
         origin: RoomInteriorOrigin.BOTTOM_RIGHT,
-        entities: [{ name: EntityName.BOXES7, x: -16, y: -16 }],
+        entities: [
+          { name: EntityName.BOXES7, x: -16, y: -16 },
+          { name: EntityName.CHEST1, x: -56, y: -16, loot: CHEST_LOOT },
+        ],
       },
       {
         origin: RoomInteriorOrigin.TOP_RIGHT,
@@ -447,6 +445,7 @@ export const dungeon: BiomeConfig = {
           { name: EntityName.BOXES8, x: -18, y: 12 },
           { name: EntityName.GOAT, x: -64, y: 32 },
           { name: EntityName.GOAT, x: -32, y: 48 },
+          { name: EntityName.CHEST1, x: -16, y: 48, loot: CHEST_LOOT },
         ],
       },
     ],
@@ -504,12 +503,7 @@ export const cave: BiomeConfig = {
       density: 0.01,
       spacing: 4,
       margin: 1,
-      loot: [
-        { name: EntityName.WOOD, quantity: 3, stackable: true, chance: 0.75 },
-        { name: EntityName.QUARTZ1, quantity: 3, stackable: true, chance: 0.8 },
-        { name: EntityName.IRON1, quantity: 2, stackable: true, chance: 0.5 },
-        { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.3 },
-      ],
+      loot: CHEST_LOOT,
     },
   ],
   generator: GeneratorName.ROOM,

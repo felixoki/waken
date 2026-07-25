@@ -660,10 +660,21 @@
 
 - Add isles full circle ✅
 
+#### 25.7.2026
+
+- Add momentum, reflect, grease and shield effects ✅
+- Add gain momentum, reflect damage, heal party, shield, grease, blink and hyperbeam spells ✅
+- Add chicken, rooster, chick and egg ✅
+- Refactor dungeon loot and add new equipment ✅
+
 ### In progress
 
 - Add dungeon entrance tiles
 - Add voices ambience sound
+- Add higher detail amount in the forest
+- Entities should do a proper look around after killing a player
+- Add missing sound effects to animals
+- Refactor cave design properly
 
 ### Bugs
 
@@ -671,7 +682,8 @@
 
 - Projectiles don't respect collisions
 - Hotbar doesn't reset after transition in dragon form
-- Ambience sound queue doesn't reset
+- Sound queue doesn't reset
+- Players can move during transitions
 
 🔵 Low
 
@@ -686,7 +698,5 @@
 - Cooking ⭐
 - Relationships ⭐
 - Ideas
-  - Add reflect damage effect
-  - Add gain momentum spell
   - Remove among player collisions
   - Hidden rooms in dungeons

@@ -86,4 +86,49 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Dragon form",
     "A scorched page pulsing with the will of a greater river dragon.",
   ),
+  [EntityName.SPELL_PAGE_REVIVE]: page(
+    SpellName.REVIVE,
+    "Spell page: Revive",
+    "A hallowed page describing how to call a fallen ally back from the brink.",
+  ),
+  [EntityName.SPELL_PAGE_TAME]: page(
+    SpellName.TAME,
+    "Spell page: Tame",
+    "A gentle page inscribed with rites for soothing wild beasts.",
+  ),
+  [EntityName.SPELL_PAGE_GAIN_MOMENTUM]: page(
+    SpellName.GAIN_MOMENTUM,
+    "Spell page: Gain momentum",
+    "A brisk page that teaches how to rally a party into a relentless charge.",
+  ),
+  [EntityName.SPELL_PAGE_REFLECT_DAMAGE]: page(
+    SpellName.REFLECT_DAMAGE,
+    "Spell page: Reflect damage",
+    "A mirrored page describing a ward that flings harm back at its source.",
+  ),
+  [EntityName.SPELL_PAGE_HEAL_PARTY]: page(
+    SpellName.HEAL_PARTY,
+    "Spell page: Heal party",
+    "A soothing page woven with dream light that mends wounds over time.",
+  ),
+  [EntityName.SPELL_PAGE_SHIELD]: page(
+    SpellName.SHIELD,
+    "Spell page: Shield",
+    "A steadfast page detailing a ward that absorbs a burst of damage.",
+  ),
+  [EntityName.SPELL_PAGE_GREASE]: page(
+    SpellName.GREASE,
+    "Spell page: Grease",
+    "A slick page that teaches how to coat foes in flammable oil.",
+  ),
+  [EntityName.SPELL_PAGE_BLINK]: page(
+    SpellName.BLINK,
+    "Spell page: Blink",
+    "A flickering page that reveals how to slip a short distance through space.",
+  ),
+  [EntityName.SPELL_PAGE_HYPERBEAM]: page(
+    SpellName.HYPERBEAM,
+    "Spell page: Hyperbeam",
+    "A searing page crackling with the secret of a channelled beam of force.",
+  ),
 };

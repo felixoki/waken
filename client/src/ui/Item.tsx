@@ -185,6 +185,67 @@ export function Item({
               </div>
             );
           })()}
+          {(() => {
+            const modifier = configs.entities[name as EntityName]?.modifier;
+            if (!modifier) return null;
+
+            const rows: { label: string; value: string }[] = [];
+            const { multipliers, regen, max } = modifier;
+
+            const percent = (value: number) =>
+              `${value >= 0 ? "+" : ""}${Math.round(value * 100)}%`;
+
+            if (multipliers?.damage)
+              rows.push({ label: "Damage", value: percent(multipliers.damage - 1) });
+            if (multipliers?.crit)
+              rows.push({ label: "Crit damage", value: percent(multipliers.crit - 1) });
+            if (multipliers?.defense)
+              rows.push({ label: "Defense", value: percent(1 - multipliers.defense) });
+            if (multipliers?.speed)
+              rows.push({ label: "Speed", value: percent(multipliers.speed - 1) });
+            if (regen?.health)
+              rows.push({ label: "Health regen", value: `+${regen.health}/s` });
+            if (regen?.mana)
+              rows.push({ label: "Mana regen", value: `+${regen.mana}/s` });
+            if (max?.health)
+              rows.push({ label: "Max health", value: `${max.health}` });
+            if (max?.mana)
+              rows.push({ label: "Max mana", value: `${max.mana}` });
+
+            if (!rows.length) return null;
+
+            return (
+              <div className="mt-2 flex flex-col gap-1 text-xs">
+                {rows.map((row, i) => (
+                  <div key={i} className="flex justify-between">
+                    <span className="text-white/50">{row.label}</span>
+                    <span className="text-white">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+          {(() => {
+            const bonuses = configs.entities[name as EntityName]?.bonuses;
+            if (!bonuses?.length) return null;
+
+            return (
+              <div className="mt-2 flex flex-col gap-1 text-xs">
+                {bonuses.flatMap((bonus, i) =>
+                  bonus.effects.map(([effect, duration], j) => (
+                    <div key={`${i}-${j}`} className="flex justify-between">
+                      <span className="text-white/50 capitalize">
+                        {bonus.spell ?? bonus.weapon}
+                      </span>
+                      <span className="text-white capitalize">
+                        {effect} ({duration / 1000}s)
+                      </span>
+                    </div>
+                  )),
+                )}
+              </div>
+            );
+          })()}
           {barLabel && (
             <div className="mt-1 flex justify-between text-xs">
               <span className="text-white/50">Stock</span>

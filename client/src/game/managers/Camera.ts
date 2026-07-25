@@ -16,6 +16,15 @@ export class CameraManager {
     this.camera.startFollow(target, false);
   }
 
+  dash(lerp = 0.16, duration = 260): void {
+    this.camera.setLerp(lerp, lerp);
+    this.scene.time.delayedCall(duration, () => this.camera.setLerp(1, 1));
+  }
+
+  shake(duration = 120, intensity = 0.005): void {
+    this.camera.shake(duration, intensity, true);
+  }
+
   setZoom(zoom: number): void {
     this.camera.setZoom(zoom);
   }

@@ -8,6 +8,10 @@ import { PoisonedEffect } from "../effects/Poisoned";
 import { IlluminatedEffect } from "../effects/Illuminated";
 import { RegainEffect } from "../effects/Regain";
 import { DragonEffect } from "../effects/Dragon";
+import { MomentumEffect } from "../effects/Momentum";
+import { ReflectEffect } from "../effects/Reflect";
+import { ShieldEffect } from "../effects/Shield";
+import { GreaseEffect } from "../effects/Grease";
 
 export class EffectFactory {
   static create(name: EffectName, entity: Entity): Effect {
@@ -26,6 +30,14 @@ export class EffectFactory {
         return new RegainEffect(entity);
       case EffectName.DRAGON:
         return new DragonEffect(entity);
+      case EffectName.MOMENTUM:
+        return new MomentumEffect(entity);
+      case EffectName.REFLECT:
+        return new ReflectEffect(entity);
+      case EffectName.SHIELD:
+        return new ShieldEffect(entity);
+      case EffectName.GREASE:
+        return new GreaseEffect(entity);
     }
   }
 }

@@ -308,4 +308,76 @@ export const taming = {
       y: target.y,
     });
   },
+
+  lay: (data: { id: string }, socket: Socket, io: Server, world: World) => {
+    const target = world.entities.get(data.id);
+    if (!target || !target.tame?.isTamed) return;
+
+    const def = configs.entities[target.name];
+    const layable = def?.components.find(
+      (c: ComponentConfig) => c.name === ComponentName.LAYABLE,
+    );
+    const feedable = def?.components.find(
+      (c: ComponentConfig) => c.name === ComponentName.FEEDABLE,
+    );
+
+    if (!layable || layable.name !== ComponentName.LAYABLE) return;
+    if (!feedable || feedable.name !== ComponentName.FEEDABLE) return;
+
+    const now = Date.now();
+
+    if (
+      !target.tame.fedAt ||
+      now - target.tame.fedAt >= feedable.config.duration
+    )
+      return;
+
+    if (target.tame.bredAt && now - target.tame.bredAt < layable.config.cooldown)
+      return;
+
+    const rooster = world.entities.getByMap(target.map).find((e) => {
+      if (e.name !== EntityName.ROOSTER) return false;
+      return (
+        Math.hypot(e.x - target.x, e.y - target.y) <= layable.config.range
+      );
+    });
+
+    if (!rooster) return;
+
+    const eggDef = configs.entities[layable.config.egg];
+    const maxHealth = eggDef?.maxHealth ?? 1;
+
+    const player = world.players.getBySocketId(socket.id);
+    const party = player ? world.parties.getByPlayerId(player.id) : undefined;
+    const partyId = configs.maps[target.map].isInstanced ? party?.id : undefined;
+
+    handlers.entity.create(
+      {
+        name: layable.config.egg,
+        map: target.map,
+        x: target.x,
+        y: target.y,
+        health: maxHealth,
+        maxHealth,
+        isLocked: false,
+        tame: { isTamed: true },
+      },
+      socket,
+      io,
+      world,
+      partyId,
+    );
+
+    world.entities.update(target.id, {
+      tame: { ...target.tame, bredAt: now },
+    });
+
+    const key = world.chunks.getChunkByEntity(target.id);
+    const room = key ? `chunk:${key}` : socket.id;
+
+    handlers.broadcast.room(socket, io, room, Event.ENTITY_LAY, {
+      id: target.id,
+      bredAt: now,
+    });
+  },
 };

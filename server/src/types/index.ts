@@ -28,3 +28,4 @@ export * from "./path.js";
 export * from "./parties.js";
 export * from "./events.js";
 export * from "./villain.js";
+export * from "./zones.js";

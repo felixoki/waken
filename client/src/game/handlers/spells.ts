@@ -7,6 +7,7 @@ import {
   EffectName,
 } from "@server/types";
 import { Entity } from "../Entity";
+import type { Player } from "../Player";
 import { Projectile } from "../Projectile";
 import { Hitbox } from "../Hitbox";
 import { vfx } from "../vfx";
@@ -133,6 +134,22 @@ export const spells: Record<SpellName, SpellHandler> = {
     vfx.shaders.illuminate(entity.scene, config.duration!);
   },
 
+  [SpellName.GAIN_MOMENTUM]: (entity: Entity) => {
+    vfx.emitters.puff(entity.scene, entity.x, entity.y);
+  },
+
+  [SpellName.REFLECT_DAMAGE]: (entity: Entity) => {
+    vfx.emitters.puff(entity.scene, entity.x, entity.y);
+  },
+
+  [SpellName.HEAL_PARTY]: (entity: Entity) => {
+    vfx.emitters.hearts(entity.scene, entity.x, entity.y);
+  },
+
+  [SpellName.SHIELD]: (entity: Entity) => {
+    vfx.emitters.puff(entity.scene, entity.x, entity.y);
+  },
+
   [SpellName.HURT_SHADOWS]: (
     entity: Entity,
     config: SpellConfig,
@@ -156,6 +173,52 @@ export const spells: Record<SpellName, SpellHandler> = {
       { width: config.hitbox!.width, height: config.hitbox!.height },
       direction,
     );
+  },
+
+  [SpellName.GREASE]: (
+    entity: Entity,
+    config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    new Hitbox(
+      entity.scene,
+      target.x,
+      target.y,
+      config.hitbox!.width,
+      config.hitbox!.height,
+      entity.id,
+      config,
+    );
+
+    vfx.emitters.puff(entity.scene, target.x, target.y);
+  },
+
+  [SpellName.BLINK]: (
+    entity: Entity,
+    config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    const dx = target.x - entity.x;
+    const dy = target.y - entity.y;
+
+    const dist = Math.min(Math.hypot(dx, dy), config.range!);
+    const angle = Math.atan2(dy, dx);
+
+    const x = entity.x + Math.cos(angle) * dist;
+    const y = entity.y + Math.sin(angle) * dist;
+
+    vfx.emitters.puff(entity.scene, entity.x, entity.y);
+    entity.setPosition(x, y);
+
+    if ((entity as Player).isControllable) entity.scene.managers.camera.dash();
+
+    vfx.emitters.puff(entity.scene, x, y);
+  },
+
+  [SpellName.HYPERBEAM]: (entity: Entity) => {
+    vfx.emitters.puff(entity.scene, entity.x, entity.y);
   },
 
   [SpellName.METEOR_SHOWER]: (

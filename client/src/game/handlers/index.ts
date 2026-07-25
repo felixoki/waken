@@ -13,6 +13,7 @@ import { vision } from "./vision";
 import { weapons } from "./weapons";
 import { behavior } from "./behavior";
 import { charge } from "./charge";
+import { beam } from "./beam";
 import { sprites } from "./sprites";
 import { villain } from "./villain";
 import { textures } from "./textures";
@@ -25,6 +26,7 @@ export const handlers = {
   interpolation,
   physics,
   charge,
+  beam,
   combat,
   player,
   spells,

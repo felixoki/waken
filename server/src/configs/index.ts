@@ -9,6 +9,7 @@ import { spells } from "./spells.js";
 import { tiers } from "./tiers.js";
 import { time } from "./time.js";
 import { weapons } from "./weapons.js";
+import { zones } from "./zones.js";
 
 export const configs = {
   animations,
@@ -23,4 +24,5 @@ export const configs = {
   tiers,
   time,
   weapons,
+  zones,
 };

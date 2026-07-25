@@ -26,7 +26,7 @@ export class Jumping implements State {
     );
     anim?.play(this.name, entity.facing);
 
-    handlers.move.getVelocity(entity, SPEED_JUMPING);
+    handlers.move.getVelocity(entity, SPEED_JUMPING * entity.speed);
 
     this.baseOriginY = entity.displayOriginY;
     this.baseOffsetY = entity.body
@@ -55,7 +55,7 @@ export class Jumping implements State {
   }
 
   update(entity: Entity): void {
-    handlers.move.getVelocity(entity, SPEED_JUMPING);
+    handlers.move.getVelocity(entity, SPEED_JUMPING * entity.speed);
   }
 
   exit(entity: Entity): void {

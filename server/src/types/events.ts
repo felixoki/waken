@@ -18,6 +18,7 @@ export enum Event {
   PLAYER_HEALTH_SYNC = "player_health_sync",
   PLAYER_MAX_HEALTH = "player_max_health",
   PLAYER_MANA = "player_mana",
+  PLAYER_MAX_MANA = "player_max_mana",
   PLAYER_INVENTORY_WIPE = "player_inventory_wipe",
 
   /** Entity */
@@ -47,6 +48,7 @@ export enum Event {
   ENTITY_CAPTURE = "entity_capture",
   ENTITY_FEED = "entity_feed",
   ENTITY_MATURE = "entity_mature",
+  ENTITY_LAY = "entity_lay",
   ENTITY_FISH = "entity:fish",
   ENTITY_OVERLAP = "entity_overlap",
 

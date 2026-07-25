@@ -27,6 +27,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public health: number = 100;
   public maxHealth: number = 100;
   public mana: number = 100;
+  public maxMana: number = 100;
+  public speed: number = 1;
   public createdAt: number = 0;
   public target?: { x: number; y: number; id?: string };
   public pointerdown: boolean = false;

@@ -1,6 +1,7 @@
-import { SpellConfig, SpellName, SoundName } from "../types";
+import { SpellConfig, SpellName, SoundName, Target } from "../types";
 import { DamageType } from "../types/damage.js";
 import { EffectName } from "../types/effects.js";
+import { ZoneName } from "../types/zones.js";
 
 export const spells: Record<SpellName, SpellConfig> = {
   [SpellName.SHARD]: {
@@ -79,6 +80,70 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons5", row: 8, col: 18 },
     },
   },
+  [SpellName.GAIN_MOMENTUM]: {
+    name: SpellName.GAIN_MOMENTUM,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 25,
+    buff: {
+      target: Target.PARTY,
+      effects: [[EffectName.MOMENTUM, 8000]],
+    },
+    metadata: {
+      description:
+        "Rallies your party, everyone hits harder and moves faster for a time.",
+      displayName: "Gain momentum",
+    },
+  },
+  [SpellName.REFLECT_DAMAGE]: {
+    name: SpellName.REFLECT_DAMAGE,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 20,
+    buff: {
+      target: Target.SELF,
+      effects: [[EffectName.REFLECT, 15000]],
+    },
+    metadata: {
+      description:
+        "Wraps you in a shard ward, halving incoming damage and flinging part of it back.",
+      displayName: "Reflect damage",
+    },
+  },
+  [SpellName.HEAL_PARTY]: {
+    name: SpellName.HEAL_PARTY,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 30,
+    buff: {
+      target: Target.PARTY,
+      effects: [[EffectName.REGAIN, 8000]],
+    },
+    metadata: {
+      description:
+        "Mends your party over time, weaving dream light that closes wounds.",
+      displayName: "Heal party",
+    },
+  },
+  [SpellName.SHIELD]: {
+    name: SpellName.SHIELD,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 25,
+    buff: {
+      target: Target.SELF,
+      effects: [[EffectName.SHIELD, 12000]],
+    },
+    metadata: {
+      description:
+        "Conjures a ward that absorbs a burst of damage before it shatters.",
+      displayName: "Shield",
+    },
+  },
   [SpellName.ILLUMINATE]: {
     name: SpellName.ILLUMINATE,
     sounds: { cast: SoundName.SLASH },
@@ -86,6 +151,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     knockback: 0,
     mana: 5,
     duration: 5000,
+    zone: { type: ZoneName.LIGHT, radius: 300, duration: 6000 },
     metadata: {
       description: "Casts a bright light that illuminates the surroundings.",
       displayName: "Illuminate",
@@ -104,7 +170,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     },
     metadata: {
       description: "Damages all shadow enemies in a wide area around you.",
-      displayName: "Hurt Shadows",
+      displayName: "Hurt shadows",
     },
   },
   [SpellName.METEOR_SHOWER]: {
@@ -128,8 +194,54 @@ export const spells: Record<SpellName, SpellConfig> = {
     },
     metadata: {
       description: "Rains burning meteors down onto enemies in an area.",
-      displayName: "Meteor Shower",
+      displayName: "Meteor shower",
       icon: { spritesheet: "icons5", row: 10, col: 9 },
+    },
+  },
+  [SpellName.GREASE]: {
+    name: SpellName.GREASE,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 5 },
+    knockback: 0,
+    mana: 15,
+    duration: 300,
+    effects: [[EffectName.GREASE, 8000]],
+    hitbox: {
+      width: 90,
+      height: 90,
+    },
+    metadata: {
+      description: "Coats enemies in oil and weakens them to fire.",
+      displayName: "Grease",
+    },
+  },
+  [SpellName.BLINK]: {
+    name: SpellName.BLINK,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 0 },
+    knockback: 0,
+    mana: 15,
+    range: 200,
+    duration: 200,
+    metadata: {
+      description: "Blink a short distance toward your cursor.",
+      displayName: "Blink",
+    },
+  },
+  [SpellName.HYPERBEAM]: {
+    name: SpellName.HYPERBEAM,
+    sounds: { cast: SoundName.SLASH },
+    damage: { type: DamageType.PHYSICAL, amount: 12 },
+    knockback: 0,
+    mana: 4,
+    channel: { tick: 150, range: 320, segments: 10 },
+    hitbox: {
+      width: 34,
+      height: 34,
+    },
+    metadata: {
+      description: "Channels a searing beam that scorches everything in its path.",
+      displayName: "Hyperbeam",
     },
   },
   [SpellName.BUTTERFLY_EFFIGY]: {

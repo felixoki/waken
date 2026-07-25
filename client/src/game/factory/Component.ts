@@ -38,6 +38,7 @@ import { WindswayComponent } from "../components/Windsway";
 import { TamableComponent } from "../components/Tamable";
 import { FeedableComponent } from "../components/Feedable";
 import { MaturableComponent } from "../components/Maturable";
+import { LayableComponent } from "../components/Layable";
 
 export class ComponentFactory {
   static create(
@@ -150,6 +151,9 @@ export class ComponentFactory {
           break;
         case ComponentName.MATURABLE:
           comp = new MaturableComponent(entity, component.config);
+          break;
+        case ComponentName.LAYABLE:
+          comp = new LayableComponent(entity, component.config);
           break;
       }
 

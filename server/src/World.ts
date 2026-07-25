@@ -13,6 +13,7 @@ import { PartyStore } from "./stores/Party";
 import { Server } from "socket.io";
 import { ChunkManager } from "./managers/Chunk";
 import { AuthorityManager } from "./managers/Authority";
+import { ZoneManager } from "./managers/Zone";
 import { combat } from "./handlers/combat.js";
 import { handlers } from "./handlers/index.js";
 import { SublevelStore } from "./stores/Sublevel.js";
@@ -27,6 +28,7 @@ export class World {
   public readonly sublevels: SublevelStore;
   public readonly chunks: ChunkManager;
   public readonly authority: AuthorityManager;
+  public readonly zones: ZoneManager;
   public readonly affected: Set<string> = new Set();
   
   public server: Server;
@@ -42,6 +44,7 @@ export class World {
     this.sublevels = new SublevelStore();
     this.chunks = new ChunkManager();
     this.authority = new AuthorityManager();
+    this.zones = new ZoneManager();
 
     this.economy = new EconomyManager(this.items);
   }

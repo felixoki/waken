@@ -102,6 +102,21 @@ export const animations: Partial<
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
+  [EntityName.CHICKEN]: {
+    [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.ROOSTER]: {
+    [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.CHICK]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.EGG]: {
+    [StateName.IDLE]: { frameCount: 1, frameRate: 1, repeat: -1 },
+  },
   [EntityName.FOX]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },

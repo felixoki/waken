@@ -25,7 +25,7 @@ export class Running implements State {
     );
     anim?.play(this.name, entity.facing);
 
-    handlers.move.getVelocity(entity, SPEED_RUNNING);
+    handlers.move.getVelocity(entity, SPEED_RUNNING * entity.speed);
   }
 
   exit(entity: Entity): void {

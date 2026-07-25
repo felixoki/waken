@@ -325,6 +325,39 @@ export const emitters = {
     return { main: emitter, embers };
   },
 
+  reflect: (
+    scene: Scene,
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+  ) => {
+    const emitter = scene.add.particles(fromX, fromY, "particle_circle", {
+      tint: [0x66ccff, 0xaaffff, 0xffffff],
+      alpha: { start: 0.9, end: 0 },
+      scale: { start: 0.35, end: 0.1 },
+      speed: { min: 10, max: 30 },
+      lifespan: 250,
+      frequency: 12,
+      quantity: 2,
+      blendMode: "ADD",
+    });
+    emitter.setDepth(1500);
+
+    scene.tweens.add({
+      targets: emitter,
+      x: toX,
+      y: toY,
+      duration: 160,
+      ease: "Quad.easeIn",
+      onComplete: () => {
+        emitter.stop();
+        emitter.explode(12, toX, toY);
+        scene.time.delayedCall(300, () => emitter.destroy());
+      },
+    });
+  },
+
   leaf: (scene: Scene, x: number, y: number) => {
     const emitter = scene.add.particles(x, y, "particle_leaf", {
       tint: [0x4caf50, 0x81c784, 0xa5d6a7],

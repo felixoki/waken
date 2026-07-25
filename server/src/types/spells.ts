@@ -2,6 +2,7 @@ import { Damage } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { Icon } from "./entities.js";
 import { SoundName } from "./sounds.js";
+import { ZoneName } from "./zones.js";
 
 export enum SpellName {
   SHARD = "shard",
@@ -18,6 +19,23 @@ export enum SpellName {
   BITE = "bite",
   REVIVE = "revive",
   TAME = "tame",
+  GAIN_MOMENTUM = "gain_momentum",
+  REFLECT_DAMAGE = "reflect_damage",
+  HEAL_PARTY = "heal_party",
+  SHIELD = "shield",
+  GREASE = "grease",
+  BLINK = "blink",
+  HYPERBEAM = "hyperbeam",
+}
+
+export enum Target {
+  SELF = "self",
+  PARTY = "party",
+}
+
+export interface Buff {
+  target: Target;
+  effects: [EffectName, number, number?][];
 }
 
 export interface ComboStep {
@@ -45,6 +63,8 @@ export interface SpellConfig {
   mana: number;
   lifesteal?: number;
   effects?: [EffectName, number, number?][];
+  buff?: Buff;
+  zone?: { type: ZoneName; radius: number; duration: number };
   speed?: number;
   range?: number;
   duration?: number;
@@ -55,6 +75,11 @@ export interface SpellConfig {
   };
   combo?: ComboStep[];
   charge?: ChargeConfig;
+  channel?: {
+    tick: number;
+    range: number;
+    segments: number;
+  };
   chargePercent?: number;
   animation?: {
     key: string;

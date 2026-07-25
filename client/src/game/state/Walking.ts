@@ -25,7 +25,7 @@ export class Walking implements State {
     );
     anim?.play(this.name, entity.facing);
 
-    handlers.move.getVelocity(entity, SPEED_WALKING);
+    handlers.move.getVelocity(entity, SPEED_WALKING * entity.speed);
   }
 
   exit(entity: Entity): void {

@@ -7,6 +7,7 @@ import { IlluminatePipeline } from "./pipelines/Illuminate";
 import { AmbiencePipeline } from "./pipelines/Ambience";
 import { VortexPipeline } from "./pipelines/Vortex";
 import { WindPipeline } from "./pipelines/Wind";
+import { BeamPipeline } from "./pipelines/Beam";
 import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
 import { BlacksmithScene } from "./scenes/Blacksmith";
@@ -46,7 +47,7 @@ export const config: Phaser.Types.Core.GameConfig = {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
   backgroundColor: "302929",
@@ -74,6 +75,7 @@ export const config: Phaser.Types.Core.GameConfig = {
         AmbiencePipeline,
       );
       renderer.pipelines.addPostPipeline(PipelineName.VORTEX, VortexPipeline);
+      renderer.pipelines.addPostPipeline(PipelineName.BEAM, BeamPipeline);
       renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
     },
   },
