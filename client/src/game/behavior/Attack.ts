@@ -5,7 +5,7 @@ import { handlers } from "../handlers";
 import { configs } from "@server/configs";
 
 export class AttackBehavior extends Behavior {
-  private target: { id: string; lastPosition: Waypoint | null } = {
+  public target: { id: string; lastPosition: Waypoint | null } = {
     id: "",
     lastPosition: null,
   };
@@ -16,6 +16,7 @@ export class AttackBehavior extends Behavior {
   private lastAttackTime: number = 0;
   private frustrationThreshold: number = 3000;
   private cooldowns = new Map<StateName, number>();
+  public alert = { active: false, time: 0, duration: 800 };
   private stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
@@ -38,6 +39,7 @@ export class AttackBehavior extends Behavior {
     this.recalculation.last = 0;
     this.lastAttackTime = 0;
     this.cooldowns.clear();
+    this.alert.active = false;
   }
 
   update(entity: Entity): Partial<Input> {
@@ -45,21 +47,22 @@ export class AttackBehavior extends Behavior {
 
     const target = entity.scene.managers.players.get(this.target.id);
 
-    if (!target) {
-      this.completed = true;
-      return {};
-    }
-
-    const dead = target.state === StateName.DEAD;
+    if (!target || target.state === StateName.DEAD)
+      return handlers.behavior.lookAround(entity, this);
 
     if (!this.target.lastPosition)
       this.target.lastPosition = { x: target.x, y: target.y };
 
     const now = entity.scene.time.now;
 
-    const canSee =
-      !dead &&
-      handlers.vision.canSee(entity.scene, entity, target, 600, Math.PI / 2, 7);
+    const canSee = handlers.vision.canSee(
+      entity.scene,
+      entity,
+      target,
+      600,
+      Math.PI / 2,
+      7,
+    );
 
     if (canSee) {
       this.target.lastPosition = { x: target.x, y: target.y };
@@ -254,5 +257,6 @@ export class AttackBehavior extends Behavior {
     this.recalculation.last = 0;
     this.lastAttackTime = 0;
     this.cooldowns.clear();
+    this.alert.active = false;
   }
 }

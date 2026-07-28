@@ -1,5 +1,6 @@
 import {
   ComponentName,
+  EffectName,
   EntityName,
   Event,
   Slot,
@@ -67,6 +68,9 @@ export const player = {
   swap: (data: PlayerConfig, main: MainScene): void => {
     const current = main.managers.players.player;
     if (!current) return;
+
+    if (current.hasEffect(EffectName.DRAGON))
+      current.removeEffect(EffectName.DRAGON);
 
     const prev = {
       inventory: current

@@ -38,8 +38,13 @@ export class DragonEffect extends Effect {
     hotbar.setSlots(this._slots());
     hotbar.select(0);
 
-    if ((this.entity as Player).isControllable)
+    if ((this.entity as Player).isControllable) {
       EventBus.emit(Event.TRANSFORM_TOGGLE, true);
+      EventBus.emit(Event.EFFECT_APPLY, {
+        name: this.name,
+        expiresAt: Date.now() + DRAGON_FORM_DURATION,
+      });
+    }
 
     this.timer = this.entity.scene.time.delayedCall(DRAGON_FORM_DURATION, () =>
       this.entity.removeEffect(EffectName.DRAGON),
@@ -62,8 +67,10 @@ export class DragonEffect extends Effect {
     hotbar?.setSlots(this.saved);
     this.saved = null;
 
-    if ((this.entity as Player).isControllable)
+    if ((this.entity as Player).isControllable) {
       EventBus.emit(Event.TRANSFORM_TOGGLE, false);
+      EventBus.emit(Event.EFFECT_REMOVE, this.name);
+    }
   }
 
   private _slots(): (Slot | null)[] {

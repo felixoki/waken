@@ -210,9 +210,11 @@ export const spells: Record<SpellName, SpellHandler> = {
     const y = entity.y + Math.sin(angle) * dist;
 
     vfx.emitters.puff(entity.scene, entity.x, entity.y);
-    entity.setPosition(x, y);
 
-    if ((entity as Player).isControllable) entity.scene.managers.camera.dash();
+    if ((entity as Player).isControllable) {
+      entity.setPosition(x, y);
+      entity.scene.managers.camera.dash();
+    }
 
     vfx.emitters.puff(entity.scene, x, y);
   },

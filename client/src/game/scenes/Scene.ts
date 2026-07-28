@@ -2,7 +2,9 @@ import { PhysicsManager } from "../managers/Physics";
 import { TileManager } from "../managers/Tile";
 import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
-import { Event, PipelineName } from "@server/types";
+import { Event, MapName, PipelineName } from "@server/types";
+import { configs } from "@server/configs";
+import { AmbiencePipeline } from "../pipelines/Ambience";
 import type { MainScene } from "./Main";
 import { Player } from "../Player";
 
@@ -12,6 +14,8 @@ export class Scene extends Phaser.Scene {
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
+  
+  private ambience?: AmbiencePipeline;
 
   get managers() {
     const main = this.scene.get("main") as MainScene;
@@ -47,6 +51,13 @@ export class Scene extends Phaser.Scene {
     if (!this.cameras.main.hasPostPipeline)
       this.cameras.main.setPostPipeline(PipelineName.AMBIENCE);
 
+    this.ambience = this.cameras.main.getPostPipeline(
+      AmbiencePipeline,
+    ) as AmbiencePipeline;
+
+    const ambience = configs.maps[this.scene.key as MapName]?.ambience;
+    if (this.ambience && ambience) this.ambience.setBase(ambience);
+
     this.game.events.off(Event.CAMERA_FOLLOW, this._follow, this);
     this.game.events.on(Event.CAMERA_FOLLOW, this._follow, this);
   }
@@ -71,6 +82,9 @@ export class Scene extends Phaser.Scene {
 
     const { width, height } = this.cameras.main;
     this.light.setSize(width, height);
+
+    const cam = this.cameras.main;
+    this.ambience?.setCamera(cam.scrollX, cam.scrollY, cam.zoom);
   }
 
   shutdown(): void {

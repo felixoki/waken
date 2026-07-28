@@ -12,7 +12,7 @@ export class BeamPipeline extends PostFXPipeline {
   public endY: number = 0;
   public thickness: number = 34;
   public core: [number, number, number] = [1, 1, 1];
-  public edge: [number, number, number] = [1, 0.28, 0.32];
+  public edge: [number, number, number] = [0.28, 0.55, 1.0];
 
   constructor(game: Phaser.Game) {
     super({

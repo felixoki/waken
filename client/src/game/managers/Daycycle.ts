@@ -1,5 +1,6 @@
 import {
   AmbienceConfig,
+  AmbienceLayer,
   ComponentName,
   MapName,
   PipelineName,
@@ -12,7 +13,7 @@ import { PHASE_TRANSITION_DURATION } from "@server/globals";
 import { LightComponent } from "../components/Light";
 import { GlimmerComponent } from "../components/Glimmer";
 
-export class AmbienceManager {
+export class DaycycleManager {
   private scene: MainScene;
   private current: TimePhase | null = null;
   private ambientColors = new Map<
@@ -105,22 +106,30 @@ export class AmbienceManager {
   }
 
   private _transitionTo(pipeline: AmbiencePipeline, config: AmbienceConfig) {
+    const mod = pipeline.layer(AmbienceLayer.DAYCYCLE);
+
+    if (mod.coolness == null) {
+      this._apply(pipeline, config);
+      return;
+    }
+
     this.scene.tweens.add({
-      targets: pipeline,
+      targets: mod,
       coolness: config.coolness,
       saturation: config.saturation,
       contrast: config.contrast,
-      "vignette.strength": config.vignette.strength,
+      vignette: config.vignette.strength,
       duration: PHASE_TRANSITION_DURATION,
       ease: "Sine.easeInOut",
     });
   }
 
   private _apply(pipeline: AmbiencePipeline, config: AmbienceConfig) {
-    pipeline.setCoolness(config.coolness);
-    pipeline.setSaturation(config.saturation);
-    pipeline.setContrast(config.contrast);
-    pipeline.setVignette(pipeline.vignette.radius, config.vignette.strength);
+    const mod = pipeline.layer(AmbienceLayer.DAYCYCLE);
+    mod.coolness = config.coolness;
+    mod.saturation = config.saturation;
+    mod.contrast = config.contrast;
+    mod.vignette = config.vignette.strength;
   }
 
   private _scaleLights(multiplier: number, animate: boolean) {
@@ -128,8 +137,10 @@ export class AmbienceManager {
 
     for (const [_, entity] of entities) {
       const light = entity.getComponent<LightComponent>(ComponentName.LIGHT);
+      
       if (light) {
         const target = light.intensity * multiplier;
+
         if (animate)
           this.scene.tweens.add({
             targets: light.light,
@@ -141,8 +152,10 @@ export class AmbienceManager {
       }
 
       const glimmer = entity.getComponent<GlimmerComponent>(ComponentName.GLIMMER);
+
       if (glimmer) {
         const target = glimmer.intensity * multiplier;
+
         if (animate)
           this.scene.tweens.add({
             targets: glimmer.light,

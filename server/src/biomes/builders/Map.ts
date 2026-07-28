@@ -442,21 +442,15 @@ export class MapBuilder {
         const generator = new EntranceGenerator(this.config, this.seed, def);
 
         for (let n = 0; n < (def.count ?? 1); n++) {
-          const entrance = generator.generate(
-            terrain,
-            firstgids,
-            spawn,
-            n,
-            taken,
-          );
+          const entrance = generator.generate(terrain, spawn, n, taken);
 
           if (!entrance) continue;
 
           taken.push(entrance.origin);
 
           const pad = 1;
-          const fw = def.facade[0].length;
-          const fh = def.facade.length;
+          const fw = def.width;
+          const fh = def.height;
           const minX = (entrance.origin.x - pad) * tileWidth;
           const maxX = (entrance.origin.x + fw + pad) * tileWidth;
           const minY = (entrance.origin.y - pad) * tileHeight;
@@ -467,17 +461,6 @@ export class MapBuilder {
             if (e.x >= minX && e.x < maxX && e.y >= minY && e.y < maxY)
               entities.splice(i, 1);
           }
-
-          tiledLayers.push(
-            handlers.generation.createLayer(
-              layerId++,
-              "entrance",
-              width,
-              height,
-              entrance.layer,
-              [{ name: "collides", type: "bool", value: true }],
-            ),
-          );
 
           entities.push(...entrance.entities);
         }

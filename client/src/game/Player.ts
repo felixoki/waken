@@ -101,7 +101,10 @@ export class Player extends Entity {
         input.target = this.target;
       } else this.target = input.target;
 
+      if (remoteInput) this.setPosition(input.x, input.y);
+
       this.states?.get(this.state)?.update(this);
+
       if (this.isControllable && this._changed(input)) {
         this.lastInput = input;
         this.scene.game.events.emit(Event.PLAYER_INPUT, input);

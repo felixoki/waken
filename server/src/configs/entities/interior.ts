@@ -15,10 +15,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
-          height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          width: 24,
+          height: 20,
+          offsetX: 10,
+          offsetY: 16,
           pushable: false,
         },
       },
@@ -111,10 +111,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
-          height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          width: 32,
+          height: 10,
+          offsetX: 8,
+          offsetY: 20,
           pushable: false,
         },
       },
@@ -175,10 +175,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
-          height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          width: 9,
+          height: 6,
+          offsetX: 10,
+          offsetY: 8,
           pushable: false,
         },
       },
@@ -205,10 +205,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
-          height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          width: 20,
+          height: 10,
+          offsetX: 10,
+          offsetY: 14,
           pushable: false,
         },
       },
@@ -236,10 +236,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
-          height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          width: 32,
+          height: 20,
+          offsetX: 22,
+          offsetY: 32,
           pushable: false,
         },
       },
@@ -269,10 +269,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
+          width: 28,
           height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          offsetX: 16,
+          offsetY: 20,
           pushable: false,
         },
       },
@@ -300,9 +300,9 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
+          width: 34,
           height: 12,
-          offsetX: 28,
+          offsetX: 6,
           offsetY: 24,
           pushable: false,
         },
@@ -331,9 +331,9 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
+          width: 56,
           height: 12,
-          offsetX: 28,
+          offsetX: 12,
           offsetY: 24,
           pushable: false,
         },
@@ -1035,10 +1035,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
+          width: 24,
           height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          offsetX: 12,
+          offsetY: 12,
           pushable: false,
         },
       },
@@ -1071,10 +1071,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
+          width: 24,
           height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          offsetX: 12,
+          offsetY: 12,
           pushable: false,
         },
       },
@@ -1094,7 +1094,6 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
-
   [EntityName.TABLE3]: {
     facing: Direction.DOWN,
     moving: [],
@@ -1105,10 +1104,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 8,
+          width: 24,
           height: 12,
-          offsetX: 28,
-          offsetY: 24,
+          offsetX: 12,
+          offsetY: 12,
           pushable: false,
         },
       },

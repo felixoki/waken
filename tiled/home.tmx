@@ -5,6 +5,118 @@
  </editorsettings>
  <tileset firstgid="1" name="village_home_walls_floor" tilewidth="16" tileheight="16" tilecount="176" columns="11">
   <image source="../client/public/assets/sprites/village_home_walls_floor.png" width="176" height="256"/>
+  <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="6" width="16" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="11">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="13">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="22">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="24">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="25">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="26">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="33">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="34">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="36">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.0026034" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="37">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="47">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16"/>
+    <object id="2" x="10" y="6" width="6" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="48">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="16"/>
+    <object id="2" x="0" y="6" width="6" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="67">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="68">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="69">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="74">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="75">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="100">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="101">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="139">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="6" width="13" height="10"/>
+   </objectgroup>
+  </tile>
+  <tile id="141">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="3" y="6" width="13" height="10"/>
+   </objectgroup>
+  </tile>
  </tileset>
  <tileset firstgid="177" name="village_home_interior" tilewidth="16" tileheight="16" tilecount="378" columns="14">
   <image source="../client/public/assets/sprites/village_home_interior.png" width="224" height="432"/>
@@ -44,6 +156,9 @@
 </data>
  </layer>
  <layer id="1" name="walls" width="16" height="13">
+  <properties>
+   <property name="collides" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 134,135,135,135,135,135,135,135,135,135,135,135,135,135,135,136,
 145,15,24,24,24,24,24,24,24,19,18,24,24,24,16,147,
@@ -52,8 +167,8 @@
 145,14,0,0,0,0,0,0,0,12,14,0,0,0,12,147,
 145,14,0,0,0,0,0,0,0,12,48,2,2,2,49,147,
 145,14,0,0,0,0,0,0,0,23,24,24,24,24,16,147,
-145,14,0,0,0,0,0,0,0,34,69,70,71,72,27,147,
-145,14,0,0,0,0,0,0,0,45,80,81,82,83,38,147,
+145,14,0,0,0,0,0,0,0,34,69,70,75,76,27,147,
+145,14,0,0,0,0,0,0,0,45,80,81,86,87,38,147,
 145,14,0,0,0,0,0,0,0,0,0,0,0,0,12,147,
 145,14,0,0,0,0,0,0,0,0,0,0,0,0,12,147,
 145,48,2,2,2,2,2,2,2,2,140,141,142,2,49,147,

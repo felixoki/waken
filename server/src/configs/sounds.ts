@@ -121,6 +121,28 @@ export const sounds = {
       variants: ["shard_hit1", "shard_hit2", "shard_hit3"],
     },
 
+    [SoundName.BLINK]: {
+      volume: 0.6,
+      folder: "spells",
+    },
+    [SoundName.FIRE_BREATH]: {
+      volume: 0.6,
+      folder: "spells",
+      variants: ["breath_fire1", "breath_fire2", "breath_fire3"],
+    },
+    [SoundName.HURT_SHADOWS]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.LIGHTNING_STRIKE]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.SHIELD]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+
     [SoundName.ORC_IDLE]: {
       volume: 0.5,
       folder: "creatures",
@@ -152,6 +174,16 @@ export const sounds = {
     [SoundName.BOAR_SLASH]: {
       volume: 0.5,
       folder: "animals",
+    },
+    [SoundName.CHICKEN_IDLE]: {
+      volume: 0.5,
+      folder: "animals",
+      variants: [
+        "chicken_idle1",
+        "chicken_idle2",
+        "chicken_idle3",
+        "chicken_idle4",
+      ],
     },
     [SoundName.GOAT_IDLE]: {
       volume: 0.5,

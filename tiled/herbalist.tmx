@@ -168,6 +168,21 @@
     <object id="1" x="0" y="0" width="14" height="16"/>
    </objectgroup>
   </tile>
+  <tile id="41">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="42">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="43">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
   <tile id="46">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="16" height="16"/>
@@ -342,6 +357,14 @@
  <tileset firstgid="501" name="village_herbalist_boiler" tilewidth="16" tileheight="16" tilecount="72" columns="24">
   <image source="../client/public/assets/sprites/village_herbalist_boiler.png" width="384" height="48"/>
   <tile id="0">
+   <objectgroup draworder="index" id="3">
+    <object id="2" x="5" y="4" width="11" height="12">
+     <properties>
+      <property name="clearance" type="int" value="500"/>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+   </objectgroup>
    <animation>
     <frame tileid="0" duration="100"/>
     <frame tileid="2" duration="100"/>
@@ -358,6 +381,14 @@
    </animation>
   </tile>
   <tile id="1">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="4" width="9" height="12">
+     <properties>
+      <property name="clearance" type="int" value="500"/>
+      <property name="rendersAbove" type="bool" value="true"/>
+     </properties>
+    </object>
+   </objectgroup>
    <animation>
     <frame tileid="1" duration="100"/>
     <frame tileid="3" duration="100"/>
@@ -374,6 +405,9 @@
    </animation>
   </tile>
   <tile id="24">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="5.0026" y="0" width="10.9974" height="8"/>
+   </objectgroup>
    <animation>
     <frame tileid="24" duration="100"/>
     <frame tileid="26" duration="100"/>
@@ -390,6 +424,9 @@
    </animation>
   </tile>
   <tile id="25">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="9" height="8"/>
+   </objectgroup>
    <animation>
     <frame tileid="25" duration="100"/>
     <frame tileid="27" duration="100"/>
@@ -564,6 +601,9 @@
 </data>
  </layer>
  <layer id="4" name="boiler" width="16" height="13">
+  <properties>
+   <property name="collides" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

@@ -77,6 +77,8 @@ export const config: Phaser.Types.Core.GameConfig = {
       renderer.pipelines.addPostPipeline(PipelineName.VORTEX, VortexPipeline);
       renderer.pipelines.addPostPipeline(PipelineName.BEAM, BeamPipeline);
       renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
+
+      game.sound.pauseOnBlur = false;
     },
   },
 };

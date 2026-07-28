@@ -31,7 +31,7 @@ export const sublevel = {
 
     if (!pending) {
       pending = handlers.generation.start(config.biome, entranceId);
-      world.sublevels.setInstance(entranceId, pending);
+      world.sublevels.setInstance(entranceId, pending, map);
     }
 
     const biome = await pending;
@@ -168,7 +168,9 @@ export const sublevel = {
       entranceId,
     );
 
-    if (remaining === 0) {
+    const isPersistent = configs.maps[from]?.isPersistent ?? false;
+
+    if (remaining === 0 && !isPersistent) {
       const ids = world.chunks.getEntitiesByPrefix(`${from}:${entranceId}`);
 
       for (const id of ids)
@@ -189,5 +191,24 @@ export const sublevel = {
       undefined,
       entranceId,
     );
+  },
+
+  teardown: (
+    entityIds: string[],
+    socket: Socket | null,
+    io: Server,
+    world: World,
+  ) => {
+    for (const entityId of entityIds) {
+      const subMap = world.sublevels.getInstanceMap(entityId);
+      if (!subMap) continue;
+
+      const subIds = world.chunks.getEntitiesByPrefix(`${subMap}:${entityId}`);
+
+      for (const subId of subIds)
+        handlers.entity.remove(subId, Event.ENTITY_DESTROY, socket, io, world);
+
+      world.sublevels.removeInstance(entityId);
+    }
   },
 };

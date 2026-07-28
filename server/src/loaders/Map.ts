@@ -1,7 +1,13 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
-import { EntityConfig, EntityName, MapName, TiledMap } from "../types/index.js";
+import {
+  EntityConfig,
+  EntityName,
+  Item,
+  MapName,
+  TiledMap,
+} from "../types/index.js";
 import { randomUUID } from "crypto";
 import { configs } from "../configs/index.js";
 import { MAX_HEALTH } from "../globals.js";
@@ -51,6 +57,23 @@ export class MapLoader {
       y: obj.y,
       createdAt: Date.now(),
       isLocked: false,
+      loot: this._parseContents(obj),
     };
+  }
+
+  private _parseContents(obj: any): (Item & { chance: number })[] | undefined {
+    const prop = obj.properties?.find((p: any) => p.name === "contents");
+    if (!prop?.value) return undefined;
+
+    const items = JSON.parse(prop.value) as {
+      name: EntityName;
+      quantity: number;
+    }[];
+
+    return items.map((item) => ({
+      ...item,
+      stackable: configs.entities[item.name]?.metadata?.stackable ?? false,
+      chance: 1,
+    }));
   }
 }

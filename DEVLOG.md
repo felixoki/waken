@@ -667,23 +667,33 @@
 - Add chicken, rooster, chick and egg ✅
 - Refactor dungeon loot and add new equipment ✅
 
+#### 26.7.2026
+
+- Entities should do a proper look around after killing a player ✅
+- Sound queue doesn't reset ✅
+- Add spell icons and sound effects ✅
+
+#### 27.7.2026
+
+- Finetune static entity bodies ✅
+- Refactor dungeon and cave entrance ✅
+- Add dungeon ambience ✅
+
+#### 28.7.2026
+
+- Add items parsing for Tiled maps ✅
+- Hotbar doesn't reset after transition in dragon form ✅
+- Fix blink spell arbitrary positions ✅
+- Teardown sublevels and add persistency ✅
+
 ### In progress
 
-- Add dungeon entrance tiles
 - Add voices ambience sound
-- Add higher detail amount in the forest
-- Entities should do a proper look around after killing a player
-- Add missing sound effects to animals
-- Refactor cave design properly
 
 ### Bugs
 
 🔴 High
 
-- Projectiles don't respect collisions
-- Hotbar doesn't reset after transition in dragon form
-- Sound queue doesn't reset
-- Players can move during transitions
 
 🔵 Low
 
@@ -693,9 +703,9 @@
 
 ### Backlog
 
-- Building ⭐
 - Weather ⭐
 - Cooking ⭐
+- Building ⭐
 - Relationships ⭐
 - Ideas
   - Remove among player collisions

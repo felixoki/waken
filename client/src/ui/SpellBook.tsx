@@ -52,8 +52,8 @@ export function SpellBook() {
       ref={setNodeRef}
       className={`bg-black/25 rounded-lg p-4 ${isOver ? "ring-2 ring-blue-400" : ""}`}
     >
-      <h3 className="text-white mb-2">Spells</h3>
-      <ul className="flex flex-wrap gap-1">
+      <h3 className="text-white mb-2">Spellbook</h3>
+      <ul className="flex flex-wrap gap-1 max-w-135">
         {spells.map((spell, i) => {
           const data: DragData = {
             zone: SlotZone.SPELLBOOK,

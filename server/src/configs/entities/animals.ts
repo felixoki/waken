@@ -489,6 +489,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.DAMAGEABLE },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.CHICKEN_IDLE, interval: [5000, 12000] },
+      },
+      {
         name: ComponentName.TAMABLE,
         config: { entity: EntityName.CHICKEN },
       },
@@ -530,6 +534,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.CHICKEN_IDLE, interval: [5000, 12000] },
+      },
       {
         name: ComponentName.TAMABLE,
         config: { entity: EntityName.ROOSTER },

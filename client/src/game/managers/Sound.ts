@@ -159,6 +159,8 @@ export class SoundManager {
       });
 
       next.once("complete", () => {
+        next.destroy();
+        if (this.current?.sound !== next) return;
         this.current = null;
         this.queue.index = (index + 1) % this.queue.music.length;
         this.play.queue(this.queue.index);

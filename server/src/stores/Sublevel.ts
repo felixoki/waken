@@ -5,6 +5,7 @@ type Return = { entranceId: string; map: MapName; x: number; y: number };
 
 export class SublevelStore {
   private instances: Map<string, Promise<GeneratedMap | null>> = new Map();
+  private maps: Map<string, MapName> = new Map();
   private members: Map<string, Set<string>> = new Map();
   private returns: Map<string, Return> = new Map();
 
@@ -12,13 +13,23 @@ export class SublevelStore {
     return this.instances.get(entranceId);
   }
 
-  setInstance(entranceId: string, gen: Promise<GeneratedMap | null>): void {
+  getInstanceMap(entranceId: string): MapName | undefined {
+    return this.maps.get(entranceId);
+  }
+
+  setInstance(
+    entranceId: string,
+    gen: Promise<GeneratedMap | null>,
+    map: MapName,
+  ): void {
     this.instances.set(entranceId, gen);
+    this.maps.set(entranceId, map);
     this.members.set(entranceId, new Set());
   }
 
   removeInstance(entranceId: string): void {
     this.instances.delete(entranceId);
+    this.maps.delete(entranceId);
     this.members.delete(entranceId);
   }
 

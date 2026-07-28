@@ -302,11 +302,9 @@ export interface RoomConfig {
   };
 }
 
-export type FacadeCell = readonly [string, number] | null;
-
 export interface EntranceDef {
-  facade: readonly (readonly FacadeCell[])[];
-  door: { col: number; row: number };
+  width: number;
+  height: number;
   entity: EntityName;
   guards?: EntityName;
   minDistance?: number;

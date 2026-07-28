@@ -121,7 +121,23 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.FISHING_ROD]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 20, end: 21 },
+            { row: 6, start: 20, end: 21 },
+          ],
+        },
+        key: "fishing_rod_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {

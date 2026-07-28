@@ -1,5 +1,6 @@
 import { BiomeName } from "./generation";
 import { SoundConfig } from "./sounds";
+import { MapAmbienceConfig } from "./ambience";
 
 export enum MapName {
   VILLAGE = "village",
@@ -23,9 +24,11 @@ export interface MapConfig {
   json: string;
   isIndoor: boolean;
   isInstanced: boolean;
+  isPersistent?: boolean;
   isPartyInstance?: boolean;
   spritesheets: Spritesheet[];
   sound?: SoundConfig;
+  ambience?: MapAmbienceConfig;
 }
 
 export interface Spritesheet {

@@ -1299,6 +1299,13 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 16,
         asTileset: true,
       },
+      {
+        key: "entrances",
+        file: "entrances.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
     ],
   },
   [MapName.DUNGEON]: {
@@ -1308,6 +1315,13 @@ export const maps: Record<MapName, MapConfig> = {
     isIndoor: true,
     isInstanced: true,
     isPartyInstance: true,
+    ambience: {
+      brightness: 0.45,
+      coolness: 0.9,
+      vignette: { radius: 0.3, strength: 0.6 },
+      fog: { color: [0.5, 0.55, 0.68], strength: 0.4, speed: 0.04, scale: 2.5 },
+      eclipse: { radius: 0.34, softness: 0.3, strength: 0.92 },
+    },
     sound: {
       music: [MusicName.THE_DEPTHS],
       ambience: [AmbienceName.CANALS],
@@ -1353,6 +1367,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "",
     isIndoor: true,
     isInstanced: true,
+    isPersistent: true,
     spritesheets: [
       ...player,
       ...creatures,

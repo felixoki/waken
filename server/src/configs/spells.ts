@@ -94,6 +94,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Rallies your party, everyone hits harder and moves faster for a time.",
       displayName: "Gain momentum",
+      icon: { spritesheet: "icons2", row: 21, col: 9 },
     },
   },
   [SpellName.REFLECT_DAMAGE]: {
@@ -110,6 +111,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Wraps you in a shard ward, halving incoming damage and flinging part of it back.",
       displayName: "Reflect damage",
+      icon: { spritesheet: "icons2", row: 21, col: 6 },
     },
   },
   [SpellName.HEAL_PARTY]: {
@@ -126,11 +128,12 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Mends your party over time, weaving dream light that closes wounds.",
       displayName: "Heal party",
+      icon: { spritesheet: "icons8", row: 21, col: 15 },
     },
   },
   [SpellName.SHIELD]: {
     name: SpellName.SHIELD,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.SHIELD },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 25,
@@ -142,6 +145,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Conjures a ward that absorbs a burst of damage before it shatters.",
       displayName: "Shield",
+      icon: { spritesheet: "icons2", row: 21, col: 5 },
     },
   },
   [SpellName.ILLUMINATE]: {
@@ -155,11 +159,12 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Casts a bright light that illuminates the surroundings.",
       displayName: "Illuminate",
+      icon: { spritesheet: "icons8", row: 21, col: 6 },
     },
   },
   [SpellName.HURT_SHADOWS]: {
     name: SpellName.HURT_SHADOWS,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.HURT_SHADOWS },
     damage: { type: DamageType.ILLUMINATED, amount: 90 },
     knockback: 0,
     mana: 30,
@@ -171,6 +176,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Damages all shadow enemies in a wide area around you.",
       displayName: "Hurt shadows",
+      icon: { spritesheet: "icons8", row: 21, col: 9 },
     },
   },
   [SpellName.METEOR_SHOWER]: {
@@ -213,11 +219,12 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Coats enemies in oil and weakens them to fire.",
       displayName: "Grease",
+      icon: { spritesheet: "icons8", row: 21, col: 2 },
     },
   },
   [SpellName.BLINK]: {
     name: SpellName.BLINK,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.BLINK },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 15,
@@ -226,6 +233,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Blink a short distance toward your cursor.",
       displayName: "Blink",
+      icon: { spritesheet: "icons5", row: 14, col: 18 },
     },
   },
   [SpellName.HYPERBEAM]: {
@@ -242,6 +250,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Channels a searing beam that scorches everything in its path.",
       displayName: "Hyperbeam",
+      icon: { spritesheet: "icons8", row: 21, col: 13 },
     },
   },
   [SpellName.BUTTERFLY_EFFIGY]: {
@@ -263,7 +272,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.LIGHTNING_STRIKE]: {
     name: SpellName.LIGHTNING_STRIKE,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.LIGHTNING_STRIKE },
     damage: { type: DamageType.PHYSICAL, amount: 150 },
     knockback: 120,
     mana: 90,
@@ -314,6 +323,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Drains the life from all nearby creatures, healing you for the damage dealt.",
       displayName: "Absorb life",
+      icon: { spritesheet: "icons2", row: 21, col: 15 },
     },
   },
   [SpellName.DRAGON_FORM]: {
@@ -338,7 +348,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.FIRE_BREATH]: {
     name: SpellName.FIRE_BREATH,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.FIRE_BREATH },
     damage: { type: DamageType.BURNING, amount: 25 },
     knockback: 40,
     mana: 0,

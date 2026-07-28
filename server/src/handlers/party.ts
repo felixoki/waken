@@ -83,6 +83,8 @@ export const party = {
         `${map}:${data.id}`,
       );
 
+      handlers.sublevel.teardown(entityIds, socket, io, world);
+
       for (const entityId of entityIds)
         handlers.entity.remove(
           entityId,
@@ -400,6 +402,8 @@ export const party = {
       const entityIds = world.chunks.getEntitiesByPrefix(
         `${prevMap}:${data.id}`,
       );
+
+      handlers.sublevel.teardown(entityIds, socket, io, world);
 
       for (const entityId of entityIds)
         handlers.entity.remove(

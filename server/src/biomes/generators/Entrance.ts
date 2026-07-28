@@ -20,61 +20,44 @@ export class EntranceGenerator {
 
   generate(
     terrain: TerrainName[],
-    firstgids: Map<string, number>,
     spawn: { x: number; y: number },
     salt = 0,
     taken: { x: number; y: number }[] = [],
   ): {
-    layer: number[];
     entities: Entity[];
     origin: { x: number; y: number };
   } | null {
-    const { width, tileWidth, tileHeight } = this.config;
-    const { facade, door } = this.def;
-    const gen = handlers.generation;
+    const { tileWidth, tileHeight } = this.config;
+    const { width: fw, height: fh, entity } = this.def;
 
     const origin = this._origin(terrain, spawn, salt, taken);
     if (!origin) return null;
 
-    const layer = new Array(width * this.config.height).fill(0);
-
-    for (let row = 0; row < facade.length; row++)
-      for (let col = 0; col < facade[row].length; col++) {
-        const cell = facade[row][col];
-        if (!cell) continue;
-
-        const gid = firstgids.get(cell[0]);
-        if (gid === undefined) continue;
-
-        const index = gen.toIndex(origin.x + col, origin.y + row, width);
-        layer[index] = gid + cell[1];
-      }
-
     const entities: Entity[] = [];
 
-    const offset = configs.entities[this.def.entity]?.offset;
-    const doorX = (origin.x + door.col + 1) * tileWidth;
-    const doorY = (origin.y + door.row + 1) * tileHeight;
+    const offset = configs.entities[entity]?.offset;
+    const centerX = (origin.x + fw / 2) * tileWidth;
+    const centerY = (origin.y + fh / 2) * tileHeight;
 
     entities.push({
-      name: this.def.entity,
-      x: doorX + (offset?.x ?? 0),
-      y: doorY + (offset?.y ?? 0),
+      name: entity,
+      x: centerX + (offset?.x ?? 0),
+      y: centerY + (offset?.y ?? 0),
     });
 
     if (this.def.guards) {
-      const guardY = (origin.y + facade.length) * tileHeight;
+      const guardY = (origin.y + fh) * tileHeight;
       const guards = [
         { x: (origin.x - 1) * tileWidth, y: guardY },
-        { x: (origin.x + facade[0].length) * tileWidth, y: guardY },
-        { x: doorX, y: guardY + 2 * tileHeight },
+        { x: (origin.x + fw) * tileWidth, y: guardY },
+        { x: centerX, y: guardY + 2 * tileHeight },
       ];
 
       for (const g of guards)
         entities.push({ name: this.def.guards, x: g.x, y: g.y });
     }
 
-    return { layer, entities, origin };
+    return { entities, origin };
   }
 
   private _origin(
@@ -86,8 +69,8 @@ export class EntranceGenerator {
     const { width, height, tileWidth, tileHeight } = this.config;
     const gen = handlers.generation;
 
-    const fw = this.def.facade[0].length;
-    const fh = this.def.facade.length;
+    const fw = this.def.width;
+    const fh = this.def.height;
     const margin = 3;
     const min = this.def.minDistance ?? 40;
     const spacing = this.def.spacing ?? 16;

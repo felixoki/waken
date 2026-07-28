@@ -11,13 +11,18 @@ export function Seeds() {
   useEffect(() => {
     const sync = (next: (ItemInterface | null)[]) => setItems(next);
     const toggle = () => setIsOpen((prev) => !prev);
+    const transform = (active: boolean) => {
+      if (active) setIsOpen(false);
+    };
 
     EventBus.on(Event.INVENTORY_UPDATE, sync);
     EventBus.on(Event.UI_TOGGLE, toggle);
+    EventBus.on(Event.TRANSFORM_TOGGLE, transform);
 
     return () => {
       EventBus.off(Event.INVENTORY_UPDATE, sync);
       EventBus.off(Event.UI_TOGGLE, toggle);
+      EventBus.off(Event.TRANSFORM_TOGGLE, transform);
     };
   }, []);
 

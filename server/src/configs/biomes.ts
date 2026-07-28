@@ -11,40 +11,31 @@ import {
 } from "../types/generation";
 import { groundStamps, grassStamps, flowerStamps } from "./details";
 
-/**
- * Shared chest loot pool. Rolled per-entry by `chance` when a chest is first
- * opened. Features resources, consumables, the new equipment and spell pages.
- * Equipment and spell pages are non-stackable so they never merge in a slot.
- */
 const CHEST_LOOT: (Item & { chance: number })[] = [
-  /** Resources & consumables */
-  { name: EntityName.WOOD, quantity: 3, stackable: true, chance: 0.6 },
+  { name: EntityName.WOOD, quantity: 5, stackable: true, chance: 0.75 },
   { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.5 },
   { name: EntityName.QUARTZ1, quantity: 5, stackable: true, chance: 0.5 },
-  { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.4 },
-  { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.4 },
+  { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.5 },
+  { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.5 },
 
-  /** Equipment */
-  { name: EntityName.AMULET1, quantity: 1, stackable: false, chance: 0.14 },
-  { name: EntityName.RING1, quantity: 1, stackable: false, chance: 0.14 },
-  { name: EntityName.RING2, quantity: 1, stackable: false, chance: 0.12 },
-  { name: EntityName.RING3, quantity: 1, stackable: false, chance: 0.12 },
-  { name: EntityName.AMULET2, quantity: 1, stackable: false, chance: 0.12 },
-  { name: EntityName.BOOTS1, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.AMULET1, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.RING1, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.RING2, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.RING3, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.AMULET2, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.BOOTS1, quantity: 1, stackable: false, chance: 0.05 },
   { name: EntityName.HARE_FOOT, quantity: 1, stackable: false, chance: 0.1 },
   { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.08 },
-  { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.08 },
+  { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.05 },
+  { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.05 },
 
-  /** Spell pages */
-  { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.06 },
-  { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.06 },
-  { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.05 },
-  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.06 },
-  { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.06 },
-  { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.06 },
+  { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.025 },
+  { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.05 },
+  { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.025 },
+  { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
+  { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_ABSORB_LIFE, quantity: 1, stackable: false, chance: 0.05 },
-  { name: EntityName.SPELL_PAGE_DRAGON_FORM, quantity: 1, stackable: false, chance: 0.03 },
 ];
 
 export const levels: { depth: number; map: MapName; biome?: BiomeName }[] = [

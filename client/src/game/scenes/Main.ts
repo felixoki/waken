@@ -41,7 +41,7 @@ import { DestructibleComponent } from "../components/Destructible";
 import { GrowableComponent } from "../components/Growable";
 import { TamableComponent } from "../components/Tamable";
 import { vfx } from "../vfx";
-import { AmbienceManager } from "../managers/Ambience";
+import { DaycycleManager } from "../managers/Daycycle";
 import { ChunkManager } from "../managers/Chunk";
 import { EffectFactory } from "../factory/Effect";
 import { SoundManager } from "../managers/Sound";
@@ -53,7 +53,7 @@ import { Scene } from "./Scene";
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
   public entityManager!: EntityManager;
-  public ambienceManager!: AmbienceManager;
+  public daycycleManager!: DaycycleManager;
   public chunkManager!: ChunkManager;
   public soundManager!: SoundManager;
   public socketManager = SocketManager;
@@ -66,7 +66,7 @@ export class MainScene extends Phaser.Scene {
     return {
       players: this.playerManager,
       entities: this.entityManager,
-      ambience: this.ambienceManager,
+      daycycle: this.daycycleManager,
       socket: this.socketManager,
       chunks: this.chunkManager,
       sound: this.soundManager,
@@ -82,7 +82,7 @@ export class MainScene extends Phaser.Scene {
 
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
-    this.ambienceManager = new AmbienceManager(this);
+    this.daycycleManager = new DaycycleManager(this);
     this.chunkManager = new ChunkManager();
     this.soundManager = new SoundManager(this);
 
@@ -145,11 +145,11 @@ export class MainScene extends Phaser.Scene {
      * World
      */
     this.managers.socket.on(Event.WORLD_TIME, (data: { phase: TimePhase }) => {
-      this.managers.ambience.setPhase(data.phase, false);
+      this.managers.daycycle.setPhase(data.phase, false);
     });
 
     this.managers.socket.on(Event.WORLD_PHASE, (data: TimePhase) => {
-      this.managers.ambience.setPhase(data, true);
+      this.managers.daycycle.setPhase(data, true);
     });
 
     /**
@@ -819,9 +819,9 @@ export class MainScene extends Phaser.Scene {
         const scene = this.scene.get(data.map) as ForestScene;
 
         const onReady = () => {
-          if (this.managers.ambience.phase)
-            this.managers.ambience.setPhase(
-              this.managers.ambience.phase,
+          if (this.managers.daycycle.phase)
+            this.managers.daycycle.setPhase(
+              this.managers.daycycle.phase,
               false,
             );
 
