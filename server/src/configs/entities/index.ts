@@ -10,6 +10,7 @@ import { interior } from "./interior";
 import { people } from "./people";
 import { resources } from "./resources";
 import { rocks } from "./rocks";
+import { spawners } from "./spawners";
 import { spellPages } from "./spellpages";
 import { transitions } from "./transitions";
 import { villain } from "./villain";
@@ -26,6 +27,7 @@ export const entities = {
   ...people,
   ...resources,
   ...rocks,
+  ...spawners,
   ...spellPages,
   ...transitions,
   ...interior,

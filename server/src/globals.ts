@@ -40,6 +40,11 @@ export const PHASE_STARTS = [
   { phase: TimePhase.NIGHT, start: 0.6 },
 ];
 
+/** Weather */
+export const WEATHER_MIN_DURATION = 3 * 60 * 1000;
+export const WEATHER_MAX_DURATION = 8 * 60 * 1000;
+export const WEATHER_RAIN_CHANCE = 0;
+
 /** Actions */
 export const DURATION_JUMPING = 800;
 export const DURATION_LIFT = 250;

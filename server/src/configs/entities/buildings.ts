@@ -563,4 +563,62 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.TENT1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 1, end: 5 },
+            { row: 10, start: 1, end: 5 },
+            { row: 11, start: 1, end: 5 },
+            { row: 12, start: 1, end: 5 },
+            { row: 13, start: 1, end: 5 },
+            { row: 14, start: 1, end: 5 },
+            { row: 15, start: 1, end: 5 },
+          ],
+        },
+        key: "tent1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 80, height: 32, offsetX: 0, offsetY: 32, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TENT2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 16, start: 1, end: 8 },
+            { row: 17, start: 1, end: 8 },
+            { row: 18, start: 1, end: 8 },
+            { row: 19, start: 1, end: 8 },
+            { row: 20, start: 1, end: 8 },
+            { row: 21, start: 1, end: 8 },
+            { row: 22, start: 1, end: 8 },
+          ],
+        },
+        key: "tent2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 80, height: 32, offsetX: 0, offsetY: 32, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
 };

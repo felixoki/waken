@@ -94,6 +94,10 @@ export const animations: Partial<
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
+  [EntityName.COW]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
   [EntityName.GOAT]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
@@ -192,6 +196,15 @@ export const animations: Partial<
   [EntityName.CITIZEN13]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 12, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.CITIZEN14]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+  },
+  [EntityName.CITIZEN15]: {
+    [StateName.IDLE]: { frameCount: 8, frameRate: 8, repeat: -1 },
+  },
+  [EntityName.CITIZEN16]: {
+    [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
   [EntityName.HOST]: {
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },

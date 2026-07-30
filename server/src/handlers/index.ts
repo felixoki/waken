@@ -12,6 +12,7 @@ import { item } from "./item.js";
 import { party } from "./party.js";
 import { player } from "./player.js";
 import { spell } from "./spell.js";
+import { spawner } from "./spawner.js";
 import { storage } from "./storage.js";
 import { sublevel } from "./sublevel.js";
 import { taming } from "./taming.js";
@@ -32,6 +33,7 @@ export const handlers = {
   generation,
   party,
   spell,
+  spawner,
   storage,
   sublevel,
   taming,

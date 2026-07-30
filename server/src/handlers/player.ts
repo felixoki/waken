@@ -113,6 +113,7 @@ export const player = {
     socket.to(`map:${player.map}`).emit(Event.PLAYER_CREATE, player);
     socket.emit(Event.PARTY_LIST, world.parties.getLobbies());
     socket.emit(Event.WORLD_TIME, world.getTime());
+    socket.emit(Event.WORLD_WEATHER, world.getWeather());
     socket.emit(Event.ECONOMY_UPDATE, world.economy.getSnapshot());
     socket.emit(Event.STORE_SYNC, world.items.snapshot());
     socket.emit(Event.SPELLS_SYNC, player.spells);

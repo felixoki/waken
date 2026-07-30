@@ -28,6 +28,7 @@ import {
   SlotReference,
   SlotZone,
   SoundName,
+  WeatherName,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
@@ -42,6 +43,7 @@ import { GrowableComponent } from "../components/Growable";
 import { TamableComponent } from "../components/Tamable";
 import { vfx } from "../vfx";
 import { DaycycleManager } from "../managers/Daycycle";
+import { WeatherManager } from "../managers/Weather";
 import { ChunkManager } from "../managers/Chunk";
 import { EffectFactory } from "../factory/Effect";
 import { SoundManager } from "../managers/Sound";
@@ -54,6 +56,7 @@ export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
   public entityManager!: EntityManager;
   public daycycleManager!: DaycycleManager;
+  public weatherManager!: WeatherManager;
   public chunkManager!: ChunkManager;
   public soundManager!: SoundManager;
   public socketManager = SocketManager;
@@ -70,6 +73,7 @@ export class MainScene extends Phaser.Scene {
       socket: this.socketManager,
       chunks: this.chunkManager,
       sound: this.soundManager,
+      weather: this.weatherManager,
     };
   }
 
@@ -83,6 +87,7 @@ export class MainScene extends Phaser.Scene {
     this.playerManager = new PlayerManager(this);
     this.entityManager = new EntityManager(this);
     this.daycycleManager = new DaycycleManager(this);
+    this.weatherManager = new WeatherManager(this);
     this.chunkManager = new ChunkManager();
     this.soundManager = new SoundManager(this);
 
@@ -146,6 +151,10 @@ export class MainScene extends Phaser.Scene {
      */
     this.managers.socket.on(Event.WORLD_TIME, (data: { phase: TimePhase }) => {
       this.managers.daycycle.setPhase(data.phase, false);
+    });
+
+    this.managers.socket.on(Event.WORLD_WEATHER, (data: WeatherName) => {
+      this.managers.weather.setWeather(data, true);
     });
 
     this.managers.socket.on(Event.WORLD_PHASE, (data: TimePhase) => {
@@ -323,6 +332,30 @@ export class MainScene extends Phaser.Scene {
 
       this.managers.entities.remove(data);
     });
+
+    this.managers.socket.on(
+      Event.TEXTURE_SPAWN,
+      (data: {
+        map: MapName;
+        x: number;
+        y: number;
+        sprite: string;
+        frames: number;
+        frameRate: number;
+      }) => {
+        const scene = this.scene.get(data.map) as Scene;
+        if (!scene) return;
+
+        vfx.texture.spawn(
+          scene,
+          data.x,
+          data.y,
+          data.sprite,
+          data.frames,
+          data.frameRate,
+        );
+      },
+    );
 
     this.managers.socket.on(
       Event.EXTRACT_MATERIAL,
@@ -824,6 +857,8 @@ export class MainScene extends Phaser.Scene {
               this.managers.daycycle.phase,
               false,
             );
+
+          this.managers.weather.setWeather(this.managers.weather.weather, false);
 
           const localId = this.managers.players.player?.id;
           const config = data.players.find((p) => p.id === localId);

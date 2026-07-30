@@ -47,6 +47,8 @@ export const entity = {
       key,
       partyId,
     );
+
+    return config;
   },
 
   remove: (

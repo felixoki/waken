@@ -612,7 +612,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           },
           {
             ref: ChoiceId.GOODBYE,
-          },  
+          },
         ],
       },
       [NodeId.STORY]: {
@@ -1196,6 +1196,165 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
       [NodeId.QUEST]: {
         text: "Hmm, I don't know if you're up for the task.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+    },
+  },
+  [EntityName.CITIZEN14]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [
+      {
+        name: BehaviorName.STAY,
+      },
+    ],
+    dialogue: {
+      [NodeId.GREETING]: {
+        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+    },
+  },
+  [EntityName.CITIZEN15]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [
+      {
+        name: BehaviorName.STAY,
+      },
+    ],
+    dialogue: {
+      [NodeId.GREETING]: {
+        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
+        choices: [
+          {
+            text: "What's wrong?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "He tastes more than he sells these days. Says the dreams go down easier when the world's a little blurry. But every morning he looks a year older. *sighs* I just want my old papa back.",
+        choices: [
+          {
+            text: "Have you talked to him yet?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. Would you say something? Gently?",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+    },
+  },
+  [EntityName.CITIZEN16]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [
+      {
+        name: BehaviorName.STAY,
+      },
+    ],
+    dialogue: {
+      [NodeId.GREETING]: {
+        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
+        choices: [
+          {
+            text: "What's wrong?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "He tastes more than he sells these days. Says the dreams go down easier when the world's a little blurry. But every morning he looks a year older. *sighs* I just want my old papa back.",
+        choices: [
+          {
+            text: "Have you talked to him yet?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. Would you say something? Gently?",
         choices: [
           {
             ref: ChoiceId.GOODBYE,

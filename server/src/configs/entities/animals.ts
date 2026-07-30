@@ -382,6 +382,37 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
   },
+  [EntityName.COW]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 60,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 28,
+          height: 18,
+          offsetX: 18,
+          offsetY: 34,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.COW_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
   [EntityName.GOAT]: {
     facing: Direction.DOWN,
     moving: [],

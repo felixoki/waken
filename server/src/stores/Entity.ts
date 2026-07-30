@@ -1,10 +1,14 @@
-import { EntityConfig, MapName } from "../types";
+import { EntityConfig, MapName, SpawnerState } from "../types";
 
 export class EntityStore {
   private entities: Map<string, EntityConfig> = new Map();
+  public readonly spawners: Map<string, SpawnerState> = new Map();
 
   add(id: string, config: EntityConfig): void {
     this.entities.set(id, config);
+
+    if (config.spawner || config.textureSpawner)
+      this.spawners.set(id, { lastAt: Date.now(), children: new Set() });
   }
 
   get(id: string): EntityConfig | undefined {
@@ -13,6 +17,7 @@ export class EntityStore {
 
   remove(id: string): void {
     this.entities.delete(id);
+    this.spawners.delete(id);
   }
 
   update(id: string, updates: Partial<EntityConfig>): void {

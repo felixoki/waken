@@ -185,6 +185,11 @@ export const sounds = {
         "chicken_idle4",
       ],
     },
+    [SoundName.COW_IDLE]: {
+      volume: 0.5,
+      folder: "animals",
+      variants: ["cow_idle1", "cow_idle2", "cow_idle3", "cow_idle4"],
+    },
     [SoundName.GOAT_IDLE]: {
       volume: 0.5,
       folder: "animals",
@@ -234,7 +239,7 @@ export const sounds = {
   },
 
   ambience: {
-    [AmbienceName.RAIN]: { volume: 0.4 },
+    [AmbienceName.RAIN]: { volume: 0.05 },
     [AmbienceName.BIRDS]: {
       volume: 0.1,
       variants: ["birds1", "birds2", "birds3"],

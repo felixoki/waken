@@ -20,6 +20,10 @@ uniform float fogScale;
 uniform vec2 cameraScroll;
 uniform float cameraZoom;
 
+uniform float rainStrength;
+uniform float rainSpeed;
+uniform float rainScale;
+
 uniform float eclipseRadius;
 uniform float eclipseSoftness;
 uniform float eclipseStrength;
@@ -52,6 +56,37 @@ float fbm(vec2 p) {
   return v;
 }
 
+float rain(vec2 uv, float t) {
+  float acc = 0.0;
+  for (int i = 0; i < 3; i++) {
+    float fi = float(i);
+    vec2 st = uv * (rainScale * (24.0 + fi * 12.0));
+    st.x += fi * 37.0;
+
+    /** Per-column random drives fall speed and phase so columns don't scroll in lockstep. */
+    float col = floor(st.x);
+    float cr = hash(vec2(col, fi + 1.0));
+    st.y += t * rainSpeed * (5.0 + cr * 8.0) + cr * 90.0;
+
+    vec2 id = floor(st);
+    vec2 f = fract(st);
+
+    /** Per-cell randoms scatter position, length and brightness of each drop. */
+    float drop = step(0.9, hash(id + fi * 7.0));
+    float xoff = 0.25 + hash(id + 3.3) * 0.5;
+    float yoff = hash(id + 9.1);
+    float len = 0.4 + hash(id + 5.7) * 0.7;
+    float bright = 0.5 + hash(id + 1.9) * 0.5;
+
+    float dx = f.x - xoff;
+    float dy = (f.y - yoff) / len;
+    float streak = smoothstep(0.5, 0.0, abs(dx) * 9.0)
+                 * smoothstep(0.5, 0.0, abs(dy) * 1.3);
+    acc += streak * drop * bright;
+  }
+  return acc;
+}
+
 void main(void) {
   vec4 color = texture2D(uMainSampler, outTexCoord);
 
@@ -78,6 +113,11 @@ void main(void) {
   f = mix(f, fbm(uv * 1.7 - vec2(0.0, time * fogSpeed * 0.6)), 0.5);
   f = smoothstep(0.3, 0.7, f);
   graded = mix(graded, fogColor, f * fogStrength);
+
+  // --- Rain (world-anchored so camera movement doesn't alter apparent speed) ---
+  vec2 rainUv = vec2(world.x, -world.y) * 0.003;
+  float r = rain(rainUv, time);
+  graded += r * rainStrength * 0.12;
 
   // --- Vignette ---
   vec2 center = outTexCoord - 0.5;

@@ -2,6 +2,7 @@ export enum Event {
   /** World */
   WORLD_TIME = "world_time",
   WORLD_PHASE = "world_phase",
+  WORLD_WEATHER = "world_weather",
 
   /** Player */
   PLAYER_CREATE = "player_create",
@@ -51,6 +52,7 @@ export enum Event {
   ENTITY_LAY = "entity_lay",
   ENTITY_FISH = "entity:fish",
   ENTITY_OVERLAP = "entity_overlap",
+  TEXTURE_SPAWN = "texture_spawn",
 
   /** Item */
   ITEM_COLLECT = "item_collect",

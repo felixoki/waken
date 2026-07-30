@@ -52,6 +52,28 @@ export interface EntityConfig {
   effects?: Effect[];
   crop?: CropState;
   tame?: TameState;
+  spawner?: SpawnerConfig;
+  textureSpawner?: TextureSpawnerConfig;
+}
+
+export interface SpawnerConfig {
+  entities: { name: EntityName; weight: number }[];
+  max: number;
+  duration: number;
+  radius?: number;
+}
+
+export interface TextureSpawnerConfig {
+  sprites: string[];
+  duration: number;
+  radius: number;
+  frames: number;
+  frameRate: number;
+}
+
+export interface SpawnerState {
+  lastAt: number;
+  children: Set<string>;
 }
 
 export interface Bonus {
@@ -171,6 +193,9 @@ export enum EntityName {
   CITIZEN11 = "citizen11",
   CITIZEN12 = "citizen12",
   CITIZEN13 = "citizen13",
+  CITIZEN14 = "citizen14",
+  CITIZEN15 = "citizen15",
+  CITIZEN16 = "citizen16",
   CLARY_SAGE = "clary_sage",
   CUPBOARD1 = "cupboard1",
   CUPBOARD2 = "cupboard2",
@@ -196,6 +221,7 @@ export enum EntityName {
   TROUT = "trout",
   FLYAMINATA1 = "flyaminata1",
   FOX = "fox",
+  COW = "cow",
   GOAT = "goat",
   GOATLING = "goatling",
   GOAT_MILK = "goat_milk",
@@ -257,6 +283,10 @@ export enum EntityName {
   ROCKS5 = "rocks5",
   ROCKS6 = "rocks6",
   SHADOW_WANDERER = "shadow_wanderer",
+  SPAWNER = "spawner",
+  TEXTURE_SPAWNER = "texture_spawner",
+  TENT1 = "tent1",
+  TENT2 = "tent2",
   STUMP1 = "stump1",
   STUMP2 = "stump2",
   SUNFLOWER = "sunflower",

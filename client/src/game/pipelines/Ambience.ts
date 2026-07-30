@@ -10,6 +10,7 @@ export interface AmbienceState {
   contrast: number;
   vignette: { radius: number; strength: number };
   fog: { color: [number, number, number]; strength: number; speed: number; scale: number };
+  rain: { strength: number; speed: number; scale: number };
   eclipse: { radius: number; softness: number; strength: number };
 }
 
@@ -20,6 +21,7 @@ export interface AmbienceModifier {
   coolness?: number;
   vignette?: number;
   fog?: number;
+  rain?: number;
 }
 
 export class AmbiencePipeline extends PostFXPipeline {
@@ -42,6 +44,7 @@ export class AmbiencePipeline extends PostFXPipeline {
       contrast: 1.0,
       vignette: { radius: 0.5, strength: 0.0 },
       fog: { color: [0.6, 0.65, 0.75], strength: 0.0, speed: 0.02, scale: 3.0 },
+      rain: { strength: 0.0, speed: 1.0, scale: 1.0 },
       eclipse: { radius: 1.0, softness: 0.5, strength: 0.0 },
     };
     this.layers = new Map();
@@ -55,6 +58,7 @@ export class AmbiencePipeline extends PostFXPipeline {
     if (config.contrast != null) this.base.contrast = config.contrast;
     if (config.vignette) this.base.vignette = { ...config.vignette };
     if (config.fog) this.base.fog = { ...config.fog, color: [...config.fog.color] };
+    if (config.rain) this.base.rain = { ...config.rain };
     if (config.eclipse) this.base.eclipse = { ...config.eclipse };
   }
 
@@ -84,6 +88,7 @@ export class AmbiencePipeline extends PostFXPipeline {
     let coolness = this.base.coolness;
     let vignette = this.base.vignette.strength;
     let fog = this.base.fog.strength;
+    let rain = this.base.rain.strength;
 
     for (const mod of this.layers.values()) {
       if (mod.brightness != null) brightness *= mod.brightness;
@@ -92,6 +97,7 @@ export class AmbiencePipeline extends PostFXPipeline {
       if (mod.coolness != null) coolness += mod.coolness;
       if (mod.vignette != null) vignette += mod.vignette;
       if (mod.fog != null) fog += mod.fog;
+      if (mod.rain != null) rain += mod.rain;
     }
 
     this.set1f("coolness", coolness);
@@ -105,6 +111,9 @@ export class AmbiencePipeline extends PostFXPipeline {
     this.set1f("fogStrength", fog);
     this.set1f("fogSpeed", this.base.fog.speed);
     this.set1f("fogScale", this.base.fog.scale);
+    this.set1f("rainStrength", rain);
+    this.set1f("rainSpeed", this.base.rain.speed);
+    this.set1f("rainScale", this.base.rain.scale);
     this.set2f("cameraScroll", this.camera.x, this.camera.y);
     this.set1f("cameraZoom", this.camera.zoom);
     this.set1f("eclipseRadius", this.base.eclipse.radius);

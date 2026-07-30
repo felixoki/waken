@@ -746,6 +746,55 @@
                     }
                 }, 
                 {
+                 "id":1065,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":7,
+                             "id":1,
+                             "name":"",
+                             "properties":[
+                                    {
+                                     "name":"clearance",
+                                     "type":"int",
+                                     "value":10
+                                    }],
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":16,
+                             "x":0,
+                             "y":3
+                            }, 
+                            {
+                             "height":6,
+                             "id":2,
+                             "name":"",
+                             "properties":[
+                                    {
+                                     "name":"clearance",
+                                     "type":"int",
+                                     "value":10
+                                    }],
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":4,
+                             "x":0,
+                             "y":10
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    }
+                }, 
+                {
                  "id":1066,
                  "objectgroup":
                     {
@@ -815,8 +864,8 @@
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":7.0026,
-                             "x":9,
+                             "width":4,
+                             "x":12,
                              "y":10
                             }],
                      "opacity":1,
@@ -847,9 +896,9 @@
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":7,
-                             "x":0.0221133,
-                             "y":0.0366721
+                             "width":4,
+                             "x":0,
+                             "y":0
                             }],
                      "opacity":1,
                      "type":"objectgroup",
@@ -879,8 +928,8 @@
                              "rotation":0,
                              "type":"",
                              "visible":true,
-                             "width":7,
-                             "x":9,
+                             "width":4,
+                             "x":12,
                              "y":0
                             }],
                      "opacity":1,

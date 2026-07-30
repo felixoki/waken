@@ -6,6 +6,8 @@ import {
   EntityName,
   Item,
   MapName,
+  SpawnerConfig,
+  TextureSpawnerConfig,
   TiledMap,
 } from "../types/index.js";
 import { randomUUID } from "crypto";
@@ -58,6 +60,8 @@ export class MapLoader {
       createdAt: Date.now(),
       isLocked: false,
       loot: this._parseContents(obj),
+      spawner: this._parseSpawner(obj),
+      textureSpawner: this._parseTextureSpawner(obj),
     };
   }
 
@@ -75,5 +79,17 @@ export class MapLoader {
       stackable: configs.entities[item.name]?.metadata?.stackable ?? false,
       chance: 1,
     }));
+  }
+
+  private _parseSpawner(obj: any): SpawnerConfig | undefined {
+    const prop = obj.properties?.find((p: any) => p.name === "spawner");
+    return prop?.value ? (JSON.parse(prop.value) as SpawnerConfig) : undefined;
+  }
+
+  private _parseTextureSpawner(obj: any): TextureSpawnerConfig | undefined {
+    const prop = obj.properties?.find((p: any) => p.name === "textureSpawner");
+    return prop?.value
+      ? (JSON.parse(prop.value) as TextureSpawnerConfig)
+      : undefined;
   }
 }

@@ -686,24 +686,30 @@
 - Fix blink spell arbitrary positions ✅
 - Teardown sublevels and add persistency ✅
 
+#### 30.7.2026
+
+- Add weather management and rainy weather ✅
+- Add entity spawner ✅
+- Add texture spawner ✅
+- Add bonfire camp ✅
+- Add cow ✅
+
 ### In progress
 
 - Add voices ambience sound
+- Refactor fishing
 
 ### Bugs
 
 🔴 High
 
-
 🔵 Low
 
-- Fishing is broken in multiplayer
 - Effect tint doesn't reset for other clients
 - Ledge corners render above players
 
 ### Backlog
 
-- Weather ⭐
 - Cooking ⭐
 - Building ⭐
 - Relationships ⭐

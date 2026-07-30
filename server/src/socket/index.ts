@@ -51,8 +51,9 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      */
     {
       event: Event.ENTITY_CREATE,
-      handler: (data: Omit<EntityConfig, "id" | "createdAt">) =>
-        handlers.entity.create(data, socket, io, world),
+      handler: (data: Omit<EntityConfig, "id" | "createdAt">) => {
+        handlers.entity.create(data, socket, io, world);
+      },
     },
     {
       event: Event.ENTITY_INPUT,

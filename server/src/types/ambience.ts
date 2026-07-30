@@ -20,6 +20,11 @@ export enum AmbienceLayer {
   WEATHER = "weather",
 }
 
+export enum WeatherName {
+  CLEAR = "clear",
+  RAIN = "rain",
+}
+
 export interface MapAmbienceConfig {
   brightness?: number;
   coolness?: number;

@@ -243,6 +243,18 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "cow-idle",
+    file: "cow_idle_with_shadow.png",
+    frameWidth: 64,
+    frameHeight: 64,
+  },
+  {
+    key: "cow-walking",
+    file: "cow_walking_with_shadow.png",
+    frameWidth: 64,
+    frameHeight: 64,
+  },
+  {
     key: "goat-idle",
     file: "goat_idle_with_shadow.png",
     frameWidth: 32,
@@ -612,6 +624,24 @@ const citizens: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "citizen14-idle",
+    file: "citizen14_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "citizen15-idle",
+    file: "citizen15_idle_with_shadow.png",
+    frameWidth: 48,
+    frameHeight: 48,
+  },
+  {
+    key: "citizen16-idle",
+    file: "citizen16_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
     key: "baker-idle",
     file: "baker_idle_with_shadow.png",
     frameWidth: 32,
@@ -822,6 +852,30 @@ export const maps: Record<MapName, MapConfig> = {
       ...creatures,
       ...interior,
       {
+        key: "fish1",
+        file: "fish1_jumping.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "fish2",
+        file: "fish2_jumping.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "fish3",
+        file: "fish3_jumping.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "fish4",
+        file: "fish4_jumping.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
         key: "village_home",
         file: "village_home.png",
         frameWidth: 16,
@@ -831,6 +885,20 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "village_home_smoke",
         file: "village_home_smoke.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "village_camp_objects",
+        file: "village_camp_objects.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "bonfire",
+        file: "bonfire.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
@@ -947,6 +1015,13 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 16,
         asTileset: true,
       },
+      {
+        key: "entrances",
+        file: "entrances.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      }
     ],
   },
   [MapName.HERBALIST_HOUSE]: {
@@ -1319,7 +1394,7 @@ export const maps: Record<MapName, MapConfig> = {
       brightness: 0.45,
       coolness: 0.9,
       vignette: { radius: 0.3, strength: 0.6 },
-      fog: { color: [0.5, 0.55, 0.68], strength: 0.4, speed: 0.04, scale: 2.5 },
+      fog: { color: [0.5, 0.55, 0.68], strength: 0.25, speed: 0.04, scale: 2.5 },
       eclipse: { radius: 0.34, softness: 0.3, strength: 0.92 },
     },
     sound: {

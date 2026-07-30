@@ -30,5 +30,7 @@ export const sound = {
       if (!main.managers.sound.hasAmbience(name))
         main.managers.sound.play.ambience(name, AmbienceDomain.MAP);
     });
+
+    main.managers.weather.syncAmbience(map);
   },
 };

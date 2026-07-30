@@ -3,11 +3,20 @@ import { MapLoader } from "./loaders/Map";
 import { EntityStore } from "./stores/Entity";
 import { PlayerStore } from "./stores/Player";
 import { ItemsStore } from "./stores/Items";
-import { Event, MapName, TimePhase, TimeState } from "./types/index.js";
+import {
+  Event,
+  MapName,
+  TimePhase,
+  TimeState,
+  WeatherName,
+} from "./types/index.js";
 import { EconomyManager } from "./managers/Economy";
 import {
   DAY,
   PHASE_STARTS,
+  WEATHER_MIN_DURATION,
+  WEATHER_MAX_DURATION,
+  WEATHER_RAIN_CHANCE,
 } from "./globals";
 import { PartyStore } from "./stores/Party";
 import { Server } from "socket.io";
@@ -20,7 +29,11 @@ import { SublevelStore } from "./stores/Sublevel.js";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
-  
+  private weather: { current: WeatherName; remaining: number } = {
+    current: WeatherName.CLEAR,
+    remaining: 0,
+  };
+
   public readonly players: PlayerStore;
   public readonly entities: EntityStore;
   public readonly items: ItemsStore;
@@ -30,7 +43,7 @@ export class World {
   public readonly authority: AuthorityManager;
   public readonly zones: ZoneManager;
   public readonly affected: Set<string> = new Set();
-  
+
   public server: Server;
   public economy: EconomyManager;
 
@@ -80,8 +93,11 @@ export class World {
       this.server.emit(Event.WORLD_PHASE, this.time.phase);
     }
 
+    this.weather.remaining -= delta;
+    if (this.weather.remaining <= 0) this._rollWeather();
+
     handlers.player.regen(delta, this);
-    
+
     this.economy.update(delta);
 
     if (this.economy.dirty) {
@@ -90,10 +106,28 @@ export class World {
     }
 
     combat.effects.tick(this, this.server, Date.now());
+
+    handlers.spawner.entity.tick(this, this.server, Date.now());
+    handlers.spawner.texture.tick(this, this.server, Date.now());
   }
 
   getTime(): TimeState {
     return { ...this.time };
+  }
+
+  getWeather(): WeatherName {
+    return this.weather.current;
+  }
+
+  private _rollWeather(): void {
+    this.weather.current =
+      Math.random() < WEATHER_RAIN_CHANCE
+        ? WeatherName.RAIN
+        : WeatherName.CLEAR;
+    this.weather.remaining =
+      WEATHER_MIN_DURATION +
+      Math.random() * (WEATHER_MAX_DURATION - WEATHER_MIN_DURATION);
+    this.server.emit(Event.WORLD_WEATHER, this.weather.current);
   }
 
   setTime(time: TimeState): void {
