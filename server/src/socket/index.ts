@@ -14,6 +14,8 @@ import {
   EntityName,
   SlotReference,
   SlotType,
+  PlaceBuildData,
+  DestroyBuildData,
 } from "../types/index.js";
 import { World } from "../World.js";
 import { NodeId } from "../types/dialogue.js";
@@ -113,6 +115,16 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.ITEM_SOLIDIFY,
       handler: (data: { index: number }) =>
         handlers.taming.solidify(data, socket, io, world),
+    },
+    {
+      event: Event.BUILD_PLACE,
+      handler: (data: PlaceBuildData) =>
+        handlers.build.place(data, socket, io, world),
+    },
+    {
+      event: Event.BUILD_DESTROY,
+      handler: (data: DestroyBuildData) =>
+        handlers.build.demolish(data, socket, io, world),
     },
     /**
      * Farming

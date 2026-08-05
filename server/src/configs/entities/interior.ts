@@ -400,9 +400,9 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 24,
-          height: 16,
-          offsetX: 4,
+          width: 21,
+          height: 6,
+          offsetX: 6,
           offsetY: 16,
           static: true,
           collides: true,

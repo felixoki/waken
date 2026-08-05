@@ -35,6 +35,9 @@ export const animations: Partial<
   [EntityName.GREENGROCER]: {
     [StateName.IDLE]: { frameCount: 9, frameRate: 9, repeat: -1 },
   },
+  [EntityName.FISHWIFE]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 12, repeat: -1 },
+  },
   [EntityName.BLACKSMITH]: {
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
@@ -68,6 +71,11 @@ export const animations: Partial<
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
     [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
     [StateName.SLASHING]: { frameCount: 5, frameRate: 5, repeat: 0 },
+  },
+  [EntityName.HERON]: {
+    [StateName.IDLE]: { frameCount: 10, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 14, frameRate: 12, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 7, frameRate: 7, repeat: 0 },
   },
   [EntityName.SHADOW_WANDERER]: {
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },

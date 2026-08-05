@@ -70,6 +70,11 @@ export enum Event {
   SPELLBOOK_SYNC = "spellbook:sync",
   SEEDS_SELECT = "seeds_select",
 
+  /** Building */
+  BUILD_SELECT = "build_select",
+  BUILD_PLACE = "build_place",
+  BUILD_DESTROY = "build_destroy",
+
   /** Economy */
   ECONOMY_UPDATE = "economy_update",
 

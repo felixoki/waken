@@ -16,8 +16,8 @@ export class HomeScene extends Scene {
   create() {
     super.create();
 
-    const { tilemap, thresholds } = MapFactory.create(this, MapName.HOME);
-    this.tileManager = new TileManager(tilemap, thresholds);
+    const { tilemap, thresholds, colliders } = MapFactory.create(this, MapName.HOME);
+    this.tileManager = new TileManager(tilemap, thresholds, colliders);
     this.physics.world.setBounds(0, 0, tilemap.widthInPixels, tilemap.heightInPixels);
 
     this.cameraManager.fitZoom();

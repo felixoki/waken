@@ -355,9 +355,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.CABBAGE,
             EntityName.CARROT,
             EntityName.TOMATO,
-            EntityName.PERCH,
-            EntityName.CARP,
-            EntityName.TROUT,
             EntityName.GOAT_MILK,
           ],
           recipes: [
@@ -433,6 +430,50 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             effects: [{ name: DialogueEffectName.CONVERSATION_END }],
           },
         ],
+      },
+    },
+  },
+  [EntityName.FISHWIFE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      {
+        name: ComponentName.COLLECTOR,
+        config: {
+          accepts: [
+            EntityName.PERCH,
+            EntityName.CARP,
+            EntityName.PIKE,
+          ],
+          recipes: [],
+        },
+      },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Fishwife",
+      description:
+        "A trader who collects and supplies fresh fish to villagers.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        ref: NodeId.GREETING,
       },
     },
   },
@@ -1232,7 +1273,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
+        text: "I can't stand the village life. All the rules and regulations.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1269,31 +1310,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
-        choices: [
-          {
-            text: "What's wrong?",
-            next: NodeId.STORY,
-          },
-          {
-            ref: ChoiceId.GOODBYE,
-          },
-        ],
-      },
-      [NodeId.STORY]: {
-        text: "He tastes more than he sells these days. Says the dreams go down easier when the world's a little blurry. But every morning he looks a year older. *sighs* I just want my old papa back.",
-        choices: [
-          {
-            text: "Have you talked to him yet?",
-            next: NodeId.QUEST,
-          },
-          {
-            ref: ChoiceId.GOODBYE,
-          },
-        ],
-      },
-      [NodeId.QUEST]: {
-        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. Would you say something? Gently?",
+        text: "Food's dire. We'll have to go hunting soon.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1330,31 +1347,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "You've met my father, the one who runs the drink stall? *lowers her voice* I'm worried about him.",
-        choices: [
-          {
-            text: "What's wrong?",
-            next: NodeId.STORY,
-          },
-          {
-            ref: ChoiceId.GOODBYE,
-          },
-        ],
-      },
-      [NodeId.STORY]: {
-        text: "He tastes more than he sells these days. Says the dreams go down easier when the world's a little blurry. But every morning he looks a year older. *sighs* I just want my old papa back.",
-        choices: [
-          {
-            text: "Have you talked to him yet?",
-            next: NodeId.QUEST,
-          },
-          {
-            ref: ChoiceId.GOODBYE,
-          },
-        ],
-      },
-      [NodeId.QUEST]: {
-        text: "I've tried. He just smiles and pours another. Maybe... maybe he'd listen to someone who isn't his daughter. Would you say something? Gently?",
+        text: "The rainy nights are tough. I hope we have enough firewood.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,

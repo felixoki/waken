@@ -89,6 +89,35 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons8", row: 10, col: 28 },
     },
   },
+  [EntityName.HAMMER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 17, end: 18 },
+            { row: 10, start: 17, end: 18 },
+          ],
+        },
+        key: "hammer_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hammer",
+      description:
+        "A sturdy builder's hammer for raising walls and furnishing rooms.",
+      icon: { spritesheet: "icons8", row: 10, col: 16 },
+    },
+  },
   [EntityName.SOULSTONE]: {
     facing: Direction.DOWN,
     moving: [],
@@ -163,7 +192,23 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.AXE]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons7",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 2, end: 3 },
+            { row: 20, start: 2, end: 3 },
+          ],
+        },
+        key: "axe_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {

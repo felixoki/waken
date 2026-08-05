@@ -4,11 +4,14 @@ import { fileURLToPath } from "url";
 import {
   EntityConfig,
   EntityName,
+  FishName,
   Item,
   MapName,
   SpawnerConfig,
   TextureSpawnerConfig,
   TiledMap,
+  ZoneConfig,
+  ZoneName,
 } from "../types/index.js";
 import { randomUUID } from "crypto";
 import { configs } from "../configs/index.js";
@@ -62,6 +65,7 @@ export class MapLoader {
       loot: this._parseContents(obj),
       spawner: this._parseSpawner(obj),
       textureSpawner: this._parseTextureSpawner(obj),
+      zone: this._parseZone(obj),
     };
   }
 
@@ -91,5 +95,42 @@ export class MapLoader {
     return prop?.value
       ? (JSON.parse(prop.value) as TextureSpawnerConfig)
       : undefined;
+  }
+
+  private _parseZone(obj: any): ZoneConfig | undefined {
+    const prop = obj.properties?.find((p: any) => p.name === "zone");
+    if (!prop?.value) return undefined;
+
+    const parsed = JSON.parse(prop.value) as {
+      type?: string;
+      fish?: string[];
+      width?: number;
+      height?: number;
+    };
+
+    if (
+      !parsed.type ||
+      !(Object.values(ZoneName) as string[]).includes(parsed.type)
+    )
+      return undefined;
+
+    const type = parsed.type as ZoneName;
+    const width = parsed.width ?? (obj.width > 1 ? obj.width : 64);
+    const height = parsed.height ?? (obj.height > 1 ? obj.height : 64);
+
+    const config: ZoneConfig = { type, width, height };
+
+    if (type === ZoneName.FISH) {
+      const valid = Object.values(FishName) as string[];
+      const fish = (parsed.fish ?? []).filter((name): name is FishName =>
+        valid.includes(name),
+      );
+
+      if (!fish.length) return undefined;
+
+      config.fish = fish;
+    }
+
+    return config;
   }
 }

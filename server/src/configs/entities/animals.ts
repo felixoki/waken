@@ -511,6 +511,53 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
   },
+  [EntityName.HERON]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 240,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 18,
+          offsetX: 20,
+          offsetY: 32,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 90 },
+        range: 45,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
   [EntityName.CHICKEN]: {
     facing: Direction.DOWN,
     moving: [],

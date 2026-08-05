@@ -1,4 +1,5 @@
 import { animations } from "./animations.js";
+import { buildable } from "./buildable.js";
 import { COMMON_CHOICES, COMMON_NODES } from "./dialogue.js";
 import { effects, interactions } from "./effects.js";
 import { entities } from "./entities/index.js";
@@ -13,6 +14,7 @@ import { zones } from "./zones.js";
 
 export const configs = {
   animations,
+  buildable,
   dialogue: { choices: COMMON_CHOICES, nodes: COMMON_NODES },
   effects,
   entities,

@@ -35,3 +35,6 @@ CREATE TABLE
         updated_at TIMESTAMP DEFAULT NOW (),
         FOREIGN KEY (world_id) REFERENCES worlds (id) ON DELETE CASCADE
     );
+
+ALTER TABLE world_state
+ADD COLUMN IF NOT EXISTS chunks JSONB DEFAULT '{}';

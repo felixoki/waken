@@ -2,7 +2,7 @@ import { Damage } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { Icon } from "./entities.js";
 import { SoundName } from "./sounds.js";
-import { ZoneName } from "./zones.js";
+import { TemporaryZoneName } from "./zones.js";
 
 export enum SpellName {
   SHARD = "shard",
@@ -64,7 +64,7 @@ export interface SpellConfig {
   lifesteal?: number;
   effects?: [EffectName, number, number?][];
   buff?: Buff;
-  zone?: { type: ZoneName; radius: number; duration: number };
+  zone?: { type: TemporaryZoneName; radius: number; duration: number };
   speed?: number;
   range?: number;
   duration?: number;

@@ -25,8 +25,8 @@ export default class ForestScene extends Scene {
   create() {
     super.create();
 
-    const { tilemap, thresholds } = MapFactory.create(this, MapName.FOREST);
-    this.tileManager = new TileManager(tilemap, thresholds);
+    const { tilemap, thresholds, colliders } = MapFactory.create(this, MapName.FOREST);
+    this.tileManager = new TileManager(tilemap, thresholds, colliders);
     this.physics.world.setBounds(
       0,
       0,
@@ -50,11 +50,11 @@ export default class ForestScene extends Scene {
       data: tilemap,
     });
 
-    const { tilemap: map, thresholds } = MapFactory.create(
+    const { tilemap: map, thresholds, colliders } = MapFactory.create(
       this,
       MapName.FOREST,
     );
-    this.tileManager = new TileManager(map, thresholds);
+    this.tileManager = new TileManager(map, thresholds, colliders);
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.cameraManager.fitZoom();

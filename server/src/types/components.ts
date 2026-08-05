@@ -48,6 +48,7 @@ export enum ComponentName {
   TAMABLE = "tamable",
   SKIN = "skin",
   WINDSWAY = "windsway",
+  ZONE = "zone",
 }
 
 export type ComponentConfig =
@@ -87,7 +88,8 @@ export type ComponentConfig =
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.TRAP; config: TrapConfig }
   | { name: ComponentName.TAMABLE; config: TamableConfig }
-  | { name: ComponentName.WINDSWAY };
+  | { name: ComponentName.WINDSWAY }
+  | { name: ComponentName.ZONE };
 
 export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };

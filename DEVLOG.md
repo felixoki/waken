@@ -694,14 +694,24 @@
 - Add bonfire camp ✅
 - Add cow ✅
 
+#### 1.8.2026
+
+- Refactor fishing ✅
+
+#### 5.8.2026
+
+- Add builder ✅
+
+
 ### In progress
 
 - Add voices ambience sound
-- Refactor fishing
 
 ### Bugs
 
 🔴 High
+
+- Multiple chests break when opened simultaneously
 
 🔵 Low
 
@@ -711,7 +721,6 @@
 ### Backlog
 
 - Cooking ⭐
-- Building ⭐
 - Relationships ⭐
 - Ideas
   - Remove among player collisions

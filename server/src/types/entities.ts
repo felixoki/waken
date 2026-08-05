@@ -9,6 +9,7 @@ import { SpellName } from "./spells";
 import { WeaponName } from "./weapons";
 import { Effect, EffectName } from "./effects.js";
 import { SoundName } from "./sounds";
+import { ZoneConfig } from "./zones.js";
 
 export interface AttackConfig {
   state: StateName;
@@ -54,6 +55,7 @@ export interface EntityConfig {
   tame?: TameState;
   spawner?: SpawnerConfig;
   textureSpawner?: TextureSpawnerConfig;
+  zone?: ZoneConfig;
 }
 
 export interface SpawnerConfig {
@@ -216,9 +218,11 @@ export enum EntityName {
   FISHING_HOOK = "fishing_hook",
   FISHING_ROD = "fishing_rod",
   FISH_STAND1 = "fish_stand1",
+  FISHWIFE = "fishwife",
+  ZONE = "zone",
   CARP = "carp",
   PERCH = "perch",
-  TROUT = "trout",
+  PIKE = "pike",
   FLYAMINATA1 = "flyaminata1",
   FOX = "fox",
   COW = "cow",
@@ -240,6 +244,7 @@ export enum EntityName {
   GLASSBLOWER_HOUSE = "glassblower_house",
   GLIMMER = "glimmer",
   GREENGROCER = "greengrocer",
+  HAMMER = "hammer",
   HARE = "hare",
   HARE_FOOT = "hare_foot",
   HAT1 = "hat1",
@@ -247,6 +252,7 @@ export enum EntityName {
   HERBALIST = "herbalist",
   HERBALIST_EXIT = "herbalist_exit",
   HERBALIST_HOUSE = "herbalist_house",
+  HERON = "heron",
   HOE = "hoe",
   HOST = "host",
   HOUSE1 = "house1",
@@ -342,5 +348,5 @@ export enum EntityName {
 export enum FishName {
   CARP = "carp",
   PERCH = "perch",
-  TROUT = "trout",
+  PIKE = "pike",
 }

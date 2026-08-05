@@ -3,6 +3,7 @@ import { buildings } from "./buildings";
 import { creatures } from "./creatures";
 import { crops } from "./crops";
 import { equipment } from "./equipment";
+import { fish } from "./fish";
 import { flora } from "./flora";
 import { food } from "./food";
 import { ingredients } from "./ingredients";
@@ -14,6 +15,7 @@ import { spawners } from "./spawners";
 import { spellPages } from "./spellpages";
 import { transitions } from "./transitions";
 import { villain } from "./villain";
+import { zones } from "./zones";
 
 export const entities = {
   ...animals,
@@ -21,6 +23,7 @@ export const entities = {
   ...creatures,
   ...crops,
   ...equipment,
+  ...fish,
   ...flora,
   ...food,
   ...ingredients,
@@ -32,4 +35,5 @@ export const entities = {
   ...transitions,
   ...interior,
   ...villain,
+  ...zones,
 };

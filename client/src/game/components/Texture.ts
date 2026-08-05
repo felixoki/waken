@@ -25,10 +25,13 @@ export class TextureComponent extends Component {
   }
 
   private _create(): void {
-    const scene = this.entity.scene;
-    const { tileSize, tiles, spritesheet } = this.config;
+    TextureComponent.ensure(this.entity.scene, this.config, this.key);
+  }
 
-    if (scene.textures.exists(this.key)) return;
+  static ensure(scene: Phaser.Scene, config: TextureConfig, key: string): void {
+    const { tileSize, tiles, spritesheet } = config;
+
+    if (scene.textures.exists(key)) return;
 
     const width = tiles.length
       ? Math.max(...tiles.map((t) => t.end - t.start + 1)) * tileSize
@@ -38,7 +41,7 @@ export class TextureComponent extends Component {
     const rt = scene.make.renderTexture({ width, height }, false);
 
     if (!tiles.length) {
-      rt.saveTexture(this.key);
+      rt.saveTexture(key);
       rt.destroy();
       return;
     }
@@ -56,7 +59,7 @@ export class TextureComponent extends Component {
       }
     });
 
-    rt.saveTexture(this.key);
+    rt.saveTexture(key);
     rt.destroy();
   }
 

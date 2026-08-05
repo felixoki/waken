@@ -408,6 +408,24 @@ const animals: Spritesheet[] = [
   { key: "bear-walking", file: "bear_walking_with_shadow.png" },
   { key: "bear-running", file: "bear_running_with_shadow.png" },
   { key: "bear-slashing", file: "bear_slashing_with_shadow.png" },
+  {
+    key: "heron-idle",
+    file: "heron_idle_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "heron-walking",
+    file: "heron_walking_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "heron-slashing",
+    file: "heron_slashing_with_shadow.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
 ];
 
 const plants: Spritesheet[] = [
@@ -852,8 +870,8 @@ export const maps: Record<MapName, MapConfig> = {
       ...creatures,
       ...interior,
       {
-        key: "fish1",
-        file: "fish1_jumping.png",
+        key: "perch",
+        file: "perch_jumping.png",
         frameWidth: 32,
         frameHeight: 32,
       },
@@ -1021,7 +1039,7 @@ export const maps: Record<MapName, MapConfig> = {
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
-      }
+      },
     ],
   },
   [MapName.HERBALIST_HOUSE]: {
@@ -1169,6 +1187,12 @@ export const maps: Record<MapName, MapConfig> = {
     isInstanced: false,
     spritesheets: [
       ...player,
+      {
+        key: "fishwife-idle",
+        file: "fishwife_idle_with_shadow.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
       {
         key: "village_fishing_dock_house_walls_floor",
         file: "village_fishing_dock_house_walls_floor.png",
@@ -1394,7 +1418,12 @@ export const maps: Record<MapName, MapConfig> = {
       brightness: 0.45,
       coolness: 0.9,
       vignette: { radius: 0.3, strength: 0.6 },
-      fog: { color: [0.5, 0.55, 0.68], strength: 0.25, speed: 0.04, scale: 2.5 },
+      fog: {
+        color: [0.5, 0.55, 0.68],
+        strength: 0.25,
+        speed: 0.04,
+        scale: 2.5,
+      },
       eclipse: { radius: 0.34, softness: 0.3, strength: 0.92 },
     },
     sound: {

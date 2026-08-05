@@ -24,12 +24,15 @@ export class TileManager {
   private grid?: number[][];
 
   public thresholds: Threshold[];
+  public colliders: Phaser.GameObjects.Rectangle[];
 
   constructor(
     private tilemap: Phaser.Tilemaps.Tilemap,
     thresholds: Threshold[] = [],
+    colliders: Phaser.GameObjects.Rectangle[] = [],
   ) {
     this.thresholds = thresholds;
+    this.colliders = colliders;
     this._getAnimations();
     this._findTiles();
   }
@@ -151,8 +154,8 @@ export class TileManager {
 
       const x0 = Math.floor(body.x / tileWidth);
       const y0 = Math.floor(body.y / tileHeight);
-      const x1 = Math.floor((body.x + body.width) / tileWidth);
-      const y1 = Math.floor((body.y + body.height) / tileHeight);
+      const x1 = Math.ceil((body.x + body.width) / tileWidth) - 1;
+      const y1 = Math.ceil((body.y + body.height) / tileHeight) - 1;
 
       for (let ty = y0; ty <= y1; ty++)
         for (let tx = x0; tx <= x1; tx++)

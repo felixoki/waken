@@ -4,12 +4,12 @@ import {
   Event,
   FishName,
   StateName,
+  ZoneName,
 } from "@server/types";
 import {
   DURATION_FISHING_WAIT_MIN,
   DURATION_FISHING_WAIT_MAX,
   DURATION_FISHING_WINDOW,
-  DURATION_FISHING_CATCH,
   FISHING_ARC_HEIGHT,
   FISHING_ARC_DURATION,
   FISHING_SCAN_TILES,
@@ -18,6 +18,7 @@ import {
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
+import { ZoneComponent } from "../components/Zone";
 import { handlers } from "../handlers";
 
 enum Phase {
@@ -26,8 +27,6 @@ enum Phase {
   BITE = "bite",
   CATCHING = "catching",
 }
-
-const pool: FishName[] = Object.values(FishName);
 
 export class Fishing implements State {
   public name = StateName.FISHING;
@@ -42,8 +41,10 @@ export class Fishing implements State {
     | null = null;
   private waitTimer: Phaser.Time.TimerEvent | null = null;
   private biteTimer: Phaser.Time.TimerEvent | null = null;
-  private catchTimer: Phaser.Time.TimerEvent | null = null;
-  private arcFish: Phaser.GameObjects.Image | null = null;
+  private onCatchComplete:
+    | ((anim: Phaser.Animations.Animation) => void)
+    | null = null;
+  private zoneFish: FishName[] | null = null;
 
   enter(entity: Entity): void {
     const water = this._findWater(entity);
@@ -89,8 +90,12 @@ export class Fishing implements State {
         Phaser.Animations.Events.ANIMATION_COMPLETE,
         this.onThrowComplete,
       );
+    if (this.onCatchComplete)
+      entity.off(
+        Phaser.Animations.Events.ANIMATION_COMPLETE,
+        this.onCatchComplete,
+      );
     this._clearTimers();
-    this._destroyArcFish();
     entity.isLocked = false;
   }
 
@@ -115,12 +120,30 @@ export class Fishing implements State {
     return null;
   }
 
+  private _findFishZone(
+    entity: Entity,
+    x: number,
+    y: number,
+  ): FishName[] | null {
+    for (const other of entity.scene.managers.entities.all) {
+      const zone = other.getComponent<ZoneComponent>(ComponentName.ZONE);
+
+      if (!zone || zone.type !== ZoneName.FISH) continue;
+      if (zone.contains(x, y)) return zone.data.fish ?? [];
+    }
+
+    return null;
+  }
+
   private _startWaiting(entity: Entity): void {
     this.phase = Phase.WAITING;
     const anim = entity.getComponent<AnimationComponent>(
       ComponentName.ANIMATION,
     );
     anim?.play(StateName.FISHING, this.facing);
+
+    this.zoneFish = this._findFishZone(entity, this.bobberX, this.bobberY);
+    if (!this.zoneFish) return;
 
     const delay =
       DURATION_FISHING_WAIT_MIN +
@@ -148,14 +171,21 @@ export class Fishing implements State {
     this._clearTimers();
     this._playVariant(entity, "catch", 6, 10, 0);
 
-    const fishName = pool[Math.floor(Math.random() * pool.length)];
-    this._spawnFishArc(entity, fishName);
+    const available = this.zoneFish;
+    const fishName =
+      available && available.length
+        ? available[Math.floor(Math.random() * available.length)]
+        : null;
 
-    this.catchTimer = entity.scene.time.delayedCall(
-      DURATION_FISHING_CATCH,
-      () => {
-        this._returnToIdle(entity);
-      },
+    this.onCatchComplete = () => {
+      this.onCatchComplete = null;
+      if (fishName) this._spawnFishArc(entity, fishName);
+      this._returnToIdle(entity);
+    };
+
+    entity.once(
+      Phaser.Animations.Events.ANIMATION_COMPLETE,
+      this.onCatchComplete,
     );
   }
 
@@ -175,25 +205,23 @@ export class Fishing implements State {
     const iconMap: Record<FishName, { row: number; col: number }> = {
       [FishName.CARP]: { row: 4, col: 13 },
       [FishName.PERCH]: { row: 2, col: 25 },
-      [FishName.TROUT]: { row: 4, col: 7 },
+      [FishName.PIKE]: { row: 4, col: 7 },
     };
     const icon = iconMap[fishName];
     const texture = entity.scene.textures.get("icons1");
     const columns = Math.floor(texture.source[0].width / 16);
     const frameIndex = (icon.row - 1) * columns + (icon.col - 1);
 
-    const fish = entity.scene.add.image(
-      this.bobberX,
-      this.bobberY,
-      "icons1",
-      frameIndex,
-    );
-    fish.setDepth(1000 + this.bobberY);
-    this.arcFish = fish;
+    const originX = this.bobberX;
+    const originY = this.bobberY;
 
-    const startY = this.bobberY;
+    const fish = entity.scene.add.image(originX, originY, "icons1", frameIndex);
+    fish.setDepth(1000 + originY);
+
+    const startY = originY;
     const endX = entity.x;
     const endY = entity.y;
+    const isOwner = entity === entity.scene.managers.players.player;
 
     entity.scene.tweens.add({
       targets: fish,
@@ -207,14 +235,16 @@ export class Fishing implements State {
         fish.setDepth(1000 + fish.y);
       },
       onComplete: () => {
-        if (!this.arcFish || !entity.active) return;
-        this.arcFish = null;
         fish.destroy();
+
+        if (!isOwner || !entity.active) return;
 
         entity.scene.game.events.emit(Event.ENTITY_FISH, {
           name: fishName,
           x: endX,
           y: endY + 8,
+          originX,
+          originY,
         });
       },
     });
@@ -254,16 +284,7 @@ export class Fishing implements State {
     this.onThrowComplete = null;
     this.waitTimer?.destroy();
     this.biteTimer?.destroy();
-    this.catchTimer?.destroy();
     this.waitTimer = null;
     this.biteTimer = null;
-    this.catchTimer = null;
-  }
-
-  private _destroyArcFish(): void {
-    if (this.arcFish) {
-      this.arcFish.destroy();
-      this.arcFish = null;
-    }
   }
 }

@@ -8,7 +8,11 @@ export class MapFactory {
   static create(
     scene: Scene,
     map: MapName,
-  ): { tilemap: Phaser.Tilemaps.Tilemap; thresholds: Threshold[] } {
+  ): {
+    tilemap: Phaser.Tilemaps.Tilemap;
+    thresholds: Threshold[];
+    colliders: Phaser.GameObjects.Rectangle[];
+  } {
     const config = configs.maps[map];
 
     const tilemap = scene.make.tilemap({ key: map });
@@ -34,6 +38,7 @@ export class MapFactory {
     let objectLayerIndex = 0;
 
     const thresholds: Threshold[] = [];
+    const colliders: Phaser.GameObjects.Rectangle[] = [];
 
     rawLayers.forEach((rawLayer: any, overallIndex: number) => {
       const depth = overallIndex * 10;
@@ -69,7 +74,14 @@ export class MapFactory {
 
         if (hasCollision) {
           layer.setCollisionByExclusion([-1, 0]);
-          this.createCollisions(scene, layer, thresholds, depth, layerClearance);
+          this.createCollisions(
+            scene,
+            layer,
+            thresholds,
+            colliders,
+            depth,
+            layerClearance,
+          );
         }
 
         if (rendersAbove) layer.setDepth(10000 + depth);
@@ -109,7 +121,7 @@ export class MapFactory {
       }
     });
 
-    return { tilemap, thresholds };
+    return { tilemap, thresholds, colliders };
   }
 
   private static createStaticLayer(
@@ -139,11 +151,11 @@ export class MapFactory {
     scene: Scene,
     layer: Phaser.Tilemaps.TilemapLayer,
     thresholds: Threshold[],
+    colliders: Phaser.GameObjects.Rectangle[],
     depth: number,
     layerClearance?: number,
   ): void {
     const tiles = layer.getTilesWithin().filter((t) => t.collides);
-    let bodies = 0;
 
     const process = (a: any, b: any): boolean => {
       const entity = (a instanceof Entity ? a : b) as Entity;
@@ -239,7 +251,7 @@ export class MapFactory {
           process,
         );
 
-        bodies++;
+        colliders.push(rect);
       });
 
       if (isThreshold) {

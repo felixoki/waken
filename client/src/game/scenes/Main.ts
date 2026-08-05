@@ -45,6 +45,7 @@ import { vfx } from "../vfx";
 import { DaycycleManager } from "../managers/Daycycle";
 import { WeatherManager } from "../managers/Weather";
 import { ChunkManager } from "../managers/Chunk";
+import { BuildManager } from "../managers/Build";
 import { EffectFactory } from "../factory/Effect";
 import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
@@ -59,6 +60,7 @@ export class MainScene extends Phaser.Scene {
   public weatherManager!: WeatherManager;
   public chunkManager!: ChunkManager;
   public soundManager!: SoundManager;
+  public buildManager!: BuildManager;
   public socketManager = SocketManager;
 
   constructor() {
@@ -74,6 +76,7 @@ export class MainScene extends Phaser.Scene {
       chunks: this.chunkManager,
       sound: this.soundManager,
       weather: this.weatherManager,
+      build: this.buildManager,
     };
   }
 
@@ -90,6 +93,7 @@ export class MainScene extends Phaser.Scene {
     this.weatherManager = new WeatherManager(this);
     this.chunkManager = new ChunkManager();
     this.soundManager = new SoundManager(this);
+    this.buildManager = new BuildManager(this);
 
     const scenes = [
       MapName.VILLAGE,
@@ -143,6 +147,7 @@ export class MainScene extends Phaser.Scene {
 
     this.managers.players.update();
     this.managers.entities.update();
+    this.managers.build.update();
   }
 
   private _registerEvents(): void {

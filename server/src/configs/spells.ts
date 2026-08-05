@@ -1,7 +1,7 @@
 import { SpellConfig, SpellName, SoundName, Target } from "../types";
 import { DamageType } from "../types/damage.js";
 import { EffectName } from "../types/effects.js";
-import { ZoneName } from "../types/zones.js";
+import { TemporaryZoneName } from "../types/zones.js";
 
 export const spells: Record<SpellName, SpellConfig> = {
   [SpellName.SHARD]: {
@@ -155,7 +155,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     knockback: 0,
     mana: 5,
     duration: 5000,
-    zone: { type: ZoneName.LIGHT, radius: 300, duration: 6000 },
+    zone: { type: TemporaryZoneName.LIGHT, radius: 300, duration: 6000 },
     metadata: {
       description: "Casts a bright light that illuminates the surroundings.",
       displayName: "Illuminate",

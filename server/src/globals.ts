@@ -1,4 +1,4 @@
-import { TimePhase } from "./types/index.js";
+import { MapName, TimePhase } from "./types/index.js";
 
 /** Server */
 export const HEARTBEAT_INTERVAL = 30_000;
@@ -13,6 +13,9 @@ export const TILE_SIZE = 16;
 export const CHUNK_PIXEL_SIZE = 16 * TILE_SIZE;
 export const CHUNK_ACTIVATION_RADIUS = 2;
 export const CHUNK_ACTIVATION_BUDGET = 2;
+
+/** Building */
+export const BUILD_MAPS = new Set<MapName>([MapName.HOME]);
 
 /** Movement */
 export const SPEED_WALKING = 80;

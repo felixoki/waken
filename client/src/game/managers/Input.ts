@@ -23,6 +23,8 @@ export class InputManager {
   private pointer: { x: number; y: number } = { x: 0, y: 0 };
   private target?: { x: number; y: number };
   private pointerdown: boolean = false;
+  private left: boolean = false;
+  private right: boolean = false;
 
   constructor(scene: Scene) {
     this.scene = scene;
@@ -115,13 +117,30 @@ export class InputManager {
     return this.pointerdown;
   }
 
+  useLeftClick(): boolean {
+    const clicked = this.left;
+    this.left = false;
+    return clicked;
+  }
+
+  useRightClick(): boolean {
+    const clicked = this.right;
+    this.right = false;
+    return clicked;
+  }
+
   getPointer(): { x: number; y: number } {
     return { x: this.pointer.x, y: this.pointer.y };
   }
 
   registerPointerEvents(): void {
+    this.scene.input.mouse?.disableContextMenu();
+
     this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
       this.pointerdown = true;
+
+      if (pointer.leftButtonDown()) this.left = true;
+      if (pointer.rightButtonDown()) this.right = true;
 
       const target = this.scene.cameraManager.getWorldPoint(
         pointer.x,

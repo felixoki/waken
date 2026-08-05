@@ -45,6 +45,8 @@ export class AttackBehavior extends Behavior {
   update(entity: Entity): Partial<Input> {
     if (entity.isLocked) return {};
 
+    const canRun = !!entity.states?.has(StateName.RUNNING);
+
     const target = entity.scene.managers.players.get(this.target.id);
 
     if (!target || target.state === StateName.DEAD)
@@ -164,7 +166,7 @@ export class AttackBehavior extends Behavior {
       }
 
       if (this.path.length) {
-        const input = handlers.path.follow(entity, this.path, 8, true);
+        const input = handlers.path.follow(entity, this.path, 8, canRun);
         if (input) return input;
       }
 
@@ -179,7 +181,7 @@ export class AttackBehavior extends Behavior {
       return {
         facing: direction,
         moving: [direction],
-        isRunning: true,
+        isRunning: canRun,
       };
     }
 
@@ -234,7 +236,7 @@ export class AttackBehavior extends Behavior {
         this.path = [];
 
       if (this.path.length) {
-        const input = handlers.path.follow(entity, this.path, 8, true);
+        const input = handlers.path.follow(entity, this.path, 8, canRun);
 
         if (!input) {
           this.completed = true;

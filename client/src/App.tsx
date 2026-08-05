@@ -12,6 +12,7 @@ import { Stats } from "./ui/Stats";
 import { Economy } from "./ui/Economy";
 import { Loading } from "./ui/Loading";
 import { Seeds } from "./ui/Seeds";
+import { Build } from "./ui/Build";
 import { SpellBook } from "./ui/SpellBook";
 import { Storage } from "./ui/Storage";
 import { Collector } from "./ui/Collector";
@@ -85,6 +86,7 @@ function App() {
           <Dialogue />
           <SpellBook />
           <Seeds />
+          <Build />
         </div>
         <Storage />
         <Collector />

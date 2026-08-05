@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="11" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="2">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="11" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="3">
+ <editorsettings>
+  <export target="../client/public/assets/maps/fishing_hut.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="village_fishing_dock_house_walls_floor" tilewidth="16" tileheight="16" tilecount="100" columns="10">
   <image source="../client/public/assets/sprites/village_fishing_dock_house_walls_floor.png" width="160" height="160"/>
   <tile id="1">
@@ -145,5 +148,6 @@
  </layer>
  <objectgroup id="5" name="objects">
   <object id="1" name="Fishing_Hut_Exit" x="87" y="128" width="1" height="1"/>
+  <object id="2" name="Fishwife" x="88" y="78" width="1" height="1"/>
  </objectgroup>
 </map>
