@@ -185,11 +185,11 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.BEAR],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 2, max: 4 },
+      count: { min: 1, max: 3 },
       spacing: 8,
     },
     {
-      entities: [EntityName.GOBLIN1, EntityName.ORC1],
+      entities: [EntityName.GOBLIN1],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 7, max: 15 },
       spacing: 5,
@@ -198,13 +198,13 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.TROLL],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 2, max: 5 },
+      count: { min: 2, max: 4 },
       spacing: 8,
     },
     {
       entities: [EntityName.SHADOW_WANDERER],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 1, max: 3 },
+      count: { min: 0, max: 3 },
       spacing: 10,
     },
   ],

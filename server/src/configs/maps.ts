@@ -876,21 +876,15 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 32,
       },
       {
-        key: "fish2",
-        file: "fish2_jumping.png",
-        frameWidth: 32,
+        key: "carp",
+        file: "carp_jumping.png",
+        frameWidth: 48,
         frameHeight: 32,
       },
       {
-        key: "fish3",
-        file: "fish3_jumping.png",
-        frameWidth: 32,
-        frameHeight: 32,
-      },
-      {
-        key: "fish4",
-        file: "fish4_jumping.png",
-        frameWidth: 32,
+        key: "pike",
+        file: "pike_jumping.png",
+        frameWidth: 48,
         frameHeight: 32,
       },
       {

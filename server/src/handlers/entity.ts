@@ -163,6 +163,7 @@ export const entity = {
     }
 
     const room = world.chunks.getChunkByEntity(data.id);
+    const partyId = world.chunks.getPartyByEntity(data.id);
 
     world.chunks.removeEntity(data.id);
     world.entities.remove(data.id);
@@ -197,6 +198,7 @@ export const entity = {
           socket,
           io,
           world,
+          partyId,
         );
       }
     };

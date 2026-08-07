@@ -141,6 +141,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           recipes: [
             {
               tier: 1,
+              output: EntityName.HAMMER,
+              quantity: 1,
+              ingredients: [{ item: EntityName.WOOD, quantity: 2 }],
+            },
+            {
+              tier: 1,
               output: EntityName.AXE,
               quantity: 1,
               ingredients: [
@@ -443,11 +449,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [
-            EntityName.PERCH,
-            EntityName.CARP,
-            EntityName.PIKE,
-          ],
+          accepts: [EntityName.PERCH, EntityName.CARP, EntityName.PIKE],
           recipes: [],
         },
       },

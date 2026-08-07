@@ -4,9 +4,10 @@ import { Entity } from "../Entity";
 import { RANGE_INTERACTING } from "@server/globals";
 
 export class StorageComponent extends Component {
+  private static openId: string | null = null;
+
   private entity: Entity;
   private slots: number;
-  private isOpen = false;
   private range = RANGE_INTERACTING;
 
   public name = ComponentName.STORAGE;
@@ -30,6 +31,9 @@ export class StorageComponent extends Component {
   update(): void {}
 
   detach(): void {
+    if (StorageComponent.openId === this.entity.id)
+      StorageComponent.openId = null;
+
     this.entity.off("pointed", this._open, this);
     this.entity.scene.game.events.off(Event.STORAGE_CLOSE, this._close, this);
     this.entity.scene.game.events.off(
@@ -40,7 +44,7 @@ export class StorageComponent extends Component {
   }
 
   private _open(): void {
-    if (this.isOpen || this.entity.isLocked) return;
+    if (StorageComponent.openId || this.entity.isLocked) return;
 
     const player = this.entity.scene.managers.players.player;
     if (!player) return;
@@ -63,7 +67,7 @@ export class StorageComponent extends Component {
   private _confirm(entityId: string): void {
     if (entityId !== this.entity.id) return;
 
-    this.isOpen = true;
+    StorageComponent.openId = entityId;
 
     const animKey = `${this.entity.name}_tex_anim`;
     if (this.entity.scene.anims.exists(animKey)) this.entity.play(animKey);
@@ -72,7 +76,8 @@ export class StorageComponent extends Component {
   private _close(entityId: string): void {
     if (entityId !== this.entity.id) return;
 
-    this.isOpen = false;
+    if (StorageComponent.openId === entityId) StorageComponent.openId = null;
+
     const animKey = `${this.entity.name}_tex_anim`;
 
     if (this.entity.scene.anims.exists(animKey))

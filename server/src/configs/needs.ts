@@ -8,7 +8,7 @@ export const needs: NeedConfig[] = [
     items: [
       { item: EntityName.VENISON_MEAT, tier: 1 },
       { item: EntityName.RASPBERRY, tier: 1 },
-      { item: EntityName.BOAR_MEAT, tier: 2 },
+      { item: EntityName.BOAR_MEAT, tier: 1 },
       { item: EntityName.CARROT, tier: 2 },
       { item: EntityName.TOMATO, tier: 2 },
       { item: EntityName.CABBAGE, tier: 2 },

@@ -702,6 +702,10 @@
 
 - Add builder ✅
 
+#### 6.8.2026
+
+- Multiple chests break when opened simultaneously ✅
+- Wood doesn't spawn in the forest ✅
 
 ### In progress
 
@@ -711,7 +715,6 @@
 
 🔴 High
 
-- Multiple chests break when opened simultaneously
 
 🔵 Low
 
@@ -720,6 +723,7 @@
 
 ### Backlog
 
+- UI ⭐
 - Cooking ⭐
 - Relationships ⭐
 - Ideas
