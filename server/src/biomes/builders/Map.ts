@@ -490,12 +490,27 @@ export class MapBuilder {
      * Wells (forest only)
      */
     if (this.config.id === BiomeName.FOREST) {
+      const occupied = new Set<number>();
+
+      for (const e of entities) {
+        const tx = Math.floor(e.x / tileWidth);
+        const ty = Math.floor(e.y / tileHeight);
+
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++)
+            if (handlers.generation.inBounds(tx + dx, ty + dy, width, height))
+              occupied.add(
+                handlers.generation.toIndex(tx + dx, ty + dy, width),
+              );
+      }
+
       const wells = handlers.generation.find.positions.well(
         this.config,
         terrain,
         spawn,
         10,
         this.seed,
+        occupied,
       );
 
       for (const pos of wells)

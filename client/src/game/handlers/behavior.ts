@@ -37,7 +37,12 @@ export const behavior: {
     const attack = queue.get<AttackBehavior>(BehaviorName.ATTACK);
 
     if (attack) {
-      attack.start(targetId);
+      const engaged =
+        queue.active === attack &&
+        attack.target.id === targetId &&
+        !attack.completed;
+
+      if (!engaged) attack.start(targetId);
       queue.shiftTo(BehaviorName.ATTACK);
     }
   },

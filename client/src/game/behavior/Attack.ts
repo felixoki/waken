@@ -121,6 +121,8 @@ export class AttackBehavior extends Behavior {
       const facing = handlers.direction.fromAngle(angle);
 
       for (const config of attacks) {
+        if (config.state === StateName.WARNING) continue;
+        
         const range = config.range ?? 40;
         const minRange = frustrated ? 0 : (config.minRange ?? 0);
 

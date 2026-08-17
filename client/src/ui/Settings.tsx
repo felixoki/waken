@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import EventBus from "../game/EventBus";
 import { MenuOverlay } from "./MenuOverlay";
 
-type View = "menu" | "controls";
+type View = "menu" | "controls" | "credits";
 
 const controls = [
   { action: "Forward", key: "W" },
@@ -20,6 +20,51 @@ const controls = [
   { action: "Next slot", key: "E" },
   { action: "Inventory", key: "Tab" },
   { action: "Menu", key: "Esc" },
+];
+
+const credits = [
+  {
+    title: "Assets by",
+    entries: [
+      {
+        name: "Ngan Nguyen",
+        source: "@ngannguyen17 on Fiverr",
+        href: "https://www.fiverr.com/ngannguyen17",
+      },
+      {
+        name: "CraftPix.net",
+        source: "2D Game Assets Store & Free",
+        href: "https://craftpix.net",
+      },
+    ],
+  },
+  {
+    title: "Music and sound effects by",
+    entries: [
+      { name: "Discount Dylan" },
+      {
+        name: "Sweet Village",
+        source: "16pixel.itch.io",
+        href: "https://16pixel.itch.io",
+      },
+      { name: "JC Sounds", source: "CC BY 4.0" },
+      {
+        name: "Animals Sound Effects Audio Package",
+        source: "Aligned Games",
+      },
+      { name: "RPGSounds", source: "Kenney.nl", href: "https://kenney.nl" },
+      {
+        name: "Little Robot Sound Factory",
+        source: "littlerobotsoundfactory.com",
+        href: "https://www.littlerobotsoundfactory.com",
+      },
+      {
+        name: "CelesteVidal",
+        source: "freesound.org, freesound_community from Pixabay",
+        href: "https://freesound.org/people/CelesteVidal/sounds/501064/",
+      },
+    ],
+  },
 ];
 
 function Keycap({ label }: { label: string }) {
@@ -59,7 +104,7 @@ export function Settings() {
         setView("menu");
       }}
     >
-      {view === "controls" && (
+      {view !== "menu" && (
         <button
           onClick={() => setView("menu")}
           className="absolute top-4 left-4 flex items-center gap-1.5 px-4 py-2 bg-white/10 rounded-md text-white/60 hover:text-white hover:bg-white/15 transition-colors text-base"
@@ -96,6 +141,12 @@ export function Settings() {
             Settings
           </button>
           <button
+            onClick={() => setView("credits")}
+            className="text-white/60 text-xl hover:text-white transition-colors py-2"
+          >
+            Credits
+          </button>
+          <button
             onClick={() => window.location.reload()}
             className="text-white/60 text-xl hover:text-white transition-colors py-2"
           >
@@ -113,6 +164,35 @@ export function Settings() {
             >
               <span className="text-white/50 text-base">{action}</span>
               <Keycap label={key} />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {view === "credits" && (
+        <div className="flex flex-col items-center justify-center h-full gap-8">
+          {credits.map(({ title, entries }) => (
+            <div key={title} className="flex flex-col items-center gap-2">
+              <h2 className="text-white/40 text-base mb-1">{title}</h2>
+              {entries.map(({ name, source, href }) => (
+                <div key={name} className="text-center">
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-white/60 text-base hover:text-white transition-colors"
+                    >
+                      {name}
+                    </a>
+                  ) : (
+                    <span className="text-white/60 text-base">{name}</span>
+                  )}
+                  {source && (
+                    <span className="text-white/30 text-sm"> — {source}</span>
+                  )}
+                </div>
+              ))}
             </div>
           ))}
         </div>

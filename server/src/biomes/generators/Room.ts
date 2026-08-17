@@ -258,37 +258,53 @@ export class RoomGenerator {
     let spawn: { x: number; y: number } | undefined;
 
     if (spawnRoom) {
-      const floorTopAt = (c: number) => {
-        for (let y = 0; y < height; y++)
-          if (terrain[y * width + c] === TerrainName.FLOOR) return y;
-        return -1;
-      };
+      /** Seed a flood from every floor tile in the spawn room so the exit
+       * anchor is always on floor reachable from where the player materializes,
+       * even if erosion or water carved through the room centre. */
+      const seeds: number[] = [];
 
-      let col = spawnRoom.x + Math.floor(spawnRoom.width / 2);
-      let top = floorTopAt(col);
+      for (let y = spawnRoom.y; y < spawnRoom.y + spawnRoom.height; y++)
+        for (let x = spawnRoom.x; x < spawnRoom.x + spawnRoom.width; x++) {
+          const i = y * width + x;
+          if (terrain[i] === TerrainName.FLOOR) seeds.push(i);
+        }
 
-      if (top >= 0) {
-        let left = col;
-        let right = col;
-        while (
-          left - 1 >= 0 &&
-          terrain[top * width + left - 1] === TerrainName.FLOOR
-        )
-          left--;
-        while (
-          right + 1 < width &&
-          terrain[top * width + right + 1] === TerrainName.FLOOR
-        )
-          right++;
-        col = (left + right) >> 1;
-        top = floorTopAt(col);
+      const reachable = handlers.generation.flood(
+        width,
+        height,
+        (i) => terrain[i] === TerrainName.FLOOR,
+        seeds,
+      );
+
+      /** Topmost reachable floor tile inside the spawn room becomes the exit */
+      let anchor = -1;
+
+      for (
+        let y = spawnRoom.y;
+        y < spawnRoom.y + spawnRoom.height && anchor < 0;
+        y++
+      )
+        for (let x = spawnRoom.x; x < spawnRoom.x + spawnRoom.width; x++) {
+          const i = y * width + x;
+          if (reachable[i]) {
+            anchor = i;
+            break;
+          }
+        }
+
+      if (anchor >= 0) {
+        const ay = (anchor / width) | 0;
+
+        let left = anchor % width;
+        let right = anchor % width;
+        while (left - 1 >= 0 && reachable[ay * width + left - 1]) left--;
+        while (right + 1 < width && reachable[ay * width + right + 1]) right++;
+        const col = (left + right) >> 1;
+
+        doorX = col * tileWidth;
+        exit = { x: doorX, y: Math.max(0, ay - 1) * tileHeight };
+        spawn = { x: doorX, y: (ay + 1) * tileHeight };
       }
-
-      if (top < 0) top = spawnRoom.y;
-
-      doorX = col * tileWidth;
-      exit = { x: doorX, y: (top - 1) * tileHeight };
-      spawn = { x: doorX, y: (top + 1) * tileHeight };
     }
 
     let deepest = 0;

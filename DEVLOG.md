@@ -725,10 +725,17 @@
 - Add wolves ✅
 - Add hops and beer ✅
 
+#### 17.8.2026
+
+- Wolves will howl over and over during attacks ✅
+- Caves spawn without exits ✅
+- Wells spawn on top of trees ✅
+- Replace forest music track ✅
+- Add credits page ✅
+
 
 ### In progress
 
-- Add credits page
 - Add fishwife functionality
 
 ### Bugs

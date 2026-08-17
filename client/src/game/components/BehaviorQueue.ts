@@ -45,6 +45,10 @@ export class BehaviorQueue extends Component {
     return (behavior as T) || null;
   }
 
+  get active(): Behavior | null {
+    return this.current;
+  }
+
   add(behavior: Behavior): void {
     this.queue.push(behavior);
   }

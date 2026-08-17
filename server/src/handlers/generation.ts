@@ -923,6 +923,7 @@ export const generation = {
         spawn: { x: number; y: number },
         count: number,
         seed: string,
+        occupied?: Set<number>,
       ): { x: number; y: number }[] => {
         const { width, height, tileWidth, tileHeight } = config;
 
@@ -931,6 +932,7 @@ export const generation = {
           y: Math.floor(spawn.y / tileHeight),
         };
         const min = 40;
+        const clearance = 2;
         const candidates: { x: number; y: number }[] = [];
 
         for (let y = 0; y < height; y++)
@@ -940,6 +942,30 @@ export const generation = {
 
             const distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
             if (distance < min) continue;
+
+            if (
+              !generation.hasTerrainMargin(
+                x,
+                y,
+                clearance,
+                terrain,
+                config.terrain,
+                width,
+                height,
+              )
+            )
+              continue;
+
+            if (occupied) {
+              let blocked = false;
+
+              for (let dy = -clearance; dy <= clearance && !blocked; dy++)
+                for (let dx = -clearance; dx <= clearance && !blocked; dx++)
+                  if (occupied.has(generation.toIndex(x + dx, y + dy, width)))
+                    blocked = true;
+
+              if (blocked) continue;
+            }
 
             candidates.push({ x, y });
           }
