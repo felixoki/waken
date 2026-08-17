@@ -9,10 +9,10 @@ const SPOUT: Record<
   Direction,
   { x: number; y: number; angle: { min: number; max: number } }
 > = {
-  [Direction.DOWN]: { x: 6, y: 6, angle: { min: 65, max: 115 } },
-  [Direction.UP]: { x: -6, y: -4, angle: { min: 65, max: 115 } },
-  [Direction.LEFT]: { x: -18, y: 2, angle: { min: 95, max: 155 } },
-  [Direction.RIGHT]: { x: 12, y: 2, angle: { min: 25, max: 85 } },
+  [Direction.DOWN]: { x: 4, y: 12, angle: { min: 65, max: 115 } },
+  [Direction.UP]: { x: 8, y: -10, angle: { min: 65, max: 115 } },
+  [Direction.LEFT]: { x: -16, y: 3, angle: { min: 95, max: 155 } },
+  [Direction.RIGHT]: { x: 16, y: 3, angle: { min: 25, max: 85 } },
 };
 
 export class Watering implements State {

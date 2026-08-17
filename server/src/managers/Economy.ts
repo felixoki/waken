@@ -126,14 +126,11 @@ export class EconomyManager {
     const needs: EconomySnapshot["needs"] = [];
 
     this.needs.forEach((need) => {
-      if (need.tier > this.tier) return;
-
-      const items = need.items
-        .filter((tier) => tier.tier <= this.tier)
-        .map((tier) => ({
-          item: tier.item,
-          quantity: Math.floor(this.supply.get(tier.item)),
-        }));
+      const items = need.items.map((tier) => ({
+        item: tier.item,
+        quantity: Math.floor(this.supply.get(tier.item)),
+        tier: tier.tier,
+      }));
 
       needs.push({ name: need.name, items });
     });

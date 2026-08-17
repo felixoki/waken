@@ -70,15 +70,20 @@ export function Economy() {
       </div>
 
       <ul className="grid grid-cols-[repeat(6,4rem)] gap-1 justify-center">
-        {items.map((entry, i) => (
-          <Item
-            key={i}
-            name={entry.item}
-            bar={entry.quantity}
-            barMax={MAX_STACK}
-            barLabel={`${entry.quantity}/${MAX_STACK}`}
-          />
-        ))}
+        {items.map((entry, i) => {
+          const locked = entry.tier > snapshot.tier;
+          return (
+            <Item
+              key={i}
+              name={entry.item}
+              bar={locked ? undefined : entry.quantity}
+              barMax={MAX_STACK}
+              barLabel={locked ? undefined : `${entry.quantity}/${MAX_STACK}`}
+              disabled={locked}
+              hint={locked ? `Unlock with tier ${entry.tier}` : undefined}
+            />
+          );
+        })}
       </ul>
 
       {upgradeConfig && (

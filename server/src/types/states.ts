@@ -14,6 +14,7 @@ export enum StateName {
   MINING = "mining",
   RAKING = "raking",
   WATERING = "watering",
+  WARNING = "warning",
   DEAD = "dead",
 }
 

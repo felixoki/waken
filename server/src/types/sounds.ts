@@ -19,6 +19,9 @@ export enum SoundName {
   BEAR_SLASH = "bear_slash",
   BOAR_IDLE = "boar_idle",
   BOAR_SLASH = "boar_slash",
+  WOLF_IDLE = "wolf_idle",
+  WOLF_SLASH = "wolf_slash",
+  WOLF_WARNING = "wolf_warning",
   COW_IDLE = "cow_idle",
   GOAT_IDLE = "goat_idle",
   DEER_IDLE = "deer_idle",
@@ -39,6 +42,7 @@ export enum SoundName {
   CHOP = "chop",
   MINE = "mine",
   REVIVE = "revive",
+  PEOPLE = "people",
 }
 
 export enum MusicName {

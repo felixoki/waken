@@ -202,12 +202,13 @@ export class Fishing implements State {
   }
 
   private _spawnFishArc(entity: Entity, fishName: FishName): void {
-    const iconMap: Record<FishName, { row: number; col: number }> = {
+    const icons: Record<FishName, { row: number; col: number }> = {
       [FishName.CARP]: { row: 4, col: 13 },
       [FishName.PERCH]: { row: 2, col: 25 },
       [FishName.PIKE]: { row: 4, col: 7 },
+      [FishName.CAVEFISH]: { row: 2, col: 1 },
     };
-    const icon = iconMap[fishName];
+    const icon = icons[fishName];
     const texture = entity.scene.textures.get("icons1");
     const columns = Math.floor(texture.source[0].width / 16);
     const frameIndex = (icon.row - 1) * columns + (icon.col - 1);

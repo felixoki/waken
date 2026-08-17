@@ -1,5 +1,6 @@
-import { EntityName } from "./entities";
+import { EntityName, FishName, TextureSpawnerConfig } from "./entities";
 import { Item } from "./components";
+import { ZoneConfig } from "./zones";
 
 export interface Range {
   min: number;
@@ -217,6 +218,7 @@ export interface SpawnRule {
   count?: Range;
   spacing: number;
   margin?: number;
+  wallAdjacent?: boolean;
   cluster?: boolean;
   group?: GroupConfig;
   loot?: (Item & { chance: number })[];
@@ -227,6 +229,8 @@ export interface Entity {
   x: number;
   y: number;
   loot?: (Item & { chance: number })[];
+  zone?: ZoneConfig;
+  textureSpawner?: TextureSpawnerConfig;
 }
 
 export interface Room {
@@ -296,6 +300,22 @@ export interface RoomConfig {
   templates: RoomTemplate[];
   interior: RoomInterior[];
   hasRecesses?: boolean;
+  erosion?: {
+    band: number;
+    scale: number;
+    threshold: number;
+    smoothing: number;
+    clearance: number;
+    quantize: number;
+    north: number;
+  };
+  water?: {
+    chance: number;
+    scale: number;
+    radius: { min: number; max: number };
+    threshold: number;
+    fish?: FishName[];
+  };
   distribution: {
     large: RoomDistribution;
     small: RoomDistribution;

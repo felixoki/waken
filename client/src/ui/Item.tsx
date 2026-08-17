@@ -17,6 +17,7 @@ interface Props {
   interactive?: boolean;
   disabled?: boolean;
   active?: boolean;
+  hint?: string;
   recipe?: Ingredient[];
   dragId?: string;
   dropId?: string;
@@ -35,6 +36,7 @@ export function Item({
   interactive = false,
   disabled = false,
   active = false,
+  hint,
   recipe,
   dragId,
   dropId,
@@ -157,6 +159,7 @@ export function Item({
             <p className="font-semibold leading-tight">{displayName}</p>
           </div>
           {description && <p className="text-gray-300 mt-1">{description}</p>}
+          {hint && <p className="text-white mt-1">{hint}</p>}
           {(() => {
             const entity = configs.entities[name as EntityName];
             const comp = entity?.components.find(

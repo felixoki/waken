@@ -175,6 +175,20 @@ export const sounds = {
       volume: 0.5,
       folder: "animals",
     },
+    [SoundName.WOLF_IDLE]: {
+      volume: 0.5,
+      folder: "animals",
+      variants: ["wolf_idle1", "wolf_idle2"],
+    },
+    [SoundName.WOLF_SLASH]: {
+      volume: 0.5,
+      folder: "animals",
+    },
+    [SoundName.WOLF_WARNING]: {
+      volume: 0.5,
+      folder: "animals",
+      variants: ["wolf_warning1", "wolf_warning2"],
+    },
     [SoundName.CHICKEN_IDLE]: {
       volume: 0.5,
       folder: "animals",
@@ -228,6 +242,11 @@ export const sounds = {
     [SoundName.GRAB]: { volume: 0.05, folder: "misc" },
     [SoundName.PICKUP]: { volume: 0.5, folder: "misc", variants: ["pop"] },
     [SoundName.FIRE]: { volume: 0.05, folder: "misc" },
+    [SoundName.PEOPLE]: {
+      volume: 0.6,
+      folder: "ambience",
+      variants: ["people1"],
+    },
   },
 
   music: {

@@ -1,0 +1,1165 @@
+{
+  "columns": 37,
+  "image": "../sprites/cave_water_coasts.png",
+  "imageheight": 496,
+  "imagewidth": 592,
+  "margin": 0,
+  "name": "cave_water_coasts",
+  "spacing": 0,
+  "tilecount": 1147,
+  "tileheight": 16,
+  "tilewidth": 16,
+  "tiles": [
+    {
+      "id": 51,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 51
+        },
+        {
+          "duration": 100,
+          "tileid": 236
+        },
+        {
+          "duration": 100,
+          "tileid": 421
+        },
+        {
+          "duration": 100,
+          "tileid": 606
+        },
+        {
+          "duration": 100,
+          "tileid": 791
+        },
+        {
+          "duration": 100,
+          "tileid": 976
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 6
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 52
+        },
+        {
+          "duration": 100,
+          "tileid": 237
+        },
+        {
+          "duration": 100,
+          "tileid": 422
+        },
+        {
+          "duration": 100,
+          "tileid": 607
+        },
+        {
+          "duration": 100,
+          "tileid": 792
+        },
+        {
+          "duration": 100,
+          "tileid": 977
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 12,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 4
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 53
+        },
+        {
+          "duration": 100,
+          "tileid": 238
+        },
+        {
+          "duration": 100,
+          "tileid": 423
+        },
+        {
+          "duration": 100,
+          "tileid": 608
+        },
+        {
+          "duration": 100,
+          "tileid": 793
+        },
+        {
+          "duration": 100,
+          "tileid": 978
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 6
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 55
+        },
+        {
+          "duration": 100,
+          "tileid": 240
+        },
+        {
+          "duration": 100,
+          "tileid": 425
+        },
+        {
+          "duration": 100,
+          "tileid": 610
+        },
+        {
+          "duration": 100,
+          "tileid": 795
+        },
+        {
+          "duration": 100,
+          "tileid": 980
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 56
+        },
+        {
+          "duration": 100,
+          "tileid": 241
+        },
+        {
+          "duration": 100,
+          "tileid": 426
+        },
+        {
+          "duration": 100,
+          "tileid": 611
+        },
+        {
+          "duration": 100,
+          "tileid": 796
+        },
+        {
+          "duration": 100,
+          "tileid": 981
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 88
+        },
+        {
+          "duration": 100,
+          "tileid": 273
+        },
+        {
+          "duration": 100,
+          "tileid": 458
+        },
+        {
+          "duration": 100,
+          "tileid": 643
+        },
+        {
+          "duration": 100,
+          "tileid": 828
+        },
+        {
+          "duration": 100,
+          "tileid": 1013
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16.0003,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 0.00465288172903833
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 90
+        },
+        {
+          "duration": 100,
+          "tileid": 275
+        },
+        {
+          "duration": 100,
+          "tileid": 460
+        },
+        {
+          "duration": 100,
+          "tileid": 645
+        },
+        {
+          "duration": 100,
+          "tileid": 830
+        },
+        {
+          "duration": 100,
+          "tileid": 1015
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16.0003,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 92
+        },
+        {
+          "duration": 100,
+          "tileid": 277
+        },
+        {
+          "duration": 100,
+          "tileid": 462
+        },
+        {
+          "duration": 100,
+          "tileid": 647
+        },
+        {
+          "duration": 100,
+          "tileid": 832
+        },
+        {
+          "duration": 100,
+          "tileid": 1017
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16.0003,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 93,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 93
+        },
+        {
+          "duration": 100,
+          "tileid": 278
+        },
+        {
+          "duration": 100,
+          "tileid": 463
+        },
+        {
+          "duration": 100,
+          "tileid": 648
+        },
+        {
+          "duration": 100,
+          "tileid": 833
+        },
+        {
+          "duration": 100,
+          "tileid": 1018
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16.0003,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 0.00465288172903744
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 125,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 125
+        },
+        {
+          "duration": 100,
+          "tileid": 310
+        },
+        {
+          "duration": 100,
+          "tileid": 495
+        },
+        {
+          "duration": 100,
+          "tileid": 680
+        },
+        {
+          "duration": 100,
+          "tileid": 865
+        },
+        {
+          "duration": 100,
+          "tileid": 1050
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 126,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 126
+        },
+        {
+          "duration": 100,
+          "tileid": 311
+        },
+        {
+          "duration": 100,
+          "tileid": 496
+        },
+        {
+          "duration": 100,
+          "tileid": 681
+        },
+        {
+          "duration": 100,
+          "tileid": 866
+        },
+        {
+          "duration": 100,
+          "tileid": 1051
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 12,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": -4
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 127,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 127
+        },
+        {
+          "duration": 100,
+          "tileid": 312
+        },
+        {
+          "duration": 100,
+          "tileid": 497
+        },
+        {
+          "duration": 100,
+          "tileid": 682
+        },
+        {
+          "duration": 100,
+          "tileid": 867
+        },
+        {
+          "duration": 100,
+          "tileid": 1052
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 128
+        },
+        {
+          "duration": 100,
+          "tileid": 313
+        },
+        {
+          "duration": 100,
+          "tileid": 498
+        },
+        {
+          "duration": 100,
+          "tileid": 683
+        },
+        {
+          "duration": 100,
+          "tileid": 868
+        },
+        {
+          "duration": 100,
+          "tileid": 1053
+        }
+      ],
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "addon"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "offset",
+          "type": "string",
+          "value": "east"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 129,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 129
+        },
+        {
+          "duration": 100,
+          "tileid": 314
+        },
+        {
+          "duration": 100,
+          "tileid": 499
+        },
+        {
+          "duration": 100,
+          "tileid": 684
+        },
+        {
+          "duration": 100,
+          "tileid": 869
+        },
+        {
+          "duration": 100,
+          "tileid": 1054
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0.00480288172903798,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 130,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 130
+        },
+        {
+          "duration": 100,
+          "tileid": 315
+        },
+        {
+          "duration": 100,
+          "tileid": 500
+        },
+        {
+          "duration": 100,
+          "tileid": 685
+        },
+        {
+          "duration": 100,
+          "tileid": 870
+        },
+        {
+          "duration": 100,
+          "tileid": 1055
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 160,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "fill"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "water"
+        }
+      ]
+    },
+    {
+      "id": 162,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 162
+        },
+        {
+          "duration": 100,
+          "tileid": 347
+        },
+        {
+          "duration": 100,
+          "tileid": 532
+        },
+        {
+          "duration": 100,
+          "tileid": 717
+        },
+        {
+          "duration": 100,
+          "tileid": 902
+        },
+        {
+          "duration": 100,
+          "tileid": 1087
+        }
+      ],
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "addon"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "offset",
+          "type": "string",
+          "value": "south"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 163,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 163
+        },
+        {
+          "duration": 100,
+          "tileid": 348
+        },
+        {
+          "duration": 100,
+          "tileid": 533
+        },
+        {
+          "duration": 100,
+          "tileid": 718
+        },
+        {
+          "duration": 100,
+          "tileid": 903
+        },
+        {
+          "duration": 100,
+          "tileid": 1088
+        }
+      ],
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "addon"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "offset",
+          "type": "string",
+          "value": "south"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    },
+    {
+      "id": 164,
+      "animation": [
+        {
+          "duration": 100,
+          "tileid": 164
+        },
+        {
+          "duration": 100,
+          "tileid": 349
+        },
+        {
+          "duration": 100,
+          "tileid": 534
+        },
+        {
+          "duration": 100,
+          "tileid": 719
+        },
+        {
+          "duration": 100,
+          "tileid": 904
+        },
+        {
+          "duration": 100,
+          "tileid": 1089
+        }
+      ],
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "addon"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "offset",
+          "type": "string",
+          "value": "south"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "floor"
+        }
+      ]
+    }
+  ]
+}

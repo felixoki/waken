@@ -707,9 +707,29 @@
 - Multiple chests break when opened simultaneously ✅
 - Wood doesn't spawn in the forest ✅
 
+#### 9.8.2026
+
+- Add wine and bread ✅
+
+#### 10.8.2026
+
+- Refactor caves ✅
+
+#### 11.8.2026
+
+- Add people ambience ✅
+- Add warning state ✅
+
+#### 15.8.2026
+
+- Add wolves ✅
+- Add hops and beer ✅
+
+
 ### In progress
 
-- Add voices ambience sound
+- Add credits page
+- Add fishwife functionality
 
 ### Bugs
 
@@ -720,10 +740,13 @@
 
 - Effect tint doesn't reset for other clients
 - Ledge corners render above players
+- Direction visibly resets after watering
 
 ### Backlog
 
 - UI ⭐
+- Market house ⭐
+- Temples ⭐
 - Cooking ⭐
 - Relationships ⭐
 - Ideas

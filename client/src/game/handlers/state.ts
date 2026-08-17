@@ -20,6 +20,10 @@ export const state = {
         state: () => StateName.CASTING,
       },
       {
+        condition: () => input.state === StateName.WARNING,
+        state: () => StateName.WARNING,
+      },
+      {
         condition: () => input.state === StateName.SLASHING,
         state: () => StateName.SLASHING,
       },

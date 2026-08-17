@@ -256,6 +256,53 @@ export const generation = {
     return cells;
   },
 
+  borderIndices: (width: number, height: number): number[] => {
+    const indices: number[] = [];
+
+    for (let x = 0; x < width; x++) indices.push(x, (height - 1) * width + x);
+    for (let y = 1; y < height - 1; y++)
+      indices.push(y * width, y * width + width - 1);
+
+    return indices;
+  },
+
+  flood: (
+    width: number,
+    height: number,
+    passable: (index: number) => boolean,
+    seeds: Iterable<number>,
+  ): Uint8Array => {
+    const visited = new Uint8Array(width * height);
+    const stack: number[] = [];
+
+    for (const seed of seeds)
+      if (!visited[seed] && passable(seed)) {
+        visited[seed] = 1;
+        stack.push(seed);
+      }
+
+    while (stack.length) {
+      const i = stack.pop()!;
+      const x = i % width;
+      const y = (i / width) | 0;
+
+      const push = (nx: number, ny: number) => {
+        if (nx < 0 || nx >= width || ny < 0 || ny >= height) return;
+        const ni = ny * width + nx;
+        if (visited[ni] || !passable(ni)) return;
+        visited[ni] = 1;
+        stack.push(ni);
+      };
+
+      push(x - 1, y);
+      push(x + 1, y);
+      push(x, y - 1);
+      push(x, y + 1);
+    }
+
+    return visited;
+  },
+
   isInBlock: (
     x: number,
     y: number,

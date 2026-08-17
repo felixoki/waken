@@ -273,8 +273,8 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Lantern",
-      description: "A oil lantern that casts a warm glow in the dark.",
-      icon: { spritesheet: "icons6", row: 1, col: 5 },
+      description: "A lantern that casts a warm glow in the dark.",
+      icon: { spritesheet: "icons8", row: 8, col: 16 },
     },
   },
   [EntityName.HARE_FOOT]: {

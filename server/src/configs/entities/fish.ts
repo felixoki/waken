@@ -93,4 +93,33 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons1", row: 4, col: 7 },
     },
   },
+  [EntityName.CAVEFISH]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 2, end: 3 },
+            { row: 2, start: 2, end: 3 },
+          ],
+        },
+        key: "cavefish_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Cavefish",
+      description: "A pale, eyeless fish from the sunless pools.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 2, col: 1 },
+    },
+  },
 };

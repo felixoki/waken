@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="23" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="1">
+ <editorsettings>
+  <export target="../client/public/assets/maps/cave.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="cave_walls_floor" tilewidth="16" tileheight="16" tilecount="682" columns="62">
+  <image source="../client/public/assets/sprites/cave_walls_floor.png" width="992" height="176"/>
+ </tileset>
+ <tileset firstgid="683" name="cave_water_coasts" tilewidth="16" tileheight="16" tilecount="1147" columns="37">
+  <image source="../client/public/assets/sprites/cave_water_coasts.png" width="592" height="496"/>
+  <tile id="51">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="6" width="10" height="10"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="51" duration="100"/>
+    <frame tileid="236" duration="100"/>
+    <frame tileid="421" duration="100"/>
+    <frame tileid="606" duration="100"/>
+    <frame tileid="791" duration="100"/>
+    <frame tileid="976" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="52">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="4" width="16" height="12"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="52" duration="100"/>
+    <frame tileid="237" duration="100"/>
+    <frame tileid="422" duration="100"/>
+    <frame tileid="607" duration="100"/>
+    <frame tileid="792" duration="100"/>
+    <frame tileid="977" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="53">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="6" width="10" height="10"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="53" duration="100"/>
+    <frame tileid="238" duration="100"/>
+    <frame tileid="423" duration="100"/>
+    <frame tileid="608" duration="100"/>
+    <frame tileid="793" duration="100"/>
+    <frame tileid="978" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="55">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="55" duration="100"/>
+    <frame tileid="240" duration="100"/>
+    <frame tileid="425" duration="100"/>
+    <frame tileid="610" duration="100"/>
+    <frame tileid="795" duration="100"/>
+    <frame tileid="980" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="56">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="56" duration="100"/>
+    <frame tileid="241" duration="100"/>
+    <frame tileid="426" duration="100"/>
+    <frame tileid="611" duration="100"/>
+    <frame tileid="796" duration="100"/>
+    <frame tileid="981" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="88">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0.00465288" width="10" height="16.0003"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="88" duration="100"/>
+    <frame tileid="273" duration="100"/>
+    <frame tileid="458" duration="100"/>
+    <frame tileid="643" duration="100"/>
+    <frame tileid="828" duration="100"/>
+    <frame tileid="1013" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="90">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16.0003"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="90" duration="100"/>
+    <frame tileid="275" duration="100"/>
+    <frame tileid="460" duration="100"/>
+    <frame tileid="645" duration="100"/>
+    <frame tileid="830" duration="100"/>
+    <frame tileid="1015" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="92">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="16.0003"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="92" duration="100"/>
+    <frame tileid="277" duration="100"/>
+    <frame tileid="462" duration="100"/>
+    <frame tileid="647" duration="100"/>
+    <frame tileid="832" duration="100"/>
+    <frame tileid="1017" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="93">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0.00465288" width="10" height="16.0003"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="93" duration="100"/>
+    <frame tileid="278" duration="100"/>
+    <frame tileid="463" duration="100"/>
+    <frame tileid="648" duration="100"/>
+    <frame tileid="833" duration="100"/>
+    <frame tileid="1018" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="125">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="6" y="0" width="10" height="10"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="125" duration="100"/>
+    <frame tileid="310" duration="100"/>
+    <frame tileid="495" duration="100"/>
+    <frame tileid="680" duration="100"/>
+    <frame tileid="865" duration="100"/>
+    <frame tileid="1050" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="126">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="-4" width="16" height="12"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="126" duration="100"/>
+    <frame tileid="311" duration="100"/>
+    <frame tileid="496" duration="100"/>
+    <frame tileid="681" duration="100"/>
+    <frame tileid="866" duration="100"/>
+    <frame tileid="1051" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="127">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="10" height="10"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="127" duration="100"/>
+    <frame tileid="312" duration="100"/>
+    <frame tileid="497" duration="100"/>
+    <frame tileid="682" duration="100"/>
+    <frame tileid="867" duration="100"/>
+    <frame tileid="1052" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="128">
+   <animation>
+    <frame tileid="128" duration="100"/>
+    <frame tileid="313" duration="100"/>
+    <frame tileid="498" duration="100"/>
+    <frame tileid="683" duration="100"/>
+    <frame tileid="868" duration="100"/>
+    <frame tileid="1053" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="129">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.00480288" y="0" width="16" height="8"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="129" duration="100"/>
+    <frame tileid="314" duration="100"/>
+    <frame tileid="499" duration="100"/>
+    <frame tileid="684" duration="100"/>
+    <frame tileid="869" duration="100"/>
+    <frame tileid="1054" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="130">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="8"/>
+   </objectgroup>
+   <animation>
+    <frame tileid="130" duration="100"/>
+    <frame tileid="315" duration="100"/>
+    <frame tileid="500" duration="100"/>
+    <frame tileid="685" duration="100"/>
+    <frame tileid="870" duration="100"/>
+    <frame tileid="1055" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="162">
+   <animation>
+    <frame tileid="162" duration="100"/>
+    <frame tileid="347" duration="100"/>
+    <frame tileid="532" duration="100"/>
+    <frame tileid="717" duration="100"/>
+    <frame tileid="902" duration="100"/>
+    <frame tileid="1087" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="163">
+   <animation>
+    <frame tileid="163" duration="100"/>
+    <frame tileid="348" duration="100"/>
+    <frame tileid="533" duration="100"/>
+    <frame tileid="718" duration="100"/>
+    <frame tileid="903" duration="100"/>
+    <frame tileid="1088" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="164">
+   <animation>
+    <frame tileid="164" duration="100"/>
+    <frame tileid="349" duration="100"/>
+    <frame tileid="534" duration="100"/>
+    <frame tileid="719" duration="100"/>
+    <frame tileid="904" duration="100"/>
+    <frame tileid="1089" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="1830" name="crystals" tilewidth="16" tileheight="16" tilecount="360" columns="40">
+  <image source="../client/public/assets/sprites/crystals.png" width="640" height="144"/>
+ </tileset>
+ <tileset firstgid="2190" name="cave_objects" tilewidth="16" tileheight="16" tilecount="2142" columns="42">
+  <image source="../client/public/assets/sprites/cave_objects.png" width="672" height="816"/>
+ </tileset>
+ <layer id="2" name="floor" width="23" height="22">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,0,0,0,0,0,
+0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,0,0,0,0,
+0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,0,0,0,0,
+0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,0,0,0,0,
+0,170,0,0,0,0,170,170,170,170,170,170,0,0,170,0,0,0,0,0,0,0,0,
+0,170,0,170,0,0,170,170,170,170,170,170,0,0,170,0,0,0,0,0,0,0,0,
+0,170,0,0,0,0,170,170,170,170,170,170,0,0,170,170,170,170,0,0,0,0,0,
+0,170,0,0,0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,
+0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,
+0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,
+0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,
+0,0,0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,0,0,
+0,0,0,0,0,0,0,0,170,170,170,170,170,170,170,170,170,170,170,170,170,0,0,
+0,0,0,0,0,0,0,0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,
+0,0,0,0,0,0,0,0,170,170,170,170,170,170,170,170,170,170,170,170,170,170,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,170,170,170,170,170,170,170,170,170,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,170,170,170,170,170,170,170,170,170,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="water" width="23" height="22">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,843,843,843,843,0,0,0,0,0,0,843,843,0,0,0,0,0,0,0,0,0,
+0,0,843,0,843,843,0,0,0,0,0,0,843,843,0,0,0,0,0,0,0,0,0,
+0,0,843,843,843,843,0,0,0,0,0,0,843,843,0,0,0,0,0,0,0,0,0,
+0,0,843,843,843,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="coast" width="23" height="22">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,734,735,736,737,0,0,0,0,0,0,738,739,0,0,0,0,0,0,0,0,0,
+0,0,771,0,773,774,0,0,0,0,0,0,775,776,0,0,0,0,0,0,0,0,0,
+0,0,808,809,810,811,0,0,0,0,0,0,812,813,0,0,0,0,0,0,0,0,0,
+0,0,845,846,847,848,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="walls" width="23" height="22">
+  <data encoding="csv">
+69,69,72,189,189,189,189,189,189,189,189,190,191,73,69,69,69,69,69,69,69,69,69,
+69,133,134,251,251,251,251,251,251,251,251,252,253,135,136,69,69,69,69,69,69,69,69,
+194,195,196,313,313,313,313,313,313,313,313,314,315,197,198,199,69,69,69,69,69,69,69,
+256,257,258,375,375,375,375,375,375,375,375,376,377,259,260,261,69,69,69,69,69,69,69,
+318,319,320,437,437,437,437,437,437,437,437,438,439,321,322,323,69,69,69,69,69,69,69,
+380,381,382,0,0,0,0,0,0,0,0,0,0,383,384,385,69,69,69,69,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,188,189,190,73,69,69,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,250,251,252,135,136,69,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,312,313,314,197,198,199,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,374,375,376,259,260,261,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,436,437,438,321,322,323,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,383,384,385,69,69,69,
+442,443,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,188,189,73,69,69,
+504,505,67,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,250,251,135,136,69,
+69,567,129,130,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,313,197,198,199,
+69,69,504,505,66,66,66,67,68,0,0,0,0,0,0,0,0,0,374,375,259,260,261,
+69,69,69,567,128,128,128,129,130,0,0,0,0,0,0,0,0,0,436,437,321,322,323,
+69,69,69,69,69,69,69,191,192,0,0,0,0,0,0,0,0,0,0,0,383,384,385,
+69,69,69,69,69,69,69,504,505,506,506,507,67,68,0,0,0,0,0,0,0,446,447,
+69,69,69,69,69,69,69,69,567,568,568,569,129,130,0,0,0,0,0,0,0,446,447,
+69,69,69,69,69,69,69,69,69,69,69,69,504,505,506,507,507,507,507,507,507,508,509,
+69,69,69,69,69,69,69,69,69,69,69,69,69,567,568,569,569,569,569,569,569,570,69
+</data>
+ </layer>
+ <layer id="5" name="interior" width="23" height="22">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2011,2012,2013,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2051,2052,2053,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2091,2092,2093,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2011,2012,2013,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2051,2052,2053,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2091,2092,2093,0,0,0,0,0,0,0,
+0,0,0,0,2011,2012,2013,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,2051,2052,2053,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,2091,2092,2093,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

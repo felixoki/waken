@@ -207,19 +207,62 @@ export class MapBuilder {
           for (const layer of tiledLayers) layer.data[i] = 0;
 
       /**
-       * Floor underlay
+       * Wall underlay
        */
       const floorFills = this.loader.query(this.config.walls, {
         role: TileRole.FILL,
         terrain: TerrainName.FLOOR,
       });
       const floorTile = floorFills.length ? gid + floorFills[0].id : 0;
+      const voidFills = this.loader.query(this.config.walls, {
+        role: TileRole.FILL,
+        terrain: TerrainName.VOID,
+      });
+      const ceilingTile = voidFills.length ? gid + voidFills[0].id : floorTile;
+
+      const voidBacked = new Set<number>();
+      for (const tile of this.loader.load(this.config.walls).tiles ?? [])
+        if (
+          handlers.generation.parseProperties(tile.properties).backing === "void"
+        )
+          voidBacked.add(gid + tile.id);
 
       if (floorTile) {
         const underlay = new Array(width * height).fill(0);
 
-        for (let i = 0; i < below.length; i++)
-          if (below[i] !== 0 || above[i] !== 0) underlay[i] = floorTile;
+        const floorBottom = new Int32Array(width).fill(-1);
+
+        for (let x = 0; x < width; x++)
+          for (let y = height - 1; y >= 0; y--)
+            if (terrain[y * width + x] === TerrainName.FLOOR) {
+              floorBottom[x] = y;
+              break;
+            }
+
+        const touchesFloor = (x: number, y: number) => {
+          for (let dy = -1; dy <= 1; dy++)
+            for (let dx = -1; dx <= 1; dx++) {
+              if (!dx && !dy) continue;
+              const nx = x + dx;
+              const ny = y + dy;
+              if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+              if (terrain[ny * width + nx] === TerrainName.FLOOR) return true;
+            }
+
+          return false;
+        };
+
+        for (let i = 0; i < below.length; i++) {
+          if (below[i] === 0 && above[i] === 0) continue;
+          const x = i % width;
+          const y = (i / width) | 0;
+          underlay[i] =
+            voidBacked.has(below[i]) ||
+            voidBacked.has(above[i]) ||
+            (!touchesFloor(x, y) && y < floorBottom[x])
+              ? ceilingTile
+              : floorTile;
+        }
 
         tiledLayers.push(
           handlers.generation.createLayer(
@@ -257,7 +300,10 @@ export class MapBuilder {
         ),
       );
 
-      /** Void fill rendered above the player at remaining VOID cells */
+      /**
+       * Void fill: the open ceiling renders above the player, while void
+       * pockets sealed inside the wall band render as solid rock below it.
+       */
       const voidLayer = layers.find((l) => l.terrain === TerrainName.VOID);
 
       if (voidLayer) {
@@ -268,15 +314,37 @@ export class MapBuilder {
 
         if (voidFills.length) {
           const voidGid = firstgids.get(voidLayer.tileset)!;
-          const voidAbove = new Array(width * height).fill(0);
+          const tile = voidGid + voidFills[0].id;
 
-          for (let i = 0; i < terrain.length; i++)
-            if (
-              terrain[i] === TerrainName.VOID &&
-              below[i] === 0 &&
-              above[i] === 0
-            )
-              voidAbove[i] = voidGid + voidFills[0].id;
+          const renderable = (i: number) =>
+            terrain[i] === TerrainName.VOID && below[i] === 0 && above[i] === 0;
+
+          const exterior = handlers.generation.flood(
+            width,
+            height,
+            renderable,
+            handlers.generation.borderIndices(width, height),
+          );
+
+          const voidAbove = new Array(width * height).fill(0);
+          const voidBelow = new Array(width * height).fill(0);
+
+          for (let i = 0; i < terrain.length; i++) {
+            if (!renderable(i)) continue;
+            if (exterior[i]) voidAbove[i] = tile;
+            else voidBelow[i] = tile;
+          }
+
+          tiledLayers.push(
+            handlers.generation.createLayer(
+              layerId++,
+              "void_fill",
+              width,
+              height,
+              voidBelow,
+              [{ name: "collides", type: "bool", value: true }],
+            ),
+          );
 
           tiledLayers.push(
             handlers.generation.createLayer(

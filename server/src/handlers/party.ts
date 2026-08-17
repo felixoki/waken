@@ -247,6 +247,8 @@ export const party = {
           createdAt: Date.now(),
           isLocked: false,
           loot: biomeEntity.loot,
+          zone: biomeEntity.zone,
+          textureSpawner: biomeEntity.textureSpawner,
         };
 
         world.entities.add(id, config);

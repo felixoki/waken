@@ -252,6 +252,64 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons3", row: 10, col: 10 },
     },
   },
+  [EntityName.FOX_PELT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons9",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 2, end: 3 },
+            { row: 2, start: 2, end: 3 },
+          ],
+        },
+        key: "fox_pelt_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Fox pelt",
+      description: "A soft pelt obtained from a cunning fox.",
+      stackable: true,
+      icon: { spritesheet: "icons9", row: 2, col: 1 },
+    },
+  },
+  [EntityName.BEAR_PELT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 11, end: 12 },
+            { row: 10, start: 11, end: 12 },
+          ],
+        },
+        key: "bear_pelt_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bear pelt",
+      description: "A thick pelt obtained from a wild bear.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 10, col: 10 },
+    },
+  },
   [EntityName.RAT_CLAWS]: {
     facing: Direction.DOWN,
     moving: [],

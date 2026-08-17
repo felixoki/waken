@@ -26,6 +26,8 @@ export const broadcast = {
     map: MapName,
     chunkKey: string | null | undefined,
     partyId?: string,
+    socket?: Socket | null,
+    includeSender = true,
   ) => {
     const instanced = configs.maps[map].isInstanced && !!partyId;
     const rooms: string[] = [];
@@ -38,8 +40,10 @@ export const broadcast = {
 
     if (!rooms.length) return;
 
-    if (rooms.length === 1) io.to(rooms[0]).emit(event, data);
-    else io.to(rooms[0]).to(rooms[1]).emit(event, data);
+    const emitter = socket && !includeSender ? socket : io;
+
+    if (rooms.length === 1) emitter.to(rooms[0]).emit(event, data);
+    else emitter.to(rooms[0]).to(rooms[1]).emit(event, data);
   },
 
   toChunk: (

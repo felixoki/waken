@@ -53,6 +53,11 @@ export class EntitySpawner {
           if (occupied.has(index)) continue;
           if (!rule.terrain.includes(terrain[index])) continue;
           if (
+            rule.wallAdjacent &&
+            !this._nearWall(x, y, terrain, rule.terrain)
+          )
+            continue;
+          if (
             rule.margin &&
             !gen.hasTerrainMargin(
               x,
@@ -166,6 +171,8 @@ export class EntitySpawner {
           )
         )
           continue;
+        if (rule.wallAdjacent && !this._nearWall(x, y, terrain, rule.terrain))
+          continue;
         candidates.push({ x, y });
       }
 
@@ -233,5 +240,26 @@ export class EntitySpawner {
 
     const hash = handlers.generation.spatialHash(x, y, r + 1000);
     return handlers.generation.hashToUnit(hash) < (rule.density ?? 0);
+  }
+
+  private _nearWall(
+    x: number,
+    y: number,
+    terrain: TerrainName[],
+    floor: TerrainName[],
+    reach = 2,
+  ): boolean {
+    const { width, height } = this.config;
+
+    for (let dy = -reach; dy <= reach; dy++)
+      for (let dx = -reach; dx <= reach; dx++) {
+        if (!dx && !dy) continue;
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx < 0 || nx >= width || ny < 0 || ny >= height) return true;
+        if (!floor.includes(terrain[ny * width + nx])) return true;
+      }
+
+    return false;
   }
 }

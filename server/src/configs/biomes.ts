@@ -1,4 +1,4 @@
-import { EntityName, Item, MapName } from "../types";
+import { EntityName, FishName, Item, MapName } from "../types";
 import {
   BiomeConfig,
   BiomeName,
@@ -13,26 +13,26 @@ import { groundStamps, grassStamps, flowerStamps } from "./details";
 
 const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.WOOD, quantity: 5, stackable: true, chance: 0.75 },
-  { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.5 },
+  { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.25 },
   { name: EntityName.QUARTZ1, quantity: 5, stackable: true, chance: 0.5 },
-  { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.5 },
-  { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.5 },
+  { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.1 },
+  { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.1 },
 
-  { name: EntityName.AMULET1, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.RING1, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.RING2, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.RING3, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.AMULET2, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.BOOTS1, quantity: 1, stackable: false, chance: 0.05 },
-  { name: EntityName.HARE_FOOT, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.05 },
-  { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.05 },
+  { name: EntityName.AMULET1, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.RING1, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.RING2, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.RING3, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.AMULET2, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.BOOTS1, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.HARE_FOOT, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.01 },
 
   { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.025 },
   { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.05 },
-  { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.01 },
-  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.025 },
+  { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.001 },
+  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.02 },
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_ABSORB_LIFE, quantity: 1, stackable: false, chance: 0.05 },
@@ -189,6 +189,13 @@ export const forest: BiomeConfig = {
       spacing: 8,
     },
     {
+      entities: [EntityName.WOLF1, EntityName.WOLF2, EntityName.WOLF3],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 5, max: 10 },
+      spacing: 8,
+      group: { min: 0, max: 2, radius: 3 },
+    },
+    {
       entities: [EntityName.GOBLIN1],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 7, max: 15 },
@@ -307,7 +314,7 @@ export const dungeon: BiomeConfig = {
         water: { coverage: 0.15 },
         enemies: [
           {
-            entities: [EntityName.RAT],
+            entities: [EntityName.RAT, EntityName.GOBLIN1],
             count: { min: 4, max: 6 },
           },
         ],
@@ -326,21 +333,8 @@ export const dungeon: BiomeConfig = {
         depth: { min: 2, max: undefined },
         enemies: [
           {
-            entities: [EntityName.ORC1, EntityName.GOBLIN1],
-            count: { min: 1, max: 3 },
-          },
-        ],
-      },
-      {
-        id: RoomName.FEAST2,
-        type: RoomType.FEAST,
-        difficulty: RoomDifficulty.HARD,
-        weight: 6,
-        depth: { min: 3, max: undefined },
-        enemies: [
-          {
-            entities: [EntityName.GOBLIN1, EntityName.GOBLIN2],
-            count: { min: 2, max: 4 },
+            entities: [EntityName.ORC1, EntityName.GOBLIN2],
+            count: { min: 3, max: 5 },
           },
         ],
       },
@@ -352,8 +346,8 @@ export const dungeon: BiomeConfig = {
         depth: { min: 4, max: undefined },
         enemies: [
           {
-            entities: [EntityName.ORC1, EntityName.ORC2],
-            count: { min: 2, max: 4 },
+            entities: [EntityName.GOBLIN2, EntityName.ORC2],
+            count: { min: 3, max: 4 },
           },
         ],
       },
@@ -445,8 +439,8 @@ export const dungeon: BiomeConfig = {
 
 export const cave: BiomeConfig = {
   id: BiomeName.CAVE,
-  width: 40,
-  height: 40,
+  width: 48,
+  height: 48,
   tileWidth: 16,
   tileHeight: 16,
 
@@ -459,6 +453,11 @@ export const cave: BiomeConfig = {
 
   layers: [
     { terrain: TerrainName.VOID, tileset: "cave_walls_floor", threshold: null },
+    {
+      terrain: TerrainName.WATER,
+      tileset: "cave_water_coasts",
+      threshold: null,
+    },
     {
       terrain: TerrainName.RECESSED,
       tileset: "cave_walls_floor",
@@ -476,7 +475,14 @@ export const cave: BiomeConfig = {
     },
   ],
 
-  borders: [],
+  borders: [
+    {
+      from: TerrainName.FLOOR,
+      to: TerrainName.WATER,
+      tileset: "cave_water_coasts",
+      collides: true,
+    },
+  ],
   ledge: "cave_walls_floor",
   walls: "cave_walls_floor",
   terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
@@ -484,16 +490,18 @@ export const cave: BiomeConfig = {
     {
       entities: [EntityName.QUARTZ_ORE],
       terrain: [TerrainName.FLOOR],
-      density: 0.1,
-      spacing: 2,
-      margin: 4,
+      count: { min: 1, max: 3 },
+      spacing: 3,
+      margin: 1,
+      wallAdjacent: true,
     },
     {
       entities: [EntityName.CHEST1],
       terrain: [TerrainName.FLOOR],
-      density: 0.01,
-      spacing: 4,
+      count: { min: 1, max: 1 },
+      spacing: 3,
       margin: 1,
+      wallAdjacent: true,
       loot: CHEST_LOOT,
     },
   ],
@@ -506,10 +514,26 @@ export const cave: BiomeConfig = {
       easyDepth: 1,
       chance: { hidden: 0, puzzle: 0 },
     },
+    erosion: {
+      band: 0.5,
+      scale: 0.13,
+      threshold: 0.6,
+      smoothing: 0,
+      clearance: 1,
+      quantize: 3,
+      north: 4,
+    },
+    water: {
+      chance: 0.6,
+      scale: 0.2,
+      radius: { min: 4, max: 6 },
+      threshold: 0.6,
+      fish: [FishName.CAVEFISH],
+    },
     distribution: {
       large: {
-        count: { min: 1, max: 2 },
-        size: { width: { min: 18, max: 26 }, height: { min: 14, max: 20 } },
+        count: { min: 1, max: 1 },
+        size: { width: { min: 22, max: 30 }, height: { min: 16, max: 22 } },
       },
       small: {
         count: { min: 0, max: 0 },

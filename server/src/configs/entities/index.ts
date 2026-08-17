@@ -1,5 +1,6 @@
 import { animals } from "./animals";
 import { buildings } from "./buildings";
+import { cloths } from "./cloths";
 import { creatures } from "./creatures";
 import { crops } from "./crops";
 import { equipment } from "./equipment";
@@ -20,6 +21,7 @@ import { zones } from "./zones";
 export const entities = {
   ...animals,
   ...buildings,
+  ...cloths,
   ...creatures,
   ...crops,
   ...equipment,

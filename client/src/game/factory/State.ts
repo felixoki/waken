@@ -16,6 +16,7 @@ import { Felling } from "../state/Felling";
 import { Mining } from "../state/Mining";
 import { Raking } from "../state/Raking";
 import { Watering } from "../state/Watering";
+import { Warning } from "../state/Warning";
 
 export class StateFactory {
     static create(names: StateName[]): Map<StateName, State> {
@@ -35,6 +36,7 @@ export class StateFactory {
         [StateName.MINING]: new Mining(),
         [StateName.RAKING]: new Raking(),
         [StateName.WATERING]: new Watering(),
+        [StateName.WARNING]: new Warning(),
         [StateName.DEAD]: new Dead(),
       };
 

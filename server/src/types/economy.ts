@@ -27,6 +27,6 @@ export type EconomySnapshot = {
   tier: number;
   needs: {
     name: NeedName;
-    items: { item: EntityName; quantity: number }[];
+    items: { item: EntityName; quantity: number; tier: number }[];
   }[];
 };

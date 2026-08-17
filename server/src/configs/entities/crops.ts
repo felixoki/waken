@@ -49,7 +49,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Carrot Seed",
       description: "A humble seed that grows into a crunchy carrot.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 1 },
+      icon: { spritesheet: "icons6", row: 1, col: 7 },
     },
   },
   [EntityName.CARROT]: {
@@ -133,7 +133,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tomato Seed",
       description: "A small seed that ripens into a plump red tomato.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 2 },
+      icon: { spritesheet: "icons6", row: 1, col: 7 },
     },
   },
   [EntityName.TOMATO]: {
@@ -218,7 +218,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Cabbage Seed",
       description: "A seed that grows into a full head of cabbage.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 3 },
+      icon: { spritesheet: "icons6", row: 1, col: 7 },
     },
   },
   [EntityName.CABBAGE]: {
@@ -294,6 +294,287 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A dense leafy green vegetable grown in rows.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 3 },
+    },
+  },
+  [EntityName.WHEAT_SEED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wheat seed",
+      description: "A small seed that grows into a stalk of wheat.",
+      stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 7 },
+    },
+  },
+  [EntityName.WHEAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "gathering3",
+          tileSize: 16,
+          tiles: [
+            { row: 23, start: 5, end: 6 },
+            { row: 24, start: 5, end: 6 },
+          ],
+        },
+        key: "wheat_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: false,
+        },
+      },
+      {
+        name: ComponentName.GROWABLE,
+        config: {
+          spritesheet: "gathering3",
+          tileSize: 16,
+          stages: [
+            {
+              stage: GrowthStage.SEED,
+              at: 0.0,
+              tiles: [
+                { row: 23, start: 1, end: 2 },
+                { row: 24, start: 1, end: 2 },
+              ],
+              offsetY: -8,
+            },
+            {
+              stage: GrowthStage.SPROUT,
+              at: 0.5,
+              tiles: [
+                { row: 23, start: 3, end: 4 },
+                { row: 24, start: 3, end: 4 },
+              ],
+              offsetY: -8,
+            },
+            {
+              stage: GrowthStage.MATURE,
+              at: 1.0,
+              tiles: [
+                { row: 23, start: 5, end: 6 },
+                { row: 24, start: 5, end: 6 },
+              ],
+              offsetY: -8,
+            },
+          ],
+          duration: 1 * DAY,
+          yield: [{ name: EntityName.WHEAT, quantity: 1, stackable: true }],
+          regrows: false,
+          needsWater: true,
+        },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wheat",
+      description: "A stalk of wheat grown in fields.",
+      stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 5 },
+    },
+  },
+  [EntityName.GRAPE_SEED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Grape seed",
+      description: "A small seed that grows into a grapevine.",
+      stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 7 },
+    },
+  },
+  [EntityName.GRAPE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "gathering3",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 5, end: 6 },
+            { row: 2, start: 5, end: 6 },
+            { row: 3, start: 5, end: 6 },
+          ],
+        },
+        key: "grape_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: false,
+        },
+      },
+      {
+        name: ComponentName.GROWABLE,
+        config: {
+          spritesheet: "gathering3",
+          tileSize: 16,
+          stages: [
+            {
+              stage: GrowthStage.SEED,
+              at: 0.0,
+              tiles: [
+                { row: 1, start: 1, end: 2 },
+                { row: 2, start: 1, end: 2 },
+                { row: 3, start: 1, end: 2 },
+              ],
+              offsetY: -16,
+            },
+            {
+              stage: GrowthStage.SPROUT,
+              at: 0.5,
+              tiles: [
+                { row: 1, start: 3, end: 4 },
+                { row: 2, start: 3, end: 4 },
+                { row: 3, start: 3, end: 4 },
+              ],
+              offsetY: -16,
+            },
+            {
+              stage: GrowthStage.MATURE,
+              at: 1.0,
+              tiles: [
+                { row: 1, start: 5, end: 6 },
+                { row: 2, start: 5, end: 6 },
+                { row: 3, start: 5, end: 6 },
+              ],
+              offsetY: -16,
+            },
+          ],
+          duration: 1000,
+          yield: [{ name: EntityName.GRAPE, quantity: 1, stackable: true }],
+          regrows: false,
+          needsWater: true,
+        },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Grape",
+      description: "A bunch of grapes grown on a vine.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 10, col: 19 },
+    },
+  },
+  [EntityName.HOPS_SEED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hops seed",
+      description: "A small seed that grows into a climbing hop bine.",
+      stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 7 },
+    },
+  },
+  [EntityName.HOPS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "gathering3",
+          tileSize: 16,
+          tiles: [
+            { row: 4, start: 5, end: 6 },
+            { row: 5, start: 5, end: 6 },
+            { row: 6, start: 5, end: 6 },
+          ],
+        },
+        key: "hops_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: false,
+        },
+      },
+      {
+        name: ComponentName.GROWABLE,
+        config: {
+          spritesheet: "gathering3",
+          tileSize: 16,
+          stages: [
+            {
+              stage: GrowthStage.SEED,
+              at: 0.0,
+              tiles: [
+                { row: 4, start: 1, end: 2 },
+                { row: 5, start: 1, end: 2 },
+                { row: 6, start: 1, end: 2 },
+              ],
+              offsetY: -16,
+            },
+            {
+              stage: GrowthStage.SPROUT,
+              at: 0.5,
+              tiles: [
+                { row: 4, start: 3, end: 4 },
+                { row: 5, start: 3, end: 4 },
+                { row: 6, start: 3, end: 4 },
+              ],
+              offsetY: -16,
+            },
+            {
+              stage: GrowthStage.MATURE,
+              at: 1.0,
+              tiles: [
+                { row: 4, start: 5, end: 6 },
+                { row: 5, start: 5, end: 6 },
+                { row: 6, start: 5, end: 6 },
+              ],
+              offsetY: -16,
+            },
+          ],
+          duration: 1 * DAY,
+          yield: [{ name: EntityName.HOPS, quantity: 1, stackable: true }],
+          regrows: false,
+          needsWater: true,
+        },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hops",
+      description: "Fragrant cones grown on a climbing hop bine.",
+      stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 8 },
     },
   },
 };

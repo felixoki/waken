@@ -54,10 +54,10 @@ export const entity = {
   remove: (
     id: string,
     event: Event.ENTITY_DESTROY | Event.ENTITY_DESPAWN,
-    _socket: Socket | null,
+    socket: Socket | null,
     io: Server,
     world: World,
-    _includeSender = true,
+    includeSender = true,
   ) => {
     const target = world.entities.get(id);
     if (!target) return;
@@ -68,7 +68,17 @@ export const entity = {
     world.chunks.removeEntity(id);
     world.entities.remove(id);
 
-    handlers.broadcast.entity(io, world, event, id, target.map, chunk, partyId);
+    handlers.broadcast.entity(
+      io,
+      world,
+      event,
+      id,
+      target.map,
+      chunk,
+      partyId,
+      socket,
+      includeSender,
+    );
   },
 
   input: (data: Partial<Input>, socket: Socket, world: World) => {

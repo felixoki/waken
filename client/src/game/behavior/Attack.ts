@@ -70,6 +70,31 @@ export class AttackBehavior extends Behavior {
       this.target.lastPosition = { x: target.x, y: target.y };
       this.lostSightTime = 0;
 
+      const canWarn = entity.states?.has(StateName.WARNING);
+
+      if (canWarn) {
+        const hasWarned = this.cooldowns.has(StateName.WARNING);
+
+        if (!hasWarned) {
+          this.cooldowns.set(StateName.WARNING, now + 1800);
+          const angle = Phaser.Math.Angle.Between(
+            entity.x,
+            entity.y,
+            target.x,
+            target.y,
+          );
+          return {
+            facing: handlers.direction.fromAngle(angle),
+            moving: [],
+            isRunning: false,
+            state: StateName.WARNING,
+          };
+        }
+
+        if (now < (this.cooldowns.get(StateName.WARNING) ?? 0))
+          return { moving: [], isRunning: false };
+      }
+
       const distance = Phaser.Math.Distance.Between(
         entity.x,
         entity.y,
@@ -85,8 +110,7 @@ export class AttackBehavior extends Behavior {
         return {};
       }
 
-      const frustrated =
-        now - this.lastAttackTime > this.frustrationThreshold;
+      const frustrated = now - this.lastAttackTime > this.frustrationThreshold;
 
       const angle = Phaser.Math.Angle.Between(
         entity.x,
@@ -126,10 +150,7 @@ export class AttackBehavior extends Behavior {
         }
 
         this.lastAttackTime = now;
-        this.cooldowns.set(
-          config.state,
-          now + (config.cooldown ?? 1000),
-        );
+        this.cooldowns.set(config.state, now + (config.cooldown ?? 1000));
 
         return {
           facing,
@@ -189,7 +210,7 @@ export class AttackBehavior extends Behavior {
 
     if (this.lostSightTime > this.lostSightThreshold) {
       this.completed = true;
-      
+
       handlers.behavior.search(entity, this.target.lastPosition);
 
       return {

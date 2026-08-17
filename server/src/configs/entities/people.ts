@@ -9,6 +9,7 @@ import {
   Mood,
   NodeId,
   Recipe,
+  SoundName,
   StateName,
 } from "../../types";
 
@@ -32,6 +33,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.VIAL,
             EntityName.BEARDED_TOOTH_FUNGUS,
             EntityName.TROLL_HIDE,
+            EntityName.RAT_CLAWS,
           ],
           recipes: [
             {
@@ -61,6 +63,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               quantity: 1,
               ingredients: [
                 { item: EntityName.TROLL_HIDE, quantity: 1 },
+                { item: EntityName.RAT_CLAWS, quantity: 4 },
                 { item: EntityName.BELLADONNA, quantity: 1 },
                 { item: EntityName.CLARY_SAGE, quantity: 2 },
               ],
@@ -137,6 +140,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.GLASS,
             EntityName.DEER_HIDE,
             EntityName.FISHING_HOOK,
+            EntityName.FOX_PELT,
+            EntityName.BEAR_PELT,
+            EntityName.TUNIC,
+            EntityName.VEST,
           ],
           recipes: [
             {
@@ -155,6 +162,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
+              tier: 1,
+              output: EntityName.TUNIC,
+              quantity: 1,
+              ingredients: [{ item: EntityName.DEER_HIDE, quantity: 2 }],
+            },
+            {
               tier: 2,
               output: EntityName.LANTERN,
               quantity: 1,
@@ -164,7 +177,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
-              tier: 1,
+              tier: 2,
               output: EntityName.HOE,
               quantity: 1,
               ingredients: [
@@ -179,6 +192,15 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ingredients: [
                 { item: EntityName.WOOD, quantity: 2 },
                 { item: EntityName.IRON1, quantity: 2 },
+              ],
+            },
+            {
+              tier: 2,
+              output: EntityName.VEST,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.FOX_PELT, quantity: 1 },
+                { item: EntityName.BEAR_PELT, quantity: 1 },
               ],
             },
             {
@@ -361,7 +383,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.CABBAGE,
             EntityName.CARROT,
             EntityName.TOMATO,
-            EntityName.GOAT_MILK,
           ],
           recipes: [
             {
@@ -489,8 +510,21 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [],
-          recipes: [],
+          accepts: [EntityName.WHEAT, EntityName.BREAD],
+          recipes: [
+            {
+              tier: 3,
+              output: EntityName.WHEAT_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.WHEAT, quantity: 1 }],
+            },
+            {
+              tier: 3,
+              output: EntityName.BREAD,
+              quantity: 1,
+              ingredients: [{ item: EntityName.WHEAT, quantity: 10 }],
+            },
+          ] satisfies Recipe[],
         },
       },
       { name: ComponentName.ANIMATION },
@@ -528,8 +562,44 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [],
-          recipes: [],
+          accepts: [
+            EntityName.GOAT_MILK,
+            EntityName.GRAPE,
+            EntityName.HOPS,
+            EntityName.WHEAT,
+          ],
+          recipes: [
+            {
+              tier: 3,
+              output: EntityName.GRAPE_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.GRAPE, quantity: 1 }],
+            },
+            {
+              tier: 3,
+              output: EntityName.WINE,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.GRAPE, quantity: 5 },
+                { item: EntityName.VIAL, quantity: 1 },
+              ],
+            },
+            {
+              tier: 3,
+              output: EntityName.HOPS_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.HOPS, quantity: 1 }],
+            },
+            {
+              tier: 3,
+              output: EntityName.BEER,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.HOPS, quantity: 5 },
+                { item: EntityName.WHEAT, quantity: 3 },
+              ],
+            },
+          ] satisfies Recipe[],
         },
       },
       { name: ComponentName.ANIMATION },
@@ -1357,5 +1427,19 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
     },
+  },
+  [EntityName.PEOPLE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: {
+          name: SoundName.PEOPLE,
+          loop: true,
+        },
+      },
+    ],
+    states: [StateName.IDLE],
   },
 };
