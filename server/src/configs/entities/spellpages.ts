@@ -37,6 +37,7 @@ const page = (
     displayName,
     description,
     stackable: false,
+    weight: 0.05,
   },
 });
 

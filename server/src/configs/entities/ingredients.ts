@@ -127,6 +127,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A poisonous plant with dark berries and bold purple blossoms.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 16, col: 13 },
+      weight: 0.02,
     },
   },
   [EntityName.SUNFLOWER]: {
@@ -176,6 +177,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A tall, golden flower with a broad face that follows the sun.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 4 },
+      weight: 0.05,
     },
   },
   [EntityName.RASPBERRY]: {
@@ -225,6 +227,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A thorny bush bearing clusters of small, bright red berries.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 10, col: 13 },
+      weight: 0.01,
     },
   },
   [EntityName.DAFFODIL]: {
@@ -273,6 +276,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A bright yellow flower with a cheerful trumpet-shaped centre.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 16, col: 7 },
+      weight: 0.03,
     },
   },
   [EntityName.BLUE_LOTUS]: {
@@ -321,6 +325,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A rare aquatic flower with bold blue petals and a sweet scent.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 4, col: 31 },
+      weight: 0.04,
     },
   },
   [EntityName.CLARY_SAGE]: {
@@ -369,6 +374,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "An aromatic herb with soft leaves and delicate purple blooms.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 14, col: 31 },
+      weight: 0.02,
     },
   },
   [EntityName.BEARDED_TOOTH_FUNGUS]: {
@@ -417,6 +423,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A peculiar white fungus adorned with cascading tooth-like spines.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 18, col: 13 },
+      weight: 0.1,
     },
   },
   [EntityName.POTION1]: {
@@ -439,6 +446,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A mysterious potion crafted from rare aquatic flowers and forest herbs.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 4, col: 28 },
+      weight: 0.3,
     },
   },
   [EntityName.POTION2]: {
@@ -461,6 +469,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A warm golden potion distilled from sunflowers and belladonna.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 14, col: 28 },
+      weight: 0.3,
     },
   },
   [EntityName.POTION3]: {
@@ -483,6 +492,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
         "A thick, potent brew rendered from troll hide and deadly herbs.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 2, col: 28 },
+      weight: 0.3,
     },
   },
 };

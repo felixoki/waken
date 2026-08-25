@@ -128,6 +128,7 @@ export function Inventory() {
               name={item?.name ?? null}
               quantity={item?.quantity}
               soul={item?.soul}
+              weight={item?.weight}
               interactive
               dragId={item ? `inventory-${i}` : undefined}
               dropId={`inventory-${i}`}

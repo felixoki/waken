@@ -3,6 +3,7 @@ import { buildable } from "./buildable.js";
 import { COMMON_CHOICES, COMMON_NODES } from "./dialogue.js";
 import { effects, interactions } from "./effects.js";
 import { entities } from "./entities/index.js";
+import { fish } from "./fish.js";
 import { maps } from "./maps.js";
 import { needs } from "./needs.js";
 import { sounds } from "./sounds.js";
@@ -18,6 +19,7 @@ export const configs = {
   dialogue: { choices: COMMON_CHOICES, nodes: COMMON_NODES },
   effects,
   entities,
+  fish,
   interactions,
   maps,
   needs,

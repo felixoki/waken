@@ -25,6 +25,7 @@ export class InputManager {
   private pointerdown: boolean = false;
   private left: boolean = false;
   private right: boolean = false;
+  private captured: boolean = false;
 
   constructor(scene: Scene) {
     this.scene = scene;
@@ -70,8 +71,18 @@ export class InputManager {
     return handlers.direction.fromAngle(angle);
   }
 
+  setCapture(captured: boolean): void {
+    this.captured = captured;
+  }
+
+  getReel(): number {
+    return (this.keys.D.isDown ? 1 : 0) - (this.keys.A.isDown ? 1 : 0);
+  }
+
   getMoving(): Direction[] {
     const moving: Direction[] = [];
+
+    if (this.captured) return moving;
 
     if (this.keys.W.isDown) moving.push(Direction.UP);
     if (this.keys.S.isDown) moving.push(Direction.DOWN);
@@ -92,15 +103,17 @@ export class InputManager {
   }
 
   isRunning(): boolean {
-    return this.keys.SHIFT.isDown;
+    return !this.captured && this.keys.SHIFT.isDown;
   }
 
   isJumping(): boolean {
-    return Phaser.Input.Keyboard.JustDown(this.keys.SPACE);
+    return (
+      !this.captured && Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
+    );
   }
 
   isRolling(): boolean {
-    return Phaser.Input.Keyboard.JustDown(this.keys.C);
+    return !this.captured && Phaser.Input.Keyboard.JustDown(this.keys.C);
   }
 
   setTarget(target: { x: number; y: number }): void {

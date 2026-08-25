@@ -11,15 +11,24 @@ import { handlers } from ".";
 import { configs } from "../configs/index.js";
 
 export const item = {
+  donate: (
+    entries: { name: EntityName; quantity: number }[],
+    io: Server,
+    world: World,
+  ) => {
+    for (const entry of entries) world.items.add(entry.name, entry.quantity);
+
+    handlers.broadcast.economy(io, world);
+    handlers.broadcast.store(io, world);
+  },
+
   collect: (data: Item, socket: Socket, io: Server, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (player)
       player.inventory = handlers.storage.remove(player.inventory, data);
 
-    world.items.add(data.name, data.quantity);
     socket.emit(Event.ITEM_REMOVE, data);
-    handlers.broadcast.economy(io, world);
-    handlers.broadcast.store(io, world);
+    item.donate([data], io, world);
   },
 
   consume: (

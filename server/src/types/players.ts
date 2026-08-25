@@ -1,5 +1,6 @@
 import { Item } from './components';
 import { Direction } from './directions';
+import { FishName } from './entities';
 import { Slot } from './hotbar';
 import { MapName } from './maps';
 import { SpellName } from './spells';
@@ -24,4 +25,5 @@ export interface PlayerConfig {
   hotbar: (Slot | null)[];
   active: number;
   effects?: Effect[];
+  records?: Partial<Record<FishName, number>>;
 }

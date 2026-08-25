@@ -56,6 +56,7 @@ export interface EntityConfig {
   spawner?: SpawnerConfig;
   textureSpawner?: TextureSpawnerConfig;
   zone?: ZoneConfig;
+  weight?: number;
 }
 
 export interface SpawnerConfig {
@@ -123,11 +124,20 @@ export interface Icon {
   col: number;
 }
 
+export enum Rarity {
+  COMMON = "common",
+  UNCOMMON = "uncommon",
+  RARE = "rare",
+  LEGENDARY = "legendary",
+}
+
 export interface EntityMetadata {
   displayName?: string;
   description?: string;
   icon?: Icon;
   stackable?: boolean;
+  rarity?: Rarity;
+  weight?: number;
 }
 
 export enum EntityName {
@@ -227,6 +237,18 @@ export enum EntityName {
   PERCH = "perch",
   PIKE = "pike",
   CAVEFISH = "cavefish",
+  CARP_TROPHY1 = "carp_trophy1",
+  CARP_TROPHY2 = "carp_trophy2",
+  CARP_TROPHY3 = "carp_trophy3",
+  PERCH_TROPHY1 = "perch_trophy1",
+  PERCH_TROPHY2 = "perch_trophy2",
+  PERCH_TROPHY3 = "perch_trophy3",
+  PIKE_TROPHY1 = "pike_trophy1",
+  PIKE_TROPHY2 = "pike_trophy2",
+  PIKE_TROPHY3 = "pike_trophy3",
+  CAVEFISH_TROPHY1 = "cavefish_trophy1",
+  CAVEFISH_TROPHY2 = "cavefish_trophy2",
+  CAVEFISH_TROPHY3 = "cavefish_trophy3",
   FLYAMINATA1 = "flyaminata1",
   FOX = "fox",
   FOX_PELT = "fox_pelt",

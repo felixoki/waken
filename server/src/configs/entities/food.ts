@@ -37,6 +37,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A cut of fresh venison taken from wild game.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 12, col: 34 },
+      weight: 1.5,
     },
   },
   [EntityName.BOAR_MEAT]: {
@@ -66,6 +67,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A cut of tough meat taken from a wild boar.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 12, col: 31 },
+      weight: 1.5,
     },
   },
   [EntityName.GOAT_MILK]: {
@@ -95,6 +97,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A pail of fresh, creamy milk from a well-fed goat.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 20, col: 22 },
+      weight: 1,
     },
   },
   [EntityName.BREAD]: {
@@ -124,6 +127,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A freshly baked loaf of bread.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 12, col: 25 },
+      weight: 0.5,
     },
   },
   [EntityName.BEER]: {
@@ -153,6 +157,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A frothy mug of home-brewed beer.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 12, col: 19 },
+      weight: 0.5,
     },
   },
   [EntityName.WINE]: {
@@ -182,6 +187,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A bottle of fine wine.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 12, col: 22 },
+      weight: 0.75,
     },
   },
 };

@@ -19,6 +19,7 @@ import { sprites } from "./sprites";
 import { villain } from "./villain";
 import { textures } from "./textures";
 import { sound } from "./sound";
+import { fishing } from "./fishing";
 
 export const handlers = {
   state,
@@ -42,4 +43,5 @@ export const handlers = {
   villain,
   textures,
   sound,
+  fishing,
 };

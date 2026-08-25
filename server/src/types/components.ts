@@ -169,6 +169,7 @@ export interface Item {
   quantity: number;
   stackable: boolean;
   soul?: EntityName;
+  weight?: number;
 }
 
 export interface Transition {

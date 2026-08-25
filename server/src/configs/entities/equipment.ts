@@ -41,6 +41,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Kro Dai",
       description: "A dark amulet that infuses Slash with burning damage.",
       icon: { spritesheet: "icons2", row: 12, col: 25 },
+      weight: 0.1,
     },
   },
   [EntityName.RING1]: {
@@ -75,6 +76,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Mir Hul",
       description: "A pale ring that infuses Shard with freezing cold.",
       icon: { spritesheet: "icons2", row: 2, col: 22 },
+      weight: 0.02,
     },
   },
   [EntityName.HOE]: {
@@ -87,6 +89,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Hoe",
       description: "A worn iron hoe well-suited for breaking up soil.",
       icon: { spritesheet: "icons8", row: 10, col: 28 },
+      weight: 2,
     },
   },
   [EntityName.HAMMER]: {
@@ -116,6 +119,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A sturdy builder's hammer for raising walls and furnishing rooms.",
       icon: { spritesheet: "icons8", row: 10, col: 16 },
+      weight: 1.5,
     },
   },
   [EntityName.SOULSTONE]: {
@@ -145,6 +149,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A hollow stone that cradles a tamed creature's soul until you solidify it.",
       icon: { spritesheet: "icons3", row: 6, col: 25 },
+      weight: 0.5,
     },
   },
   [EntityName.FISHING_ROD]: {
@@ -174,6 +179,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A simple wooden rod strung with line. Stand near water and cast.",
       icon: { spritesheet: "icons1", row: 6, col: 19 },
+      weight: 1,
     },
   },
   [EntityName.WATERING_CAN]: {
@@ -187,6 +193,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A tin watering can. Equip it to water young crops as they grow.",
       icon: { spritesheet: "icons6", row: 1, col: 6 },
+      weight: 1.8,
     },
   },
   [EntityName.AXE]: {
@@ -215,6 +222,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Axe",
       description: "A heavy iron axe good for chopping wood.",
       icon: { spritesheet: "icons7", row: 20, col: 1 },
+      weight: 2.5,
     },
   },
   [EntityName.PICKAXE]: {
@@ -243,6 +251,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Pickaxe",
       description: "A sturdy iron pickaxe for breaking rock and ore.",
       icon: { spritesheet: "icons8", row: 10, col: 13 },
+      weight: 3,
     },
   },
   [EntityName.LANTERN]: {
@@ -275,6 +284,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Lantern",
       description: "A lantern that casts a warm glow in the dark.",
       icon: { spritesheet: "icons8", row: 8, col: 16 },
+      weight: 0.8,
     },
   },
   [EntityName.HARE_FOOT]: {
@@ -305,6 +315,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A small, furry foot from a hare. They say it brings good luck if you carry it.",
       icon: { spritesheet: "icons8", row: 20, col: 25 },
+      weight: 0.05,
     },
   },
   [EntityName.BOOTS1]: {
@@ -334,6 +345,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Boots of the Strider",
       description: "Weathered boots that quicken every step you take.",
       icon: { spritesheet: "icons2", row: 4, col: 4 },
+      weight: 1,
     },
   },
   [EntityName.BELL]: {
@@ -363,6 +375,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Sound the Alarm",
       description: "A brass bell whose ringing steels you against incoming harm.",
       icon: { spritesheet: "icons4", row: 10, col: 7 },
+      weight: 0.3,
     },
   },
   [EntityName.RING2]: {
@@ -392,6 +405,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tei Hul",
       description: "A heavy ring that doubles the force behind every blow.",
       icon: { spritesheet: "icons2", row: 18, col: 22 },
+      weight: 0.02,
     },
   },
   [EntityName.RING3]: {
@@ -421,6 +435,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Var Fai",
       description: "A verdant ring that knits your wounds closed over time.",
       icon: { spritesheet: "icons2", row: 20, col: 22 },
+      weight: 0.02,
     },
   },
   [EntityName.AMULET2]: {
@@ -450,6 +465,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Ral Mir",
       description: "A luminous amulet that steadily replenishes your mana.",
       icon: { spritesheet: "icons2", row: 10, col: 25 },
+      weight: 0.1,
     },
   },
   [EntityName.FEATHER]: {
@@ -479,6 +495,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Taken Under Their Wing",
       description: "A soft feather that bolsters your vitality.",
       icon: { spritesheet: "icons1", row: 18, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.HAT1]: {
@@ -508,6 +525,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Sorcerer's Hat",
       description: "A pointed hat that deepens the well of mana you can hold.",
       icon: { spritesheet: "icons8", row: 6, col: 22 },
+      weight: 0.2,
     },
   },
 };

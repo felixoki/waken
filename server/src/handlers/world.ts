@@ -41,6 +41,7 @@ export const world = {
               inventory: player.inventory,
               hotbar: player.hotbar,
               active: player.active,
+              records: player.records,
             },
           }),
         ),

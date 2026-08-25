@@ -470,7 +470,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.COLLECTOR,
         config: {
-          accepts: [EntityName.PERCH, EntityName.CARP, EntityName.PIKE],
+          accepts: [
+            EntityName.PERCH,
+            EntityName.CARP,
+            EntityName.PIKE,
+            EntityName.CAVEFISH,
+          ],
           recipes: [],
         },
       },
@@ -495,9 +500,30 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         "A trader who collects and supplies fresh fish to villagers.",
     },
     dialogue: {
-      [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
-      },
+      [NodeId.GREETING]: [
+        {
+          text: {
+            [Mood.HUNGRY]: [
+              "Anything in the creel? The village is going without.",
+              "Fish, please. Folk are getting thin.",
+            ],
+            [Mood.COLD]: [
+              "*blows on her hands* Water's like ice today. Caught much?",
+              "Cold work, this. What have you got?",
+            ],
+            [Mood.THIRSTY]: [
+              "Dry as old netting round here. What's in the creel?",
+              "*swallows* Nevermind me. Show me your catch.",
+            ],
+            [Mood.HAPPY]: [
+              "The village eats well. Let's see what you've landed.",
+              "Ah, the angler! Anything worth weighing?",
+              "Small ones feed the village. Big ones get you something.",
+            ],
+          },
+          choices: [{ ref: ChoiceId.GOODBYE }],
+        },
+      ],
     },
   },
   [EntityName.BAKER]: {

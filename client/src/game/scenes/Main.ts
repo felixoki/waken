@@ -705,6 +705,13 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.ITEM_COLLECT, data);
     });
 
+    EventBus.on(
+      Event.FISHING_TURN_IN,
+      (data: { entityId: string; action?: string }) => {
+        this.managers.socket.emit(Event.FISHING_TURN_IN, data);
+      },
+    );
+
     EventBus.on(Event.ITEM_CONSUME, (data: { name: string }) => {
       this.managers.socket.emit(Event.ITEM_CONSUME, data);
       this.managers.sound.play.sfx(SoundName.DRINK);

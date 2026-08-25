@@ -105,11 +105,23 @@ export const WEAKNESS_MULTIPLIER = 2;
 export const DURATION_FISHING_WAIT_MIN = 3000;
 export const DURATION_FISHING_WAIT_MAX = 8000;
 export const DURATION_FISHING_WINDOW = 1500;
-export const DURATION_FISHING_CATCH = 750;
 export const FISHING_ARC_HEIGHT = 48;
 export const FISHING_ARC_DURATION = 600;
 export const FISHING_SCAN_TILES = 1;
 export const FISHING_LANDING_DISTANCE = 16;
+
+/** Fishing minigame */
+export const REEL_METER_START = 30;
+export const REEL_METER_FILL = 26;
+export const REEL_BAR_ACCEL = 12;
+export const REEL_BAR_DRAG = 0.88;
+export const REEL_BAR_MAX_SPEED = 1.5;
+export const REEL_DART_MULTIPLIER = 1.6;
+export const REEL_DART_DURATION = 0.25;
+export const REEL_WEIGHT_SPEED = 0.25;
+export const REEL_WEIGHT_ERRATIC = 0.6;
+export const REEL_WEIGHT_BAR = 0.05;
+export const REEL_WEIGHT_DRAIN = 0.2;
 
 /** Sounds */
 

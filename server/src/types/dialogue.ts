@@ -37,6 +37,7 @@ export enum DialogueEffectName {
   CONVERSATION_END = "conversation:end",
   ITEM_GIVE = "item:give",
   COLLECTOR_OPEN = "collector:open",
+  FISH_TURN_IN = "fish:turnin",
 }
 
 export interface DialogueEffect {

@@ -15,6 +15,7 @@ import { rocks } from "./rocks";
 import { spawners } from "./spawners";
 import { spellPages } from "./spellpages";
 import { transitions } from "./transitions";
+import { trophies } from "./trophies";
 import { villain } from "./villain";
 import { zones } from "./zones";
 
@@ -35,6 +36,7 @@ export const entities = {
   ...spawners,
   ...spellPages,
   ...transitions,
+  ...trophies,
   ...interior,
   ...villain,
   ...zones,

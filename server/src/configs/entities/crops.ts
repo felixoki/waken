@@ -50,6 +50,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A humble seed that grows into a crunchy carrot.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.CARROT]: {
@@ -121,6 +122,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A crunchy orange root vegetable grown from seed.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 1 },
+      weight: 0.1,
     },
   },
   [EntityName.TOMATO_SEED]: {
@@ -134,6 +136,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A small seed that ripens into a plump red tomato.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.TOMATO]: {
@@ -206,6 +209,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A plump red fruit grown on a low-lying vine.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 2 },
+      weight: 0.15,
     },
   },
   [EntityName.CABBAGE_SEED]: {
@@ -219,6 +223,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A seed that grows into a full head of cabbage.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.CABBAGE]: {
@@ -294,6 +299,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A dense leafy green vegetable grown in rows.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 3 },
+      weight: 1,
     },
   },
   [EntityName.WHEAT_SEED]: {
@@ -307,6 +313,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A small seed that grows into a stalk of wheat.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.WHEAT]: {
@@ -385,6 +392,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A stalk of wheat grown in fields.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 5 },
+      weight: 0.05,
     },
   },
   [EntityName.GRAPE_SEED]: {
@@ -398,6 +406,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A small seed that grows into a grapevine.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.GRAPE]: {
@@ -480,6 +489,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A bunch of grapes grown on a vine.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 10, col: 19 },
+      weight: 0.4,
     },
   },
   [EntityName.HOPS_SEED]: {
@@ -493,6 +503,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A small seed that grows into a climbing hop bine.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 7 },
+      weight: 0.01,
     },
   },
   [EntityName.HOPS]: {
@@ -575,6 +586,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       description: "Fragrant cones grown on a climbing hop bine.",
       stackable: true,
       icon: { spritesheet: "icons6", row: 1, col: 8 },
+      weight: 0.05,
     },
   },
 };

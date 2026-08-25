@@ -195,12 +195,15 @@ export const dialogue = {
       | undefined;
 
     if (collectorConfig) {
+      const takesFish = collectorConfig.accepts.some(handlers.fishing.isFish);
+
       const giveChoices = player.inventory
         .filter(
           (item) =>
             item &&
             item.quantity > 0 &&
-            collectorConfig.accepts.includes(item.name),
+            collectorConfig.accepts.includes(item.name) &&
+            !handlers.fishing.isFish(item.name!),
         )
         .map((item) => {
           const displayName =
@@ -218,6 +221,38 @@ export const dialogue = {
         });
 
       choices.unshift(...giveChoices);
+
+      if (takesFish) {
+        const creel = player.inventory.filter(
+          (item) =>
+            item &&
+            handlers.fishing.isFish(item.name) &&
+            collectorConfig.accepts.includes(item.name),
+        ).length;
+
+        if (creel)
+          choices.unshift({
+            text: `Hand over your catch (${creel})`,
+            next: undefined,
+            effects: [
+              {
+                name: DialogueEffectName.FISH_TURN_IN,
+                params: { entityId, action: "give" },
+              },
+            ],
+          });
+
+        choices.push({
+          text: "How do my records stand?",
+          next: undefined,
+          effects: [
+            {
+              name: DialogueEffectName.FISH_TURN_IN,
+              params: { entityId, action: "records" },
+            },
+          ],
+        });
+      }
 
       if (collectorConfig.recipes && collectorConfig.recipes.length)
         choices.push({

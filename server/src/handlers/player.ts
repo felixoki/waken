@@ -68,6 +68,8 @@ export const player = {
         inventory: saved?.data?.inventory ?? [...new Array(20).fill(null)],
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [...new Array(8).fill(null)],
         active: (saved?.data?.active as number) ?? 0,
+        records:
+          (saved?.data?.records as PlayerConfig["records"]) ?? {},
       };
 
       world.players.add(player.id, player);
@@ -116,6 +118,7 @@ export const player = {
           inventory: player.inventory,
           hotbar: player.hotbar,
           active: player.active,
+          records: player.records,
         },
       });
 

@@ -33,6 +33,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A sturdy vest made from tough materials.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 6, col: 28 },
+      weight: 1.2,
     },
   },
   [EntityName.TUNIC]: {
@@ -62,6 +63,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A sturdy tunic made from tough materials.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 6, col: 25 },
+      weight: 0.6,
     },
   },
 };

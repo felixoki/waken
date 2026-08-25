@@ -30,6 +30,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A small translucent crystal with a faint pale glow.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 14, col: 19 },
+      weight: 0.5,
     },
   },
   [EntityName.WOOD]: {
@@ -59,6 +60,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A rough-cut log split from a felled tree.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 2, col: 28 },
+      weight: 2,
     },
   },
   [EntityName.BONE]: {
@@ -88,6 +90,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A cracked bone stripped clean by tooth and claw.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 2, col: 13 },
+      weight: 0.3,
     },
   },
   [EntityName.IRON1]: {
@@ -117,6 +120,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A rough chunk of iron ore pulled from the earth.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 10, col: 19 },
+      weight: 1.5,
     },
   },
   [EntityName.GLASS]: {
@@ -134,6 +138,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A shard of refined glass, smooth and transparent.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 4, col: 4 },
+      weight: 0.4,
     },
   },
   [EntityName.VIAL]: {
@@ -163,6 +168,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A slender glass vial used for storing liquids.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 6, col: 28 },
+      weight: 0.1,
     },
   },
   [EntityName.FISHING_HOOK]: {
@@ -192,6 +198,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A sharp metal hook for rigging a fishing line.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 6, col: 28 },
+      weight: 0.01,
     },
   },
   [EntityName.DEER_HIDE]: {
@@ -221,6 +228,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A supple hide stripped from a forest deer.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 10, col: 10 },
+      weight: 2,
     },
   },
   [EntityName.TROLL_HIDE]: {
@@ -250,6 +258,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A thick, warty hide peeled from a fallen troll.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 10, col: 10 },
+      weight: 5,
     },
   },
   [EntityName.FOX_PELT]: {
@@ -279,6 +288,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A soft pelt obtained from a cunning fox.",
       stackable: true,
       icon: { spritesheet: "icons9", row: 2, col: 1 },
+      weight: 1,
     },
   },
   [EntityName.BEAR_PELT]: {
@@ -308,6 +318,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A thick pelt obtained from a wild bear.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 10, col: 10 },
+      weight: 6,
     },
   },
   [EntityName.RAT_CLAWS]: {
@@ -337,6 +348,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "Jagged claws torn from a filthy sewer rat.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 18, col: 13 },
+      weight: 0.05,
     },
   },
 };

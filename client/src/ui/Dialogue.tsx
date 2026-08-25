@@ -31,6 +31,9 @@ export const Dialogue = () => {
           EventBus.emit(Event.ENTITY_DIALOGUE_END, data.entityId);
         if (effect.params) EventBus.emit(Event.COLLECTOR_OPEN, effect.params);
       },
+      [DialogueEffectName.FISH_TURN_IN]: (effect: DialogueEffect) => {
+        if (effect.params) EventBus.emit(Event.FISHING_TURN_IN, effect.params);
+      },
     };
 
   const choose = (choice: DialogueChoice) => {

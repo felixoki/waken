@@ -3,6 +3,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  Rarity,
 } from "../../types";
 
 export const fish: Partial<Record<EntityName, EntityDefinition>> = {
@@ -31,8 +32,10 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Carp",
       description: "A sturdy river carp.",
-      stackable: true,
+      stackable: false,
+      rarity: Rarity.COMMON,
       icon: { spritesheet: "icons1", row: 4, col: 13 },
+      weight: 3.8,
     },
   },
   [EntityName.PERCH]: {
@@ -60,8 +63,10 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Perch",
       description: "A small striped perch, common in these waters.",
-      stackable: true,
+      stackable: false,
+      rarity: Rarity.COMMON,
       icon: { spritesheet: "icons1", row: 2, col: 25 },
+      weight: 0.8,
     },
   },
   [EntityName.PIKE]: {
@@ -89,8 +94,10 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Pike",
       description: "A large predatory pike, common in freshwater lakes.",
-      stackable: true,
+      stackable: false,
+      rarity: Rarity.RARE,
       icon: { spritesheet: "icons1", row: 4, col: 7 },
+      weight: 5.6,
     },
   },
   [EntityName.CAVEFISH]: {
@@ -118,8 +125,10 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Cavefish",
       description: "A pale, eyeless fish from the sunless pools.",
-      stackable: true,
+      stackable: false,
+      rarity: Rarity.RARE,
       icon: { spritesheet: "icons1", row: 2, col: 1 },
+      weight: 1.1,
     },
   },
 };

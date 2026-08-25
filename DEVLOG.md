@@ -733,10 +733,15 @@
 - Replace forest music track ✅
 - Add credits page ✅
 
+#### 25.8.2026
+
+- Add entity weight and rarity ✅
+- Add reeling minigame ✅
+- Add fishwife functionality ✅
+- Add personal bests and trophies ✅
+
 
 ### In progress
-
-- Add fishwife functionality
 
 ### Bugs
 

@@ -13653,6 +13653,17 @@
                  "width":1,
                  "x":400,
                  "y":1232
+                }, 
+                {
+                 "height":1.8357044515833,
+                 "id":1630,
+                 "name":"Fishing_rod",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1.52975370965277,
+                 "x":432.614349089797,
+                 "y":703.992657182194
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -13812,7 +13823,7 @@
          "y":0
         }],
  "nextlayerid":66,
- "nextobjectid":1630,
+ "nextobjectid":1631,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

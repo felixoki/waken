@@ -14,6 +14,7 @@ const controls = [
   { action: "Run", key: "Shift" },
   { action: "Jump", key: "Space" },
   { action: "Roll", key: "C" },
+  { action: "Reel in fish", key: "A / D" },
   { action: "Attack", key: "Left mouse" },
   { action: "Aim", key: "Mouse" },
   { action: "Prev slot", key: "Q" },

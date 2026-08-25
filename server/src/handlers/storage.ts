@@ -54,6 +54,16 @@ export const storage = {
     return result;
   },
 
+  fits(slots: (Item | null)[], item: Item): boolean {
+    if (
+      item.stackable &&
+      slots.some((s) => s?.name === item.name && s.quantity < MAX_STACK)
+    )
+      return true;
+
+    return slots.some((s) => s === null);
+  },
+
   has(slots: (Item | null)[], item: Item): boolean {
     const total = slots
       .filter((s): s is Item => s?.name === item.name)

@@ -102,9 +102,15 @@ export const entity = {
 
     if (!player || !entity) return;
 
-    const stackable =
-      configs.entities[entity.name]?.metadata?.stackable ?? false;
-    const item: Item = { name: entity.name, quantity: 1, stackable };
+    const metadata = configs.entities[entity.name]?.metadata;
+    const item: Item = {
+      name: entity.name,
+      quantity: 1,
+      stackable: metadata?.stackable ?? false,
+      weight: entity.weight ?? metadata?.weight,
+    };
+
+    if (!handlers.storage.fits(player.inventory, item)) return;
 
     player.inventory = handlers.storage.add(player.inventory, item);
     socket.emit(Event.INVENTORY_SYNC, player.inventory);

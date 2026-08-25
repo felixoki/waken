@@ -13,6 +13,7 @@ export * from "./directions.js";
 export * from "./economy.js";
 export * from "./entities.js";
 export * from "./farming.js";
+export * from "./fish.js";
 export * from "./geometry.js";
 export * from "./hotbar.js";
 export * from "./input.js";

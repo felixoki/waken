@@ -157,6 +157,10 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: any) => handlers.fishing.catch(data, socket, io, world),
     },
     {
+      event: Event.FISHING_TURN_IN,
+      handler: (data: any) => handlers.fishing.turnIn(data, socket, io, world),
+    },
+    {
       event: Event.ENTITY_CAPTURE,
       handler: (data: { id: string }) =>
         handlers.taming.capture(data, socket, io, world),

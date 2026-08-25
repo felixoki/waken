@@ -51,6 +51,10 @@ export enum Event {
   ENTITY_MATURE = "entity_mature",
   ENTITY_LAY = "entity_lay",
   ENTITY_FISH = "entity:fish",
+  FISHING_TURN_IN = "fishing:turnin",
+  FISHING_MINIGAME_START = "fishing:minigame_start",
+  FISHING_MINIGAME_UPDATE = "fishing:minigame_update",
+  FISHING_MINIGAME_END = "fishing:minigame_end",
   ENTITY_OVERLAP = "entity_overlap",
   TEXTURE_SPAWN = "texture_spawn",
 

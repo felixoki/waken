@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { ComponentName, EntityName, SpellName } from "@server/types";
+import { ComponentName, EntityName, Rarity, SpellName } from "@server/types";
 import { SpellConfig } from "@server/types/spells";
 import { Ingredient } from "@server/types/collectors";
 import { configs } from "@server/configs";
@@ -14,6 +14,7 @@ interface Props {
   barMax?: number;
   barLabel?: string;
   soul?: EntityName | null;
+  weight?: number;
   interactive?: boolean;
   disabled?: boolean;
   active?: boolean;
@@ -33,6 +34,7 @@ export function Item({
   barMax = 100,
   barLabel,
   soul,
+  weight,
   interactive = false,
   disabled = false,
   active = false,
@@ -73,9 +75,30 @@ export function Item({
 
   const displayName = config?.metadata?.displayName || name || "";
   const description = config?.metadata?.description;
+  const rarity = (config?.metadata as { rarity?: Rarity } | undefined)?.rarity;
+  const baseWeight = (config?.metadata as { weight?: number } | undefined)
+    ?.weight;
+  const shownWeight = weight ?? baseWeight;
 
   const baseClass =
     "relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square overflow-hidden transition-colors";
+
+  const rarityRing = rarity && rarity !== Rarity.COMMON
+    ? {
+        [Rarity.UNCOMMON]: "ring-2 ring-green-500",
+        [Rarity.RARE]: "ring-2 ring-blue-500",
+        [Rarity.LEGENDARY]: "ring-2 ring-amber-500",
+      }[rarity as Exclude<Rarity, Rarity.COMMON>]
+    : "";
+
+  const rarityText = rarity
+    ? {
+        [Rarity.COMMON]: "text-white",
+        [Rarity.UNCOMMON]: "text-green-400",
+        [Rarity.RARE]: "text-blue-400",
+        [Rarity.LEGENDARY]: "text-amber-400",
+      }[rarity]
+    : "text-white";
 
   const stateClass = disabled
     ? "bg-gray-200 opacity-50 cursor-not-allowed"
@@ -83,7 +106,7 @@ export function Item({
       ? "bg-gray-200 border-2 border-blue-600"
       : isOver
         ? "bg-gray-200 ring-2 ring-blue-400"
-        : "bg-gray-200";
+        : `bg-gray-200 ${rarityRing}`;
 
   const handleMouseEnter = () => {
     if (ref.current) {
@@ -120,8 +143,14 @@ export function Item({
         ) : (
           displayName
         )}
+        {weight !== undefined && !isDragging && (
+          <span className="absolute bottom-0.5 right-1 text-[0.6rem] text-gray-700">
+            {weight.toFixed(1)}
+          </span>
+        )}
         {quantity !== undefined &&
           quantity > 0 &&
+          weight === undefined &&
           bar === undefined &&
           !isDragging && (
             <span className="absolute bottom-1 right-1">{quantity}</span>
@@ -156,7 +185,9 @@ export function Item({
                 <Icon icon={config.metadata.icon} zoom={2} />
               </div>
             )}
-            <p className="font-semibold leading-tight">{displayName}</p>
+            <p className={`font-semibold leading-tight ${rarityText}`}>
+              {displayName}
+            </p>
           </div>
           {description && <p className="text-gray-300 mt-1">{description}</p>}
           {hint && <p className="text-white mt-1">{hint}</p>}
@@ -253,6 +284,14 @@ export function Item({
             <div className="mt-1 flex justify-between text-xs">
               <span className="text-white/50">Stock</span>
               <span className="text-white">{barLabel}</span>
+            </div>
+          )}
+          {shownWeight !== undefined && (
+            <div className="mt-1 flex justify-between text-xs">
+              <span className="text-white/50">Weight</span>
+              <span className="text-white">
+                {shownWeight.toFixed(2).replace(/\.?0+$/, "")} kg
+              </span>
             </div>
           )}
           {soul && (
