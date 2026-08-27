@@ -1390,7 +1390,7 @@ export const maps: Record<MapName, MapConfig> = {
     isInstanced: true,
     isPartyInstance: true,
     sound: {
-      music: [MusicName.INTO_THE_MIST],
+      music: [MusicName.BRAIDED_LIGHTS, MusicName.INTO_THE_MIST],
       ambience: [AmbienceName.BIRDS],
     },
     spritesheets: [

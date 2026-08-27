@@ -231,21 +231,21 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 2,
     },
   },
-  [EntityName.TROLL_HIDE]: {
+  [EntityName.TROLL_SCALES]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "icons1",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 11, end: 12 },
-            { row: 10, start: 11, end: 12 },
+            { row: 1, start: 23, end: 24 },
+            { row: 2, start: 23, end: 24 },
           ],
         },
-        key: "troll_hide_texture",
+        key: "troll_scales_texture",
       },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
@@ -254,11 +254,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Troll hide",
-      description: "A thick, warty hide peeled from a fallen troll.",
+      displayName: "Troll scales",
+      description: "A handful of coarse green scales torn from a fallen troll.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 10, col: 10 },
-      weight: 5,
+      icon: { spritesheet: "icons1", row: 2, col: 22 },
+      weight: 1,
     },
   },
   [EntityName.FOX_PELT]: {
@@ -349,6 +349,36 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       stackable: true,
       icon: { spritesheet: "icons3", row: 18, col: 13 },
       weight: 0.05,
+    },
+  },
+  [EntityName.BALE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 17, start: 17, end: 18 },
+            { row: 18, start: 17, end: 18 },
+          ],
+        },
+        key: "bale_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bale",
+      description: "A dish of thick amber fat taken from cattle.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 18, col: 16 },
+      weight: 0.5,
     },
   },
 };

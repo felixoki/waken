@@ -143,14 +143,8 @@ export function Item({
         ) : (
           displayName
         )}
-        {weight !== undefined && !isDragging && (
-          <span className="absolute bottom-0.5 right-1 text-[0.6rem] text-gray-700">
-            {weight.toFixed(1)}
-          </span>
-        )}
         {quantity !== undefined &&
           quantity > 0 &&
-          weight === undefined &&
           bar === undefined &&
           !isDragging && (
             <span className="absolute bottom-1 right-1">{quantity}</span>

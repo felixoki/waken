@@ -47,6 +47,7 @@ export enum SoundName {
 
 export enum MusicName {
   SWEET_VILLAGE = "sweet_village",
+  BRAIDED_LIGHTS = "braided_lights",
   AFTER_RAIN = "after_rain",
   INTO_THE_MIST = "into_the_mist",
   AT_DAYBREAK = "at_daybreak",
@@ -55,6 +56,7 @@ export enum MusicName {
 
 export enum AmbienceName {
   RAIN = "rain",
+  STORM = "storm",
   BIRDS = "birds",
   CANALS = "canals",
 }

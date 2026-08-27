@@ -740,6 +740,11 @@
 - Add fishwife functionality ✅
 - Add personal bests and trophies ✅
 
+#### 27.8.2026
+
+- Add cloudy and stormy weather ✅
+- Add dungeon unlock potion ✅
+- Update music ✅
 
 ### In progress
 

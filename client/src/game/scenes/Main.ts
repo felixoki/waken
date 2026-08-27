@@ -162,6 +162,10 @@ export class MainScene extends Phaser.Scene {
       this.managers.weather.setWeather(data, true);
     });
 
+    this.managers.socket.on(Event.WORLD_LIGHTNING, (data: number) => {
+      this.managers.weather.strike(data);
+    });
+
     this.managers.socket.on(Event.WORLD_PHASE, (data: TimePhase) => {
       this.managers.daycycle.setPhase(data, true);
     });

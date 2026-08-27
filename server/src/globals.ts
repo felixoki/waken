@@ -46,7 +46,60 @@ export const PHASE_STARTS = [
 /** Weather */
 export const WEATHER_MIN_DURATION = 3 * 60 * 1000;
 export const WEATHER_MAX_DURATION = 8 * 60 * 1000;
-export const WEATHER_RAIN_CHANCE = 0;
+export const WEATHER_RAIN_CHANCE = 0.2;
+export const WEATHER_CLEAR_CHANCE = 0.2;
+export const WEATHER_STORM_CHANCE = 0.2;
+
+/** Lightning */
+export const STRIKE_MIN_INTERVAL = 5_000;
+export const STRIKE_MAX_INTERVAL = 20_000;
+export const STRIKE_DISTANCE_BIAS = 0.5;
+export const STRIKE_FLASH_COLOR: [number, number, number] = [0.88, 0.92, 1.0];
+export const STRIKE_FLASH_STRENGTH = 0.7;
+export const STRIKE_FLASH_IN = 40;
+export const STRIKE_FLASH_OUT = 240;
+export const STRIKE_FLICKER_CHANCE = 0.45;
+export const STRIKE_THUNDER_DELAY = 3600;
+export const STRIKE_THUNDER_VOLUME = 0.8;
+export const STRIKE_THUNDER_RATE_NEAR = 0.6;
+export const STRIKE_THUNDER_RATE_FAR = 0.3;
+export const STRIKE_SHAKE_RANGE = 0.35;
+export const STRIKE_SHAKE_DURATION = 420;
+export const STRIKE_SHAKE_INTENSITY = 0.0009;
+
+/** Wind */
+export const WIND_AMPLITUDE = 1.2;
+export const WIND_SPEED = 0.0015;
+export const WIND_CLOUDY = 1.3;
+export const WIND_RAIN = 2.2;
+export const WIND_STORM = 3.6;
+export const WIND_GUST = 0.45;
+
+/** Rain */
+export const RAIN_DENSITY = 0.1;
+export const RAIN_RUSH = 0.3;
+
+/** Clouds */
+export const CLOUD_STRENGTH = 0.4;
+export const CLOUD_SCALE = 110;
+export const CLOUD_SPEED = 8;
+export const CLOUD_ANGLE = 25;
+export const CLOUD_COVERAGE = 0.6;
+export const CLOUD_SOFTNESS = 0.18;
+export const CLOUD_COLOR: [number, number, number] = [0.58, 0.64, 0.78];
+
+/** Rays */
+export const RAY_STRENGTH = 0.1;
+export const RAY_SCALE = 55;
+export const RAY_LENGTH = 14;
+export const RAY_RUN = 540;
+export const RAY_SPEED = 6;
+export const RAY_ANGLE = 115;
+export const RAY_COVERAGE = 0.65;
+export const RAY_SOFTNESS = 0.22;
+export const RAY_CORE = 0.4;
+export const RAY_GAP = 0.38;
+export const RAY_HAZE = 0.1;
 
 /** Actions */
 export const DURATION_JUMPING = 800;

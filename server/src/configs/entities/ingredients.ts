@@ -426,6 +426,105 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.1,
     },
   },
+  [EntityName.HENBANE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "gathering1",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 13, end: 15 },
+            { row: 8, start: 13, end: 15 },
+            { row: 9, start: 13, end: 15 },
+          ],
+        },
+        key: "henbane_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+      {
+        name: ComponentName.POINTABLE,
+      },
+      {
+        name: ComponentName.PICKABLE,
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Henbane",
+      description:
+        "A poisonous weed with pale yellow flowers and clammy leaves.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 16, col: 7 },
+      weight: 0.02,
+    },
+  },
+  [EntityName.OPIUM_POPPY]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "gathering1",
+          tileSize: 16,
+          tiles: [
+            { row: 10, start: 19, end: 20 },
+            { row: 11, start: 19, end: 20 },
+            { row: 12, start: 19, end: 20 },
+          ],
+        },
+        key: "opium_poppy_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+      {
+        name: ComponentName.POINTABLE,
+      },
+      {
+        name: ComponentName.PICKABLE,
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Opium poppy",
+      description: "A bare stalk hung with swollen pods of milky sap.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 16, col: 1 },
+      weight: 0.02,
+    },
+  },
   [EntityName.POTION1]: {
     facing: Direction.DOWN,
     moving: [],
@@ -489,10 +588,40 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Troll blood",
       description:
-        "A thick, potent brew rendered from troll hide and deadly herbs.",
+        "A thick, potent brew rendered from troll scales and deadly herbs.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 2, col: 28 },
       weight: 0.3,
+    },
+  },
+  [EntityName.POTION4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 11, start: 29, end: 30 },
+            { row: 12, start: 29, end: 30 },
+          ],
+        },
+        key: "potion4_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "The Further",
+      description: "A pale draught brewed from henbane and opium poppy.",
+      stackable: true,
+      icon: { spritesheet: "icons2", row: 12, col: 28 },
+      weight: 0.2,
     },
   },
 };

@@ -1,11 +1,11 @@
 import { PipelineName } from "@server/types";
+import { WIND_AMPLITUDE, WIND_SPEED } from "@server/globals";
 import Phaser from "phaser";
 
 const MultiPipeline = Phaser.Renderer.WebGL.Pipelines.MultiPipeline;
 
 export class WindPipeline extends MultiPipeline {
-  private amplitude: number = 1.2;
-  private speed: number = 0.0015;
+  public readonly wind = { amplitude: WIND_AMPLITUDE, speed: WIND_SPEED };
 
   constructor(game: Phaser.Game, name: string = PipelineName.WIND) {
     super({
@@ -62,7 +62,7 @@ export class WindPipeline extends MultiPipeline {
     super.onPreRender();
 
     this.set1f("current_time", this.game.loop.time);
-    this.set1f("wind_amplitude", this.amplitude);
-    this.set1f("wind_speed", this.speed);
+    this.set1f("wind_amplitude", this.wind.amplitude);
+    this.set1f("wind_speed", this.wind.speed);
   }
 }

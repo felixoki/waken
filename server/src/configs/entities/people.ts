@@ -32,8 +32,11 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.BELLADONNA,
             EntityName.VIAL,
             EntityName.BEARDED_TOOTH_FUNGUS,
-            EntityName.TROLL_HIDE,
+            EntityName.TROLL_SCALES,
             EntityName.RAT_CLAWS,
+            EntityName.HENBANE,
+            EntityName.OPIUM_POPPY,
+            EntityName.BALE,
           ],
           recipes: [
             {
@@ -62,10 +65,21 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               output: EntityName.POTION3,
               quantity: 1,
               ingredients: [
-                { item: EntityName.TROLL_HIDE, quantity: 1 },
+                { item: EntityName.TROLL_SCALES, quantity: 1 },
                 { item: EntityName.RAT_CLAWS, quantity: 4 },
                 { item: EntityName.BELLADONNA, quantity: 1 },
                 { item: EntityName.CLARY_SAGE, quantity: 2 },
+              ],
+            },
+            {
+              tier: 2,
+              output: EntityName.POTION4,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.VIAL, quantity: 1 },
+                { item: EntityName.HENBANE, quantity: 2 },
+                { item: EntityName.OPIUM_POPPY, quantity: 2 },
+                { item: EntityName.BALE, quantity: 1 },
               ],
             },
           ] satisfies Recipe[],
@@ -380,6 +394,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.RASPBERRY,
             EntityName.VENISON_MEAT,
             EntityName.BOAR_MEAT,
+            EntityName.BEEF,
             EntityName.CABBAGE,
             EntityName.CARROT,
             EntityName.TOMATO,

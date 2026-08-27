@@ -3,6 +3,7 @@ export enum Event {
   WORLD_TIME = "world_time",
   WORLD_PHASE = "world_phase",
   WORLD_WEATHER = "world_weather",
+  WORLD_LIGHTNING = "world_lightning",
 
   /** Player */
   PLAYER_CREATE = "player_create",

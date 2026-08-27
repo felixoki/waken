@@ -48,7 +48,11 @@ const credits = [
         source: "16pixel.itch.io",
         href: "https://16pixel.itch.io",
       },
-      { name: "JC Sounds", source: "CC BY 4.0" },
+      {
+        name: "JC Sounds – Fantasy SFX Pack Vol 1, Nature Ambient Pack Vol 1",
+        source: "JC Sounds, CC BY 4.0",
+        href: "https://www.patreon.com/jcsounds",
+      },
       {
         name: "Animals Sound Effects Audio Package",
         source: "Aligned Games",

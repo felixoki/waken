@@ -251,6 +251,7 @@ export const sounds = {
 
   music: {
     [MusicName.SWEET_VILLAGE]: { volume: 0.5 },
+    [MusicName.BRAIDED_LIGHTS]: { volume: 0.5 },
     [MusicName.AFTER_RAIN]: { volume: 0.5 },
     [MusicName.INTO_THE_MIST]: { volume: 0.5 },
     [MusicName.AT_DAYBREAK]: { volume: 0.5 },
@@ -258,7 +259,11 @@ export const sounds = {
   },
 
   ambience: {
-    [AmbienceName.RAIN]: { volume: 0.05 },
+    [AmbienceName.RAIN]: { volume: 0.75 },
+    [AmbienceName.STORM]: {
+      volume: 0.75,
+      variants: ["storm1", "storm2"],
+    },
     [AmbienceName.BIRDS]: {
       volume: 0.1,
       variants: ["birds1", "birds2", "birds3"],

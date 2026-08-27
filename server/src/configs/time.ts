@@ -11,6 +11,7 @@ export const time = {
       vignette: {
         strength: 0.15,
       },
+      sun: { color: 0xffd9c4, intensity: 1.0 },
     },
     [TimePhase.DAY]: {
       ambient: 0xffffff,
@@ -21,6 +22,7 @@ export const time = {
       vignette: {
         strength: 0.1,
       },
+      sun: { color: 0xfffaf0, intensity: 0.65 },
     },
     [TimePhase.DUSK]: {
       ambient: 0xccc0b0,
@@ -31,6 +33,7 @@ export const time = {
       vignette: {
         strength: 0.2,
       },
+      sun: { color: 0xffb877, intensity: 1.15 },
     },
     [TimePhase.NIGHT]: {
       ambient: 0x3b4757,
@@ -41,6 +44,7 @@ export const time = {
       vignette: {
         strength: 0.42,
       },
+      sun: { color: 0xc2d4ff, intensity: 0.0 },
     },
   } satisfies Record<TimePhase, AmbienceConfig>,
 };

@@ -50,8 +50,8 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
           spritesheet: "icons8",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 32, end: 33 },
-            { row: 12, start: 32, end: 33 },
+            { row: 11, start: 29, end: 30 },
+            { row: 12, start: 29, end: 30 },
           ],
         },
         key: "boar_meat_texture",
@@ -65,6 +65,36 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Boar meat",
       description: "A cut of tough meat taken from a wild boar.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 12, col: 28 },
+      weight: 1.5,
+    },
+  },
+  [EntityName.BEEF]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 11, start: 32, end: 33 },
+            { row: 12, start: 32, end: 33 },
+          ],
+        },
+        key: "beef_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Beef",
+      description: "A heavy cut of meat taken from cattle.",
       stackable: true,
       icon: { spritesheet: "icons8", row: 12, col: 31 },
       weight: 1.5,

@@ -590,7 +590,25 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     maxHealth: 60,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.BEEF,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.BALE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.15,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,

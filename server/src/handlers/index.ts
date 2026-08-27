@@ -17,6 +17,7 @@ import { spawner } from "./spawner.js";
 import { storage } from "./storage.js";
 import { sublevel } from "./sublevel.js";
 import { taming } from "./taming.js";
+import { weather } from "./weather.js";
 import { world } from "./world.js";
 
 export const handlers = {
@@ -39,5 +40,6 @@ export const handlers = {
   storage,
   sublevel,
   taming,
+  weather,
   world,
 };

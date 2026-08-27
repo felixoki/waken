@@ -34,11 +34,12 @@ export class DaycycleManager {
     const preset = configs.time.phases[phase];
 
     const pipelines = this._getPipelines();
-    pipelines.forEach(
-      animate
-        ? (p) => this._transitionTo(p, preset)
-        : (p) => this._apply(p, preset),
-    );
+    pipelines.forEach((pipeline) => {
+      if (animate) this._transitionTo(pipeline, preset);
+      else this._apply(pipeline, preset);
+
+      this._applySun(pipeline, preset, animate);
+    });
 
     const scenes = this._getOutdoorScenes();
     scenes.forEach((s) => {
@@ -122,6 +123,29 @@ export class DaycycleManager {
       duration: PHASE_TRANSITION_DURATION,
       ease: "Sine.easeInOut",
     });
+  }
+
+  private _applySun(
+    pipeline: AmbiencePipeline,
+    config: AmbienceConfig,
+    animate: boolean,
+  ) {
+    const color = Phaser.Display.Color.IntegerToColor(config.sun.color);
+    const target = {
+      r: color.red / 255,
+      g: color.green / 255,
+      b: color.blue / 255,
+      intensity: config.sun.intensity,
+    };
+
+    if (animate)
+      this.scene.tweens.add({
+        targets: pipeline.sun,
+        ...target,
+        duration: PHASE_TRANSITION_DURATION,
+        ease: "Sine.easeInOut",
+      });
+    else Object.assign(pipeline.sun, target);
   }
 
   private _apply(pipeline: AmbiencePipeline, config: AmbienceConfig) {

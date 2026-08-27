@@ -7,6 +7,10 @@ export interface AmbienceConfig {
   vignette: {
     strength: number;
   };
+  sun: {
+    color: number;
+    intensity: number;
+  };
 }
 
 export interface LightConfig {
@@ -18,11 +22,20 @@ export interface LightConfig {
 export enum AmbienceLayer {
   DAYCYCLE = "daycycle",
   WEATHER = "weather",
+  LIGHTNING = "lightning",
 }
 
 export enum WeatherName {
   CLEAR = "clear",
+  CLOUDY = "cloudy",
   RAIN = "rain",
+  STORM = "storm",
+}
+
+export interface WeatherState {
+  current: WeatherName;
+  remaining: number;
+  lightning: number;
 }
 
 export interface MapAmbienceConfig {

@@ -9,14 +9,12 @@ import {
   TimePhase,
   TimeState,
   WeatherName,
+  WeatherState,
 } from "./types/index.js";
 import { EconomyManager } from "./managers/Economy";
 import {
   DAY,
   PHASE_STARTS,
-  WEATHER_MIN_DURATION,
-  WEATHER_MAX_DURATION,
-  WEATHER_RAIN_CHANCE,
 } from "./globals";
 import { PartyStore } from "./stores/Party";
 import { Server } from "socket.io";
@@ -29,9 +27,10 @@ import { SublevelStore } from "./stores/Sublevel.js";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
-  private weather: { current: WeatherName; remaining: number } = {
-    current: WeatherName.CLEAR,
+  public weather: WeatherState = {
+    current: WeatherName.CLOUDY,
     remaining: 0,
+    lightning: 0,
   };
 
   public readonly players: PlayerStore;
@@ -93,8 +92,7 @@ export class World {
       this.server.emit(Event.WORLD_PHASE, this.time.phase);
     }
 
-    this.weather.remaining -= delta;
-    if (this.weather.remaining <= 0) this._rollWeather();
+    handlers.weather.tick(delta, this, this.server);
 
     handlers.player.regen(delta, this);
 
@@ -117,17 +115,6 @@ export class World {
 
   getWeather(): WeatherName {
     return this.weather.current;
-  }
-
-  private _rollWeather(): void {
-    this.weather.current =
-      Math.random() < WEATHER_RAIN_CHANCE
-        ? WeatherName.RAIN
-        : WeatherName.CLEAR;
-    this.weather.remaining =
-      WEATHER_MIN_DURATION +
-      Math.random() * (WEATHER_MAX_DURATION - WEATHER_MIN_DURATION);
-    this.server.emit(Event.WORLD_WEATHER, this.weather.current);
   }
 
   setTime(time: TimeState): void {

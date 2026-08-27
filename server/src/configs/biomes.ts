@@ -156,6 +156,13 @@ export const forest: BiomeConfig = {
       spacing: 2,
     },
     {
+      entities: [EntityName.HENBANE, EntityName.OPIUM_POPPY],
+      terrain: [TerrainName.GRASS],
+      count: { min: 6, max: 10 },
+      spacing: 20,
+      margin: 1,
+    },
+    {
       entities: [EntityName.DEER],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 15, max: 25 },
