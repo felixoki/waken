@@ -18,4 +18,5 @@ export interface Effect {
   lastTickAt?: number;
   ownerId: string;
   absorb?: number;
+  held?: boolean;
 }

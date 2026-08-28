@@ -195,6 +195,18 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "dog-idle",
+    file: "dog_idle_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "dog-walking",
+    file: "dog_walking_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
     key: "goose-idle",
     file: "goose_idle_with_shadow.png",
     frameWidth: 32,
@@ -1222,6 +1234,12 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "blacksmith-walking",
         file: "blacksmith_walking_with_shadow.png",
+        frameWidth: 48,
+        frameHeight: 48,
+      },
+      {
+        key: "tanner-idle",
+        file: "tanner_idle_with_shadow.png",
         frameWidth: 48,
         frameHeight: 48,
       },

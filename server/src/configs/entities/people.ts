@@ -288,6 +288,67 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     },
   },
+  [EntityName.TANNER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Tanner",
+      description:
+        "The smith's helping hand, curing hides into leather by the forge.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        ref: NodeId.GREETING,
+        individual: [
+          {
+            text: "You work for the smith?",
+            next: NodeId.STORY,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "I scrape and cure the hides he hasn't the patience for. Leather for grips, straps, bellows, all of it passes through my hands first.",
+        choices: [
+          {
+            text: "Anything you're short of?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "Hides, always hides. Deer if you can manage it, though a fox pelt never goes to waste. Take them to the smith, he keeps the ledger.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+    },
+  },
   [EntityName.GLASSBLOWER]: {
     facing: Direction.DOWN,
     moving: [],

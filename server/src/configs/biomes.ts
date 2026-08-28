@@ -218,7 +218,13 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.SHADOW_WANDERER],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 0, max: 3 },
+      count: { min: 1, max: 3 },
+      spacing: 10,
+    },
+    {
+      entities: [EntityName.HERON],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 1, max: 3 },
       spacing: 10,
     },
   ],

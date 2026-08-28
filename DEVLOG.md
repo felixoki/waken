@@ -746,6 +746,11 @@
 - Add dungeon unlock potion ✅
 - Update music ✅
 
+#### 28.8.2026
+
+- Add dog and tanner ✅
+- Add menu to game transition ✅
+
 ### In progress
 
 ### Bugs

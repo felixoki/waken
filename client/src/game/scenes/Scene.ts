@@ -26,6 +26,7 @@ export class Scene extends Phaser.Scene {
       socket: main.managers.socket,
       chunks: main.managers.chunks,
       sound: main.managers.sound,
+      weather: main.managers.weather,
       physics: this.physicsManager,
       tile: this.tileManager,
       camera: this.cameraManager,

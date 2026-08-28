@@ -530,7 +530,7 @@ export const combat = {
         let killed = false;
 
         for (const effect of target.effects) {
-          if (now >= effect.expiresAt) {
+          if (!effect.held && now >= effect.expiresAt) {
             emit(Event.EFFECT_REMOVE, { id, name: effect.name });
             continue;
           }

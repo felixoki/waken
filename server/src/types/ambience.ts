@@ -36,6 +36,7 @@ export interface WeatherState {
   current: WeatherName;
   remaining: number;
   lightning: number;
+  soaked: number;
 }
 
 export interface MapAmbienceConfig {

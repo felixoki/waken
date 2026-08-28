@@ -4,7 +4,10 @@ import {
   Event,
   GrowableConfig,
   GrowthStageConfig,
+  MapName,
+  WeatherName,
 } from "@server/types";
+import { configs } from "@server/configs";
 import { DURATION_CROP_DEHYDRATION } from "@server/globals";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
@@ -96,7 +99,9 @@ export class GrowableComponent extends Component {
     if (this.isMature()) return;
 
     if (this.config.needsWater && !this.watered) {
-      this._checkDehydration();
+      if (this._inRain()) this._soak();
+      else this._checkDehydration();
+
       return;
     }
 
@@ -190,6 +195,24 @@ export class GrowableComponent extends Component {
   private _setThirsty(): void {
     this.watered = false;
     this.entity.setTint(THIRSTY_TINT);
+  }
+
+  private _inRain(): boolean {
+    const scene = this.entity.scene;
+    if (configs.maps[scene.scene.key as MapName]?.isIndoor) return false;
+
+    const weather = scene.managers.weather.weather;
+
+    return weather === WeatherName.RAIN || weather === WeatherName.STORM;
+  }
+
+  private _soak(): void {
+    this.water();
+
+    if (this.entity.scene.managers.players.player?.isAuthority)
+      this.entity.scene.game.events.emit(Event.ENTITY_WATER, {
+        id: this.entity.id,
+      });
   }
 
   private _checkDehydration(): void {

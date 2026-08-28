@@ -40,10 +40,10 @@ const WEATHER_TRANSITION_DURATION = PHASE_TRANSITION_DURATION * 3;
 type WeatherModifier = Required<Omit<AmbienceModifier, "flash">>;
 
 const CLEAR: WeatherModifier = {
-  brightness: 1.0,
-  saturation: 1.0,
-  contrast: 1.0,
-  coolness: 0.0,
+  brightness: 1.05,
+  saturation: 1.07,
+  contrast: 1.02,
+  coolness: -0.07,
   vignette: 0.0,
   fog: 0.0,
   rain: 0.0,
@@ -187,6 +187,9 @@ export class WeatherManager {
   }
 
   strike(distance: number): void {
+    const map = this.scene.managers.players.player?.map;
+    if (!map || configs.maps[map]?.isIndoor) return;
+
     const closeness = 1 - Phaser.Math.Clamp(distance, 0, 1);
 
     this._flash(closeness);
@@ -245,6 +248,7 @@ export class WeatherManager {
     if (!map) return;
 
     const scene = this.scene.scene.get(map) as Scene;
+
 
     scene?.managers?.camera?.shake(
       STRIKE_SHAKE_DURATION,

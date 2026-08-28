@@ -246,8 +246,19 @@
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":96,
+                 "x":128,
                  "y":128
+                }, 
+                {
+                 "height":0.762863790670167,
+                 "id":13,
+                 "name":"Tanner",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0.762863790670167,
+                 "x":64,
+                 "y":122
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -256,7 +267,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":13,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
@@ -316,7 +327,7 @@
                              "type":"",
                              "visible":true,
                              "width":13,
-                             "x":0.00251684663473117,
+                             "x":0.00251685,
                              "y":6
                             }],
                      "opacity":1,

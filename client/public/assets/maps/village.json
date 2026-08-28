@@ -8177,17 +8177,6 @@
                 }, 
                 {
                  "height":1,
-                 "id":84,
-                 "name":"Rock4",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1,
-                 "x":448,
-                 "y":768
-                }, 
-                {
-                 "height":1,
                  "id":90,
                  "name":"Bush2",
                  "rotation":0,
@@ -8856,8 +8845,7 @@
                  "width":1,
                  "x":192,
                  "y":544
-                },
-            
+                }, 
                 {
                  "height":1,
                  "id":440,
@@ -8868,7 +8856,8 @@
                  "width":1,
                  "x":191.996,
                  "y":528.002
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":441,
@@ -9693,8 +9682,7 @@
                  "width":1,
                  "x":808.424,
                  "y":120.482
-                },
-            
+                }, 
                 {
                  "height":1,
                  "id":534,
@@ -9705,7 +9693,8 @@
                  "width":1,
                  "x":824.424,
                  "y":120.482
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":535,
@@ -10530,8 +10519,7 @@
                  "width":1,
                  "x":791.52,
                  "y":200.027
-                },
-            
+                }, 
                 {
                  "height":1,
                  "id":610,
@@ -10542,7 +10530,8 @@
                  "width":1,
                  "x":807.52,
                  "y":200.027
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":611,
@@ -11367,8 +11356,7 @@
                  "width":1,
                  "x":1063.69,
                  "y":151.545
-                },
-            
+                }, 
                 {
                  "height":1,
                  "id":686,
@@ -11379,7 +11367,8 @@
                  "width":1,
                  "x":1079.75,
                  "y":104.32
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":687,
@@ -12204,8 +12193,7 @@
                  "width":1,
                  "x":1063.65,
                  "y":231.001
-                },
-            
+                }, 
                 {
                  "height":1,
                  "id":1383,
@@ -12216,7 +12204,8 @@
                  "width":1,
                  "x":1080.03,
                  "y":231.297
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":1384,
@@ -13059,8 +13048,7 @@
                  "width":1,
                  "x":80,
                  "y":2000
-                },
-            
+                }, 
                 {
                  "height":128,
                  "id":1565,
@@ -13077,7 +13065,8 @@
                  "width":128,
                  "x":817,
                  "y":1840
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":1569,
@@ -13396,7 +13385,7 @@
                         {
                          "name":"textureSpawner",
                          "type":"string",
-                         "value":"{\"sprites\":[\"pike\"],\"duration\":1500,\"radius\":32,\"frames\":9,\"frameRate\":12}"
+                         "value":"{\"sprites\":[\"pike\"],\"duration\":15000,\"radius\":32,\"frames\":9,\"frameRate\":12}"
                         }],
                  "rotation":0,
                  "type":"",
@@ -13655,15 +13644,15 @@
                  "y":1232
                 }, 
                 {
-                 "height":1.8357044515833,
-                 "id":1630,
-                 "name":"Fishing_rod",
+                 "height":1,
+                 "id":1631,
+                 "name":"Dog",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":1.52975370965277,
-                 "x":432.614349089797,
-                 "y":703.992657182194
+                 "width":1,
+                 "x":272,
+                 "y":1280
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -13823,7 +13812,7 @@
          "y":0
         }],
  "nextlayerid":66,
- "nextobjectid":1631,
+ "nextobjectid":1632,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

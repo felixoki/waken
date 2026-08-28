@@ -225,6 +225,11 @@ export const sounds = {
       folder: "animals",
       variants: ["duck_idle1", "duck_idle2", "duck_idle3", "duck_idle4"],
     },
+    [SoundName.DOG_IDLE]: {
+      volume: 0.5,
+      folder: "animals",
+      variants: ["dog_idle1", "dog_idle2", "dog_idle3", "dog_idle4"],
+    },
     [SoundName.GOOSE_IDLE]: {
       volume: 0.5,
       folder: "animals",
@@ -265,7 +270,7 @@ export const sounds = {
       variants: ["storm1", "storm2"],
     },
     [AmbienceName.BIRDS]: {
-      volume: 0.1,
+      volume: 0.005,
       variants: ["birds1", "birds2", "birds3"],
     },
     [AmbienceName.CANALS]: { volume: 1.2 },

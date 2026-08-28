@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="21" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="13">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="21" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="14">
  <editorsettings>
   <export target="../client/public/assets/maps/blacksmith_house.json" format="json"/>
  </editorsettings>
@@ -442,6 +442,7 @@
   <object id="9" name="Torch1" x="286" y="63.9953" width="1" height="1"/>
   <object id="10" name="Blacksmith_Exit" x="54" y="208" width="1" height="1"/>
   <object id="11" name="Light" x="168" y="80" width="1" height="1"/>
-  <object id="12" name="Blacksmith" x="96" y="128" width="1" height="1"/>
+  <object id="12" name="Blacksmith" x="128" y="128" width="1" height="1"/>
+  <object id="13" name="Tanner" x="64" y="122" width="0.762864" height="0.762864"/>
  </objectgroup>
 </map>

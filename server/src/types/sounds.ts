@@ -26,6 +26,7 @@ export enum SoundName {
   GOAT_IDLE = "goat_idle",
   DEER_IDLE = "deer_idle",
   DUCK_IDLE = "duck_idle",
+  DOG_IDLE = "dog_idle",
   GOOSE_IDLE = "goose_idle",
   GROUSE_IDLE = "grouse_idle",
   CHICKEN_IDLE = "chicken_idle",

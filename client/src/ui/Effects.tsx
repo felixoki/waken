@@ -24,7 +24,12 @@ export function Effects() {
     const onApply = (effect: Effect) => {
       setEffects((prev) => {
         const existing = prev.get(effect.name);
-        const appliedAt = existing && existing.expiresAt === effect.expiresAt ? existing.appliedAt : Date.now();
+        const appliedAt =
+          existing &&
+          existing.expiresAt === effect.expiresAt &&
+          existing.held === effect.held
+            ? existing.appliedAt
+            : Date.now();
         return new Map(prev).set(effect.name, { ...effect, appliedAt });
       });
     };
@@ -46,20 +51,24 @@ export function Effects() {
     };
   }, []);
 
-  const active = [...effects.values()].filter((e) => e.expiresAt > now);
+  const active = [...effects.values()].filter((e) => e.held || e.expiresAt > now);
   if (!active.length) return null;
 
   return (
     <div className="flex flex-wrap gap-2">
       {active.map((effect) => {
-        const remaining = Math.ceil((effect.expiresAt - now) / 1000);
+        const remaining = effect.held
+          ? null
+          : Math.ceil((effect.expiresAt - now) / 1000);
         return (
           <div
             key={effect.name}
             className="flex items-center gap-3 bg-black/60 backdrop-blur-sm rounded-md px-3 py-2 text-base text-white font-mono border border-white/10"
           >
             <span className="capitalize font-semibold">{effect.name}</span>
-            <span className="text-white/60">{remaining}s</span>
+            {remaining !== null && (
+              <span className="text-white/60">{remaining}s</span>
+            )}
           </div>
         );
       })}

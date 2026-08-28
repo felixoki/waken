@@ -31,6 +31,7 @@ export class World {
     current: WeatherName.CLOUDY,
     remaining: 0,
     lightning: 0,
+    soaked: 0,
   };
 
   public readonly players: PlayerStore;

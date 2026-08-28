@@ -162,9 +162,9 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 40,
+          width: 52,
           height: 24,
-          offsetX: 12,
+          offsetX: 8,
           offsetY: 24,
           static: true,
         },

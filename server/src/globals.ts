@@ -78,6 +78,8 @@ export const WIND_GUST = 0.45;
 /** Rain */
 export const RAIN_DENSITY = 0.1;
 export const RAIN_RUSH = 0.3;
+export const WET_INTERVAL = 2_000;
+export const WET_DURATION = 30_000;
 
 /** Clouds */
 export const CLOUD_STRENGTH = 0.4;

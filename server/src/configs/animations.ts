@@ -42,6 +42,9 @@ export const animations: Partial<
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
+  [EntityName.TANNER]: {
+    [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
   [EntityName.ORC1]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
@@ -118,6 +121,10 @@ export const animations: Partial<
   },
   [EntityName.DUCK]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.DOG]: {
+    [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
   [EntityName.GOOSE]: {
