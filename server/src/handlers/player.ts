@@ -307,7 +307,8 @@ export const player = {
     }
 
     if (party && to.isInstanced) {
-      await handlers.party.descend(data, io, socket, world);
+      const ok = await handlers.party.descend(data, io, socket, world);
+      if (!ok) socket.emit(Event.PLAYER_TRANSITION_DENIED);
       return;
     }
 

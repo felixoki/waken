@@ -330,4 +330,5 @@ export interface EntranceDef {
   minDistance?: number;
   count?: number;
   spacing?: number;
+  requires?: number;
 }

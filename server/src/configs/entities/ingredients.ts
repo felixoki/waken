@@ -602,6 +602,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },
       {
+        name: ComponentName.CONSUMABLE,
+        config: { unlock: 1 },
+      },
+      {
         name: ComponentName.TEXTURE,
         config: {
           spritesheet: "icons2",

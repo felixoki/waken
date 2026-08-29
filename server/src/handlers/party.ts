@@ -9,7 +9,7 @@ import {
   PartyStatus,
   Transition,
 } from "../types";
-import { levels } from "../configs/biomes.js";
+import { levels } from "../configs/levels.js";
 import { configs } from "../configs/index.js";
 import { handlers } from ".";
 import { MAX_HEALTH } from "../globals.js";
@@ -95,6 +95,7 @@ export const party = {
         );
 
       data.status = PartyStatus.LOBBY;
+      data.unlocked = 0;
       handlers.authority.release(io, world, map, data.id);
 
       io.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
@@ -124,6 +125,7 @@ export const party = {
       members: [player.id],
       status: PartyStatus.LOBBY,
       depth: 0,
+      unlocked: 0,
     };
 
     world.parties.add(id, data);
@@ -221,7 +223,7 @@ export const party = {
       const seed = `${data.id}-${data.depth}-${Date.now()}`;
 
       const { data: biome, error } = await tryCatch(
-        handlers.generation.start(level.biome, seed),
+        handlers.generation.start(level.biome, seed, data.unlocked),
       );
 
       if (error || !biome) {

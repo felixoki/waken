@@ -71,8 +71,9 @@ export const shaders = {
       DURATION_EXTRACTION_BOUNCE,
       () => {
         timers.delete(name);
+        if (entity.scene) entity.resetPipeline();
         renderer.pipelines.remove(name);
-        if (entity.active) entity.resetPipeline();
+        pipeline.destroy();
         onComplete?.();
       },
     );

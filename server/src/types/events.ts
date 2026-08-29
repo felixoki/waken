@@ -12,6 +12,7 @@ export enum Event {
   PLAYER_INPUT = "player_input",
   PLAYER_LEAVE = "player_leave",
   PLAYER_TRANSITION = "player_transition",
+  PLAYER_TRANSITION_DENIED = "player_transition_denied",
   PLAYER_AUTHORITY = "player_authority",
   PLAYER_HURT = "player_hurt",
   PLAYER_DEATH = "player_death",

@@ -1,8 +1,8 @@
 import { generateBiome } from "../biomes";
 import { tryCatchSync } from "../utils/tryCatch";
 
-process.on("message", ({ biome, seed }) => {
-  const { data, error } = tryCatchSync(() => generateBiome(biome, seed));
+process.on("message", ({ biome, seed, unlocked }) => {
+  const { data, error } = tryCatchSync(() => generateBiome(biome, seed, unlocked));
 
   if (error) {
     console.error("Worker generation failed:", error);

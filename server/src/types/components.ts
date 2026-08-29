@@ -218,9 +218,10 @@ export interface GrowableConfig {
 }
 
 export interface ConsumableConfig {
-  effect: EffectName;
-  duration: number;
-  restore: { health?: number; mana?: number };
+  effect?: EffectName;
+  duration?: number;
+  restore?: { health?: number; mana?: number };
+  unlock?: number;
 }
 
 export interface StorageConfig {

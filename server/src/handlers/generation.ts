@@ -525,7 +525,11 @@ export const generation = {
     ...(properties ? { properties } : {}),
   }),
 
-  start: (biome: string, seed: string): Promise<GeneratedMap | null> => {
+  start: (
+    biome: string,
+    seed: string,
+    unlocked = 0,
+  ): Promise<GeneratedMap | null> => {
     return new Promise((resolve, reject) => {
       const worker = fork(join(__dirname, `../workers/generate.${__ext}`), [], {
         stdio: ["inherit", "inherit", "inherit", "ipc"],
@@ -553,7 +557,7 @@ export const generation = {
         if (code !== 0) reject(new Error(`Worker exited with code ${code}`));
       });
 
-      worker.send({ biome, seed });
+      worker.send({ biome, seed, unlocked });
     });
   },
 

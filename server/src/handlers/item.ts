@@ -5,6 +5,7 @@ import {
   EntityName,
   Event,
   Item,
+  PartyStatus,
 } from "../types";
 import { World } from "../World";
 import { handlers } from ".";
@@ -34,7 +35,7 @@ export const item = {
   consume: (
     data: { name: string },
     socket: Socket,
-    _io: Server,
+    io: Server,
     world: World,
   ) => {
     const player = world.players.getBySocketId(socket.id);
@@ -53,6 +54,18 @@ export const item = {
     );
     if (!slot) return;
 
+    const config = consumable.config as ConsumableConfig;
+
+    if (config.unlock !== undefined) {
+      if (configs.maps[player.map].isInstanced) return;
+
+      const party = world.parties.getByPlayerId(player.id);
+      if (!party || party.status !== PartyStatus.LOBBY) return;
+
+      party.unlocked = Math.max(party.unlocked, config.unlock);
+      io.to(`party:${party.id}`).emit(Event.PARTY_UPDATE, party);
+    }
+
     player.inventory = handlers.storage.remove(player.inventory, {
       name: data.name as EntityName,
       quantity: 1,
@@ -60,10 +73,9 @@ export const item = {
     });
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
 
-    const config = consumable.config as ConsumableConfig;
     const { restore } = config;
 
-    if (restore.health) {
+    if (restore?.health) {
       const health = Math.min(player.health + restore.health, player.maxHealth);
       world.players.update(player.id, { health });
       socket.emit(Event.PLAYER_HEALTH, health);
@@ -72,23 +84,25 @@ export const item = {
         .emit(Event.PLAYER_HEALTH_SYNC, { id: player.id, health });
     }
 
-    if (restore.mana) {
+    if (restore?.mana) {
       const mana = Math.min(player.mana + restore.mana, player.maxMana);
       world.players.update(player.id, { mana });
       socket.emit(Event.PLAYER_MANA, mana);
     }
 
-    const effect = {
-      name: config.effect,
-      expiresAt: Date.now() + config.duration,
-      lastTickAt: Date.now(),
-      ownerId: player.id,
-    };
+    if (config.effect && config.duration) {
+      const effect = {
+        name: config.effect,
+        expiresAt: Date.now() + config.duration,
+        lastTickAt: Date.now(),
+        ownerId: player.id,
+      };
 
-    const existing = player.effects ?? [];
-    existing.push(effect);
-    world.players.update(player.id, { effects: existing });
+      const existing = player.effects ?? [];
+      existing.push(effect);
+      world.players.update(player.id, { effects: existing });
 
-    socket.emit(Event.EFFECT_APPLY, { id: player.id, effect });
+      socket.emit(Event.EFFECT_APPLY, { id: player.id, effect });
+    }
   },
 };

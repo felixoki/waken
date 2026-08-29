@@ -13653,6 +13653,17 @@
                  "width":1,
                  "x":272,
                  "y":1280
+                }, 
+                {
+                 "height":2.5481764612199,
+                 "id":1632,
+                 "name":"Potion4",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":4.7778308647874,
+                 "x":443.382704252269,
+                 "y":702.659659181398
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -13812,7 +13823,7 @@
          "y":0
         }],
  "nextlayerid":66,
- "nextobjectid":1632,
+ "nextobjectid":1633,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

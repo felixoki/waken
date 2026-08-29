@@ -8,6 +8,7 @@ export const DUNGEON_ENTRANCE_DEF: EntranceDef = {
   guards: EntityName.ORC1,
   count: 1,
   spacing: 20,
+  requires: 1,
 };
 
 export const CAVE_ENTRANCE_DEF: EntranceDef = {

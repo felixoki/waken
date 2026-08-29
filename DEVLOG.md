@@ -751,6 +751,11 @@
 - Add dog and tanner ✅
 - Add menu to game transition ✅
 
+#### 29.8.2026
+
+- Improve path finding performance ✅
+- Add gated depth for biomes ✅
+
 ### In progress
 
 ### Bugs

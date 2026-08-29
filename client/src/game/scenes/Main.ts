@@ -258,6 +258,14 @@ export class MainScene extends Phaser.Scene {
       handlers.player.transition(data, this);
     });
 
+    this.managers.socket.on(Event.PLAYER_TRANSITION_DENIED, () => {
+      const player = this.managers.players.player;
+      if (!player) return;
+
+      player.isLocked = false;
+      player.isTransitioning = false;
+    });
+
     this.managers.socket.on(Event.PLAYER_AUTHORITY, (data: boolean) => {
       const player = this.managers.players.player;
       if (!player) return;

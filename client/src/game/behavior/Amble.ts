@@ -77,7 +77,10 @@ export class AmbleBehavior extends Behavior {
         handlers.path.find(grid, start, end, entity.scene.tileManager.map) ||
         [];
 
-      if (!this.path.length) this.target = null;
+      if (!this.path.length) {
+        this.target = null;
+        this.idle.time = this._randomIdle();
+      }
     }
 
     if (this.path.length) {

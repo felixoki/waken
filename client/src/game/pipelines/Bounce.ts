@@ -103,3 +103,7 @@ export class BouncePipeline extends MultiPipeline {
     this.phase = Math.random() * Math.PI * 2;
   }
 }
+
+export const BOUNCE_POOL_SIZE = 12;
+
+export const bounceSlotName = (index: number) => `bounce_pool_${index}`;

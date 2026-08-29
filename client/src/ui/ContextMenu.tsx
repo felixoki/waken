@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 export interface ContextMenuAction {
   label: string;
   onClick: () => void;
+  disabled?: boolean;
+  title?: string;
 }
 
 interface ContextMenuProps {
@@ -35,7 +37,13 @@ export function ContextMenu({ x, y, actions, onClose }: ContextMenuProps) {
       {actions.map((action) => (
         <button
           key={action.label}
-          className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 capitalize rounded"
+          disabled={action.disabled}
+          title={action.title}
+          className={`block w-full text-left px-4 py-2 text-sm capitalize rounded ${
+            action.disabled
+              ? "text-gray-400 cursor-not-allowed"
+              : "hover:bg-gray-100"
+          }`}
           onClick={action.onClick}
         >
           {action.label}

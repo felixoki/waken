@@ -30,11 +30,18 @@ export class MapBuilder {
   private config: BiomeConfig;
   private loader: TilesetLoader;
   private seed: string;
+  private unlocked: number;
 
-  constructor(config: BiomeConfig, loader: TilesetLoader, seed: string) {
+  constructor(
+    config: BiomeConfig,
+    loader: TilesetLoader,
+    seed: string,
+    unlocked = 0,
+  ) {
     this.config = config;
     this.loader = loader;
     this.seed = seed;
+    this.unlocked = unlocked;
   }
 
   build(): GeneratedMap {
@@ -522,6 +529,8 @@ export class MapBuilder {
       const taken: { x: number; y: number }[] = [];
 
       for (const def of entrances) {
+        if ((def.requires ?? 0) > this.unlocked) continue;
+
         const generator = new EntranceGenerator(this.config, this.seed, def);
 
         for (let n = 0; n < (def.count ?? 1); n++) {
@@ -578,7 +587,7 @@ export class MapBuilder {
           y: pos.y + (offset?.y ?? 0),
         });
 
-      if (roomDescent) {
+      if (roomDescent && this.unlocked >= 2) {
         const descentOffset = configs.entities[EntityName.CLOUDLADDER]?.offset;
 
         entities.push({

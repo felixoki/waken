@@ -12,7 +12,51 @@ interface Node {
   parent?: Node;
 }
 
+export const MAX_PATH_EXPANSIONS = 2000;
+
 export const path = {
+  heap: {
+    push: (heap: Node[], node: Node): void => {
+      let i = heap.push(node) - 1;
+
+      while (i > 0) {
+        const parent = (i - 1) >> 1;
+        if (heap[parent].f <= heap[i].f) break;
+
+        [heap[parent], heap[i]] = [heap[i], heap[parent]];
+        i = parent;
+      }
+    },
+
+    pop: (heap: Node[]): Node => {
+      const top = heap[0];
+      const last = heap.pop()!;
+
+      if (heap.length) {
+        heap[0] = last;
+
+        let i = 0;
+
+        for (;;) {
+          const left = 2 * i + 1;
+          const right = left + 1;
+          let smallest = i;
+
+          if (left < heap.length && heap[left].f < heap[smallest].f)
+            smallest = left;
+          if (right < heap.length && heap[right].f < heap[smallest].f)
+            smallest = right;
+          if (smallest === i) break;
+
+          [heap[smallest], heap[i]] = [heap[i], heap[smallest]];
+          i = smallest;
+        }
+      }
+
+      return top;
+    },
+  },
+
   isWalkable: (grid: number[][], x: number, y: number): boolean => {
     return grid[y] && grid[y][x] === 0;
   },
@@ -116,7 +160,11 @@ export const path = {
     const open: Node[] = [];
     const closed: Set<string> = new Set<string>();
 
-    open.push({
+    const best: Map<string, number> = new Map();
+
+    best.set(`${start.x},${start.y}`, 0);
+
+    path.heap.push(open, {
       x: start.x,
       y: start.y,
       g: 0,
@@ -124,22 +172,29 @@ export const path = {
       f: path.heuristic(start, end),
     });
 
+    let expansions = 0;
+
     while (open.length) {
-      open.sort((a, b) => a.f - b.f);
-      const current = open.shift()!;
+      const current = path.heap.pop(open);
+      const key = `${current.x},${current.y}`;
+
+      if (closed.has(key)) continue;
+
+      if (++expansions > MAX_PATH_EXPANSIONS) return null;
 
       if (current.x === end.x && current.y === end.y)
         return path.reconstruct(current, map);
 
-      closed.add(`${current.x},${current.y}`);
+      closed.add(key);
 
       const directions = allowDiagonals ? DIRECTIONS : DIRECTIONS_CARDINAL;
 
       for (const { dx, dy } of directions) {
         const nx = current.x + dx;
         const ny = current.y + dy;
+        const neighbour = `${nx},${ny}`;
 
-        if (closed.has(`${nx},${ny}`)) continue;
+        if (closed.has(neighbour)) continue;
 
         if (!path.isWalkable(grid, nx, ny)) continue;
 
@@ -151,24 +206,22 @@ export const path = {
           continue;
 
         const g = current.g + (dx !== 0 && dy !== 0 ? 1.414 : 1);
+
+        const previous = best.get(neighbour);
+        if (previous !== undefined && g >= previous) continue;
+
+        best.set(neighbour, g);
+
         const h = path.heuristic({ x: nx, y: ny }, end);
-        const f = g + h;
 
-        const existing = open.find((n) => n.x === nx && n.y === ny);
-        if (existing && g >= existing.g) continue;
-
-        const n: Node = {
+        path.heap.push(open, {
           x: nx,
           y: ny,
           g,
           h,
-          f,
+          f: g + h,
           parent: current,
-        };
-
-        if (existing) open.splice(open.indexOf(existing), 1);
-
-        open.push(n);
+        });
       }
     }
 

@@ -5,12 +5,14 @@ import {
   EntityName,
   Event,
   Item as ItemInterface,
+  PartyStatus,
   SlotZone,
   SpellName,
 } from "@server/types";
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
 import { ContextMenu, ContextMenuAction } from "./ContextMenu";
+import { useParty } from "./useParty";
 import { Item } from "./Item";
 import type { DragData } from "./Provider";
 
@@ -27,6 +29,7 @@ export function Inventory() {
     x: number;
     y: number;
   } | null>(null);
+  const { party, inRealm } = useParty();
 
   useEffect(() => {
     const add = (items: (ItemInterface | null)[]) => setItems(items);
@@ -80,39 +83,53 @@ export function Inventory() {
 
   const item = menu !== null ? items[menu.index] : null;
 
+  const canUnlock =
+    !!party && party.status === PartyStatus.LOBBY && !inRealm;
+
   const actions: ContextMenuAction[] = item
-    ? getActions(item.name, !!storageEntityId, !!item.soul).map((action) => ({
-        label: action,
-        onClick: () => {
-          if (action === Action.CONSUME)
-            EventBus.emit(Event.ITEM_CONSUME, { name: item.name });
+    ? getActions(item.name, !!storageEntityId, !!item.soul).map((action) => {
+        const gated =
+          action === Action.CONSUME &&
+          getUnlock(item.name) !== undefined &&
+          !canUnlock;
 
-          if (action === Action.LEARN) {
-            const spell = getSpell(item.name);
+        return {
+          label: action,
+          disabled: gated,
+          title: gated ? "Only in the village, with a party" : undefined,
+          onClick: () => {
+            if (gated) return;
 
-            if (spell)
-              EventBus.emit(Event.SPELL_LEARN, {
-                entityName: item.name,
-                spell,
+            if (action === Action.CONSUME)
+              EventBus.emit(Event.ITEM_CONSUME, { name: item.name });
+
+            if (action === Action.LEARN) {
+              const spell = getSpell(item.name);
+
+              if (spell)
+                EventBus.emit(Event.SPELL_LEARN, {
+                  entityName: item.name,
+                  spell,
+                });
+            }
+
+            if (action === Action.DEPOSIT && storageEntityId)
+              EventBus.emit(Event.SLOT_MOVE, {
+                source: { zone: SlotZone.INVENTORY, index: menu!.index },
+                target: {
+                  zone: SlotZone.STORAGE,
+                  index: -1,
+                  entityId: storageEntityId,
+                },
               });
-          }
 
-          if (action === Action.DEPOSIT && storageEntityId)
-            EventBus.emit(Event.SLOT_MOVE, {
-              source: { zone: SlotZone.INVENTORY, index: menu!.index },
-              target: {
-                zone: SlotZone.STORAGE,
-                index: -1,
-                entityId: storageEntityId,
-              },
-            });
+            if (action === Action.SOLIDIFY)
+              EventBus.emit(Event.ITEM_SOLIDIFY, { index: menu!.index });
 
-          if (action === Action.SOLIDIFY)
-            EventBus.emit(Event.ITEM_SOLIDIFY, { index: menu!.index });
-
-          setMenu(null);
-        },
-      }))
+            setMenu(null);
+          },
+        };
+      })
     : [];
 
   return (
@@ -182,6 +199,14 @@ function getActions(
   if (storageOpen) actions.push(Action.DEPOSIT);
 
   return actions;
+}
+
+function getUnlock(name: EntityName): number | undefined {
+  const comp = configs.entities[name]?.components.find(
+    (c) => c.name === ComponentName.CONSUMABLE,
+  );
+
+  return comp?.name === ComponentName.CONSUMABLE ? comp.config.unlock : undefined;
 }
 
 function getSpell(name: EntityName): SpellName | null {

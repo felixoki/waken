@@ -192,19 +192,22 @@ export function Item({
             );
             if (!comp || comp.name !== ComponentName.CONSUMABLE) return null;
             const { effect, restore } = comp.config;
+            if (!effect && !restore?.health && !restore?.mana) return null;
             return (
               <div className="mt-2 flex flex-col gap-1 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-white/50">Effect</span>
-                  <span className="text-white capitalize">{effect}</span>
-                </div>
-                {restore.health && (
+                {effect && (
+                  <div className="flex justify-between">
+                    <span className="text-white/50">Effect</span>
+                    <span className="text-white capitalize">{effect}</span>
+                  </div>
+                )}
+                {restore?.health && (
                   <div className="flex justify-between">
                     <span className="text-white/50">Restore health</span>
                     <span className="text-white">+{restore.health}</span>
                   </div>
                 )}
-                {restore.mana && (
+                {restore?.mana && (
                   <div className="flex justify-between">
                     <span className="text-white/50">Restore mana</span>
                     <span className="text-white">+{restore.mana}</span>

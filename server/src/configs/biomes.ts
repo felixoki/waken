@@ -1,4 +1,4 @@
-import { EntityName, FishName, Item, MapName } from "../types";
+import { EntityName, FishName, Item } from "../types";
 import {
   BiomeConfig,
   BiomeName,
@@ -36,12 +36,6 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_ABSORB_LIFE, quantity: 1, stackable: false, chance: 0.05 },
-];
-
-export const levels: { depth: number; map: MapName; biome?: BiomeName }[] = [
-  { depth: 0, map: MapName.FOREST, biome: BiomeName.FOREST },
-  { depth: 1, map: MapName.DUNGEON, biome: BiomeName.DUNGEON },
-  { depth: 2, map: MapName.ISLES },
 ];
 
 export const forest: BiomeConfig = {

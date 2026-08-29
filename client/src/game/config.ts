@@ -7,6 +7,11 @@ import { IlluminatePipeline } from "./pipelines/Illuminate";
 import { AmbiencePipeline } from "./pipelines/Ambience";
 import { VortexPipeline } from "./pipelines/Vortex";
 import { WindPipeline } from "./pipelines/Wind";
+import {
+  BOUNCE_POOL_SIZE,
+  BouncePipeline,
+  bounceSlotName,
+} from "./pipelines/Bounce";
 import { BeamPipeline } from "./pipelines/Beam";
 import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
@@ -77,6 +82,11 @@ export const config: Phaser.Types.Core.GameConfig = {
       renderer.pipelines.addPostPipeline(PipelineName.VORTEX, VortexPipeline);
       renderer.pipelines.addPostPipeline(PipelineName.BEAM, BeamPipeline);
       renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
+
+      for (let i = 0; i < BOUNCE_POOL_SIZE; i++) {
+        const name = bounceSlotName(i);
+        renderer.pipelines.add(name, new BouncePipeline(game, name));
+      }
 
       game.sound.pauseOnBlur = false;
     },

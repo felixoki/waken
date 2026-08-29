@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="66" nextobjectid="1632">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="66" nextobjectid="1633">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -10035,6 +10035,7 @@
   <object id="1617" name="Bush1" x="143.996" y="2112" width="1" height="1"/>
   <object id="1621" name="People" x="400" y="1232" width="1" height="1"/>
   <object id="1631" name="Dog" x="272" y="1280" width="1" height="1"/>
+  <object id="1632" name="Potion4" x="443.383" y="702.66" width="4.77783" height="2.54818"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="134">
   <properties>

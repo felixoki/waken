@@ -9,4 +9,5 @@ export interface Party {
   members: string[];
   status: PartyStatus;
   depth: number;
+  unlocked: number;
 }

@@ -11,7 +11,7 @@ const biomes: Record<string, BiomeConfig> = {
   cave
 };
 
-export function generateBiome(id: string, seed?: string) {
+export function generateBiome(id: string, seed?: string, unlocked = 0) {
   const config = biomes[id];
   if (!config) return;
 
@@ -19,6 +19,6 @@ export function generateBiome(id: string, seed?: string) {
     ? { ...config, noise: { ...config.noise, seed } }
     : config;
 
-  const builder = new MapBuilder(seeded, loader, seed ?? "default");
+  const builder = new MapBuilder(seeded, loader, seed ?? "default", unlocked);
   return builder.build();
 }
