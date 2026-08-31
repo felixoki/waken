@@ -7,4 +7,5 @@ export enum PipelineName {
   VORTEX = "vortex",
   WIND = "wind",
   BEAM = "beam",
+  SHEEN = "sheen",
 }

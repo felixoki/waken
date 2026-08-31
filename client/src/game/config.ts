@@ -13,6 +13,7 @@ import {
   bounceSlotName,
 } from "./pipelines/Bounce";
 import { BeamPipeline } from "./pipelines/Beam";
+import { SheenPipeline } from "./pipelines/Sheen";
 import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
 import { BlacksmithScene } from "./scenes/Blacksmith";
@@ -82,6 +83,7 @@ export const config: Phaser.Types.Core.GameConfig = {
       renderer.pipelines.addPostPipeline(PipelineName.VORTEX, VortexPipeline);
       renderer.pipelines.addPostPipeline(PipelineName.BEAM, BeamPipeline);
       renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
+      renderer.pipelines.add(PipelineName.SHEEN, new SheenPipeline(game));
 
       for (let i = 0; i < BOUNCE_POOL_SIZE; i++) {
         const name = bounceSlotName(i);

@@ -131,7 +131,7 @@ export class MainScene extends Phaser.Scene {
     if (scenes.length) this.scene.bringToTop(MapName.VILLAGE);
   }
 
-  update(_time: number, _delta: number): void {
+  update(_time: number, delta: number): void {
     const player = this.managers.players.player;
 
     if (player) {
@@ -148,6 +148,7 @@ export class MainScene extends Phaser.Scene {
     this.managers.players.update();
     this.managers.entities.update();
     this.managers.build.update();
+    this.managers.weather.update(delta);
   }
 
   private _registerEvents(): void {

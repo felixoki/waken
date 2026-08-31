@@ -81,6 +81,39 @@ export const RAIN_RUSH = 0.3;
 export const WET_INTERVAL = 2_000;
 export const WET_DURATION = 30_000;
 
+/** Wetness */
+export const WETNESS_SOAK_DURATION = 75_000;
+export const WETNESS_DRY_DURATION = 45_000;
+export const WETNESS_RAIN = 0.8;
+export const WETNESS_STORM = 1.0;
+
+/** Wet sheen on entities */
+export const SHEEN_DARKEN = 0.72;
+export const SHEEN_DEEPEN = 1.35;
+export const SHEEN_STRENGTH = 0.62;
+export const SHEEN_SCALE = 2.6;
+export const SHEEN_SPEED = 0.45;
+export const SHEEN_STEPS = 3;
+export const SHEEN_FADE = 0.22;
+export const SHEEN_FACING = 0.1;
+export const SHEEN_FACING_LOW = 0.28;
+export const SHEEN_FACING_HIGH = 0.52;
+export const SHEEN_SOAK_DURATION = 8_000;
+export const SHEEN_DRY_DURATION = 6_000;
+export const SHEEN_DEPTH_BIAS = 0.01;
+
+/** Rain splashes */
+export const SPLASH_RATE = 26;
+export const SPLASH_LIFESPAN = 380;
+export const SPLASH_MAX = 8;
+export const SPLASH_FLOOR = 0.05;
+export const SPLASH_DEPTH = 900;
+
+/** Sky tint */
+export const SKY_TINT: [number, number, number] = [0.62, 0.72, 0.95];
+export const SKY_TINT_BLEND = 0.6;
+export const SKY_TINT_FLOOR = 0.3;
+
 /** Clouds */
 export const CLOUD_STRENGTH = 0.4;
 export const CLOUD_SCALE = 110;

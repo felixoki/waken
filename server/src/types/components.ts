@@ -47,6 +47,7 @@ export enum ComponentName {
   TRAP = "trap",
   TAMABLE = "tamable",
   SKIN = "skin",
+  WETSHEEN = "wetsheen",
   WINDSWAY = "windsway",
   ZONE = "zone",
 }

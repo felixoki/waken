@@ -20,6 +20,8 @@ uniform float fogScale;
 uniform vec2 cameraScroll;
 uniform float cameraZoom;
 
+uniform float wetness;
+
 uniform float rainStrength;
 uniform float rainSpeed;
 uniform float rainScale;
@@ -170,6 +172,13 @@ void main(void) {
 
   // --- Brightness ---
   graded *= brightness;
+
+  // --- Wetness ---
+  if (wetness > 0.0) {
+    float wl = dot(graded, vec3(0.299, 0.587, 0.114));
+    graded = mix(vec3(wl), graded, 1.0 + wetness * 0.14);
+    graded *= mix(1.0, 0.94, wetness);
+  }
 
   vec2 screen = vec2(outTexCoord.x, 1.0 - outTexCoord.y);
   vec2 world = cameraScroll + (screen * resolution) / cameraZoom;

@@ -51,6 +51,15 @@ export class Texture {
     handlers.textures.fangs(scene);
     handlers.textures.clouds(scene);
 
+    if (!scene.textures.exists("particle_ring")) {
+      const g = scene.add.graphics();
+
+      g.lineStyle(3, 0xffffff, 1);
+      g.strokeEllipse(16, 10, 28, 16);
+      g.generateTexture("particle_ring", 32, 20);
+      g.destroy();
+    }
+
     if (!scene.textures.exists("particle_square")) {
       const g = scene.add.graphics();
 

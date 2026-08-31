@@ -31,13 +31,26 @@ import {
   WIND_RAIN,
   WIND_SPEED,
   WIND_STORM,
+  WETNESS_DRY_DURATION,
+  WETNESS_RAIN,
+  WETNESS_SOAK_DURATION,
+  WETNESS_STORM,
+  SKY_TINT,
+  SKY_TINT_BLEND,
+  SKY_TINT_FLOOR,
+  SPLASH_DEPTH,
+  SPLASH_FLOOR,
+  SPLASH_MAX,
+  SPLASH_RATE,
 } from "@server/globals";
 import { WindPipeline } from "../pipelines/Wind";
+import { SheenPipeline } from "../pipelines/Sheen";
+import { emitters, RainSplashes } from "../vfx/emitters";
 import type { Scene } from "../scenes/Scene";
 
 const WEATHER_TRANSITION_DURATION = PHASE_TRANSITION_DURATION * 3;
 
-type WeatherModifier = Required<Omit<AmbienceModifier, "flash">>;
+type WeatherModifier = Required<Omit<AmbienceModifier, "flash" | "wetness">>;
 
 const CLEAR: WeatherModifier = {
   brightness: 1.05,
@@ -99,6 +112,13 @@ const AMBIENCES: Partial<Record<WeatherName, AmbienceName>> = {
   [WeatherName.STORM]: AmbienceName.STORM,
 };
 
+const WETNESS: Record<WeatherName, number> = {
+  [WeatherName.CLEAR]: 0,
+  [WeatherName.CLOUDY]: 0,
+  [WeatherName.RAIN]: WETNESS_RAIN,
+  [WeatherName.STORM]: WETNESS_STORM,
+};
+
 const WINDS: Record<WeatherName, number> = {
   [WeatherName.CLEAR]: 1,
   [WeatherName.CLOUDY]: WIND_CLOUDY,
@@ -110,12 +130,168 @@ export class WeatherManager {
   private scene: MainScene;
   private current: WeatherName = WeatherName.CLOUDY;
 
+  private soaked = 0;
+  private lit = 0;
+  private tone: [number, number, number] = [1, 1, 1];
+
+  private splashes?: { key: string; handle: RainSplashes };
+  private pending = 0;
+  private sheen?: SheenPipeline;
+
   constructor(scene: MainScene) {
     this.scene = scene;
   }
 
   get weather(): WeatherName {
     return this.current;
+  }
+
+  get wetness(): number {
+    return this.soaked;
+  }
+
+  get flash(): number {
+    return this.lit;
+  }
+
+  get sky(): [number, number, number] {
+    return this.tone;
+  }
+
+  get raining(): boolean {
+    return (
+      this.current === WeatherName.RAIN || this.current === WeatherName.STORM
+    );
+  }
+
+  update(delta: number): void {
+    this._soak(delta);
+    this._sky();
+    this._splash(delta);
+  }
+
+  private _soak(delta: number): void {
+    const target = WETNESS[this.current] ?? 0;
+
+    if (this.soaked < target)
+      this.soaked = Math.min(
+        target,
+        this.soaked + delta / WETNESS_SOAK_DURATION,
+      );
+    else if (this.soaked > target)
+      this.soaked = Math.max(target, this.soaked - delta / WETNESS_DRY_DURATION);
+  }
+
+  private _sky(): void {
+    const pipeline = this._current();
+    const sun = pipeline?.sun;
+
+    this.lit = Math.min(
+      Math.max(pipeline?.layer(AmbienceLayer.LIGHTNING).flash ?? 0, 0),
+      1,
+    );
+
+    const level = Math.max(sun?.intensity ?? 1, SKY_TINT_FLOOR);
+    const source = [sun?.r ?? 1, sun?.g ?? 1, sun?.b ?? 1];
+
+    for (let i = 0; i < 3; i++) {
+      const blended =
+        Phaser.Math.Linear(source[i], SKY_TINT[i], SKY_TINT_BLEND) * level;
+
+      this.tone[i] = Phaser.Math.Linear(blended, 1, this.lit);
+    }
+
+    const sheen = this._sheen();
+
+    if (!sheen) return;
+
+    sheen.state.flash = this.lit;
+    sheen.state.sky.r = this.tone[0];
+    sheen.state.sky.g = this.tone[1];
+    sheen.state.sky.b = this.tone[2];
+  }
+
+  private _splash(delta: number): void {
+    const scene = this._outdoor();
+
+    if (
+      !scene ||
+      !this.raining ||
+      this.soaked <= SPLASH_FLOOR ||
+      !scene.scene.isVisible()
+    ) {
+      this._clearSplashes();
+      return;
+    }
+
+    if (
+      this.splashes?.key !== scene.scene.key ||
+      !this.splashes.handle.ring.scene
+    ) {
+      this._clearSplashes();
+
+      this.splashes = {
+        key: scene.scene.key,
+        handle: emitters.rain(scene, SPLASH_DEPTH),
+      };
+    }
+
+    const intensity = this.current === WeatherName.STORM ? 1 : 0.6;
+    this.pending += SPLASH_RATE * intensity * this.soaked * (delta / 1000);
+
+    let budget = Math.floor(this.pending);
+    this.pending -= budget;
+
+    if (budget > SPLASH_MAX) budget = SPLASH_MAX;
+
+    const view = scene.cameras.main.worldView;
+
+    while (budget-- > 0)
+      this.splashes.handle.splash(
+        view.x + Math.random() * view.width,
+        view.y + Math.random() * view.height,
+      );
+  }
+
+  private _clearSplashes(): void {
+    if (!this.splashes) return;
+
+    if (this.splashes.handle.ring.scene) this.splashes.handle.destroy();
+
+    this.splashes = undefined;
+    this.pending = 0;
+  }
+
+  private _sheen(): SheenPipeline | undefined {
+    if (this.sheen) return this.sheen;
+
+    const renderer = this.scene.game
+      .renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+
+    this.sheen = renderer.pipelines?.get(PipelineName.SHEEN) as
+      | SheenPipeline
+      | undefined;
+
+    return this.sheen;
+  }
+
+  private _outdoor(): Scene | undefined {
+    const map = this.scene.managers.players.player?.map;
+
+    if (!map || configs.maps[map]?.isIndoor) return undefined;
+
+    return this.scene.scene.get(map) as Scene | undefined;
+  }
+
+  private _current(): AmbiencePipeline | undefined {
+    const scene = this._outdoor();
+
+    if (!scene?.cameras?.main) return undefined;
+
+    const found = scene.cameras.main.getPostPipeline(PipelineName.AMBIENCE);
+    const pipeline = Array.isArray(found) ? found[0] : found;
+
+    return (pipeline as AmbiencePipeline) ?? undefined;
   }
 
   setWeather(name: WeatherName, animate: boolean) {

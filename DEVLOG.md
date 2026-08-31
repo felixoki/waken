@@ -756,6 +756,10 @@
 - Improve path finding performance ✅
 - Add gated depth for biomes ✅
 
+####
+
+- Improve rain and wet effect ✅
+
 ### In progress
 
 ### Bugs

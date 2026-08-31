@@ -2,7 +2,7 @@ import { PhysicsManager } from "../managers/Physics";
 import { TileManager } from "../managers/Tile";
 import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
-import { Event, MapName, PipelineName } from "@server/types";
+import { AmbienceLayer, Event, MapName, PipelineName } from "@server/types";
 import { configs } from "@server/configs";
 import { AmbiencePipeline } from "../pipelines/Ambience";
 import type { MainScene } from "./Main";
@@ -14,8 +14,9 @@ export class Scene extends Phaser.Scene {
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
-  
+
   private ambience?: AmbiencePipeline;
+  private indoor = false;
 
   get managers() {
     const main = this.scene.get("main") as MainScene;
@@ -35,6 +36,8 @@ export class Scene extends Phaser.Scene {
   }
 
   create(): void {
+    this.indoor = !!configs.maps[this.scene.key as MapName]?.isIndoor;
+
     this.physicsManager = new PhysicsManager(this);
     this.cameraManager = new CameraManager(this);
     this.interfaceManager = new InterfaceManager(this);
@@ -86,6 +89,11 @@ export class Scene extends Phaser.Scene {
 
     const cam = this.cameras.main;
     this.ambience?.setCamera(cam.scrollX, cam.scrollY, cam.zoom);
+
+    if (this.indoor || !this.ambience) return;
+
+    this.ambience.layer(AmbienceLayer.WEATHER).wetness =
+      this.managers.weather.wetness;
   }
 
   shutdown(): void {

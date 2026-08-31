@@ -82,6 +82,7 @@ export interface AmbienceModifier {
   clouds?: number;
   rays?: number;
   flash?: number;
+  wetness?: number;
 }
 
 export class AmbiencePipeline extends PostFXPipeline {
@@ -196,6 +197,7 @@ export class AmbiencePipeline extends PostFXPipeline {
     let clouds = this.base.clouds.strength;
     let rays = this.base.rays.strength;
     let flash = 0;
+    let wetness = 0;
 
     for (const mod of this.layers.values()) {
       if (mod.brightness != null) brightness *= mod.brightness;
@@ -208,6 +210,7 @@ export class AmbiencePipeline extends PostFXPipeline {
       if (mod.clouds != null) clouds += mod.clouds;
       if (mod.rays != null) rays += mod.rays;
       if (mod.flash != null) flash += mod.flash;
+      if (mod.wetness != null) wetness += mod.wetness;
     }
 
     this.set1f("coolness", coolness);
@@ -221,6 +224,7 @@ export class AmbiencePipeline extends PostFXPipeline {
     this.set1f("fogStrength", fog);
     this.set1f("fogSpeed", this.base.fog.speed);
     this.set1f("fogScale", this.base.fog.scale);
+    this.set1f("wetness", Math.min(Math.max(wetness, 0), 1));
     this.set1f("rainStrength", rain);
     this.set1f("rainSpeed", this.base.rain.speed);
     this.set1f("rainScale", this.base.rain.scale);

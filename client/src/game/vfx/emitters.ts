@@ -4,8 +4,55 @@ import { sprites } from "../handlers/sprites";
 import { VortexPipeline } from "../pipelines/Vortex";
 import { configs } from "@server/configs";
 import { Direction, EntityName, PipelineName, StateName } from "@server/types";
+import { SPLASH_LIFESPAN } from "@server/globals";
+
+export interface RainSplashes {
+  ring: Phaser.GameObjects.Particles.ParticleEmitter;
+  drop: Phaser.GameObjects.Particles.ParticleEmitter;
+  splash: (x: number, y: number) => void;
+  destroy: () => void;
+}
 
 export const emitters = {
+  rain: (scene: Scene, depth: number): RainSplashes => {
+    const ring = scene.add.particles(0, 0, "particle_ring", {
+      lifespan: SPLASH_LIFESPAN,
+      alpha: { start: 0.42, end: 0 },
+      scale: { start: 0.08, end: 0.5 },
+      tint: 0xcfe4ff,
+      blendMode: "ADD",
+      emitting: false,
+    });
+
+    const drop = scene.add.particles(0, 0, "particle_circle", {
+      lifespan: SPLASH_LIFESPAN * 0.55,
+      alpha: { start: 0.5, end: 0 },
+      scale: { start: 0.07, end: 0.02 },
+      speedY: { min: -46, max: -22 },
+      speedX: { min: -14, max: 14 },
+      gravityY: 190,
+      tint: 0xdcecff,
+      blendMode: "ADD",
+      emitting: false,
+    });
+
+    ring.setDepth(depth);
+    drop.setDepth(depth);
+
+    return {
+      ring: ring,
+      drop: drop,
+      splash: (x: number, y: number) => {
+        ring.emitParticleAt(x, y);
+        if (Math.random() < 0.3) drop.emitParticleAt(x, y, 2);
+      },
+      destroy: () => {
+        ring.destroy();
+        drop.destroy();
+      },
+    };
+  },
+
   burning: (entity: Entity): (() => void) => {
     const emitter = entity.scene.add.particles(0, 0, "particle_circle", {
       tint: [0xff4400, 0xff8800, 0xffcc00],
