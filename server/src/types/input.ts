@@ -16,6 +16,7 @@ export interface Input {
   speed?: number;
   pointerdown: boolean;
   target?: { x: number; y: number; id?: string };
+  bed?: string;
   state: StateName;
   equipped: Slot | null | undefined;
   active: number;

@@ -38,6 +38,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public clearance?: number;
   public depthOffset: number = 0;
   public tame: TameState = {};
+  public bed?: string;
 
   protected lastInput: Partial<Input> | null = null;
   protected depthY: number = 0;

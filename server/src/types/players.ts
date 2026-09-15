@@ -6,6 +6,11 @@ import { MapName } from './maps';
 import { SpellName } from './spells';
 import { Effect } from './effects.js';
 
+export interface SleepState {
+  bed: string;
+  isAsleep: boolean;
+}
+
 export interface PlayerConfig {
   id: string;
   socketId: string;
@@ -20,6 +25,7 @@ export interface PlayerConfig {
   isAuthority: boolean;
   isDead: boolean;
   locked?: string;
+  sleep?: SleepState;
   spells: SpellName[];
   inventory: (Item | null)[];
   hotbar: (Slot | null)[];

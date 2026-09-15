@@ -393,6 +393,56 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.BED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 39,
+          offsetX: 0,
+          offsetY: 0,
+          static: true,
+          collides: true,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home_interior",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 5, end: 6 },
+            { row: 3, start: 5, end: 6 },
+            { row: 4, start: 5, end: 6 },
+          ],
+        },
+        key: "bed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.SLEEPABLE,
+        config: {
+          anchor: { x: -1, y: -7 },
+          exits: {
+            [Direction.LEFT]: { x: -20.5, y: -4.5 },
+            [Direction.RIGHT]: { x: 20.5, y: -4.5 },
+          },
+          facing: Direction.DOWN,
+          depth: 8,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bed",
+      description: "A simple bed. Sleep here to slip into the dream.",
+    },
+  },
   [EntityName.CHEST1]: {
     facing: Direction.DOWN,
     moving: [],

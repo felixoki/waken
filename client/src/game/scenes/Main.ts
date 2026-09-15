@@ -555,6 +555,9 @@ export class MainScene extends Phaser.Scene {
     this.managers.socket.on(
       Event.ENTITY_LOCK,
       (data: { entityId: string; facing?: Direction }) => {
+        this.managers.entities.lock(data.entityId, true);
+        this.game.events.emit(Event.ENTITY_LOCK, data);
+
         const entity = this.managers.entities.get(data.entityId);
         if (!entity) return;
 
@@ -570,10 +573,8 @@ export class MainScene extends Phaser.Scene {
     );
 
     this.managers.socket.on(Event.ENTITY_UNLOCK, (data: string) => {
-      const entity = this.managers.entities.get(data);
-      if (!entity) return;
-
-      entity.isLocked = false;
+      this.managers.entities.lock(data, false);
+      this.game.events.emit(Event.ENTITY_UNLOCK, data);
     });
 
     this.game.events.on(Event.ENTITY_INPUT, (data: Partial<Input>) => {
@@ -953,6 +954,61 @@ export class MainScene extends Phaser.Scene {
     EventBus.on(Event.PARTY_START_REQUEST, () => {
       this.managers.socket.emit(Event.PARTY_START);
     });
+
+    /**
+     * Sleep
+     */
+    this.game.events.on(
+      Event.PLAYER_SLEEP_REQUEST,
+      (data: { entityId: string }) => {
+        this.managers.socket.emit(Event.PLAYER_SLEEP, data);
+      },
+    );
+
+    this.game.events.on(
+      Event.PLAYER_WAKE_REQUEST,
+      (data: { direction?: Direction }) => {
+        this.managers.socket.emit(Event.PLAYER_WAKE, data);
+      },
+    );
+
+    this.managers.socket.on(
+      Event.PLAYER_SLEEP,
+      (data: { id: string; entityId: string; x: number; y: number }) => {
+        const player = this.managers.players.get(data.id);
+        if (!player) return;
+
+        player.bed = data.entityId;
+        player.setPosition(data.x, data.y);
+
+        if (player.state !== StateName.SLEEPING)
+          player.transitionTo(StateName.SLEEPING);
+      },
+    );
+
+    this.managers.socket.on(
+      Event.PLAYER_SLEEP_DENIED,
+      (data: { entityId: string }) => {
+        const player = this.managers.players.player;
+        if (!player || player.bed !== data.entityId) return;
+
+        player.bed = undefined;
+      },
+    );
+
+    this.managers.socket.on(
+      Event.PLAYER_WAKE,
+      (data: { id: string; x: number; y: number }) => {
+        const player = this.managers.players.get(data.id);
+        if (!player) return;
+
+        player.bed = undefined;
+        player.setPosition(data.x, data.y);
+
+        if (player.state === StateName.SLEEPING)
+          player.transitionTo(StateName.IDLE);
+      },
+    );
 
     /**
      * Sublevels

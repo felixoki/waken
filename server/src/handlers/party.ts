@@ -42,14 +42,22 @@ export const party = {
       const memberSocket = io.sockets.sockets.get(member.socketId);
       if (!memberSocket) continue;
 
+      const landing =
+        handlers.sleep.landing(member, world) ??
+        (configs.maps[member.map].isInstanced
+          ? { map: MapName.VILLAGE, ...village.spawn }
+          : { map: member.map, x: member.x, y: member.y });
+
+      handlers.sleep.clear(memberId, world, io);
+
       handlers.player.transfer(
         memberSocket,
         io,
         world,
         memberId,
-        MapName.VILLAGE,
-        village.spawn.x,
-        village.spawn.y,
+        landing.map,
+        landing.x,
+        landing.y,
         {
           health: MAX_HEALTH,
           isDead: false,
@@ -96,6 +104,7 @@ export const party = {
 
       data.status = PartyStatus.LOBBY;
       data.unlocked = 0;
+      data.ready = [];
       handlers.authority.release(io, world, map, data.id);
 
       io.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
@@ -123,12 +132,15 @@ export const party = {
       id,
       leader: player.id,
       members: [player.id],
+      ready: [],
       status: PartyStatus.LOBBY,
       depth: 0,
       unlocked: 0,
     };
 
     world.parties.add(id, data);
+    handlers.sleep.roster(data, world);
+
     socket.join(`party:${id}`);
     socket.emit(Event.PARTY_CREATE, data);
 
@@ -146,6 +158,7 @@ export const party = {
 
     if (!data || data.status !== PartyStatus.LOBBY) return;
     world.parties.addMember(id, player.id);
+    handlers.sleep.roster(data, world);
 
     socket.join(`party:${id}`);
     socket.to(`party:${id}`).emit(Event.PARTY_UPDATE, data);
@@ -162,6 +175,7 @@ export const party = {
     if (!data) return;
 
     world.parties.removeMember(data.id, player.id);
+    handlers.sleep.roster(data, world);
 
     socket.leave(`party:${data.id}`);
     socket.emit(Event.PARTY_LEAVE);
@@ -171,15 +185,20 @@ export const party = {
       configs.maps[player.map].isInstanced
     ) {
       const village = configs.maps[MapName.VILLAGE];
+      const landing =
+        handlers.sleep.landing(player, world) ??
+        { map: MapName.VILLAGE, ...village.spawn };
+
+      handlers.sleep.clear(player.id, world, io);
 
       handlers.player.transfer(
         socket,
         io,
         world,
         player.id,
-        MapName.VILLAGE,
-        village.spawn.x,
-        village.spawn.y,
+        landing.map,
+        landing.x,
+        landing.y,
         {
           isDead: false,
           health: MAX_HEALTH,
@@ -348,29 +367,58 @@ export const party = {
     return true;
   },
 
+  announce: (io: Server, world: World) => {
+    const list = world.parties.getLobbies();
+    const maps = Object.values(MapName).filter(
+      (m) => !configs.maps[m].isInstanced,
+    );
+
+    for (const map of maps) io.to(`map:${map}`).emit(Event.PARTY_LIST, list);
+  },
+
   start: async (socket: Socket, io: Server, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
     const data = world.parties.getByPlayerId(player.id);
-    if (!data || data.leader !== player.id || data.status !== PartyStatus.LOBBY)
+
+    if (!data || data.leader !== player.id) return;
+    if (data.status !== PartyStatus.LOBBY) return;
+
+    handlers.sleep.roster(data, world);
+    if (!data.members.length || data.ready.length !== data.members.length)
       return;
+
+    await party.begin(io, world, data);
+  },
+
+  begin: async (io: Server, world: World, data: Party): Promise<boolean> => {
+    if (data.status !== PartyStatus.LOBBY) return false;
 
     data.depth = 0;
     data.status = PartyStatus.IN_GAME;
 
     const map = levels[data.depth].map;
-    socket.emit(Event.PARTY_START_LOADING, map);
-    socket.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING, map);
+    io.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING, map);
+
+    for (const memberId of data.members) handlers.sleep.depart(memberId, world);
+
+    data.ready = [];
 
     const ok = await party.enter(io, world, data);
 
     if (!ok) {
       data.status = PartyStatus.LOBBY;
-      return;
+
+      for (const memberId of data.members)
+        handlers.sleep.wake(memberId, io, world);
+
+      return false;
     }
 
-    party.broadcast(socket, world);
+    party.announce(io, world);
+
+    return true;
   },
 
   descend: async (

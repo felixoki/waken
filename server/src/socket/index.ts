@@ -206,6 +206,19 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.PARTY_START,
       handler: () => handlers.party.start(socket, io, world),
     },
+    /**
+     * Sleep
+     */
+    {
+      event: Event.PLAYER_SLEEP,
+      handler: (data: { entityId: string }) =>
+        handlers.sleep.enter(data, socket, io, world),
+    },
+    {
+      event: Event.PLAYER_WAKE,
+      handler: (data: { direction?: Direction }) =>
+        handlers.sleep.request(data, socket, io, world),
+    },
     {
       event: Event.PLAYER_CAST,
       handler: (data: { name: SpellName; targetId?: string }) =>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="28" height="28" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="28" height="28" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="10">
  <editorsettings>
   <export target="../client/public/assets/maps/home.json" format="json"/>
  </editorsettings>
@@ -281,5 +281,9 @@
  </layer>
  <objectgroup id="7" name="objects">
   <object id="1" name="House1_Exit" x="200" y="208" width="1" height="1"/>
+  <object id="6" name="Bed" x="64" y="83" width="1" height="1"/>
+  <object id="7" name="Bed" x="112" y="83" width="1" height="1"/>
+  <object id="8" name="Bed" x="160.002" y="83.0011" width="1" height="1"/>
+  <object id="9" name="Bed" x="208" y="83.0041" width="1" height="1"/>
  </objectgroup>
 </map>

@@ -88,17 +88,34 @@ export const PartyPanel = () => {
           </span>
         </div>
         <ul className="flex flex-col gap-1">
-          {party.members.map((id) => (
-            <li key={id} className="text-sm text-white">
-              {id.slice(0, 8)}
-              {id === playerId && " (you)"}
-            </li>
-          ))}
+          {party.members.map((id) => {
+            const isReady = party.ready?.includes(id);
+
+            return (
+              <li
+                key={id}
+                className="flex items-center justify-between text-sm text-white"
+              >
+                <span className={isReady ? "text-white" : "text-white/50"}>
+                  {id.slice(0, 8)}
+                  {id === playerId && " (you)"}
+                </span>
+                <span className="text-xs text-white/50">
+                  {isReady ? "ready" : "not ready"}
+                </span>
+              </li>
+            );
+          })}
         </ul>
         <div className="flex gap-2">
           {party.leader === playerId && !inRealm && (
             <button
-              className="rounded text-white bg-blue-600 px-2 py-1 hover:bg-blue-700"
+              className="rounded px-2 py-1 text-white bg-blue-600 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-black/25 disabled:text-white/40"
+              disabled={
+                !party.members.length ||
+                (party.ready?.length ?? 0) < party.members.length
+              }
+              title="Everyone has to be ready first"
               onClick={() => EventBus.emit(Event.PARTY_START_REQUEST)}
             >
               Start

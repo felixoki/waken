@@ -203,6 +203,8 @@ export const combat = {
       io: Server,
       world: World,
     ) => {
+      if (player.sleep?.isAsleep) handlers.sleep.wake(player.id, io, world);
+
       world.players.update(player.id, { health: 0, isDead: true });
 
       const event = {

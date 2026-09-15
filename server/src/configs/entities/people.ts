@@ -349,6 +349,68 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     },
   },
+  [EntityName.STUDENT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Student",
+      description:
+        "A young reader set on the city university, full of questions about books and wandering.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        text: "I wish I can go to the city one day and attend the university. They have a process to produce a hundred books at once. I wonder how that works.",
+        choices: [
+          {
+            text: "Have you read anything about dream wandering?",
+            next: NodeId.STORY,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "They say you can meet other wanderers if you manage to dream of the same location.",
+        choices: [
+          {
+            text: "Do you think it really works?",
+            next: NodeId.QUEST,
+          },
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+      [NodeId.QUEST]: {
+        text: "I think the hardest part must be remembering what you dreamt of afterwards.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+          },
+        ],
+      },
+    },
+  },
   [EntityName.GLASSBLOWER]: {
     facing: Direction.DOWN,
     moving: [],
@@ -966,7 +1028,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "I remember the first time I set foot on a ship, I was feverish with excitement at the crackling atmosphere in the air. In the coming months, I could already picture us sailing to distant shores...",
+        text: "I remember the first time I set foot on a ship, I was feverish with excitement at the crackling atmosphere in the air... In the coming months, I could already picture us sailing to distant shores...",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1247,7 +1309,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     dialogue: {
       [NodeId.GREETING]: {
         text: [
-          "I traded my last coin for a 'lucky' pebble. The fellow vanished right after. Suspicious, that.",
+          "Ah... the smell of cut grass and stapled wood in the cusp of summer. You must be a city dweller if you're unfamiliar with that.",
           "I once owned a ring that made me feel invincible. But I lost it in the river. *shakes head*",
         ],
         choices: [
@@ -1348,7 +1410,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "You ever notice how the village looks different at dusk? *shivers*.",
+        text: "You ever notice how the village looks different at dusk?",
         choices: [
           {
             text: "I never thought about it. Why is that?",
@@ -1447,7 +1509,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "I can't stand the village life. All the rules and regulations.",
+        text: "I can't stand the village life. All the rules and regulations. And I don't trust anyone there. I'm sure there are cultists among them.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1484,7 +1546,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "Food's dire. We'll have to go hunting soon.",
+        text: "I ran from wolves once, barely escaped. Then I hid in a bush all day. I remember it was almost winter. I watched as the thin layer of snow from the previous evening melted in the day's warmth, before slowly reforming during the snowfall at nightfall.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1521,7 +1583,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     dialogue: {
       [NodeId.GREETING]: {
-        text: "The rainy nights are tough. I hope we have enough firewood.",
+        text: "The rainy nights are tough, I won't lie. I hope we have enough firewood.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,

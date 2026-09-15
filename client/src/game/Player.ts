@@ -91,6 +91,7 @@ export class Player extends Entity {
       this.speed = remoteInput.speed;
 
     if (this.isLocked) {
+      if (remoteInput) this.bed = input.bed;
       if (input.moving) this.moving = input.moving;
       if (input.facing) this.setFacing(input.facing);
 
@@ -112,6 +113,8 @@ export class Player extends Entity {
 
       return;
     }
+
+    if (remoteInput) this.bed = input.bed;
 
     this.target = input.target;
     this.setFacing(input.facing);
@@ -198,6 +201,7 @@ export class Player extends Entity {
       isRolling: isRolling || false,
       pointerdown: pointerdown || false,
       target: target,
+      bed: this.bed,
       state: this.state,
       equipped: equipped,
       active: hotbar?.getActive() ?? 0,
@@ -213,6 +217,7 @@ export class Player extends Entity {
       input.x !== last.x ||
       input.y !== last.y ||
       input.facing !== last.facing ||
+      input.bed !== last.bed ||
       input.state !== last.state ||
       input.isRunning !== last.isRunning ||
       input.isFlying !== last.isFlying ||

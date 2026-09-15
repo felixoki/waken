@@ -21,7 +21,8 @@ Stack: Phaser 3 client (Vite + React UI overlay), Node server, WebSocket multipl
 
 ## Code style
 
-- `/** */` block comments, never `//`
+- **Don't leave comments.** No explanatory comments, no JSDoc on fields, no notes about why a value was chosen or what a workaround is for. The code says what it does; put reasoning in the PR or in chat, not in the file. Existing section markers (`/** Fishing */`) are the only exception — match them when adding a section.
+- If a comment is genuinely unavoidable, use `/** */` block comments, never `//`
 - Handlers are stateless plain objects grouping pure functions by domain — no classes, no instantiation
 - Entity definitions are plain config objects shared between client and server
 - Components, States, Effects are attachable/detachable at runtime

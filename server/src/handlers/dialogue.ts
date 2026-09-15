@@ -256,7 +256,7 @@ export const dialogue = {
 
       if (collectorConfig.recipes && collectorConfig.recipes.length)
         choices.push({
-          text: "Show me what you can craft",
+          text: "Craft",
           next: undefined,
           effects: [
             {

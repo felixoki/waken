@@ -42,6 +42,14 @@ export class EntityManager {
     return this.entities.get(id);
   }
 
+  lock(id: string, locked: boolean): void {
+    const queued = this.queue.find((config) => config.id === id);
+    if (queued) queued.isLocked = locked;
+
+    const entity = this.entities.get(id);
+    if (entity) entity.isLocked = locked;
+  }
+
   get all(): Entity[] {
     return [...this.entities.values()];
   }

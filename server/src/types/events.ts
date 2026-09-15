@@ -94,6 +94,13 @@ export enum Event {
   ENTITIES_UPDATE = "entities_update",
   DAMAGE_NUMBER = "damage_number",
 
+  /** Sleep */
+  PLAYER_SLEEP = "player_sleep",
+  PLAYER_SLEEP_REQUEST = "player_sleep_request",
+  PLAYER_SLEEP_DENIED = "player_sleep_denied",
+  PLAYER_WAKE = "player_wake",
+  PLAYER_WAKE_REQUEST = "player_wake_request",
+
   /** Chunk */
   CHUNK_DEACTIVATE = "chunk_deactivate",
 

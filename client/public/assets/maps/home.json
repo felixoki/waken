@@ -190,6 +190,50 @@
                  "width":1,
                  "x":200,
                  "y":208
+                }, 
+                {
+                 "height":1,
+                 "id":6,
+                 "name":"Bed",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":64,
+                 "y":83
+                }, 
+                {
+                 "height":1,
+                 "id":7,
+                 "name":"Bed",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":112,
+                 "y":83
+                }, 
+                {
+                 "height":1,
+                 "id":8,
+                 "name":"Bed",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":160.002103061654,
+                 "y":83.0010504440077
+                }, 
+                {
+                 "height":1,
+                 "id":9,
+                 "name":"Bed",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":208.000210917467,
+                 "y":83.0041164454008
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -197,8 +241,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":6,
+ "nextlayerid":10,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

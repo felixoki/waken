@@ -15,6 +15,7 @@ import { Felling } from "../state/Felling";
 import { Mining } from "../state/Mining";
 import { Raking } from "../state/Raking";
 import { Watering } from "../state/Watering";
+import { Sleeping } from "../state/Sleeping";
 import { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
 
@@ -47,7 +48,11 @@ export class PlayerManager {
       const existing = this.others.get(config.id);
 
       if (existing) {
-        if (existing.map === config.map) return;
+        if (existing.map === config.map) {
+          existing.setPosition(config.x, config.y);
+          return;
+        }
+
         this.remove(config.id);
       }
     }
@@ -79,6 +84,7 @@ export class PlayerManager {
         [StateName.MINING, new Mining()],
         [StateName.RAKING, new Raking()],
         [StateName.WATERING, new Watering()],
+        [StateName.SLEEPING, new Sleeping()],
         [StateName.DEAD, new Dead()],
       ]),
       config.socketId,
@@ -101,6 +107,13 @@ export class PlayerManager {
     if (hotbar && config.hotbar?.length) hotbar.setSlots(config.hotbar);
 
     this.others.set(config.id, player);
+
+    if (config.sleep?.isAsleep) {
+      player.bed = config.sleep.bed;
+      scene.time.delayedCall(0, () => {
+        if (player.active) player.transitionTo(StateName.SLEEPING);
+      });
+    }
   }
 
   updateOther(input: Input): void {

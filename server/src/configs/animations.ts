@@ -45,6 +45,9 @@ export const animations: Partial<
   [EntityName.TANNER]: {
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
+  [EntityName.STUDENT]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 12, repeat: -1 },
+  },
   [EntityName.ORC1]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },

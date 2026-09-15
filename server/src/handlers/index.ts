@@ -12,6 +12,7 @@ import { generation } from "./generation.js";
 import { item } from "./item.js";
 import { party } from "./party.js";
 import { player } from "./player.js";
+import { sleep } from "./sleep.js";
 import { spell } from "./spell.js";
 import { spawner } from "./spawner.js";
 import { storage } from "./storage.js";
@@ -35,6 +36,7 @@ export const handlers = {
   dialogue,
   generation,
   party,
+  sleep,
   spell,
   spawner,
   storage,

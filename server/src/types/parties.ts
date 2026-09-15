@@ -7,6 +7,7 @@ export interface Party {
   id: string;
   leader: string;
   members: string[];
+  ready: string[];
   status: PartyStatus;
   depth: number;
   unlocked: number;

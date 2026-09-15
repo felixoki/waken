@@ -1,3 +1,4 @@
+import { Direction } from "./directions";
 import { EntityName } from "./entities";
 import { MapName } from "./maps";
 import { CollectorConfig } from "./collectors";
@@ -46,6 +47,7 @@ export enum ComponentName {
   TRANSITION = "transition",
   TRAP = "trap",
   TAMABLE = "tamable",
+  SLEEPABLE = "sleepable",
   SKIN = "skin",
   WETSHEEN = "wetsheen",
   WINDSWAY = "windsway",
@@ -83,6 +85,7 @@ export type ComponentConfig =
   | { name: ComponentName.PICKABLE }
   | { name: ComponentName.POINTABLE }
   | { name: ComponentName.REVIVEABLE }
+  | { name: ComponentName.SLEEPABLE; config: SleepableConfig }
   | { name: ComponentName.STORAGE; config: StorageConfig }
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
@@ -142,6 +145,13 @@ export interface FollowConfig {
 
 export interface LearnableConfig {
   spell: SpellName;
+}
+
+export interface SleepableConfig {
+  anchor: { x: number; y: number };
+  exits: Partial<Record<Direction, { x: number; y: number }>>;
+  facing: Direction;
+  depth: number;
 }
 
 export interface JumpableConfig {

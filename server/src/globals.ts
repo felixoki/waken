@@ -189,6 +189,11 @@ export const CRIT_MULTIPLIER = 2;
 export const RESISTANCE_MULTIPLIER = 0.5;
 export const WEAKNESS_MULTIPLIER = 2;
 
+/** Sleeping */
+export const SLEEP_FRAMES = 10;
+export const SLEEP_FRAMERATE = 6;
+export const SLEEP_RANGE = 48;
+
 /** Fishing */
 export const DURATION_FISHING_WAIT_MIN = 3000;
 export const DURATION_FISHING_WAIT_MAX = 8000;

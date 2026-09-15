@@ -4,6 +4,10 @@ export const state = {
   resolve: (input: Partial<Input>) => {
     const selectors = [
       {
+        condition: () => !!input.bed,
+        state: () => StateName.SLEEPING,
+      },
+      {
         condition: () => input.state === StateName.DASHING,
         state: () => StateName.DASHING,
       },

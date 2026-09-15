@@ -93,6 +93,12 @@ const player: Spritesheet[] = [
     frameHeight: 64,
   },
   {
+    key: "player-sleeping",
+    file: "player_sleeping_with_shadow.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
     key: "player-idle-lantern",
     file: "player_idle_with_lantern.png",
     frameWidth: 32,
@@ -979,6 +985,18 @@ export const maps: Record<MapName, MapConfig> = {
       ...icons,
       ...creatures,
       ...interior,
+      {
+        key: "student-idle",
+        file: "student_idle_with_shadow.png",
+        frameWidth: 48,
+        frameHeight: 48,
+      },
+      {
+        key: "village_home_interior",
+        file: "village_home_interior.png",
+        frameWidth: 16,
+        frameHeight: 16,
+      },
       {
         key: "perch",
         file: "perch_jumping.png",

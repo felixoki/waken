@@ -13655,15 +13655,26 @@
                  "y":1280
                 }, 
                 {
-                 "height":2.5481764612199,
+                 "height":2.54818,
                  "id":1632,
-                 "name":"Potion4",
+                 "name":"Bed",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":4.7778308647874,
-                 "x":443.382704252269,
-                 "y":702.659659181398
+                 "width":4.77783,
+                 "x":443.383,
+                 "y":702.66
+                }, 
+                {
+                 "height":1,
+                 "id":1633,
+                 "name":"Student",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":360,
+                 "y":106
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -13823,7 +13834,7 @@
          "y":0
         }],
  "nextlayerid":66,
- "nextobjectid":1633,
+ "nextobjectid":1634,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
