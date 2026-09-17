@@ -4,6 +4,7 @@ import {
   EntityDefinition,
   EntityName,
   EffectName,
+  Rarity,
   SpellName,
   StateName,
 } from "../../types";
@@ -526,6 +527,39 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A pointed hat that deepens the well of mana you can hold.",
       icon: { spritesheet: "icons8", row: 6, col: 22 },
       weight: 0.2,
+    },
+  },
+  [EntityName.SILVER_SWORD]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 11, end: 12 },
+            { row: 4, start: 11, end: 12 },
+          ],
+        },
+        key: "silver_sword_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { multipliers: { damage: 1.75, defense: 0.5 } },
+    bonuses: [{ effects: [[EffectName.SEARING, 4000]] }],
+    metadata: {
+      displayName: "The Silver Sword of Inrah",
+      description:
+        "A legendary blade that sharpens every blow, dulls every wound, and sets your spells searing.",
+      icon: { spritesheet: "icons2", row: 4, col: 10 },
+      rarity: Rarity.LEGENDARY,
+      weight: 2.5,
     },
   },
 };

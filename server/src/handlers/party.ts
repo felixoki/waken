@@ -3,6 +3,7 @@ import { World } from "../World";
 import { randomUUID } from "crypto";
 import {
   EntityConfig,
+  EntityName,
   Event,
   MapName,
   Party,
@@ -12,7 +13,7 @@ import {
 import { levels } from "../configs/levels.js";
 import { configs } from "../configs/index.js";
 import { handlers } from ".";
-import { MAX_HEALTH } from "../globals.js";
+import { MAX_HEALTH, RELIC_CHANCE } from "../globals.js";
 import { tryCatch } from "../utils/tryCatch.js";
 import { MapLoader } from "../loaders/Map.js";
 
@@ -49,6 +50,8 @@ export const party = {
           : { map: member.map, x: member.x, y: member.y });
 
       handlers.sleep.clear(memberId, world, io);
+
+      world.relics.forfeit(member.inventory);
 
       handlers.player.transfer(
         memberSocket,
@@ -191,6 +194,8 @@ export const party = {
 
       handlers.sleep.clear(player.id, world, io);
 
+      world.relics.forfeit(player.inventory);
+
       handlers.player.transfer(
         socket,
         io,
@@ -254,6 +259,16 @@ export const party = {
       tilemap = biome.tilemap;
 
       biome.entities.forEach((biomeEntity) => {
+        if (biomeEntity.name === EntityName.SILVER_SWORD) {
+          if (
+            world.relics.has(biomeEntity.name) ||
+            Math.random() >= RELIC_CHANCE
+          )
+            return;
+
+          world.relics.reserve(biomeEntity.name);
+        }
+
         const id = randomUUID();
         const maxHealth =
           configs.entities[biomeEntity.name]?.maxHealth ?? MAX_HEALTH;

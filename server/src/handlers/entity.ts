@@ -62,6 +62,8 @@ export const entity = {
     const target = world.entities.get(id);
     if (!target) return;
 
+    world.relics.release(target.name);
+
     const partyId = world.chunks.getPartyByEntity(id);
     const chunk = world.chunks.getChunkByEntity(id);
 
@@ -114,6 +116,9 @@ export const entity = {
 
     player.inventory = handlers.storage.add(player.inventory, item);
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
+
+    if (world.relics.has(entity.name))
+      world.relics.claim(entity.name, player.id);
 
     const chunk = world.chunks.getChunkByEntity(data);
     const partyId = world.chunks.getPartyByEntity(data);

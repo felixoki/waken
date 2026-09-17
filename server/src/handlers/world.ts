@@ -16,6 +16,8 @@ export const world = {
 
     if (state?.time) world.setTime(state.time);
 
+    if (state?.relics) world.relics.hydrate(state.relics);
+
     return !!state?.entities?.length;
   },
 
@@ -24,6 +26,10 @@ export const world = {
       entities: world.entities.all,
       chunks: {},
       time: world.getTime(),
+      relics: world.relics.snapshot((playerId) => {
+        const holder = world.players.get(playerId);
+        return !holder || !configs.maps[holder.map].isInstanced;
+      }),
     });
 
     await Promise.all(

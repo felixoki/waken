@@ -327,6 +327,7 @@ export enum EntityName {
   ROCKS5 = "rocks5",
   ROCKS6 = "rocks6",
   SHADOW_WANDERER = "shadow_wanderer",
+  SILVER_SWORD = "silver_sword",
   SPAWNER = "spawner",
   TEXTURE_SPAWNER = "texture_spawner",
   TENT1 = "tent1",

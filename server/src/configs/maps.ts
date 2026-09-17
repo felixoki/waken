@@ -1433,6 +1433,7 @@ export const maps: Record<MapName, MapConfig> = {
       ...player,
       ...animals,
       ...plants,
+      ...icons,
       ...creatures,
       ...interior,
       {

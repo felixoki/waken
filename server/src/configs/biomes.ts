@@ -221,6 +221,13 @@ export const forest: BiomeConfig = {
       count: { min: 1, max: 3 },
       spacing: 10,
     },
+    {
+      entities: [EntityName.SILVER_SWORD],
+      terrain: [TerrainName.GRASS],
+      count: { min: 1, max: 1 },
+      spacing: 4,
+      margin: 2,
+    },
   ],
 
   generator: GeneratorName.TERRAIN,

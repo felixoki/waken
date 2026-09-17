@@ -12,6 +12,7 @@ import { MomentumEffect } from "../effects/Momentum";
 import { ReflectEffect } from "../effects/Reflect";
 import { ShieldEffect } from "../effects/Shield";
 import { GreaseEffect } from "../effects/Grease";
+import { SearingEffect } from "../effects/Searing";
 
 export class EffectFactory {
   static create(name: EffectName, entity: Entity): Effect {
@@ -38,6 +39,8 @@ export class EffectFactory {
         return new ShieldEffect(entity);
       case EffectName.GREASE:
         return new GreaseEffect(entity);
+      case EffectName.SEARING:
+        return new SearingEffect(entity);
     }
   }
 }

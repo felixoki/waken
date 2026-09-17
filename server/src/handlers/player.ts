@@ -316,21 +316,25 @@ export const player = {
 
     const prev = p.map;
     const partyId = configs.maps[prev].isInstanced ? party?.id : undefined;
+    const leaving = !!party && configs.maps[prev].isInstanced;
+    const landing = leaving ? handlers.sleep.landing(p, world) : undefined;
+
+    if (leaving) handlers.sleep.clear(p.id, world, io);
 
     player.transfer(
       socket,
       io,
       world,
       p.id,
-      data.to,
-      data.x,
-      data.y,
+      landing?.map ?? data.to,
+      landing?.x ?? data.x,
+      landing?.y ?? data.y,
       undefined,
       undefined,
       partyId,
     );
 
-    if (party && configs.maps[prev].isInstanced) {
+    if (party && leaving) {
       handlers.party.cleanup(socket, io, world, party.id);
       handlers.party.leave(socket, io, world);
     }

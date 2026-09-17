@@ -28,6 +28,7 @@ export const effects: Record<EffectName, EffectDefinition> = {
   },
   [EffectName.SHIELD]: { absorb: 50 },
   [EffectName.GREASE]: {},
+  [EffectName.SEARING]: { interval: 1000, damage: 20 },
 };
 
 export const interactions: Partial<

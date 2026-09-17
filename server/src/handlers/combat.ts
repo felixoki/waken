@@ -470,12 +470,20 @@ export const combat = {
         for (const slot of inventory) {
           if (!slot) continue;
 
-          for (const bonus of configs.entities[slot.name]?.bonuses ?? [])
+          for (const bonus of configs.entities[slot.name]?.bonuses ?? []) {
+            const isWild =
+              isSpell &&
+              !bonus.spell &&
+              !bonus.weapon &&
+              config.damage.amount > 0;
+
             if (
+              isWild ||
               (isSpell && bonus.spell === config.name) ||
               (!isSpell && bonus.weapon === config.name)
             )
               effects.push(...bonus.effects);
+          }
         }
       }
 

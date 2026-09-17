@@ -24,6 +24,7 @@ import { ZoneManager } from "./managers/Zone";
 import { combat } from "./handlers/combat.js";
 import { handlers } from "./handlers/index.js";
 import { SublevelStore } from "./stores/Sublevel.js";
+import { RelicStore } from "./stores/Relic.js";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
@@ -39,6 +40,7 @@ export class World {
   public readonly items: ItemsStore;
   public readonly parties: PartyStore;
   public readonly sublevels: SublevelStore;
+  public readonly relics: RelicStore;
   public readonly chunks: ChunkManager;
   public readonly authority: AuthorityManager;
   public readonly zones: ZoneManager;
@@ -55,6 +57,7 @@ export class World {
     this.items = new ItemsStore();
     this.parties = new PartyStore();
     this.sublevels = new SublevelStore();
+    this.relics = new RelicStore();
     this.chunks = new ChunkManager();
     this.authority = new AuthorityManager();
     this.zones = new ZoneManager();

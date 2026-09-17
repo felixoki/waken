@@ -46,7 +46,7 @@ export const load = {
 
     const { data: result, error } = await tryCatch(
       pg.query(
-        `SELECT entities, chunks, time FROM world_state WHERE world_id = $1`,
+        `SELECT entities, chunks, time, relics FROM world_state WHERE world_id = $1`,
         [worldId],
       ),
     );

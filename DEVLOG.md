@@ -756,9 +756,14 @@
 - Improve path finding performance ✅
 - Add gated depth for biomes ✅
 
-####
+#### 15.9.2026
 
 - Improve rain and wet effect ✅
+- Add sleeping ✅
+
+#### 17.9.2026
+
+- Add relics ✅
 
 ### In progress
 
@@ -783,3 +788,4 @@
 - Ideas
   - Remove among player collisions
   - Hidden rooms in dungeons
+  - Mountains

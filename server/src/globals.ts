@@ -189,6 +189,9 @@ export const CRIT_MULTIPLIER = 2;
 export const RESISTANCE_MULTIPLIER = 0.5;
 export const WEAKNESS_MULTIPLIER = 2;
 
+/** Relics */
+export const RELIC_CHANCE = 1;
+
 /** Sleeping */
 export const SLEEP_FRAMES = 10;
 export const SLEEP_FRAMERATE = 6;
