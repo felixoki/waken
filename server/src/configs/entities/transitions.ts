@@ -225,6 +225,7 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "dungeon_entrance_texture",
       },
+      { name: ComponentName.TRACKABLE },
       {
         name: ComponentName.BODY,
         config: {
@@ -272,6 +273,7 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
         },
         key: "cave_entrance_texture",
       },
+      { name: ComponentName.TRACKABLE },
       {
         name: ComponentName.BODY,
         config: {

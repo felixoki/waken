@@ -15,6 +15,7 @@ import { HotbarComponent } from "../components/Hotbar";
 import { AnimationComponent } from "../components/Animation";
 import { FollowComponent } from "../components/Follow";
 import { LightComponent } from "../components/Light";
+import { TrailComponent } from "../components/Trail";
 import type { MainScene } from "../scenes/Main";
 import { Entity } from "../Entity";
 import { Factory } from "../factory/Factory";
@@ -215,6 +216,18 @@ export const player = {
       const anim = p.getComponent<AnimationComponent>(ComponentName.ANIMATION);
       anim?.setVariant(null);
       anim?.play(p.state, p.facing);
+    },
+  },
+
+  compass: {
+    sync: (p: Player, equipped: Slot | null | undefined): void => {
+      const trail = p.getComponent<TrailComponent>(ComponentName.TRAIL);
+      if (!trail) return;
+
+      trail.setEnabled(
+        equipped?.type === SlotType.ENTITY &&
+          equipped.item.name === EntityName.COMPASS,
+      );
     },
   },
 

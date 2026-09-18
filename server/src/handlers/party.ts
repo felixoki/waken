@@ -10,6 +10,7 @@ import {
   PartyStatus,
   Transition,
 } from "../types";
+import { Landmark } from "../types/generation.js";
 import { levels } from "../configs/levels.js";
 import { configs } from "../configs/index.js";
 import { handlers } from ".";
@@ -242,6 +243,7 @@ export const party = {
 
     let spawn: { x: number; y: number };
     let tilemap: unknown = null;
+    let landmarks: Landmark[] = [];
 
     if (level.biome) {
       const seed = `${data.id}-${data.depth}-${Date.now()}`;
@@ -257,6 +259,9 @@ export const party = {
 
       spawn = biome.spawn;
       tilemap = biome.tilemap;
+      landmarks = biome.entities
+        .filter((e) => configs.landmarks.has(e.name))
+        .map(({ name, x, y }) => ({ name, x, y }));
 
       biome.entities.forEach((biomeEntity) => {
         if (biomeEntity.name === EntityName.SILVER_SWORD) {
@@ -297,6 +302,10 @@ export const party = {
       const loader = new MapLoader();
       const tiled = loader.load(config.json);
       const entities = loader.parseEntities(level.map, tiled);
+
+      landmarks = entities
+        .filter((e) => configs.landmarks.has(e.name))
+        .map(({ name, x, y }) => ({ name, x, y }));
 
       entities.forEach((entity) => {
         world.entities.add(entity.id, entity);
@@ -375,6 +384,7 @@ export const party = {
       tilemap,
       spawn,
       players,
+      landmarks,
     };
 
     io.to(`party:${data.id}`).emit(Event.PARTY_START, payload);

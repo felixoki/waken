@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { Transition, Event, EntityConfig, PlayerConfig } from "../types";
+import { Landmark } from "../types/generation.js";
 import { World } from "../World";
 import { configs } from "../configs";
 import { handlers } from ".";
@@ -40,6 +41,10 @@ export const sublevel = {
       if (isNew) world.sublevels.removeInstance(entranceId);
       return;
     }
+
+    const landmarks: Landmark[] = biome.entities
+      .filter((e) => configs.landmarks.has(e.name))
+      .map(({ name, x, y }) => ({ name, x, y }));
 
     if (isNew) {
       biome.entities.forEach((e) => {
@@ -141,6 +146,7 @@ export const sublevel = {
       tilemap: biome.tilemap,
       spawn: biome.spawn,
       players,
+      landmarks,
     });
   },
 

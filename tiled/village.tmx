@@ -10035,7 +10035,7 @@
   <object id="1617" name="Bush1" x="143.996" y="2112" width="1" height="1"/>
   <object id="1621" name="People" x="400" y="1232" width="1" height="1"/>
   <object id="1631" name="Dog" x="272" y="1280" width="1" height="1"/>
-  <object id="1632" name="Bed" x="443.383" y="702.66" width="4.77783" height="2.54818"/>
+  <object id="1632" name="Compass" x="443.383" y="702.66" width="4.77783" height="2.54818"/>
   <object id="1633" name="Student" x="360" y="106" width="1" height="1"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="134">

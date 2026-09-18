@@ -53,6 +53,25 @@ export const emitters = {
     };
   },
 
+  trail: (scene: Scene): Phaser.GameObjects.Particles.ParticleEmitter => {
+    const emitter = scene.add.particles(0, 0, "particle_circle", {
+      tint: [0xffffff, 0xf2f7ff, 0xffeec9],
+      alpha: { start: 0.75, end: 0 },
+      scale: { start: 0.1, end: 0.01 },
+      speedX: { min: -1.5, max: 1.5 },
+      speedY: { min: -4, max: -1 },
+      gravityY: -2,
+      lifespan: { min: 2200, max: 3200 },
+      frequency: 60,
+      quantity: 2,
+      blendMode: "ADD",
+      emitting: false,
+    });
+    emitter.setDepth(999);
+
+    return emitter;
+  },
+
   burning: (entity: Entity): (() => void) => {
     const emitter = entity.scene.add.particles(0, 0, "particle_circle", {
       tint: [0xff4400, 0xff8800, 0xffcc00],

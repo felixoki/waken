@@ -288,6 +288,37 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.8,
     },
   },
+  [EntityName.COMPASS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 23, end: 24 },
+            { row: 8, start: 23, end: 24 },
+          ],
+        },
+        key: "compass_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wayward compass",
+      description:
+        "A compass that will spawn embers to show you the way to the closest point of interest.",
+      icon: { spritesheet: "icons8", row: 8, col: 22 },
+      rarity: Rarity.RARE,
+      weight: 0.4,
+    },
+  },
   [EntityName.HARE_FOOT]: {
     facing: Direction.DOWN,
     moving: [],

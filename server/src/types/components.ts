@@ -46,6 +46,8 @@ export enum ComponentName {
   TEXTURE_ANIMATION = "textureAnimation",
   TRANSITION = "transition",
   TRAP = "trap",
+  TRACKABLE = "trackable",
+  TRAIL = "trail",
   TAMABLE = "tamable",
   SLEEPABLE = "sleepable",
   SKIN = "skin",
@@ -91,6 +93,7 @@ export type ComponentConfig =
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.TRAP; config: TrapConfig }
+  | { name: ComponentName.TRACKABLE }
   | { name: ComponentName.TAMABLE; config: TamableConfig }
   | { name: ComponentName.WINDSWAY }
   | { name: ComponentName.ZONE };

@@ -3,6 +3,7 @@ import { TileManager } from "../managers/Tile";
 import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
 import { AmbienceLayer, Event, MapName, PipelineName } from "@server/types";
+import { Landmark } from "@server/types/generation";
 import { configs } from "@server/configs";
 import { AmbiencePipeline } from "../pipelines/Ambience";
 import type { MainScene } from "./Main";
@@ -14,6 +15,7 @@ export class Scene extends Phaser.Scene {
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
+  public landmarks: Landmark[] = [];
 
   private ambience?: AmbiencePipeline;
   private indoor = false;
@@ -73,6 +75,7 @@ export class Scene extends Phaser.Scene {
   teardown(): void {
     [...this.children.list].forEach((child) => child.destroy());
 
+    this.landmarks = [];
     this.tileManager?.destroy();
     this.tileManager = undefined!;
   }

@@ -765,6 +765,10 @@
 
 - Add relics ✅
 
+#### 18.9.2026
+
+- Add compass and landmarks ✅
+
 ### In progress
 
 ### Bugs

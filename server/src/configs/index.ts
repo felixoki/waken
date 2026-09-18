@@ -12,6 +12,18 @@ import { tiers } from "./tiers.js";
 import { time } from "./time.js";
 import { weapons } from "./weapons.js";
 import { zones } from "./zones.js";
+import { ComponentName } from "../types/components.js";
+import { EntityDefinition, EntityName } from "../types/entities.js";
+
+const landmarks = new Set(
+  (Object.entries(entities) as [EntityName, EntityDefinition][])
+    .filter(([, definition]) =>
+      definition.components.some(
+        (component) => component.name === ComponentName.TRACKABLE,
+      ),
+    )
+    .map(([name]) => name),
+);
 
 export const configs = {
   animations,
@@ -21,6 +33,7 @@ export const configs = {
   entities,
   fish,
   interactions,
+  landmarks,
   maps,
   needs,
   sounds,

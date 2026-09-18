@@ -144,6 +144,7 @@ export const path = {
     end: { x: number; y: number },
     map: Phaser.Tilemaps.Tilemap,
     allowDiagonals: boolean = false,
+    maxExpansions: number = MAX_PATH_EXPANSIONS,
   ): Array<{ x: number; y: number }> | null => {
     if (!path.isWalkable(grid, start.x, start.y)) {
       const closest = path.findClosestWalkable(grid, start.x, start.y);
@@ -180,7 +181,7 @@ export const path = {
 
       if (closed.has(key)) continue;
 
-      if (++expansions > MAX_PATH_EXPANSIONS) return null;
+      if (++expansions > maxExpansions) return null;
 
       if (current.x === end.x && current.y === end.y)
         return path.reconstruct(current, map);

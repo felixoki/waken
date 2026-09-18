@@ -233,6 +233,8 @@ export interface Entity {
   textureSpawner?: TextureSpawnerConfig;
 }
 
+export type Landmark = Pick<Entity, "name" | "x" | "y">;
+
 export interface Room {
   x: number;
   y: number;

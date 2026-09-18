@@ -215,6 +215,7 @@ export enum EntityName {
   CITIZEN15 = "citizen15",
   CITIZEN16 = "citizen16",
   CLARY_SAGE = "clary_sage",
+  COMPASS = "compass",
   CUPBOARD1 = "cupboard1",
   CUPBOARD2 = "cupboard2",
   DEER = "deer",

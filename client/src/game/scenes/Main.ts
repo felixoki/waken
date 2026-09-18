@@ -37,6 +37,7 @@ import { DURATION_EXTRACTION_BOUNCE } from "@server/globals";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
+import { Landmark } from "@server/types/generation";
 import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
 import { GrowableComponent } from "../components/Growable";
@@ -874,8 +875,11 @@ export class MainScene extends Phaser.Scene {
         tilemap: any;
         spawn: { x: number; y: number };
         players: PlayerConfig[];
+        landmarks: Landmark[];
       }) => {
         const scene = this.scene.get(data.map) as ForestScene;
+
+        scene.landmarks = data.landmarks ?? [];
 
         const onReady = () => {
           if (this.managers.daycycle.phase)
@@ -1024,8 +1028,11 @@ export class MainScene extends Phaser.Scene {
         tilemap: any;
         spawn: { x: number; y: number };
         players: PlayerConfig[];
+        landmarks: Landmark[];
       }) => {
         const scene = this.scene.get(data.map) as SublevelScene;
+
+        scene.landmarks = data.landmarks ?? [];
 
         const onReady = () => {
           const localId = this.managers.players.player?.id;
