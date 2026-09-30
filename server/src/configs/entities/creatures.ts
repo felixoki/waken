@@ -16,6 +16,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 150,
+    speed: 1.1,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -88,6 +89,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 280,
+    speed: 1.05,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -166,6 +168,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 60,
+    speed: 1.2,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -238,6 +241,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 120,
+    speed: 1.1,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -316,6 +320,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 340,
+    speed: 1.05,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -360,6 +365,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.TROLL_IDLE, interval: [6000, 14000] },
+      },
     ],
     states: [
       StateName.IDLE,
@@ -374,9 +383,120 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PHYSICAL, amount: 45 },
         range: 40,
+        sound: SoundName.TROLL_SLASH,
       },
       {
         state: StateName.THROWING,
+        range: 200,
+        minRange: 50,
+        cooldown: 4000,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.ANCIENT_TROLL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 900,
+    speed: 1.05,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.ANCIENT_TROLL_HEART,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.TROLL_SCALES,
+              quantity: 3,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.IRON1,
+              quantity: 4,
+              stackable: true,
+              chance: 0.5,
+            },
+            {
+              name: EntityName.SOULSTONE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+            {
+              name: EntityName.AMULET2,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
+            },
+            {
+              name: EntityName.RING2,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
+            },
+            {
+              name: EntityName.BOOTS1,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 20,
+          offsetX: 32,
+          offsetY: 30,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.TROLL_IDLE, interval: [6000, 14000] },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+      StateName.THROWING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 80 },
+        range: 40,
+        sound: SoundName.TROLL_SLASH,
+      },
+      {
+        state: StateName.THROWING,
+        damage: { type: DamageType.PHYSICAL, amount: 110 },
         range: 200,
         minRange: 50,
         cooldown: 4000,
@@ -475,6 +595,134 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           fov: Math.PI * 2,
         },
       },
+    ],
+  },
+  [EntityName.BLOODGEIST1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 100,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.SPELL_PAGE_GREASE,
+              quantity: 1,
+              stackable: false,
+              chance: 0.2,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 10,
+          offsetX: 11,
+          offsetY: 17,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.CASTING],
+    attacks: [
+      {
+        state: StateName.CASTING,
+        spell: SpellName.GREASE,
+        range: 160,
+        cooldown: 8000,
+        windup: 450,
+      },
+      {
+        state: StateName.CASTING,
+        spell: SpellName.FIRE_WAVE,
+        range: 70,
+        cooldown: 4000,
+        windup: 450,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK, config: { spacing: 50, recovery: 1500 } },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.HEXGEIST]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 220,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE,
+              quantity: 1,
+              stackable: false,
+              chance: 0.15,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 10,
+          offsetX: 11,
+          offsetY: 19,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.CASTING],
+    attacks: [
+      {
+        state: StateName.CASTING,
+        spell: SpellName.GRASP,
+        damage: { type: DamageType.PHYSICAL, amount: 25 },
+        range: 150,
+        cooldown: 3500,
+        windup: 450,
+      },
+      {
+        state: StateName.CASTING,
+        spell: SpellName.LIGHTNING_STRIKE,
+        damage: { type: DamageType.PHYSICAL, amount: 40 },
+        range: 240,
+        cooldown: 9000,
+        windup: 650,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK, config: { spacing: 130, recovery: 1800 } },
+      { name: BehaviorName.SEARCH },
     ],
   },
 };

@@ -37,6 +37,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.HENBANE,
             EntityName.OPIUM_POPPY,
             EntityName.BALE,
+            EntityName.ERGOT,
           ],
           recipes: [
             {
@@ -65,6 +66,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               output: EntityName.POTION3,
               quantity: 1,
               ingredients: [
+                { item: EntityName.VIAL, quantity: 1 },
                 { item: EntityName.TROLL_SCALES, quantity: 1 },
                 { item: EntityName.RAT_CLAWS, quantity: 4 },
                 { item: EntityName.BELLADONNA, quantity: 1 },
@@ -72,7 +74,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
-              tier: 2,
+              tier: 1,
               output: EntityName.POTION4,
               quantity: 1,
               ingredients: [
@@ -80,6 +82,18 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
                 { item: EntityName.HENBANE, quantity: 2 },
                 { item: EntityName.OPIUM_POPPY, quantity: 2 },
                 { item: EntityName.BALE, quantity: 1 },
+              ],
+            },
+            {
+              tier: 2,
+              output: EntityName.POTION5,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.VIAL, quantity: 1 },
+                { item: EntityName.ERGOT, quantity: 2 },
+                { item: EntityName.RAT_CLAWS, quantity: 2 },
+                { item: EntityName.TROLL_SCALES, quantity: 1 },
+                { item: EntityName.OPIUM_POPPY, quantity: 2 },
               ],
             },
           ] satisfies Recipe[],
@@ -731,6 +745,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.GRAPE,
             EntityName.HOPS,
             EntityName.WHEAT,
+            EntityName.WINE,
+            EntityName.BEER,
           ],
           recipes: [
             {

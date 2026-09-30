@@ -165,6 +165,127 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.TREE6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "snow_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 15, end: 19 },
+            { row: 29, start: 15, end: 19 },
+            { row: 30, start: 15, end: 19 },
+            { row: 31, start: 15, end: 19 },
+            { row: 32, start: 15, end: 19 },
+          ],
+        },
+        key: "tree6_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 28,
+          offsetY: 48,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE7]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "snow_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 27, start: 9, end: 13 },
+            { row: 28, start: 9, end: 13 },
+            { row: 29, start: 9, end: 13 },
+            { row: 30, start: 9, end: 13 },
+            { row: 31, start: 9, end: 13 },
+            { row: 32, start: 9, end: 13 },
+          ],
+        },
+        key: "tree7_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 32,
+          offsetY: 64,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE8]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "snow_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 2, end: 6 },
+            { row: 3, start: 2, end: 6 },
+            { row: 4, start: 2, end: 6 },
+            { row: 5, start: 2, end: 6 },
+            { row: 6, start: 2, end: 6 },
+          ],
+        },
+        key: "tree8_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 32,
+          offsetY: 48,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.APPLETREE2]: {
     facing: Direction.DOWN,
     moving: [],

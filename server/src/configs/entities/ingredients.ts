@@ -476,6 +476,54 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.02,
     },
   },
+  [EntityName.EDELWEISS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "snow_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 36, start: 19, end: 20 },
+            { row: 37, start: 19, end: 20 },
+          ],
+        },
+        key: "edelweiss_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 8,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+      {
+        name: ComponentName.POINTABLE,
+      },
+      {
+        name: ComponentName.PICKABLE,
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Edelweiss",
+      description: "A star of pale felted petals that only opens above the snowline.",
+      stackable: true,
+      icon: { spritesheet: "icons6", row: 1, col: 9 },
+      weight: 0.02,
+    },
+  },
   [EntityName.OPIUM_POPPY]: {
     facing: Direction.DOWN,
     moving: [],
@@ -625,6 +673,40 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A pale draught brewed from henbane and opium poppy.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 12, col: 28 },
+      weight: 0.2,
+    },
+  },
+  [EntityName.POTION5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { unlock: 2 },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 29, end: 30 },
+            { row: 8, start: 29, end: 30 },
+          ],
+        },
+        key: "potion5_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Rimewake",
+      description: "A frost-cold draught brewed in the wake of rime.",
+      stackable: true,
+      icon: { spritesheet: "icons2", row: 8, col: 28 },
       weight: 0.2,
     },
   },

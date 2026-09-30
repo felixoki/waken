@@ -7,10 +7,15 @@ import {
   SoundName,
 } from "../../types";
 
+const BARREL_LOOT = [
+  { name: EntityName.ERGOT, quantity: 1, stackable: true, chance: 0.25 },
+];
+
 export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BARREL1]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
       {
         name: ComponentName.BODY,
@@ -22,6 +27,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
       { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
@@ -44,6 +50,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BARREL2]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
       {
         name: ComponentName.BODY,
@@ -55,6 +62,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
       { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
@@ -75,6 +83,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BARREL3]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
       {
         name: ComponentName.BODY,
@@ -86,6 +95,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
       { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
@@ -107,6 +117,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BARRELS1]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
       {
         name: ComponentName.BODY,
@@ -118,6 +129,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
       { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
@@ -139,6 +151,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BARRELS2]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
       {
         name: ComponentName.BODY,
@@ -150,6 +163,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
       { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.TEXTURE,
@@ -950,7 +964,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BOWL1]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.BODY,
         config: {
@@ -981,7 +998,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.VASES1]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.BODY,
         config: {
@@ -1012,7 +1032,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.VASES2]: {
     facing: Direction.DOWN,
     moving: [],
+    maxHealth: 10,
     components: [
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.DESTRUCTIBLE },
       {
         name: ComponentName.BODY,
         config: {
