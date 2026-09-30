@@ -1,0 +1,204 @@
+{
+  "columns": 21,
+  "image": "../sprites/stairs_grass.png",
+  "imageheight": 272,
+  "imagewidth": 336,
+  "margin": 0,
+  "name": "stairs_grass",
+  "spacing": 0,
+  "tilecount": 357,
+  "tileheight": 16,
+  "tiles": [
+    {
+      "id": 77,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 131,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 132,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    }
+  ],
+  "tilewidth": 16
+}
