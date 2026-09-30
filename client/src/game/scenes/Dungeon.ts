@@ -28,7 +28,7 @@ export default class DungeonScene extends Scene {
       this,
       MapName.DUNGEON,
     );
-    this.tileManager = new TileManager(tilemap, thresholds, colliders);
+    this.setTiles(new TileManager(tilemap, thresholds, colliders));
     this.physics.world.setBounds(
       0,
       0,
@@ -57,7 +57,7 @@ export default class DungeonScene extends Scene {
       thresholds,
       colliders,
     } = MapFactory.create(this, MapName.DUNGEON);
-    this.tileManager = new TileManager(map, thresholds, colliders);
+    this.setTiles(new TileManager(map, thresholds, colliders));
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
     this.cameraManager.fitZoom();

@@ -26,7 +26,7 @@ export default class SublevelScene extends Scene {
     super.create();
 
     const { tilemap, thresholds, colliders } = MapFactory.create(this, this.map);
-    this.tileManager = new TileManager(tilemap, thresholds, colliders);
+    this.setTiles(new TileManager(tilemap, thresholds, colliders));
 
     this.physics.world.setBounds(
       0,
@@ -51,7 +51,7 @@ export default class SublevelScene extends Scene {
     });
 
     const { tilemap: map, thresholds, colliders } = MapFactory.create(this, this.map);
-    this.tileManager = new TileManager(map, thresholds, colliders);
+    this.setTiles(new TileManager(map, thresholds, colliders));
     
     this.physics.world.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameraManager.fitZoom();

@@ -2,23 +2,31 @@ import { PhysicsManager } from "../managers/Physics";
 import { TileManager } from "../managers/Tile";
 import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
+import { ClimateManager } from "../managers/Climate";
 import { AmbienceLayer, Event, MapName, PipelineName } from "@server/types";
 import { Landmark } from "@server/types/generation";
 import { configs } from "@server/configs";
 import { AmbiencePipeline } from "../pipelines/Ambience";
 import type { MainScene } from "./Main";
 import { Player } from "../Player";
+import { snow, type SnowTracks } from "../handlers/snow";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhysicsManager;
   public tileManager!: TileManager;
+  public snow?: SnowTracks;
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
   public landmarks: Landmark[] = [];
 
   private ambience?: AmbiencePipeline;
+  private climate?: ClimateManager;
   private indoor = false;
+
+  get frost(): number {
+    return this.climate?.frost ?? 0;
+  }
 
   get managers() {
     const main = this.scene.get("main") as MainScene;
@@ -63,6 +71,7 @@ export class Scene extends Phaser.Scene {
 
     const ambience = configs.maps[this.scene.key as MapName]?.ambience;
     if (this.ambience && ambience) this.ambience.setBase(ambience);
+    if (this.ambience) this.climate = new ClimateManager(this, this.ambience);
 
     this.game.events.off(Event.CAMERA_FOLLOW, this._follow, this);
     this.game.events.on(Event.CAMERA_FOLLOW, this._follow, this);
@@ -72,7 +81,17 @@ export class Scene extends Phaser.Scene {
     if (data.key === this.scene.key) this.cameraManager.follow(data.player);
   }
 
+  setTiles(tiles: TileManager): void {
+    if (this.snow) snow.destroy(this.snow);
+
+    this.tileManager = tiles;
+    this.snow = snow.create(this, tiles) ?? undefined;
+  }
+
   teardown(): void {
+    if (this.snow) snow.destroy(this.snow);
+    this.snow = undefined;
+
     [...this.children.list].forEach((child) => child.destroy());
 
     this.landmarks = [];
@@ -85,6 +104,11 @@ export class Scene extends Phaser.Scene {
 
     const player = this.managers.players.player;
     this.tileManager.update(delta, player);
+
+    if (this.snow) {
+      snow.flush(this.snow);
+      snow.fade(this.snow, delta);
+    }
     this.interfaceManager.update();
 
     const { width, height } = this.cameras.main;
@@ -95,8 +119,10 @@ export class Scene extends Phaser.Scene {
 
     if (this.indoor || !this.ambience) return;
 
+    this.climate?.update(delta);
+
     this.ambience.layer(AmbienceLayer.WEATHER).wetness =
-      this.managers.weather.wetness;
+      this.managers.weather.wetness * (1 - this.frost);
   }
 
   shutdown(): void {

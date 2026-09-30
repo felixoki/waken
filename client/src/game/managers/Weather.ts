@@ -42,6 +42,9 @@ import {
   SPLASH_FLOOR,
   SPLASH_MAX,
   SPLASH_RATE,
+  SNOW_CLOUDY,
+  SNOW_RAIN,
+  SNOW_STORM,
 } from "@server/globals";
 import { WindPipeline } from "../pipelines/Wind";
 import { SheenPipeline } from "../pipelines/Sheen";
@@ -50,7 +53,9 @@ import type { Scene } from "../scenes/Scene";
 
 const WEATHER_TRANSITION_DURATION = PHASE_TRANSITION_DURATION * 3;
 
-type WeatherModifier = Required<Omit<AmbienceModifier, "flash" | "wetness">>;
+type WeatherModifier = Required<
+  Omit<AmbienceModifier, "flash" | "wetness" | "frost">
+>;
 
 const CLEAR: WeatherModifier = {
   brightness: 1.05,
@@ -60,6 +65,7 @@ const CLEAR: WeatherModifier = {
   vignette: 0.0,
   fog: 0.0,
   rain: 0.0,
+  snow: 0.0,
   clouds: 0.0,
   rays: 0.0,
 };
@@ -72,6 +78,7 @@ const CLOUDY: WeatherModifier = {
   vignette: 0.02,
   fog: 0.0,
   rain: 0.0,
+  snow: SNOW_CLOUDY,
   clouds: CLOUD_STRENGTH,
   rays: RAY_STRENGTH,
 };
@@ -84,6 +91,7 @@ const RAIN: WeatherModifier = {
   vignette: 0.08,
   fog: 0.05,
   rain: 1.0,
+  snow: SNOW_RAIN,
   clouds: 0.0,
   rays: 0.0,
 };
@@ -96,6 +104,7 @@ const STORM: WeatherModifier = {
   vignette: 0.22,
   fog: 0.12,
   rain: 3.2,
+  snow: SNOW_STORM,
   clouds: 0.0,
   rays: 0.0,
 };
@@ -137,6 +146,7 @@ export class WeatherManager {
   private splashes?: { key: string; handle: RainSplashes };
   private pending = 0;
   private sheen?: SheenPipeline;
+  private frosty = false;
 
   constructor(scene: MainScene) {
     this.scene = scene;
@@ -165,9 +175,21 @@ export class WeatherManager {
   }
 
   update(delta: number): void {
+    this._freeze();
     this._soak(delta);
     this._sky();
     this._splash(delta);
+  }
+
+  private _freeze(): void {
+    const frosty = (this._outdoor()?.frost ?? 0) >= 0.5;
+
+    if (frosty === this.frosty) return;
+
+    this.frosty = frosty;
+
+    const map = this.scene.managers.players.player?.map;
+    if (map) this.syncAmbience(map);
   }
 
   private _soak(delta: number): void {
@@ -236,7 +258,8 @@ export class WeatherManager {
       };
     }
 
-    const intensity = this.current === WeatherName.STORM ? 1 : 0.6;
+    const intensity =
+      (this.current === WeatherName.STORM ? 1 : 0.6) * (1 - scene.frost);
     this.pending += SPLASH_RATE * intensity * this.soaked * (delta / 1000);
 
     let budget = Math.floor(this.pending);
@@ -350,7 +373,8 @@ export class WeatherManager {
 
   syncAmbience(map: MapName): void {
     const indoor = !!configs.maps[map]?.isIndoor;
-    const wanted = indoor ? null : (AMBIENCES[this.current] ?? null);
+    const wanted =
+      indoor || this.frosty ? null : (AMBIENCES[this.current] ?? null);
 
     for (const name of [AmbienceName.RAIN, AmbienceName.STORM]) {
       const playing = this.scene.managers.sound.hasAmbience(name);

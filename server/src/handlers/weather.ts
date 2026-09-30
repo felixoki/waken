@@ -6,6 +6,7 @@ import {
   Event,
   MapName,
   PlayerConfig,
+  SurfaceName,
   WeatherName,
 } from "../types/index.js";
 import { World } from "../World.js";
@@ -22,6 +23,7 @@ import {
   STRIKE_DISTANCE_BIAS,
   WET_INTERVAL,
   WET_DURATION,
+  SURFACE_OFFSET,
 } from "../globals.js";
 
 export const weather = {
@@ -48,13 +50,13 @@ export const weather = {
 
     if (raining) {
       for (const player of world.players.all)
-        if (weather.exposed(player.map))
+        if (weather.rained(world, player))
           weather.drench(player.id, false, world, io, now);
 
       for (const entity of world.entities.all)
         if (
           configs.entities[entity.name]?.behaviors?.length &&
-          weather.exposed(entity.map)
+          weather.rained(world, entity)
         )
           weather.drench(entity.id, true, world, io, now);
     }
@@ -63,6 +65,15 @@ export const weather = {
   },
 
   exposed: (map: MapName): boolean => !configs.maps[map]?.isIndoor,
+
+  rained: (world: World, target: EntityConfig | PlayerConfig): boolean =>
+    weather.exposed(target.map) &&
+    world.surfaces.at(
+      target.map,
+      target.x,
+      target.y + SURFACE_OFFSET,
+      handlers.climate.instance(world, target),
+    ) !== SurfaceName.SNOW,
 
   socket: (target: EntityConfig | PlayerConfig): string | undefined =>
     "socketId" in target ? target.socketId : undefined,
@@ -112,7 +123,7 @@ export const weather = {
       const held = effects.find((e) => e.name === EffectName.WET && e.held);
 
       if (!target || !held) continue;
-      if (raining && weather.exposed(target.map)) continue;
+      if (raining && weather.rained(world, target)) continue;
 
       held.held = false;
       held.expiresAt = now + WET_DURATION;

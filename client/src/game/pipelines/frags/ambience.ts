@@ -28,6 +28,13 @@ uniform float rainScale;
 uniform float rainDensity;
 uniform float rainRush;
 
+uniform vec3 snowColor;
+uniform float snowStrength;
+uniform float snowSpeed;
+uniform float snowScale;
+uniform float snowDensity;
+uniform float snowDrift;
+
 uniform vec3 cloudColor;
 uniform float cloudStrength;
 uniform float cloudScale;
@@ -115,6 +122,37 @@ float rain(vec2 uv, float t, float intensity) {
     float streak = smoothstep(0.5, 0.0, abs(dx) * 9.0)
                  * smoothstep(0.5, 0.0, abs(dy) * 1.3);
     acc += streak * drop * bright;
+  }
+  return acc;
+}
+
+float snow(vec2 world, float t) {
+  float acc = 0.0;
+  for (int i = 0; i < 3; i++) {
+    float fi = float(i);
+    float cell = snowScale * (14.0 + fi * 9.0);
+
+    vec2 p = world;
+    p.y -= t * snowSpeed * (9.0 + fi * 7.0);
+    p.x += sin(t * (0.5 + fi * 0.15) + p.y * 0.04 + fi * 2.3)
+         * snowDrift * (2.0 + fi * 2.0);
+
+    vec2 id = floor(p / cell);
+    vec2 local = floor(p - id * cell);
+
+    float live = step(
+      1.0 - clamp(snowDensity * snowStrength, 0.0, 0.8),
+      hash(id + fi * 17.3)
+    );
+    vec2 at = floor(vec2(hash(id + 3.7 + fi), hash(id + 8.1 + fi)) * (cell - 3.0)) + 1.0;
+
+    vec2 o = local - at;
+    float size = fi < 1.5 ? 0.5 : 1.5;
+    float flake = step(-0.5, o.x) * step(o.x, size)
+                * step(-0.5, o.y) * step(o.y, size);
+
+    float alpha = fi < 0.5 ? 0.5 : (fi < 1.5 ? 0.9 : 1.0);
+    acc += flake * live * alpha;
   }
   return acc;
 }
@@ -213,6 +251,12 @@ void main(void) {
     vec2 rainUv = vec2(world.x, -world.y) * 0.003;
     float r = rain(rainUv, time, rainStrength);
     graded += r * min(rainStrength, 1.5) * 0.12;
+  }
+
+  // --- Snow (world-anchored, snapped to world pixels) ---
+  if (snowStrength > 0.0) {
+    float f = snow(world, time);
+    graded = mix(graded, snowColor, clamp(f, 0.0, 1.0) * min(snowStrength, 1.0));
   }
 
   // --- Lightning ---

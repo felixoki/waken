@@ -20,6 +20,11 @@ import {
   RAY_SCALE,
   RAY_SOFTNESS,
   RAY_SPEED,
+  SNOW_COLOR,
+  SNOW_DENSITY,
+  SNOW_DRIFT,
+  SNOW_SCALE,
+  SNOW_SPEED,
 } from "@server/globals";
 
 const PostFXPipeline = Phaser.Renderer.WebGL.Pipelines.PostFXPipeline;
@@ -37,6 +42,14 @@ export interface AmbienceState {
     scale: number;
     density: number;
     rush: number;
+  };
+  snow: {
+    color: [number, number, number];
+    strength: number;
+    speed: number;
+    scale: number;
+    density: number;
+    drift: number;
   };
   clouds: {
     color: [number, number, number];
@@ -79,6 +92,8 @@ export interface AmbienceModifier {
   vignette?: number;
   fog?: number;
   rain?: number;
+  snow?: number;
+  frost?: number;
   clouds?: number;
   rays?: number;
   flash?: number;
@@ -112,6 +127,14 @@ export class AmbiencePipeline extends PostFXPipeline {
         scale: 1.0,
         density: RAIN_DENSITY,
         rush: RAIN_RUSH,
+      },
+      snow: {
+        color: [...SNOW_COLOR],
+        strength: 0.0,
+        speed: SNOW_SPEED,
+        scale: SNOW_SCALE,
+        density: SNOW_DENSITY,
+        drift: SNOW_DRIFT,
       },
       clouds: {
         color: [...CLOUD_COLOR],
@@ -155,6 +178,8 @@ export class AmbiencePipeline extends PostFXPipeline {
     if (config.vignette) this.base.vignette = { ...config.vignette };
     if (config.fog) this.base.fog = { ...config.fog, color: [...config.fog.color] };
     if (config.rain) this.base.rain = { ...config.rain };
+    if (config.snow)
+      this.base.snow = { ...config.snow, color: [...config.snow.color] };
     if (config.clouds)
       this.base.clouds = { ...config.clouds, color: [...config.clouds.color] };
     if (config.rays) this.base.rays = { ...config.rays };
@@ -194,6 +219,8 @@ export class AmbiencePipeline extends PostFXPipeline {
     let vignette = this.base.vignette.strength;
     let fog = this.base.fog.strength;
     let rain = this.base.rain.strength;
+    let snow = this.base.snow.strength;
+    let frost = 0;
     let clouds = this.base.clouds.strength;
     let rays = this.base.rays.strength;
     let flash = 0;
@@ -207,11 +234,17 @@ export class AmbiencePipeline extends PostFXPipeline {
       if (mod.vignette != null) vignette += mod.vignette;
       if (mod.fog != null) fog += mod.fog;
       if (mod.rain != null) rain += mod.rain;
+      if (mod.snow != null) snow += mod.snow;
+      if (mod.frost != null) frost += mod.frost;
       if (mod.clouds != null) clouds += mod.clouds;
       if (mod.rays != null) rays += mod.rays;
       if (mod.flash != null) flash += mod.flash;
       if (mod.wetness != null) wetness += mod.wetness;
     }
+
+    frost = Math.min(Math.max(frost, 0), 1);
+    snow *= frost;
+    rain *= 1 - frost;
 
     this.set1f("coolness", coolness);
     this.set1f("saturation", saturation);
@@ -230,6 +263,17 @@ export class AmbiencePipeline extends PostFXPipeline {
     this.set1f("rainScale", this.base.rain.scale);
     this.set1f("rainDensity", this.base.rain.density);
     this.set1f("rainRush", this.base.rain.rush);
+    this.set3f(
+      "snowColor",
+      this.base.snow.color[0],
+      this.base.snow.color[1],
+      this.base.snow.color[2],
+    );
+    this.set1f("snowStrength", Math.max(snow, 0));
+    this.set1f("snowSpeed", this.base.snow.speed);
+    this.set1f("snowScale", this.base.snow.scale);
+    this.set1f("snowDensity", this.base.snow.density);
+    this.set1f("snowDrift", this.base.snow.drift);
     this.set3f(
       "cloudColor",
       this.base.clouds.color[0],
