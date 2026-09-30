@@ -4,6 +4,8 @@ export enum SoundName {
   GOBLIN_SLASH = "goblin_slash",
   ORC_IDLE = "orc_idle",
   ORC_SLASH = "orc_slash",
+  TROLL_IDLE = "troll_idle",
+  TROLL_SLASH = "troll_slash",
   SHADOW_WANDERER_IDLE = "shadow_wanderer_idle",
   SLASH = "slash",
   SHARD_CHARGE = "shard_charge",

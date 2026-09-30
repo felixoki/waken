@@ -17,6 +17,10 @@ export enum MapName {
   ISLES = "isles",
 }
 
+export enum SurfaceName {
+  SNOW = "snow",
+}
+
 export interface MapConfig {
   id: MapName;
   biome?: BiomeName;

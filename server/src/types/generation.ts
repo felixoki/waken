@@ -1,6 +1,7 @@
 import { EntityName, FishName, TextureSpawnerConfig } from "./entities";
 import { Item } from "./components";
 import { ZoneConfig } from "./zones";
+import type { MapName, SurfaceName } from "./maps";
 
 export interface Range {
   min: number;
@@ -11,12 +12,15 @@ export enum BiomeName {
   FOREST = "forest",
   DUNGEON = "dungeon",
   CAVE = "cave",
+  MOUNTAIN = "mountain",
 }
 
 export enum TerrainName {
   WATER = "water",
   GROUND = "ground",
   GRASS = "grass",
+  EARTH = "earth",
+  SNOW = "snow",
   RECESSED = "recessed",
   FLOOR = "floor",
   ELEVATED = "elevated",
@@ -29,6 +33,7 @@ export enum TerrainName {
 export enum GeneratorName {
   TERRAIN = "terrain",
   ROOM = "room",
+  TERRACE = "terrace",
 }
 
 export const TERRAIN_ORDER = [
@@ -36,6 +41,8 @@ export const TERRAIN_ORDER = [
   TerrainName.WATER,
   TerrainName.GROUND,
   TerrainName.GRASS,
+  TerrainName.EARTH,
+  TerrainName.SNOW,
   TerrainName.RECESSED,
   TerrainName.FLOOR,
   TerrainName.ELEVATED,
@@ -52,6 +59,36 @@ export enum TileRole {
   WALL_INNER = "wall_inner",
   LEDGE_OUTER = "ledge_outer",
   LEDGE_INNER = "ledge_inner",
+  RIM = "rim",
+  BASE = "base",
+  CRACK = "crack",
+  FACE = "face",
+  END = "end",
+  END_SHADOW = "end_shadow",
+  WALL = "wall",
+  WALL_SHADOW = "wall_shadow",
+  CORNER = "corner",
+  STAIR = "stair",
+}
+
+export enum FacePosition {
+  FLAT = "flat",
+  LEFT = "left",
+  RIGHT = "right",
+  CAP_LEFT = "cap_left",
+  CAP_RIGHT = "cap_right",
+  JUNCTION_LEFT = "junction_left",
+  JUNCTION_RIGHT = "junction_right",
+  INNER_WEST = "inner_west",
+  INNER_EAST = "inner_east",
+  UP_LEFT = "up_left",
+  UP_RIGHT = "up_right",
+  WEST = "west",
+  EAST = "east",
+  TOP_LEFT = "top_left",
+  TOP_RIGHT = "top_right",
+  BOTTOM_LEFT = "bottom_left",
+  BOTTOM_RIGHT = "bottom_right",
 }
 
 export enum BorderPosition {
@@ -104,8 +141,9 @@ export interface Neighbors<T> {
 
 export interface TileQuery {
   role: TileRole;
-  position?: BorderPosition;
+  position?: BorderPosition | FacePosition;
   terrain?: TerrainName;
+  over?: TerrainName;
 }
 
 export interface TileEntry {
@@ -153,6 +191,37 @@ export interface LayerConfig {
   terrain: TerrainName;
   tileset: string;
   threshold: number | null;
+  surface?: SurfaceName;
+}
+
+export interface TerraceConfig {
+  earth: number;
+  snow: number;
+  foot: number;
+  gap: number;
+  summit: number;
+  dome: number;
+  rough: number;
+  scarps: number;
+  ridge: number;
+  tread: number;
+  stairs: { every: number; tilesets: string[] };
+  patches: number;
+}
+
+export interface FacePiece {
+  gid: number;
+  columns: number;
+  height: number;
+  anchor: number;
+}
+
+export interface Summit {
+  x: number;
+  y: number;
+  height: number;
+  rx: number;
+  ry: number;
 }
 
 export interface BorderConfig {
@@ -181,6 +250,8 @@ export interface BiomeConfig {
   ledge?: string;
   tilesets?: string[];
   rooms?: RoomConfig;
+  terraces?: TerraceConfig;
+  peak?: { entity: EntityName; requires: number };
 }
 
 export interface GeneratedMap {
@@ -209,11 +280,14 @@ export interface DetailConfig {
   terrains: TerrainName[];
   density: number;
   stamps: DetailStamp[];
+  gap?: number;
+  cluster?: boolean;
 }
 
 export interface SpawnRule {
   entities: EntityName[];
   terrain: TerrainName[];
+  elevation?: Range;
   density?: number;
   count?: Range;
   spacing: number;
@@ -322,6 +396,24 @@ export interface RoomConfig {
     large: RoomDistribution;
     small: RoomDistribution;
   };
+}
+
+export interface BiomeBand {
+  config: BiomeConfig;
+  y: number;
+}
+
+export interface Level {
+  depth: number;
+  map: MapName;
+  requires?: number;
+  biomes?: LevelBiome[];
+}
+
+export interface LevelBiome {
+  biome: BiomeName;
+  requires?: number;
+  spawn?: boolean;
 }
 
 export interface EntranceDef {

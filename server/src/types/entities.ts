@@ -20,6 +20,7 @@ export interface AttackConfig {
   range?: number;
   minRange?: number;
   cooldown?: number;
+  windup?: number;
   sound?: SoundName;
 }
 
@@ -108,6 +109,7 @@ export interface EntityDefinition {
   components: ComponentConfig[];
   states: StateName[];
   maxHealth?: number;
+  speed?: number;
   scale?: number;
   behaviors?: BehaviorConfig[];
   attacks?: AttackConfig[];
@@ -166,6 +168,7 @@ export enum EntityName {
   BLACKSMITH = "blacksmith",
   BLACKSMITH_EXIT = "blacksmith_exit",
   BLACKSMITH_HOUSE = "blacksmith_house",
+  BLOODGEIST1 = "bloodgeist1",
   BLUE_LOTUS = "blue_lotus",
   BOAR = "boar",
   BOAR_MEAT = "boar_meat",
@@ -268,6 +271,7 @@ export enum EntityName {
   ROOSTER = "rooster",
   CHICK = "chick",
   EGG = "egg",
+  ERGOT = "ergot",
   SOULSTONE = "soulstone",
   GOBLIN1 = "goblin1",
   GOBLIN2 = "goblin2",
@@ -284,11 +288,13 @@ export enum EntityName {
   HARE_FOOT = "hare_foot",
   HAT1 = "hat1",
   HENBANE = "henbane",
+  EDELWEISS = "edelweiss",
   HENHOUSE = "henhouse",
   HERBALIST = "herbalist",
   HERBALIST_EXIT = "herbalist_exit",
   HERBALIST_HOUSE = "herbalist_house",
   HERON = "heron",
+  HEXGEIST = "hexgeist",
   HOE = "hoe",
   HOPS = "hops",
   HOPS_SEED = "hops_seed",
@@ -345,7 +351,9 @@ export enum EntityName {
   TABLE3 = "table3",
   TOMATO = "tomato",
   TROLL = "troll",
+  ANCIENT_TROLL = "ancient_troll",
   TROLL_SCALES = "troll_scales",
+  ANCIENT_TROLL_HEART = "ancient_troll_heart",
   TOMATO_SEED = "tomato_seed",
   TORCH1 = "torch1",
   TUNIC = "tunic",
@@ -354,6 +362,9 @@ export enum EntityName {
   TREE2 = "tree2",
   TREE4 = "tree4",
   TREE5 = "tree5",
+  TREE6 = "tree6",
+  TREE7 = "tree7",
+  TREE8 = "tree8",
   SPELL_PAGE_SHARD = "spell_page_shard",
   SPELL_PAGE_SLASH = "spell_page_slash",
   SPELL_PAGE_ILLUMINATE = "spell_page_illuminate",
@@ -379,6 +390,7 @@ export enum EntityName {
   POTION2 = "potion2",
   POTION3 = "potion3",
   POTION4 = "potion4",
+  POTION5 = "potion5",
   VASES1 = "vases1",
   VASES2 = "vases2",
   VEST = "vest",
