@@ -8,13 +8,12 @@ produced it. Where a number can be measured, measure it rather than assuming.
 Entity spritesheets live in `client/public/assets/sprites/` and are named:
 
 ```
-<entity>_<state>_with_shadow.png      dog_idle_with_shadow.png
-                                      bear_slashing_with_shadow.png
+<entity>_<state>.png      dog_idle.png
+                          bear_slashing.png
 ```
 
-116 of the 237 files carry the `_with_shadow` suffix. It marks sheets that bake
-the drop shadow into the frames, which is every entity sheet. Files without it
-are tilesets, UI and effects.
+Every entity sheet bakes its drop shadow into the frames, so names carry no
+`_with_shadow` suffix. That suffix was dropped from all files on 2026-09-29.
 
 ### Deriving frame size
 
@@ -22,7 +21,7 @@ Never assume. Frame sizes in `maps.ts` range from 16 to 160 and vary per sheet.
 Measure the sheet and divide by the frame count from `animations.ts`:
 
 ```sh
-sips -g pixelWidth -g pixelHeight client/public/assets/sprites/dog_idle_with_shadow.png
+sips -g pixelWidth -g pixelHeight client/public/assets/sprites/dog_idle.png
 ```
 
 A horizontal strip of 6 frames at 192x32 is `frameWidth: 32, frameHeight: 32`.
