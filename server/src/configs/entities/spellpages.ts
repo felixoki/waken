@@ -92,10 +92,10 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Revive",
     "A hallowed page describing how to call a fallen ally back from the brink.",
   ),
-  [EntityName.SPELL_PAGE_TAME]: page(
-    SpellName.TAME,
-    "Spell page: Tame",
-    "A gentle page inscribed with rites for soothing wild beasts.",
+  [EntityName.SPELL_PAGE_CATCH_SOUL]: page(
+    SpellName.CATCH_SOUL,
+    "Spell page: Catch Soul",
+    "A gentle page inscribed with rites for soothing a weakened creature's soul.",
   ),
   [EntityName.SPELL_PAGE_GAIN_MOMENTUM]: page(
     SpellName.GAIN_MOMENTUM,

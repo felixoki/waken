@@ -35,7 +35,7 @@ import { TrapComponent } from "../components/Trap";
 import { JumpableComponent } from "../components/Jumpable";
 import { AmbientSoundComponent } from "../components/AmbientSound";
 import { WindswayComponent } from "../components/Windsway";
-import { TamableComponent } from "../components/Tamable";
+import { CapturableComponent } from "../components/Capturable";
 import { FeedableComponent } from "../components/Feedable";
 import { MaturableComponent } from "../components/Maturable";
 import { LayableComponent } from "../components/Layable";
@@ -145,8 +145,8 @@ export class ComponentFactory {
         case ComponentName.WINDSWAY:
           comp = new WindswayComponent(entity);
           break;
-        case ComponentName.TAMABLE:
-          comp = new TamableComponent(entity, component.config);
+        case ComponentName.CAPTURABLE:
+          comp = new CapturableComponent(entity, component.config);
           break;
         case ComponentName.FEEDABLE:
           comp = new FeedableComponent(entity, component.config);

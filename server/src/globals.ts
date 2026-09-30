@@ -374,3 +374,8 @@ export const PATCH_MAX_HOLE = 40;
 export const PATCH_GAP = 2;
 export const PEAK_CLEARANCE = 3;
 export const SEAM_MARGIN = 8;
+
+/** Location */
+
+export const LOCATION_MARGIN = 4;
+export const LOCATION_HOLD = 2500;

@@ -700,8 +700,8 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
-        name: ComponentName.TAMABLE,
-        config: { entity: EntityName.GOAT },
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.GOAT },
       },
       {
         name: ComponentName.FEEDABLE,
@@ -840,8 +840,8 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: { name: SoundName.CHICKEN_IDLE, interval: [5000, 12000] },
       },
       {
-        name: ComponentName.TAMABLE,
-        config: { entity: EntityName.CHICKEN },
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.CHICKEN },
       },
       {
         name: ComponentName.FEEDABLE,
@@ -887,8 +887,8 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: { name: SoundName.CHICKEN_IDLE, interval: [5000, 12000] },
       },
       {
-        name: ComponentName.TAMABLE,
-        config: { entity: EntityName.ROOSTER },
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.ROOSTER },
       },
       {
         name: ComponentName.FEEDABLE,

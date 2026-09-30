@@ -41,7 +41,7 @@ import { Landmark } from "@server/types/generation";
 import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
 import { GrowableComponent } from "../components/Growable";
-import { TamableComponent } from "../components/Tamable";
+import { CapturableComponent } from "../components/Capturable";
 import { vfx } from "../vfx";
 import { DaycycleManager } from "../managers/Daycycle";
 import { WeatherManager } from "../managers/Weather";
@@ -63,6 +63,7 @@ export class MainScene extends Phaser.Scene {
   public soundManager!: SoundManager;
   public buildManager!: BuildManager;
   public socketManager = SocketManager;
+  public location?: string;
 
   constructor() {
     super("main");
@@ -456,10 +457,15 @@ export class MainScene extends Phaser.Scene {
       const entity = this.managers.entities.entities.get(data.id);
       if (!entity) return;
 
-      const tamable = entity.getComponent<TamableComponent>(
-        ComponentName.TAMABLE,
+      const capturable = entity.getComponent<CapturableComponent>(
+        ComponentName.CAPTURABLE,
       );
-      tamable?.pacify();
+      capturable?.pacify();
+    });
+
+    this.managers.socket.on(Event.ENTITY_RESISTED, (data: { id: string }) => {
+      const entity = this.managers.entities.entities.get(data.id);
+      if (entity) handlers.combat.resist(entity);
     });
 
     this.managers.socket.on(Event.ENTITY_INPUT, (data: Partial<Input>) => {

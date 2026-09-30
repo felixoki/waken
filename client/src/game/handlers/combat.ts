@@ -181,6 +181,20 @@ export const combat = {
     }
   },
 
+  resist: (entity: Entity) => {
+    const player = entity.scene.managers.players.player;
+    const camera = (entity.scene as Scene).cameraManager;
+    if (!player || !camera) return;
+
+    const pos = camera.getScreenPosition(entity.x, entity.y, player);
+
+    EventBus.emit(Event.DAMAGE_NUMBER, {
+      x: pos.x,
+      y: pos.y - 40,
+      label: "Resisted",
+    });
+  },
+
   hurt: (entity: Entity, health: number) => {
     entity.health = health;
 

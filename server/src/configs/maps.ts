@@ -1030,6 +1030,7 @@ const creatures: Spritesheet[] = [
 export const maps: Record<MapName, MapConfig> = {
   [MapName.VILLAGE]: {
     id: MapName.VILLAGE,
+    label: "Village",
     spawn: { x: 434, y: 608 },
     json: "village.json",
     isIndoor: false,
@@ -1486,6 +1487,7 @@ export const maps: Record<MapName, MapConfig> = {
   },
   [MapName.FOREST]: {
     id: MapName.FOREST,
+    label: "Forest",
     spawn: { x: 434, y: 608 },
     json: "",
     isIndoor: false,
@@ -1639,6 +1641,7 @@ export const maps: Record<MapName, MapConfig> = {
   },
   [MapName.DUNGEON]: {
     id: MapName.DUNGEON,
+    label: "Dungeon",
     spawn: { x: 1024, y: 1024 },
     json: "",
     isIndoor: true,
@@ -1696,6 +1699,7 @@ export const maps: Record<MapName, MapConfig> = {
   },
   [MapName.CAVE]: {
     id: MapName.CAVE,
+    label: "Cave",
     biome: BiomeName.CAVE,
     spawn: { x: 256, y: 256 },
     json: "",
@@ -1735,10 +1739,18 @@ export const maps: Record<MapName, MapConfig> = {
         frameHeight: 16,
         asTileset: true,
       },
+      {
+        key: "ground_grass_details",
+        file: "ground_grass_details.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
     ],
   },
   [MapName.ISLES]: {
     id: MapName.ISLES,
+    label: "Isles",
     spawn: { x: 262, y: 773 },
     json: "isles.json",
     isIndoor: false,

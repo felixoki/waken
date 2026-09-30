@@ -3,7 +3,7 @@ import {
   EntityName,
   Event,
   SlotType,
-  TamableConfig,
+  CapturableConfig,
 } from "@server/types";
 import { RANGE_CAPTURE } from "@server/globals";
 import { Component } from "./Component";
@@ -16,15 +16,15 @@ const ORBIT_COLORS = [0xfff275, 0xffd166, 0xf4a259];
 const ORBIT_RADIUS = 10;
 const ORBIT_COUNT = 3;
 
-export class TamableComponent extends Component {
+export class CapturableComponent extends Component {
   private entity: Entity;
-  private config: TamableConfig;
+  private config: CapturableConfig;
   private isCapturable = false;
   private circles: Phaser.GameObjects.Image[] = [];
 
-  public name = ComponentName.TAMABLE;
+  public name = ComponentName.CAPTURABLE;
 
-  constructor(entity: Entity, config: TamableConfig) {
+  constructor(entity: Entity, config: CapturableConfig) {
     super();
 
     this.entity = entity;
@@ -61,8 +61,8 @@ export class TamableComponent extends Component {
     this.circles = [];
   }
 
-  public get captures() {
-    return this.config.entity;
+  public get soul() {
+    return this.config.soul;
   }
 
   public pacify(): void {

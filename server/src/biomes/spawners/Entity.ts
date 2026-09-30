@@ -208,6 +208,7 @@ export class EntitySpawner {
         name,
         x: pos.x + (offset?.x ?? 0),
         y: pos.y + (offset?.y ?? 0),
+        loot: rule.loot,
       });
       placed++;
 

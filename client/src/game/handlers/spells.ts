@@ -63,7 +63,7 @@ export const spells: Record<SpellName, SpellHandler> = {
     projectile.setEmitter(embers);
   },
 
-  [SpellName.TAME]: (
+  [SpellName.CATCH_SOUL]: (
     entity: Entity,
     config: SpellConfig,
     _target: { x: number; y: number },

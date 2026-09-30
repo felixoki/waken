@@ -313,14 +313,15 @@ export const combat = {
     )
       return;
 
-    if ("mana" in config && config.name === SpellName.TAME) {
+    if ("mana" in config && config.name === SpellName.CATCH_SOUL) {
       if (entity) {
-        const definition = configs.entities[entity.name];
-        const tamable = definition?.components.find(
-          (c: ComponentConfig) => c.name === ComponentName.TAMABLE,
-        );
+        const capturable = handlers.taming.capturable(entity.name);
+        const threshold = capturable?.threshold ?? 1;
 
-        if (tamable) handlers.taming.pacify(entity, socket, io, world);
+        if (capturable && entity.health / entity.maxHealth <= threshold)
+          handlers.taming.pacify(entity, socket, io, world);
+        else if (capturable && !entity.tame?.isPacified)
+          socket.emit(Event.ENTITY_RESISTED, { id: entity.id });
       }
 
       return;

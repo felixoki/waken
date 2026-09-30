@@ -19,7 +19,7 @@ export enum SpellName {
   FIRE_WAVE = "fire_wave",
   BITE = "bite",
   REVIVE = "revive",
-  TAME = "tame",
+  CATCH_SOUL = "catch_soul",
   GAIN_MOMENTUM = "gain_momentum",
   REFLECT_DAMAGE = "reflect_damage",
   HEAL_PARTY = "heal_party",

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Action,
+  ComponentConfig,
   ComponentName,
   EntityName,
   Event,
@@ -87,7 +88,7 @@ export function Inventory() {
     !!party && party.status === PartyStatus.LOBBY && !inRealm;
 
   const actions: ContextMenuAction[] = item
-    ? getActions(item.name, !!storageEntityId, !!item.soul).map((action) => {
+    ? getActions(item.name, !!storageEntityId, item.soul).map((action) => {
         const gated =
           action === Action.CONSUME &&
           getUnlock(item.name) !== undefined &&
@@ -156,7 +157,7 @@ export function Inventory() {
                 const actions = getActions(
                   item.name,
                   !!storageEntityId,
-                  !!item.soul,
+                  item.soul,
                 );
                 if (actions.length === 0) return;
                 setMenu({ index: i, x: e.clientX, y: e.clientY });
@@ -181,7 +182,7 @@ export function Inventory() {
 function getActions(
   name: EntityName,
   storageOpen = false,
-  hasSoul = false,
+  soul?: EntityName | null,
 ): Action[] {
   const def = configs.entities[name];
   if (!def) return [];
@@ -194,11 +195,20 @@ function getActions(
   if (def.components.some((c) => c.name === ComponentName.LEARNABLE))
     actions.push(Action.LEARN);
 
-  if (name === EntityName.SOULSTONE && hasSoul) actions.push(Action.SOLIDIFY);
+  if (name === EntityName.SOULSTONE && soul && isSolidifiable(soul))
+    actions.push(Action.SOLIDIFY);
 
   if (storageOpen) actions.push(Action.DEPOSIT);
 
   return actions;
+}
+
+function isSolidifiable(soul: EntityName): boolean {
+  const capturable = configs.entities[soul]?.components.find(
+    (c): c is Extract<ComponentConfig, { name: ComponentName.CAPTURABLE }> =>
+      c.name === ComponentName.CAPTURABLE,
+  );
+  return capturable?.config.solidifiable !== false;
 }
 
 function getUnlock(name: EntityName): number | undefined {

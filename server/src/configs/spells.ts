@@ -407,8 +407,8 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons8", row: 21, col: 11 },
     },
   },
-  [SpellName.TAME]: {
-    name: SpellName.TAME,
+  [SpellName.CATCH_SOUL]: {
+    name: SpellName.CATCH_SOUL,
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 15,
@@ -421,8 +421,8 @@ export const spells: Record<SpellName, SpellConfig> = {
     },
     metadata: {
       description:
-        "A soothing bolt that pacifies a wild animal so its soul can be caught.",
-      displayName: "Tame Animal",
+        "A soothing bolt that pacifies a weakened creature so its soul can be caught.",
+      displayName: "Catch Soul",
       icon: { spritesheet: "icons5", row: 4, col: 18 },
     },
   },

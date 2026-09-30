@@ -16,13 +16,16 @@ import { configs } from "../configs/index.js";
 import { World } from "../World";
 
 export const storage = {
+  stacks: (a: Item, b: Item): boolean =>
+    a.name === b.name && a.stackable && b.stackable && a.soul === b.soul,
+
   add(slots: (Item | null)[], item: Item): (Item | null)[] {
     const result = storage.clone(slots);
     let remaining = item.quantity;
 
     if (item.stackable)
       for (const s of result) {
-        if (s?.name !== item.name || s.quantity >= MAX_STACK) continue;
+        if (!s || !storage.stacks(s, item) || s.quantity >= MAX_STACK) continue;
         const add = Math.min(MAX_STACK - s.quantity, remaining);
 
         s.quantity += add;
@@ -43,7 +46,8 @@ export const storage = {
     let remaining = item.quantity;
 
     for (let i = 0; i < result.length && remaining > 0; i++) {
-      if (result[i]?.name !== item.name) continue;
+      if (result[i]?.name !== item.name || result[i]!.soul !== item.soul)
+        continue;
       const remove = Math.min(result[i]!.quantity, remaining);
 
       result[i]!.quantity -= remove;
@@ -57,7 +61,7 @@ export const storage = {
   fits(slots: (Item | null)[], item: Item): boolean {
     if (
       item.stackable &&
-      slots.some((s) => s?.name === item.name && s.quantity < MAX_STACK)
+      slots.some((s) => !!s && storage.stacks(s, item) && s.quantity < MAX_STACK)
     )
       return true;
 
@@ -66,7 +70,7 @@ export const storage = {
 
   has(slots: (Item | null)[], item: Item): boolean {
     const total = slots
-      .filter((s): s is Item => s?.name === item.name)
+      .filter((s): s is Item => s?.name === item.name && s.soul === item.soul)
       .reduce((sum, s) => sum + s.quantity, 0);
 
     return total >= item.quantity;
@@ -278,9 +282,7 @@ export const storage = {
         const intoItem = into.core as Item;
 
         if (
-          fromItem.name === intoItem.name &&
-          fromItem.stackable &&
-          intoItem.stackable &&
+          storage.stacks(fromItem, intoItem) &&
           intoItem.quantity < MAX_STACK
         ) {
           const moved = Math.min(MAX_STACK - intoItem.quantity, fromItem.quantity);

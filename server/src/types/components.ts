@@ -49,7 +49,7 @@ export enum ComponentName {
   TRACKABLE = "trackable",
   TRAIL = "trail",
   TREAD = "tread",
-  TAMABLE = "tamable",
+  CAPTURABLE = "capturable",
   SLEEPABLE = "sleepable",
   SKIN = "skin",
   WETSHEEN = "wetsheen",
@@ -95,7 +95,7 @@ export type ComponentConfig =
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
   | { name: ComponentName.TRAP; config: TrapConfig }
   | { name: ComponentName.TRACKABLE }
-  | { name: ComponentName.TAMABLE; config: TamableConfig }
+  | { name: ComponentName.CAPTURABLE; config: CapturableConfig }
   | { name: ComponentName.WINDSWAY }
   | { name: ComponentName.ZONE };
 
@@ -103,8 +103,10 @@ export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };
 }
 
-export interface TamableConfig {
-  entity: EntityName;
+export interface CapturableConfig {
+  soul: EntityName;
+  threshold?: number;
+  solidifiable?: boolean;
 }
 
 export interface FeedableConfig {

@@ -148,7 +148,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Soulstone",
       description:
-        "A hollow stone that cradles a tamed creature's soul until you solidify it.",
+        "A hollow stone that cradles a captured creature's soul.",
       icon: { spritesheet: "icons3", row: 6, col: 25 },
       weight: 0.5,
     },

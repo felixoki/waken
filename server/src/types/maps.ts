@@ -23,6 +23,7 @@ export enum SurfaceName {
 
 export interface MapConfig {
   id: MapName;
+  label?: string;
   biome?: BiomeName;
   spawn: { x: number; y: number };
   json: string;

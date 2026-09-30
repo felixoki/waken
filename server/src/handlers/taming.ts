@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import {
+  CapturableConfig,
   ComponentConfig,
   ComponentName,
   EntityConfig,
@@ -13,6 +14,12 @@ import { configs } from "../configs";
 import { handlers } from ".";
 
 export const taming = {
+  capturable: (name: EntityName): CapturableConfig | undefined =>
+    configs.entities[name]?.components.find(
+      (c): c is Extract<ComponentConfig, { name: ComponentName.CAPTURABLE }> =>
+        c.name === ComponentName.CAPTURABLE,
+    )?.config,
+
   pacify: (entity: EntityConfig, socket: Socket, io: Server, world: World) => {
     if (entity.tame?.isPacified || entity.tame?.isTamed) return;
 
@@ -45,17 +52,10 @@ export const taming = {
     )
       return;
 
-    const definition = configs.entities[target.name];
-    const tamable = definition?.components.find(
-      (c: ComponentConfig) => c.name === ComponentName.TAMABLE,
-    );
+    const capturable = taming.capturable(target.name);
+    if (!capturable) return;
 
-    if (!tamable) return;
-
-    const soul =
-      tamable.name === ComponentName.TAMABLE
-        ? tamable.config.entity
-        : target.name;
+    const soul = capturable.soul;
 
     const partyId = world.chunks.getPartyByEntity(target.id);
     const chunk = world.chunks.getChunkByEntity(target.id);
@@ -107,7 +107,7 @@ export const taming = {
     if (!slot || slot.name !== EntityName.SOULSTONE || !slot.soul) return;
 
     const def = configs.entities[slot.soul];
-    if (!def) return;
+    if (!def || taming.capturable(slot.soul)?.solidifiable === false) return;
 
     const maxHealth = def.maxHealth ?? 1;
 

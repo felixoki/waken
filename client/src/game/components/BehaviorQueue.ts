@@ -19,6 +19,8 @@ export class BehaviorQueue extends Component {
   attach(): void {}
 
   update(): Partial<Input> | null {
+    if (this.entity.tame?.isPacified) return null;
+
     if (!this.current && this.queue.length)
       this.current = this.queue.shift() || null;
 

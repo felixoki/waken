@@ -11,6 +11,7 @@ import { PartyPanel as Party } from "./ui/Party";
 import { Stats } from "./ui/Stats";
 import { Economy } from "./ui/Economy";
 import { Loading } from "./ui/Loading";
+import { Location } from "./ui/Location";
 import { Seeds } from "./ui/Seeds";
 import { Build } from "./ui/Build";
 import { SpellBook } from "./ui/SpellBook";
@@ -66,6 +67,7 @@ function App() {
     <div>
       <div id="game" className="w-screen h-screen"></div>
       <Loading />
+      <Location />
       <Entities />
       <DamageNumbers />
       <Tooltip />

@@ -47,6 +47,7 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
 
 export const forest: BiomeConfig = {
   id: BiomeName.FOREST,
+  label: "Forest",
   width: 256,
   height: 256,
   tileWidth: 16,
@@ -270,6 +271,7 @@ export const forest: BiomeConfig = {
 
 export const dungeon: BiomeConfig = {
   id: BiomeName.DUNGEON,
+  label: "Dungeon",
   width: 128,
   height: 128,
   tileWidth: 16,
@@ -465,6 +467,7 @@ export const dungeon: BiomeConfig = {
 
 export const cave: BiomeConfig = {
   id: BiomeName.CAVE,
+  label: "Cave",
   width: 48,
   height: 48,
   tileWidth: 16,
@@ -511,6 +514,16 @@ export const cave: BiomeConfig = {
   ],
   ledge: "cave_walls_floor",
   walls: "cave_walls_floor",
+  details: [
+    {
+      tileset: "ground_grass_details",
+      terrains: [TerrainName.FLOOR],
+      density: 0.4,
+      stamps: groundStamps,
+      gap: 0,
+      cluster: true,
+    },
+  ],
   terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
   objects: [
     {
@@ -587,6 +600,7 @@ export const cave: BiomeConfig = {
 
 export const mountain: BiomeConfig = {
   id: BiomeName.MOUNTAIN,
+  label: "Mountain",
   width: 256,
   height: 160,
   tileWidth: 16,

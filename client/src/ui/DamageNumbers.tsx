@@ -6,7 +6,8 @@ interface DamageNumber {
   id: number;
   x: number;
   y: number;
-  damage: number;
+  damage?: number;
+  label?: string;
   isCritical?: boolean;
 }
 
@@ -46,11 +47,13 @@ export function DamageNumbers() {
           className={`absolute font-bold animate-[damage-float_0.8s_ease-out_forwards] ${
             n.isCritical
               ? "text-yellow-400 text-xl"
-              : "text-white text-base"
+              : n.label
+                ? "text-slate-300 text-sm"
+                : "text-white text-base"
           }`}
           style={{ left: n.x, top: n.y }}
         >
-          {n.damage}
+          {n.label ?? n.damage}
         </span>
       ))}
     </div>

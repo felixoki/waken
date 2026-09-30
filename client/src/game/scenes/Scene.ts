@@ -4,12 +4,13 @@ import { CameraManager } from "../managers/Camera";
 import { InterfaceManager } from "../managers/Interface";
 import { ClimateManager } from "../managers/Climate";
 import { AmbienceLayer, Event, MapName, PipelineName } from "@server/types";
-import { Landmark } from "@server/types/generation";
+import { Landmark, LocationBand } from "@server/types/generation";
 import { configs } from "@server/configs";
 import { AmbiencePipeline } from "../pipelines/Ambience";
 import type { MainScene } from "./Main";
 import { Player } from "../Player";
 import { snow, type SnowTracks } from "../handlers/snow";
+import { location } from "../handlers/location";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhysicsManager;
@@ -19,6 +20,9 @@ export class Scene extends Phaser.Scene {
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
   public landmarks: Landmark[] = [];
+  public bands: LocationBand[] = [];
+  public band?: LocationBand;
+  public row = -1;
 
   private ambience?: AmbiencePipeline;
   private climate?: ClimateManager;
@@ -86,6 +90,9 @@ export class Scene extends Phaser.Scene {
 
     this.tileManager = tiles;
     this.snow = snow.create(this, tiles) ?? undefined;
+    this.bands = location.bands(tiles.map);
+    this.band = undefined;
+    this.row = -1;
   }
 
   teardown(): void {
@@ -104,6 +111,9 @@ export class Scene extends Phaser.Scene {
 
     const player = this.managers.players.player;
     this.tileManager.update(delta, player);
+
+    if (player?.scene === this)
+      location.update(this, this.scene.get("main") as MainScene, player.y);
 
     if (this.snow) {
       snow.flush(this.snow);

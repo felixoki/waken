@@ -122,23 +122,34 @@ export class EntityManager {
 
   private _drain(): void {
     let created = 0;
+    let remaining = this.queue.length;
+    const deferred: EntityConfig[] = [];
 
-    while (this.queue.length && created < CHUNK_ACTIVATION_BUDGET) {
+    while (remaining-- && created < CHUNK_ACTIVATION_BUDGET) {
       const config = this.queue.shift()!;
+
+      if (this.entities.has(config.id)) {
+        this.queued.delete(config.id);
+        continue;
+      }
+
+      const scene = this.main.scene.get(config.map) as Scene | null;
+
+      if (!scene?.managers?.tile) {
+        deferred.push(config);
+        continue;
+      }
+
       this.queued.delete(config.id);
-
-      if (this.entities.has(config.id)) continue;
-
-      this._create(config);
+      this._create(config, scene);
       created++;
     }
+
+    if (deferred.length) this.queue.push(...deferred);
   }
 
-  private _create(config: EntityConfig): void {
+  private _create(config: EntityConfig, scene: Scene): void {
     if (this.entities.has(config.id)) return;
-
-    const scene = this.main.scene.get(config.map) as Scene;
-    if (!scene?.managers?.physics) return;
 
     const definition = configs.entities[config.name];
 

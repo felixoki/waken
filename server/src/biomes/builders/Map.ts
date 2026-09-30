@@ -847,6 +847,19 @@ export class MapBuilder {
       nextlayerid: layerId,
       nextobjectid: 1,
       orientation: "orthogonal",
+      properties: [
+        {
+          name: "bands",
+          type: "string",
+          value: JSON.stringify(
+            this.bands.map(({ config, y }) => ({
+              label: config.label,
+              y,
+              height: config.height,
+            })),
+          ),
+        },
+      ],
       renderorder: "right-down",
       tiledversion: "1.11.0",
       tileheight: tileHeight,

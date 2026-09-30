@@ -48,6 +48,7 @@ export enum Event {
   ENTITY_GROW = "entity_grow",
   ENTITY_WITHER = "entity_wither",
   ENTITY_PACIFIED = "entity_pacified",
+  ENTITY_RESISTED = "entity_resisted",
   ENTITY_CAPTURE = "entity_capture",
   ENTITY_FEED = "entity_feed",
   ENTITY_MATURE = "entity_mature",
@@ -157,5 +158,6 @@ export enum Event {
   FADE_OUT = "fade_out",
   FADE_OUT_DONE = "fade_out_done",
   FADE_IN = "fade_in",
+  LOCATION = "location",
   MAP_READY = "map_ready",
 }

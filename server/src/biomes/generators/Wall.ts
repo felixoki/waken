@@ -27,8 +27,13 @@ export class WallGenerator {
     const below = new Array(this.width * this.height).fill(0);
     const above = new Array(this.width * this.height).fill(0);
 
-    this._place(terrain, tileset, firstgid, below, above, true);
-    this._place(terrain, tileset, firstgid, below, above, false);
+    for (let y = this.height - 1; y >= 0; y--) {
+      this._place(terrain, tileset, firstgid, below, above, y, "corners");
+      this._place(terrain, tileset, firstgid, below, above, y, "faces");
+    }
+
+    for (let y = this.height - 1; y >= 0; y--)
+      this._place(terrain, tileset, firstgid, below, above, y, "sides");
 
     return { below, above };
   }
@@ -39,62 +44,65 @@ export class WallGenerator {
     firstgid: number,
     below: number[],
     above: number[],
-    cornersOnly: boolean,
+    y: number,
+    pass: "corners" | "faces" | "sides",
   ) {
     const columns = this.loader.load(tileset).columns;
 
-    for (let y = this.height - 1; y >= 0; y--)
-      for (let x = 0; x < this.width; x++) {
-        const i = handlers.generation.toIndex(x, y, this.width);
-        const cell = terrain[i];
+    for (let x = 0; x < this.width; x++) {
+      const i = handlers.generation.toIndex(x, y, this.width);
+      const cell = terrain[i];
 
-        if (cell !== TerrainName.VOID && cell !== TerrainName.WALL_BASE)
-          continue;
+      if (cell !== TerrainName.VOID && cell !== TerrainName.WALL_BASE)
+        continue;
+      if (pass !== "corners") {
         if (below[i] !== 0 || above[i] !== 0) continue;
-
-        const match = this._classify(terrain, cell, x, y);
-        if (!match) continue;
-
-        const isCorner =
-          match.position !== BorderPosition.TOP &&
-          match.position !== BorderPosition.BOTTOM &&
-          match.position !== BorderPosition.LEFT &&
-          match.position !== BorderPosition.RIGHT;
-
-        if (cornersOnly !== isCorner) continue;
-
-        const tile = this.loader.queryOne(tileset, {
-          role: match.role,
-          position: match.position,
-        });
-        if (!tile) continue;
-
-        const props = handlers.generation.parseProperties(tile.properties);
-        const pw = props.width ?? match.placement.width;
-        const ph = props.height ?? match.placement.height;
-        const anchor = {
-          x: props.anchor_x ?? match.placement.anchor.x,
-          y: props.anchor_y ?? match.placement.anchor.y,
-        };
-        const baseTile = tile.id - anchor.y * columns - anchor.x;
-
-        const rendersAbove = this._rendersAbove(match);
-
-        for (let by = 0; by < ph; by++)
-          for (let bx = 0; bx < pw; bx++) {
-            const wx = x - anchor.x + bx;
-            const wy = y - anchor.y + by;
-
-            if (wx < 0 || wx >= this.width || wy < 0 || wy >= this.height)
-              continue;
-
-            const wi = handlers.generation.toIndex(wx, wy, this.width);
-            const target = rendersAbove ? above : below;
-            if (target[wi] !== 0) continue;
-
-            target[wi] = firstgid + baseTile + bx + by * columns;
-          }
+        if ((pass === "faces") !== (cell === TerrainName.WALL_BASE)) continue;
       }
+
+      const match = this._classify(terrain, cell, x, y);
+      if (!match) continue;
+
+      const isCorner =
+        match.position !== BorderPosition.TOP &&
+        match.position !== BorderPosition.BOTTOM &&
+        match.position !== BorderPosition.LEFT &&
+        match.position !== BorderPosition.RIGHT;
+
+      if ((pass === "corners") !== isCorner) continue;
+
+      const tile = this.loader.queryOne(tileset, {
+        role: match.role,
+        position: match.position,
+      });
+      if (!tile) continue;
+
+      const props = handlers.generation.parseProperties(tile.properties);
+      const pw = props.width ?? match.placement.width;
+      const ph = props.height ?? match.placement.height;
+      const anchor = {
+        x: props.anchor_x ?? match.placement.anchor.x,
+        y: props.anchor_y ?? match.placement.anchor.y,
+      };
+      const baseTile = tile.id - anchor.y * columns - anchor.x;
+
+      const rendersAbove = this._rendersAbove(match);
+
+      for (let by = 0; by < ph; by++)
+        for (let bx = 0; bx < pw; bx++) {
+          const wx = x - anchor.x + bx;
+          const wy = y - anchor.y + by;
+
+          if (wx < 0 || wx >= this.width || wy < 0 || wy >= this.height)
+            continue;
+
+          const wi = handlers.generation.toIndex(wx, wy, this.width);
+          const target = rendersAbove ? above : below;
+          if (target[wi] !== 0) continue;
+
+          target[wi] = firstgid + baseTile + bx + by * columns;
+        }
+    }
   }
 
   private _rendersAbove(match: WallMatch): boolean {
@@ -141,7 +149,12 @@ export class WallGenerator {
     const southeast = get(1, 1);
     const southwest = get(-1, 1);
 
-    const fl = (t: TerrainName | null) => t === TerrainName.FLOOR;
+    const fl = (t: TerrainName | null) =>
+      t !== null &&
+      t !== TerrainName.VOID &&
+      t !== TerrainName.WALL_BASE &&
+      t !== TerrainName.WALL_MID &&
+      t !== TerrainName.WALL_TOP;
 
     /** Outer corners: wall_base with floor S + cardinal side + diagonal */
     if (cell === TerrainName.WALL_BASE && fl(south)) {

@@ -233,6 +233,7 @@ export interface BorderConfig {
 
 export interface BiomeConfig {
   id: BiomeName;
+  label: string;
   width: number;
   height: number;
   tileWidth: number;
@@ -401,6 +402,12 @@ export interface RoomConfig {
 export interface BiomeBand {
   config: BiomeConfig;
   y: number;
+}
+
+export interface LocationBand {
+  label: string;
+  y: number;
+  height: number;
 }
 
 export interface Level {

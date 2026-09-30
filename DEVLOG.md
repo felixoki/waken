@@ -769,6 +769,14 @@
 
 - Add compass and landmarks ✅
 
+#### 30.9.2026
+
+- Add mountain biome ✅
+- Add scene and biome intro toast ✅
+- Refactor caves ✅
+- Refactor soul catching ✅
+
+
 ### In progress
 
 ### Bugs

@@ -544,6 +544,14 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
+        name: ComponentName.CAPTURABLE,
+        config: {
+          soul: EntityName.SHADOW_WANDERER,
+          threshold: 0.3,
+          solidifiable: false,
+        },
+      },
+      {
         name: ComponentName.AURA,
         config: {
           tints: [0x0a0f20, 0x0f1530, 0x151e45, 0x1a2555, 0x202e6a],

@@ -375,7 +375,7 @@ export enum EntityName {
   SPELL_PAGE_ABSORB_LIFE = "spell_page_absorb_life",
   SPELL_PAGE_DRAGON_FORM = "spell_page_dragon_form",
   SPELL_PAGE_REVIVE = "spell_page_revive",
-  SPELL_PAGE_TAME = "spell_page_tame",
+  SPELL_PAGE_CATCH_SOUL = "spell_page_catch_soul",
   SPELL_PAGE_GAIN_MOMENTUM = "spell_page_gain_momentum",
   SPELL_PAGE_REFLECT_DAMAGE = "spell_page_reflect_damage",
   SPELL_PAGE_HEAL_PARTY = "spell_page_heal_party",

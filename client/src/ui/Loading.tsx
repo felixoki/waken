@@ -19,7 +19,7 @@ const tips = [
   "If villagers aren't happy, they are less likely to give you quests or tell you important information.",
   "Unlocking a tier will give you access to better gear, but it will also increase the needs of your villagers.",
   "Some items let you carry special effects as long as you have them in your inventory.",
-  "A soulstone can carry the realm spirit of animals. You can solidify the animal back in the village.",
+  "Weaken a creature before casting Catch Soul. Animals caught in a soulstone can be solidified back in the village.",
   "Goblins often keep goats and hens as livestock.",
   "To unlock the next tier, your villagers must be happy and every item they need must be in stock.",
   "Only the young trolls still wander down into the forest. The ancient ones stay on the mountain peaks.",
