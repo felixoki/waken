@@ -3,6 +3,7 @@ import { DamageType } from "@server/types/damage";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
+import { configs } from "@server/configs";
 import {
   DURATION_THROWING,
   SPEED_RUNNING,
@@ -81,6 +82,9 @@ export class Throwing implements State {
     const offset = ROCK_SPAWN_OFFSET[entity.facing] ?? { x: 0, y: 0 };
     const startX = entity.x + offset.x;
     const startY = entity.y + offset.y;
+    const throwDamage = configs.entities[entity.name]?.attacks?.find(
+      (attack) => attack.state === StateName.THROWING,
+    )?.damage;
 
     const rock = entity.scene.add.image(startX, startY, "troll_throwing_rock");
     rock.setDepth(1000 + startY);
@@ -113,7 +117,7 @@ export class Throwing implements State {
           entity.id,
           {
             name: null as any,
-            damage: { type: DamageType.PHYSICAL, amount: 60 },
+            damage: throwDamage ?? { type: DamageType.PHYSICAL, amount: 60 },
             knockback: 80,
             range: 0,
             duration: ROCK_HITBOX_DURATION,

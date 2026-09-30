@@ -21,7 +21,7 @@ export class BehaviorFactory {
           be = new PatrolBehavior(behavior.config);
           break;
         case BehaviorName.ATTACK:
-          be = new AttackBehavior();
+          be = new AttackBehavior(behavior.config);
           break;
         case BehaviorName.DEFEND:
           be = new DefendBehavior(behavior.config);

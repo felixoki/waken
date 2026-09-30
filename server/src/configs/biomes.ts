@@ -1,4 +1,4 @@
-import { EntityName, FishName, Item } from "../types";
+import { EntityName, FishName, Item, SurfaceName } from "../types";
 import {
   BiomeConfig,
   BiomeName,
@@ -9,7 +9,7 @@ import {
   RoomType,
   TerrainName,
 } from "../types/generation";
-import { groundStamps, grassStamps, flowerStamps } from "./details";
+import { groundStamps, grassStamps, flowerStamps, snowStamps } from "./details";
 
 const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.WOOD, quantity: 5, stackable: true, chance: 0.75 },
@@ -36,6 +36,13 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_ABSORB_LIFE, quantity: 1, stackable: false, chance: 0.05 },
+
+  { name: EntityName.CARROT_SEED, quantity: 3, stackable: true, chance: 0.2 },
+  { name: EntityName.CABBAGE_SEED, quantity: 3, stackable: true, chance: 0.2 },
+  { name: EntityName.WHEAT_SEED, quantity: 4, stackable: true, chance: 0.2 },
+  { name: EntityName.TOMATO_SEED, quantity: 2, stackable: true, chance: 0.12 },
+  { name: EntityName.GRAPE_SEED, quantity: 2, stackable: true, chance: 0.06 },
+  { name: EntityName.HOPS_SEED, quantity: 2, stackable: true, chance: 0.06 },
 ];
 
 export const forest: BiomeConfig = {
@@ -190,7 +197,7 @@ export const forest: BiomeConfig = {
       spacing: 8,
     },
     {
-      entities: [EntityName.WOLF1, EntityName.WOLF2, EntityName.WOLF3],
+      entities: [EntityName.WOLF1, EntityName.WOLF2],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 5, max: 10 },
       spacing: 8,
@@ -238,20 +245,25 @@ export const forest: BiomeConfig = {
     {
       tileset: "ground_grass_details",
       terrains: [TerrainName.GROUND],
-      density: 0.06,
+      density: 0.4,
       stamps: groundStamps,
-    },
-    {
-      tileset: "ground_grass_details",
-      terrains: [TerrainName.GRASS],
-      density: 0.06,
-      stamps: grassStamps,
+      gap: 0,
+      cluster: true,
     },
     {
       tileset: "village_home",
       terrains: [TerrainName.GRASS],
       density: 0.03,
       stamps: flowerStamps,
+      gap: 1,
+    },
+    {
+      tileset: "ground_grass_details",
+      terrains: [TerrainName.GRASS],
+      density: 0.45,
+      stamps: grassStamps,
+      gap: 0,
+      cluster: true,
     },
   ],
 };
@@ -571,4 +583,173 @@ export const cave: BiomeConfig = {
     ],
     interior: [],
   },
+};
+
+export const mountain: BiomeConfig = {
+  id: BiomeName.MOUNTAIN,
+  width: 256,
+  height: 160,
+  tileWidth: 16,
+  tileHeight: 16,
+
+  noise: {
+    octaves: 4,
+    persistence: 0.5,
+    lacunarity: 2.0,
+    scale: 0.02,
+  },
+
+  layers: [
+    { terrain: TerrainName.GRASS, tileset: "village_home", threshold: null },
+    {
+      terrain: TerrainName.EARTH,
+      tileset: "forest_ground_grass",
+      threshold: null,
+    },
+    {
+      terrain: TerrainName.SNOW,
+      tileset: "mountains_ground",
+      threshold: null,
+      surface: SurfaceName.SNOW,
+    },
+  ],
+
+  terraces: {
+    earth: 6,
+    snow: 4,
+    foot: 16,
+    gap: 6,
+    summit: 16,
+    dome: 1.25,
+    rough: 0.45,
+    scarps: 2,
+    ridge: 5,
+    tread: 3,
+    stairs: { every: 40, tilesets: ["stairs_grass", "mountains_ground"] },
+    patches: 6,
+  },
+
+  tilesets: ["stairs_grass"],
+
+  borders: [],
+
+  terrain: [TerrainName.GRASS],
+
+  objects: [
+    {
+      entities: [
+        EntityName.TREE1,
+        EntityName.TREE2,
+        EntityName.TREE4,
+        EntityName.TREE5,
+      ],
+      terrain: [TerrainName.GRASS],
+      elevation: { min: 0, max: 0 },
+      density: 0.5,
+      spacing: 2,
+      margin: 2,
+      cluster: true,
+    },
+    {
+      entities: [
+        EntityName.TREE1,
+        EntityName.TREE2,
+        EntityName.TREE4,
+        EntityName.TREE5,
+      ],
+      terrain: [TerrainName.GRASS],
+      elevation: { min: 1, max: 6 },
+      density: 0.45,
+      spacing: 2,
+      margin: 1,
+      cluster: true,
+    },
+    {
+      entities: [EntityName.REED1, EntityName.REED2, EntityName.REED3],
+      terrain: [TerrainName.GRASS],
+      density: 0.3,
+      spacing: 0,
+      group: { min: 3, max: 4, radius: 1 },
+    },
+    {
+      entities: [EntityName.TREE6, EntityName.TREE7, EntityName.TREE8],
+      terrain: [TerrainName.SNOW],
+      density: 0.35,
+      spacing: 2,
+      margin: 2,
+      cluster: true,
+    },
+    {
+      entities: [EntityName.WOLF3],
+      terrain: [TerrainName.EARTH, TerrainName.SNOW],
+      count: { min: 4, max: 7 },
+      spacing: 10,
+      group: { min: 1, max: 2, radius: 3 },
+    },
+    {
+      entities: [EntityName.EDELWEISS],
+      terrain: [TerrainName.SNOW],
+      count: { min: 2, max: 4 },
+      spacing: 25,
+      margin: 1,
+    },
+    {
+      entities: [EntityName.ANCIENT_TROLL],
+      terrain: [TerrainName.EARTH, TerrainName.SNOW],
+      count: { min: 1, max: 2 },
+      spacing: 20,
+    },
+    {
+      entities: [EntityName.HEXGEIST],
+      terrain: [TerrainName.EARTH, TerrainName.SNOW],
+      count: { min: 3, max: 5 },
+      spacing: 12,
+    },
+    {
+      entities: [EntityName.BLOODGEIST1],
+      terrain: [TerrainName.EARTH, TerrainName.SNOW],
+      count: { min: 3, max: 5 },
+      spacing: 12,
+    },
+  ],
+
+  details: [
+    {
+      tileset: "ground_grass_details",
+      terrains: [TerrainName.EARTH],
+      density: 0.5,
+      stamps: groundStamps,
+      gap: 0,
+      cluster: true,
+    },
+    {
+      tileset: "village_home",
+      terrains: [TerrainName.GRASS],
+      density: 0.03,
+      stamps: flowerStamps,
+      gap: 1,
+    },
+    {
+      tileset: "ground_grass_details",
+      terrains: [TerrainName.GRASS],
+      density: 0.45,
+      stamps: grassStamps,
+      gap: 0,
+      cluster: true,
+    },
+    {
+      tileset: "snow_details",
+      terrains: [TerrainName.SNOW],
+      density: 0.5,
+      stamps: snowStamps,
+      gap: 0,
+      cluster: true,
+    },
+  ],
+
+  peak: { entity: EntityName.CLOUDLADDER, requires: 3 },
+
+  generator: GeneratorName.TERRACE,
+  exclusion: 0,
+  smoothing: null,
 };

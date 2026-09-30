@@ -16,6 +16,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 300,
+    speed: 1.1,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -82,6 +83,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 50,
+    speed: 1.3,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -141,6 +143,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 90,
+    speed: 1.25,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -200,6 +203,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 180,
+    speed: 1.2,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -259,6 +263,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 80,
+    speed: 1.15,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -324,6 +329,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
+    speed: 0.75,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -355,6 +361,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
+    speed: 0.75,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -386,6 +393,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 40,
+    speed: 1.45,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -428,6 +436,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 30,
+    speed: 1.45,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -470,6 +479,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 25,
+    speed: 1.15,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -505,6 +515,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 35,
+    speed: 1.4,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -557,6 +568,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 30,
+    speed: 1.2,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -588,6 +600,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
+    speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -619,6 +632,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 60,
+    speed: 0.6,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -668,6 +682,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 30,
+    speed: 0.75,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -730,6 +745,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 15,
+    speed: 0.75,
     scale: 0.7,
     components: [
       { name: ComponentName.ANIMATION },
@@ -766,6 +782,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 240,
+    speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -813,6 +830,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
+    speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -859,6 +877,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 25,
+    speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -901,6 +920,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 8,
+    speed: 0.75,
     components: [
       { name: ComponentName.ANIMATION },
       { name: ComponentName.DAMAGEABLE },
@@ -956,6 +976,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 40,
+    speed: 1.1,
     scale: 0.50,
     components: [
       { name: ComponentName.ANIMATION },

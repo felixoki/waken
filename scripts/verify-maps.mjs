@@ -47,10 +47,16 @@ const jsonLayers = (map) => {
 
 const problems = [];
 const claimed = new Set();
+const references = [];
 
 for (const file of readdirSync(SRC).filter((f) => f.endsWith(".tmx"))) {
   const path = resolve(SRC, file);
   const xml = readFileSync(path, "utf8");
+
+  if (/<property name="reference" type="bool" value="true"\/>/.test(xml)) {
+    references.push(file);
+    continue;
+  }
 
   const target = xml.match(/<export\b[^>]*\btarget="([^"]*)"/)?.[1];
   if (!target) {
@@ -117,3 +123,5 @@ if (problems.length) {
 }
 
 console.log("All " + claimed.size + " map exports current.");
+if (references.length)
+  console.log("Skipped " + references.length + " reference map(s): " + references.join(", "));

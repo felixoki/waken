@@ -2,6 +2,7 @@ import { authority } from "./authority.js";
 import { broadcast } from "./broadcast.js";
 import { build } from "./build.js";
 import { chunks } from "./chunks.js";
+import { climate } from "./climate.js";
 import { collector } from "./collector.js";
 import { combat } from "./combat.js";
 import { dialogue } from "./dialogue.js";
@@ -26,6 +27,7 @@ export const handlers = {
   broadcast,
   build,
   chunks,
+  climate,
   collector,
   player,
   entity,

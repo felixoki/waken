@@ -44,9 +44,14 @@ export interface DefendBehaviorConfig {
   repeat?: boolean;
 }
 
+export interface AttackBehaviorConfig {
+  spacing?: number;
+  recovery?: number;
+}
+
 export type BehaviorConfig =
   | { name: BehaviorName.PATROL; config?: PatrolBehaviorConfig }
-  | { name: BehaviorName.ATTACK }
+  | { name: BehaviorName.ATTACK; config?: AttackBehaviorConfig }
   | { name: BehaviorName.DEFEND; config?: DefendBehaviorConfig }
   | { name: BehaviorName.STAY }
   | { name: BehaviorName.AMBLE; config?: AmbleBehaviorConfig }

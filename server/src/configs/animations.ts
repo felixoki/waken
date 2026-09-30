@@ -111,7 +111,24 @@ export const animations: Partial<
     [StateName.DASHING]: { frameCount: 5, frameRate: 5, repeat: 0 },
     [StateName.CASTING]: { frameCount: 6, frameRate: 6, repeat: 0 },
   },
+  [EntityName.BLOODGEIST1]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.CASTING]: { frameCount: 12, frameRate: 14, repeat: 0 },
+  },
+  [EntityName.HEXGEIST]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.CASTING]: { frameCount: 14, frameRate: 14, repeat: 0 },
+  },
   [EntityName.TROLL]: {
+    [StateName.IDLE]: { frameCount: 7, frameRate: 7, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 6, frameRate: 6, repeat: 0 },
+    [StateName.THROWING]: { frameCount: 10, frameRate: 10, repeat: 0 },
+  },
+  [EntityName.ANCIENT_TROLL]: {
     [StateName.IDLE]: { frameCount: 7, frameRate: 7, repeat: -1 },
     [StateName.WALKING]: { frameCount: 8, frameRate: 8, repeat: -1 },
     [StateName.RUNNING]: { frameCount: 6, frameRate: 6, repeat: -1 },

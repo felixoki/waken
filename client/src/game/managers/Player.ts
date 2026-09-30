@@ -2,6 +2,7 @@ import { PlayerConfig, Input, StateName, ComponentName } from "@server/types";
 import { Player } from "../Player";
 import { EntityName } from "@server/types";
 import { HotbarComponent } from "../components/Hotbar";
+import { TreadComponent } from "../components/Tread";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
 import { Running } from "../state/Running";
@@ -41,6 +42,9 @@ export class PlayerManager {
 
   update(): void {
     this.player?.update();
+
+    for (const other of this.others.values())
+      other.getComponent<TreadComponent>(ComponentName.TREAD)?.update();
   }
 
   add(config: PlayerConfig, isLocal: boolean): void {

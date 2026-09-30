@@ -7,6 +7,7 @@ export class Hitbox extends Phaser.GameObjects.Rectangle {
   public ownerId: string;
   public config: CombatConfig;
   public clearance?: number;
+  public inner: number = 0;
   public hazard: boolean;
 
   declare body: Phaser.Physics.Arcade.Body;

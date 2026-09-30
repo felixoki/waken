@@ -20,6 +20,7 @@ import { InventoryComponent } from "./components/Inventory";
 import { HotbarComponent } from "./components/Hotbar";
 import { DamageableComponent } from "./components/Damageable";
 import { TrailComponent } from "./components/Trail";
+import { TreadComponent } from "./components/Tread";
 import { FOOTSTEP_DISTANCE } from "@server/globals";
 
 export class Player extends Entity {
@@ -75,6 +76,7 @@ export class Player extends Entity {
     this.addComponent(new InventoryComponent());
     this.addComponent(new HotbarComponent(this, new Array(8).fill(null)));
     this.addComponent(new DamageableComponent());
+    this.addComponent(new TreadComponent(this));
 
     if (this.isControllable) this.addComponent(new TrailComponent(this));
   }

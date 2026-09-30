@@ -12,6 +12,8 @@
     "dev:client": "npm run dev --workspace=client",
     "dev": "concurrently --kill-others --kill-signal SIGTERM \"npm run dev:server\" \"npm run dev:client\"",
     "verify:maps": "node scripts/verify-maps.mjs",
+    "extract:tilesets": "node scripts/extract-tilesets.mjs",
+    "extract:details": "node scripts/extract-details.mjs",
     "typecheck": "tsc -p client --noEmit && tsc -p server --noEmit",
     "build:client": "npm run build --workspace=client",
     "build:server": "npm run build --workspace=server",

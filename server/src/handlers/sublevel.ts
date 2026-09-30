@@ -1,5 +1,11 @@
 import { Server, Socket } from "socket.io";
-import { Transition, Event, EntityConfig, PlayerConfig } from "../types";
+import {
+  Transition,
+  Event,
+  EntityConfig,
+  PlayerConfig,
+  TiledMap,
+} from "../types";
 import { Landmark } from "../types/generation.js";
 import { World } from "../World";
 import { configs } from "../configs";
@@ -31,7 +37,10 @@ export const sublevel = {
     const isNew = !pending;
 
     if (!pending) {
-      pending = handlers.generation.start(config.biome, entranceId);
+      pending = handlers.generation.start(
+        [{ biome: config.biome, spawn: true }],
+        entranceId,
+      );
       world.sublevels.setInstance(entranceId, pending, map);
     }
 
@@ -41,6 +50,8 @@ export const sublevel = {
       if (isNew) world.sublevels.removeInstance(entranceId);
       return;
     }
+
+    if (isNew) world.surfaces.register(map, biome.tilemap as TiledMap, entranceId);
 
     const landmarks: Landmark[] = biome.entities
       .filter((e) => configs.landmarks.has(e.name))
@@ -185,6 +196,7 @@ export const sublevel = {
         handlers.entity.remove(id, Event.ENTITY_DESTROY, socket, io, world);
 
       world.sublevels.removeInstance(entranceId);
+      world.surfaces.release(entranceId);
     }
 
     handlers.player.transfer(
@@ -217,6 +229,7 @@ export const sublevel = {
         handlers.entity.remove(subId, Event.ENTITY_DESTROY, socket, io, world);
 
       world.sublevels.removeInstance(entityId);
+      world.surfaces.release(entityId);
     }
   },
 };

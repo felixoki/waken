@@ -153,6 +153,16 @@ export const sounds = {
       folder: "creatures",
       variants: ["orc_slash1", "orc_slash2"],
     },
+    [SoundName.TROLL_IDLE]: {
+      volume: 0.5,
+      folder: "creatures",
+      variants: ["troll_idle1", "troll_idle2", "troll_idle3"],
+    },
+    [SoundName.TROLL_SLASH]: {
+      volume: 0.5,
+      folder: "creatures",
+      variants: ["troll_slash"],
+    },
     [SoundName.SHADOW_WANDERER_IDLE]: {
       volume: 0.7,
       folder: "creatures",

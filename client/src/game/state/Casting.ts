@@ -139,8 +139,10 @@ export class Casting implements State {
 
     if (this.timer?.combo) this.timer.combo.destroy();
 
+    const windup = handlers.combat.attack(entity, config.name)?.windup ?? 0;
+
     this.timer = {
-      delay: entity.scene.time.delayedCall(DELAY_ATTACK, () => {
+      delay: entity.scene.time.delayedCall(DELAY_ATTACK + windup, () => {
         if (!entity.scene) return;
 
         handlers.spells[config.name](
@@ -152,7 +154,7 @@ export class Casting implements State {
         );
       }),
 
-      duration: entity.scene.time.delayedCall(duration, () => {
+      duration: entity.scene.time.delayedCall(duration + windup, () => {
         if (config.combo && !isFinisher) {
           this.step = step + 1;
           entity.isLocked = false;

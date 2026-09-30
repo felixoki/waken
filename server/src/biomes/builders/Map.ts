@@ -1,9 +1,16 @@
 import { handlers } from "../../handlers";
 import { TilesetLoader } from "../../loaders/Tileset";
-import { EntityName } from "../../types";
+import { EntityName, SurfaceName } from "../../types";
 import { configs } from "../../configs";
-import { DUNGEON_LADDER_COUNT } from "../../globals";
 import {
+  DUNGEON_LADDER_COUNT,
+  DIRECTIONS_CARDINAL,
+  LEDGE_CLEARANCE,
+  PEAK_CLEARANCE,
+  SEAM_MARGIN,
+} from "../../globals";
+import {
+  BiomeBand,
   BiomeConfig,
   BiomeName,
   DoorAnchor,
@@ -16,10 +23,13 @@ import {
 import { BorderGenerator } from "../generators/Border";
 import { DoorGenerator } from "../generators/Door";
 import { EntranceGenerator } from "../generators/Entrance";
+import { FaceGenerator } from "../generators/Face";
+import { PatchGenerator } from "../generators/Patch";
 import { entrances } from "../../configs/entrances";
 import { LedgeGenerator } from "../generators/Ledge";
 import { RoomGenerator } from "../generators/Room";
 import { StairGenerator } from "../generators/Stair";
+import { TerraceGenerator } from "../generators/Terrace";
 import { TerrainGenerator } from "../generators/Terrain";
 import { WallGenerator } from "../generators/Wall";
 import { TerrainSmoother } from "../smoothers/Terrain";
@@ -27,66 +37,108 @@ import { DetailSpawner } from "../spawners/Detail";
 import { EntitySpawner } from "../spawners/Entity";
 
 export class MapBuilder {
+  private bands: BiomeBand[];
+  private host: number;
   private config: BiomeConfig;
   private loader: TilesetLoader;
   private seed: string;
   private unlocked: number;
+  private width: number;
+  private height: number;
 
   constructor(
-    config: BiomeConfig,
+    configs: BiomeConfig[],
+    host: number,
     loader: TilesetLoader,
     seed: string,
     unlocked = 0,
   ) {
-    this.config = config;
+    const [first] = configs;
+
+    this.bands = [];
+    let y = 0;
+
+    for (const config of configs) {
+      if (
+        config.width !== first.width ||
+        config.tileWidth !== first.tileWidth ||
+        config.tileHeight !== first.tileHeight
+      )
+        throw new Error(
+          `Biome ${config.id} cannot stack on ${first.id}: width or tile size differs`,
+        );
+
+      this.bands.push({ config, y });
+      y += config.height;
+    }
+
+    this.host = host;
+    this.config = configs[host];
     this.loader = loader;
     this.seed = seed;
     this.unlocked = unlocked;
+    this.width = first.width;
+    this.height = y;
   }
 
   build(): GeneratedMap {
-    const { width, height, tileWidth, tileHeight, layers, borders } =
-      this.config;
+    const { width, height, bands } = this;
+    const { tileWidth, tileHeight, layers } = this.config;
+    const host = bands[this.host];
 
-    const generators = { terrain: TerrainGenerator, room: RoomGenerator };
-    const generator = new generators[this.config.generator](
-      this.config,
-      this.seed,
-    );
-    const {
-      terrain: genTerrain,
-      entities: roomEntities,
-      spawn: roomSpawn,
-      exit: roomExit,
-      descent: roomDescent,
-      doors: roomDoors,
-    } = generator.generate() as {
-      terrain: TerrainName[];
-      entities: Entity[];
-      spawn?: { x: number; y: number };
-      exit?: { x: number; y: number };
-      descent?: { x: number; y: number };
-      doors?: DoorAnchor[];
+    const generators = {
+      terrain: TerrainGenerator,
+      room: RoomGenerator,
+      terrace: TerraceGenerator,
     };
-    let terrain = genTerrain;
 
-    if (this.config.smoothing) {
-      const smoother = new TerrainSmoother(this.config);
-      terrain = smoother.smooth(
-        terrain,
-        this.config.smoothing.iterations,
-        this.config.smoothing.threshold,
-        "all",
+    const grid: TerrainName[] = new Array(width * height);
+    const region = new Uint8Array(width * height);
+    const roomEntities: Entity[] = [];
+    const elevations: (Uint8Array | undefined)[] = [];
+
+    let roomSpawn: { x: number; y: number } | undefined;
+    let roomExit: { x: number; y: number } | undefined;
+    let roomDoors: DoorAnchor[] | undefined;
+
+    for (let b = 0; b < bands.length; b++) {
+      const { config, y } = bands[b];
+      const generator = new generators[config.generator](
+        config,
+        config.noise.seed ?? this.seed,
       );
-      terrain = handlers.generation.enforceMinimumWater(terrain, width, height);
-      terrain = handlers.generation.unifyShores(terrain, width, height);
-      terrain = handlers.generation.enforceMinimumBlock(
-        terrain,
-        width,
-        height,
-        TerrainName.GROUND,
-        TerrainName.GRASS,
-      );
+      const generated = generator.generate() as {
+        terrain: TerrainName[];
+        entities: Entity[];
+        spawn?: { x: number; y: number };
+        exit?: { x: number; y: number };
+        doors?: DoorAnchor[];
+        elevation?: Uint8Array;
+      };
+
+      elevations.push(generated.elevation);
+
+      const smoothed = this.smooth(config, generated.terrain);
+      const local = b > 0 ? this.seam(config, smoothed) : smoothed;
+      const offset = y * width;
+
+      for (let i = 0; i < local.length; i++) {
+        grid[offset + i] = local[i];
+        region[offset + i] = b;
+      }
+
+      const dy = y * tileHeight;
+      const shift = (p?: { x: number; y: number }) =>
+        p && { x: p.x, y: p.y + dy };
+
+      for (const e of generated.entities)
+        roomEntities.push({ ...e, y: e.y + dy });
+
+      if (b !== this.host) continue;
+
+      roomSpawn = shift(generated.spawn);
+      roomExit = shift(generated.exit);
+      roomDoors = generated.doors?.map((d) => ({ ...d, y: d.y + y }));
     }
 
     const tilesetOrder = this.collectTilesets();
@@ -100,99 +152,186 @@ export class MapBuilder {
       nextGid += tileset.tilecount;
     }
 
+    const ledges = new Array(width * height).fill(0);
+    const overlay = new Array(width * height).fill(0);
+    const rock = new Uint8Array(width * height);
+    const elevation = new Uint8Array(width * height);
+    let hasLedges = false;
+
+    for (let b = 0; b < bands.length; b++) {
+      const local = elevations[b];
+      if (!local) continue;
+
+      const { config, y } = bands[b];
+      const offset = y * width;
+      const seed = config.noise.seed ?? this.seed;
+      const gid = (name: string) => firstgids.get(name)!;
+
+      elevation.set(local, offset);
+
+      const faces = new FaceGenerator(config, this.loader, gid, seed).generate(
+        local,
+      );
+      const patches = new PatchGenerator(config, this.loader, gid, seed).generate(
+        local,
+        faces.data,
+      );
+
+      for (let i = 0; i < faces.data.length; i++) {
+        if (faces.data[i]) {
+          ledges[offset + i] = faces.data[i];
+          hasLedges = true;
+        }
+
+        if (faces.data[i] || faces.stairs[i]) rock[offset + i] = 1;
+        overlay[offset + i] = faces.stairs[i] || patches.data[i];
+      }
+
+      for (const [i, t] of faces.under) grid[offset + i] = t;
+      for (const i of patches.grass) grid[offset + i] = TerrainName.GRASS;
+    }
+
+    const blocked = new Uint8Array(width * height);
+
+    for (let i = 0; i < ledges.length; i++) {
+      if (!ledges[i] && !overlay[i]) continue;
+
+      blocked[i] = 1;
+      if (!rock[i]) continue;
+
+      const x = i % width;
+      const y = (i / width) | 0;
+
+      for (let dy = -1; dy <= 1; dy++)
+        for (let dx = -1; dx <= 1; dx++) {
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx >= 0 && ny >= 0 && nx < width && ny < height)
+            blocked[ny * width + nx] = 1;
+        }
+    }
+
+    const terrain = this.mask(grid, region, this.host);
+    const view = { ...this.config, width, height };
+
     /**
-     * Build fill layers, interleaving per-terrain detail layers immediately after
-     * each fill so ground details render beneath the grass fill layer.
+     * Build fill layers
      */
     let layerId = 1;
     const tiledLayers: any[] = [];
-    const detailSeed = this.seed;
-    const detailSpawner = new DetailSpawner(detailSeed);
     const fillSeed = handlers.generation.hash(`${this.seed}-fill`);
 
-    for (let i = 0; i < layers.length; i++) {
-      const layerConfig = layers[i];
+    const fillOrder: TerrainName[] = [];
 
-      const fills = this.loader.query(layerConfig.tileset, {
-        role: TileRole.FILL,
-        terrain: layerConfig.terrain,
-      });
+    for (const band of this.ordered())
+      for (const l of band.config.layers)
+        if (!fillOrder.includes(l.terrain)) fillOrder.push(l.terrain);
 
-      if (!fills.length) continue;
+    for (const fillTerrain of fillOrder) {
+      let data: number[] | null = null;
+      let surface: SurfaceName | undefined;
 
-      const gid = firstgids.get(layerConfig.tileset)!;
-      const data = new Array(width * height).fill(0);
-      const isBaseLayer = i === 0;
+      for (const { config, y: top } of bands) {
+        const index = config.layers.findIndex((l) => l.terrain === fillTerrain);
+        if (index < 0) continue;
 
-      for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++) {
-          const idx = handlers.generation.toIndex(x, y, width);
+        const layerConfig = config.layers[index];
+        const fills = this.loader.query(layerConfig.tileset, {
+          role: TileRole.FILL,
+          terrain: layerConfig.terrain,
+        });
 
-          if (
-            isBaseLayer ||
-            handlers.generation.isTerrainAtOrAbove(
-              terrain[idx],
-              layerConfig.terrain,
-            )
-          ) {
-            let tile = fills[0];
+        if (!fills.length) continue;
 
-            if (fills.length > 1) {
-              const rng = handlers.generation.seededRandom(
-                handlers.generation.spatialHash(x, y, fillSeed),
-              );
+        data ??= new Array(width * height).fill(0);
+        surface ??= layerConfig.surface;
 
-              if (rng() < 0.125)
-                tile = fills[1 + Math.floor(rng() * (fills.length - 1))];
+        const gid = firstgids.get(layerConfig.tileset)!;
+        const isBaseLayer = index === 0;
+
+        for (let y = top; y < top + config.height; y++)
+          for (let x = 0; x < width; x++) {
+            const idx = handlers.generation.toIndex(x, y, width);
+
+            if (
+              isBaseLayer ||
+              handlers.generation.isTerrainAtOrAbove(
+                grid[idx],
+                layerConfig.terrain,
+              )
+            ) {
+              let tile = fills[0];
+
+              if (fills.length > 1) {
+                const rng = handlers.generation.seededRandom(
+                  handlers.generation.spatialHash(x, y, fillSeed),
+                );
+
+                if (rng() < 0.125)
+                  tile = fills[1 + Math.floor(rng() * (fills.length - 1))];
+              }
+
+              data[idx] = gid + tile.id;
             }
-
-            data[idx] = gid + tile.id;
           }
-        }
+      }
+
+      if (!data || !data.some((gid) => gid !== 0)) continue;
 
       tiledLayers.push(
         handlers.generation.createLayer(
           layerId++,
-          layerConfig.terrain,
+          fillTerrain,
           width,
           height,
           data,
+          surface && [{ name: "surface", type: "string", value: surface }],
         ),
       );
+    }
 
-      for (const detailConfig of this.config.details ?? []) {
-        if (!detailConfig.terrains.includes(layerConfig.terrain)) continue;
+    /**
+     * Build overlay layer
+     */
+    const detailSpawner = new DetailSpawner(this.seed, width, height, blocked);
 
-        const highestTerrain = detailConfig.terrains.reduce((best, t) => {
-          const bestIdx = layers.findIndex((l) => l.terrain === best);
-          const tIdx = layers.findIndex((l) => l.terrain === t);
-          return tIdx > bestIdx ? t : best;
-        });
+    for (const band of this.ordered()) {
+      const masked = this.mask(grid, region, bands.indexOf(band));
 
-        if (highestTerrain !== layerConfig.terrain) continue;
-
+      for (const detailConfig of band.config.details ?? []) {
         const detailGid = firstgids.get(detailConfig.tileset);
         if (detailGid === undefined) continue;
 
-        const detailData = detailSpawner.spawn(
-          terrain,
-          width,
-          height,
-          detailConfig,
-          detailGid,
-        );
-
-        tiledLayers.push(
-          handlers.generation.createLayer(
-            layerId++,
-            `${detailConfig.terrains.join("_")}_details`,
-            width,
-            height,
-            detailData,
-          ),
-        );
+        detailSpawner.spawn(masked, detailConfig, detailGid, overlay);
       }
     }
+
+    if (overlay.some((gid) => gid !== 0))
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "overlay",
+          width,
+          height,
+          overlay,
+        ),
+      );
+
+    if (hasLedges)
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "ledges",
+          width,
+          height,
+          ledges,
+          [
+            { name: "clearance", type: "int", value: LEDGE_CLEARANCE },
+            { name: "collides", type: "bool", value: true },
+            { name: "seeThrough", type: "bool", value: true },
+          ],
+        ),
+      );
 
     /**
      * Build wall layer
@@ -200,7 +339,7 @@ export class MapBuilder {
     if (this.config.walls) {
       const gid = firstgids.get(this.config.walls)!;
       const generator = new WallGenerator(
-        { width: this.config.width, height: this.config.height },
+        { width, height },
         this.loader,
       );
       const { below, above } = generator.generate(
@@ -373,14 +512,14 @@ export class MapBuilder {
     if (this.config.ledge) {
       const gid = firstgids.get(this.config.ledge)!;
       const gen = new LedgeGenerator(
-        { width: this.config.width, height: this.config.height },
+        { width, height },
         this.loader,
       );
       const ledges = gen.generate(terrain, this.config.ledge, gid);
 
       const stairGen = new StairGenerator({
-        width: this.config.width,
-        height: this.config.height,
+        width,
+        height,
       });
       const stairs = stairGen.generate(terrain, gid, this.seed, ledges);
 
@@ -413,8 +552,8 @@ export class MapBuilder {
     if (roomDoors && roomDoors.length && this.config.walls) {
       const gid = firstgids.get(this.config.walls)!;
       const doorGen = new DoorGenerator({
-        width: this.config.width,
-        height: this.config.height,
+        width,
+        height,
       });
       const { below: doorsBelow, above: doorsAbove } = doorGen.generate(
         roomDoors,
@@ -458,40 +597,117 @@ export class MapBuilder {
     /**
      * Build border layers
      */
-    const borderGenerator = new BorderGenerator(this.config, this.loader);
+    const borderGenerator = new BorderGenerator({ width, height }, this.loader);
 
     const elevate = (t: TerrainName): number => TERRAIN_ORDER.indexOf(t);
 
-    const sorted = [...borders].sort(
-      (a, b) => elevate(a.from) - elevate(b.from),
-    );
+    const sorted = this.ordered()
+      .flatMap((band) =>
+        band.config.borders.map((border) => ({
+          border,
+          band: bands.indexOf(band),
+        })),
+      )
+      .sort((a, b) => elevate(a.border.from) - elevate(b.border.from));
 
-    for (const border of sorted) {
+    const borderLayers = new Map<
+      string,
+      ReturnType<typeof handlers.generation.createLayer>
+    >();
+
+    for (const { border, band } of sorted) {
       const gid = firstgids.get(border.tileset)!;
-      const data = borderGenerator.generate(terrain, border, gid);
+      const data = this.clip(
+        borderGenerator.generate(grid, border, gid),
+        region,
+        band,
+      );
+      const name = `${border.from}_${border.to}_border`;
+      const existing = borderLayers.get(name);
+
+      if (existing) {
+        for (let i = 0; i < data.length; i++)
+          if (data[i]) existing.data[i] = data[i];
+        continue;
+      }
+
       const properties = border.collides
         ? [{ name: "collides", type: "bool", value: true }]
         : undefined;
 
-      tiledLayers.push(
-        handlers.generation.createLayer(
-          layerId++,
-          `${border.from}_${border.to}_border`,
-          width,
-          height,
-          data,
-          properties,
-        ),
+      const layer = handlers.generation.createLayer(
+        layerId++,
+        name,
+        width,
+        height,
+        data,
+        properties,
       );
+
+      borderLayers.set(name, layer);
+      tiledLayers.push(layer);
     }
 
     /**
      * Spawn entities
      */
-    const spawner = new EntitySpawner(this.config, this.seed);
-    const spawn =
-      roomSpawn ?? handlers.generation.find.spawn(this.config, terrain);
-    const entities = [...spawner.spawn(terrain, spawn), ...roomEntities];
+    const hostTerrain = grid.slice(
+      host.y * width,
+      (host.y + this.config.height) * width,
+    );
+    const hostSpawn = handlers.generation.find.spawn(this.config, hostTerrain);
+    const spawn = roomSpawn ?? {
+      x: hostSpawn.x,
+      y: hostSpawn.y + host.y * tileHeight,
+    };
+
+    const entities: Entity[] = [];
+
+    for (const band of this.ordered()) {
+      const b = bands.indexOf(band);
+      const spawner = new EntitySpawner(
+        { ...band.config, width, height },
+        band.config.noise.seed ?? this.seed,
+      );
+
+      const within =
+        bands.length > 1 ? region.map((r) => (r === b ? 1 : 0)) : undefined;
+
+      entities.push(...spawner.spawn(grid, spawn, elevation, blocked, within));
+    }
+
+    entities.push(...roomEntities);
+
+    /**
+     * Peaks
+     */
+    for (let b = 0; b < bands.length; b++) {
+      const { peak } = bands[b].config;
+      if (!peak || peak.requires > this.unlocked || !elevations[b]) continue;
+
+      const spot = this.summit(bands[b], elevation, blocked);
+      if (!spot) continue;
+
+      const minX = (spot.x - PEAK_CLEARANCE) * tileWidth;
+      const maxX = (spot.x + PEAK_CLEARANCE + 1) * tileWidth;
+      const minY = (spot.y - PEAK_CLEARANCE) * tileHeight;
+      const maxY = (spot.y + PEAK_CLEARANCE + 1) * tileHeight;
+
+      for (let i = entities.length - 1; i >= 0; i--) {
+        const e = entities[i];
+        if (e.x >= minX && e.x < maxX && e.y >= minY && e.y < maxY)
+          entities.splice(i, 1);
+      }
+
+      const pos = handlers.generation.tileToWorld(spot.x, spot.y, tileWidth, tileHeight);
+      const offset = configs.entities[peak.entity]?.offset;
+
+      entities.push({
+        name: peak.entity,
+        x: pos.x + (offset?.x ?? 0),
+        y: pos.y + (offset?.y ?? 0),
+      });
+    }
 
     /**
      * Wells (forest only)
@@ -512,7 +728,7 @@ export class MapBuilder {
       }
 
       const wells = handlers.generation.find.positions.well(
-        this.config,
+        view,
         terrain,
         spawn,
         10,
@@ -531,7 +747,7 @@ export class MapBuilder {
       for (const def of entrances) {
         if ((def.requires ?? 0) > this.unlocked) continue;
 
-        const generator = new EntranceGenerator(this.config, this.seed, def);
+        const generator = new EntranceGenerator(view, this.seed, def);
 
         for (let n = 0; n < (def.count ?? 1); n++) {
           const entrance = generator.generate(terrain, spawn, n, taken);
@@ -564,7 +780,7 @@ export class MapBuilder {
      */
     if (this.config.id === BiomeName.DUNGEON) {
       const torches = handlers.generation.find.positions.torch(
-        this.config,
+        view,
         terrain,
       );
 
@@ -572,7 +788,7 @@ export class MapBuilder {
         entities.push({ name: EntityName.TORCH1, x: pos.x, y: pos.y });
 
       const ladders = handlers.generation.find.positions.ladder(
-        this.config,
+        view,
         terrain,
         DUNGEON_LADDER_COUNT,
         torches,
@@ -586,16 +802,6 @@ export class MapBuilder {
           x: pos.x + (offset?.x ?? 0),
           y: pos.y + (offset?.y ?? 0),
         });
-
-      if (roomDescent && this.unlocked >= 2) {
-        const descentOffset = configs.entities[EntityName.CLOUDLADDER]?.offset;
-
-        entities.push({
-          name: EntityName.CLOUDLADDER,
-          x: roomDescent.x + (descentOffset?.x ?? 0),
-          y: roomDescent.y + (descentOffset?.y ?? 0),
-        });
-      }
     }
 
     /**
@@ -658,15 +864,142 @@ export class MapBuilder {
     };
   }
 
+  private smooth(config: BiomeConfig, terrain: TerrainName[]): TerrainName[] {
+    if (!config.smoothing) return terrain;
+
+    const { width, height } = config;
+    const smoother = new TerrainSmoother(config);
+
+    let result = smoother.smooth(
+      terrain,
+      config.smoothing.iterations,
+      config.smoothing.threshold,
+      "all",
+    );
+    result = handlers.generation.enforceMinimumWater(result, width, height);
+    result = handlers.generation.unifyShores(result, width, height);
+    result = handlers.generation.enforceMinimumBlock(
+      result,
+      width,
+      height,
+      TerrainName.GROUND,
+      TerrainName.GRASS,
+    );
+
+    return result;
+  }
+
+  private seam(config: BiomeConfig, terrain: TerrainName[]): TerrainName[] {
+    const { width, height } = config;
+    const result = [...terrain];
+    const seen = new Uint8Array(width * height);
+
+    for (let start = 0; start < SEAM_MARGIN * width; start++) {
+      if (seen[start] || result[start] !== TerrainName.WATER) continue;
+
+      const stack = [start];
+      const pond: number[] = [];
+      seen[start] = 1;
+
+      while (stack.length) {
+        const i = stack.pop()!;
+        pond.push(i);
+
+        const x = i % width;
+        const y = (i / width) | 0;
+
+        for (const { dx, dy } of DIRECTIONS_CARDINAL) {
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+
+          const n = ny * width + nx;
+          if (seen[n] || result[n] !== TerrainName.WATER) continue;
+
+          seen[n] = 1;
+          stack.push(n);
+        }
+      }
+
+      for (const i of pond) result[i] = TerrainName.GRASS;
+    }
+
+    return result;
+  }
+
+  private summit(
+    band: BiomeBand,
+    elevation: Uint8Array,
+    blocked: Uint8Array,
+  ): { x: number; y: number } | null {
+    const { width } = this;
+    const top = band.y;
+    const bottom = band.y + band.config.height;
+    const seed = handlers.generation.hash(`${band.config.noise.seed ?? this.seed}-peak`);
+
+    let highest = 0;
+    for (let i = top * width; i < bottom * width; i++)
+      highest = Math.max(highest, elevation[i]);
+
+    for (let level = highest; level >= 1; level--)
+      for (let reach = PEAK_CLEARANCE; reach >= PEAK_CLEARANCE - 1; reach--) {
+        const candidates: { x: number; y: number }[] = [];
+
+        for (let y = top + reach; y < bottom - reach; y++)
+          for (let x = reach; x < width - reach; x++) {
+            let open = true;
+
+            for (let dy = -reach; dy <= reach && open; dy++)
+              for (let dx = -reach; dx <= reach && open; dx++) {
+                const i = (y + dy) * width + x + dx;
+                open = elevation[i] === level && !blocked[i];
+              }
+
+            if (open) candidates.push({ x, y });
+          }
+
+        if (candidates.length)
+          return candidates[
+            handlers.generation.spatialHash(candidates.length, level, seed) %
+              candidates.length
+          ];
+      }
+
+    return null;
+  }
+
+  private mask(
+    grid: TerrainName[],
+    region: Uint8Array,
+    band: number,
+  ): TerrainName[] {
+    if (this.bands.length === 1) return grid;
+    return grid.map((t, i) => (region[i] === band ? t : TerrainName.VOID));
+  }
+
+  private clip(data: number[], region: Uint8Array, band: number): number[] {
+    if (this.bands.length === 1) return data;
+
+    for (let i = 0; i < data.length; i++) if (region[i] !== band) data[i] = 0;
+    return data;
+  }
+
+  private ordered(): BiomeBand[] {
+    const host = this.bands[this.host];
+    return [host, ...this.bands.filter((b) => b !== host)];
+  }
+
   private collectTilesets(): string[] {
     const names = new Set<string>();
 
-    for (const layer of this.config.layers) names.add(layer.tileset);
-    for (const border of this.config.borders) names.add(border.tileset);
-    for (const detail of this.config.details ?? []) names.add(detail.tileset);
-    if (this.config.walls) names.add(this.config.walls);
-    if (this.config.ledge) names.add(this.config.ledge);
-    for (const name of this.config.tilesets ?? []) names.add(name);
+    for (const { config } of this.ordered()) {
+      for (const layer of config.layers) names.add(layer.tileset);
+      for (const border of config.borders) names.add(border.tileset);
+      for (const detail of config.details ?? []) names.add(detail.tileset);
+      if (config.walls) names.add(config.walls);
+      if (config.ledge) names.add(config.ledge);
+      for (const name of config.tilesets ?? []) names.add(name);
+    }
 
     return Array.from(names);
   }

@@ -9,6 +9,7 @@ import {
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
+import { PATH_ARRIVAL } from "@server/globals";
 
 export class FleeBehavior extends Behavior {
   private targetId: string = "";
@@ -46,8 +47,6 @@ export class FleeBehavior extends Behavior {
     if (!entity.scene.tileManager) return {};
 
     const map = entity.scene.tileManager.map;
-    const tw = map.tileWidth;
-    const th = map.tileHeight;
     const mapW = map.widthInPixels;
     const mapH = map.heightInPixels;
 
@@ -66,19 +65,7 @@ export class FleeBehavior extends Behavior {
     if (this.flying) return this._flyToExit(entity, mapW, mapH);
 
     if (this.exit && !this.path.length) {
-      const grid = handlers.path.getGrid(entity);
-      if (!grid.length) return {};
-
-      const start = {
-        x: Math.floor(entity.x / tw),
-        y: Math.floor(entity.y / th),
-      };
-      const end = {
-        x: Math.floor(this.exit.x / tw),
-        y: Math.floor(this.exit.y / th),
-      };
-
-      this.path = handlers.path.find(grid, start, end, map) || [];
+      this.path = handlers.path.plan(entity, this.exit, false) ?? [];
 
       if (!this.path.length) {
         this.attempts++;
@@ -109,7 +96,7 @@ export class FleeBehavior extends Behavior {
     }
 
     if (this.path.length) {
-      const input = handlers.path.follow(entity, this.path, 8, true);
+      const input = handlers.path.follow(entity, this.path, PATH_ARRIVAL, true);
 
       if (!input) {
         this._despawn(entity);

@@ -1,0 +1,12 @@
+{
+  "columns": 21,
+  "image": "../sprites/snow_details.png",
+  "imageheight": 160,
+  "imagewidth": 336,
+  "margin": 0,
+  "name": "snow_details",
+  "spacing": 0,
+  "tilecount": 210,
+  "tileheight": 16,
+  "tilewidth": 16
+}

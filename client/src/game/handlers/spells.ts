@@ -12,7 +12,11 @@ import { Projectile } from "../Projectile";
 import { Hitbox } from "../Hitbox";
 import { vfx } from "../vfx";
 import { EffectFactory } from "../factory/Effect";
-import { DELAY_ATTACK } from "@server/globals";
+import {
+  DELAY_ATTACK,
+  FIRE_WAVE_CLEARANCE,
+  FIRE_WAVE_THICKNESS,
+} from "@server/globals";
 
 const FIRE_BREATH_MOUTH: Record<Direction, { x: number; y: number }> = {
   [Direction.DOWN]: { x: 0, y: 20 },
@@ -469,6 +473,44 @@ export const spells: Record<SpellName, SpellHandler> = {
         depth,
       );
     });
+  },
+
+  [SpellName.FIRE_WAVE]: (entity: Entity, config: SpellConfig) => {
+    const scene = entity.scene;
+    const radius = config.radius!;
+    const duration = config.duration!;
+    const { x, y } = entity.body.center;
+
+    const hitbox = new Hitbox(
+      scene,
+      x,
+      y,
+      radius * 2,
+      radius * 2,
+      entity.id,
+      config,
+      FIRE_WAVE_CLEARANCE,
+    );
+    hitbox.body.setCircle(1, radius - 1, radius - 1);
+
+    scene.tweens.addCounter({
+      from: 1,
+      to: radius,
+      duration,
+      onUpdate: (tween) => {
+        if (!hitbox.active) return;
+
+        const r = tween.getValue() ?? 1;
+        hitbox.body.setCircle(r, radius - r, radius - r);
+        hitbox.inner = Math.max(0, r - FIRE_WAVE_THICKNESS);
+      },
+    });
+
+    scene.managers.sound.play.sfx(SoundName.FIRE_BREATH, {
+      position: { x, y },
+    });
+
+    vfx.emitters.fireWave(scene, x, y, radius, duration, entity.depth);
   },
 
   [SpellName.BITE]: (

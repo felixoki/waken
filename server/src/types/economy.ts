@@ -25,6 +25,7 @@ export interface NeedConfig {
 
 export type EconomySnapshot = {
   tier: number;
+  canUpgrade: boolean;
   needs: {
     name: NeedName;
     items: { item: EntityName; quantity: number; tier: number }[];

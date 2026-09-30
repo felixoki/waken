@@ -16,6 +16,7 @@ export enum SpellName {
   ABSORB_LIFE = "absorb_life",
   DRAGON_FORM = "dragon_form",
   FIRE_BREATH = "fire_breath",
+  FIRE_WAVE = "fire_wave",
   BITE = "bite",
   REVIVE = "revive",
   TAME = "tame",

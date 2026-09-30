@@ -240,6 +240,85 @@ export const emitters = {
     return cleanup;
   },
 
+  fireWave: (
+    scene: Scene,
+    x: number,
+    y: number,
+    radius: number,
+    duration: number,
+    depth: number = 10000,
+  ): (() => void) => {
+    const speed = (radius / duration) * 1000;
+    let front = 0;
+
+    const flame = scene.add.particles(x, y, "particle_glow", {
+      color: [0xffffff, 0xffe070, 0xff8c1a, 0xd92b00, 0x7a1500],
+      colorEase: "quad.out",
+      alpha: { start: 1, end: 0 },
+      lifespan: duration,
+      angle: { start: 0, end: 360, steps: 72 },
+      speed: { min: speed * 0.85, max: speed },
+      scale: { start: 0.25, end: 0.8, ease: "sine.out" },
+      blendMode: "ADD",
+      emitting: false,
+    });
+    flame.setDepth(depth + 2);
+    flame.explode(72);
+
+    const smoke = scene.add.particles(x, y, "particle_glow", {
+      color: [0x553322, 0x2a2522, 0x111111],
+      alpha: { start: 0.35, end: 0 },
+      lifespan: duration + 300,
+      speed: { min: speed * 0.5, max: speed * 0.7 },
+      scale: { start: 0.4, end: 1.3, ease: "sine.out" },
+      emitting: false,
+    });
+    smoke.setDepth(depth + 1);
+    smoke.explode(24);
+
+    const embers = scene.add.particles(x, y, "particle_circle", {
+      tint: [0xffdd66, 0xff8800, 0xff5500],
+      alpha: { start: 0.9, end: 0 },
+      scale: { start: 0.12, end: 0.01 },
+      speed: { min: 5, max: 20 },
+      gravityY: -50,
+      lifespan: { min: 900, max: 1400 },
+      quantity: 3,
+      frequency: 24,
+      blendMode: "ADD",
+      duration,
+      emitZone: {
+        type: "random",
+        source: {
+          getRandomPoint: (point: Phaser.Types.Math.Vector2Like) => {
+            const angle = Math.random() * Math.PI * 2;
+            point.x = Math.cos(angle) * front;
+            point.y = Math.sin(angle) * front;
+          },
+        },
+      } as Phaser.Types.GameObjects.Particles.EmitZoneData,
+    });
+    embers.setDepth(depth + 3);
+
+    scene.tweens.addCounter({
+      from: 0,
+      to: radius,
+      duration,
+      onUpdate: (tween) => {
+        front = tween.getValue() ?? 0;
+      },
+    });
+
+    const cleanup = () => {
+      flame.destroy();
+      smoke.destroy();
+      embers.destroy();
+    };
+    scene.time.delayedCall(duration + 1400, cleanup);
+
+    return cleanup;
+  },
+
   bite: (
     scene: Scene,
     x: number,

@@ -1,8 +1,17 @@
-import { BehaviorName, Input, StateName, Stuck, Waypoint } from "@server/types";
+import {
+  AttackBehaviorConfig,
+  BehaviorName,
+  Input,
+  SpellName,
+  StateName,
+  Stuck,
+  Waypoint,
+} from "@server/types";
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 import { configs } from "@server/configs";
+import { LINE_INTERVAL, PATH_ARRIVAL } from "@server/globals";
 
 export class AttackBehavior extends Behavior {
   public target: { id: string; lastPosition: Waypoint | null } = {
@@ -15,8 +24,11 @@ export class AttackBehavior extends Behavior {
   private lostSightThreshold: number = 3000;
   private lastAttackTime: number = 0;
   private frustrationThreshold: number = 3000;
-  private cooldowns = new Map<StateName, number>();
+  private cooldowns = new Map<StateName | SpellName, number>();
+  private spacing: number;
+  private recovery: number;
   public alert = { active: false, time: 0, duration: 800 };
+  private line = { at: 0, clear: true };
   private stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
@@ -25,13 +37,16 @@ export class AttackBehavior extends Behavior {
 
   public name = BehaviorName.ATTACK;
 
-  constructor() {
+  constructor(config?: AttackBehaviorConfig) {
     super();
     this.repeat = true;
+    this.spacing = config?.spacing ?? 0;
+    this.recovery = config?.recovery ?? 0;
   }
 
   start(targetId: string): void {
     this.target.id = targetId;
+    this.line = { at: 0, clear: true };
     this.completed = false;
     this.path = [];
     this.target.lastPosition = null;
@@ -120,14 +135,31 @@ export class AttackBehavior extends Behavior {
       );
       const facing = handlers.direction.fromAngle(angle);
 
+      const recovering = now - this.lastAttackTime < this.recovery;
+      let spell: SpellName | null = null;
+      let cooldown = 0;
+      let ready = 0;
+
       for (const config of attacks) {
         if (config.state === StateName.WARNING) continue;
-        
+
         const range = config.range ?? 40;
         const minRange = frustrated ? 0 : (config.minRange ?? 0);
+        const key = config.spell ?? config.state;
 
         if (distance < minRange || distance > range) continue;
-        if (now < (this.cooldowns.get(config.state) ?? 0)) continue;
+        if (now < (this.cooldowns.get(key) ?? 0)) continue;
+
+        if (config.spell) {
+          if (recovering) continue;
+
+          ready++;
+          if (Math.random() * ready < 1) {
+            spell = config.spell;
+            cooldown = config.cooldown ?? 1000;
+          }
+          continue;
+        }
 
         if (config.weapon) {
           const weapon = configs.weapons[config.weapon];
@@ -152,7 +184,7 @@ export class AttackBehavior extends Behavior {
         }
 
         this.lastAttackTime = now;
-        this.cooldowns.set(config.state, now + (config.cooldown ?? 1000));
+        this.cooldowns.set(key, now + (config.cooldown ?? 1000));
 
         return {
           facing,
@@ -162,36 +194,47 @@ export class AttackBehavior extends Behavior {
         };
       }
 
-      if (handlers.path.stuck(entity, this.stuck, now, 2)) {
-        const grid = handlers.path.getGrid(entity);
+      if (spell) {
+        this.lastAttackTime = now;
+        this.cooldowns.set(spell, now + cooldown);
 
-        if (grid.length) {
-          const { tileManager } = entity.scene;
+        return {
+          facing,
+          moving: [],
+          isRunning: false,
+          state: StateName.CASTING,
+          spell,
+          target: { x: target.x, y: target.y },
+        };
+      }
 
-          const from = handlers.path.position(entity);
-          const to = handlers.path.position(target);
+      if (this.spacing && distance <= this.spacing)
+        return { facing, moving: [], isRunning: false };
 
-          const start = {
-            x: Math.floor(from.x / tileManager.map.tileWidth),
-            y: Math.floor(from.y / tileManager.map.tileHeight),
-          };
+      if (now - this.line.at > LINE_INTERVAL) {
+        this.line.at = now;
+        this.line.clear = handlers.path.direct(entity, target);
+      }
 
-          const end = {
-            x: Math.floor(to.x / tileManager.map.tileWidth),
-            y: Math.floor(to.y / tileManager.map.tileHeight),
-          };
+      const stuck = handlers.path.stuck(entity, this.stuck, now, 2);
+      const blocked =
+        !this.line.clear &&
+        !this.path.length &&
+        now - this.recalculation.last > this.recalculation.interval;
 
-          this.path =
-            handlers.path.find(grid, start, end, tileManager.map, true) || [];
-
-          if (this.path.length) this.path.shift();
-        }
+      if (stuck || blocked) {
+        this.recalculation.last = now;
+        this.path =
+          handlers.path.plan(entity, handlers.path.position(target), true) ??
+          [];
       }
 
       if (this.path.length) {
-        const input = handlers.path.follow(entity, this.path, 8, canRun);
+        const input = handlers.path.follow(entity, this.path, PATH_ARRIVAL, canRun);
         if (input) return input;
       }
+
+      if (!this.line.clear) return { facing, moving: [], isRunning: false };
 
       const chaseAngle = Phaser.Math.Angle.Between(
         entity.x,
@@ -229,37 +272,15 @@ export class AttackBehavior extends Behavior {
       ) {
         this.recalculation.last = now;
 
-        const grid = handlers.path.getGrid(entity);
-
-        if (grid.length) {
-          const { tileManager } = entity.scene;
-
-          const from = handlers.path.position(entity);
-
-          const start = {
-            x: Math.floor(from.x / tileManager.map.tileWidth),
-            y: Math.floor(from.y / tileManager.map.tileHeight),
-          };
-
-          const end = {
-            x: Math.floor(
-              this.target.lastPosition.x / tileManager.map.tileWidth,
-            ),
-            y: Math.floor(
-              this.target.lastPosition.y / tileManager.map.tileHeight,
-            ),
-          };
-
-          this.path =
-            handlers.path.find(grid, start, end, tileManager.map, true) || [];
-        }
+        this.path =
+          handlers.path.plan(entity, this.target.lastPosition, true) ?? [];
       }
 
       if (this.path.length && handlers.path.stuck(entity, this.stuck, now, 2))
         this.path = [];
 
       if (this.path.length) {
-        const input = handlers.path.follow(entity, this.path, 8, canRun);
+        const input = handlers.path.follow(entity, this.path, PATH_ARRIVAL, canRun);
 
         if (!input) {
           this.completed = true;

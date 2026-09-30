@@ -21,6 +21,9 @@ const tips = [
   "Some items let you carry special effects as long as you have them in your inventory.",
   "A soulstone can carry the realm spirit of animals. You can solidify the animal back in the village.",
   "Goblins often keep goats and hens as livestock.",
+  "To unlock the next tier, your villagers must be happy and every item they need must be in stock.",
+  "Only the young trolls still wander down into the forest. The ancient ones stay on the mountain peaks.",
+  "The mountain peaks are freezing cold. Don't linger in the snow for too long.",
 ];
 
 function randomTip(exclude?: string) {

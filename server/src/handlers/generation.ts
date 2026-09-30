@@ -4,6 +4,7 @@ import { TiledProperty } from "../types";
 import {
   BiomeConfig,
   GeneratedMap,
+  LevelBiome,
   Neighbors,
   Range,
   Room,
@@ -16,7 +17,9 @@ import {
 } from "../types/generation";
 import { join, dirname } from "path";
 import {
+  CONTOUR_GONE,
   CORNERS,
+  DIRECTIONS_CARDINAL,
   DUNGEON_LADDER_TORCH_CLEARANCE,
   DUNGEON_RECESS_GAP,
   DUNGEON_RECESS_MARGIN,
@@ -526,7 +529,7 @@ export const generation = {
   }),
 
   start: (
-    biome: string,
+    biomes: LevelBiome[],
     seed: string,
     unlocked = 0,
   ): Promise<GeneratedMap | null> => {
@@ -557,8 +560,294 @@ export const generation = {
         if (code !== 0) reject(new Error(`Worker exited with code ${code}`));
       });
 
-      worker.send({ biome, seed, unlocked });
+      worker.send({ biomes, seed, unlocked });
     });
+  },
+
+  contours: {
+    deneedle: (
+      input: number[],
+      limit: (x: number) => number,
+      cap = 14,
+    ): number[] => {
+      const t = [...input];
+
+      for (let pass = 0; pass < 3; pass++)
+        for (const forward of [true, false])
+          for (let i = 0; i < t.length - 1; i++) {
+            const x = forward ? i + 1 : t.length - 2 - i;
+            const near = x ? t[x - 1] : t[x + 1];
+
+            if (t[x] <= CONTOUR_GONE) continue;
+
+            if (near <= CONTOUR_GONE) {
+              if (t[x] > cap) t[x] = Math.min(cap, limit(x));
+              continue;
+            }
+
+            if (t[x] - near > cap) t[x] = Math.min(near + cap, limit(x));
+            else if (near - t[x] > cap) t[x] = Math.min(near - cap, limit(x));
+          }
+
+      return t;
+    },
+
+    fillGaps: (
+      input: number[],
+      limit: (x: number) => number,
+      widest = 5,
+    ): number[] => {
+      const t = [...input];
+      const live: number[] = [];
+
+      for (let x = 0; x < t.length; x++) if (t[x] > CONTOUR_GONE) live.push(x);
+
+      for (let i = 0; i < live.length - 1; i++) {
+        const left = live[i];
+        const right = live[i + 1];
+        const span = right - left;
+
+        if (span <= 1 || span > widest + 1) continue;
+
+        for (let x = left + 1; x < right; x++) {
+          const blend = t[left] + ((t[right] - t[left]) * (x - left)) / span;
+          t[x] = Math.max(1, Math.min(Math.round(blend), limit(x)));
+        }
+      }
+
+      return t;
+    },
+
+    smooth: (input: number[], limit: (x: number) => number): number[] => {
+      const t = [...input];
+
+      for (let pass = 0; pass < 12; pass++) {
+        let done = true;
+
+        for (let x = 1; x < t.length - 1; x++) {
+          const left = t[x - 1];
+          const right = t[x + 1];
+
+          if (t[x] <= CONTOUR_GONE) continue;
+
+          if (
+            left > t[x] &&
+            right > t[x] &&
+            left > CONTOUR_GONE &&
+            right > CONTOUR_GONE
+          ) {
+            const raise = Math.min(left, right, limit(x));
+
+            if (raise > t[x]) {
+              t[x] = raise;
+              done = false;
+            }
+          } else if (left < t[x] && right < t[x]) {
+            t[x] = Math.max(left, right);
+            done = false;
+          }
+        }
+
+        if (done) break;
+      }
+
+      return t;
+    },
+
+    despike: (input: number[], limit: (x: number) => number): number[] => {
+      const t = [...input];
+
+      for (let x = 1; x < t.length; x++) {
+        if (t[x] <= CONTOUR_GONE || t[x - 1] <= CONTOUR_GONE) continue;
+
+        const step = t[x] - t[x - 1];
+
+        if (step === -2)
+          t[x] = t[x - 1] - 1 <= limit(x) ? t[x - 1] - 1 : t[x - 1] - 3;
+        else if (step === 2)
+          for (const want of [t[x - 1] + 1, t[x - 1] + 3])
+            if (want <= limit(x)) {
+              t[x] = want;
+              break;
+            }
+      }
+
+      return t;
+    },
+
+    treads: (input: number[], length: number): number[] => {
+      const t = [...input];
+      const steep = (x: number) =>
+        t[x] > CONTOUR_GONE &&
+        t[x + 1] > CONTOUR_GONE &&
+        Math.abs(t[x + 1] - t[x]) >= 2;
+
+      let x = 0;
+
+      while (x < t.length - 1) {
+        if (!steep(x) || !steep(x + 1)) {
+          x++;
+          continue;
+        }
+
+        let end = x + 1;
+        while (end < t.length - 1 && steep(end)) end++;
+
+        for (let start = x; start <= end; start += length) {
+          let stop = Math.min(start + length - 1, end);
+          if (end - stop === 1) stop = end;
+
+          let top = Infinity;
+          for (let i = start; i <= stop; i++) top = Math.min(top, t[i]);
+          for (let i = start; i <= stop; i++) t[i] = top;
+
+          if (stop === end) break;
+        }
+
+        x = end + 1;
+      }
+
+      return t;
+    },
+
+    bridge: (input: number[], limit: (x: number) => number): number[] => {
+      const t = [...input];
+      const live: number[] = [];
+
+      for (let x = 0; x < t.length; x++) if (t[x] > CONTOUR_GONE) live.push(x);
+
+      for (let i = 0; i < live.length - 1; i++) {
+        const left = live[i];
+        const right = live[i + 1];
+        const span = right - left;
+
+        if (span < 2) continue;
+
+        for (let x = left + 1; x < right; x++) {
+          const cap = limit(x);
+          const blend = t[left] + ((t[right] - t[left]) * (x - left)) / span;
+
+          t[x] = cap < 1 ? CONTOUR_GONE : Math.max(1, Math.min(Math.round(blend), cap));
+        }
+      }
+
+      return t;
+    },
+  },
+
+  masks: {
+    erode: (input: Uint8Array, width: number, height: number): Uint8Array => {
+      const mask = input.slice();
+      const at = (x: number, y: number) =>
+        x >= 0 && y >= 0 && x < width && y < height && mask[y * width + x] === 1;
+
+      while (true) {
+        const thin: number[] = [];
+
+        for (let y = 0; y < height; y++)
+          for (let x = 0; x < width; x++)
+            if (
+              at(x, y) &&
+              ((!at(x, y - 1) && !at(x, y + 1)) || (!at(x - 1, y) && !at(x + 1, y)))
+            )
+              thin.push(y * width + x);
+
+        if (!thin.length) return mask;
+        for (const i of thin) mask[i] = 0;
+      }
+    },
+
+    fillHoles: (
+      input: Uint8Array,
+      eligible: Uint8Array,
+      width: number,
+      height: number,
+      most: number,
+    ): Uint8Array => {
+      const mask = input.slice();
+      const seen = new Uint8Array(width * height);
+
+      for (let start = 0; start < mask.length; start++) {
+        if (mask[start] || !eligible[start] || seen[start]) continue;
+
+        const stack = [start];
+        const blob: number[] = [];
+        let open = false;
+
+        seen[start] = 1;
+
+        while (stack.length) {
+          const i = stack.pop()!;
+          blob.push(i);
+
+          const x = i % width;
+          const y = (i / width) | 0;
+
+          for (const { dx, dy } of DIRECTIONS_CARDINAL) {
+            const nx = x + dx;
+            const ny = y + dy;
+            const n = ny * width + nx;
+
+            if (nx < 0 || ny < 0 || nx >= width || ny >= height || !eligible[n]) {
+              open = true;
+              continue;
+            }
+
+            if (input[n] || seen[n]) continue;
+
+            seen[n] = 1;
+            stack.push(n);
+          }
+        }
+
+        if (!open && blob.length <= most) for (const i of blob) mask[i] = 1;
+      }
+
+      return mask;
+    },
+
+    slivers: (
+      input: Uint8Array,
+      width: number,
+      height: number,
+      least: number,
+    ): Uint8Array => {
+      const mask = input.slice();
+      const seen = new Uint8Array(width * height);
+
+      for (let start = 0; start < mask.length; start++) {
+        if (!mask[start] || seen[start]) continue;
+
+        const stack = [start];
+        const blob: number[] = [];
+
+        seen[start] = 1;
+
+        while (stack.length) {
+          const i = stack.pop()!;
+          blob.push(i);
+
+          const x = i % width;
+          const y = (i / width) | 0;
+
+          for (const { dx, dy } of DIRECTIONS_CARDINAL) {
+            const nx = x + dx;
+            const ny = y + dy;
+            const n = ny * width + nx;
+
+            if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
+            if (!mask[n] || seen[n]) continue;
+
+            seen[n] = 1;
+            stack.push(n);
+          }
+        }
+
+        if (blob.length < least) for (const i of blob) mask[i] = 0;
+      }
+
+      return mask;
+    },
   },
 
   rooms: {

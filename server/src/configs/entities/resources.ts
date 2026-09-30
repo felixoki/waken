@@ -261,6 +261,36 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1,
     },
   },
+  [EntityName.ANCIENT_TROLL_HEART]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 17, end: 18 },
+            { row: 2, start: 17, end: 18 },
+          ],
+        },
+        key: "ancient_troll_heart_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Ancient troll heart",
+      description: "Still warm, and heavier than any heart should be.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 2, col: 16 },
+      weight: 1,
+    },
+  },
   [EntityName.FOX_PELT]: {
     facing: Direction.DOWN,
     moving: [],
@@ -348,6 +378,36 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "Jagged claws torn from a filthy sewer rat.",
       stackable: true,
       icon: { spritesheet: "icons3", row: 18, col: 13 },
+      weight: 0.05,
+    },
+  },
+  [EntityName.ERGOT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 13, start: 14, end: 15 },
+            { row: 14, start: 14, end: 15 },
+          ],
+        },
+        key: "ergot_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Ergot",
+      description: "Dark, spur-shaped fungus picked from spoiled grain.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 14, col: 13 },
       weight: 0.05,
     },
   },

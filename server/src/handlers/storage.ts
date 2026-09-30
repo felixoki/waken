@@ -76,6 +76,19 @@ export const storage = {
     return slots.map((s) => (s ? { ...s } : null));
   },
 
+  pick<T extends { chance: number }>(entries: T[]): T {
+    let total = 0;
+    for (const e of entries) total += e.chance;
+
+    let r = Math.random() * total;
+    for (const e of entries) {
+      r -= e.chance;
+      if (r <= 0) return e;
+    }
+
+    return entries[entries.length - 1];
+  },
+
   open: (data: { entityId: string }, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
     const entity = world.entities.get(data.entityId);
@@ -92,12 +105,21 @@ export const storage = {
 
       let storing: (Item | null)[] = new Array(slots).fill(null);
 
-      if (entity.loot)
+      if (entity.loot?.length) {
+        let rolled = false;
+
         for (const entry of entity.loot) {
           if (Math.random() > entry.chance) continue;
           const { chance, ...item } = entry;
           storing = storage.add(storing, item);
+          rolled = true;
         }
+
+        if (!rolled) {
+          const { chance, ...item } = storage.pick(entity.loot);
+          storing = storage.add(storing, item);
+        }
+      }
 
       entity.storing = storing;
     }

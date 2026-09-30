@@ -23,6 +23,7 @@ export enum AmbienceLayer {
   DAYCYCLE = "daycycle",
   WEATHER = "weather",
   LIGHTNING = "lightning",
+  CLIMATE = "climate",
 }
 
 export enum WeatherName {
@@ -37,6 +38,10 @@ export interface WeatherState {
   remaining: number;
   lightning: number;
   soaked: number;
+}
+
+export interface ClimateState {
+  chilled: number;
 }
 
 export interface MapAmbienceConfig {

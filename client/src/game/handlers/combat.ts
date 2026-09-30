@@ -1,4 +1,5 @@
 import {
+  AttackConfig,
   ComponentName,
   Direction,
   DirectionVectors,
@@ -7,6 +8,7 @@ import {
   Event,
   SlotType,
   SpellConfig,
+  SpellName,
   StateName,
 } from "@server/types";
 import { Entity } from "../Entity";
@@ -18,7 +20,6 @@ import { handlers } from ".";
 import EventBus from "../EventBus";
 import { vfx } from "../vfx";
 import type { Scene } from "../scenes/Scene";
-import type { Villain } from "../Villain";
 
 export const combat = {
   resolve: (entity: Entity): SpellConfig | null => {
@@ -40,8 +41,15 @@ export const combat = {
       ? EntityName.DRAGON
       : entity.name;
 
-    const pending = (entity as Villain).spell;
-    if (pending) return configs.spells[pending] ?? null;
+    const pending = entity.spell;
+
+    if (pending) {
+      const spell = configs.spells[pending];
+      if (!spell) return null;
+
+      const attack = handlers.combat.attack(entity, pending);
+      return attack?.damage ? { ...spell, damage: attack.damage } : spell;
+    }
 
     const definition = configs.entities[name];
     const attack = definition?.attacks?.find(
@@ -51,6 +59,9 @@ export const combat = {
     if (!attack?.spell) return null;
     return configs.spells[attack.spell] ?? null;
   },
+
+  attack: (entity: Entity, spell: SpellName): AttackConfig | undefined =>
+    configs.entities[entity.name]?.attacks?.find((a) => a.spell === spell),
 
   consume: (entity: Entity, config: SpellConfig): boolean => {
     const player = entity.scene.managers.players.get(entity.id);
@@ -107,6 +118,12 @@ export const combat = {
     const hitbox = obj2 as Hitbox;
 
     if (hitbox.clearance !== undefined && entity.z > hitbox.clearance) return;
+
+    if (hitbox.inner) {
+      const dx = entity.body.center.x - hitbox.x;
+      const dy = entity.body.center.y - hitbox.y;
+      if (dx * dx + dy * dy < hitbox.inner * hitbox.inner) return;
+    }
 
     const isAuthority = entity.scene.managers.players?.player?.isAuthority;
 

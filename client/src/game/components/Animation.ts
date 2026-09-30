@@ -8,12 +8,14 @@ import {
 import { Entity } from "../Entity";
 import { Component } from "./Component";
 import { configs } from "@server/configs";
+import { SPEED_DEFAULT } from "@server/globals";
 
 export class AnimationComponent extends Component {
   private entity: Entity;
   private config: Partial<Record<StateName, AnimationConfig>>;
   private variant: string | null = null;
   private skin: string | null = null;
+  private speed: number;
 
   public name = ComponentName.ANIMATION;
 
@@ -24,6 +26,7 @@ export class AnimationComponent extends Component {
     super();
     this.entity = entity;
     this.config = config;
+    this.speed = configs.entities[entity.name]?.speed ?? SPEED_DEFAULT;
   }
 
   attach(): void {
@@ -69,6 +72,11 @@ export class AnimationComponent extends Component {
     if (this.entity.texture.key !== textureKey)
       this.entity.setTexture(textureKey);
 
+    this.entity.anims.timeScale =
+      state === StateName.WALKING || state === StateName.RUNNING
+        ? this.speed
+        : 1;
+
     if (this.entity.anims.currentAnim?.key !== animKey)
       this.entity.play(animKey);
   }
@@ -98,6 +106,8 @@ export class AnimationComponent extends Component {
 
     if (this.entity.texture.key !== textureKey)
       this.entity.setTexture(textureKey);
+
+    this.entity.anims.timeScale = 1;
 
     if (this.entity.anims.currentAnim?.key !== animKey)
       this.entity.play(animKey);

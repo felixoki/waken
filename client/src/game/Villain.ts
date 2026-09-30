@@ -5,19 +5,18 @@ import {
   Input,
   StateName,
   DragonAction,
-  SpellName,
   Stuck,
 } from "@server/types";
 import { StateFactory } from "./factory/State";
 import { Scene } from "./scenes/Scene";
 import { ComponentFactory } from "./factory/Component";
 import { handlers } from "./handlers";
+import { SPEED_DEFAULT } from "@server/globals";
 
 export class Villain extends Entity {
   public isTransforming: boolean = false;
   public actions: DragonAction[] = [];
   public engagements: number = 0;
-  public spell: SpellName | null = null;
   public stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
@@ -40,6 +39,7 @@ export class Villain extends Entity {
 
     this.createdAt = def.createdAt;
     this.maxHealth = def.maxHealth ?? def.health;
+    this.speed = def.speed ?? SPEED_DEFAULT;
 
     this._setup(def);
   }
@@ -62,10 +62,5 @@ export class Villain extends Entity {
     if (!input) return null;
 
     return { ...input, id: this.id, x: this.x, y: this.y };
-  }
-
-  protected _changed(input: Partial<Input>): boolean {
-    if (input.state === StateName.CASTING) return true;
-    return super._changed(input);
   }
 }

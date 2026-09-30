@@ -33,6 +33,7 @@ export class TilesetLoader {
       if (!props.role || props.role !== query.role) return false;
       if (query.position && props.position !== query.position) return false;
       if (query.terrain && props.terrain !== query.terrain) return false;
+      if (query.over && props.over && props.over !== query.over) return false;
 
       return true;
     });

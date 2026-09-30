@@ -48,6 +48,7 @@ export enum ComponentName {
   TRAP = "trap",
   TRACKABLE = "trackable",
   TRAIL = "trail",
+  TREAD = "tread",
   TAMABLE = "tamable",
   SLEEPABLE = "sleepable",
   SKIN = "skin",

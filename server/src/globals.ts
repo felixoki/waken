@@ -24,6 +24,7 @@ export const SPEED_FLYING = 150;
 export const SPEED_JUMPING = 100;
 export const SPEED_ROLLING = 120;
 export const SPEED_DASHING = 1200;
+export const SPEED_DEFAULT = 1;
 
 export const HEIGHT_JUMPING = 40;
 export const HEIGHT_FLYING = 32;
@@ -86,6 +87,56 @@ export const WETNESS_SOAK_DURATION = 75_000;
 export const WETNESS_DRY_DURATION = 45_000;
 export const WETNESS_RAIN = 0.8;
 export const WETNESS_STORM = 1.0;
+
+/** Snow */
+export const SNOW_CLOUDY = 0.5;
+export const SNOW_RAIN = 1;
+export const SNOW_STORM = 1.6;
+export const SNOW_DENSITY = 0.5;
+export const SNOW_SPEED = 1;
+export const SNOW_SCALE = 1;
+export const SNOW_DRIFT = 1;
+export const SNOW_COOLNESS = 0.2;
+export const SNOW_COLOR: [number, number, number] = [1.0, 1.0, 1.0];
+
+/** Surfaces */
+export const SURFACE_OFFSET = 8;
+export const TREAD_FEET = 4;
+export const PATH_WIDTH = 9;
+export const PATH_JITTER = 2.2;
+export const PATH_SPILL = 0.22;
+export const PATH_ALPHA = 0.8;
+export const PATH_FLOOR = 0xb7cbd0;
+export const PATH_SHADE = 0x9db3ba;
+export const PATH_WALL = 0x8ba1ab;
+export const PATH_RIM = 0xd6e4e7;
+export const PATH_FADE_INTERVAL = 400;
+export const PATH_FADE_ALPHA = 0.02;
+export const PATH_TEXTURE = "path";
+export const PATH_BRUSHES = 8;
+export const PATH_CLUMPS = 4;
+export const PATH_CELL = PATH_WIDTH + 6;
+
+/** Kicked snow */
+export const KICK_SPACING = 9;
+export const KICK_COUNT = 2;
+export const KICK_SPEED = 34;
+export const KICK_LIFT = 26;
+export const KICK_SPREAD = 0.8;
+export const KICK_LIFESPAN = 420;
+export const KICK_GRAVITY = 260;
+export const KICK_DEPTH = 999;
+
+/** Climate */
+export const CLIMATE_RADIUS = 4;
+export const CLIMATE_EASE = 1_800;
+export const FROST_ON = 0.6;
+export const FROST_OFF = 0.4;
+export const FROST_EASE = 600;
+
+/** Cold */
+export const COLD_INTERVAL = 1_000;
+export const COLD_DURATION = 5_000;
 
 /** Wet sheen on entities */
 export const SHEEN_DARKEN = 0.72;
@@ -167,12 +218,20 @@ export const ROCK_HITBOX_DURATION = 200;
 export const ROCK_MAX_THROW_RANGE = 200;
 export const ROCK_INACCURACY_SCALE = 0.1;
 
+export const FIRE_WAVE_THICKNESS = 20;
+export const FIRE_WAVE_CLEARANCE = 12;
+
 export const RANGE_SLASHING = 40;
 export const RANGE_INTERACTING = 100;
 export const RANGE_HITBOX_DETECTION = 100;
 
 /** Vision */
 export const VISION_PROXIMITY = 200;
+export const PATH_DEADZONE = 2;
+export const LINE_INTERVAL = 150;
+export const PATH_MARGIN = 1;
+export const PATH_ARRIVAL = 4;
+export const PATH_SNAP = 4;
 
 export const DISTANCE_DASHING = (SPEED_DASHING * DURATION_DASHING) / 1000;
 
@@ -303,3 +362,15 @@ export const DUNGEON_LADDER_TORCH_CLEARANCE = 4;
 
 export const TRANSFORM_RANGE = 50;
 export const DRAGON_FORM_DURATION = 10000;
+
+/** Terraces */
+
+export const CONTOUR_GONE = -2;
+export const CONTOUR_REACH = 2;
+export const LEDGE_CLEARANCE = 20;
+export const STAIR_SPACING = 14;
+export const PATCH_MIN_SIZE = 14;
+export const PATCH_MAX_HOLE = 40;
+export const PATCH_GAP = 2;
+export const PEAK_CLEARANCE = 3;
+export const SEAM_MARGIN = 8;

@@ -1,5 +1,6 @@
 import { configs } from "../../configs";
 import { handlers } from "../../handlers";
+import { BodyConfig, ComponentName, TextureConfig } from "../../types";
 import {
   BiomeConfig,
   Entity,
@@ -11,17 +12,31 @@ import { NoiseGenerator } from "../generators/Noise";
 export class EntitySpawner {
   private config: BiomeConfig;
   private seed: string;
+  private elevation?: Uint8Array;
+  private within?: Uint8Array;
+  private blocked?: Uint8Array;
+  private footprints = new Map<SpawnRule, [number, number][]>();
 
   constructor(config: BiomeConfig, seed: string) {
     this.config = config;
     this.seed = seed;
   }
 
-  spawn(terrain: TerrainName[], spawn: { x: number; y: number }): Entity[] {
+  spawn(
+    terrain: TerrainName[],
+    spawn: { x: number; y: number },
+    elevation?: Uint8Array,
+    blocked?: Uint8Array,
+    within?: Uint8Array,
+  ): Entity[] {
     const { width, height, tileHeight, tileWidth } = this.config;
     const gen = handlers.generation;
     const entities: Entity[] = [];
     const occupied = new Set<number>();
+
+    this.elevation = elevation;
+    this.within = within;
+    this.blocked = blocked;
 
     this._reserve(
       occupied,
@@ -48,10 +63,7 @@ export class EntitySpawner {
 
       for (let y = 0; y < height; y++)
         for (let x = 0; x < width; x++) {
-          const index = gen.toIndex(x, y, width);
-
-          if (occupied.has(index)) continue;
-          if (!rule.terrain.includes(terrain[index])) continue;
+          if (!this._fitsAt(x, y, rule, terrain, occupied)) continue;
           if (
             rule.wallAdjacent &&
             !this._nearWall(x, y, terrain, rule.terrain)
@@ -84,8 +96,10 @@ export class EntitySpawner {
             loot: rule.loot,
           });
 
-          if (rule.group)
+          if (rule.group) {
+            occupied.add(gen.toIndex(x, y, width));
             this._spawnGroup(x, y, r, hash, rule, terrain, entities, occupied);
+          }
 
           this._reserve(occupied, x, y, rule.spacing);
         }
@@ -117,9 +131,7 @@ export class EntitySpawner {
         height,
         (sx, sy) => {
           if (Math.abs(sx - x) + Math.abs(sy - y) > radius) return false;
-          const index = gen.toIndex(sx, sy, width);
-          if (occupied.has(index)) return false;
-          return rule.terrain.includes(terrain[index]);
+          return this._fitsAt(sx, sy, rule, terrain, occupied);
         },
         radius,
       );
@@ -155,9 +167,7 @@ export class EntitySpawner {
 
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++) {
-        const index = gen.toIndex(x, y, width);
-        if (occupied.has(index)) continue;
-        if (!rule.terrain.includes(terrain[index])) continue;
+        if (!this._fitsAt(x, y, rule, terrain, occupied)) continue;
         if (
           rule.margin &&
           !gen.hasTerrainMargin(
@@ -187,7 +197,7 @@ export class EntitySpawner {
     let placed = 0;
     for (const { x, y } of candidates) {
       if (placed >= target) break;
-      if (occupied.has(gen.toIndex(x, y, width))) continue;
+      if (!this._fitsAt(x, y, rule, terrain, occupied)) continue;
 
       const hash = gen.spatialHash(x, y, r);
       const name = rule.entities[hash % rule.entities.length];
@@ -201,11 +211,87 @@ export class EntitySpawner {
       });
       placed++;
 
-      if (rule.group)
+      if (rule.group) {
+        occupied.add(gen.toIndex(x, y, width));
         this._spawnGroup(x, y, r, hash, rule, terrain, entities, occupied);
+      }
 
       this._reserve(occupied, x, y, rule.spacing);
     }
+  }
+
+  private _fitsAt(
+    x: number,
+    y: number,
+    rule: SpawnRule,
+    terrain: TerrainName[],
+    occupied: Set<number>,
+  ): boolean {
+    const { width, height } = this.config;
+
+    if (occupied.has(y * width + x)) return false;
+
+    for (const [dx, dy] of this._footprint(rule)) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx < 0 || ny < 0 || nx >= width || ny >= height) return false;
+
+      const index = ny * width + nx;
+      if (this.blocked?.[index] || !this._fits(index, rule, terrain)) return false;
+    }
+
+    return true;
+  }
+
+  private _footprint(rule: SpawnRule): [number, number][] {
+    const cached = this.footprints.get(rule);
+    if (cached) return cached;
+
+    const { tileWidth, tileHeight } = this.config;
+    const cells = new Map<string, [number, number]>([["0,0", [0, 0]]]);
+
+    for (const name of rule.entities) {
+      const definition = configs.entities[name];
+      const texture = definition?.components.find(
+        (c) => c.name === ComponentName.TEXTURE,
+      )?.config as TextureConfig | undefined;
+      const body = definition?.components.find(
+        (c) => c.name === ComponentName.BODY,
+      )?.config as BodyConfig | undefined;
+
+      if (!texture || !body) continue;
+
+      const w =
+        Math.max(...texture.tiles.map((t) => t.end - t.start + 1)) * texture.tileSize;
+      const h = texture.tiles.length * texture.tileSize;
+      const left = tileWidth / 2 + (definition?.offset?.x ?? 0) - w / 2 + body.offsetX;
+      const top = tileHeight / 2 + (definition?.offset?.y ?? 0) - h / 2 + body.offsetY;
+
+      for (
+        let ty = Math.floor(top / tileHeight);
+        ty <= Math.floor((top + body.height - 1) / tileHeight);
+        ty++
+      )
+        for (
+          let tx = Math.floor(left / tileWidth);
+          tx <= Math.floor((left + body.width - 1) / tileWidth);
+          tx++
+        )
+          cells.set(`${tx},${ty}`, [tx, ty]);
+    }
+
+    const footprint = [...cells.values()];
+    this.footprints.set(rule, footprint);
+    return footprint;
+  }
+
+  private _fits(index: number, rule: SpawnRule, terrain: TerrainName[]): boolean {
+    if (this.within && !this.within[index]) return false;
+    if (!rule.terrain.includes(terrain[index])) return false;
+    if (!rule.elevation || !this.elevation) return true;
+
+    const level = this.elevation[index];
+    return level >= rule.elevation.min && level <= rule.elevation.max;
   }
 
   private _reserve(
