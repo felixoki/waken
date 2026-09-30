@@ -370,6 +370,20 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons5", row: 2, col: 9 },
     },
   },
+  [SpellName.FIRE_WAVE]: {
+    name: SpellName.FIRE_WAVE,
+    sounds: {},
+    damage: { type: DamageType.BURNING, amount: 12 },
+    knockback: 60,
+    mana: 0,
+    duration: 500,
+    radius: 80,
+    effects: [[EffectName.BURNING, 3000]],
+    metadata: {
+      description: "A ring of fire bursts outward from the caster.",
+      displayName: "Fire wave",
+    },
+  },
   [SpellName.BITE]: {
     name: SpellName.BITE,
     sounds: { cast: SoundName.SLASH },
