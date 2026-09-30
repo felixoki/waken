@@ -191,14 +191,26 @@ export function Item({
               (c) => c.name === ComponentName.CONSUMABLE,
             );
             if (!comp || comp.name !== ComponentName.CONSUMABLE) return null;
-            const { effect, restore } = comp.config;
-            if (!effect && !restore?.health && !restore?.mana) return null;
+            const { effect, restore, unlock } = comp.config;
+            if (
+              !effect &&
+              !restore?.health &&
+              !restore?.mana &&
+              unlock === undefined
+            )
+              return null;
             return (
               <div className="mt-2 flex flex-col gap-1 text-xs">
                 {effect && (
                   <div className="flex justify-between">
                     <span className="text-white/50">Effect</span>
                     <span className="text-white capitalize">{effect}</span>
+                  </div>
+                )}
+                {unlock !== undefined && (
+                  <div className="flex justify-between">
+                    <span className="text-white/50">Effect</span>
+                    <span className="text-white">Expands dream depth</span>
                   </div>
                 )}
                 {restore?.health && (

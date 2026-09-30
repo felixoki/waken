@@ -41,6 +41,7 @@ export function Economy() {
   );
   const canAffordUpgrade =
     !!upgradeConfig &&
+    snapshot.canUpgrade &&
     upgradeConfig.requirements.every(
       (req) => (store[req.item] ?? 0) >= req.quantity,
     );
@@ -99,6 +100,11 @@ export function Economy() {
               />
             ))}
           </ul>
+          {!snapshot.canUpgrade && (
+            <p className="text-white/50 text-xs mb-2">
+              Every villager need must be stocked first
+            </p>
+          )}
           <button
             disabled={!canAffordUpgrade}
             onClick={upgradeEconomy}

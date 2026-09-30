@@ -49,7 +49,9 @@ export const PartyPanel = () => {
             className="rounded bg-black/25 px-2 py-0.5 text-xs text-white/70"
             title="Dream depth"
           >
-            Depth {party.unlocked + 1}/{levels.length}
+            Depth{" "}
+            {levels.filter((l) => (l.requires ?? 0) <= party.unlocked).length}/
+            {levels.length}
           </span>
         </div>
         <ul className="flex flex-col gap-1">
@@ -84,7 +86,9 @@ export const PartyPanel = () => {
             className="rounded bg-black/25 px-2 py-0.5 text-xs text-white/70"
             title="Dream depth"
           >
-            Depth {party.unlocked + 1}/{levels.length}
+            Depth{" "}
+            {levels.filter((l) => (l.requires ?? 0) <= party.unlocked).length}/
+            {levels.length}
           </span>
         </div>
         <ul className="flex flex-col gap-1">
