@@ -1,24 +1,44 @@
-import { forest, dungeon, cave } from "../configs/biomes";
+import { forest, dungeon, cave, mountain } from "../configs/biomes";
 import { TilesetLoader } from "../loaders/Tileset";
-import { BiomeConfig } from "../types/generation";
+import { BiomeConfig, BiomeName, LevelBiome } from "../types/generation";
 import { MapBuilder } from "./builders/Map";
 
 const loader = new TilesetLoader();
 
-const biomes: Record<string, BiomeConfig> = {
-  forest,
-  dungeon,
-  cave
+const biomes: Record<BiomeName, BiomeConfig> = {
+  [BiomeName.FOREST]: forest,
+  [BiomeName.DUNGEON]: dungeon,
+  [BiomeName.CAVE]: cave,
+  [BiomeName.MOUNTAIN]: mountain,
 };
 
-export function generateBiome(id: string, seed?: string, unlocked = 0) {
-  const config = biomes[id];
-  if (!config) return;
+export function generateBiome(
+  slots: LevelBiome[],
+  seed?: string,
+  unlocked = 0,
+) {
+  const active = slots.filter((s) => (s.requires ?? 0) <= unlocked);
+  if (!active.length) return;
 
-  const seeded = seed
-    ? { ...config, noise: { ...config.noise, seed } }
-    : config;
+  const host = Math.max(
+    0,
+    active.findIndex((s) => s.spawn),
+  );
 
-  const builder = new MapBuilder(seeded, loader, seed ?? "default", unlocked);
+  const configs = active.map(({ biome }, i) => {
+    const config = biomes[biome];
+    if (!seed) return config;
+
+    const noise = i === host ? seed : `${seed}-${biome}`;
+    return { ...config, noise: { ...config.noise, seed: noise } };
+  });
+
+  const builder = new MapBuilder(
+    configs,
+    host,
+    loader,
+    seed ?? "default",
+    unlocked,
+  );
   return builder.build();
 }

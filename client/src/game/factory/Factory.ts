@@ -10,6 +10,7 @@ import { StateFactory } from "./State";
 import { ComponentFactory } from "./Component";
 import { BehaviorQueue } from "../components/BehaviorQueue";
 import { BehaviorFactory } from "./Behavior";
+import { SPEED_DEFAULT } from "@server/globals";
 
 export class Factory {
   static create(
@@ -34,6 +35,7 @@ export class Factory {
 
     entity.createdAt = definition.createdAt;
     entity.maxHealth = definition.maxHealth;
+    entity.speed = definition.speed ?? SPEED_DEFAULT;
     entity.isLocked = definition.isLocked;
     entity.tame = definition.tame ? { ...definition.tame } : {};
 

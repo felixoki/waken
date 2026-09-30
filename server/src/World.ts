@@ -10,6 +10,7 @@ import {
   TimeState,
   WeatherName,
   WeatherState,
+  ClimateState,
 } from "./types/index.js";
 import { EconomyManager } from "./managers/Economy";
 import {
@@ -21,6 +22,7 @@ import { Server } from "socket.io";
 import { ChunkManager } from "./managers/Chunk";
 import { AuthorityManager } from "./managers/Authority";
 import { ZoneManager } from "./managers/Zone";
+import { SurfaceManager } from "./managers/Surface";
 import { combat } from "./handlers/combat.js";
 import { handlers } from "./handlers/index.js";
 import { SublevelStore } from "./stores/Sublevel.js";
@@ -34,6 +36,7 @@ export class World {
     lightning: 0,
     soaked: 0,
   };
+  public climate: ClimateState = { chilled: 0 };
 
   public readonly players: PlayerStore;
   public readonly entities: EntityStore;
@@ -44,7 +47,9 @@ export class World {
   public readonly chunks: ChunkManager;
   public readonly authority: AuthorityManager;
   public readonly zones: ZoneManager;
+  public readonly surfaces: SurfaceManager;
   public readonly affected: Set<string> = new Set();
+  public readonly chilled: Set<string> = new Set();
 
   public server: Server;
   public economy: EconomyManager;
@@ -61,6 +66,7 @@ export class World {
     this.chunks = new ChunkManager();
     this.authority = new AuthorityManager();
     this.zones = new ZoneManager();
+    this.surfaces = new SurfaceManager();
 
     this.economy = new EconomyManager(this.items);
   }
@@ -73,6 +79,8 @@ export class World {
       .forEach(([name, config]) => {
         const tilemap = loader.load(config.json);
         const entities = loader.parseEntities(name as MapName, tilemap);
+
+        this.surfaces.register(name as MapName, tilemap);
 
         entities.forEach((entity) => {
           this.entities.add(entity.id, entity);
@@ -97,6 +105,7 @@ export class World {
     }
 
     handlers.weather.tick(delta, this, this.server);
+    handlers.climate.tick(this, this.server, Date.now());
 
     handlers.player.regen(delta, this);
 

@@ -8,6 +8,7 @@ import {
   MapName,
   Party,
   PartyStatus,
+  TiledMap,
   Transition,
 } from "../types";
 import { Landmark } from "../types/generation.js";
@@ -96,6 +97,7 @@ export const party = {
       );
 
       handlers.sublevel.teardown(entityIds, socket, io, world);
+      world.surfaces.release(data.id);
 
       for (const entityId of entityIds)
         handlers.entity.remove(
@@ -245,11 +247,11 @@ export const party = {
     let tilemap: unknown = null;
     let landmarks: Landmark[] = [];
 
-    if (level.biome) {
+    if (level.biomes) {
       const seed = `${data.id}-${data.depth}-${Date.now()}`;
 
       const { data: biome, error } = await tryCatch(
-        handlers.generation.start(level.biome, seed, data.unlocked),
+        handlers.generation.start(level.biomes, seed, data.unlocked),
       );
 
       if (error || !biome) {
@@ -258,6 +260,7 @@ export const party = {
       }
 
       spawn = biome.spawn;
+      world.surfaces.register(level.map, biome.tilemap as TiledMap, data.id);
       tilemap = biome.tilemap;
       landmarks = biome.entities
         .filter((e) => configs.landmarks.has(e.name))
@@ -458,11 +461,17 @@ export const party = {
     const data = world.parties.getByPlayerId(player.id);
     if (!data || data.status !== PartyStatus.IN_GAME) return false;
 
-    const next = levels[data.depth + 1];
-    if (!next || transition.to !== next.map) return false;
+    const next = levels.find(
+      (level) =>
+        level.depth > data.depth &&
+        level.map === transition.to &&
+        (level.requires ?? 0) <= data.unlocked,
+    );
+    if (!next) return false;
 
-    const prevMap = levels[data.depth].map;
-    data.depth += 1;
+    const prevDepth = data.depth;
+    const prevMap = levels[prevDepth].map;
+    data.depth = next.depth;
 
     const map = levels[data.depth].map;
     socket.emit(Event.PARTY_START_LOADING, map);
@@ -471,7 +480,7 @@ export const party = {
     const ok = await party.enter(io, world, data);
 
     if (!ok) {
-      data.depth -= 1;
+      data.depth = prevDepth;
       return false;
     }
 
@@ -481,6 +490,7 @@ export const party = {
       );
 
       handlers.sublevel.teardown(entityIds, socket, io, world);
+      world.surfaces.release(data.id, prevMap);
 
       for (const entityId of entityIds)
         handlers.entity.remove(

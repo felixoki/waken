@@ -21,6 +21,7 @@ import { textures } from "./textures";
 import { sound } from "./sound";
 import { fishing } from "./fishing";
 import { sleep } from "./sleep";
+import { snow } from "./snow";
 
 export const handlers = {
   state,
@@ -46,4 +47,5 @@ export const handlers = {
   sound,
   fishing,
   sleep,
+  snow,
 };

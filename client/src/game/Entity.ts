@@ -16,6 +16,7 @@ import { EntityName } from "@server/types";
 import { Scene } from "./scenes/Scene";
 import { BehaviorQueue } from "./components/BehaviorQueue";
 import { handlers } from "./handlers";
+import { SPEED_DEFAULT } from "@server/globals";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
@@ -28,9 +29,10 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public maxHealth: number = 100;
   public mana: number = 100;
   public maxMana: number = 100;
-  public speed: number = 1;
+  public speed: number = SPEED_DEFAULT;
   public createdAt: number = 0;
   public target?: { x: number; y: number; id?: string };
+  public spell: SpellName | null = null;
   public pointerdown: boolean = false;
   public knockback?: Phaser.Time.TimerEvent;
   public flash?: Phaser.Tweens.Tween;
@@ -99,8 +101,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (input.moving) this.setMoving(input.moving);
     if (input.target) this.setTarget(input.target);
 
-    if (input.spell !== undefined)
-      (this as unknown as { spell: SpellName | null }).spell = input.spell;
+    if (input.spell !== undefined) this.spell = input.spell;
 
     if (state !== this.state) this.transitionTo(state);
     else this.states?.get(this.state)?.update(this);
@@ -129,6 +130,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
   }
 
   protected _changed(input: Partial<Input>): boolean {
+    if (input.state === StateName.CASTING) return true;
+
     const last = this.lastInput;
     if (!last) return true;
 

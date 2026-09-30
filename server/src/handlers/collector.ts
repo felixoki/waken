@@ -59,7 +59,7 @@ export const collector = {
   upgrade: (_socket: Socket, io: Server, world: World) => {
     const nextTier = world.economy.getTier() + 1;
     const upgrade = configs.tiers.find((t) => t.tier === nextTier);
-    if (!upgrade) return;
+    if (!upgrade || !world.economy.canUpgrade()) return;
 
     const canAfford = upgrade.requirements.every((req) =>
       world.items.has(req.item, req.quantity),

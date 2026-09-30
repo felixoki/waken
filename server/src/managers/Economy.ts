@@ -95,6 +95,19 @@ export class EconomyManager {
     this.dirty = true;
   }
 
+  canUpgrade(): boolean {
+    for (const need of this.needs.values()) {
+      if (need.tier > this.tier) continue;
+      if (this.getSupply(need) < need.low) return false;
+
+      for (const item of need.items)
+        if (item.tier <= this.tier && this.supply.get(item.item) < 1)
+          return false;
+    }
+
+    return true;
+  }
+
   isLow(name: NeedName): boolean {
     const need = this.needs.get(name);
     if (!need || need.tier > this.tier) return false;
@@ -135,6 +148,6 @@ export class EconomyManager {
       needs.push({ name: need.name, items });
     });
 
-    return { tier: this.tier, needs };
+    return { tier: this.tier, canUpgrade: this.canUpgrade(), needs };
   }
 }
