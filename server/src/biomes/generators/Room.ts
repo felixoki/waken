@@ -45,8 +45,6 @@ export class RoomGenerator {
     entities: Entity[];
     spawn?: { x: number; y: number };
     exit?: { x: number; y: number };
-    descent?: { x: number; y: number };
-    descents?: { x: number; y: number }[];
     doors: DoorAnchor[];
   } {
     const { width, height } = this.config;
@@ -307,18 +305,6 @@ export class RoomGenerator {
       }
     }
 
-    let deepest = 0;
-    for (let i = 1; i < depths.length; i++)
-      if (depths[i] > depths[deepest]) deepest = i;
-
-    const deepRoom = this.rooms[deepest];
-    const descent = deepRoom
-      ? {
-          x: (deepRoom.x + Math.floor(deepRoom.width / 2)) * tileWidth,
-          y: (deepRoom.y + Math.floor(deepRoom.height / 2)) * tileHeight,
-        }
-      : undefined;
-
     const fish = this.config.rooms?.water?.fish;
 
     if (fish?.length)
@@ -343,7 +329,7 @@ export class RoomGenerator {
         });
       }
 
-    return { terrain, entities, spawn, exit, descent, doors: this.doors };
+    return { terrain, entities, spawn, exit, doors: this.doors };
   }
 
   private _place() {
