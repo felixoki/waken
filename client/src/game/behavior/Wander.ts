@@ -11,6 +11,7 @@ import {
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
+import { PATH_ARRIVAL } from "@server/globals";
 
 export class WanderBehavior extends Behavior {
   private spawn: Waypoint = { x: 0, y: 0 };
@@ -89,24 +90,9 @@ export class WanderBehavior extends Behavior {
     if (!this.target && !this.path.length) this.target = this._getRandomPoint();
 
     if (this.target && !this.path.length) {
-      const grid = handlers.path.getGrid(entity);
-      if (!grid.length || !entity.scene.tileManager) return {};
+      if (!entity.scene.tileManager) return {};
 
-      const tw = entity.scene.tileManager.map.tileWidth;
-      const th = entity.scene.tileManager.map.tileHeight;
-
-      const start = {
-        x: Math.floor(entity.x / tw),
-        y: Math.floor(entity.y / th),
-      };
-      const end = {
-        x: Math.floor(this.target.x / tw),
-        y: Math.floor(this.target.y / th),
-      };
-
-      this.path =
-        handlers.path.find(grid, start, end, entity.scene.tileManager.map) ||
-        [];
+      this.path = handlers.path.plan(entity, this.target, false) ?? [];
 
       if (!this.path.length) {
         this.target = null;
@@ -115,7 +101,7 @@ export class WanderBehavior extends Behavior {
     }
 
     if (this.path.length) {
-      const input = handlers.path.follow(entity, this.path, 8, false);
+      const input = handlers.path.follow(entity, this.path, PATH_ARRIVAL, false);
 
       if (!input) {
         this.target = null;

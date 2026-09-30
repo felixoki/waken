@@ -12,6 +12,7 @@ import {
 import { Behavior } from "./Behavior";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
+import { PATH_ARRIVAL } from "@server/globals";
 
 export class PatrolBehavior extends Behavior {
   private spawn: Waypoint = { x: 0, y: 0 };
@@ -92,23 +93,9 @@ export class PatrolBehavior extends Behavior {
     if (!this.target && !this.path.length) this.target = this._getRandomPoint();
 
     if (this.target && !this.path.length) {
-      const grid = handlers.path.getGrid(entity);
+      if (!entity.scene.tileManager) return {};
 
-      if (!grid.length || !entity.scene.tileManager) return {};
-
-      const start = {
-        x: Math.floor(entity.x / entity.scene.tileManager.map.tileWidth),
-        y: Math.floor(entity.y / entity.scene.tileManager.map.tileHeight),
-      };
-
-      const end = {
-        x: Math.floor(this.target.x / entity.scene.tileManager.map.tileWidth),
-        y: Math.floor(this.target.y / entity.scene.tileManager.map.tileHeight),
-      };
-
-      this.path =
-        handlers.path.find(grid, start, end, entity.scene.tileManager.map) ||
-        [];
+      this.path = handlers.path.plan(entity, this.target, false) ?? [];
 
       if (!this.path.length) {
         this.target = null;
@@ -117,7 +104,7 @@ export class PatrolBehavior extends Behavior {
     }
 
     if (this.path.length) {
-      const input = handlers.path.follow(entity, this.path, 8, false);
+      const input = handlers.path.follow(entity, this.path, PATH_ARRIVAL, false);
 
       if (!input) {
         this.target = null;
