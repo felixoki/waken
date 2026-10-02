@@ -73,7 +73,12 @@ export const forest: BiomeConfig = {
       threshold: -0.5,
     },
     { terrain: TerrainName.GROUND, tileset: "village_home", threshold: -0.3 },
-    { terrain: TerrainName.GRASS, tileset: "village_home", threshold: null },
+    {
+      terrain: TerrainName.GRASS,
+      tileset: "village_home",
+      threshold: null,
+      surface: SurfaceName.GRASS,
+    },
   ],
 
   borders: [
@@ -294,16 +299,19 @@ export const dungeon: BiomeConfig = {
       terrain: TerrainName.RECESSED,
       tileset: "dungeon_walls_floor",
       threshold: null,
+      surface: SurfaceName.STONE,
     },
     {
       terrain: TerrainName.FLOOR,
       tileset: "dungeon_walls_floor",
       threshold: null,
+      surface: SurfaceName.STONE,
     },
     {
       terrain: TerrainName.ELEVATED,
       tileset: "dungeon_walls_floor",
       threshold: null,
+      surface: SurfaceName.STONE,
     },
   ],
 
@@ -491,16 +499,19 @@ export const cave: BiomeConfig = {
       terrain: TerrainName.RECESSED,
       tileset: "cave_walls_floor",
       threshold: null,
+      surface: SurfaceName.STONE,
     },
     {
       terrain: TerrainName.FLOOR,
       tileset: "cave_walls_floor",
       threshold: null,
+      surface: SurfaceName.STONE,
     },
     {
       terrain: TerrainName.ELEVATED,
       tileset: "cave_walls_floor",
       threshold: null,
+      surface: SurfaceName.STONE,
     },
   ],
 
@@ -614,11 +625,17 @@ export const mountain: BiomeConfig = {
   },
 
   layers: [
-    { terrain: TerrainName.GRASS, tileset: "village_home", threshold: null },
+    {
+      terrain: TerrainName.GRASS,
+      tileset: "village_home",
+      threshold: null,
+      surface: SurfaceName.GRASS,
+    },
     {
       terrain: TerrainName.EARTH,
       tileset: "forest_ground_grass",
       threshold: null,
+      surface: SurfaceName.DIRT,
     },
     {
       terrain: TerrainName.SNOW,

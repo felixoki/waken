@@ -346,12 +346,19 @@ export function Item({
               <span className="text-white font-medium text-sm">Recipe</span>
               {recipe.map((ing, i) => {
                 const ingConfig = configs.entities[ing.item];
-                const ingName = ingConfig?.metadata?.displayName || ing.item;
+                const isSoul = !!ingConfig?.components.some(
+                  (c) => c.name === ComponentName.CAPTURABLE,
+                );
+                const baseName = ingConfig?.metadata?.displayName || ing.item;
+                const ingName = isSoul ? `Soul of ${baseName}` : baseName;
+                const ingIcon = isSoul
+                  ? configs.entities[EntityName.SOULSTONE]?.metadata?.icon
+                  : ingConfig?.metadata?.icon;
                 return (
                   <div key={i} className="flex items-center gap-1.5">
-                    {ingConfig?.metadata?.icon && (
+                    {ingIcon && (
                       <div className="relative shrink-0">
-                        <Icon icon={ingConfig.metadata.icon} zoom={1.5} />
+                        <Icon icon={ingIcon} zoom={1.5} />
                         <span className="absolute -bottom-1 -right-1 bg-black/80 text-white leading-none rounded px-0.5 text-[10px]">
                           {ing.quantity}
                         </span>

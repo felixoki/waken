@@ -710,4 +710,38 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.2,
     },
   },
+  [EntityName.POTION6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { unlock: 3 },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 29, end: 30 },
+            { row: 16, start: 29, end: 30 },
+          ],
+        },
+        key: "potion6_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Skyward",
+      description: "A weightless draught of edelweiss, troll heart and a wandering soul.",
+      stackable: true,
+      icon: { spritesheet: "icons2", row: 16, col: 28 },
+      weight: 0.2,
+    },
+  },
 };

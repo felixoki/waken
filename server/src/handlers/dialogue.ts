@@ -202,19 +202,25 @@ export const dialogue = {
           (item) =>
             item &&
             item.quantity > 0 &&
-            collectorConfig.accepts.includes(item.name) &&
+            collectorConfig.accepts.includes(item.soul ?? item.name) &&
             !handlers.fishing.isFish(item.name!),
         )
         .map((item) => {
+          const key = item!.soul ?? item!.name;
           const displayName =
-            configs.entities[item!.name]?.metadata?.displayName || item!.name;
+            configs.entities[key]?.metadata?.displayName || key;
+          const label = item!.soul ? `Soul of ${displayName}` : displayName;
           return {
-            text: `Give ${displayName} (${item!.quantity})`,
+            text: `Give ${label} (${item!.quantity})`,
             next: NodeId.GREETING,
             effects: [
               {
                 name: DialogueEffectName.ITEM_GIVE,
-                params: { name: item!.name, quantity: item!.quantity },
+                params: {
+                  name: item!.name,
+                  quantity: item!.quantity,
+                  soul: item!.soul,
+                },
               },
             ],
           };

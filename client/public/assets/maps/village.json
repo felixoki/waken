@@ -1011,6 +1011,12 @@
          "id":5,
          "name":"road",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"surface",
+                 "type":"string",
+                 "value":"stone"
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":76,
@@ -1301,6 +1307,12 @@
          "id":6,
          "name":"grass",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"surface",
+                 "type":"string",
+                 "value":"grass"
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":76,
@@ -2194,6 +2206,12 @@
          "id":34,
          "name":"grass",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"surface",
+                 "type":"string",
+                 "value":"grass"
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":76,
@@ -16054,6 +16072,28 @@
                  "width":1,
                  "x":360,
                  "y":106
+                }, 
+                {
+                 "height":1.32056784417296,
+                 "id":1833,
+                 "name":"Axe",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1.10047320347752,
+                 "x":427.86398151205,
+                 "y":689.556509298999
+                }, 
+                {
+                 "height":1.18823859831048,
+                 "id":1834,
+                 "name":"Fishing_rod",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1.29626028906603,
+                 "x":432.302806403526,
+                 "y":684.209389245361
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -16213,7 +16253,7 @@
          "y":0
         }],
  "nextlayerid":66,
- "nextobjectid":1833,
+ "nextobjectid":1835,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

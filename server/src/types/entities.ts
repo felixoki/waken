@@ -22,6 +22,7 @@ export interface AttackConfig {
   cooldown?: number;
   windup?: number;
   sound?: SoundName;
+  swing?: SoundName;
 }
 
 export interface CropState {
@@ -391,6 +392,7 @@ export enum EntityName {
   POTION3 = "potion3",
   POTION4 = "potion4",
   POTION5 = "potion5",
+  POTION6 = "potion6",
   VASES1 = "vases1",
   VASES2 = "vases2",
   VEST = "vest",

@@ -38,6 +38,9 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             EntityName.OPIUM_POPPY,
             EntityName.BALE,
             EntityName.ERGOT,
+            EntityName.EDELWEISS,
+            EntityName.ANCIENT_TROLL_HEART,
+            EntityName.SHADOW_WANDERER,
           ],
           recipes: [
             {
@@ -94,6 +97,17 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
                 { item: EntityName.RAT_CLAWS, quantity: 2 },
                 { item: EntityName.TROLL_SCALES, quantity: 1 },
                 { item: EntityName.OPIUM_POPPY, quantity: 2 },
+              ],
+            },
+            {
+              tier: 3,
+              output: EntityName.POTION6,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.VIAL, quantity: 1 },
+                { item: EntityName.SHADOW_WANDERER, quantity: 1 },
+                { item: EntityName.ANCIENT_TROLL_HEART, quantity: 1 },
+                { item: EntityName.EDELWEISS, quantity: 1 },
               ],
             },
           ] satisfies Recipe[],

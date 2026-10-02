@@ -19,6 +19,9 @@ export enum MapName {
 
 export enum SurfaceName {
   SNOW = "snow",
+  GRASS = "grass",
+  STONE = "stone",
+  DIRT = "dirt",
 }
 
 export interface MapConfig {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="66" nextobjectid="1833">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="66" nextobjectid="1835">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -10235,6 +10235,8 @@
   <object id="1621" name="People" x="400" y="1232" width="1" height="1"/>
   <object id="1631" name="Dog" x="272" y="1280" width="1" height="1"/>
   <object id="1633" name="Student" x="360" y="106" width="1" height="1"/>
+  <object id="1833" name="Axe" x="427.864" y="689.557" width="1.10047" height="1.32057"/>
+  <object id="1834" name="Fishing_rod" x="432.303" y="684.209" width="1.29626" height="1.18824"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="134">
   <properties>

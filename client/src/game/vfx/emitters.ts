@@ -1346,8 +1346,9 @@ export const emitters = {
 
     const mainPoints = createBolt(source.x, source.y, dest.x, dest.y);
 
-    drawBolt(g, mainPoints, 2, 0x8888ff, 0.8);
-    drawBolt(g, mainPoints, 1, 0xffffff, 1);
+    drawBolt(g, mainPoints, 7, 0x6666ff, 0.2);
+    drawBolt(g, mainPoints, 3.5, 0x8888ff, 0.85);
+    drawBolt(g, mainPoints, 1.5, 0xffffff, 1);
 
     for (let i = 0; i < mainPoints.length; i++) {
       if (i % 2 !== 0) continue;
@@ -1400,8 +1401,8 @@ export const emitters = {
         branchEnd.y,
       );
 
-      drawBolt(g, branchPoints, 1.5, 0x8888ff, 0.6);
-      drawBolt(g, branchPoints, 0.5, 0xffffff, 0.8);
+      drawBolt(g, branchPoints, 2.5, 0x8888ff, 0.6);
+      drawBolt(g, branchPoints, 1, 0xffffff, 0.8);
 
       for (let j = 0; j < branchPoints.length; j++) {
         if (j % 5 !== 0) continue;
@@ -1424,18 +1425,20 @@ export const emitters = {
       }
     }
 
-    const flash = scene.add.circle(dest.x, dest.y, 6, 0xccccff, 0.9);
-    flash.setDepth(2501);
-    flash.setBlendMode(Phaser.BlendModes.ADD);
-
-    scene.tweens.add({
-      targets: flash,
-      alpha: 0,
-      scaleX: 4,
-      scaleY: 4,
-      duration: 300,
-      onComplete: () => flash.destroy(),
+    const burst = scene.add.particles(dest.x, dest.y, "particle_circle", {
+      tint: [0xffffff, 0xddddff, 0xaaaaff],
+      alpha: { start: 1, end: 0 },
+      scale: { start: 0.3, end: 0, ease: "Quad.easeOut" },
+      speed: { min: 90, max: 200 },
+      lifespan: { min: 120, max: 280 },
+      quantity: 28,
+      frequency: -1,
+      blendMode: "ADD",
     });
+    burst.setDepth(2501);
+    burst.explode();
+
+    scene.time.delayedCall(280, () => burst.destroy());
 
     scene.tweens.add({
       targets: g,

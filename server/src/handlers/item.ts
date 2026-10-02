@@ -29,7 +29,11 @@ export const item = {
       player.inventory = handlers.storage.remove(player.inventory, data);
 
     socket.emit(Event.ITEM_REMOVE, data);
-    item.donate([data], io, world);
+    item.donate(
+      [{ name: data.soul ?? data.name, quantity: data.quantity }],
+      io,
+      world,
+    );
   },
 
   consume: (

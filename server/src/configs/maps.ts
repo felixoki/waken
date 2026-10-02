@@ -858,6 +858,13 @@ const icons: Spritesheet[] = [
     frameHeight: 16,
     asTileset: true,
   },
+  {
+    key: "icons10",
+    file: "icons10.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
 ];
 
 const interior: Spritesheet[] = [
