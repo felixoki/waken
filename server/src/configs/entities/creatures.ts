@@ -68,6 +68,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         damage: { type: DamageType.PIERCING, amount: 30 },
         range: 40,
         sound: SoundName.ORC_SLASH,
+        swing: SoundName.SWORD_SWING,
       },
     ],
     behaviors: [
@@ -147,6 +148,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         damage: { type: DamageType.PIERCING, amount: 50 },
         range: 40,
         sound: SoundName.ORC_SLASH,
+        swing: SoundName.SWORD_SWING,
       },
     ],
     behaviors: [
@@ -220,6 +222,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         damage: { type: DamageType.PIERCING, amount: 12 },
         range: 40,
         sound: SoundName.GOBLIN_SLASH,
+        swing: SoundName.DAGGER_SWING,
       },
     ],
     behaviors: [
@@ -299,6 +302,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         damage: { type: DamageType.PIERCING, amount: 24 },
         range: 40,
         sound: SoundName.GOBLIN_SLASH,
+        swing: SoundName.DAGGER_SWING,
       },
     ],
     behaviors: [
@@ -604,6 +608,9 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
     ],
+    metadata: {
+      displayName: "Shadow wanderer",
+    },
   },
   [EntityName.BLOODGEIST1]: {
     facing: Direction.DOWN,
@@ -644,6 +651,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         range: 160,
         cooldown: 8000,
         windup: 450,
+        sound: SoundName.BLOODGEIST_HIT,
       },
       {
         state: StateName.CASTING,
@@ -651,6 +659,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         range: 70,
         cooldown: 4000,
         windup: 450,
+        sound: SoundName.BLOODGEIST_HIT,
       },
     ],
     behaviors: [
@@ -708,6 +717,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         range: 150,
         cooldown: 3500,
         windup: 450,
+        sound: SoundName.BLOODGEIST_HIT,
       },
       {
         state: StateName.CASTING,
@@ -716,6 +726,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         range: 240,
         cooldown: 9000,
         windup: 650,
+        sound: SoundName.BLOODGEIST_HIT,
       },
     ],
     behaviors: [

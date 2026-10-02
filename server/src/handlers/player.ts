@@ -60,11 +60,7 @@ export const player = {
         maxMana: MAX_MANA,
         isAuthority,
         isDead: false,
-        spells: (saved?.data?.spells as SpellName[]) || [
-          SpellName.SHARD,
-          SpellName.SLASH,
-          SpellName.REVIVE,
-        ],
+        spells: Object.keys(configs.spells) as SpellName[],
         inventory: saved?.data?.inventory ?? [...new Array(20).fill(null)],
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [...new Array(8).fill(null)],
         active: (saved?.data?.active as number) ?? 0,

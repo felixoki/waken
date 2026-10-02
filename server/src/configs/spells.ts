@@ -82,7 +82,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.GAIN_MOMENTUM]: {
     name: SpellName.GAIN_MOMENTUM,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.GAIN_MOMENTUM },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 25,
@@ -99,7 +99,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.REFLECT_DAMAGE]: {
     name: SpellName.REFLECT_DAMAGE,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.REFLECT_DAMAGE },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 20,
@@ -116,7 +116,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.HEAL_PARTY]: {
     name: SpellName.HEAL_PARTY,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.HEAL_PARTY },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 30,
@@ -150,7 +150,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.ILLUMINATE]: {
     name: SpellName.ILLUMINATE,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.ILLUMINATE },
     damage: { type: DamageType.PHYSICAL, amount: 0 },
     knockback: 0,
     mana: 5,
@@ -206,7 +206,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.GREASE]: {
     name: SpellName.GREASE,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.GREASE },
     damage: { type: DamageType.PHYSICAL, amount: 5 },
     knockback: 0,
     mana: 15,
@@ -290,7 +290,7 @@ export const spells: Record<SpellName, SpellConfig> = {
   },
   [SpellName.GRASP]: {
     name: SpellName.GRASP,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.GRASP },
     damage: { type: DamageType.PHYSICAL, amount: 60 },
     knockback: 0,
     mana: 1,
@@ -304,11 +304,12 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "A spectral hand rises from the ground, rushes forward and grasps enemies.",
       displayName: "Grasp",
+      icon: { spritesheet: "icons10", row: 4, col: 27 },
     },
   },
   [SpellName.ABSORB_LIFE]: {
     name: SpellName.ABSORB_LIFE,
-    sounds: { cast: SoundName.SLASH },
+    sounds: { cast: SoundName.ABSORB_LIFE },
     damage: { type: DamageType.PHYSICAL, amount: 25 },
     knockback: 0,
     mana: 35,
@@ -343,7 +344,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Transform into a sinuous river dragon, coiling weightless through the air.",
       displayName: "Dragon form",
-      icon: { spritesheet: "icons5", row: 4, col: 9 },
+      icon: { spritesheet: "icons10", row: 14, col: 9 },
     },
   },
   [SpellName.FIRE_BREATH]: {
@@ -367,12 +368,12 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Exhale a torrent of flame, scorching all before it.",
       displayName: "Fire breath",
-      icon: { spritesheet: "icons5", row: 2, col: 9 },
+      icon: { spritesheet: "icons10", row: 14, col: 18 },
     },
   },
   [SpellName.FIRE_WAVE]: {
     name: SpellName.FIRE_WAVE,
-    sounds: {},
+    sounds: { cast: SoundName.FIRE_WAVE },
     damage: { type: DamageType.BURNING, amount: 12 },
     knockback: 60,
     mana: 0,
@@ -382,6 +383,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "A ring of fire bursts outward from the caster.",
       displayName: "Fire wave",
+      icon: { spritesheet: "icons10", row: 16, col: 18 },
     },
   },
   [SpellName.BITE]: {
@@ -414,7 +416,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     mana: 15,
     speed: 250,
     range: 300,
-    sounds: { impact: SoundName.SHARD_HIT },
+    sounds: { cast: SoundName.CATCH_SOUL, impact: SoundName.SHARD_HIT },
     hitbox: {
       width: 10,
       height: 10,

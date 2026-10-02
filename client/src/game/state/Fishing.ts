@@ -43,6 +43,7 @@ export class Fishing implements State {
     | null = null;
   private zoneFish: FishName[] | null = null;
   private reel: Reel | null = null;
+  private reelSound: Phaser.Sound.WebAudioSound | null = null;
 
   enter(entity: Entity): void {
     const water = handlers.fishing.findWater(entity);
@@ -62,6 +63,9 @@ export class Fishing implements State {
     this.bobberY = water.y;
 
     this._playVariant(entity, "throw", 4, 10, 0);
+    entity.scene.managers.sound.play.sfx(SoundName.FISHING_CAST, {
+      position: { x: entity.x, y: entity.y },
+    });
 
     this.onThrowComplete = () => {
       this._startWaiting(entity);
@@ -128,6 +132,9 @@ export class Fishing implements State {
   private _startBite(entity: Entity): void {
     this.phase = FishingPhase.BITE;
     this._playVariant(entity, "bite", 4, 8, -1);
+    entity.scene.managers.sound.play.sfx(SoundName.FISHING_BITE, {
+      position: { x: this.bobberX, y: this.bobberY },
+    });
 
     this.biteTimer = entity.scene.time.delayedCall(
       DURATION_FISHING_WINDOW,
@@ -168,6 +175,7 @@ export class Fishing implements State {
 
     const dt = Math.min(entity.scene.game.loop.delta / 1000, 0.05);
     const direction = (entity as Player).inputManager?.getReel() ?? 0;
+    this._updateReelSound(entity, direction);
 
     const { on, outcome } = handlers.fishing.step(
       reel,
@@ -198,13 +206,29 @@ export class Fishing implements State {
       return;
     }
 
-    entity.scene.managers.sound.play.sfx(SoundName.COLLECT, {
-      position: { x: entity.x, y: entity.y },
-    });
     this._catch(entity, hooked);
   }
 
+  private _updateReelSound(entity: Entity, direction: number): void {
+    if (direction === 0) {
+      if (this.reelSound?.isPlaying) this.reelSound.pause();
+      return;
+    }
+
+    if (!this.reelSound) {
+      this.reelSound = entity.scene.managers.sound.play.loop(
+        SoundName.FISHING_REEL,
+      );
+      return;
+    }
+
+    if (this.reelSound.isPaused) this.reelSound.resume();
+  }
+
   private _endReel(entity: Entity): void {
+    this.reelSound?.destroy();
+    this.reelSound = null;
+
     if (!this.reel) return;
 
     this.reel = null;
@@ -242,6 +266,10 @@ export class Fishing implements State {
   }
 
   private _spawnFishArc(entity: Entity, hooked: Hooked): void {
+    entity.scene.managers.sound.play.sfx(SoundName.FISHING_SPLASH, {
+      position: { x: this.bobberX, y: this.bobberY },
+    });
+
     const entityName = handlers.fishing.toEntityName(hooked.name);
     const icon = configs.entities[entityName]?.metadata?.icon;
     if (!icon) return;

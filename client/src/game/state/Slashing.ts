@@ -29,6 +29,15 @@ export class Slashing implements State {
     );
     anim?.play(this.name, entity.facing);
 
+    const swing = configs.entities[entity.name]?.attacks?.find(
+      (a) => a.state === StateName.SLASHING,
+    )?.swing;
+
+    if (swing)
+      entity.scene.managers.sound.play.sfx(swing, {
+        position: { x: entity.x, y: entity.y },
+      });
+
     this.timer = {
       duration: entity.scene.time.delayedCall(DURATION_SLASHING, () => {
         this.exit(entity);

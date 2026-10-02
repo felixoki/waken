@@ -1,6 +1,7 @@
 import { SurfaceName, TiledProperty } from "@server/types";
 
 const SURFACES = Object.values(SurfaceName);
+const GRASS = SURFACES.indexOf(SurfaceName.GRASS) + 1;
 
 interface Animation {
   frames: number[];
@@ -166,10 +167,16 @@ export class TileManager {
       this.surfaces ??= new Uint8Array(width * height);
 
       for (let y = 0; y < data.height; y++)
-        for (let x = 0; x < data.width; x++)
-          if (data.data[y][x].index > 0) this.surfaces[y * width + x] = code;
+        for (let x = 0; x < data.width; x++) {
+          const index = y * width + x;
 
-      this.base ??= data.tilemapLayer;
+          if (data.data[y][x].index <= 0) continue;
+          if (code === GRASS && this.surfaces[index]) continue;
+
+          this.surfaces[index] = code;
+        }
+
+      if (value === SurfaceName.SNOW) this.base ??= data.tilemapLayer;
     }
 
     if (!this.surfaces) return;

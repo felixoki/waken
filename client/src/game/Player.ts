@@ -6,6 +6,7 @@ import {
   EntityName,
   ComponentName,
   SoundName,
+  SurfaceName,
   EffectName,
 } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
@@ -22,6 +23,12 @@ import { DamageableComponent } from "./components/Damageable";
 import { TrailComponent } from "./components/Trail";
 import { TreadComponent } from "./components/Tread";
 import { FOOTSTEP_DISTANCE } from "@server/globals";
+
+const FOOTSTEPS: Partial<Record<SurfaceName, SoundName>> = {
+  [SurfaceName.SNOW]: SoundName.FOOTSTEP_SNOW,
+  [SurfaceName.GRASS]: SoundName.FOOTSTEP_GRASS,
+  [SurfaceName.STONE]: SoundName.FOOTSTEP_STONE,
+};
 
 export class Player extends Entity {
   public socketId: string;
@@ -179,7 +186,14 @@ export class Player extends Entity {
 
     if (this.stepAccumulator >= FOOTSTEP_DISTANCE) {
       this.stepAccumulator -= FOOTSTEP_DISTANCE;
-      this.scene.managers.sound.play.sfx(SoundName.FOOTSTEP);
+      const surface = this.scene.tileManager?.surfaceAt(
+        body.center.x,
+        body.bottom,
+      );
+
+      this.scene.managers.sound.play.sfx(
+        (surface && FOOTSTEPS[surface]) ?? SoundName.FOOTSTEP,
+      );
     }
   }
 

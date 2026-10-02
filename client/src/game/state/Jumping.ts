@@ -1,4 +1,4 @@
-import { ComponentName, StateName } from "@server/types";
+import { ComponentName, SoundName, StateName } from "@server/types";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
@@ -26,6 +26,10 @@ export class Jumping implements State {
     );
     anim?.play(this.name, entity.facing);
 
+    entity.scene.managers.sound.play.sfx(SoundName.JUMP, {
+      position: { x: entity.x, y: entity.y },
+    });
+
     handlers.move.getVelocity(entity, SPEED_JUMPING * entity.speed);
 
     this.baseOriginY = entity.displayOriginY;
@@ -50,6 +54,9 @@ export class Jumping implements State {
     });
 
     this.timer = entity.scene.time.delayedCall(DURATION_JUMPING, () => {
+      entity.scene.managers.sound.play.sfx(SoundName.LAND, {
+        position: { x: entity.x, y: entity.y },
+      });
       this.exit(entity);
     });
   }

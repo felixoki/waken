@@ -40,12 +40,73 @@ export const sounds = {
     [SoundName.CHOP]: {
       volume: 1,
       folder: "misc",
-      variants: ["chop"],
+      variants: [
+        "chop1",
+        "chop2",
+        "chop3",
+        "chop4",
+        "chop5",
+        "chop6",
+        "chop7",
+        "chop8",
+        "chop9",
+        "chop10",
+      ],
+    },
+    [SoundName.TREE_FALL]: {
+      volume: 0.6,
+      folder: "misc",
+      variants: ["tree_fall1", "tree_fall2", "tree_fall3"],
+    },
+    [SoundName.FISHING_CAST]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["cast"],
+    },
+    [SoundName.FISHING_BITE]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["bite1", "bite2", "bite3", "bite4"],
+    },
+    [SoundName.FISHING_REEL]: {
+      volume: 0.4,
+      folder: "misc",
+      variants: ["reel1", "reel2"],
+    },
+    [SoundName.FISHING_SPLASH]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["splash"],
     },
     [SoundName.MINE]: {
       volume: 0.5,
       folder: "misc",
-      variants: ["mine"],
+      variants: ["mine1", "mine2", "mine3", "mine4", "mine5", "mine6", "mine7"],
+    },
+    [SoundName.SWORD_SWING]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["sword_swing1", "sword_swing2", "sword_swing3"],
+    },
+    [SoundName.DAGGER_SWING]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["dagger_swing1", "dagger_swing2", "dagger_swing3"],
+    },
+    [SoundName.HIT]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["hit1", "hit2", "hit3", "hit4", "hit5", "hit6"],
+    },
+    [SoundName.WOOD_BREAK]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["wood_break1", "wood_break2", "wood_break3"],
+    },
+    [SoundName.VASES_BREAK]: {
+      volume: 0.5,
+      folder: "misc",
+      variants: ["vases_break1", "vases_break2", "vases_break3"],
     },
     [SoundName.FOOTSTEP]: {
       volume: 0.1,
@@ -60,6 +121,44 @@ export const sounds = {
         "stepdirt7",
         "stepdirt8",
       ],
+    },
+    [SoundName.FOOTSTEP_GRASS]: {
+      volume: 0.08,
+      folder: "footsteps",
+      variants: [
+        "stepgrass1",
+        "stepgrass2",
+        "stepgrass3",
+        "stepgrass4",
+        "stepgrass5",
+        "stepgrass6",
+      ],
+    },
+    [SoundName.FOOTSTEP_STONE]: {
+      volume: 0.07,
+      folder: "footsteps",
+      variants: [
+        "stepstone1",
+        "stepstone2",
+        "stepstone3",
+        "stepstone4",
+        "stepstone5",
+        "stepstone6",
+      ],
+    },
+    [SoundName.FOOTSTEP_SNOW]: {
+      volume: 0.07,
+      folder: "footsteps",
+      variants: ["stepsnow1", "stepsnow2", "stepsnow3", "stepsnow4"],
+    },
+    [SoundName.JUMP]: {
+      volume: 0.2,
+      folder: "footsteps",
+      variants: ["jump1", "jump2"],
+    },
+    [SoundName.LAND]: {
+      volume: 0.2,
+      folder: "footsteps",
     },
     [SoundName.GOBLIN_IDLE]: {
       volume: 0.7,
@@ -99,7 +198,42 @@ export const sounds = {
     [SoundName.REVIVE]: {
       volume: 2,
       folder: "spells",
-      variants: ["revive1", "revive2"],
+    },
+    [SoundName.GAIN_MOMENTUM]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.REFLECT_DAMAGE]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.HEAL_PARTY]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.ILLUMINATE]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.GREASE]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.GRASP]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.ABSORB_LIFE]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.FIRE_WAVE]: {
+      volume: 0.7,
+      folder: "spells",
+    },
+    [SoundName.CATCH_SOUL]: {
+      volume: 0.7,
+      folder: "spells",
     },
 
     [SoundName.SHARD_CHARGE]: {
@@ -138,6 +272,10 @@ export const sounds = {
       volume: 0.7,
       folder: "spells",
     },
+    [SoundName.METEOR]: {
+      volume: 0.4,
+      folder: "spells",
+    },
     [SoundName.SHIELD]: {
       volume: 0.7,
       folder: "spells",
@@ -167,6 +305,18 @@ export const sounds = {
       volume: 0.7,
       folder: "creatures",
       variants: ["shadow_wanderer_idle1"],
+    },
+    [SoundName.BLOODGEIST_HIT]: {
+      volume: 0.6,
+      folder: "creatures",
+      variants: [
+        "bloodgeist_hit1",
+        "bloodgeist_hit2",
+        "bloodgeist_hit3",
+        "bloodgeist_hit4",
+        "bloodgeist_hit5",
+        "bloodgeist_hit6",
+      ],
     },
     [SoundName.BEAR_IDLE]: {
       volume: 0.5,

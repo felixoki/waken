@@ -245,6 +245,11 @@ export const spells: Record<SpellName, SpellHandler> = {
       };
 
       entity.scene.time.delayedCall(delay, () => {
+        entity.scene.managers.sound.play.sfx(SoundName.METEOR, {
+          position: impact,
+          seek: 1.5,
+        });
+
         vfx.emitters.fall(entity.scene, impact, () => {
           if (!entity.scene) return;
 
@@ -504,10 +509,6 @@ export const spells: Record<SpellName, SpellHandler> = {
         hitbox.body.setCircle(r, radius - r, radius - r);
         hitbox.inner = Math.max(0, r - FIRE_WAVE_THICKNESS);
       },
-    });
-
-    scene.managers.sound.play.sfx(SoundName.FIRE_BREATH, {
-      position: { x, y },
     });
 
     vfx.emitters.fireWave(scene, x, y, radius, duration, entity.depth);

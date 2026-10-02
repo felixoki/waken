@@ -21,6 +21,7 @@ import {
   PATH_WALL,
   PATH_WIDTH,
 } from "@server/globals";
+import { SurfaceName } from "@server/types";
 import type { Scene } from "../scenes/Scene";
 import type { TileManager } from "../managers/Tile";
 
@@ -36,6 +37,8 @@ export interface SnowTracks {
   x: number;
   y: number;
 }
+
+const SNOW = Object.values(SurfaceName).indexOf(SurfaceName.SNOW) + 1;
 
 const fract = (value: number): number => value - Math.floor(value);
 
@@ -56,7 +59,7 @@ export const snow = {
     let y1 = -1;
 
     for (let i = 0; i < surfaces.length; i++) {
-      if (!surfaces[i]) continue;
+      if (surfaces[i] !== SNOW) continue;
 
       const x = i % width;
       const y = (i - x) / width;

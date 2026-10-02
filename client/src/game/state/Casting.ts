@@ -43,6 +43,17 @@ export class Casting implements State {
     entity.setState(this.name);
     entity.isLocked = true;
 
+    if (config.sounds?.cast && !entity.scene.managers.players.get(entity.id))
+      entity.scene.managers.sound.play.sfx(config.sounds.cast, {
+        position: { x: entity.x, y: entity.y },
+      });
+
+    const attack = handlers.combat.attack(entity, config.name);
+    if (attack?.sound)
+      entity.scene.managers.sound.play.sfx(attack.sound, {
+        position: { x: entity.x, y: entity.y },
+      });
+
     const anim = entity.getComponent<AnimationComponent>(
       ComponentName.ANIMATION,
     );

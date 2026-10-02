@@ -240,6 +240,11 @@ export class MainScene extends Phaser.Scene {
 
       if (!player) return;
 
+      if (!data.isMiss && data.health < player.health)
+        this.managers.sound.play.sfx(SoundName.HIT, {
+          position: { x: player.x, y: player.y },
+        });
+
       handlers.combat.hurt(player, data.health);
       handlers.combat.knockback(player, data.knockback);
 
@@ -327,8 +332,13 @@ export class MainScene extends Phaser.Scene {
           entity.getComponent(ComponentName.FELLABLE) ??
           entity.getComponent(ComponentName.MINEABLE);
 
-        if (destructible) vfx.emitters.break(entity);
-        else if (damageable) vfx.emitters.dissolve(entity);
+        if (destructible) {
+          vfx.emitters.break(entity);
+          this.managers.sound.play.sfx(
+            destructible.config?.sound ?? SoundName.WOOD_BREAK,
+            { position: { x: entity.x, y: entity.y } },
+          );
+        } else if (damageable) vfx.emitters.dissolve(entity);
         else if (extractable)
           vfx.emitters.puff(entity.scene, entity.x, entity.y);
       }
@@ -386,6 +396,10 @@ export class MainScene extends Phaser.Scene {
         /** @todo Introduce a handler */
         if (data.felled) {
           const { scene, x, y } = entity;
+          if (entity.getComponent(ComponentName.FELLABLE))
+            this.managers.sound.play.sfx(SoundName.TREE_FALL, {
+              position: { x, y },
+            });
           vfx.shaders.bounce(entity);
           scene.time.delayedCall(DURATION_EXTRACTION_BOUNCE, () => {
             vfx.emitters.puff(scene, x, y);

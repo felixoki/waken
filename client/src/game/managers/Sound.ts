@@ -40,6 +40,7 @@ export class SoundManager {
       opts?: {
         volume?: number;
         rate?: number;
+        seek?: number;
         position?: { x: number; y: number };
       },
     ) => {
@@ -65,6 +66,7 @@ export class SoundManager {
         volume,
         pan,
         rate: opts?.rate ?? 0.95 + Math.random() * 0.1,
+        seek: opts?.seek ?? 0,
       });
     },
 

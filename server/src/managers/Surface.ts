@@ -11,6 +11,7 @@ interface SurfaceGrid {
 }
 
 const SURFACES = Object.values(SurfaceName);
+const GRASS = SURFACES.indexOf(SurfaceName.GRASS) + 1;
 
 export class SurfaceManager {
   private grids = new Map<string, SurfaceGrid | null>();
@@ -72,8 +73,12 @@ export class SurfaceManager {
 
       cells ??= new Uint8Array(tiled.width * tiled.height);
 
-      for (let i = 0; i < layer.data.length; i++)
-        if (layer.data[i]) cells[i] = code;
+      for (let i = 0; i < layer.data.length; i++) {
+        if (!layer.data[i]) continue;
+        if (code === GRASS && cells[i]) continue;
+
+        cells[i] = code;
+      }
     }
 
     if (!cells) return null;
