@@ -8,7 +8,7 @@ import { DamageType } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { SpellName } from "./spells";
 import { TrapConfig } from "./traps";
-import { AmbientSoundConfig } from "./sounds";
+import { AmbientSoundConfig, SoundName } from "./sounds";
 
 export enum ComponentName {
   ANIMATION = "animation",
@@ -67,7 +67,7 @@ export type ComponentConfig =
   | { name: ComponentName.COLLECTOR; config: CollectorConfig }
   | { name: ComponentName.CONSUMABLE; config: ConsumableConfig }
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
-  | { name: ComponentName.DESTRUCTIBLE }
+  | { name: ComponentName.DESTRUCTIBLE; config?: DestructibleConfig }
   | { name: ComponentName.FARMABLE }
   | { name: ComponentName.FEEDABLE; config: FeedableConfig }
   | { name: ComponentName.BREEDABLE; config: BreedableConfig }
@@ -158,6 +158,10 @@ export interface SleepableConfig {
   exits: Partial<Record<Direction, { x: number; y: number }>>;
   facing: Direction;
   depth: number;
+}
+
+export interface DestructibleConfig {
+  sound: SoundName;
 }
 
 export interface JumpableConfig {

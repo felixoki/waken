@@ -1001,7 +1001,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     maxHealth: 10,
     components: [
       { name: ComponentName.DAMAGEABLE },
-      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.VASES_BREAK },
+      },
       {
         name: ComponentName.BODY,
         config: {
@@ -1035,7 +1038,10 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     maxHealth: 10,
     components: [
       { name: ComponentName.DAMAGEABLE },
-      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.VASES_BREAK },
+      },
       {
         name: ComponentName.BODY,
         config: {

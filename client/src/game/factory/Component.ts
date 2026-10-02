@@ -89,7 +89,7 @@ export class ComponentFactory {
           comp = new DamageableComponent();
           break;
         case ComponentName.DESTRUCTIBLE:
-          comp = new DestructibleComponent();
+          comp = new DestructibleComponent(component.config);
           break;
         case ComponentName.TRANSITION:
           comp = new TransitionComponent(entity, component.config);
