@@ -361,6 +361,7 @@ export const path = {
       [-hw, hh],
       [hw, hh],
     ];
+    const rails = entity.scene.tileManager.getRails();
 
     for (const [ox, oy] of corners)
       for (let i = 0; i <= steps; i++) {
@@ -375,6 +376,8 @@ export const path = {
           )
         )
           return false;
+
+        if (rails.some((rail) => rail.contains(x, y))) return false;
       }
 
     return true;
@@ -413,22 +416,22 @@ export const path = {
       if (j * step - hh < 0 || j * step + hh > rows * th)
         for (let i = 0; i < width; i++) data[j * width + i] = 1;
 
+    const block = (x: number, y: number, w: number, h: number) => {
+      const i0 = Math.max(0, Math.floor((x - hw) / step) + 1);
+      const i1 = Math.min(width - 1, Math.ceil((x + w + hw) / step) - 1);
+      const j0 = Math.max(0, Math.floor((y - hh) / step) + 1);
+      const j1 = Math.min(height - 1, Math.ceil((y + h + hh) / step) - 1);
+
+      for (let j = j0; j <= j1; j++)
+        for (let i = i0; i <= i1; i++) data[j * width + i] = 1;
+    };
+
     for (let ty = 0; ty < rows; ty++)
-      for (let tx = 0; tx < cols; tx++) {
-        if (!grid[ty][tx]) continue;
+      for (let tx = 0; tx < cols; tx++)
+        if (grid[ty][tx]) block(tx * tw, ty * th, tw, th);
 
-        const left = tx * tw - hw;
-        const right = (tx + 1) * tw + hw;
-        const top = ty * th - hh;
-        const bottom = (ty + 1) * th + hh;
-        const i0 = Math.max(0, Math.floor(left / step) + 1);
-        const i1 = Math.min(width - 1, Math.ceil(right / step) - 1);
-        const j0 = Math.max(0, Math.floor(top / step) + 1);
-        const j1 = Math.min(height - 1, Math.ceil(bottom / step) - 1);
-
-        for (let j = j0; j <= j1; j++)
-          for (let i = i0; i <= i1; i++) data[j * width + i] = 1;
-      }
+    for (const rail of entity.scene.tileManager.getRails())
+      block(rail.x, rail.y, rail.width, rail.height);
 
     const space = { data, width, height, step };
     sizes.set(key, space);

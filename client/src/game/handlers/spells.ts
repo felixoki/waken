@@ -394,6 +394,108 @@ export const spells: Record<SpellName, SpellHandler> = {
     });
   },
 
+  [SpellName.DARK_WAVE]: (
+    entity: Entity,
+    config: SpellConfig,
+    _target: { x: number; y: number },
+    direction: { x: number; y: number },
+  ) => {
+    const scene = entity.scene;
+    const range = config.range!;
+    const origin = {
+      x: entity.x + direction.x * 10,
+      y: entity.y + direction.y * 10,
+    };
+
+    let hitbox: Hitbox | null = null;
+
+    vfx.quads.wave(scene, origin, direction, range, (front, done) => {
+      if (!scene.sys) return;
+
+      if (!hitbox) {
+        hitbox = new Hitbox(
+          scene,
+          origin.x,
+          origin.y,
+          range,
+          range,
+          entity.id,
+          config,
+        );
+
+        if ((entity as Player).isControllable)
+          scene.managers.camera.shake(90, 0.0006);
+      }
+
+      if (!hitbox.active) return;
+
+      if (done) {
+        hitbox.destroy();
+        return;
+      }
+
+      const r = Math.min(range / 2, Math.max(14, front * 0.55));
+
+      hitbox.setPosition(
+        origin.x + direction.x * front * 0.72,
+        origin.y + direction.y * front * 0.72,
+      );
+      hitbox.body.setCircle(r, range / 2 - r, range / 2 - r);
+    });
+  },
+
+  [SpellName.ICE_PILLARS]: (
+    entity: Entity,
+    config: SpellConfig,
+    target: { x: number; y: number },
+    _direction: { x: number; y: number },
+  ) => {
+    const scene = entity.scene;
+    const dx = target.x - entity.x;
+    const dy = target.y - entity.y;
+    const angle = Math.atan2(dy, dx);
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    const dist = Phaser.Math.Clamp(Math.hypot(dx, dy), 96, config.range!);
+
+    const scales = [0.78, 0.94, 1.12];
+    const spacing = 34;
+
+    for (let i = 0; i < scales.length; i++) {
+      const along = dist - (scales.length - 1 - i) * spacing;
+      const across = Phaser.Math.Between(-6, 6);
+      const x = entity.x + cos * along - sin * across;
+      const y = entity.y + sin * along + cos * across;
+      const scale = scales[i];
+
+      scene.time.delayedCall(i * 110, () => {
+        if (!scene.sys) return;
+
+        vfx.quads.pillar(scene, x, y, scale, () => {
+          if (!scene.sys) return;
+
+          new Hitbox(
+            scene,
+            x,
+            y - 6,
+            config.hitbox!.width * scale,
+            config.hitbox!.height * scale,
+            entity.id,
+            { ...config, duration: 150 },
+          );
+
+          scene.managers.sound.play.sfx(SoundName.SHARD_LAUNCH, {
+            position: { x, y },
+            rate: 0.7 + i * 0.12,
+          });
+
+          if ((entity as Player).isControllable)
+            scene.managers.camera.shake(110, 0.0005 + i * 0.0003);
+        });
+      });
+    }
+  },
+
   [SpellName.ABSORB_LIFE]: (
     entity: Entity,
     config: SpellConfig,

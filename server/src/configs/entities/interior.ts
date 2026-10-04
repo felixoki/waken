@@ -407,6 +407,194 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.CANDLES1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 28,
+          intensity: 0.35,
+          color: 0xffd980,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "candles",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 5, end: 6 },
+            { row: 2, start: 5, end: 6 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 6,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.CANDLE, quantity: 1 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Candles",
+    },
+  },
+  [EntityName.CANDLES2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 34,
+          intensity: 0.4,
+          color: 0xffd980,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "candles",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 3, end: 4 },
+            { row: 2, start: 3, end: 4 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 6,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.CANDLE, quantity: 2 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Candles",
+    },
+  },
+  [EntityName.CANDLES3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 40,
+          intensity: 0.45,
+          color: 0xffd980,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "candles",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 1, end: 2 },
+            { row: 2, start: 1, end: 2 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 6,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.CANDLE, quantity: 3 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Candles",
+    },
+  },
+  [EntityName.LEVER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "dungeon_doors_lever",
+          tileSize: 16,
+          tiles: [{ row: 1, start: 1, end: 1 }],
+          stride: 3,
+          frames: 5,
+          direction: "vertical",
+          frameRate: 14,
+          repeat: 0,
+          autoplay: false,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.SWITCH, config: { trigger: true } },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Lever",
+    },
+  },
+  [EntityName.CLOSED_DOOR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 16,
+          offsetX: 4,
+          offsetY: 16,
+          static: true,
+          collides: true,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "dungeon_doors_lever",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 5, end: 6 },
+            { row: 2, start: 5, end: 6 },
+            { row: 3, start: 5, end: 6 },
+          ],
+          frames: 5,
+          direction: "vertical",
+          frameRate: 10,
+          repeat: 0,
+          autoplay: false,
+        },
+      },
+      { name: ComponentName.SWITCH, config: { trigger: false } },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.BED]: {
     facing: Direction.DOWN,
     moving: [],

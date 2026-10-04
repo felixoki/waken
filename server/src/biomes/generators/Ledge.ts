@@ -168,17 +168,19 @@ export class LedgeGenerator {
     }
 
     /** Sides (convex) */
+    const faced = cell === TerrainName.ELEVATED || fl(get(0, -2));
+
     if (fl(east))
       return {
-        role: outerRole,
-        position: BorderPosition.RIGHT,
+        role: faced ? outerRole : innerRole,
+        position: faced ? BorderPosition.RIGHT : BorderPosition.LEFT,
         placement: { width: 1, height: 1, anchor: { x: 0, y: 0 } },
       };
 
     if (fl(west))
       return {
-        role: outerRole,
-        position: BorderPosition.LEFT,
+        role: faced ? outerRole : innerRole,
+        position: faced ? BorderPosition.LEFT : BorderPosition.RIGHT,
         placement: { width: 1, height: 1, anchor: { x: 0, y: 0 } },
       };
 

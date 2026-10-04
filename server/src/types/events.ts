@@ -42,6 +42,7 @@ export enum Event {
   ENTITY_DIALOGUE_CHOICE = "entity_dialogue_choice",
   ENTITY_LOCK = "entity_lock",
   ENTITY_UNLOCK = "entity_unlock",
+  ENTITY_TOGGLE = "entity_toggle",
   ENTITY_PLANT = "entity_plant",
   ENTITY_HARVEST = "entity_harvest",
   ENTITY_WATER = "entity_water",
@@ -54,7 +55,7 @@ export enum Event {
   ENTITY_MATURE = "entity_mature",
   ENTITY_LAY = "entity_lay",
   ENTITY_FISH = "entity:fish",
-  FISHING_TURN_IN = "fishing:turnin",
+  FISHING_WEIGH = "fishing:weigh",
   FISHING_MINIGAME_START = "fishing:minigame_start",
   FISHING_MINIGAME_UPDATE = "fishing:minigame_update",
   FISHING_MINIGAME_END = "fishing:minigame_end",
@@ -62,10 +63,9 @@ export enum Event {
   TEXTURE_SPAWN = "texture_spawn",
 
   /** Item */
-  ITEM_COLLECT = "item_collect",
+  ITEM_HAND_OVER = "item_hand_over",
   ITEM_CONSUME = "item_consume",
   ITEM_SOLIDIFY = "item_solidify",
-  ITEM_REMOVE = "item_remove",
 
   /** Inventory & Hotbar */
   INVENTORY_UPDATE = "inventory_update",
@@ -84,11 +84,11 @@ export enum Event {
 
   /** Economy */
   ECONOMY_UPDATE = "economy_update",
+  ECONOMY_UPGRADE = "economy_upgrade",
 
-  /** Collector */
-  COLLECTOR_OPEN = "collector_open",
-  COLLECTOR_CRAFT = "collector_craft",
-  COLLECTOR_TIER_UPGRADE = "collector_tier_upgrade",
+  /** Crafter */
+  CRAFTER_OPEN = "crafter_open",
+  CRAFTER_CRAFT = "crafter_craft",
   STORE_SYNC = "store_sync",
 
   /** Entities (UI) */

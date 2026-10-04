@@ -40,14 +40,23 @@ const credits = [
     ],
   },
   {
-    title: "Music and sound effects by",
+    title: "Music by",
     entries: [
-      { name: "Discount Dylan" },
+      {
+        name: "Discount Dylan",
+        source: "Spotify",
+        href: "https://open.spotify.com/intl-de/artist/0bJC8fwPbZ4C51vXgH6pD5",
+      },
       {
         name: "Sweet Village",
         source: "16pixel.itch.io",
         href: "https://16pixel.itch.io",
       },
+    ],
+  },
+  {
+    title: "Sound effects by",
+    entries: [
       {
         name: "JC Sounds – Fantasy SFX Pack Vol 1, Nature Ambient Pack Vol 1",
         source: "JC Sounds, CC BY 4.0",
@@ -67,6 +76,16 @@ const credits = [
         name: "CelesteVidal",
         source: "freesound.org, freesound_community from Pixabay",
         href: "https://freesound.org/people/CelesteVidal/sounds/501064/",
+      },
+      {
+        name: "pegonthetrack",
+        source: "Universal Sound Effects",
+        href: "https://linktr.ee/pegonthetrack",
+      },
+      {
+        name: "ELVGames",
+        source: "Universal Sound Effects",
+        href: "https://linktr.ee/elvgames",
       },
     ],
   },

@@ -132,4 +132,14 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Hyperbeam",
     "A searing page crackling with the secret of a channelled beam of force.",
   ),
+  [EntityName.SPELL_PAGE_DARK_WAVE]: page(
+    SpellName.DARK_WAVE,
+    "Spell page: Dark wave",
+    "A page so black the ink seems to drink the light around it.",
+  ),
+  [EntityName.SPELL_PAGE_ICE_PILLARS]: page(
+    SpellName.ICE_PILLARS,
+    "Spell page: Ice pillars",
+    "A brittle page rimed with frost that never thaws.",
+  ),
 };

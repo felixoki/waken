@@ -3,6 +3,7 @@ import { TilesetLoader } from "../../loaders/Tileset";
 import { EntityName, SurfaceName } from "../../types";
 import { configs } from "../../configs";
 import {
+  DUNGEON_CANDLE_CLEARANCE,
   DUNGEON_LADDER_COUNT,
   DIRECTIONS_CARDINAL,
   LEDGE_CLEARANCE,
@@ -16,6 +17,7 @@ import {
   DoorAnchor,
   Entity,
   GeneratedMap,
+  SeparatorStamp,
   TERRAIN_ORDER,
   TerrainName,
   TileRole,
@@ -100,6 +102,7 @@ export class MapBuilder {
     let roomSpawn: { x: number; y: number } | undefined;
     let roomExit: { x: number; y: number } | undefined;
     let roomDoors: DoorAnchor[] | undefined;
+    let roomSeparators: SeparatorStamp[] | undefined;
 
     for (let b = 0; b < bands.length; b++) {
       const { config, y } = bands[b];
@@ -113,6 +116,7 @@ export class MapBuilder {
         spawn?: { x: number; y: number };
         exit?: { x: number; y: number };
         doors?: DoorAnchor[];
+        separators?: SeparatorStamp[];
         elevation?: Uint8Array;
       };
 
@@ -139,6 +143,10 @@ export class MapBuilder {
       roomSpawn = shift(generated.spawn);
       roomExit = shift(generated.exit);
       roomDoors = generated.doors?.map((d) => ({ ...d, y: d.y + y }));
+      roomSeparators = generated.separators?.map((s) => ({
+        ...s,
+        index: s.index + offset,
+      }));
     }
 
     const tilesetOrder = this.collectTilesets();
@@ -502,6 +510,22 @@ export class MapBuilder {
               [{ name: "rendersAbove", type: "bool", value: true }],
             ),
           );
+
+          const base = tiledLayers.findIndex(
+            (l) => l.name === TerrainName.VOID,
+          );
+          const fills = tiledLayers.filter((l) => fillOrder.includes(l.name));
+          const redundant =
+            base >= 0 &&
+            tiledLayers[base].data.every(
+              (gid: number, i: number) =>
+                gid === 0 ||
+                voidAbove[i] !== 0 ||
+                voidBelow[i] !== 0 ||
+                fills.some((l) => l.name !== TerrainName.VOID && l.data[i] !== 0),
+            );
+
+          if (redundant) tiledLayers.splice(base, 1);
         }
       }
     }
@@ -530,7 +554,11 @@ export class MapBuilder {
           width,
           height,
           ledges,
-          [{ name: "collides", type: "bool", value: true }],
+          [
+            { name: "clearance", type: "int", value: LEDGE_CLEARANCE },
+            { name: "collides", type: "bool", value: true },
+            { name: "seeThrough", type: "bool", value: true },
+          ],
         ),
       );
 
@@ -541,7 +569,12 @@ export class MapBuilder {
           width,
           height,
           stairs,
-          [{ name: "collides", type: "bool", value: true }],
+          [
+            { name: "clearance", type: "int", value: LEDGE_CLEARANCE },
+            { name: "collides", type: "bool", value: true },
+            { name: "seeThrough", type: "bool", value: true },
+            { name: "walkable", type: "bool", value: true },
+          ],
         ),
       );
     }
@@ -562,6 +595,13 @@ export class MapBuilder {
 
       const wallLayers = tiledLayers.filter((l) =>
         ["walls", "walls_above", "void_above"].includes(l.name),
+      );
+
+      new WallGenerator({ width, height }, this.loader).doors(
+        this.config.walls,
+        gid,
+        tiledLayers.find((l) => l.name === "walls").data,
+        doorsBelow,
       );
 
       for (let i = 0; i < doorsBelow.length; i++)
@@ -592,6 +632,60 @@ export class MapBuilder {
           ],
         ),
       );
+    }
+
+    if (this.config.walls)
+      new WallGenerator({ width, height }, this.loader).flatten(
+        terrain,
+        firstgids.get(this.config.walls)!,
+        tiledLayers.find((l) => l.name === "walls").data,
+        tiledLayers.find((l) => l.name === "walls_above").data,
+        tiledLayers.find((l) => l.name === "doors_above")?.data,
+      );
+
+    /**
+     * Build separators
+     */
+    const separated = new Set<number>();
+
+    if (roomSeparators?.length && this.config.walls) {
+      const gid = firstgids.get(this.config.walls)!;
+
+      const data = (name: string, rendersAbove: boolean): number[] => {
+        let layer = tiledLayers.find((l) => l.name === name);
+
+        if (!layer) {
+          layer = handlers.generation.createLayer(
+            layerId++,
+            name,
+            width,
+            height,
+            new Array(width * height).fill(0),
+            rendersAbove
+              ? [
+                  { name: "collides", type: "bool", value: true },
+                  { name: "rendersAbove", type: "bool", value: true },
+                ]
+              : [{ name: "collides", type: "bool", value: true }],
+          );
+          tiledLayers.push(layer);
+        }
+
+        return layer.data;
+      };
+
+      for (const stamp of roomSeparators) {
+        const target = data(stamp.layer, stamp.layer.endsWith("_above"));
+
+        if (
+          stamp.expect !== undefined &&
+          target[stamp.index] !== gid + stamp.expect
+        )
+          continue;
+
+        target[stamp.index] = gid + stamp.id;
+        separated.add(stamp.index);
+      }
     }
 
     /**
@@ -784,7 +878,14 @@ export class MapBuilder {
         terrain,
       );
 
-      for (const pos of torches)
+      const fixtures = (pos: { x: number; y: number }) => {
+        const i =
+          Math.floor(pos.y / tileHeight) * width + Math.floor(pos.x / tileWidth);
+
+        return !separated.has(i - 1) && !separated.has(i) && !separated.has(i + 1);
+      };
+
+      for (const pos of torches.filter(fixtures))
         entities.push({ name: EntityName.TORCH1, x: pos.x, y: pos.y });
 
       const ladders = handlers.generation.find.positions.ladder(
@@ -796,12 +897,109 @@ export class MapBuilder {
       );
       const offset = configs.entities[EntityName.LADDER]?.offset;
 
-      for (const pos of ladders)
+      for (const pos of ladders.filter(fixtures))
         entities.push({
           name: EntityName.LADDER,
           x: pos.x + (offset?.x ?? 0),
           y: pos.y + (offset?.y ?? 0),
         });
+
+      /**
+       * Candles
+       */
+      if (this.config.walls) {
+        const windows = new Array(width * height).fill(0);
+        const candles = [
+          EntityName.CANDLES1,
+          EntityName.CANDLES2,
+          EntityName.CANDLES3,
+        ];
+        const obstacles = entities.map((e) => {
+          const fixture =
+            e.name === EntityName.TORCH1 || e.name === EntityName.LADDER;
+          const extent = RoomGenerator.extent(e.name, tileWidth, tileHeight);
+          const reach = fixture
+            ? DUNGEON_CANDLE_CLEARANCE * tileWidth - extent.x + 4
+            : 0;
+
+          return {
+            minX: e.x - extent.x - reach,
+            minY: e.y - extent.y - (fixture ? tileHeight : 0),
+            maxX: e.x + extent.x + reach,
+            maxY: e.y + extent.y + (fixture ? tileHeight : 0),
+          };
+        });
+
+        const niches = new WallGenerator({ width, height }, this.loader).niches(
+          this.config.walls,
+          firstgids.get(this.config.walls)!,
+          tiledLayers.find((l) => l.name === "walls").data,
+          windows,
+          obstacles,
+          tileWidth,
+          tileHeight,
+          this.seed,
+        );
+
+        for (const niche of niches)
+          entities.push({
+            name: candles[niche.size - 1],
+            x: (niche.x + 1) * tileWidth,
+            y: (niche.y + 1) * tileHeight,
+          });
+
+        if (niches.length)
+          tiledLayers.push(
+            handlers.generation.createLayer(
+              layerId++,
+              "windows",
+              width,
+              height,
+              windows,
+            ),
+          );
+      }
+    }
+
+    /**
+     * Variants
+     */
+    const variantSeed = handlers.generation.hash(`${this.seed}-variants`);
+
+    for (const variant of this.config.variants ?? []) {
+      const base = firstgids.get(variant.of)!;
+      const first = firstgids.get(variant.tileset)!;
+      const options = new Map<number, number[]>();
+
+      for (const tile of this.loader.load(variant.tileset).tiles ?? []) {
+        const of = handlers.generation.parseProperties(tile.properties)
+          .variantOf;
+        if (of === undefined) continue;
+
+        const list = options.get(base + of) ?? [];
+        list.push(first + tile.id);
+        options.set(base + of, list);
+      }
+
+      for (const layer of tiledLayers) {
+        if (!["walls", "walls_above", "ledges"].includes(layer.name)) continue;
+
+        for (let i = 0; i < layer.data.length; i++) {
+          const list = options.get(layer.data[i]);
+          if (!list) continue;
+
+          const rng = handlers.generation.seededRandom(
+            handlers.generation.spatialHash(
+              i % width,
+              (i / width) | 0,
+              variantSeed,
+            ),
+          );
+
+          if (rng() < variant.chance)
+            layer.data[i] = list[Math.floor(rng() * list.length)];
+        }
+      }
     }
 
     /**
@@ -1012,6 +1210,7 @@ export class MapBuilder {
       if (config.walls) names.add(config.walls);
       if (config.ledge) names.add(config.ledge);
       for (const name of config.tilesets ?? []) names.add(name);
+      for (const variant of config.variants ?? []) names.add(variant.tileset);
     }
 
     return Array.from(names);

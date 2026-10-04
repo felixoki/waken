@@ -101,7 +101,6 @@ export class MainScene extends Phaser.Scene {
       MapName.VILLAGE,
       MapName.HERBALIST_HOUSE,
       MapName.HOME,
-      MapName.DUNGEON_TEST,
       MapName.BLACKSMITH_HOUSE,
       MapName.MARKET_HOUSE,
       MapName.TAVERN,

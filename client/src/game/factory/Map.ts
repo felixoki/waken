@@ -68,6 +68,10 @@ export class MapFactory {
           (prop) => prop.name === "rendersAbove" && prop.value === true,
         );
 
+        const walkable = properties?.some(
+          (prop) => prop.name === "walkable" && prop.value === true,
+        );
+
         const layer = tilemap.createLayer(currentIndex, tilesets, 0, 0);
 
         if (!layer) return;
@@ -81,6 +85,7 @@ export class MapFactory {
             colliders,
             depth,
             layerClearance,
+            walkable,
           );
         }
 
@@ -154,6 +159,7 @@ export class MapFactory {
     colliders: Phaser.GameObjects.Rectangle[],
     depth: number,
     layerClearance?: number,
+    walkable?: boolean,
   ): void {
     const tiles = layer.getTilesWithin().filter((t) => t.collides);
 
@@ -208,6 +214,7 @@ export class MapFactory {
           clearance !== undefined ? clearance.value : layerClearance;
         if (typeof tileClearance === "number")
           rect.setData("clearance", tileClearance);
+        if (walkable) rect.setData("walkable", true);
 
         if (rendersAbove !== undefined) {
           isThreshold = true;

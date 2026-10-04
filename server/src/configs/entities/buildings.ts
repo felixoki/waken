@@ -316,6 +316,55 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.MARKET_HOUSE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_market_house",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 1, end: 10 },
+            { row: 2, start: 1, end: 10 },
+            { row: 3, start: 1, end: 10 },
+            { row: 4, start: 1, end: 10 },
+            { row: 5, start: 1, end: 10 },
+            { row: 6, start: 1, end: 10 },
+            { row: 7, start: 1, end: 10 },
+            { row: 8, start: 1, end: 10 },
+            { row: 9, start: 1, end: 10 },
+          ],
+        },
+        key: "market_house_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 134,
+          height: 48,
+          offsetX: 13,
+          offsetY: 84,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.MARKET_HOUSE,
+          x: 168,
+          y: 192,
+          width: 16,
+          height: 14,
+          offsetX: 0,
+          offsetY: 64,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.TAVERN]: {
     facing: Direction.DOWN,
     moving: [],

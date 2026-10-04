@@ -776,6 +776,16 @@
 - Refactor caves ✅
 - Refactor soul catching ✅
 
+#### 2.10.2026
+
+- Add giant's stalk potion ✅
+- Add surface, spell and creature sounds ✅
+
+#### 3.10.2026
+
+- Add bookkeeper and market house ✅
+- Refactor dungeon generation ✅
+
 
 ### In progress
 
@@ -789,15 +799,13 @@
 - Effect tint doesn't reset for other clients
 - Ledge corners render above players
 - Direction visibly resets after watering
+- Illuminate breaks ambience pipeline
 
 ### Backlog
 
 - UI ⭐
-- Market house ⭐
 - Temples ⭐
 - Cooking ⭐
 - Relationships ⭐
 - Ideas
   - Remove among player collisions
-  - Hidden rooms in dungeons
-  - Mountains

@@ -15,7 +15,8 @@ import {
   DUNGEON_ROOM_FURNISH_CHANCE,
   DUNGEON_ROOM_PADDING,
 } from "../../globals";
-import { EntityName, ZoneName } from "../../types";
+import { ComponentName, EntityName, ZoneName } from "../../types";
+import { configs } from "../../configs";
 import {
   BiomeConfig,
   DoorAnchor,
@@ -23,10 +24,18 @@ import {
   Room,
   RoomInterior,
   RoomInteriorOrigin,
+  SeparatorStamp,
   TerrainName,
 } from "../../types/generation";
+import { SeparatorGenerator } from "./Separator";
 
 const MIN_WALL_RUN = 6;
+const RECESS_CLEARANCE = 2;
+const RECESS_MIN = 5;
+const TRAP_WIDTH = 3;
+const TRAP_DEPTH = 4;
+const TRAP_MARGIN = 3;
+const TRAP_SPACING = 12;
 
 export class RoomGenerator {
   private config: BiomeConfig;
@@ -46,6 +55,7 @@ export class RoomGenerator {
     spawn?: { x: number; y: number };
     exit?: { x: number; y: number };
     doors: DoorAnchor[];
+    separators: SeparatorStamp[];
   } {
     const { width, height } = this.config;
     const { tileWidth, tileHeight } = this.config;
@@ -75,10 +85,28 @@ export class RoomGenerator {
     );
     for (let i = 0; i < cleaned.length; i++) terrain[i] = cleaned[i];
 
-    this._carve(terrain);
     this._walls(terrain);
 
+    const draft = [...terrain];
+    const pits = new Uint8Array(width * height);
+
+    this._carve(draft, pits);
+
+    for (let i = 0; i < draft.length; i++)
+      if (draft[i] === TerrainName.RECESSED) pits[i] = 1;
+
+    const separators = new SeparatorGenerator(this.config, this.seed).generate(
+      terrain,
+      this.rooms,
+      this.doors,
+      pits,
+    );
+
+    this._carve(terrain, separators.occupied);
     this._water(terrain);
+
+    entities.push(...separators.entities);
+    entities.push(...this._traps(terrain));
 
     const { rooms: roomConfig } = this.config;
 
@@ -120,6 +148,8 @@ export class RoomGenerator {
             const ox = room.x + 1 + Math.floor(rng() * (room.width - 2));
             const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
 
+            if (separators.occupied[oy * width + ox]) continue;
+
             entities.push({
               name: entity,
               x: ox * tileWidth,
@@ -127,50 +157,6 @@ export class RoomGenerator {
             });
           }
         }
-
-        if (isLarge)
-          for (const piece of template.traps ?? []) {
-            const count =
-              piece.count.min +
-              Math.floor(rng() * (piece.count.max - piece.count.min + 1));
-
-            for (let j = 0; j < count; j++) {
-              const entity =
-                piece.entities[Math.floor(rng() * piece.entities.length)];
-
-              let ox = -1;
-              let oy = -1;
-
-              for (let attempt = 0; attempt < 12; attempt++) {
-                const tx = room.x + 1 + Math.floor(rng() * (room.width - 2));
-                const ty = room.y + 1 + Math.floor(rng() * (room.height - 2));
-
-                let clear = true;
-
-                for (let dy = -1; dy <= 1 && clear; dy++)
-                  for (let dx = -1; dx <= 1 && clear; dx++)
-                    if (
-                      terrain[(ty + dy) * width + (tx + dx)] !==
-                      TerrainName.FLOOR
-                    )
-                      clear = false;
-
-                if (clear) {
-                  ox = tx;
-                  oy = ty;
-                  break;
-                }
-              }
-
-              if (ox < 0) continue;
-
-              entities.push({
-                name: entity,
-                x: ox * tileWidth,
-                y: oy * tileHeight,
-              });
-            }
-          }
 
         if (!isLarge && roomConfig.interior.length) {
           const corners = handlers.generation.rooms.shuffle(
@@ -191,6 +177,18 @@ export class RoomGenerator {
             tileWidth,
             tileHeight,
           );
+
+          const taken: typeof placed = [];
+
+          for (let y = room.y; y < room.y + room.height; y++)
+            for (let x = room.x; x < room.x + room.width; x++)
+              if (separators.occupied[y * width + x])
+                taken.push({
+                  minX: x * tileWidth,
+                  minY: y * tileHeight,
+                  maxX: (x + 1) * tileWidth,
+                  maxY: (y + 1) * tileHeight,
+                });
 
           for (const corner of corners) {
             if (rng() > DUNGEON_ROOM_FURNISH_CHANCE) continue;
@@ -225,16 +223,20 @@ export class RoomGenerator {
             for (const e of piece.entities) {
               const ex = ref.x + e.x;
               const ey = ref.y + e.y;
+              const extent = RoomGenerator.extent(e.name, tileWidth, tileHeight);
               const box = {
-                minX: ex - tileWidth,
-                minY: ey - tileHeight,
-                maxX: ex + tileWidth,
-                maxY: ey + tileHeight,
+                minX: ex - extent.x,
+                minY: ey - extent.y,
+                maxX: ex + extent.x,
+                maxY: ey + extent.y,
               };
 
               if (
                 placed.some((b) => handlers.generation.rooms.overlaps(b, box))
               )
+                continue;
+
+              if (taken.some((b) => handlers.generation.rooms.overlaps(b, box)))
                 continue;
 
               survivors.push({ name: e.name, x: ex, y: ey, loot: e.loot, box });
@@ -329,7 +331,160 @@ export class RoomGenerator {
         });
       }
 
-    return { terrain, entities, spawn, exit, doors: this.doors };
+    return {
+      terrain,
+      entities,
+      spawn,
+      exit,
+      doors: this.doors,
+      separators: separators.stamps,
+    };
+  }
+
+  static extent(
+    name: EntityName,
+    tileWidth: number,
+    tileHeight: number,
+  ): { x: number; y: number } {
+
+    for (const component of configs.entities[name]?.components ?? []) {
+      if (
+        component.name !== ComponentName.TEXTURE &&
+        component.name !== ComponentName.TEXTURE_ANIMATION
+      )
+        continue;
+
+      const { tiles, tileSize } = component.config;
+      const columns = Math.max(...tiles.map((t) => t.end - t.start + 1));
+
+      return {
+        x: Math.max(tileWidth, (columns * tileSize) / 2),
+        y: Math.max(tileHeight, (tiles.length * tileSize) / 2),
+      };
+    }
+
+    return { x: tileWidth, y: tileHeight };
+  }
+
+  private _traps(terrain: TerrainName[]): Entity[] {
+    const settings = this.config.rooms?.traps;
+    if (!settings) return [];
+
+    const { width, height, tileWidth, tileHeight } = this.config;
+    const rng = handlers.generation.seededRandom(
+      handlers.generation.hash(`${this.seed}-traps`),
+    );
+
+    const passage = (x: number, y: number) =>
+      x >= 0 &&
+      y >= 0 &&
+      x < width &&
+      y < height &&
+      terrain[y * width + x] === TerrainName.FLOOR &&
+      !this._inAnyRoom(x, y);
+
+    const walled = (x: number, y: number) =>
+      x < 0 ||
+      y < 0 ||
+      x >= width ||
+      y >= height ||
+      terrain[y * width + x] !== TerrainName.FLOOR;
+
+    const span = (x: number, y: number, dx: number, dy: number) => {
+      if (!passage(x, y)) return null;
+
+      let from = 0;
+      let to = 0;
+
+      while (passage(x + (from - 1) * dx, y + (from - 1) * dy)) from--;
+      while (passage(x + (to + 1) * dx, y + (to + 1) * dy)) to++;
+
+      if (!walled(x + (from - 1) * dx, y + (from - 1) * dy)) return null;
+      if (!walled(x + (to + 1) * dx, y + (to + 1) * dy)) return null;
+
+      return { from, to };
+    };
+
+    const sites: { x: number; y: number }[] = [];
+
+    const gated = (x: number, y: number) =>
+      this.doors.some((door) => {
+        const top = door.dir === "north" ? door.y - 3 : door.y + 1;
+
+        return (
+          Math.abs(door.x - x) <= TRAP_WIDTH + TRAP_MARGIN &&
+          y + TRAP_DEPTH + TRAP_MARGIN > top &&
+          y - TRAP_MARGIN < top + 3
+        );
+      });
+
+    for (let y = TRAP_MARGIN; y < height - TRAP_MARGIN; y++)
+      for (let x = TRAP_MARGIN; x < width - TRAP_MARGIN; x++) {
+        if (gated(x, y)) continue;
+
+        const across = span(x, y, 1, 0);
+
+        if (across && across.from === 0 && across.to === TRAP_WIDTH) {
+          let straight = true;
+
+          for (let r = -TRAP_MARGIN; r < TRAP_DEPTH + TRAP_MARGIN; r++) {
+            const row = span(x, y + r, 1, 0);
+            if (!row || row.from !== 0 || row.to !== TRAP_WIDTH) straight = false;
+          }
+
+          if (straight)
+            sites.push({
+              x: ((x + (TRAP_WIDTH + 1) / 2) * tileWidth) | 0,
+              y: (y + 1) * tileHeight,
+            });
+        }
+
+        const along = span(x, y, 0, 1);
+
+        if (along && along.from === 0 && along.to === TRAP_DEPTH - 1) {
+          let straight = true;
+
+          for (let c = -TRAP_MARGIN; c < TRAP_WIDTH + TRAP_MARGIN; c++) {
+            const column = span(x + c, y, 0, 1);
+            const below = terrain[(y + TRAP_DEPTH) * width + x + c];
+
+            if (!column || column.from !== 0 || column.to !== TRAP_DEPTH - 1)
+              straight = false;
+            if (below !== TerrainName.VOID && below !== TerrainName.WALL_TOP)
+              straight = false;
+          }
+
+          if (straight)
+            sites.push({
+              x: ((x + TRAP_WIDTH / 2) * tileWidth) | 0,
+              y: (y + 1) * tileHeight,
+            });
+        }
+      }
+
+    const count =
+      settings.count.min +
+      Math.floor(rng() * (settings.count.max - settings.count.min + 1));
+    const traps: Entity[] = [];
+
+    for (const site of handlers.generation.rooms.shuffle(sites, rng)) {
+      if (traps.length >= count) break;
+
+      const crowded = traps.some(
+        (t) =>
+          Math.abs(t.x - site.x) < TRAP_SPACING * tileWidth &&
+          Math.abs(t.y - site.y) < TRAP_SPACING * tileHeight,
+      );
+      if (crowded) continue;
+
+      traps.push({
+        name: settings.entities[Math.floor(rng() * settings.entities.length)],
+        x: site.x,
+        y: site.y,
+      });
+    }
+
+    return traps;
   }
 
   private _place() {
@@ -874,7 +1029,7 @@ export class RoomGenerator {
     return depths;
   }
 
-  private _carve(terrain: TerrainName[]) {
+  private _carve(terrain: TerrainName[], occupied: Uint8Array) {
     const { width } = this.config;
 
     if (!this.config.rooms) return;
@@ -947,6 +1102,57 @@ export class RoomGenerator {
           );
         }
       }
+
+      this._clear(terrain, room, occupied);
     }
+  }
+
+  private _clear(terrain: TerrainName[], room: Room, occupied: Uint8Array) {
+    const { width } = this.config;
+    const x1 = room.x + room.width;
+    const y1 = room.y + room.height;
+    let cleared = false;
+
+    for (let y = room.y; y < y1; y++)
+      for (let x = room.x; x < x1; x++) {
+        if (!occupied[y * width + x]) continue;
+
+        for (let dy = -RECESS_CLEARANCE; dy <= RECESS_CLEARANCE; dy++)
+          for (let dx = -RECESS_CLEARANCE; dx <= RECESS_CLEARANCE; dx++) {
+            const i = (y + dy) * width + x + dx;
+            if (terrain[i] !== TerrainName.RECESSED) continue;
+
+            terrain[i] = TerrainName.FLOOR;
+            cleared = true;
+          }
+      }
+
+    if (!cleared) return;
+
+    const keep = new Set<number>();
+
+    for (let y = room.y; y <= y1 - RECESS_MIN; y++)
+      for (let x = room.x; x <= x1 - RECESS_MIN; x++) {
+        let solid = true;
+
+        for (let dy = 0; dy < RECESS_MIN && solid; dy++)
+          for (let dx = 0; dx < RECESS_MIN && solid; dx++)
+            if (terrain[(y + dy) * width + x + dx] !== TerrainName.RECESSED)
+              solid = false;
+
+        if (!solid) continue;
+
+        for (let dy = 0; dy < RECESS_MIN; dy++)
+          for (let dx = 0; dx < RECESS_MIN; dx++)
+            keep.add((y + dy) * width + x + dx);
+      }
+
+    for (let y = room.y; y < y1; y++)
+      for (let x = room.x; x < x1; x++) {
+        const i = y * width + x;
+
+        if (terrain[i] === TerrainName.RECESSED && !keep.has(i))
+          terrain[i] = TerrainName.FLOOR;
+      }
   }
 }

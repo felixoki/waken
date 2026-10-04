@@ -40,6 +40,7 @@ export class TextureAnimationComponent extends Component {
   private _createFrames(): void {
     const scene = this.entity.scene;
     const { tileSize, tiles, spritesheet, frames, direction } = this.config;
+    const stride = this.config.stride ?? tiles.length;
 
     const texture = scene.textures.get(spritesheet);
     const columns = Math.floor(texture.source[0].width / tileSize);
@@ -60,7 +61,7 @@ export class TextureAnimationComponent extends Component {
       tiles.forEach((r, rowIndex) => {
         for (let col = r.start; col <= r.end; col++) {
           const row =
-            direction === "vertical" ? r.row + f * tiles.length : r.row;
+            direction === "vertical" ? r.row + f * stride : r.row;
           const c =
             direction === "horizontal" ? col + f * (r.end - r.start + 1) : col;
 

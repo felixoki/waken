@@ -66,6 +66,7 @@ export class MapLoader {
       spawner: this._parseSpawner(obj),
       textureSpawner: this._parseTextureSpawner(obj),
       zone: this._parseZone(obj),
+      link: obj.properties?.find((p: any) => p.name === "link")?.value,
     };
   }
 

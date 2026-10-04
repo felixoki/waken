@@ -6,6 +6,7 @@ export enum MapName {
   VILLAGE = "village",
   HERBALIST_HOUSE = "herbalist_house",
   BLACKSMITH_HOUSE = "blacksmith_house",
+  MARKET_HOUSE = "market_house",
   GLASSBLOWER_HOUSE = "glassblower_house",
   FARM_HOUSE = "farm_house",
   FISHING_HUT = "fishing_hut",

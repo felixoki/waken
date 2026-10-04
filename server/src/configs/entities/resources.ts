@@ -63,6 +63,33 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 2,
     },
   },
+  [EntityName.CANDLE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [{ row: 8, start: 19, end: 19 }],
+        },
+        key: "candle_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Candle",
+      description: "A stub of tallow with a wick, still good for a few hours.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 8, col: 19 },
+      weight: 0.1,
+    },
+  },
   [EntityName.BONE]: {
     facing: Direction.DOWN,
     moving: [],

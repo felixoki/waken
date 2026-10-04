@@ -19,11 +19,13 @@ export class PointableComponent extends Component {
   }
 
   private _onPointerDown(
-    _pointer: Phaser.Input.Pointer,
+    pointer: Phaser.Input.Pointer,
     _localX: number,
     _localY: number,
     event: Phaser.Types.Input.EventData,
   ): void {
+    if (pointer.event.target !== this.entity.scene.game.canvas) return;
+
     const player = this.entity.scene.managers.players.player;
     if (!player) return;
 

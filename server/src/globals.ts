@@ -357,6 +357,9 @@ export const DUNGEON_RECESS_MIN_DIM = 7;
 export const DUNGEON_TORCH_STRIDE = 16;
 export const DUNGEON_LADDER_COUNT = 3;
 export const DUNGEON_LADDER_TORCH_CLEARANCE = 4;
+export const DUNGEON_CANDLE_GAP = 5;
+export const DUNGEON_CANDLE_CLEARANCE = 2;
+export const DUNGEON_CANDLE_CHANCE = 0.9;
 
 /** Villain */
 

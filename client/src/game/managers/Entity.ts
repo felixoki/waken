@@ -12,6 +12,7 @@ import { configs } from "@server/configs";
 import { CHUNK_ACTIVATION_BUDGET, CHUNK_PIXEL_SIZE } from "@server/globals";
 import { Villain } from "../Villain";
 import { vfx } from "../vfx";
+import { SwitchComponent } from "../components/Switch";
 
 type Rect = { x: number; y: number; width: number; height: number };
 
@@ -48,6 +49,26 @@ export class EntityManager {
 
     const entity = this.entities.get(id);
     if (entity) entity.isLocked = locked;
+  }
+
+  toggle(id: string, isOpen: boolean): void {
+    const queued = this.queue.find((config) => config.id === id);
+    if (queued) queued.isOpen = isOpen;
+
+    const entity = this.entities.get(id);
+    if (!entity) return;
+
+    entity.getComponent<SwitchComponent>(ComponentName.SWITCH)?.set(isOpen);
+
+    if (!entity.isStatic) return;
+
+    if (isOpen) this._unregisterStatic(id, entity);
+    else
+      this._registerStatic(
+        entity,
+        { id, map: entity.map, x: entity.x, y: entity.y, name: entity.name },
+        entity.scene as Scene,
+      );
   }
 
   get all(): Entity[] {
@@ -169,11 +190,12 @@ export class EntityManager {
       vfx.shaders.jump(entity);
 
     if (entity.isStatic) this._registerStatic(entity, config, scene);
+    if (config.isOpen) this.toggle(config.id, true);
   }
 
   private _registerStatic(
     entity: Entity,
-    config: EntityConfig,
+    config: Pick<EntityConfig, "id" | "map" | "x" | "y" | "name">,
     scene: Scene,
   ): void {
     const key = this._toChunkKey(config.map, config.x, config.y);

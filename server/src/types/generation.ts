@@ -250,6 +250,7 @@ export interface BiomeConfig {
   walls?: string;
   ledge?: string;
   tilesets?: string[];
+  variants?: VariantConfig[];
   rooms?: RoomConfig;
   terraces?: TerraceConfig;
   peak?: { entity: EntityName; requires: number };
@@ -274,6 +275,12 @@ export interface DetailStamp {
   tiles: { dx: number; dy: number; tileId: number }[];
   width: number;
   height: number;
+}
+
+export interface VariantConfig {
+  tileset: string;
+  of: string;
+  chance: number;
 }
 
 export interface DetailConfig {
@@ -306,6 +313,7 @@ export interface Entity {
   loot?: (Item & { chance: number })[];
   zone?: ZoneConfig;
   textureSpawner?: TextureSpawnerConfig;
+  link?: string;
 }
 
 export type Landmark = Pick<Entity, "name" | "x" | "y">;
@@ -315,6 +323,15 @@ export interface Room {
   y: number;
   width: number;
   height: number;
+}
+
+export type SeparatorLayer = "walls" | "walls_above" | "doors" | "doors_above";
+
+export interface SeparatorStamp {
+  index: number;
+  id: number;
+  layer: SeparatorLayer;
+  expect?: number;
 }
 
 export interface DoorAnchor {
@@ -355,7 +372,6 @@ export interface RoomTemplate {
   weight: number;
   depth?: { min?: number; max?: number };
   enemies?: EntityGroup[];
-  traps?: EntityGroup[];
   water?: {
     coverage: number;
   };
@@ -376,6 +392,13 @@ export interface RoomConfig {
   assignment: RoomAssignment;
   templates: RoomTemplate[];
   interior: RoomInterior[];
+  separators?: {
+    chance: number;
+    large: Range;
+    gates: Range;
+    treasure: (Item & { chance: number })[];
+  };
+  traps?: EntityGroup;
   hasRecesses?: boolean;
   erosion?: {
     band: number;

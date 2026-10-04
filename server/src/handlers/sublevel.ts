@@ -75,6 +75,7 @@ export const sublevel = {
           loot: e.loot,
           zone: e.zone,
           textureSpawner: e.textureSpawner,
+          link: e.link,
         };
 
         world.entities.add(id, entity);

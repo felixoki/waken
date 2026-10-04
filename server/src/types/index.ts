@@ -4,7 +4,7 @@ export * from "./animations.js";
 export * from "./effects.js";
 export * from "./behaviors.js";
 export * from "./build.js";
-export * from "./collectors.js";
+export * from "./crafter.js";
 export * from "./combat.js";
 export * from "./components.js";
 export * from "./chunks.js";

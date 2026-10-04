@@ -28,6 +28,7 @@ export class TileManager {
   private animations = new Map<number, Animation>();
   private grid?: number[][];
   private sight?: Uint8Array | null;
+  private rails?: Phaser.Geom.Rectangle[];
   private surfaces?: Uint8Array;
   private base?: Phaser.Tilemaps.TilemapLayer;
   private exposures = new Map<SurfaceName, Uint32Array>();
@@ -244,6 +245,20 @@ export class TileManager {
     });
   }
 
+  getRails(): Phaser.Geom.Rectangle[] {
+    return (this.rails ??= this.colliders
+      .filter((c) => c.getData("walkable"))
+      .map(
+        (c) =>
+          new Phaser.Geom.Rectangle(
+            c.x - c.width / 2,
+            c.y - c.height / 2,
+            c.width,
+            c.height,
+          ),
+      ));
+  }
+
   getSightMask(): Uint8Array | null {
     if (this.sight !== undefined) return this.sight;
 
@@ -278,9 +293,16 @@ export class TileManager {
 
     const { width, height, tileWidth, tileHeight } = this.tilemap;
 
+    const blocking = this.tilemap.layers.filter(
+      (layer) =>
+        !(layer.properties as TiledProperty[] | undefined)?.some(
+          (p) => p.name === "walkable" && p.value === true,
+        ),
+    );
+
     this.grid = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => {
-        const collides = this.tilemap.layers.some((layer) => {
+        const collides = blocking.some((layer) => {
           const tile = this.tilemap.getTileAt(x, y, true, layer.name);
           return tile?.collides;
         });

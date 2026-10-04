@@ -5,6 +5,7 @@ import {
   Event,
   Input,
   Item,
+  PickableConfig,
   Spot,
 } from "../types";
 import { randomUUID } from "crypto";
@@ -104,10 +105,14 @@ export const entity = {
 
     if (!player || !entity) return;
 
-    const metadata = configs.entities[entity.name]?.metadata;
+    const pickable = configs.entities[entity.name]?.components.find(
+      (c) => c.name === ComponentName.PICKABLE,
+    ) as { config?: PickableConfig } | undefined;
+    const name = pickable?.config?.item ?? entity.name;
+    const metadata = configs.entities[name]?.metadata;
     const item: Item = {
-      name: entity.name,
-      quantity: 1,
+      name,
+      quantity: pickable?.config?.quantity ?? 1,
       stackable: metadata?.stackable ?? false,
       weight: entity.weight ?? metadata?.weight,
     };
@@ -146,6 +151,38 @@ export const entity = {
 
     socket.to(`chunk:${key}`).emit(Event.ENTITY_SPOTTED_PLAYER, data);
     socket.emit(Event.ENTITY_SPOTTED_PLAYER, data);
+  },
+
+  toggle: (data: string, socket: Socket, io: Server, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
+    const trigger = world.entities.get(data);
+
+    if (!player || !trigger?.link) return;
+
+    const isTrigger = configs.entities[trigger.name]?.components.some(
+      (c) => c.name === ComponentName.SWITCH && c.config.trigger,
+    );
+    if (!isTrigger) return;
+
+    const partyId = world.chunks.getPartyByEntity(data);
+    const isOpen = !trigger.isOpen;
+
+    for (const entity of world.entities.getByMap(trigger.map)) {
+      if (entity.link !== trigger.link) continue;
+      if (world.chunks.getPartyByEntity(entity.id) !== partyId) continue;
+
+      world.entities.update(entity.id, { isOpen });
+
+      handlers.broadcast.entity(
+        io,
+        world,
+        Event.ENTITY_TOGGLE,
+        { id: entity.id, isOpen },
+        entity.map,
+        world.chunks.getChunkByEntity(entity.id),
+        partyId,
+      );
+    }
   },
 
   flee: (data: string, socket: Socket, io: Server, world: World) => {

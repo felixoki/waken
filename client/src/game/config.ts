@@ -17,6 +17,7 @@ import { SheenPipeline } from "./pipelines/Sheen";
 import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
 import { BlacksmithScene } from "./scenes/Blacksmith";
+import { MarketHouseScene } from "./scenes/MarketHouse";
 import { TavernScene } from "./scenes/Tavern";
 import { GlassblowerScene } from "./scenes/Glassblower";
 import { FishingHutScene } from "./scenes/FishingHut";
@@ -42,6 +43,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     HomeScene,
     ForestScene,
     BlacksmithScene,
+    MarketHouseScene,
     TavernScene,
     GlassblowerScene,
     FishingHutScene,

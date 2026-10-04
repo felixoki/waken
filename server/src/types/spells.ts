@@ -27,6 +27,8 @@ export enum SpellName {
   GREASE = "grease",
   BLINK = "blink",
   HYPERBEAM = "hyperbeam",
+  DARK_WAVE = "dark_wave",
+  ICE_PILLARS = "ice_pillars",
 }
 
 export enum Target {

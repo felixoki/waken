@@ -32,6 +32,8 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.025 },
   { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.05 },
   { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.001 },
+  { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.02 },
+  { name: EntityName.SPELL_PAGE_ICE_PILLARS, quantity: 1, stackable: false, chance: 0.02 },
   { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.02 },
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
@@ -44,6 +46,11 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.GRAPE_SEED, quantity: 2, stackable: true, chance: 0.06 },
   { name: EntityName.HOPS_SEED, quantity: 2, stackable: true, chance: 0.06 },
 ];
+
+const VAULT_LOOT = CHEST_LOOT.map((item) => ({
+  ...item,
+  chance: Math.min(1, item.chance * 3),
+}));
 
 export const forest: BiomeConfig = {
   id: BiomeName.FOREST,
@@ -318,6 +325,10 @@ export const dungeon: BiomeConfig = {
   borders: [],
   ledge: "dungeon_walls_floor",
   walls: "dungeon_walls_floor",
+  variants: [
+    { tileset: "dungeon_walls_cracks", of: "dungeon_walls_floor", chance: 0.1 },
+    { tileset: "dungeon_floor_cracks", of: "dungeon_walls_floor", chance: 0.1 },
+  ],
   terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
   objects: [],
   generator: GeneratorName.ROOM,
@@ -330,6 +341,13 @@ export const dungeon: BiomeConfig = {
       chance: { hidden: 0.1, puzzle: 0.12 },
     },
     hasRecesses: true,
+    separators: {
+      chance: 0.35,
+      large: { min: 3, max: 4 },
+      gates: { min: 3, max: 4 },
+      treasure: VAULT_LOOT,
+    },
+    traps: { entities: [EntityName.SPIKE_TRAP1], count: { min: 4, max: 7 } },
     distribution: {
       large: {
         count: { min: 1, max: 2 },
@@ -352,12 +370,6 @@ export const dungeon: BiomeConfig = {
           {
             entities: [EntityName.RAT, EntityName.GOBLIN1],
             count: { min: 4, max: 6 },
-          },
-        ],
-        traps: [
-          {
-            entities: [EntityName.SPIKE_TRAP1],
-            count: { min: 2, max: 4 },
           },
         ],
       },

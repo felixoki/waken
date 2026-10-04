@@ -19,7 +19,6 @@ import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
 import { TransitionComponent } from "../components/Transition";
 import { InteractableComponent } from "../components/Interactable";
-import { CollectorComponent } from "../components/Collector";
 import { BounceComponent } from "../components/Bounce";
 import { LightComponent } from "../components/Light";
 import { GlimmerComponent } from "../components/Glimmer";
@@ -30,6 +29,7 @@ import { FellableComponent } from "../components/Fellable";
 import { MineableComponent } from "../components/Mineable";
 import { AuraComponent } from "../components/Aura";
 import { StorageComponent } from "../components/Storage";
+import { SwitchComponent } from "../components/Switch";
 import { FollowComponent } from "../components/Follow";
 import { TrapComponent } from "../components/Trap";
 import { JumpableComponent } from "../components/Jumpable";
@@ -77,7 +77,7 @@ export class ComponentFactory {
           );
           break;
         case ComponentName.PICKABLE:
-          comp = new PickableComponent(entity);
+          comp = new PickableComponent(entity, component.config);
           break;
         case ComponentName.INVENTORY:
           comp = new InventoryComponent();
@@ -96,9 +96,6 @@ export class ComponentFactory {
           break;
         case ComponentName.INTERACTABLE:
           comp = new InteractableComponent(entity);
-          break;
-        case ComponentName.COLLECTOR:
-          comp = new CollectorComponent(component.config);
           break;
         case ComponentName.BOUNCE:
           comp = new BounceComponent(entity);
@@ -129,6 +126,9 @@ export class ComponentFactory {
           break;
         case ComponentName.STORAGE:
           comp = new StorageComponent(entity, component.config);
+          break;
+        case ComponentName.SWITCH:
+          comp = new SwitchComponent(entity, component.config);
           break;
         case ComponentName.FOLLOW:
           comp = new FollowComponent(entity, component.config);

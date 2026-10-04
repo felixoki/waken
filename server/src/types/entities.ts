@@ -59,6 +59,8 @@ export interface EntityConfig {
   textureSpawner?: TextureSpawnerConfig;
   zone?: ZoneConfig;
   weight?: number;
+  link?: string;
+  isOpen?: boolean;
 }
 
 export interface SpawnerConfig {
@@ -174,6 +176,7 @@ export enum EntityName {
   BOAR = "boar",
   BOAR_MEAT = "boar_meat",
   BONE = "bone",
+  BOOKKEEPER = "bookkeeper",
   BOOTS1 = "boots1",
   BOWL1 = "bowl1",
   BOX1 = "box1",
@@ -195,12 +198,17 @@ export enum EntityName {
   BUSH4 = "bush4",
   CABBAGE = "cabbage",
   CABBAGE_SEED = "cabbage_seed",
+  CANDLE = "candle",
+  CANDLES1 = "candles1",
+  CANDLES2 = "candles2",
+  CANDLES3 = "candles3",
   CARROT = "carrot",
   CARROT_SEED = "carrot_seed",
   CAVE_ENTRANCE = "cave_entrance",
   CAVE_EXIT = "cave_exit",
   BED = "bed",
   CHEST1 = "chest1",
+  CLOSED_DOOR = "closed_door",
   CLOUDLADDER = "cloudladder",
   CITIZEN1 = "citizen1",
   CITIZEN2 = "citizen2",
@@ -291,6 +299,8 @@ export enum EntityName {
   HENBANE = "henbane",
   EDELWEISS = "edelweiss",
   HENHOUSE = "henhouse",
+  HELPER1 = "helper1",
+  HELPER2 = "helper2",
   HERBALIST = "herbalist",
   HERBALIST_EXIT = "herbalist_exit",
   HERBALIST_HOUSE = "herbalist_house",
@@ -305,7 +315,10 @@ export enum EntityName {
   HOUSE2 = "house2",
   IRON1 = "iron1",
   LADDER = "ladder",
+  LEVER = "lever",
   LANTERN = "lantern",
+  MARKET_HOUSE = "market_house",
+  MARKET_HOUSE_EXIT = "market_house_exit",
   MARKET_STAND1 = "market_stand1",
   MARKET_STAND2 = "market_stand2",
   MARKET_STAND3 = "market_stand3",
@@ -384,6 +397,8 @@ export enum EntityName {
   SPELL_PAGE_GREASE = "spell_page_grease",
   SPELL_PAGE_BLINK = "spell_page_blink",
   SPELL_PAGE_HYPERBEAM = "spell_page_hyperbeam",
+  SPELL_PAGE_DARK_WAVE = "spell_page_dark_wave",
+  SPELL_PAGE_ICE_PILLARS = "spell_page_ice_pillars",
   VENISON_MEAT = "venison_meat",
   VIAL = "vial",
   PEOPLE = "people",

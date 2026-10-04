@@ -737,8 +737,8 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Skyward",
-      description: "A weightless draught of edelweiss, troll heart and a wandering soul.",
+      displayName: "Giant's Stalk",
+      description: "A draught that climbs through the night, rooted in an ancient troll's heart.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 16, col: 28 },
       weight: 0.2,

@@ -293,6 +293,7 @@ export const party = {
           loot: biomeEntity.loot,
           zone: biomeEntity.zone,
           textureSpawner: biomeEntity.textureSpawner,
+          link: biomeEntity.link,
         };
 
         world.entities.add(id, config);
