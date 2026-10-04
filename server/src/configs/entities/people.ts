@@ -22,26 +22,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.COLLECTOR,
+        name: ComponentName.CRAFTER,
         config: {
-          accepts: [
-            EntityName.SUNFLOWER,
-            EntityName.DAFFODIL,
-            EntityName.BLUE_LOTUS,
-            EntityName.CLARY_SAGE,
-            EntityName.BELLADONNA,
-            EntityName.VIAL,
-            EntityName.BEARDED_TOOTH_FUNGUS,
-            EntityName.TROLL_SCALES,
-            EntityName.RAT_CLAWS,
-            EntityName.HENBANE,
-            EntityName.OPIUM_POPPY,
-            EntityName.BALE,
-            EntityName.ERGOT,
-            EntityName.EDELWEISS,
-            EntityName.ANCIENT_TROLL_HEART,
-            EntityName.SHADOW_WANDERER,
-          ],
           recipes: [
             {
               tier: 1,
@@ -174,19 +156,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.COLLECTOR,
+        name: ComponentName.CRAFTER,
         config: {
-          accepts: [
-            EntityName.WOOD,
-            EntityName.IRON1,
-            EntityName.GLASS,
-            EntityName.DEER_HIDE,
-            EntityName.FISHING_HOOK,
-            EntityName.FOX_PELT,
-            EntityName.BEAR_PELT,
-            EntityName.TUNIC,
-            EntityName.VEST,
-          ],
           recipes: [
             {
               tier: 1,
@@ -367,7 +338,145 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "Hides, always hides. Deer if you can manage it, though a fox pelt never goes to waste. Take them to the smith, he keeps the ledger.",
+        text: "Hides, always hides. Deer if you can manage it, though a fox pelt never goes to waste. Take them to the market house, the bookkeeper keeps the ledger.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+    },
+  },
+  [EntityName.BOOKKEEPER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 54,
+          height: 18,
+          offsetX: 13,
+          offsetY: 24,
+          immovable: true,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Bookkeeper",
+      description:
+        "Keeper of the market house ledgers, who knows what every stall owes and is owed.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        ref: NodeId.GREETING,
+        individual: [
+          {
+            text: "Hand over collectables",
+            effects: [{ name: DialogueEffectName.ITEM_HAND_OVER }],
+          },
+          {
+            text: "What do you keep in all these books?",
+            next: NodeId.STORY,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "Every sack, jar and barrel that crosses the market. Weights, prices, debts. If it was sold in this village, it is written down here.",
+        choices: [
+          {
+            ref: ChoiceId.GOODBYE,
+            effects: [{ name: DialogueEffectName.CONVERSATION_END }],
+          },
+        ],
+      },
+    },
+  },
+  [EntityName.HELPER1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 8,
+          offsetX: 15,
+          offsetY: 26,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Clerk",
+      description:
+        "One of the bookkeeper's clerks, copying the day's tallies into the ledger.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        text: [
+          "Ugh, these numbers don't add up.",
+          "Wait... can that be? How would we even store this much of that?",
+        ],
+        choices: [{ ref: ChoiceId.GOODBYE }],
+      },
+    },
+  },
+  [EntityName.HELPER2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 8,
+          offsetX: 15,
+          offsetY: 26,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Clerk",
+      description:
+        "One of the bookkeeper's clerks, checking the market's weights and measures.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        ref: NodeId.GREETING,
+        individual: [
+          {
+            text: "Busy day?",
+            next: NodeId.STORY,
+          },
+        ],
+      },
+      [NodeId.STORY]: {
+        text: "Always. Someone has to check the stallholders' sums, and they are rarely in the village's favour.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -447,15 +556,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.COLLECTOR,
+        name: ComponentName.CRAFTER,
         config: {
-          accepts: [
-            EntityName.WOOD,
-            EntityName.QUARTZ1,
-            EntityName.BONE,
-            EntityName.GLASS,
-            EntityName.IRON1,
-          ],
           recipes: [
             {
               tier: 1,
@@ -539,17 +641,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.COLLECTOR,
+        name: ComponentName.CRAFTER,
         config: {
-          accepts: [
-            EntityName.RASPBERRY,
-            EntityName.VENISON_MEAT,
-            EntityName.BOAR_MEAT,
-            EntityName.BEEF,
-            EntityName.CABBAGE,
-            EntityName.CARROT,
-            EntityName.TOMATO,
-          ],
           recipes: [
             {
               tier: 2,
@@ -590,7 +683,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Greengrocer",
       description:
-        "A trader who collects and supplies fresh produce to villagers.",
+        "A trader who supplies fresh produce to villagers.",
     },
     dialogue: {
       [NodeId.GREETING]: {
@@ -633,18 +726,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
-      {
-        name: ComponentName.COLLECTOR,
-        config: {
-          accepts: [
-            EntityName.PERCH,
-            EntityName.CARP,
-            EntityName.PIKE,
-            EntityName.CAVEFISH,
-          ],
-          recipes: [],
-        },
-      },
       { name: ComponentName.ANIMATION },
       {
         name: ComponentName.BODY,
@@ -663,7 +744,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Fishwife",
       description:
-        "A trader who collects and supplies fresh fish to villagers.",
+        "Keeper of the scales, who weighs every catch and remembers the best of them.",
     },
     dialogue: {
       [NodeId.GREETING]: [
@@ -687,7 +768,27 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               "Small ones feed the village. Big ones get you something.",
             ],
           },
-          choices: [{ ref: ChoiceId.GOODBYE }],
+          choices: [
+            {
+              text: "Weigh my catch",
+              effects: [
+                {
+                  name: DialogueEffectName.FISH_WEIGH,
+                  params: { action: "weigh" },
+                },
+              ],
+            },
+            {
+              text: "How do my records stand?",
+              effects: [
+                {
+                  name: DialogueEffectName.FISH_WEIGH,
+                  params: { action: "records" },
+                },
+              ],
+            },
+            { ref: ChoiceId.GOODBYE },
+          ],
         },
       ],
     },
@@ -700,9 +801,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.COLLECTOR,
+        name: ComponentName.CRAFTER,
         config: {
-          accepts: [EntityName.WHEAT, EntityName.BREAD],
           recipes: [
             {
               tier: 3,
@@ -752,16 +852,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
       {
-        name: ComponentName.COLLECTOR,
+        name: ComponentName.CRAFTER,
         config: {
-          accepts: [
-            EntityName.GOAT_MILK,
-            EntityName.GRAPE,
-            EntityName.HOPS,
-            EntityName.WHEAT,
-            EntityName.WINE,
-            EntityName.BEER,
-          ],
           recipes: [
             {
               tier: 3,

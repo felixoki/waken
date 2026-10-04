@@ -1,7 +1,7 @@
 import { Direction } from "./directions";
 import { EntityName } from "./entities";
 import { MapName } from "./maps";
-import { CollectorConfig } from "./collectors";
+import { CrafterConfig } from "./crafter";
 import { LightConfig } from "./ambience";
 import { GrowthStageConfig } from "./farming";
 import { DamageType } from "./damage.js";
@@ -17,7 +17,7 @@ export enum ComponentName {
   BEHAVIOR_QUEUE = "behaviorQueue",
   BODY = "body",
   BOUNCE = "bounce",
-  COLLECTOR = "collector",
+  CRAFTER = "crafter",
   CONSUMABLE = "consumable",
   DAMAGEABLE = "damageable",
   DESTRUCTIBLE = "destructible",
@@ -42,6 +42,7 @@ export enum ComponentName {
   POINTABLE = "pointable",
   REVIVEABLE = "reviveable",
   STORAGE = "storage",
+  SWITCH = "switch",
   TEXTURE = "texture",
   TEXTURE_ANIMATION = "textureAnimation",
   TRANSITION = "transition",
@@ -64,7 +65,7 @@ export type ComponentConfig =
   | { name: ComponentName.BEHAVIOR_QUEUE }
   | { name: ComponentName.BODY; config: BodyConfig }
   | { name: ComponentName.BOUNCE }
-  | { name: ComponentName.COLLECTOR; config: CollectorConfig }
+  | { name: ComponentName.CRAFTER; config: CrafterConfig }
   | { name: ComponentName.CONSUMABLE; config: ConsumableConfig }
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
   | { name: ComponentName.DESTRUCTIBLE; config?: DestructibleConfig }
@@ -85,11 +86,12 @@ export type ComponentConfig =
   | { name: ComponentName.LEARNABLE; config: LearnableConfig }
   | { name: ComponentName.GLIMMER; config: GlimmerConfig }
   | { name: ComponentName.LIGHT; config: LightConfig }
-  | { name: ComponentName.PICKABLE }
+  | { name: ComponentName.PICKABLE; config?: PickableConfig }
   | { name: ComponentName.POINTABLE }
   | { name: ComponentName.REVIVEABLE }
   | { name: ComponentName.SLEEPABLE; config: SleepableConfig }
   | { name: ComponentName.STORAGE; config: StorageConfig }
+  | { name: ComponentName.SWITCH; config: SwitchConfig }
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
   | { name: ComponentName.TRANSITION; config: TransitionConfig }
@@ -164,6 +166,15 @@ export interface DestructibleConfig {
   sound: SoundName;
 }
 
+export interface SwitchConfig {
+  trigger: boolean;
+}
+
+export interface PickableConfig {
+  item: EntityName;
+  quantity: number;
+}
+
 export interface JumpableConfig {
   clearance: number;
 }
@@ -215,6 +226,7 @@ export interface TextureAnimationConfig {
   tileSize: number;
   offset?: { x: number; y: number };
   tiles: { row: number; start: number; end: number }[];
+  stride?: number;
   frames: number;
   direction: "horizontal" | "vertical";
   frameRate: number;

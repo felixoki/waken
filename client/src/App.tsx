@@ -16,7 +16,7 @@ import { Seeds } from "./ui/Seeds";
 import { Build } from "./ui/Build";
 import { SpellBook } from "./ui/SpellBook";
 import { Storage } from "./ui/Storage";
-import { Collector } from "./ui/Collector";
+import { Crafter } from "./ui/Crafter";
 import { Effects } from "./ui/Effects";
 import { DamageNumbers } from "./ui/DamageNumbers";
 import { Settings } from "./ui/Settings";
@@ -93,7 +93,7 @@ function App() {
           <Build />
         </div>
         <Storage />
-        <Collector />
+        <Crafter />
         </Provider>
       </div>
       <Settings />

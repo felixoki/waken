@@ -1,13 +1,9 @@
 import { Server, Socket } from "socket.io";
 import {
-  ChoiceId,
-  ComponentName,
-  DialogueChoice,
   EntityName,
   Event,
   FishName,
   Item,
-  NodeId,
   ZoneName,
 } from "../types";
 import { FISHING_LANDING_DISTANCE } from "../globals.js";
@@ -93,48 +89,17 @@ export const fishing = {
     );
   },
 
-  turnIn: (
-    data: { entityId: string; action?: "give" | "records" },
+  weigh: (
+    data: { entityId: string; action?: "weigh" | "records" },
     socket: Socket,
-    io: Server,
     world: World,
   ) => {
     const player = world.players.getBySocketId(socket.id);
-    if (!player) return;
-
-    const entity = world.entities.get(data.entityId);
-    const collector = entity
-      ? configs.entities[entity.name]?.components.find(
-          (component) => component.name === ComponentName.COLLECTOR,
-        )
-      : undefined;
-
-    const accepts =
-      collector?.name === ComponentName.COLLECTOR
-        ? collector.config.accepts
-        : [];
-
-    const takes = (name: EntityName) =>
-      fishing.isFish(name) && accepts.includes(name);
+    if (!player || player.locked !== data.entityId) return;
 
     const records = { ...(player.records ?? {}) };
-    const respond = (text: string) => {
-      const goodbye = handlers.dialogue.resolve.choice({
-        ref: ChoiceId.GOODBYE,
-      });
-
-      const choices: DialogueChoice[] = [
-        { text: "Anything else?", next: NodeId.GREETING },
-        ...(goodbye ? [goodbye] : []),
-      ];
-
-      socket.emit(Event.ENTITY_DIALOGUE_RESPONSE, {
-        entityId: data.entityId,
-        nodeId: NodeId.GREETING,
-        text,
-        choices,
-      });
-    };
+    const respond = (text: string) =>
+      handlers.dialogue.respond(socket, data.entityId, text);
 
     if (data.action === "records") {
       const lines = (Object.values(FishName) as FishName[])
@@ -151,7 +116,7 @@ export const fishing = {
     }
 
     const caught = player.inventory.filter(
-      (slot): slot is Item => !!slot && takes(slot.name),
+      (slot): slot is Item => !!slot && fishing.isFish(slot.name),
     );
 
     if (!caught.length) {
@@ -186,31 +151,32 @@ export const fishing = {
       );
     }
 
-    player.inventory = player.inventory.map((slot) =>
-      slot && takes(slot.name) ? null : slot,
-    );
+    if (!beaten.length) {
+      respond(
+        "Nothing on the scales beats your records. The bookkeeper will take them for the village.",
+      );
+      return;
+    }
+
     player.records = records;
 
-    for (const item of awarded)
-      player.inventory = handlers.storage.add(player.inventory, {
-        name: item,
-        quantity: 1,
-        stackable: false,
-      });
+    if (awarded.length) {
+      for (const item of awarded)
+        player.inventory = handlers.storage.add(player.inventory, {
+          name: item,
+          quantity: 1,
+          stackable: false,
+        });
 
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
-    handlers.item.donate(
-      caught.map((slot) => ({ name: slot.name, quantity: 1 })),
-      io,
-      world,
-    );
+      socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    }
 
     const parts = [
-      `${caught.length} fish for the village, much obliged.`,
-      beaten.length ? `New best: ${beaten.join(", ")}.` : "",
+      `New best: ${beaten.join(", ")}.`,
       awarded.length
         ? `Take ${awarded.map((item) => label(item)).join(" and ")} for that.`
         : "",
+      "The bookkeeper will take the fish for the village.",
     ].filter(Boolean);
 
     respond(parts.join("\n\n"));

@@ -4,7 +4,6 @@ import {
   DialogueEffectName,
   DialogueResponse,
 } from "@server/types/dialogue";
-import { Item } from "@server/types";
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { Event } from "@server/types";
@@ -21,18 +20,21 @@ export const Dialogue = () => {
         setIsOpen(false);
         setData(null);
       },
-      [DialogueEffectName.ITEM_GIVE]: (effect: DialogueEffect) => {
-        if (effect.params) {
-          EventBus.emit(Event.ITEM_COLLECT, effect.params as Item);
-        }
+      [DialogueEffectName.ITEM_HAND_OVER]: () => {
+        if (data?.entityId)
+          EventBus.emit(Event.ITEM_HAND_OVER, { entityId: data.entityId });
       },
-      [DialogueEffectName.COLLECTOR_OPEN]: (effect: DialogueEffect) => {
+      [DialogueEffectName.CRAFTER_OPEN]: (effect: DialogueEffect) => {
         if (data?.entityId)
           EventBus.emit(Event.ENTITY_DIALOGUE_END, data.entityId);
-        if (effect.params) EventBus.emit(Event.COLLECTOR_OPEN, effect.params);
+        if (effect.params) EventBus.emit(Event.CRAFTER_OPEN, effect.params);
       },
-      [DialogueEffectName.FISH_TURN_IN]: (effect: DialogueEffect) => {
-        if (effect.params) EventBus.emit(Event.FISHING_TURN_IN, effect.params);
+      [DialogueEffectName.FISH_WEIGH]: (effect: DialogueEffect) => {
+        if (data?.entityId)
+          EventBus.emit(Event.FISHING_WEIGH, {
+            entityId: data.entityId,
+            ...effect.params,
+          });
       },
     };
 

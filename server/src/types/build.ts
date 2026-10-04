@@ -1,6 +1,6 @@
 import { EntityName } from "./entities";
 import { MapName } from "./maps";
-import { Ingredient } from "./collectors";
+import { Ingredient } from "./crafter";
 
 export enum BuildCategory {
   FURNITURE = "furniture",

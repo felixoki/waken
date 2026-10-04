@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { ComponentName, EntityName, Rarity, SpellName } from "@server/types";
 import { SpellConfig } from "@server/types/spells";
-import { Ingredient } from "@server/types/collectors";
+import { Ingredient } from "@server/types/crafter";
 import { configs } from "@server/configs";
 import { Icon } from "./Icon";
 import { useIsDragging, type DragData } from "./Provider";

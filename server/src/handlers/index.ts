@@ -3,9 +3,10 @@ import { broadcast } from "./broadcast.js";
 import { build } from "./build.js";
 import { chunks } from "./chunks.js";
 import { climate } from "./climate.js";
-import { collector } from "./collector.js";
 import { combat } from "./combat.js";
+import { crafter } from "./crafter.js";
 import { dialogue } from "./dialogue.js";
+import { economy } from "./economy.js";
 import { entity } from "./entity.js";
 import { farming } from "./farming.js";
 import { fishing } from "./fishing.js";
@@ -28,7 +29,8 @@ export const handlers = {
   build,
   chunks,
   climate,
-  collector,
+  crafter,
+  economy,
   player,
   entity,
   farming,

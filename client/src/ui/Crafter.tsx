@@ -1,25 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import { Lock } from "lucide-react";
-import { EntityName, EconomySnapshot, Event } from "@server/types";
-import { Recipe } from "@server/types/collectors";
+import {
+  ComponentName,
+  EntityName,
+  EconomySnapshot,
+  Event,
+  Recipe,
+} from "@server/types";
 import { configs } from "@server/configs";
 import EventBus from "../game/EventBus";
 import { Item } from "./Item";
 
-interface CollectorData {
+interface CrafterData {
   entityId: string;
   entityName: EntityName;
 }
 
-export function Collector() {
-  const [data, setData] = useState<CollectorData | null>(null);
+export function Crafter() {
+  const [data, setData] = useState<CrafterData | null>(null);
   const [store, setStore] = useState<Record<string, number>>({});
   const [tier, setTier] = useState(1);
   const [activeTab, setActiveTab] = useState(1);
-  const dataRef = useRef<CollectorData | null>(null);
+  const dataRef = useRef<CrafterData | null>(null);
 
   useEffect(() => {
-    const open = (payload: CollectorData) => {
+    const open = (payload: CrafterData) => {
       dataRef.current = payload;
       setData(payload);
       setActiveTab(1);
@@ -45,14 +50,14 @@ export function Collector() {
       setData(null);
     };
 
-    EventBus.on(Event.COLLECTOR_OPEN, open);
+    EventBus.on(Event.CRAFTER_OPEN, open);
     EventBus.on(Event.STORE_SYNC, sync);
     EventBus.on(Event.ECONOMY_UPDATE, update);
     EventBus.on(Event.ENTITY_DIALOGUE_END, end);
     EventBus.on(Event.UI_TOGGLE, toggle);
 
     return () => {
-      EventBus.off(Event.COLLECTOR_OPEN, open);
+      EventBus.off(Event.CRAFTER_OPEN, open);
       EventBus.off(Event.STORE_SYNC, sync);
       EventBus.off(Event.ECONOMY_UPDATE, update);
       EventBus.off(Event.ENTITY_DIALOGUE_END, end);
@@ -63,11 +68,12 @@ export function Collector() {
   if (!data) return null;
 
   const entityDef = configs.entities[data.entityName];
-  const collectorComp = entityDef?.components.find(
-    (c) => c.name === "collector",
-  ) as { name: string; config: { recipes: Recipe[] } } | undefined;
+  const crafter = entityDef?.components.find(
+    (c) => c.name === ComponentName.CRAFTER,
+  );
 
-  const recipes: Recipe[] = collectorComp?.config?.recipes ?? [];
+  const recipes: Recipe[] =
+    crafter?.name === ComponentName.CRAFTER ? crafter.config.recipes : [];
 
   const maxTier = Math.max(
     1,
@@ -83,7 +89,7 @@ export function Collector() {
   const craft = (recipe: Recipe) => {
     if (!data) return;
 
-    EventBus.emit(Event.COLLECTOR_CRAFT, {
+    EventBus.emit(Event.CRAFTER_CRAFT, {
       entityId: data.entityId,
       output: recipe.output,
     });

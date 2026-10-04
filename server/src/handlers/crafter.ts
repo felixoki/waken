@@ -4,7 +4,7 @@ import { World } from "../World.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
 
-export const collector = {
+export const crafter = {
   craft: (
     data: { entityId: string; output: EntityName },
     socket: Socket,
@@ -20,13 +20,12 @@ export const collector = {
     const def = configs.entities[entity.name];
     if (!def) return;
 
-    const collectorComp = def.components.find(
-      (c) => c.name === ComponentName.COLLECTOR,
+    const component = def.components.find(
+      (c) => c.name === ComponentName.CRAFTER,
     );
-    if (!collectorComp || collectorComp.name !== ComponentName.COLLECTOR)
-      return;
+    if (!component || component.name !== ComponentName.CRAFTER) return;
 
-    const { recipes } = collectorComp.config;
+    const { recipes } = component.config;
     const currentTier = world.economy.getTier();
 
     const recipe = recipes.find(
@@ -54,22 +53,5 @@ export const collector = {
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
     handlers.broadcast.store(io, world);
     handlers.broadcast.economy(io, world);
-  },
-
-  upgrade: (_socket: Socket, io: Server, world: World) => {
-    const nextTier = world.economy.getTier() + 1;
-    const upgrade = configs.tiers.find((t) => t.tier === nextTier);
-    if (!upgrade || !world.economy.canUpgrade()) return;
-
-    const canAfford = upgrade.requirements.every((req) =>
-      world.items.has(req.item, req.quantity),
-    );
-    if (!canAfford) return;
-
-    for (const req of upgrade.requirements)
-      world.items.remove(req.item, req.quantity);
-
-    world.economy.upgradeTier();
-    handlers.broadcast.store(io, world);
   },
 };

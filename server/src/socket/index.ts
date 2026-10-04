@@ -6,7 +6,6 @@ import {
   Event,
   Input,
   Hit,
-  Item,
   Transition,
   Spot,
   EntityConfig,
@@ -72,6 +71,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: Spot) => handlers.entity.spot(data, socket, world),
     },
     {
+      event: Event.ENTITY_TOGGLE,
+      handler: (data: string) =>
+        handlers.entity.toggle(data, socket, io, world),
+    },
+    {
       event: Event.ENTITY_FLEE,
       handler: (data: string) => handlers.entity.flee(data, socket, io, world),
     },
@@ -103,8 +107,9 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      * Items
      */
     {
-      event: Event.ITEM_COLLECT,
-      handler: (data: Item) => handlers.item.collect(data, socket, io, world),
+      event: Event.ITEM_HAND_OVER,
+      handler: (data: { entityId: string }) =>
+        handlers.item.handOver(data, socket, io, world),
     },
     {
       event: Event.ITEM_CONSUME,
@@ -157,8 +162,9 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: any) => handlers.fishing.catch(data, socket, io, world),
     },
     {
-      event: Event.FISHING_TURN_IN,
-      handler: (data: any) => handlers.fishing.turnIn(data, socket, io, world),
+      event: Event.FISHING_WEIGH,
+      handler: (data: { entityId: string; action?: "weigh" | "records" }) =>
+        handlers.fishing.weigh(data, socket, world),
     },
     {
       event: Event.ENTITY_CAPTURE,
@@ -251,16 +257,16 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
         handlers.storage.move(data, socket, world),
     },
     /**
-     * Collector
+     * Crafter
      */
     {
-      event: Event.COLLECTOR_CRAFT,
-      handler: (data: { entityId: string; output: string }) =>
-        handlers.collector.craft(data as any, socket, io, world),
+      event: Event.CRAFTER_CRAFT,
+      handler: (data: { entityId: string; output: EntityName }) =>
+        handlers.crafter.craft(data, socket, io, world),
     },
     {
-      event: Event.COLLECTOR_TIER_UPGRADE,
-      handler: () => handlers.collector.upgrade(socket, io, world),
+      event: Event.ECONOMY_UPGRADE,
+      handler: () => handlers.economy.upgrade(io, world),
     },
   ];
 

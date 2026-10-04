@@ -299,7 +299,7 @@ export const sounds = {
     [SoundName.TROLL_SLASH]: {
       volume: 0.5,
       folder: "creatures",
-      variants: ["troll_slash"],
+      variants: ["troll_slash1", "troll_slash2"],
     },
     [SoundName.SHADOW_WANDERER_IDLE]: {
       volume: 0.7,

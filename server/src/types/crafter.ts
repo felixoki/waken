@@ -12,7 +12,6 @@ export interface Recipe {
   ingredients: Ingredient[];
 }
 
-export interface CollectorConfig {
-  accepts: EntityName[];
+export interface CrafterConfig {
   recipes: Recipe[];
 }

@@ -47,7 +47,7 @@ export function Economy() {
     );
 
   const upgradeEconomy = () => {
-    EventBus.emit(Event.COLLECTOR_TIER_UPGRADE);
+    EventBus.emit(Event.ECONOMY_UPGRADE);
   };
 
   return (

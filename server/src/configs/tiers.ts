@@ -1,5 +1,5 @@
 import { EntityName } from "../types/entities.js";
-import { Ingredient } from "../types/collectors.js";
+import { Ingredient } from "../types/crafter.js";
 
 export interface TierUpgrade {
   tier: number;

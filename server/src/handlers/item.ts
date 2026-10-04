@@ -23,16 +23,51 @@ export const item = {
     handlers.broadcast.store(io, world);
   },
 
-  collect: (data: Item, socket: Socket, io: Server, world: World) => {
+  handOver: (
+    data: { entityId: string },
+    socket: Socket,
+    io: Server,
+    world: World,
+  ) => {
     const player = world.players.getBySocketId(socket.id);
-    if (player)
-      player.inventory = handlers.storage.remove(player.inventory, data);
+    if (!player || player.locked !== data.entityId) return;
 
-    socket.emit(Event.ITEM_REMOVE, data);
+    const given = player.inventory.filter(
+      (slot): slot is Item =>
+        !!slot &&
+        slot.quantity > 0 &&
+        configs.collectables.has(slot.soul ?? slot.name),
+    );
+
+    if (!given.length) {
+      handlers.dialogue.respond(
+        socket,
+        data.entityId,
+        "You carry nothing the village has use for.",
+      );
+      return;
+    }
+
+    player.inventory = player.inventory.map((slot) =>
+      slot && given.includes(slot) ? null : slot,
+    );
+    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+
     item.donate(
-      [{ name: data.soul ?? data.name, quantity: data.quantity }],
+      given.map((slot) => ({
+        name: slot.soul ?? slot.name,
+        quantity: slot.quantity,
+      })),
       io,
       world,
+    );
+
+    const total = given.reduce((sum, slot) => sum + slot.quantity, 0);
+
+    handlers.dialogue.respond(
+      socket,
+      data.entityId,
+      `${total} ${total === 1 ? "item" : "items"} entered in the ledger. The village thanks you.`,
     );
   },
 

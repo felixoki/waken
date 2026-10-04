@@ -101,7 +101,9 @@ export class MainScene extends Phaser.Scene {
       MapName.VILLAGE,
       MapName.HERBALIST_HOUSE,
       MapName.HOME,
+      MapName.DUNGEON_TEST,
       MapName.BLACKSMITH_HOUSE,
+      MapName.MARKET_HOUSE,
       MapName.TAVERN,
       MapName.GLASSBLOWER_HOUSE,
       MapName.FISHING_HUT,
@@ -598,6 +600,17 @@ export class MainScene extends Phaser.Scene {
       this.game.events.emit(Event.ENTITY_UNLOCK, data);
     });
 
+    this.managers.socket.on(
+      Event.ENTITY_TOGGLE,
+      (data: { id: string; isOpen: boolean }) => {
+        this.managers.entities.toggle(data.id, data.isOpen);
+      },
+    );
+
+    this.game.events.on(Event.ENTITY_TOGGLE, (data: string) => {
+      this.managers.socket.emit(Event.ENTITY_TOGGLE, data);
+    });
+
     this.game.events.on(Event.ENTITY_INPUT, (data: Partial<Input>) => {
       this.managers.socket.emit(Event.ENTITY_INPUT, data);
     });
@@ -701,18 +714,6 @@ export class MainScene extends Phaser.Scene {
     /**
      * Items
      */
-    this.managers.socket.on(Event.ITEM_REMOVE, (data: Item) => {
-      const player = this.managers.players.player;
-      if (!player) return;
-
-      const inventory = player.getComponent<InventoryComponent>(
-        ComponentName.INVENTORY,
-      );
-      if (!inventory) return;
-
-      inventory.remove(data.name, data.quantity);
-    });
-
     this.managers.socket.on(Event.INVENTORY_SYNC, (data: (Item | null)[]) => {
       const player = this.managers.players.player;
       if (!player) return;
@@ -736,14 +737,14 @@ export class MainScene extends Phaser.Scene {
       EventBus.emit(Event.SPELLBOOK_SYNC, spells);
     });
 
-    EventBus.on(Event.ITEM_COLLECT, (data: Item) => {
-      this.managers.socket.emit(Event.ITEM_COLLECT, data);
+    EventBus.on(Event.ITEM_HAND_OVER, (data: { entityId: string }) => {
+      this.managers.socket.emit(Event.ITEM_HAND_OVER, data);
     });
 
     EventBus.on(
-      Event.FISHING_TURN_IN,
+      Event.FISHING_WEIGH,
       (data: { entityId: string; action?: string }) => {
-        this.managers.socket.emit(Event.FISHING_TURN_IN, data);
+        this.managers.socket.emit(Event.FISHING_WEIGH, data);
       },
     );
 
@@ -824,18 +825,18 @@ export class MainScene extends Phaser.Scene {
     });
 
     /**
-     * Collector
+     * Crafter
      */
     EventBus.on(
-      Event.COLLECTOR_CRAFT,
+      Event.CRAFTER_CRAFT,
       (data: { entityId: string; output: string }) => {
-        this.managers.socket.emit(Event.COLLECTOR_CRAFT, data);
+        this.managers.socket.emit(Event.CRAFTER_CRAFT, data);
         this.managers.sound.play.sfx(SoundName.COLLECT);
       },
     );
 
-    EventBus.on(Event.COLLECTOR_TIER_UPGRADE, () => {
-      this.managers.socket.emit(Event.COLLECTOR_TIER_UPGRADE);
+    EventBus.on(Event.ECONOMY_UPGRADE, () => {
+      this.managers.socket.emit(Event.ECONOMY_UPGRADE);
     });
 
     this.managers.socket.on(

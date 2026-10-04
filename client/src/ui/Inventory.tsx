@@ -59,7 +59,7 @@ export function Inventory() {
 
     const onStorageClose = () => setStorageEntityId(null);
 
-    const onCollectorOpen = () => {
+    const onCrafterOpen = () => {
       if (!isOpenRef.current) EventBus.emit(Event.UI_TOGGLE);
     };
 
@@ -67,7 +67,7 @@ export function Inventory() {
     EventBus.on(Event.UI_TOGGLE, toggle);
     EventBus.on(Event.STORAGE_OPEN, onStorageOpen);
     EventBus.on(Event.STORAGE_CLOSE, onStorageClose);
-    EventBus.on(Event.COLLECTOR_OPEN, onCollectorOpen);
+    EventBus.on(Event.CRAFTER_OPEN, onCrafterOpen);
     EventBus.on(Event.TRANSFORM_TOGGLE, transform);
 
     return () => {
@@ -75,7 +75,7 @@ export function Inventory() {
       EventBus.off(Event.UI_TOGGLE, toggle);
       EventBus.off(Event.STORAGE_OPEN, onStorageOpen);
       EventBus.off(Event.STORAGE_CLOSE, onStorageClose);
-      EventBus.off(Event.COLLECTOR_OPEN, onCollectorOpen);
+      EventBus.off(Event.CRAFTER_OPEN, onCrafterOpen);
       EventBus.off(Event.TRANSFORM_TOGGLE, transform);
     };
   }, []);

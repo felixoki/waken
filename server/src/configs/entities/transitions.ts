@@ -354,6 +354,26 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.MARKET_HOUSE_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 592,
+          y: 1420,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.TAVERN_EXIT]: {
     facing: Direction.DOWN,
     moving: [],

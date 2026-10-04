@@ -25,9 +25,24 @@ const landmarks = new Set(
     .map(([name]) => name),
 );
 
+const collectables = new Set<EntityName>([
+  ...needs.flatMap((need) => need.items.map((entry) => entry.item)),
+  ...tiers.flatMap((tier) => tier.requirements.map((entry) => entry.item)),
+  ...Object.values(entities).flatMap((definition) =>
+    definition.components.flatMap((component) =>
+      component.name === ComponentName.CRAFTER
+        ? component.config.recipes.flatMap((recipe) =>
+            recipe.ingredients.map((ingredient) => ingredient.item),
+          )
+        : [],
+    ),
+  ),
+]);
+
 export const configs = {
   animations,
   buildable,
+  collectables,
   dialogue: { choices: COMMON_CHOICES, nodes: COMMON_NODES },
   effects,
   entities,

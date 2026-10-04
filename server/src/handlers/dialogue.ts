@@ -91,6 +91,20 @@ export const dialogue = {
     },
   },
 
+  respond: (socket: Socket, entityId: string, text: string) => {
+    const goodbye = dialogue.resolve.choice({ ref: ChoiceId.GOODBYE });
+
+    socket.emit(Event.ENTITY_DIALOGUE_RESPONSE, {
+      entityId,
+      nodeId: NodeId.GREETING,
+      text,
+      choices: [
+        { text: "Anything else?", next: NodeId.GREETING },
+        ...(goodbye ? [goodbye] : []),
+      ],
+    });
+  },
+
   iterate: (
     entityId: string,
     socket: Socket,
@@ -188,90 +202,21 @@ export const dialogue = {
         effects: entry.choice!.effects,
       }));
 
-    const collectorConfig = definition.components?.find(
-      (c) => c.name === ComponentName.COLLECTOR,
-    )?.config as
-      | { accepts: string[]; recipes?: { tier: number }[] }
-      | undefined;
+    const crafts = definition.components.some(
+      (component) => component.name === ComponentName.CRAFTER,
+    );
 
-    if (collectorConfig) {
-      const takesFish = collectorConfig.accepts.some(handlers.fishing.isFish);
-
-      const giveChoices = player.inventory
-        .filter(
-          (item) =>
-            item &&
-            item.quantity > 0 &&
-            collectorConfig.accepts.includes(item.soul ?? item.name) &&
-            !handlers.fishing.isFish(item.name!),
-        )
-        .map((item) => {
-          const key = item!.soul ?? item!.name;
-          const displayName =
-            configs.entities[key]?.metadata?.displayName || key;
-          const label = item!.soul ? `Soul of ${displayName}` : displayName;
-          return {
-            text: `Give ${label} (${item!.quantity})`,
-            next: NodeId.GREETING,
-            effects: [
-              {
-                name: DialogueEffectName.ITEM_GIVE,
-                params: {
-                  name: item!.name,
-                  quantity: item!.quantity,
-                  soul: item!.soul,
-                },
-              },
-            ],
-          };
-        });
-
-      choices.unshift(...giveChoices);
-
-      if (takesFish) {
-        const creel = player.inventory.filter(
-          (item) =>
-            item &&
-            handlers.fishing.isFish(item.name) &&
-            collectorConfig.accepts.includes(item.name),
-        ).length;
-
-        if (creel)
-          choices.unshift({
-            text: `Hand over your catch (${creel})`,
-            next: undefined,
-            effects: [
-              {
-                name: DialogueEffectName.FISH_TURN_IN,
-                params: { entityId, action: "give" },
-              },
-            ],
-          });
-
-        choices.push({
-          text: "How do my records stand?",
-          next: undefined,
-          effects: [
-            {
-              name: DialogueEffectName.FISH_TURN_IN,
-              params: { entityId, action: "records" },
-            },
-          ],
-        });
-      }
-
-      if (collectorConfig.recipes && collectorConfig.recipes.length)
-        choices.push({
-          text: "Craft",
-          next: undefined,
-          effects: [
-            {
-              name: DialogueEffectName.COLLECTOR_OPEN,
-              params: { entityId, entityName: entity.name },
-            },
-          ],
-        });
-    }
+    if (crafts)
+      choices.push({
+        text: "Craft",
+        next: undefined,
+        effects: [
+          {
+            name: DialogueEffectName.CRAFTER_OPEN,
+            params: { entityId, entityName: entity.name },
+          },
+        ],
+      });
 
     if (goodbye)
       choices.push({
