@@ -10,13 +10,9 @@ export enum SpellName {
   ILLUMINATE = "illuminate",
   HURT_SHADOWS = "hurt_shadows",
   METEOR_SHOWER = "meteor_shower",
-  BUTTERFLY_EFFIGY = "butterfly_effigy",
   LIGHTNING_STRIKE = "lightning_strike",
-  GRASP = "grasp",
-  ABSORB_LIFE = "absorb_life",
   DRAGON_FORM = "dragon_form",
   FIRE_BREATH = "fire_breath",
-  FIRE_WAVE = "fire_wave",
   BITE = "bite",
   REVIVE = "revive",
   CATCH_SOUL = "catch_soul",
@@ -28,7 +24,8 @@ export enum SpellName {
   BLINK = "blink",
   HYPERBEAM = "hyperbeam",
   DARK_WAVE = "dark_wave",
-  ICE_PILLARS = "ice_pillars",
+  HYPNIC_JERK = "hypnic_jerk",
+  SUNDER = "sunder",
 }
 
 export enum Target {
@@ -50,6 +47,11 @@ export interface ComboStep {
     width: number;
     height: number;
   };
+}
+
+export interface FlurryStep extends ComboStep {
+  hits: number;
+  interval: number;
 }
 
 export interface ChargeConfig {
@@ -77,6 +79,7 @@ export interface SpellConfig {
     height: number;
   };
   combo?: ComboStep[];
+  flurry?: FlurryStep;
   charge?: ChargeConfig;
   channel?: {
     tick: number;

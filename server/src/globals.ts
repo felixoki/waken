@@ -218,9 +218,6 @@ export const ROCK_HITBOX_DURATION = 200;
 export const ROCK_MAX_THROW_RANGE = 200;
 export const ROCK_INACCURACY_SCALE = 0.1;
 
-export const FIRE_WAVE_THICKNESS = 20;
-export const FIRE_WAVE_CLEARANCE = 12;
-
 export const RANGE_SLASHING = 40;
 export const RANGE_INTERACTING = 100;
 export const RANGE_HITBOX_DETECTION = 100;
@@ -240,6 +237,7 @@ export const DELAY_ATTACK = 150;
 export const DURATION_COMBO_LOCK = 400;
 export const DURATION_FINISHER_LOCK = 600;
 export const DURATION_COMBO_WINDOW = 400;
+export const DELAY_FLURRY_WINDOW = 70;
 
 /** Combat */
 export const MISS_CHANCE = 0.05;
@@ -289,7 +287,7 @@ export const SFX_MAX_PAN = 0.6;
 
 /** Stats */
 export const MAX_HEALTH = 100;
-export const MAX_MANA = 100;
+export const MAX_MANA = 9999999;
 export const REGEN_HEALTH_PER_SECOND = 2;
 export const REGEN_MANA_PER_SECOND = 3;
 export const REGEN_INTERVAL = 1000;

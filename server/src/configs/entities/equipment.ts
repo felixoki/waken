@@ -530,6 +530,38 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.01,
     },
   },
+  [EntityName.JAR_OF_PICKLES]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "pickles",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 2, end: 3 },
+            { row: 2, start: 2, end: 3 },
+          ],
+        },
+        key: "pickles_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { max: { health: 150 } },
+    metadata: {
+      displayName: "Jar of pickles",
+      description:
+        "Sour, salty and oddly fortifying. Just having it on you makes you feel sturdier.",
+      icon: { spritesheet: "pickles", row: 2, col: 1 },
+      rarity: Rarity.RARE,
+      weight: 0.8,
+    },
+  },
   [EntityName.HAT1]: {
     facing: Direction.DOWN,
     moving: [],

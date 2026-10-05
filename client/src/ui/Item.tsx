@@ -15,6 +15,7 @@ interface Props {
   barLabel?: string;
   soul?: EntityName | null;
   weight?: number;
+  hideWeight?: boolean;
   interactive?: boolean;
   disabled?: boolean;
   active?: boolean;
@@ -35,6 +36,7 @@ export function Item({
   barLabel,
   soul,
   weight,
+  hideWeight = false,
   interactive = false,
   disabled = false,
   active = false,
@@ -78,7 +80,7 @@ export function Item({
   const rarity = (config?.metadata as { rarity?: Rarity } | undefined)?.rarity;
   const baseWeight = (config?.metadata as { weight?: number } | undefined)
     ?.weight;
-  const shownWeight = weight ?? baseWeight;
+  const shownWeight = hideWeight ? undefined : (weight ?? baseWeight);
 
   const baseClass =
     "relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square overflow-hidden transition-colors";

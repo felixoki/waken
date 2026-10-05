@@ -67,20 +67,10 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Meteor shower",
     "An ancient page that teaches how to call fire from the sky.",
   ),
-  [EntityName.SPELL_PAGE_BUTTERFLY_EFFIGY]: page(
-    SpellName.BUTTERFLY_EFFIGY,
-    "Spell page: Butterfly effigy",
-    "A delicate page containing the rites of the butterfly.",
-  ),
   [EntityName.SPELL_PAGE_LIGHTNING_STRIKE]: page(
     SpellName.LIGHTNING_STRIKE,
     "Spell page: Lightning strike",
     "A charred page that crackles with residual static energy.",
-  ),
-  [EntityName.SPELL_PAGE_ABSORB_LIFE]: page(
-    SpellName.ABSORB_LIFE,
-    "Spell page: Absorb life",
-    "A page steeped in dark matter that teaches one to drain the life of others.",
   ),
   [EntityName.SPELL_PAGE_DRAGON_FORM]: page(
     SpellName.DRAGON_FORM,
@@ -132,14 +122,19 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Hyperbeam",
     "A searing page crackling with the secret of a channelled beam of force.",
   ),
+  [EntityName.SPELL_PAGE_SUNDER]: page(
+    SpellName.SUNDER,
+    "Spell page: Sunder",
+    "A page cracked clean through the middle, humming where the halves meet.",
+  ),
+  [EntityName.SPELL_PAGE_HYPNIC_JERK]: page(
+    SpellName.HYPNIC_JERK,
+    "Spell page: Hypnic jerk",
+    "A page that twitches in your hand just as you start to nod off.",
+  ),
   [EntityName.SPELL_PAGE_DARK_WAVE]: page(
     SpellName.DARK_WAVE,
     "Spell page: Dark wave",
     "A page so black the ink seems to drink the light around it.",
-  ),
-  [EntityName.SPELL_PAGE_ICE_PILLARS]: page(
-    SpellName.ICE_PILLARS,
-    "Spell page: Ice pillars",
-    "A brittle page rimed with frost that never thaws.",
   ),
 };

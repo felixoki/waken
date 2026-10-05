@@ -40,4 +40,7 @@ export const interactions: Partial<
   [EffectName.GREASE]: {
     [DamageType.BURNING]: 3,
   },
+  [EffectName.COLD]: {
+    [DamageType.COLD]: 1.5,
+  },
 };

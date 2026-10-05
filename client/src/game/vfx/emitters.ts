@@ -793,6 +793,78 @@ export const emitters = {
     }
   },
 
+  flurry: (
+    scene: Scene,
+    entity: Entity,
+    direction: { x: number; y: number },
+    index: number,
+  ) => {
+    const degrees = Phaser.Math.RadToDeg(Math.atan2(direction.y, direction.x));
+    const rad = Phaser.Math.DegToRad(degrees);
+
+    const steps = 10;
+    const armLength = 22;
+    const halfAngle = 20;
+    const tipDistance = 30;
+    const pushDistance = 8;
+    const frames = 2;
+
+    const side = index % 2 === 0 ? -1 : 1;
+    const armRad = Phaser.Math.DegToRad(degrees + 180 + side * halfAngle);
+    const originX = entity.x;
+    const originY = entity.y;
+
+    for (let f = 0; f < frames; f++) {
+      const push = (f / (frames - 1)) * pushDistance;
+
+      scene.time.delayedCall(f * 30, () => {
+        const tipX = originX + Math.cos(rad) * (tipDistance + push);
+        const tipY = originY + Math.sin(rad) * (tipDistance + push);
+
+        for (let step = 0; step < steps; step++) {
+          const progress = step / (steps - 1);
+          const px = tipX + Math.cos(armRad) * armLength * progress;
+          const py = tipY + Math.sin(armRad) * armLength * progress;
+          const taper = 0.15 + progress * 0.85;
+
+          const emitter = scene.add.particles(px, py, "particle_diamond", {
+            tint: [0xffaa00, 0xffcc44, 0xffdd66, 0xffffff],
+            alpha: { start: 0.9 * taper, end: 0 },
+            scale: { start: 0.24 * taper, end: 0.04 },
+            speed: { min: 30, max: 60 },
+            angle: { min: degrees - 10, max: degrees + 10 },
+            lifespan: 180,
+            blendMode: "ADD",
+            quantity: 2,
+            frequency: -1,
+          });
+
+          emitter.setDepth(2000);
+          emitter.explode();
+
+          scene.time.delayedCall(180, () => emitter.destroy());
+
+          if (f === 0 && step % 3 === 0) {
+            const ember = scene.add.particles(px, py, "particle_circle", {
+              tint: [0xff6600, 0xff8800, 0xffaa33],
+              alpha: { start: 0.6, end: 0 },
+              scale: { start: 0.1, end: 0.02 },
+              speed: { min: 3, max: 12 },
+              lifespan: 600,
+              blendMode: "ADD",
+              quantity: 2,
+              frequency: -1,
+            });
+            ember.setDepth(2001);
+            ember.explode();
+
+            scene.time.delayedCall(600, () => ember.destroy());
+          }
+        }
+      });
+    }
+  },
+
   claw: (
     scene: Scene,
     x: number,

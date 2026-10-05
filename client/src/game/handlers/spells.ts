@@ -1,5 +1,4 @@
 import {
-  ComponentName,
   Direction,
   SpellConfig,
   SpellName,
@@ -12,11 +11,7 @@ import { Projectile } from "../Projectile";
 import { Hitbox } from "../Hitbox";
 import { vfx } from "../vfx";
 import { EffectFactory } from "../factory/Effect";
-import {
-  DELAY_ATTACK,
-  FIRE_WAVE_CLEARANCE,
-  FIRE_WAVE_THICKNESS,
-} from "@server/globals";
+import { DELAY_ATTACK } from "@server/globals";
 
 const FIRE_BREATH_MOUTH: Record<Direction, { x: number; y: number }> = {
   [Direction.DOWN]: { x: 0, y: 20 },
@@ -32,6 +27,25 @@ type SpellHandler = (
   direction: { x: number; y: number },
   step?: number,
 ) => void;
+
+const burst = (entity: Entity, config: SpellConfig, x: number, y: number) => {
+  const scene = entity.scene;
+  if (!scene.sys) return;
+
+  const radius = config.radius!;
+  const hitbox = new Hitbox(
+    scene,
+    x,
+    y,
+    radius * 2,
+    radius * 2,
+    entity.id,
+    { ...config, duration: 150 },
+  );
+  hitbox.body.setCircle(radius);
+
+  if ((entity as Player).isControllable) scene.managers.camera.shake(160, 0.0016);
+};
 
 export const spells: Record<SpellName, SpellHandler> = {
   [SpellName.SHARD]: (
@@ -98,6 +112,37 @@ export const spells: Record<SpellName, SpellHandler> = {
     direction: { x: number; y: number },
     step: number = 0,
   ) => {
+    const flurry = config.flurry;
+
+    if (step === 3 && flurry) {
+      const scene = entity.scene;
+
+      for (let i = 0; i < flurry.hits; i++)
+        scene.time.delayedCall(i * flurry.interval, () => {
+          if (!entity.scene) return;
+
+          new Hitbox(
+            scene,
+            entity.x + direction.x * flurry.offset,
+            entity.y + direction.y * flurry.offset,
+            config.hitbox!.width,
+            config.hitbox!.height,
+            entity.id,
+            config,
+          );
+
+          scene.managers.sound.play.sfx(SoundName.SLASH, {
+            position: { x: entity.x, y: entity.y },
+            rate: 1.5 + i * 0.06,
+            volume: 0.5,
+          });
+
+          vfx.emitters.flurry(scene, entity, direction, i);
+        });
+
+      return;
+    }
+
     const offset =
       step > 0 && config.combo ? config.combo[step - 1].offset : 20;
 
@@ -274,77 +319,6 @@ export const spells: Record<SpellName, SpellHandler> = {
     }
   },
 
-  [SpellName.BUTTERFLY_EFFIGY]: (
-    entity: Entity,
-    config: SpellConfig,
-    target: { x: number; y: number },
-    _direction: { x: number; y: number },
-  ) => {
-    const count = 12;
-    const radius = config.radius! * 2;
-    const scene = entity.scene;
-
-    for (let i = 0; i < count; i++) {
-      const delay = i * 80;
-
-      scene.time.delayedCall(delay, () => {
-        if (!scene.sys) return;
-
-        const dest = {
-          x: target.x + Phaser.Math.Between(-radius, radius),
-          y: target.y + Phaser.Math.Between(-radius, radius),
-        };
-
-        const flightDuration = Phaser.Math.Between(800, 1200);
-        const amplitude = Phaser.Math.Between(12, 28);
-        const freq = Phaser.Math.Between(3, 6);
-        const startX = entity.x;
-        const startY = entity.y;
-        const angle = Math.atan2(dest.y - startY, dest.x - startX);
-        const perpAngle = angle + Math.PI / 2;
-
-        const hitbox = new Hitbox(
-          scene,
-          startX,
-          startY,
-          config.hitbox!.width,
-          config.hitbox!.height,
-          entity.id,
-          { ...config, duration: flightDuration + 500 },
-        );
-
-        const emitter = vfx.emitters.butterfly(scene, startX, startY);
-        emitter.setPosition(0, 0);
-        emitter.startFollow(hitbox);
-
-        const progress = { value: 0 };
-
-        scene.tweens.add({
-          targets: progress,
-          value: 1,
-          duration: flightDuration,
-          ease: "Sine.easeInOut",
-          onUpdate: () => {
-            const t = progress.value;
-            const baseX = startX + (dest.x - startX) * t;
-            const baseY = startY + (dest.y - startY) * t;
-            const flutter =
-              Math.sin(t * Math.PI * freq) * amplitude * (1 - t * 0.3);
-
-            hitbox.setPosition(
-              baseX + Math.cos(perpAngle) * flutter,
-              baseY + Math.sin(perpAngle) * flutter,
-            );
-          },
-          onComplete: () => {
-            emitter.stop();
-            scene.time.delayedCall(800, () => emitter.destroy());
-          },
-        });
-      });
-    }
-  },
-
   [SpellName.LIGHTNING_STRIKE]: (
     entity: Entity,
     config: SpellConfig,
@@ -371,27 +345,6 @@ export const spells: Record<SpellName, SpellHandler> = {
       entity.id,
       config,
     );
-  },
-
-  [SpellName.GRASP]: (
-    entity: Entity,
-    config: SpellConfig,
-    target: { x: number; y: number },
-    _direction: { x: number; y: number },
-  ) => {
-    const scene = entity.scene;
-
-    vfx.emitters.grasp(scene, { x: entity.x, y: entity.y }, target, () => {
-      new Hitbox(
-        scene,
-        target.x,
-        target.y,
-        config.hitbox!.width,
-        config.hitbox!.height,
-        entity.id,
-        config,
-      );
-    });
   },
 
   [SpellName.DARK_WAVE]: (
@@ -444,91 +397,20 @@ export const spells: Record<SpellName, SpellHandler> = {
     });
   },
 
-  [SpellName.ICE_PILLARS]: (
-    entity: Entity,
-    config: SpellConfig,
-    target: { x: number; y: number },
-    _direction: { x: number; y: number },
-  ) => {
-    const scene = entity.scene;
-    const dx = target.x - entity.x;
-    const dy = target.y - entity.y;
-    const angle = Math.atan2(dy, dx);
-    const cos = Math.cos(angle);
-    const sin = Math.sin(angle);
-    const dist = Phaser.Math.Clamp(Math.hypot(dx, dy), 96, config.range!);
+  [SpellName.HYPNIC_JERK]: (entity: Entity, config: SpellConfig) => {
+    const { x, y } = entity.body.center;
 
-    const scales = [0.78, 0.94, 1.12];
-    const spacing = 34;
-
-    for (let i = 0; i < scales.length; i++) {
-      const along = dist - (scales.length - 1 - i) * spacing;
-      const across = Phaser.Math.Between(-6, 6);
-      const x = entity.x + cos * along - sin * across;
-      const y = entity.y + sin * along + cos * across;
-      const scale = scales[i];
-
-      scene.time.delayedCall(i * 110, () => {
-        if (!scene.sys) return;
-
-        vfx.quads.pillar(scene, x, y, scale, () => {
-          if (!scene.sys) return;
-
-          new Hitbox(
-            scene,
-            x,
-            y - 6,
-            config.hitbox!.width * scale,
-            config.hitbox!.height * scale,
-            entity.id,
-            { ...config, duration: 150 },
-          );
-
-          scene.managers.sound.play.sfx(SoundName.SHARD_LAUNCH, {
-            position: { x, y },
-            rate: 0.7 + i * 0.12,
-          });
-
-          if ((entity as Player).isControllable)
-            scene.managers.camera.shake(110, 0.0005 + i * 0.0003);
-        });
-      });
-    }
+    vfx.quads.nova(entity.scene, x, y, config.radius!, () =>
+      burst(entity, config, x, y),
+    );
   },
 
-  [SpellName.ABSORB_LIFE]: (
-    entity: Entity,
-    config: SpellConfig,
-    target: { x: number; y: number },
-    _direction: { x: number; y: number },
-  ) => {
-    const scene = entity.scene;
-    const radius = config.radius!;
-    const radiusSq = radius * radius;
+  [SpellName.SUNDER]: (entity: Entity, config: SpellConfig) => {
+    const { x, y } = entity.body.center;
 
-    new Hitbox(
-      scene,
-      target.x,
-      target.y,
-      config.hitbox!.width,
-      config.hitbox!.height,
-      entity.id,
-      config,
+    vfx.quads.sunder(entity.scene, x, y, config.radius!, () =>
+      burst(entity, config, x, y),
     );
-
-    const stream = (victim: Entity) => {
-      if (victim.id === entity.id) return;
-      if (!victim.hasComponent(ComponentName.DAMAGEABLE)) return;
-
-      const dx = victim.x - target.x;
-      const dy = victim.y - target.y;
-      if (dx * dx + dy * dy > radiusSq) return;
-
-      vfx.emitters.absorb(victim, entity);
-    };
-
-    scene.managers.entities.entities.forEach(stream);
-    scene.managers.players.others.forEach(stream);
   },
 
   [SpellName.DRAGON_FORM]: (entity: Entity) => {
@@ -580,40 +462,6 @@ export const spells: Record<SpellName, SpellHandler> = {
         depth,
       );
     });
-  },
-
-  [SpellName.FIRE_WAVE]: (entity: Entity, config: SpellConfig) => {
-    const scene = entity.scene;
-    const radius = config.radius!;
-    const duration = config.duration!;
-    const { x, y } = entity.body.center;
-
-    const hitbox = new Hitbox(
-      scene,
-      x,
-      y,
-      radius * 2,
-      radius * 2,
-      entity.id,
-      config,
-      FIRE_WAVE_CLEARANCE,
-    );
-    hitbox.body.setCircle(1, radius - 1, radius - 1);
-
-    scene.tweens.addCounter({
-      from: 1,
-      to: radius,
-      duration,
-      onUpdate: (tween) => {
-        if (!hitbox.active) return;
-
-        const r = tween.getValue() ?? 1;
-        hitbox.body.setCircle(r, radius - r, radius - r);
-        hitbox.inner = Math.max(0, r - FIRE_WAVE_THICKNESS);
-      },
-    });
-
-    vfx.emitters.fireWave(scene, x, y, radius, duration, entity.depth);
   },
 
   [SpellName.BITE]: (

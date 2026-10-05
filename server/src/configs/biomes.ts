@@ -28,16 +28,16 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.JAR_OF_PICKLES, quantity: 1, stackable: false, chance: 0.005 },
 
   { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.025 },
   { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.05 },
   { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.001 },
   { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.02 },
-  { name: EntityName.SPELL_PAGE_ICE_PILLARS, quantity: 1, stackable: false, chance: 0.02 },
+  { name: EntityName.SPELL_PAGE_HYPNIC_JERK, quantity: 1, stackable: false, chance: 0.005 },
   { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.02 },
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
-  { name: EntityName.SPELL_PAGE_ABSORB_LIFE, quantity: 1, stackable: false, chance: 0.05 },
 
   { name: EntityName.CARROT_SEED, quantity: 3, stackable: true, chance: 0.2 },
   { name: EntityName.CABBAGE_SEED, quantity: 3, stackable: true, chance: 0.2 },

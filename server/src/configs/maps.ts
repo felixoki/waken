@@ -872,6 +872,13 @@ const icons: Spritesheet[] = [
     frameHeight: 16,
     asTileset: true,
   },
+  {
+    key: "pickles",
+    file: "pickles.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
 ];
 
 const interior: Spritesheet[] = [

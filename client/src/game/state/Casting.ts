@@ -9,7 +9,11 @@ import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
 import { handlers } from "../handlers";
 import { vfx } from "../vfx";
-import { DELAY_ATTACK, DURATION_COMBO_WINDOW } from "@server/globals";
+import {
+  DELAY_ATTACK,
+  DELAY_FLURRY_WINDOW,
+  DURATION_COMBO_WINDOW,
+} from "@server/globals";
 
 export class Casting implements State {
   private timer: {
@@ -22,6 +26,9 @@ export class Casting implements State {
   private channeling: boolean = false;
   private config: SpellConfig | null = null;
   private hidden: boolean = false;
+  private armed: boolean = false;
+  private released: boolean = false;
+  private flurry: boolean = false;
 
   public name: StateName = StateName.CASTING;
 
@@ -94,6 +101,11 @@ export class Casting implements State {
       return;
     }
 
+    if (this.armed) {
+      if (!entity.pointerdown) this.released = true;
+      else if (this.released) this.flurry = true;
+    }
+
     if (!this.charging) return;
 
     if (!entity.pointerdown) this._releaseCharge(entity);
@@ -151,10 +163,67 @@ export class Casting implements State {
     if (this.timer?.combo) this.timer.combo.destroy();
 
     const windup = handlers.combat.attack(entity, config.name)?.windup ?? 0;
+    const flurry = isFinisher ? config.flurry : undefined;
+
+    this.armed = !!flurry;
+    this.released = false;
+    this.flurry = false;
+
+    const finish = () => {
+      if (config.combo && !isFinisher) {
+        this.step = step + 1;
+        entity.isLocked = false;
+
+        const reset = entity.states?.get(StateName.IDLE);
+        if (reset) reset.enter(entity);
+
+        this.timer = {
+          combo: entity.scene.time.delayedCall(DURATION_COMBO_WINDOW, () => {
+            this.step = 0;
+            this.timer = null;
+          }),
+          duration: null!,
+        };
+
+        return;
+      }
+
+      this.exit(entity);
+    };
+
+    const delay = DELAY_ATTACK + windup + (flurry ? DELAY_FLURRY_WINDOW : 0);
 
     this.timer = {
-      delay: entity.scene.time.delayedCall(DELAY_ATTACK + windup, () => {
+      delay: entity.scene.time.delayedCall(delay, () => {
         if (!entity.scene) return;
+
+        this.armed = false;
+
+        if (flurry && this.flurry) {
+          handlers.spells[config.name](
+            entity,
+            {
+              ...config,
+              damage: { ...config.damage, amount: flurry.damage },
+              knockback: flurry.knockback,
+              duration: flurry.duration,
+              hitbox: flurry.hitbox,
+            },
+            target,
+            direction,
+            step + 1,
+          );
+
+          if (!this.timer) return;
+
+          this.timer.duration.destroy();
+          this.timer.duration = entity.scene.time.delayedCall(
+            flurry.hits * flurry.interval + 120,
+            finish,
+          );
+
+          return;
+        }
 
         handlers.spells[config.name](
           entity,
@@ -165,27 +234,7 @@ export class Casting implements State {
         );
       }),
 
-      duration: entity.scene.time.delayedCall(duration + windup, () => {
-        if (config.combo && !isFinisher) {
-          this.step = step + 1;
-          entity.isLocked = false;
-
-          const reset = entity.states?.get(StateName.IDLE);
-          if (reset) reset.enter(entity);
-
-          this.timer = {
-            combo: entity.scene.time.delayedCall(DURATION_COMBO_WINDOW, () => {
-              this.step = 0;
-              this.timer = null;
-            }),
-            duration: null!,
-          };
-
-          return;
-        }
-
-        this.exit(entity);
-      }),
+      duration: entity.scene.time.delayedCall(duration + windup, finish),
     };
   }
 
@@ -203,6 +252,8 @@ export class Casting implements State {
     }
 
     this.step = 0;
+    this.armed = false;
+    this.flurry = false;
 
     if (this.charging) {
       handlers.charge.cleanup(entity);

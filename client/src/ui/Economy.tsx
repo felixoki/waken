@@ -82,6 +82,7 @@ export function Economy() {
               barLabel={locked ? undefined : `${entry.quantity}/${MAX_STACK}`}
               disabled={locked}
               hint={locked ? `Unlock with tier ${entry.tier}` : undefined}
+              hideWeight
             />
           );
         })}
@@ -97,6 +98,7 @@ export function Economy() {
                 name={req.item}
                 quantity={req.quantity}
                 disabled={(store[req.item] ?? 0) < req.quantity}
+                hideWeight
               />
             ))}
           </ul>

@@ -56,7 +56,7 @@ export const player = {
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
         health: saved?.health || MAX_HEALTH,
         maxHealth: MAX_HEALTH,
-        mana: saved?.mana || 100,
+        mana: MAX_MANA,
         maxMana: MAX_MANA,
         isAuthority,
         isDead: false,

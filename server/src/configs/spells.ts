@@ -59,8 +59,18 @@ export const spells: Record<SpellName, SpellConfig> = {
         hitbox: { width: 40, height: 60 },
       },
     ],
+    flurry: {
+      damage: 15,
+      knockback: 20,
+      duration: 60,
+      offset: 28,
+      hitbox: { width: 48, height: 34 },
+      hits: 5,
+      interval: 70,
+    },
     metadata: {
-      description: "A powerful melee combo that deals escalating damage.",
+      description:
+        "A melee combo that deals escalating damage. Double-tap the third strike for a flurry of quick hits.",
       displayName: "Slash",
       icon: { spritesheet: "icons5", row: 2, col: 9 },
     },
@@ -253,21 +263,49 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons8", row: 21, col: 13 },
     },
   },
-  [SpellName.BUTTERFLY_EFFIGY]: {
-    name: SpellName.BUTTERFLY_EFFIGY,
-    sounds: { cast: SoundName.SLASH },
-    damage: { type: DamageType.PHYSICAL, amount: 10 },
-    knockback: 15,
-    mana: 20,
-    duration: 1800,
-    radius: 50,
-    hitbox: {
-      width: 8,
-      height: 8,
-    },
+  [SpellName.DARK_WAVE]: {
+    name: SpellName.DARK_WAVE,
+    sounds: { cast: SoundName.GRASP },
+    damage: { type: DamageType.COLD, amount: 55 },
+    knockback: 140,
+    mana: 25,
+    duration: 600,
+    range: 60,
     metadata: {
-      description: "Summons a butterfly that heals allies and harms enemies.",
-      displayName: "Butterfly effigy",
+      description:
+        "Sweeps a crescent of dark matter outward. It bites deeper into anything already cold.",
+      displayName: "Dark wave",
+      icon: { spritesheet: "icons8", row: 21, col: 14 },
+    },
+  },
+  [SpellName.HYPNIC_JERK]: {
+    name: SpellName.HYPNIC_JERK,
+    sounds: { cast: SoundName.GRASP },
+    damage: { type: DamageType.PHYSICAL, amount: 60 },
+    knockback: 160,
+    mana: 30,
+    duration: 700,
+    radius: 120,
+    metadata: {
+      description:
+        "The jolt that tears you out of sleep, loosed on everything around you in a violet shockwave.",
+      displayName: "Hypnic jerk",
+      icon: { spritesheet: "icons2", row: 21, col: 15 },
+    },
+  },
+  [SpellName.SUNDER]: {
+    name: SpellName.SUNDER,
+    sounds: { cast: SoundName.GRASP },
+    damage: { type: DamageType.PHYSICAL, amount: 120 },
+    knockback: 60,
+    mana: 70,
+    duration: 2200,
+    radius: 130,
+    metadata: {
+      description:
+        "A shockwave bursts from where you stand and splits the earth around you into glowing fissures.",
+      displayName: "Sunder",
+      icon: { spritesheet: "icons8", row: 21, col: 1 },
     },
   },
   [SpellName.LIGHTNING_STRIKE]: {
@@ -286,45 +324,6 @@ export const spells: Record<SpellName, SpellConfig> = {
         "Strikes a single target with a bolt of high damage lightning.",
       displayName: "Lightning strike",
       icon: { spritesheet: "icons5", row: 16, col: 18 },
-    },
-  },
-  [SpellName.GRASP]: {
-    name: SpellName.GRASP,
-    sounds: { cast: SoundName.GRASP },
-    damage: { type: DamageType.PHYSICAL, amount: 60 },
-    knockback: 0,
-    mana: 1,
-    duration: 1200,
-    range: 120,
-    hitbox: {
-      width: 30,
-      height: 30,
-    },
-    metadata: {
-      description:
-        "A spectral hand rises from the ground, rushes forward and grasps enemies.",
-      displayName: "Grasp",
-      icon: { spritesheet: "icons10", row: 4, col: 27 },
-    },
-  },
-  [SpellName.ABSORB_LIFE]: {
-    name: SpellName.ABSORB_LIFE,
-    sounds: { cast: SoundName.ABSORB_LIFE },
-    damage: { type: DamageType.PHYSICAL, amount: 25 },
-    knockback: 0,
-    mana: 35,
-    lifesteal: 1,
-    duration: 600,
-    radius: 80,
-    hitbox: {
-      width: 160,
-      height: 160,
-    },
-    metadata: {
-      description:
-        "Drains the life from all nearby creatures, healing you for the damage dealt.",
-      displayName: "Absorb life",
-      icon: { spritesheet: "icons2", row: 21, col: 15 },
     },
   },
   [SpellName.DRAGON_FORM]: {
@@ -369,21 +368,6 @@ export const spells: Record<SpellName, SpellConfig> = {
       description: "Exhale a torrent of flame, scorching all before it.",
       displayName: "Fire breath",
       icon: { spritesheet: "icons10", row: 14, col: 18 },
-    },
-  },
-  [SpellName.FIRE_WAVE]: {
-    name: SpellName.FIRE_WAVE,
-    sounds: { cast: SoundName.FIRE_WAVE },
-    damage: { type: DamageType.BURNING, amount: 12 },
-    knockback: 60,
-    mana: 0,
-    duration: 500,
-    radius: 80,
-    effects: [[EffectName.BURNING, 3000]],
-    metadata: {
-      description: "A ring of fire bursts outward from the caster.",
-      displayName: "Fire wave",
-      icon: { spritesheet: "icons10", row: 16, col: 18 },
     },
   },
   [SpellName.BITE]: {
