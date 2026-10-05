@@ -56,11 +56,17 @@ export const player = {
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
         health: saved?.health || MAX_HEALTH,
         maxHealth: MAX_HEALTH,
-        mana: MAX_MANA,
+        mana: saved?.mana || 100,
         maxMana: MAX_MANA,
         isAuthority,
         isDead: false,
-        spells: Object.keys(configs.spells) as SpellName[],
+        spells: (
+          (saved?.data?.spells as SpellName[]) ?? [
+            SpellName.SHARD,
+            SpellName.SLASH,
+            SpellName.REVIVE,
+          ]
+        ).filter((name) => configs.spells[name]),
         inventory: saved?.data?.inventory ?? [...new Array(20).fill(null)],
         hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [...new Array(8).fill(null)],
         active: (saved?.data?.active as number) ?? 0,

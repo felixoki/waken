@@ -786,6 +786,11 @@
 - Add bookkeeper and market house ✅
 - Refactor dungeon generation ✅
 
+#### 5.10.2026
+
+- Add spells ✅
+- Add jar of pickles ✅
+
 
 ### In progress
 

@@ -15912,28 +15912,6 @@
                  "y":106
                 }, 
                 {
-                 "height":1.32057,
-                 "id":1833,
-                 "name":"Jar_of_Pickles",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1.10047,
-                 "x":427.864,
-                 "y":689.557
-                }, 
-                {
-                 "height":1.18824,
-                 "id":1834,
-                 "name":"Fishing_rod",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":1.29626,
-                 "x":432.303,
-                 "y":684.209
-                }, 
-                {
                  "height":1,
                  "id":1835,
                  "name":"Market_House",

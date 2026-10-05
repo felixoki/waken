@@ -10226,8 +10226,6 @@
   <object id="1621" name="People" x="400" y="1232" width="1" height="1"/>
   <object id="1631" name="Dog" x="272" y="1280" width="1" height="1"/>
   <object id="1633" name="Student" x="360" y="106" width="1" height="1"/>
-  <object id="1833" name="Axe" x="427.864" y="689.557" width="1.10047" height="1.32057"/>
-  <object id="1834" name="Fishing_rod" x="432.303" y="684.209" width="1.29626" height="1.18824"/>
   <object id="1835" name="Market_House" x="592" y="1335" width="1" height="1"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="134">
