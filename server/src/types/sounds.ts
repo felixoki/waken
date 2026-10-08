@@ -14,6 +14,7 @@ export enum SoundName {
   TROLL_SLASH = "troll_slash",
   SHADOW_WANDERER_IDLE = "shadow_wanderer_idle",
   BLOODGEIST_HIT = "bloodgeist_hit",
+  MAGE_HIT = "mage_hit",
   SLASH = "slash",
   SWORD_SWING = "sword_swing",
   DAGGER_SWING = "dagger_swing",
