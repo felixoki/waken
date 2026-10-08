@@ -125,6 +125,17 @@ export const animations: Partial<
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
     [StateName.CASTING]: { frameCount: 12, frameRate: 14, repeat: 0 },
   },
+  [EntityName.APPRENTICE]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.CASTING]: { frameCount: 12, frameRate: 14, repeat: 0 },
+  },
+  [EntityName.MAGE]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 8, frameRate: 10, repeat: -1 },
+    [StateName.CASTING]: { frameCount: 7, frameRate: 12, repeat: 0 },
+  },
   [EntityName.HEXGEIST]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },

@@ -2,6 +2,7 @@ import { handlers } from "../../handlers";
 import { DUNGEON_CANDLE_CHANCE, DUNGEON_CANDLE_GAP } from "../../globals";
 import { TilesetLoader } from "../../loaders/Tileset";
 import {
+  ArchConfig,
   BorderPosition,
   GridDimensions,
   TerrainName,
@@ -180,6 +181,71 @@ export class WallGenerator {
     }
 
     return niches;
+  }
+
+  arches(
+    config: ArchConfig,
+    walls: number[],
+    wallsGid: number,
+    archGid: number,
+    obstacles: { minX: number; minY: number; maxX: number; maxY: number }[],
+    occupied: number[],
+    tileWidth: number,
+    tileHeight: number,
+    seed: string,
+  ): { data: number[]; spots: { x: number; y: number }[] } {
+    const { width, height } = this;
+    const rows = config.tiles.length;
+    const columns = config.tiles[0].length;
+    const rng = handlers.generation.seededRandom(
+      handlers.generation.hash(`${seed}-arches`),
+    );
+    const data = new Array(width * height).fill(0);
+    const spots: { x: number; y: number }[] = [];
+    const faces = [TOP, MID, BOTTOM];
+
+    const plain = (x: number, y: number) =>
+      faces.every(
+        (id, r) =>
+          walls[(y + r) * width + x] === wallsGid + id &&
+          occupied[(y + r) * width + x] === 0,
+      );
+
+    for (let y = 0; y <= height - rows; y++) {
+      let last = -config.gap;
+
+      for (let x = 1; x < width - columns; x++) {
+        if (x - last < config.gap) continue;
+
+        let free = true;
+        for (let dx = -1; dx <= columns && free; dx++) free = plain(x + dx, y);
+        if (!free) continue;
+
+        const box = {
+          minX: (x - 1) * tileWidth,
+          minY: y * tileHeight,
+          maxX: (x + columns + 1) * tileWidth,
+          maxY: (y + rows + 1) * tileHeight,
+        };
+
+        if (obstacles.some((o) => handlers.generation.rooms.overlaps(o, box)))
+          continue;
+        if (rng() > config.chance) continue;
+
+        for (let r = 0; r < rows; r++)
+          for (let c = 0; c < columns; c++) {
+            const i = (y + r) * width + x + c;
+
+            walls[i] = 0;
+            data[i] = archGid + config.tiles[r][c];
+          }
+
+        spots.push({ x, y });
+        last = x;
+      }
+    }
+
+    return { data, spots };
   }
 
   private _steps(

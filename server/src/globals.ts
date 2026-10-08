@@ -341,6 +341,7 @@ export const DUNGEON_ROOM_MIN = 12;
 export const DUNGEON_ROOM_MAX = 24;
 export const DUNGEON_ROOM_FURNISH_CHANCE = 0.9;
 export const DUNGEON_WALL_HEADROOM = 6;
+export const DUNGEON_WALL_SPAN = 4;
 export const DUNGEON_LOOP_CHANCE = 0.01;
 export const DUNGEON_CORRIDOR_WIDE_CHANCE = 0.5;
 export const DUNGEON_RECESS_MARGIN = 4;
@@ -358,6 +359,13 @@ export const DUNGEON_LADDER_TORCH_CLEARANCE = 4;
 export const DUNGEON_CANDLE_GAP = 5;
 export const DUNGEON_CANDLE_CLEARANCE = 2;
 export const DUNGEON_CANDLE_CHANCE = 0.9;
+export const TEMPLE_ARCH_GAP = 12;
+export const TEMPLE_ROOM_FURNISH_CHANCE = 0.55;
+export const ROOM_ENEMY_ATTEMPTS = 8;
+export const FLAT_DEPTH = 500;
+export const ENTITY_PARTY_RANGE = 160;
+export const TEMPLE_ARCH_CHANCE = 0.5;
+export const TEMPLE_FLOOR_DETAIL_DENSITY = 0.06;
 
 /** Villain */
 
@@ -375,6 +383,32 @@ export const PATCH_MAX_HOLE = 40;
 export const PATCH_GAP = 2;
 export const PEAK_CLEARANCE = 3;
 export const SEAM_MARGIN = 8;
+
+/** Lights */
+
+export const LIGHT_FLOOR = 0.05;
+
+/** Shadows */
+
+export const SHADOW_DEPTH = 999;
+export const SHADOW_ALPHA = 0.7;
+export const SHADOW_DARKNESS_MIN = 0.05;
+export const SHADOW_SCALE = 1.5;
+export const SHADOW_WIDTH = 24;
+export const SHADOW_SPREAD = 2;
+export const SHADOW_LENGTH_MIN = 6;
+export const SHADOW_LENGTH_MAX = 40;
+export const SHADOW_STRETCH = 0.45;
+export const SHADOW_SEGMENTS = 4;
+export const SHADOW_LIFT = 0.5;
+export const SHADOW_CROUCH = 0.6;
+export const SHADOW_EASE = 0.012;
+export const SHADOW_HEAD = 10;
+export const SHADOW_TAPER = 0.4;
+export const SHADOW_AIR_FADE = 0.35;
+export const SHADOW_MIN_DISTANCE = 24;
+export const SHADOW_FADE_DISTANCE = 16;
+export const SHADOW_CULL = 48;
 
 /** Location */
 

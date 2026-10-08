@@ -25,7 +25,7 @@ export const time = {
       sun: { color: 0xfffaf0, intensity: 0.65 },
     },
     [TimePhase.DUSK]: {
-      ambient: 0xccc0b0,
+      ambient: 0xd0c7bc,
       lightIntensity: 0.6,
       coolness: 0.25,
       saturation: 0.85,
@@ -33,16 +33,17 @@ export const time = {
       vignette: {
         strength: 0.2,
       },
-      sun: { color: 0xffb877, intensity: 1.15 },
+      sun: { color: 0xffc793, intensity: 1.0 },
     },
     [TimePhase.NIGHT]: {
-      ambient: 0x3b4757,
+      ambient: 0x4a566c,
+      depth: 0x2c3546,
       lightIntensity: 1.2,
       coolness: 0.4,
-      saturation: 0.62,
-      contrast: 0.83,
+      saturation: 0.8,
+      contrast: 1.0,
       vignette: {
-        strength: 0.42,
+        strength: 0,
       },
       sun: { color: 0xc2d4ff, intensity: 0.0 },
     },

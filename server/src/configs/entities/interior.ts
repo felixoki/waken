@@ -11,6 +11,45 @@ const BARREL_LOOT = [
   { name: EntityName.ERGOT, quantity: 1, stackable: true, chance: 0.25 },
 ];
 
+const BAG_LOOT = [
+  { name: EntityName.BREAD, quantity: 1, stackable: true, chance: 0.5 },
+  { name: EntityName.CABBAGE, quantity: 1, stackable: true, chance: 0.4 },
+  { name: EntityName.CANDLE, quantity: 2, stackable: true, chance: 0.3 },
+  { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.04 },
+  { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.04 },
+];
+
+const POTIONS_LOOT = [
+  { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.35 },
+  { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.35 },
+  { name: EntityName.POTION3, quantity: 1, stackable: true, chance: 0.25 },
+  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.15 },
+  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.15 },
+  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.15 },
+];
+
+const SPELLPAGES_LOOT = [
+  { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.2 },
+  { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.2 },
+  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.08 },
+  { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.05 },
+];
+
+const REMAINS_LOOT = [
+  { name: EntityName.BONE, quantity: 2, stackable: true, chance: 1 },
+  { name: EntityName.BONE, quantity: 2, stackable: true, chance: 0.35 },
+];
+
+const ALTAR_LOOT = [
+  { name: EntityName.BONE, quantity: 3, stackable: true, chance: 0.8 },
+  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.3 },
+  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.3 },
+  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.3 },
+  { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.15 },
+  { name: EntityName.SPELL_PAGE_SUNDER, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.SPELL_PAGE_HYPNIC_JERK, quantity: 1, stackable: false, chance: 0.05 },
+];
+
 export const interior: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BARREL1]: {
     facing: Direction.DOWN,
@@ -376,9 +415,9 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.LIGHT,
         config: {
-          radius: 100,
-          intensity: 0.8,
-          color: 0xffd980,
+          radius: 130,
+          intensity: 1.1,
+          color: 0xffac58,
         },
       },
       {
@@ -415,8 +454,8 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.LIGHT,
         config: {
           radius: 28,
-          intensity: 0.35,
-          color: 0xffd980,
+          intensity: 0.5,
+          color: 0xffac58,
         },
       },
       {
@@ -456,8 +495,8 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.LIGHT,
         config: {
           radius: 34,
-          intensity: 0.4,
-          color: 0xffd980,
+          intensity: 0.55,
+          color: 0xffac58,
         },
       },
       {
@@ -497,8 +536,8 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.LIGHT,
         config: {
           radius: 40,
-          intensity: 0.45,
-          color: 0xffd980,
+          intensity: 0.6,
+          color: 0xffac58,
         },
       },
       {
@@ -594,6 +633,779 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [],
     behaviors: [],
+  },
+  [EntityName.TEMPLE_DOOR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 16,
+          offsetX: 4,
+          offsetY: 16,
+          static: true,
+          collides: true,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "temple_doors",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 7, end: 8 },
+            { row: 2, start: 7, end: 8 },
+            { row: 3, start: 7, end: 8 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 10,
+          repeat: 0,
+          autoplay: false,
+        },
+      },
+      { name: ComponentName.SWITCH, config: { trigger: false } },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ALTAR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 44,
+          height: 14,
+          offsetX: 2,
+          offsetY: 14,
+          static: true,
+          collides: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 16, loot: ALTAR_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_coffins",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 10, end: 12 },
+            { row: 4, start: 10, end: 12 },
+          ],
+        },
+        key: "altar_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Altar",
+    },
+  },
+  [EntityName.BAG1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: BAG_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 44, start: 8, end: 9 },
+            { row: 45, start: 8, end: 9 },
+          ],
+        },
+        key: "bag1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bag",
+    },
+  },
+  [EntityName.POTIONS1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: POTIONS_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 40, start: 16, end: 17 },
+            { row: 41, start: 16, end: 17 },
+          ],
+        },
+        key: "potions1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Potions",
+    },
+  },
+  [EntityName.SLEEPING_BAG1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    flat: true,
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 46, start: 17, end: 19 },
+            { row: 47, start: 17, end: 19 },
+          ],
+        },
+        key: "sleeping_bag1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Sleeping bag",
+    },
+  },
+  [EntityName.SLEEPING_BAG2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    flat: true,
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 46, start: 15, end: 16 },
+            { row: 47, start: 15, end: 16 },
+          ],
+        },
+        key: "sleeping_bag2_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Sleeping bag",
+    },
+  },
+  [EntityName.BOOKS1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 44, start: 10, end: 11 },
+            { row: 45, start: 10, end: 11 },
+          ],
+        },
+        key: "books1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Books",
+    },
+  },
+  [EntityName.SACK1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 44, start: 14, end: 15 },
+            { row: 45, start: 14, end: 15 },
+          ],
+        },
+        key: "sack1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Sack",
+    },
+  },
+  [EntityName.SKULLS1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 18, start: 7, end: 8 },
+            { row: 19, start: 7, end: 8 },
+          ],
+        },
+        key: "skulls1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Skulls",
+    },
+  },
+  [EntityName.COFFIN1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 18,
+          height: 20,
+          offsetX: 7,
+          offsetY: 24,
+          static: true,
+          collides: true,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_coffins",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 9, end: 10 },
+            { row: 6, start: 9, end: 10 },
+            { row: 7, start: 9, end: 10 },
+          ],
+        },
+        key: "coffin1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Coffin",
+    },
+  },
+  [EntityName.BOXES9]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    components: [
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 22, end: 23 },
+            { row: 3, start: 22, end: 23 },
+          ],
+        },
+        key: "boxes9_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Boxes",
+    },
+  },
+  [EntityName.VASES3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    components: [
+      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.VASES_BREAK },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 20,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 8, start: 4, end: 4 },
+            { row: 9, start: 4, end: 4 },
+          ],
+        },
+        key: "vases3_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Vase",
+    },
+  },
+  [EntityName.CANDELABRA]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 40,
+          intensity: 0.6,
+          color: 0xffac58,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "candelabra",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 1, end: 2 },
+            { row: 2, start: 1, end: 2 },
+          ],
+          frames: 3,
+          direction: "horizontal",
+          frameRate: 6,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Candelabra",
+    },
+  },
+  [EntityName.ALCHEMIST_TABLE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 22,
+          height: 40,
+          offsetX: 5,
+          offsetY: 16,
+          static: true,
+          collides: true,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_herbalist_interior",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 22, end: 23 },
+            { row: 2, start: 22, end: 23 },
+            { row: 3, start: 22, end: 23 },
+            { row: 4, start: 22, end: 23 },
+          ],
+        },
+        key: "alchemist_table_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Alchemist table",
+    },
+  },
+  [EntityName.BAG2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: BAG_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 49, start: 7, end: 8 },
+          ],
+        },
+        key: "bag2_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bag",
+    },
+  },
+  [EntityName.BAG3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: BAG_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 45, start: 22, end: 22 },
+          ],
+        },
+        key: "bag3_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Satchel",
+    },
+  },
+  [EntityName.BARREL4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
+      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 6, start: 8, end: 8 },
+            { row: 7, start: 8, end: 8 },
+          ],
+        },
+        key: "barrel4_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Barrel",
+    },
+  },
+  [EntityName.BARRELS3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 28,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.DAMAGEABLE, config: { loot: BARREL_LOOT } },
+      { name: ComponentName.DESTRUCTIBLE },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "dungeon_objects1",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 20, end: 21 },
+            { row: 6, start: 20, end: 21 },
+          ],
+        },
+        key: "barrels3_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Barrels",
+    },
+  },
+  [EntityName.CARPET1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    flat: true,
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_home_interior",
+          tileSize: 16,
+          tiles: [
+            { row: 17, start: 9, end: 13 },
+            { row: 18, start: 9, end: 13 },
+            { row: 20, start: 9, end: 13 },
+            { row: 21, start: 9, end: 13 },
+          ],
+        },
+        key: "carpet1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Carpet",
+    },
+  },
+  [EntityName.CARPET2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    flat: true,
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 22, end: 25 },
+            { row: 10, start: 22, end: 25 },
+            { row: 11, start: 22, end: 25 },
+            { row: 12, start: 22, end: 25 },
+          ],
+        },
+        key: "carpet2_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Carpet",
+    },
+  },
+  [EntityName.CHAIR1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_herbalist_interior",
+          tileSize: 16,
+          tiles: [
+            { row: 2, start: 12, end: 12 },
+            { row: 3, start: 12, end: 12 },
+          ],
+        },
+        key: "chair1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Stool",
+    },
+  },
+  [EntityName.MORTAR_AND_PESTLE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_herbalist_interior",
+          tileSize: 16,
+          tiles: [
+            { row: 8, start: 26, end: 26 },
+          ],
+        },
+        key: "mortar_and_pestle_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Mortar and pestle",
+    },
+  },
+  [EntityName.PILLOWS1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    flat: true,
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 42, start: 13, end: 15 },
+            { row: 43, start: 13, end: 15 },
+          ],
+        },
+        key: "pillows1_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Pillows",
+    },
+  },
+  [EntityName.REMAINS2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: REMAINS_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 12, start: 2, end: 3 },
+            { row: 13, start: 2, end: 3 },
+            { row: 14, start: 2, end: 3 },
+          ],
+        },
+        key: "remains2_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Remains",
+    },
+  },
+  [EntityName.REMAINS3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: REMAINS_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 12, start: 4, end: 5 },
+            { row: 13, start: 4, end: 5 },
+            { row: 14, start: 4, end: 5 },
+          ],
+        },
+        key: "remains3_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Remains",
+    },
+  },
+  [EntityName.SPELLPAGES]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: SPELLPAGES_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_camp_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 47, start: 25, end: 26 },
+            { row: 48, start: 25, end: 26 },
+          ],
+        },
+        key: "spellpages_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Spell pages",
+    },
+  },
+  [EntityName.REMAINS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8, loot: REMAINS_LOOT } },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 16, start: 9, end: 11 },
+            { row: 17, start: 9, end: 11 },
+          ],
+        },
+        key: "remains_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Remains",
+    },
   },
   [EntityName.BED]: {
     facing: Direction.DOWN,
@@ -767,8 +1579,8 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.LIGHT,
         config: {
           radius: 100,
-          intensity: 0.8,
-          color: 0xffd980,
+          intensity: 1.1,
+          color: 0xffac58,
         },
       },
       {

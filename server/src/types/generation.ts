@@ -2,6 +2,7 @@ import { EntityName, FishName, TextureSpawnerConfig } from "./entities";
 import { Item } from "./components";
 import { ZoneConfig } from "./zones";
 import type { MapName, SurfaceName } from "./maps";
+import type { TiledProperty } from "./tiled";
 
 export interface Range {
   min: number;
@@ -13,6 +14,7 @@ export enum BiomeName {
   DUNGEON = "dungeon",
   CAVE = "cave",
   MOUNTAIN = "mountain",
+  TEMPLE = "temple",
 }
 
 export enum TerrainName {
@@ -108,12 +110,16 @@ export enum RoomName {
   FEAST2 = "feast2",
   FEAST3 = "feast3",
   CAVE1 = "cave1",
+  QUARTERS1 = "quarters1",
+  WARD1 = "ward1",
 }
 
 export enum RoomType {
   SEWER = "sewer",
   FEAST = "feast",
   CAVE = "cave",
+  QUARTERS = "quarters",
+  WARD = "ward",
 }
 
 export enum RoomInteriorOrigin {
@@ -249,11 +255,24 @@ export interface BiomeConfig {
   details?: DetailConfig[];
   walls?: string;
   ledge?: string;
+  stair?: StairConfig;
+  arches?: ArchConfig;
   tilesets?: string[];
   variants?: VariantConfig[];
+  skins?: SkinConfig[];
   rooms?: RoomConfig;
   terraces?: TerraceConfig;
   peak?: { entity: EntityName; requires: number };
+  sites?: SiteConfig[];
+}
+
+export interface SiteConfig {
+  entity: EntityName;
+  requires: number;
+  width: number;
+  height: number;
+  base?: number;
+  terrain: TerrainName[];
 }
 
 export interface GeneratedMap {
@@ -281,6 +300,24 @@ export interface VariantConfig {
   tileset: string;
   of: string;
   chance: number;
+}
+
+export interface SkinConfig {
+  tileset: string;
+  of: string;
+}
+
+export interface StairConfig {
+  tileset: string;
+  tiles: number[][];
+}
+
+export interface ArchConfig {
+  tileset: string;
+  tiles: number[][];
+  entity: EntityName;
+  chance: number;
+  gap: number;
 }
 
 export interface DetailConfig {
@@ -334,6 +371,13 @@ export interface SeparatorStamp {
   expect?: number;
 }
 
+export interface AlcoveCorner {
+  room: number;
+  x: number;
+  y: number;
+  origin: RoomInteriorOrigin;
+}
+
 export interface DoorAnchor {
   x: number;
   y: number;
@@ -357,6 +401,7 @@ export interface EntityGroup {
 
 export interface RoomInterior {
   origin: RoomInteriorOrigin;
+  major?: boolean;
   entities: {
     name: EntityName;
     x: number;
@@ -377,6 +422,38 @@ export interface RoomTemplate {
   };
 }
 
+export interface SetpieceLayer {
+  name: string;
+  tileset: string;
+  before?: string;
+  properties?: TiledProperty[];
+  tiles: [number, number, number][];
+}
+
+export interface Setpiece {
+  width: number;
+  height: number;
+  anchor: { x: number; y: number };
+  layers: SetpieceLayer[];
+  entities: { name: EntityName; x: number; y: number }[];
+}
+
+export interface SetpiecePlacement {
+  setpiece: Setpiece;
+  x: number;
+  y: number;
+  span: { x: number; width: number };
+}
+
+export interface AltarConfig {
+  count: Range;
+  setpiece: Setpiece;
+  skirt?: { tileset: string; layer: string; wall: number; tiles: number[] };
+  enemies: EntityGroup[];
+  boss?: EntityName;
+  loot?: (Item & { chance: number })[];
+}
+
 export interface RoomAssignment {
   easyDepth: number;
   chance: { hidden: number; puzzle: number };
@@ -392,11 +469,16 @@ export interface RoomConfig {
   assignment: RoomAssignment;
   templates: RoomTemplate[];
   interior: RoomInterior[];
+  furnish?: number;
+  intact?: boolean;
+  alcoves?: boolean;
+  altars?: AltarConfig;
   separators?: {
     chance: number;
     large: Range;
     gates: Range;
     treasure: (Item & { chance: number })[];
+    door?: EntityName;
   };
   traps?: EntityGroup;
   hasRecesses?: boolean;

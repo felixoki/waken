@@ -55,6 +55,16 @@ const credits = [
     ],
   },
   {
+    title: "Voices by",
+    entries: [
+      {
+        name: "Sky Rae",
+        source: "skyraevoicing.com",
+        href: "https://www.skyraevoicing.com/",
+      },
+    ],
+  },
+  {
     title: "Sound effects by",
     entries: [
       {

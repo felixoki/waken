@@ -14,6 +14,7 @@ export enum MapName {
   HOME = "home",
   FOREST = "forest",
   DUNGEON = "dungeon",
+  TEMPLE = "temple",
   CAVE = "cave",
   ISLES = "isles",
 }
@@ -38,6 +39,7 @@ export interface MapConfig {
   spritesheets: Spritesheet[];
   sound?: SoundConfig;
   ambience?: MapAmbienceConfig;
+  ambient?: number;
 }
 
 export interface Spritesheet {

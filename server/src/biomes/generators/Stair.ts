@@ -1,20 +1,21 @@
 import { handlers } from "../../handlers";
 import { GridDimensions, TerrainName } from "../../types/generation";
 
-const FLOOR_L = 180;
-const FLOOR_R = 181;
-const STAIR_L = 197;
-const STAIR_R = 198;
-const SHADOW_L = 214;
-const SHADOW_R = 215;
+const TILES = [
+  [180, 181],
+  [197, 198],
+  [214, 215],
+];
 
 export class StairGenerator {
   private width: number;
   private height: number;
+  private tiles: number[][];
 
-  constructor(dimensions: GridDimensions) {
+  constructor(dimensions: GridDimensions, tiles: number[][] = TILES) {
     this.width = dimensions.width;
     this.height = dimensions.height;
+    this.tiles = tiles;
   }
 
   generate(
@@ -96,26 +97,30 @@ export class StairGenerator {
   }
 
   private _valid(terrain: TerrainName[], lx: number, ly: number): boolean {
-    if (lx - 1 < 0 || lx + 2 >= this.width || ly - 1 < 0 || ly + 2 >= this.height)
+    const rows = this.tiles.length;
+    const columns = this.tiles[0].length;
+
+    if (
+      lx - 1 < 0 ||
+      lx + columns >= this.width ||
+      ly - 1 < 0 ||
+      ly + rows - 1 >= this.height
+    )
       return false;
 
     const at = (x: number, y: number) =>
       terrain[handlers.generation.toIndex(x, y, this.width)];
 
-    return (
-      at(lx - 1, ly - 1) === TerrainName.FLOOR &&
-      at(lx - 1, ly) === TerrainName.RECESSED &&
-      at(lx + 2, ly - 1) === TerrainName.FLOOR &&
-      at(lx + 2, ly) === TerrainName.RECESSED &&
-      at(lx, ly - 1) === TerrainName.FLOOR &&
-      at(lx + 1, ly - 1) === TerrainName.FLOOR &&
-      at(lx, ly) === TerrainName.RECESSED &&
-      at(lx + 1, ly) === TerrainName.RECESSED &&
-      at(lx, ly + 1) === TerrainName.RECESSED &&
-      at(lx + 1, ly + 1) === TerrainName.RECESSED &&
-      at(lx, ly + 2) === TerrainName.RECESSED &&
-      at(lx + 1, ly + 2) === TerrainName.RECESSED
-    );
+    for (let x = lx - 1; x <= lx + columns; x++) {
+      if (at(x, ly - 1) !== TerrainName.FLOOR) return false;
+      if (at(x, ly) !== TerrainName.RECESSED) return false;
+    }
+
+    for (let dy = 1; dy < rows; dy++)
+      for (let dx = 0; dx < columns; dx++)
+        if (at(lx + dx, ly + dy) !== TerrainName.RECESSED) return false;
+
+    return true;
   }
 
   private _stamp(
@@ -125,20 +130,12 @@ export class StairGenerator {
     lx: number,
     ly: number,
   ): void {
-    const set = (x: number, y: number, tile: number) => {
-      data[handlers.generation.toIndex(x, y, this.width)] = firstgid + tile;
-    };
+    for (let dy = 0; dy < this.tiles.length; dy++)
+      for (let dx = 0; dx < this.tiles[dy].length; dx++) {
+        const i = handlers.generation.toIndex(lx + dx, ly + dy, this.width);
 
-    set(lx, ly, FLOOR_L);
-    set(lx + 1, ly, FLOOR_R);
-    set(lx, ly + 1, STAIR_L);
-    set(lx + 1, ly + 1, STAIR_R);
-    set(lx, ly + 2, SHADOW_L);
-    set(lx + 1, ly + 2, SHADOW_R);
-
-    for (let dy = 0; dy <= 2; dy++) {
-      ledges[handlers.generation.toIndex(lx, ly + dy, this.width)] = 0;
-      ledges[handlers.generation.toIndex(lx + 1, ly + dy, this.width)] = 0;
-    }
+        data[i] = firstgid + this.tiles[dy][dx];
+        ledges[i] = 0;
+      }
   }
 }

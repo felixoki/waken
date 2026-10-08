@@ -13,7 +13,9 @@ import {
   DUNGEON_RECESS_RECTS_PER_CLUSTER,
   DUNGEON_ROOM_ATTEMPTS,
   DUNGEON_ROOM_FURNISH_CHANCE,
+  DUNGEON_WALL_SPAN,
   DUNGEON_ROOM_PADDING,
+  ROOM_ENEMY_ATTEMPTS,
 } from "../../globals";
 import { ComponentName, EntityName, ZoneName } from "../../types";
 import { configs } from "../../configs";
@@ -25,6 +27,8 @@ import {
   RoomInterior,
   RoomInteriorOrigin,
   SeparatorStamp,
+  Setpiece,
+  SetpiecePlacement,
   TerrainName,
 } from "../../types/generation";
 import { SeparatorGenerator } from "./Separator";
@@ -56,6 +60,7 @@ export class RoomGenerator {
     exit?: { x: number; y: number };
     doors: DoorAnchor[];
     separators: SeparatorStamp[];
+    setpieces: SetpiecePlacement[];
   } {
     const { width, height } = this.config;
     const { tileWidth, tileHeight } = this.config;
@@ -75,6 +80,8 @@ export class RoomGenerator {
     for (const [a, b] of edges)
       this._corridor(terrain, centers[a], centers[b], 4);
 
+    this._bridge(terrain);
+
     for (const [a, b] of edges)
       this._door(terrain, centers[a], centers[b], this.rooms[a], this.rooms[b]);
 
@@ -86,6 +93,9 @@ export class RoomGenerator {
     for (let i = 0; i < cleaned.length; i++) terrain[i] = cleaned[i];
 
     this._walls(terrain);
+
+    const altars = this._altars(terrain);
+    const sacred = new Set(altars.map((a) => a.room));
 
     const draft = [...terrain];
     const pits = new Uint8Array(width * height);
@@ -100,6 +110,7 @@ export class RoomGenerator {
       this.rooms,
       this.doors,
       pits,
+      sacred,
     );
 
     this._carve(terrain, separators.occupied);
@@ -131,13 +142,17 @@ export class RoomGenerator {
       for (let i = 0; i < this.rooms.length; i++) {
         const room = this.rooms[i];
         const template = assigned[i];
+        const altar = altars.find((a) => a.room === i);
+        const shrine = altar && roomConfig.altars;
 
-        if (!template) continue;
+        if (!template && !shrine) continue;
 
         const isLarge =
           room.width >= roomConfig.distribution.large.size.width.min;
 
-        for (const piece of template.enemies ?? []) {
+        const groups = shrine ? shrine.enemies : (template?.enemies ?? []);
+
+        for (const piece of groups) {
           const count =
             piece.count.min +
             Math.floor(rng() * (piece.count.max - piece.count.min + 1));
@@ -145,17 +160,54 @@ export class RoomGenerator {
           for (let j = 0; j < count; j++) {
             const entity =
               piece.entities[Math.floor(rng() * piece.entities.length)];
-            const ox = room.x + 1 + Math.floor(rng() * (room.width - 2));
-            const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
 
-            if (separators.occupied[oy * width + ox]) continue;
+            for (let attempt = 0; attempt < ROOM_ENEMY_ATTEMPTS; attempt++) {
+              const ox = room.x + 1 + Math.floor(rng() * (room.width - 2));
+              const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
+
+              if (separators.occupied[oy * width + ox]) continue;
+              if (
+                altar &&
+                ox >= altar.x &&
+                ox < altar.x + altar.setpiece.width &&
+                oy < altar.y + altar.setpiece.height
+              )
+                continue;
+
+              entities.push({
+                name: entity,
+                x: ox * tileWidth,
+                y: oy * tileHeight,
+              });
+              break;
+            }
+          }
+        }
+
+        if (altar && shrine) {
+          for (const e of altar.setpiece.entities) {
+            const storage = configs.entities[e.name]?.components.find(
+              (c) => c.name === ComponentName.STORAGE,
+            );
+            const stocked =
+              storage?.name === ComponentName.STORAGE && storage.config.loot;
 
             entities.push({
-              name: entity,
-              x: ox * tileWidth,
-              y: oy * tileHeight,
+              name: e.name,
+              x: altar.x * tileWidth + e.x,
+              y: altar.y * tileHeight + e.y,
+              loot: storage && !stocked ? shrine.loot : undefined,
             });
           }
+
+          if (shrine.boss && altar === altars[0])
+            entities.push({
+              name: shrine.boss,
+              x: (room.x + (room.width >> 1)) * tileWidth + tileWidth / 2,
+              y: (altar.y + altar.setpiece.height + 1) * tileHeight,
+            });
+
+          continue;
         }
 
         if (!isLarge && roomConfig.interior.length) {
@@ -190,61 +242,106 @@ export class RoomGenerator {
                   maxY: (y + 1) * tileHeight,
                 });
 
-          for (const corner of corners) {
-            if (rng() > DUNGEON_ROOM_FURNISH_CHANCE) continue;
-
-            const pool = byCorner.get(corner)!;
-            const piece = pool[Math.floor(rng() * pool.length)];
-
-            if (
-              !handlers.generation.rooms.isWallIntact(
-                terrain,
-                room,
-                piece,
-                width,
-                height,
-                tileWidth,
-              ) ||
-              !handlers.generation.rooms.fitsInRoom(room, piece, tileWidth)
-            )
-              continue;
-
-            const ref = handlers.generation.rooms.cornerRef(
+          const spots = corners.map((origin) => ({
+            origin,
+            ref: handlers.generation.rooms.cornerRef(
               room,
-              corner,
+              origin,
               tileWidth,
               tileHeight,
-            );
+            ),
+            alcove: false,
+          }));
 
-            const survivors: (Entity & {
-              box: { minX: number; minY: number; maxX: number; maxY: number };
-            })[] = [];
+          if (roomConfig.alcoves)
+            for (const corner of separators.corners)
+              if (corner.room === i && byCorner.has(corner.origin))
+                spots.push({
+                  origin: corner.origin,
+                  ref: { x: corner.x * tileWidth, y: corner.y * tileHeight },
+                  alcove: true,
+                });
 
-            for (const e of piece.entities) {
-              const ex = ref.x + e.x;
-              const ey = ref.y + e.y;
-              const extent = RoomGenerator.extent(e.name, tileWidth, tileHeight);
-              const box = {
-                minX: ex - extent.x,
-                minY: ey - extent.y,
-                maxX: ex + extent.x,
-                maxY: ey + extent.y,
-              };
+          const bounds = {
+            minX: room.x * tileWidth,
+            maxX: (room.x + room.width) * tileWidth,
+            maxY: (room.y + room.height) * tileHeight,
+          };
+
+          let major = false;
+
+          for (const { origin, ref, alcove } of spots) {
+            if (rng() > (roomConfig.furnish ?? DUNGEON_ROOM_FURNISH_CHANCE))
+              continue;
+
+            const pool = byCorner.get(origin)!;
+            const options = roomConfig.intact
+              ? handlers.generation.rooms.shuffle(pool, rng)
+              : [pool[Math.floor(rng() * pool.length)]];
+
+            for (const piece of options) {
+              if (piece.major && major) continue;
 
               if (
-                placed.some((b) => handlers.generation.rooms.overlaps(b, box))
+                !alcove &&
+                (!handlers.generation.rooms.isWallIntact(
+                  terrain,
+                  room,
+                  piece,
+                  width,
+                  height,
+                  tileWidth,
+                ) ||
+                  !handlers.generation.rooms.fitsInRoom(room, piece, tileWidth))
               )
                 continue;
 
-              if (taken.some((b) => handlers.generation.rooms.overlaps(b, box)))
+              const survivors: (Entity & {
+                box: { minX: number; minY: number; maxX: number; maxY: number };
+              })[] = [];
+
+              for (const e of piece.entities) {
+                const ex = ref.x + e.x;
+                const ey = ref.y + e.y;
+                const extent = RoomGenerator.extent(e.name, tileWidth, tileHeight);
+                const inset = configs.entities[e.name]?.flat ? tileWidth : 0;
+                const box = {
+                  minX: ex - extent.x + inset,
+                  minY: ey - extent.y + inset,
+                  maxX: ex + extent.x - inset,
+                  maxY: ey + extent.y - inset,
+                };
+
+                if (
+                  alcove &&
+                  (box.minX < bounds.minX ||
+                    box.maxX > bounds.maxX ||
+                    box.maxY > bounds.maxY)
+                )
+                  continue;
+
+                if (
+                  placed.some((b) => handlers.generation.rooms.overlaps(b, box))
+                )
+                  continue;
+
+                if (taken.some((b) => handlers.generation.rooms.overlaps(b, box)))
+                  continue;
+
+                survivors.push({ name: e.name, x: ex, y: ey, loot: e.loot, box });
+              }
+
+              if (roomConfig.intact && survivors.length < piece.entities.length)
                 continue;
 
-              survivors.push({ name: e.name, x: ex, y: ey, loot: e.loot, box });
-            }
+              for (const s of survivors) {
+                placed.push(s.box);
+                entities.push({ name: s.name, x: s.x, y: s.y, loot: s.loot });
+              }
 
-            for (const s of survivors) {
-              placed.push(s.box);
-              entities.push({ name: s.name, x: s.x, y: s.y, loot: s.loot });
+              major ||= !!piece.major;
+
+              break;
             }
           }
         }
@@ -338,6 +435,12 @@ export class RoomGenerator {
       exit,
       doors: this.doors,
       separators: separators.stamps,
+      setpieces: altars.map(({ setpiece, x, y, room }) => ({
+        setpiece,
+        x,
+        y,
+        span: { x: this.rooms[room].x, width: this.rooms[room].width },
+      })),
     };
   }
 
@@ -895,6 +998,78 @@ export class RoomGenerator {
         if (px >= 0 && px < width && py >= 0 && py < height)
           terrain[py * width + px] = TerrainName.FLOOR;
       }
+  }
+
+  private _altars(
+    terrain: TerrainName[],
+  ): { room: number; setpiece: Setpiece; x: number; y: number }[] {
+    const config = this.config.rooms?.altars;
+    if (!config) return [];
+
+    const { width, height } = this.config;
+    const { setpiece, count } = config;
+    const rng = handlers.generation.seededRandom(
+      handlers.generation.hash(`${this.seed}-altars`),
+    );
+    const at = (x: number, y: number) => terrain[y * width + x];
+    const below = setpiece.height - setpiece.anchor.y;
+    const candidates: {
+      room: number;
+      setpiece: Setpiece;
+      x: number;
+      y: number;
+    }[] = [];
+
+    for (let r = 1; r < this.rooms.length; r++) {
+      const room = this.rooms[r];
+      const x = room.x + (room.width >> 1) - setpiece.anchor.x;
+      const y = room.y - setpiece.anchor.y;
+
+      if (y < 2 || room.y + below >= height) continue;
+      if (x - 1 < room.x || x + setpiece.width > room.x + room.width - 1)
+        continue;
+
+      let fits = true;
+
+      for (let cx = x - 1; cx <= x + setpiece.width && fits; cx++) {
+        fits =
+          at(cx, room.y - 1) === TerrainName.WALL_BASE &&
+          at(cx, room.y - 2) === TerrainName.WALL_MID &&
+          at(cx, room.y - 3) === TerrainName.WALL_TOP;
+
+        for (let cy = y - 2; cy < room.y - 3 && fits; cy++)
+          fits = at(cx, cy) === TerrainName.VOID;
+
+        for (let cy = room.y; cy <= room.y + below && fits; cy++)
+          fits = at(cx, cy) === TerrainName.FLOOR;
+      }
+
+      if (fits) candidates.push({ room: r, setpiece, x, y });
+    }
+
+    const wanted = count.min + Math.floor(rng() * (count.max - count.min + 1));
+
+    return handlers.generation.rooms.shuffle(candidates, rng).slice(0, wanted);
+  }
+
+  private _bridge(terrain: TerrainName[]) {
+    const { width, height } = this.config;
+
+    for (let x = 0; x < width; x++) {
+      let last = -1;
+
+      for (let y = 0; y < height; y++) {
+        if (terrain[y * width + x] !== TerrainName.FLOOR) continue;
+
+        const gap = y - last - 1;
+
+        if (last >= 0 && gap > 0 && gap < DUNGEON_WALL_SPAN)
+          for (let fy = last + 1; fy < y; fy++)
+            terrain[fy * width + x] = TerrainName.FLOOR;
+
+        last = y;
+      }
+    }
   }
 
   private _door(

@@ -482,7 +482,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 1.15,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.FEATHER,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,

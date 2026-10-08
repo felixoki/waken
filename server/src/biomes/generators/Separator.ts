@@ -1,10 +1,12 @@
 import { handlers } from "../../handlers";
 import { EntityName } from "../../types";
 import {
+  AlcoveCorner,
   BiomeConfig,
   DoorAnchor,
   Entity,
   Room,
+  RoomInteriorOrigin,
   SeparatorLayer,
   SeparatorStamp,
   TerrainName,
@@ -44,6 +46,7 @@ interface Piece {
   stamps: SeparatorStamp[];
   door?: { x: number; y: number };
   nook?: { x0: number; y0: number; x1: number; y1: number; top: boolean };
+  corners: { x: number; y: number; origin: RoomInteriorOrigin }[];
 }
 
 export class SeparatorGenerator {
@@ -66,12 +69,19 @@ export class SeparatorGenerator {
     rooms: Room[],
     doors: DoorAnchor[],
     pits: Uint8Array,
-  ): { stamps: SeparatorStamp[]; occupied: Uint8Array; entities: Entity[] } {
+    skip: Set<number> = new Set(),
+  ): {
+    stamps: SeparatorStamp[];
+    occupied: Uint8Array;
+    entities: Entity[];
+    corners: AlcoveCorner[];
+  } {
     const { width, height } = this;
     const { tileWidth, tileHeight } = this.config;
     const settings = this.config.rooms?.separators;
 
     const stamps: SeparatorStamp[] = [];
+    const corners: AlcoveCorner[] = [];
     const entities: Entity[] = [];
     const occupied = new Uint8Array(width * height);
     const blocked = new Uint8Array(width * height);
@@ -79,12 +89,14 @@ export class SeparatorGenerator {
     const gates: { piece: Piece; room: number }[] = [];
     const owner = new Int16Array(width * height).fill(-1);
 
-    if (!settings) return { stamps, occupied, entities };
+    if (!settings) return { stamps, occupied, entities, corners };
 
     const keepout = this._keepout(terrain, rooms);
     const large = this.config.rooms!.distribution.large.size.width.min;
 
     const place = (r: number, nook: Side | null, strict: boolean): boolean => {
+      if (skip.has(r)) return false;
+
       const room = rooms[r];
       const piece = this._piece(terrain, room, doors, nook);
 
@@ -127,6 +139,7 @@ export class SeparatorGenerator {
           }
 
       stamps.push(...piece.stamps);
+      for (const corner of piece.corners) corners.push({ ...corner, room: r });
       if (nook) gates.push({ piece, room: r });
 
       return true;
@@ -195,7 +208,7 @@ export class SeparatorGenerator {
       const link = `gate-${g}`;
 
       entities.push({
-        name: EntityName.CLOSED_DOOR,
+        name: settings.door ?? EntityName.CLOSED_DOOR,
         x: (door.x + 1) * tileWidth,
         y: door.y * tileHeight + (tileHeight * 3) / 2,
         link,
@@ -206,6 +219,8 @@ export class SeparatorGenerator {
         y: ((lever / width) | 0) * tileHeight + tileHeight / 2,
         link,
       });
+
+      if (!settings.treasure.length) continue;
 
       const nook = piece.nook!;
       const cy = nook.top ? nook.y0 : nook.y1 - 1;
@@ -231,7 +246,7 @@ export class SeparatorGenerator {
       }
     }
 
-    return { stamps, occupied, entities };
+    return { stamps, occupied, entities, corners };
   }
 
   private _int(min: number, max: number): number {
@@ -293,6 +308,7 @@ export class SeparatorGenerator {
       open: [],
       contacts: new Set(),
       stamps: [],
+      corners: [],
     };
 
     const at = (x: number, y: number) => y * width + x;
@@ -402,6 +418,16 @@ export class SeparatorGenerator {
     }
 
     if (bottom < top) return null;
+
+    piece.corners = fromNorth
+      ? [
+          { x: x + 1, y: y0, origin: RoomInteriorOrigin.TOP_LEFT },
+          { x, y: y0, origin: RoomInteriorOrigin.TOP_RIGHT },
+        ]
+      : [
+          { x: x + 1, y: y1 + 1, origin: RoomInteriorOrigin.BOTTOM_LEFT },
+          { x, y: y1 + 1, origin: RoomInteriorOrigin.BOTTOM_RIGHT },
+        ];
 
     const row = this._int(top, bottom);
     const east = nook ? nook === "east" : this.rng() < 0.5;

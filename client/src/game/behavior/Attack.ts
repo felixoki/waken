@@ -29,6 +29,7 @@ export class AttackBehavior extends Behavior {
   private recovery: number;
   public alert = { active: false, time: 0, duration: 800 };
   private line = { at: 0, clear: true };
+  private mend = { at: 0, needed: false };
   private stuck: Stuck = {
     lastPosition: { x: 0, y: 0 },
     lastCheck: 0,
@@ -150,7 +151,24 @@ export class AttackBehavior extends Behavior {
         if (distance < minRange || distance > range) continue;
         if (now < (this.cooldowns.get(key) ?? 0)) continue;
 
+        if (config.mend) {
+          if (now - this.mend.at > LINE_INTERVAL) {
+            this.mend.at = now;
+            this.mend.needed = handlers.combat.wounded(entity);
+          }
+
+          if (!this.mend.needed) continue;
+        }
+
         if (config.spell) {
+          if (config.opener) {
+            if (this.cooldowns.has(key)) continue;
+
+            spell = config.spell;
+            cooldown = config.cooldown ?? 1000;
+            break;
+          }
+
           if (recovering) continue;
 
           ready++;

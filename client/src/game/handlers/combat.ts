@@ -15,7 +15,12 @@ import { Entity } from "../Entity";
 import { Hitbox } from "../Hitbox";
 import { HotbarComponent } from "../components/Hotbar";
 import { configs } from "@server/configs";
-import { DURATION_COMBO_LOCK, DURATION_FINISHER_LOCK } from "@server/globals";
+import {
+  DURATION_COMBO_LOCK,
+  DURATION_FINISHER_LOCK,
+  ENTITY_PARTY_RANGE,
+  MAX_HEALTH,
+} from "@server/globals";
 import { handlers } from ".";
 import EventBus from "../EventBus";
 import { vfx } from "../vfx";
@@ -60,13 +65,41 @@ export const combat = {
     return configs.spells[attack.spell] ?? null;
   },
 
+  wounded: (entity: Entity): boolean => {
+    for (const ally of entity.scene.managers.entities.entities.values()) {
+      const definition = configs.entities[ally.name];
+
+      if (!definition?.attacks?.length || ally.health <= 0) continue;
+      if (ally.health >= (definition.maxHealth ?? MAX_HEALTH)) continue;
+
+      const distance = Phaser.Math.Distance.Between(
+        entity.x,
+        entity.y,
+        ally.x,
+        ally.y,
+      );
+
+      if (distance <= ENTITY_PARTY_RANGE) return true;
+    }
+
+    return false;
+  },
+
   attack: (entity: Entity, spell: SpellName): AttackConfig | undefined =>
     configs.entities[entity.name]?.attacks?.find((a) => a.spell === spell),
 
   consume: (entity: Entity, config: SpellConfig): boolean => {
     const player = entity.scene.managers.players.get(entity.id);
 
-    if (!player) return true;
+    if (!player) {
+      if (config.buff && entity.scene.managers.players.player?.isAuthority)
+        entity.scene.game.events.emit(Event.ENTITY_CAST, {
+          id: entity.id,
+          name: config.name,
+        });
+
+      return true;
+    }
 
     if (player.mana < config.mana) return false;
 

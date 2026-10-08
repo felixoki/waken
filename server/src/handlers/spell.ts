@@ -12,7 +12,7 @@ import {
 import { World } from "../World.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
-import { MAX_HEALTH } from "../globals.js";
+import { ENTITY_PARTY_RANGE, MAX_HEALTH } from "../globals.js";
 
 export const spell = {
   learn: (
@@ -65,6 +65,63 @@ export const spell = {
 
     if (data.name === SpellName.REVIVE && data.targetId)
       spell.revive(data.targetId, socket, io, world);
+  },
+
+  entity: (
+    data: { id: string; name: SpellName },
+    socket: Socket,
+    world: World,
+  ) => {
+    const player = world.players.getBySocketId(socket.id);
+    const caster = world.entities.get(data.id);
+    if (!player?.isAuthority || !caster || caster.health <= 0) return;
+
+    const buff = configs.spells[data.name]?.buff;
+    const attacks = configs.entities[caster.name]?.attacks;
+    if (!buff || !attacks?.some((a) => a.spell === data.name)) return;
+
+    const key = world.chunks.getChunkByEntity(caster.id);
+    if (!key) return;
+
+    const recipients = [caster.id];
+
+    if (buff.target === Target.PARTY) {
+      const parts = key.split(":");
+      const cy = Number(parts.pop());
+      const cx = Number(parts.pop());
+      const prefix = parts.join(":");
+      const keys: string[] = [];
+
+      for (let dy = -1; dy <= 1; dy++)
+        for (let dx = -1; dx <= 1; dx++)
+          keys.push(`${prefix}:${cx + dx}:${cy + dy}`);
+
+      for (const id of world.chunks.getEntitiesInChunk(keys)) {
+        const ally = world.entities.get(id);
+
+        if (!ally || ally.id === caster.id || ally.health <= 0) continue;
+        if (!configs.entities[ally.name]?.attacks?.length) continue;
+
+        const dx = ally.x - caster.x;
+        const dy = ally.y - caster.y;
+
+        if (dx * dx + dy * dy <= ENTITY_PARTY_RANGE * ENTITY_PARTY_RANGE)
+          recipients.push(ally.id);
+      }
+    }
+
+    const now = Date.now();
+
+    for (const id of recipients)
+      handlers.combat.effects.apply(
+        id,
+        true,
+        { ...configs.spells[data.name], effects: buff.effects },
+        world,
+        now,
+        world.chunks.getChunkByEntity(id),
+        socket,
+      );
   },
 
   buff: (

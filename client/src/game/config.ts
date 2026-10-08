@@ -24,6 +24,7 @@ import { FishingHutScene } from "./scenes/FishingHut";
 import { FarmScene } from "./scenes/Farm";
 import ForestScene from "./scenes/Forest";
 import DungeonScene from "./scenes/Dungeon";
+import TempleScene from "./scenes/Temple";
 import IslesScene from "./scenes/Isles";
 import SublevelScene from "./scenes/Sublevel";
 
@@ -49,6 +50,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     FishingHutScene,
     FarmScene,
     DungeonScene,
+    TempleScene,
     new SublevelScene(MapName.CAVE),
     IslesScene,
   ],

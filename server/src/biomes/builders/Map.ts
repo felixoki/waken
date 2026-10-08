@@ -18,6 +18,8 @@ import {
   Entity,
   GeneratedMap,
   SeparatorStamp,
+  SetpiecePlacement,
+  SiteConfig,
   TERRAIN_ORDER,
   TerrainName,
   TileRole,
@@ -85,7 +87,7 @@ export class MapBuilder {
 
   build(): GeneratedMap {
     const { width, height, bands } = this;
-    const { tileWidth, tileHeight, layers } = this.config;
+    const { tileWidth, tileHeight } = this.config;
     const host = bands[this.host];
 
     const generators = {
@@ -103,6 +105,7 @@ export class MapBuilder {
     let roomExit: { x: number; y: number } | undefined;
     let roomDoors: DoorAnchor[] | undefined;
     let roomSeparators: SeparatorStamp[] | undefined;
+    let roomSetpieces: SetpiecePlacement[] = [];
 
     for (let b = 0; b < bands.length; b++) {
       const { config, y } = bands[b];
@@ -117,6 +120,7 @@ export class MapBuilder {
         exit?: { x: number; y: number };
         doors?: DoorAnchor[];
         separators?: SeparatorStamp[];
+        setpieces?: SetpiecePlacement[];
         elevation?: Uint8Array;
       };
 
@@ -146,6 +150,10 @@ export class MapBuilder {
       roomSeparators = generated.separators?.map((s) => ({
         ...s,
         index: s.index + offset,
+      }));
+      roomSetpieces = (generated.setpieces ?? []).map((p) => ({
+        ...p,
+        y: p.y + y,
       }));
     }
 
@@ -256,6 +264,11 @@ export class MapBuilder {
 
         const gid = firstgids.get(layerConfig.tileset)!;
         const isBaseLayer = index === 0;
+        const exact =
+          !!config.walls &&
+          !config.borders.some(
+            (b) => b.from === fillTerrain || b.to === fillTerrain,
+          );
 
         for (let y = top; y < top + config.height; y++)
           for (let x = 0; x < width; x++) {
@@ -263,10 +276,12 @@ export class MapBuilder {
 
             if (
               isBaseLayer ||
-              handlers.generation.isTerrainAtOrAbove(
-                grid[idx],
-                layerConfig.terrain,
-              )
+              (exact
+                ? grid[idx] === fillTerrain
+                : handlers.generation.isTerrainAtOrAbove(
+                    grid[idx],
+                    layerConfig.terrain,
+                  ))
             ) {
               let tile = fills[0];
 
@@ -382,7 +397,27 @@ export class MapBuilder {
           voidBacked.add(gid + tile.id);
 
       if (floorTile) {
-        const underlay = new Array(width * height).fill(0);
+        let floor = tiledLayers.find((l) => l.name === TerrainName.FLOOR);
+
+        if (!floor) {
+          floor = handlers.generation.createLayer(
+            layerId++,
+            TerrainName.FLOOR,
+            width,
+            height,
+            new Array(width * height).fill(0),
+          );
+          tiledLayers.push(floor);
+        }
+
+        const underlay: number[] = floor.data;
+        const ground = tiledLayers.find((l) => l.name === "overlay") ?? floor;
+
+        (ground.properties ??= []).push({
+          name: "shadows",
+          type: "bool",
+          value: true,
+        });
 
         const floorBottom = new Int32Array(width).fill(-1);
 
@@ -417,16 +452,6 @@ export class MapBuilder {
               ? ceilingTile
               : floorTile;
         }
-
-        tiledLayers.push(
-          handlers.generation.createLayer(
-            layerId++,
-            "walls_floor",
-            width,
-            height,
-            underlay,
-          ),
-        );
       }
 
       tiledLayers.push(
@@ -455,78 +480,21 @@ export class MapBuilder {
       );
 
       /**
-       * Void fill: the open ceiling renders above the player, while void
-       * pockets sealed inside the wall band render as solid rock below it.
+       * Void
        */
-      const voidLayer = layers.find((l) => l.terrain === TerrainName.VOID);
+      const ceiling = tiledLayers.find((l) => l.name === TerrainName.VOID);
 
-      if (voidLayer) {
-        const voidFills = this.loader.query(voidLayer.tileset, {
-          role: TileRole.FILL,
-          terrain: TerrainName.VOID,
-        });
+      if (ceiling) {
+        for (let i = 0; i < ceiling.data.length; i++)
+          if (tiledLayers.some((l) => l !== ceiling && l.data[i] !== 0))
+            ceiling.data[i] = 0;
 
-        if (voidFills.length) {
-          const voidGid = firstgids.get(voidLayer.tileset)!;
-          const tile = voidGid + voidFills[0].id;
-
-          const renderable = (i: number) =>
-            terrain[i] === TerrainName.VOID && below[i] === 0 && above[i] === 0;
-
-          const exterior = handlers.generation.flood(
-            width,
-            height,
-            renderable,
-            handlers.generation.borderIndices(width, height),
-          );
-
-          const voidAbove = new Array(width * height).fill(0);
-          const voidBelow = new Array(width * height).fill(0);
-
-          for (let i = 0; i < terrain.length; i++) {
-            if (!renderable(i)) continue;
-            if (exterior[i]) voidAbove[i] = tile;
-            else voidBelow[i] = tile;
-          }
-
-          tiledLayers.push(
-            handlers.generation.createLayer(
-              layerId++,
-              "void_fill",
-              width,
-              height,
-              voidBelow,
-              [{ name: "collides", type: "bool", value: true }],
-            ),
-          );
-
-          tiledLayers.push(
-            handlers.generation.createLayer(
-              layerId++,
-              "void_above",
-              width,
-              height,
-              voidAbove,
-              [{ name: "rendersAbove", type: "bool", value: true }],
-            ),
-          );
-
-          const base = tiledLayers.findIndex(
-            (l) => l.name === TerrainName.VOID,
-          );
-          const fills = tiledLayers.filter((l) => fillOrder.includes(l.name));
-          const redundant =
-            base >= 0 &&
-            tiledLayers[base].data.every(
-              (gid: number, i: number) =>
-                gid === 0 ||
-                voidAbove[i] !== 0 ||
-                voidBelow[i] !== 0 ||
-                fills.some((l) => l.name !== TerrainName.VOID && l.data[i] !== 0),
-            );
-
-          if (redundant) tiledLayers.splice(base, 1);
-        }
+        ceiling.properties = [
+          { name: "rendersAbove", type: "bool", value: true },
+        ];
+        tiledLayers.push(
+          ...tiledLayers.splice(tiledLayers.indexOf(ceiling), 1),
+        );
       }
     }
 
@@ -541,11 +509,14 @@ export class MapBuilder {
       );
       const ledges = gen.generate(terrain, this.config.ledge, gid);
 
-      const stairGen = new StairGenerator({
-        width,
-        height,
-      });
-      const stairs = stairGen.generate(terrain, gid, this.seed, ledges);
+      const stair = this.config.stair;
+      const stairGen = new StairGenerator({ width, height }, stair?.tiles);
+      const stairs = stairGen.generate(
+        terrain,
+        stair ? firstgids.get(stair.tileset)! : gid,
+        this.seed,
+        ledges,
+      );
 
       tiledLayers.push(
         handlers.generation.createLayer(
@@ -594,7 +565,7 @@ export class MapBuilder {
       );
 
       const wallLayers = tiledLayers.filter((l) =>
-        ["walls", "walls_above", "void_above"].includes(l.name),
+        ["walls", "walls_above", TerrainName.VOID].includes(l.name),
       );
 
       new WallGenerator({ width, height }, this.loader).doors(
@@ -686,7 +657,22 @@ export class MapBuilder {
         target[stamp.index] = gid + stamp.id;
         separated.add(stamp.index);
       }
+
+      const overlaid = tiledLayers.find((l) => l.name === "overlay");
+      if (overlaid) for (const i of separated) overlaid.data[i] = 0;
     }
+
+    const sanctums = roomSetpieces.map((p) => ({
+      minX: p.span.x * tileWidth,
+      minY: (p.y - 1) * tileHeight,
+      maxX: (p.span.x + p.span.width) * tileWidth,
+      maxY: (p.y + p.setpiece.height) * tileHeight,
+    }));
+
+    for (const p of roomSetpieces)
+      for (let y = p.y; y < p.y + p.setpiece.anchor.y; y++)
+        for (let x = p.span.x; x < p.span.x + p.span.width; x++)
+          separated.add(y * width + x);
 
     /**
      * Build border layers
@@ -804,6 +790,34 @@ export class MapBuilder {
     }
 
     /**
+     * Sites
+     */
+    for (let b = 0; b < bands.length; b++)
+      for (const site of bands[b].config.sites ?? []) {
+        if (site.requires > this.unlocked || !elevations[b]) continue;
+
+        const origin = this.site(bands[b], site, grid, elevation, blocked);
+        if (!origin) continue;
+
+        const minX = (origin.x - 1) * tileWidth;
+        const maxX = (origin.x + site.width + 1) * tileWidth;
+        const minY = (origin.y - 1) * tileHeight;
+        const maxY = (origin.y + site.height + 1) * tileHeight;
+
+        for (let i = entities.length - 1; i >= 0; i--) {
+          const e = entities[i];
+          if (e.x >= minX && e.x < maxX && e.y >= minY && e.y < maxY)
+            entities.splice(i, 1);
+        }
+
+        entities.push({
+          name: site.entity,
+          x: (origin.x + site.width / 2) * tileWidth,
+          y: (origin.y + site.height / 2) * tileHeight,
+        });
+      }
+
+    /**
      * Wells (forest only)
      */
     if (this.config.id === BiomeName.FOREST) {
@@ -870,9 +884,12 @@ export class MapBuilder {
     }
 
     /**
-     * Torches and ladders (dungeon only)
+     * Torches and ladders (dungeon and temple only)
      */
-    if (this.config.id === BiomeName.DUNGEON) {
+    if (
+      this.config.id === BiomeName.DUNGEON ||
+      this.config.id === BiomeName.TEMPLE
+    ) {
       const torches = handlers.generation.find.positions.torch(
         view,
         terrain,
@@ -914,7 +931,9 @@ export class MapBuilder {
           EntityName.CANDLES2,
           EntityName.CANDLES3,
         ];
-        const obstacles = entities.map((e) => {
+        const obstacles = [...sanctums];
+
+        for (const e of entities) {
           const fixture =
             e.name === EntityName.TORCH1 || e.name === EntityName.LADDER;
           const extent = RoomGenerator.extent(e.name, tileWidth, tileHeight);
@@ -922,13 +941,13 @@ export class MapBuilder {
             ? DUNGEON_CANDLE_CLEARANCE * tileWidth - extent.x + 4
             : 0;
 
-          return {
+          obstacles.push({
             minX: e.x - extent.x - reach,
             minY: e.y - extent.y - (fixture ? tileHeight : 0),
             maxX: e.x + extent.x + reach,
             maxY: e.y + extent.y + (fixture ? tileHeight : 0),
-          };
-        });
+          });
+        }
 
         const niches = new WallGenerator({ width, height }, this.loader).niches(
           this.config.walls,
@@ -958,7 +977,94 @@ export class MapBuilder {
               windows,
             ),
           );
+
+        /**
+         * Arches
+         */
+        const arch = this.config.arches;
+
+        if (arch) {
+          const fixtures = entities
+            .filter(
+              (e) =>
+                e.name === EntityName.TORCH1 || e.name === EntityName.LADDER,
+            )
+            .map((e) => ({
+              minX: e.x - tileWidth,
+              minY: e.y - tileHeight * 2,
+              maxX: e.x + tileWidth,
+              maxY: e.y + tileHeight * 2,
+            }));
+
+          const { data, spots } = new WallGenerator(
+            { width, height },
+            this.loader,
+          ).arches(
+            arch,
+            tiledLayers.find((l) => l.name === "walls").data,
+            firstgids.get(this.config.walls)!,
+            firstgids.get(arch.tileset)!,
+            [...fixtures, ...sanctums],
+            windows,
+            tileWidth,
+            tileHeight,
+            this.seed,
+          );
+
+          const rows = arch.tiles.length;
+          const columns = arch.tiles[0].length;
+
+          for (const spot of spots)
+            entities.push({
+              name: arch.entity,
+              x: (spot.x + columns / 2) * tileWidth,
+              y: (spot.y + rows - 1) * tileHeight,
+            });
+
+          if (spots.length) {
+            const at = tiledLayers.findIndex(
+              (l) => l.name === "walls_above",
+            );
+
+            tiledLayers.splice(
+              at,
+              0,
+              handlers.generation.createLayer(
+                layerId++,
+                "arches",
+                width,
+                height,
+                data,
+                [{ name: "collides", type: "bool", value: true }],
+              ),
+            );
+          }
+        }
       }
+    }
+
+    /**
+     * Skins
+     */
+    const skinned = new Set<string>();
+
+    for (const skin of this.config.skins ?? []) {
+      const base = firstgids.get(skin.of)!;
+      const first = firstgids.get(skin.tileset)!;
+      const swaps = new Map<number, number>();
+
+      for (const tile of this.loader.load(skin.tileset).tiles ?? []) {
+        const of = handlers.generation.parseProperties(tile.properties).skinOf;
+        if (of !== undefined) swaps.set(base + of, first + tile.id);
+      }
+
+      for (const layer of tiledLayers)
+        for (let i = 0; i < layer.data.length; i++) {
+          const swap = swaps.get(layer.data[i]);
+          if (swap !== undefined) layer.data[i] = swap;
+        }
+
+      skinned.add(skin.of);
     }
 
     /**
@@ -1003,6 +1109,64 @@ export class MapBuilder {
     }
 
     /**
+     * Setpieces
+     */
+    for (const p of roomSetpieces) {
+      const covered = new Set<number>();
+
+      for (const layer of p.setpiece.layers)
+        for (const [dx, dy] of layer.tiles)
+          covered.add((p.y + dy) * width + p.x + dx);
+
+      for (const i of covered) for (const layer of tiledLayers) layer.data[i] = 0;
+
+      for (const layer of p.setpiece.layers) {
+        let target = tiledLayers.find((l) => l.name === layer.name);
+
+        if (!target) {
+          target = handlers.generation.createLayer(
+            layerId++,
+            layer.name,
+            width,
+            height,
+            new Array(width * height).fill(0),
+            layer.properties,
+          );
+
+          const at = layer.before
+            ? tiledLayers.findIndex((l) => l.name === layer.before)
+            : -1;
+
+          if (at >= 0) tiledLayers.splice(at, 0, target);
+          else tiledLayers.push(target);
+        }
+
+        const gid = firstgids.get(layer.tileset)!;
+
+        for (const [dx, dy, id] of layer.tiles)
+          target.data[(p.y + dy) * width + p.x + dx] = gid + id;
+      }
+
+      const skirt = this.config.rooms?.altars?.skirt;
+      const walls = tiledLayers.find((l) => l.name === "walls");
+      const trim = skirt && tiledLayers.find((l) => l.name === skirt.layer);
+
+      if (!skirt || !walls || !trim) continue;
+
+      const gid = firstgids.get(skirt.tileset)!;
+      const row = p.y + p.setpiece.anchor.y;
+
+      for (let x = p.span.x; x < p.span.x + p.span.width; x++) {
+        if (x >= p.x && x < p.x + p.setpiece.width) continue;
+        if (walls.data[(row - 1) * width + x] !== gid + skirt.wall) continue;
+
+        skirt.tiles.forEach((id, r) => {
+          trim.data[(row - 1 + r) * width + x] = gid + id;
+        });
+      }
+    }
+
+    /**
      * Cave exit
      */
     if (this.config.id === BiomeName.CAVE && roomExit) {
@@ -1020,6 +1184,17 @@ export class MapBuilder {
 
     for (const name of tilesetOrder) {
       const ts = this.loader.load(name);
+      const first = firstgids.get(name)!;
+
+      if (
+        skinned.has(name) &&
+        !tiledLayers.some((l) =>
+          l.data.some(
+            (gid: number) => gid >= first && gid < first + ts.tilecount,
+          ),
+        )
+      )
+        continue;
 
       tilesets.push({
         columns: ts.columns,
@@ -1041,7 +1216,7 @@ export class MapBuilder {
       compressionlevel: -1,
       height,
       infinite: false,
-      layers: tiledLayers,
+      layers: tiledLayers.filter((l) => l.data.some((gid: number) => gid !== 0)),
       nextlayerid: layerId,
       nextobjectid: 1,
       orientation: "orthogonal",
@@ -1179,6 +1354,63 @@ export class MapBuilder {
     return null;
   }
 
+  private site(
+    band: BiomeBand,
+    site: SiteConfig,
+    grid: TerrainName[],
+    elevation: Uint8Array,
+    blocked: Uint8Array,
+  ): { x: number; y: number } | null {
+    const { width } = this;
+    const top = band.y;
+    const bottom = band.y + band.config.height;
+    const seed = handlers.generation.hash(
+      `${band.config.noise.seed ?? this.seed}-${site.entity}`,
+    );
+    const rise = site.height - (site.base ?? site.height);
+
+    let highest = 0;
+    for (let i = top * width; i < bottom * width; i++)
+      highest = Math.max(highest, elevation[i]);
+
+    for (const terrain of site.terrain)
+      for (let margin = 1; margin >= 0; margin--) {
+        const levels = new Map<number, { x: number; y: number }[]>();
+
+        for (let y = top + margin; y < bottom - site.height - margin; y++)
+          for (let x = margin; x < width - site.width - margin; x++) {
+            const level = elevation[(y + site.height - 1) * width + x];
+            let open = true;
+
+            for (let dy = rise; dy < site.height + margin && open; dy++)
+              for (let dx = -margin; dx < site.width + margin && open; dx++) {
+                const i = (y + dy) * width + x + dx;
+                open =
+                  grid[i] === terrain && elevation[i] === level && !blocked[i];
+              }
+
+            if (!open) continue;
+
+            const list = levels.get(level) ?? [];
+            list.push({ x, y });
+            levels.set(level, list);
+          }
+
+        const ranked = [...levels.keys()].sort((a, b) => b - a);
+        const level = ranked.find((l) => l < highest) ?? ranked[0];
+        const candidates = level === undefined ? undefined : levels.get(level);
+
+        if (level === undefined || !candidates?.length) continue;
+
+        return candidates[
+          handlers.generation.spatialHash(candidates.length, level, seed) %
+            candidates.length
+        ];
+      }
+
+    return null;
+  }
+
   private mask(
     grid: TerrainName[],
     region: Uint8Array,
@@ -1209,6 +1441,11 @@ export class MapBuilder {
       for (const detail of config.details ?? []) names.add(detail.tileset);
       if (config.walls) names.add(config.walls);
       if (config.ledge) names.add(config.ledge);
+      if (config.stair) names.add(config.stair.tileset);
+      if (config.arches) names.add(config.arches.tileset);
+      for (const skin of config.skins ?? []) names.add(skin.tileset);
+      for (const layer of config.rooms?.altars?.setpiece.layers ?? [])
+        names.add(layer.tileset);
       for (const name of config.tilesets ?? []) names.add(name);
       for (const variant of config.variants ?? []) names.add(variant.tileset);
     }

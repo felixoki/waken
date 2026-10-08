@@ -16,7 +16,8 @@ import { EntityName } from "@server/types";
 import { Scene } from "./scenes/Scene";
 import { BehaviorQueue } from "./components/BehaviorQueue";
 import { handlers } from "./handlers";
-import { SPEED_DEFAULT } from "@server/globals";
+import { FLAT_DEPTH, SPEED_DEFAULT } from "@server/globals";
+import { configs } from "@server/configs";
 
 export class Entity extends Phaser.GameObjects.Sprite {
   public id: string;
@@ -82,6 +83,10 @@ export class Entity extends Phaser.GameObjects.Sprite {
   private _init() {
     this.scene.add.existing(this);
     this.depthY = this.y;
+
+    if (configs.entities[this.name as EntityName]?.flat)
+      this.depthOffset = FLAT_DEPTH - 1000 - this.y;
+
     this.setDepth(1000 + this.y + this.depthOffset);
   }
 

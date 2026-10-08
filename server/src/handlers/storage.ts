@@ -109,10 +109,16 @@ export const storage = {
 
       let storing: (Item | null)[] = new Array(slots).fill(null);
 
-      if (entity.loot?.length) {
+      const loot =
+        entity.loot ??
+        (comp && comp.name === ComponentName.STORAGE
+          ? comp.config.loot
+          : undefined);
+
+      if (loot?.length) {
         let rolled = false;
 
-        for (const entry of entity.loot) {
+        for (const entry of loot) {
           if (Math.random() > entry.chance) continue;
           const { chance, ...item } = entry;
           storing = storage.add(storing, item);
@@ -120,7 +126,7 @@ export const storage = {
         }
 
         if (!rolled) {
-          const { chance, ...item } = storage.pick(entity.loot);
+          const { chance, ...item } = storage.pick(loot);
           storing = storage.add(storing, item);
         }
       }

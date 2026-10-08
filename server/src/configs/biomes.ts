@@ -10,6 +10,13 @@ import {
   TerrainName,
 } from "../types/generation";
 import { groundStamps, grassStamps, flowerStamps, snowStamps } from "./details";
+import { altar } from "./setpieces";
+import {
+  TEMPLE_ARCH_CHANCE,
+  TEMPLE_ARCH_GAP,
+  TEMPLE_FLOOR_DETAIL_DENSITY,
+  TEMPLE_ROOM_FURNISH_CHANCE,
+} from "../globals";
 
 const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.WOOD, quantity: 5, stackable: true, chance: 0.75 },
@@ -22,20 +29,13 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.RING1, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.RING2, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.RING3, quantity: 1, stackable: false, chance: 0.01 },
-  { name: EntityName.AMULET2, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.BOOTS1, quantity: 1, stackable: false, chance: 0.01 },
-  { name: EntityName.HARE_FOOT, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.01 },
-  { name: EntityName.FEATHER, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.JAR_OF_PICKLES, quantity: 1, stackable: false, chance: 0.005 },
 
-  { name: EntityName.SPELL_PAGE_METEOR_SHOWER, quantity: 1, stackable: false, chance: 0.025 },
-  { name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE, quantity: 1, stackable: false, chance: 0.05 },
-  { name: EntityName.SPELL_PAGE_HYPERBEAM, quantity: 1, stackable: false, chance: 0.001 },
-  { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.02 },
-  { name: EntityName.SPELL_PAGE_HYPNIC_JERK, quantity: 1, stackable: false, chance: 0.005 },
   { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.02 },
+  { name: EntityName.SPELL_PAGE_CATCH_SOUL, quantity: 1, stackable: false, chance: 0.05 },
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
 
@@ -725,6 +725,7 @@ export const mountain: BiomeConfig = {
     {
       entities: [EntityName.WOLF3],
       terrain: [TerrainName.EARTH, TerrainName.SNOW],
+      elevation: { min: 3, max: 10 },
       count: { min: 4, max: 7 },
       spacing: 10,
       group: { min: 1, max: 2, radius: 3 },
@@ -791,8 +792,257 @@ export const mountain: BiomeConfig = {
   ],
 
   peak: { entity: EntityName.CLOUDLADDER, requires: 3 },
+  sites: [
+    {
+      entity: EntityName.TEMPLE_ENTRANCE,
+      requires: 2,
+      width: 11,
+      height: 9,
+      base: 5,
+      terrain: [TerrainName.SNOW, TerrainName.EARTH],
+    },
+  ],
 
   generator: GeneratorName.TERRACE,
   exclusion: 0,
   smoothing: null,
+};
+
+const APSE_LOOT: (Item & { chance: number })[] = [
+  { name: EntityName.POTION2, quantity: 2, stackable: true, chance: 0.6 },
+  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.25 },
+  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.25 },
+  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.25 },
+  { name: EntityName.QUARTZ1, quantity: 4, stackable: true, chance: 0.6 },
+  { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.4 },
+  { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.2 },
+  { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.1 },
+];
+
+const TEMPLE_FLOOR_DETAILS = [401, 402, 403, 404, 418, 419, 420, 421, 422];
+
+export const temple: BiomeConfig = {
+  id: BiomeName.TEMPLE,
+  label: "Temple",
+  width: 128,
+  height: 128,
+  tileWidth: 16,
+  tileHeight: 16,
+
+  noise: {
+    octaves: 4,
+    persistence: 0.5,
+    lacunarity: 2.0,
+    scale: 0.05,
+  },
+
+  layers: [
+    {
+      terrain: TerrainName.VOID,
+      tileset: "temple_walls_floor",
+      threshold: null,
+    },
+    {
+      terrain: TerrainName.RECESSED,
+      tileset: "temple_walls_floor",
+      threshold: null,
+      surface: SurfaceName.STONE,
+    },
+    {
+      terrain: TerrainName.FLOOR,
+      tileset: "temple_walls_floor",
+      threshold: null,
+      surface: SurfaceName.STONE,
+    },
+  ],
+
+  borders: [],
+  ledge: "dungeon_walls_floor",
+  walls: "dungeon_walls_floor",
+  skins: [
+    { tileset: "temple_walls_floor", of: "dungeon_walls_floor" },
+    { tileset: "temple_arches_doors", of: "dungeon_walls_floor" },
+  ],
+  stair: {
+    tileset: "temple_stairs",
+    tiles: [
+      [26, 27, 24],
+      [43, 44, 41],
+      [60, 61, 58],
+    ],
+  },
+  arches: {
+    tileset: "temple_arches_doors",
+    tiles: [
+      [109, 110, 111],
+      [129, 130, 131],
+      [149, 150, 151],
+    ],
+    entity: EntityName.REMAINS,
+    chance: TEMPLE_ARCH_CHANCE,
+    gap: TEMPLE_ARCH_GAP,
+  },
+  details: [
+    {
+      tileset: "temple_walls_floor",
+      terrains: [TerrainName.FLOOR],
+      density: TEMPLE_FLOOR_DETAIL_DENSITY,
+      stamps: TEMPLE_FLOOR_DETAILS.map((tileId) => ({
+        width: 1,
+        height: 1,
+        tiles: [{ dx: 0, dy: 0, tileId }],
+      })),
+      gap: 1,
+    },
+  ],
+  terrain: [TerrainName.FLOOR, TerrainName.RECESSED],
+  objects: [],
+  generator: GeneratorName.ROOM,
+  exclusion: 0,
+  smoothing: null,
+
+  rooms: {
+    assignment: {
+      easyDepth: 2,
+      chance: { hidden: 0.1, puzzle: 0.12 },
+    },
+    hasRecesses: true,
+    separators: {
+      chance: 0.35,
+      large: { min: 3, max: 4 },
+      gates: { min: 3, max: 4 },
+      treasure: [],
+      door: EntityName.TEMPLE_DOOR,
+    },
+    distribution: {
+      large: {
+        count: { min: 0, max: 0 },
+        size: { width: { min: 80, max: 100 }, height: { min: 16, max: 20 } },
+      },
+      small: {
+        count: { min: 8, max: 15 },
+        size: { width: { min: 14, max: 16 }, height: { min: 14, max: 16 } },
+      },
+    },
+    furnish: TEMPLE_ROOM_FURNISH_CHANCE,
+    intact: true,
+    alcoves: true,
+    altars: {
+      count: { min: 2, max: 3 },
+      setpiece: altar,
+      skirt: {
+        tileset: "temple_walls_floor",
+        layer: "stone",
+        wall: 87,
+        tiles: [393, 410],
+      },
+      enemies: [
+        { entities: [EntityName.HEXGEIST], count: { min: 1, max: 1 } },
+        { entities: [EntityName.BLOODGEIST1], count: { min: 1, max: 2 } },
+        { entities: [EntityName.APPRENTICE], count: { min: 1, max: 1 } },
+      ],
+      boss: EntityName.MAGE,
+      loot: APSE_LOOT,
+    },
+    templates: [
+      {
+        id: RoomName.QUARTERS1,
+        type: RoomType.QUARTERS,
+        difficulty: RoomDifficulty.EASY,
+        weight: 10,
+        enemies: [
+          { entities: [EntityName.APPRENTICE], count: { min: 1, max: 2 } },
+          { entities: [EntityName.BLOODGEIST1], count: { min: 0, max: 1 } },
+        ],
+      },
+      {
+        id: RoomName.WARD1,
+        type: RoomType.WARD,
+        difficulty: RoomDifficulty.HARD,
+        weight: 6,
+        depth: { min: 2, max: undefined },
+        enemies: [
+          { entities: [EntityName.BLOODGEIST1], count: { min: 1, max: 2 } },
+          { entities: [EntityName.HEXGEIST], count: { min: 0, max: 1 } },
+          { entities: [EntityName.APPRENTICE], count: { min: 1, max: 1 } },
+        ],
+      },
+    ],
+    interior: [
+      {
+        origin: RoomInteriorOrigin.TOP_LEFT,
+        major: true,
+        entities: [
+          { name: EntityName.BOXES9, x: 16, y: 48 },
+          { name: EntityName.POTIONS1, x: 32, y: 16 },
+          { name: EntityName.SLEEPING_BAG1, x: 40, y: 32 },
+          { name: EntityName.BAG1, x: 64, y: 32 },
+          { name: EntityName.FIREBOWL1, x: 88, y: 8 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_LEFT,
+        major: true,
+        entities: [
+          { name: EntityName.CARPET2, x: 32, y: 32 },
+          { name: EntityName.BAG3, x: 8, y: 40 },
+          { name: EntityName.VASES2, x: 16, y: 0 },
+          { name: EntityName.SPELLPAGES, x: 64, y: 16 },
+          { name: EntityName.ALCHEMIST_TABLE, x: 80, y: 32 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        major: true,
+        entities: [
+          { name: EntityName.CARPET1, x: -56, y: 32 },
+          { name: EntityName.BAG2, x: -96, y: 24 },
+          { name: EntityName.MORTAR_AND_PESTLE, x: -88, y: 8 },
+          { name: EntityName.CHAIR1, x: -72, y: 32 },
+          { name: EntityName.CHAIR1, x: -56, y: 16 },
+          { name: EntityName.PILLOWS1, x: -48, y: 48 },
+          { name: EntityName.VASES2, x: -16, y: 16 },
+          { name: EntityName.BARREL4, x: -8, y: 0 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        entities: [
+          { name: EntityName.VASES2, x: -16, y: 16 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        entities: [
+          { name: EntityName.REMAINS3, x: -16, y: -16 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.TOP_RIGHT,
+        entities: [
+          { name: EntityName.REMAINS2, x: -64, y: -16 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.BOTTOM_RIGHT,
+        entities: [
+          { name: EntityName.VASES3, x: -24, y: -32 },
+          { name: EntityName.VASES2, x: -16, y: -16 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.BOTTOM_RIGHT,
+        entities: [
+          { name: EntityName.CANDELABRA, x: -16, y: -16 },
+        ],
+      },
+      {
+        origin: RoomInteriorOrigin.BOTTOM_LEFT,
+        entities: [
+          { name: EntityName.BARRELS3, x: 16, y: -16 },
+        ],
+      },
+    ],
+  },
 };

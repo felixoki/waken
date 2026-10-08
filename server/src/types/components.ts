@@ -259,6 +259,7 @@ export interface ConsumableConfig {
 
 export interface StorageConfig {
   slots: number;
+  loot?: (Item & { chance: number })[];
 }
 
 export enum Action {

@@ -252,6 +252,56 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.TEMPLE_ENTRANCE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "temple_entrance",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 1, end: 11 },
+            { row: 2, start: 1, end: 11 },
+            { row: 3, start: 1, end: 11 },
+            { row: 4, start: 1, end: 11 },
+            { row: 5, start: 1, end: 11 },
+            { row: 6, start: 1, end: 11 },
+            { row: 7, start: 1, end: 11 },
+            { row: 8, start: 1, end: 11 },
+            { row: 9, start: 1, end: 11 },
+          ],
+        },
+        key: "temple_entrance_texture",
+      },
+      { name: ComponentName.TRACKABLE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 100,
+          height: 44,
+          offsetX: 38,
+          offsetY: 66,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.TEMPLE,
+          x: 1024,
+          y: 1024,
+          width: 20,
+          height: 12,
+          offsetX: 1,
+          offsetY: 42,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.CAVE_ENTRANCE]: {
     facing: Direction.DOWN,
     moving: [],

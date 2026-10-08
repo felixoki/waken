@@ -500,6 +500,7 @@ export const combat = {
           expiresAt: now + duration,
           lastTickAt: now,
           ownerId: attackerId || "",
+          absorb: configs.effects[name].absorb,
         };
         existing.push(effect);
 
@@ -583,6 +584,26 @@ export const combat = {
               knockback: { x: 0, y: 0 },
               attackerId: effect.ownerId || id,
             });
+          }
+
+          if (
+            isEntity &&
+            definition.interval &&
+            definition.restore?.health &&
+            effect.lastTickAt !== undefined &&
+            now - effect.lastTickAt >= definition.interval
+          ) {
+            const max = target.maxHealth ?? MAX_HEALTH;
+            const newHealth = Math.min(
+              max,
+              target.health + definition.restore.health,
+            );
+            effect.lastTickAt = now;
+
+            if (newHealth !== target.health) {
+              store.update(id, { health: newHealth });
+              emit(Event.ENTITY_HEAL, { id, health: newHealth });
+            }
           }
 
           if (

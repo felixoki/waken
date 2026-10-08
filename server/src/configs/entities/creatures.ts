@@ -683,6 +683,163 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       { name: BehaviorName.SEARCH },
     ],
   },
+  [EntityName.APPRENTICE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 45,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.SPELL_PAGE_HEAL_PARTY,
+              quantity: 1,
+              stackable: false,
+              chance: 0.08,
+            },
+            {
+              name: EntityName.BREAD,
+              quantity: 1,
+              stackable: true,
+              chance: 0.3,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 10,
+          offsetX: 11,
+          offsetY: 17,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING, StateName.CASTING],
+    attacks: [
+      {
+        state: StateName.CASTING,
+        spell: SpellName.SHIELD,
+        range: 260,
+        opener: true,
+        windup: 300,
+        sound: SoundName.BLOODGEIST_HIT,
+      },
+      {
+        state: StateName.CASTING,
+        spell: SpellName.HEAL_PARTY,
+        range: 220,
+        cooldown: 9000,
+        mend: true,
+        windup: 450,
+        sound: SoundName.BLOODGEIST_HIT,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 60,
+          scan: { interval: 2000 },
+          idle: { duration: 1500 },
+          vision: 260,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK, config: { spacing: 150, recovery: 2000 } },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.MAGE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 600,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.AMULET2,
+              quantity: 1,
+              stackable: false,
+              chance: 1,
+            },
+            {
+              name: EntityName.SPELL_PAGE_HYPNIC_JERK,
+              quantity: 1,
+              stackable: false,
+              chance: 1,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 16,
+          offsetX: 24,
+          offsetY: 20,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.CASTING,
+    ],
+    attacks: [
+      {
+        state: StateName.CASTING,
+        spell: SpellName.REFLECT_DAMAGE,
+        range: 320,
+        opener: true,
+        windup: 300,
+        sound: SoundName.MAGE_HIT,
+      },
+      {
+        state: StateName.CASTING,
+        spell: SpellName.DARK_WAVE,
+        damage: { type: DamageType.COLD, amount: 40 },
+        range: 70,
+        cooldown: 2500,
+        windup: 400,
+        sound: SoundName.MAGE_HIT,
+      },
+      {
+        state: StateName.CASTING,
+        spell: SpellName.HYPNIC_JERK,
+        range: 110,
+        cooldown: 7000,
+        windup: 600,
+        sound: SoundName.MAGE_HIT,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 60,
+          scan: { interval: 2000 },
+          idle: { duration: 1500 },
+          vision: 320,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK, config: { spacing: 50, recovery: 1200 } },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
   [EntityName.HEXGEIST]: {
     facing: Direction.DOWN,
     moving: [],

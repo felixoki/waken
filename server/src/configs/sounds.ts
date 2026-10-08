@@ -318,6 +318,18 @@ export const sounds = {
         "bloodgeist_hit6",
       ],
     },
+    [SoundName.MAGE_HIT]: {
+      volume: 0.6,
+      folder: "creatures",
+      variants: [
+        "mage_hit1",
+        "mage_hit2",
+        "mage_hit3",
+        "mage_hit4",
+        "mage_hit5",
+        "mage_hit6",
+      ],
+    },
     [SoundName.BEAR_IDLE]: {
       volume: 0.5,
       folder: "animals",

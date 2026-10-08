@@ -230,6 +230,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: { name: SpellName; targetId?: string }) =>
         handlers.spell.cast(data, socket, io, world),
     },
+    {
+      event: Event.ENTITY_CAST,
+      handler: (data: { id: string; name: SpellName }) =>
+        handlers.spell.entity(data, socket, world),
+    },
     /**
      * Spells
      */

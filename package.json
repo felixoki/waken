@@ -14,6 +14,8 @@
     "verify:maps": "node scripts/verify-maps.mjs",
     "extract:tilesets": "node scripts/extract-tilesets.mjs",
     "extract:details": "node scripts/extract-details.mjs",
+    "extract:setpieces": "node scripts/extract-setpieces.mjs",
+    "generate:biome": "npm exec --workspace=server -- tsx ../scripts/generate-biome.ts",
     "typecheck": "tsc -p client --noEmit && tsc -p server --noEmit",
     "build:client": "npm run build --workspace=client",
     "build:server": "npm run build --workspace=server",

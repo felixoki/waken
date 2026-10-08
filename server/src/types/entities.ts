@@ -20,6 +20,8 @@ export interface AttackConfig {
   range?: number;
   minRange?: number;
   cooldown?: number;
+  opener?: boolean;
+  mend?: boolean;
   windup?: number;
   sound?: SoundName;
   swing?: SoundName;
@@ -121,6 +123,7 @@ export interface EntityDefinition {
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
   offset?: { x?: number; y?: number };
+  flat?: boolean;
 }
 
 export interface Icon {
@@ -333,6 +336,34 @@ export enum EntityName {
   RAT = "rat",
   RAT_CLAWS = "rat_claws",
   RASPBERRY = "raspberry",
+  MAGE = "mage",
+  REMAINS = "remains",
+  ALCHEMIST_TABLE = "alchemist_table",
+  BAG2 = "bag2",
+  BAG3 = "bag3",
+  BARREL4 = "barrel4",
+  BARRELS3 = "barrels3",
+  CARPET1 = "carpet1",
+  CARPET2 = "carpet2",
+  CHAIR1 = "chair1",
+  MORTAR_AND_PESTLE = "mortar_and_pestle",
+  PILLOWS1 = "pillows1",
+  REMAINS2 = "remains2",
+  REMAINS3 = "remains3",
+  SPELLPAGES = "spellpages",
+  ALTAR = "altar",
+  APPRENTICE = "apprentice",
+  BAG1 = "bag1",
+  BOOKS1 = "books1",
+  BOXES9 = "boxes9",
+  CANDELABRA = "candelabra",
+  COFFIN1 = "coffin1",
+  POTIONS1 = "potions1",
+  SACK1 = "sack1",
+  SKULLS1 = "skulls1",
+  SLEEPING_BAG1 = "sleeping_bag1",
+  SLEEPING_BAG2 = "sleeping_bag2",
+  VASES3 = "vases3",
   REED1 = "reed1",
   REED2 = "reed2",
   REED3 = "reed3",
@@ -370,6 +401,8 @@ export enum EntityName {
   TROLL_SCALES = "troll_scales",
   ANCIENT_TROLL_HEART = "ancient_troll_heart",
   TOMATO_SEED = "tomato_seed",
+  TEMPLE_DOOR = "temple_door",
+  TEMPLE_ENTRANCE = "temple_entrance",
   TORCH1 = "torch1",
   TUNIC = "tunic",
   SPIKE_TRAP1 = "spike_trap1",

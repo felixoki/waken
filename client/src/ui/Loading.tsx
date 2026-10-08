@@ -8,6 +8,7 @@ const TIP_MS = 10_000;
 const backdrops: Partial<Record<MapName, string>> = {
   [MapName.FOREST]: "forest_glade.png",
   [MapName.DUNGEON]: "dungeon_corridor.png",
+  [MapName.TEMPLE]: "dungeon_corridor.png",
 };
 
 const tips = [

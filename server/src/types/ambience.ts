@@ -1,5 +1,6 @@
 export interface AmbienceConfig {
   ambient: number;
+  depth?: number;
   lightIntensity: number;
   coolness: number;
   saturation: number;

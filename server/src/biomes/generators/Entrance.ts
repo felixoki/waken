@@ -50,7 +50,6 @@ export class EntranceGenerator {
       const guards = [
         { x: (origin.x - 1) * tileWidth, y: guardY },
         { x: (origin.x + fw) * tileWidth, y: guardY },
-        { x: centerX, y: guardY + 2 * tileHeight },
       ];
 
       for (const g of guards)
