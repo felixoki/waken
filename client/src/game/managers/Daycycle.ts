@@ -9,7 +9,7 @@ import {
 import { MainScene } from "../scenes/Main";
 import { configs } from "@server/configs";
 import { AmbiencePipeline } from "../pipelines/Ambience";
-import { PHASE_TRANSITION_DURATION } from "@server/globals";
+import { DAY, PHASE_STARTS, PHASE_TRANSITION_DURATION } from "@server/globals";
 import { LightComponent } from "../components/Light";
 import { GlimmerComponent } from "../components/Glimmer";
 
@@ -21,6 +21,10 @@ export class DaycycleManager {
     { r: number; g: number; b: number }
   >();
 
+  private clock = 0;
+  private settle = 0;
+  private tint = -1;
+
   constructor(scene: MainScene) {
     this.scene = scene;
   }
@@ -29,8 +33,86 @@ export class DaycycleManager {
     return this.current;
   }
 
+  setClock(current: number) {
+    this.clock = current;
+  }
+
+  update(delta: number) {
+    this.clock = (this.clock + delta) % DAY;
+
+    if (this.settle > 0) {
+      this.settle -= delta;
+      return;
+    }
+
+    if (!this.current) return;
+
+    const preset: AmbienceConfig = configs.time.phases[this.current];
+    if (preset.depth == null) return;
+
+    let start = 0;
+    let end = 1;
+
+    for (let i = 0; i < PHASE_STARTS.length; i++) {
+      if (PHASE_STARTS[i].phase !== this.current) continue;
+
+      start = PHASE_STARTS[i].start;
+      end = PHASE_STARTS[i + 1]?.start ?? 1;
+    }
+
+    const progress = Phaser.Math.Clamp(
+      (this.clock / DAY - start) / (end - start),
+      0,
+      1,
+    );
+    const depth = Math.sin(Math.PI * progress);
+
+    const r = Math.round(
+      Phaser.Math.Linear(
+        (preset.ambient >> 16) & 0xff,
+        (preset.depth >> 16) & 0xff,
+        depth,
+      ),
+    );
+    const g = Math.round(
+      Phaser.Math.Linear(
+        (preset.ambient >> 8) & 0xff,
+        (preset.depth >> 8) & 0xff,
+        depth,
+      ),
+    );
+    const b = Math.round(
+      Phaser.Math.Linear(preset.ambient & 0xff, preset.depth & 0xff, depth),
+    );
+
+    const tint = Phaser.Display.Color.GetColor(r, g, b);
+    if (tint === this.tint) return;
+
+    this.tint = tint;
+
+    this._getOutdoorScenes().forEach((s) => {
+      s.lights.setAmbientColor(tint);
+
+      const state = this.ambientColors.get(s.scene.key);
+
+      if (state) {
+        state.r = r;
+        state.g = g;
+        state.b = b;
+      } else this.ambientColors.set(s.scene.key, { r, g, b });
+    });
+  }
+
   setPhase(phase: TimePhase, animate: boolean) {
+    if (animate) {
+      const entry = PHASE_STARTS.find((p) => p.phase === phase);
+
+      if (entry) this.clock = entry.start * DAY;
+      this.settle = PHASE_TRANSITION_DURATION;
+    }
+
     this.current = phase;
+    this.tint = -1;
     const preset = configs.time.phases[phase];
 
     const pipelines = this._getPipelines();
@@ -161,7 +243,7 @@ export class DaycycleManager {
 
     for (const [_, entity] of entities) {
       const light = entity.getComponent<LightComponent>(ComponentName.LIGHT);
-      
+
       if (light) {
         const target = light.intensity * multiplier;
 
@@ -175,7 +257,9 @@ export class DaycycleManager {
         else light.light.intensity = light.active ? target : 0;
       }
 
-      const glimmer = entity.getComponent<GlimmerComponent>(ComponentName.GLIMMER);
+      const glimmer = entity.getComponent<GlimmerComponent>(
+        ComponentName.GLIMMER,
+      );
 
       if (glimmer) {
         const target = glimmer.intensity * multiplier;

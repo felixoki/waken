@@ -85,11 +85,11 @@ const CLOUDY: WeatherModifier = {
 
 const RAIN: WeatherModifier = {
   brightness: 0.8,
-  saturation: 0.8,
-  contrast: 0.95,
+  saturation: 0.85,
+  contrast: 1.04,
   coolness: 0.18,
   vignette: 0.08,
-  fog: 0.05,
+  fog: 0.0,
   rain: 1.0,
   snow: SNOW_RAIN,
   clouds: 0.0,
@@ -102,7 +102,7 @@ const STORM: WeatherModifier = {
   contrast: 1.08,
   coolness: 0.3,
   vignette: 0.22,
-  fog: 0.12,
+  fog: 0.0,
   rain: 3.2,
   snow: SNOW_STORM,
   clouds: 0.0,

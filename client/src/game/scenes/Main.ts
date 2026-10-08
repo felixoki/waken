@@ -17,6 +17,7 @@ import {
   Spot,
   Party,
   TimePhase,
+  TimeState,
   StateName,
   Death,
   Effect as ActiveEffect,
@@ -151,6 +152,7 @@ export class MainScene extends Phaser.Scene {
     this.managers.players.update();
     this.managers.entities.update();
     this.managers.build.update();
+    this.managers.daycycle.update(delta);
     this.managers.weather.update(delta);
   }
 
@@ -158,7 +160,8 @@ export class MainScene extends Phaser.Scene {
     /**
      * World
      */
-    this.managers.socket.on(Event.WORLD_TIME, (data: { phase: TimePhase }) => {
+    this.managers.socket.on(Event.WORLD_TIME, (data: TimeState) => {
+      this.managers.daycycle.setClock(data.current);
       this.managers.daycycle.setPhase(data.phase, false);
     });
 
@@ -499,6 +502,14 @@ export class MainScene extends Phaser.Scene {
 
       if (data.reflected) handlers.combat.reflect(entity, data.attackerId);
     });
+
+    this.managers.socket.on(
+      Event.ENTITY_HEAL,
+      (data: { id: string; health: number }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (entity) entity.health = data.health;
+      },
+    );
 
     this.managers.socket.on(
       Event.EFFECT_APPLY,
@@ -870,6 +881,13 @@ export class MainScene extends Phaser.Scene {
     this.game.events.on(Event.HIT, (data: Hit) => {
       this.managers.socket.emit(Event.HIT, data);
     });
+
+    this.game.events.on(
+      Event.ENTITY_CAST,
+      (data: { id: string; name: SpellName }) => {
+        this.managers.socket.emit(Event.ENTITY_CAST, data);
+      },
+    );
 
     this.game.events.on(
       Event.PLAYER_CAST,

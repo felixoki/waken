@@ -11,11 +11,13 @@ import type { MainScene } from "./Main";
 import { Player } from "../Player";
 import { snow, type SnowTracks } from "../handlers/snow";
 import { location } from "../handlers/location";
+import { shadows, type Shadows } from "../handlers/shadows";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhysicsManager;
   public tileManager!: TileManager;
   public snow?: SnowTracks;
+  public shadows?: Shadows;
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
@@ -50,14 +52,15 @@ export class Scene extends Phaser.Scene {
   }
 
   create(): void {
-    this.indoor = !!configs.maps[this.scene.key as MapName]?.isIndoor;
+    const config = configs.maps[this.scene.key as MapName];
+    this.indoor = !!config?.isIndoor;
 
     this.physicsManager = new PhysicsManager(this);
     this.cameraManager = new CameraManager(this);
     this.interfaceManager = new InterfaceManager(this);
 
     this.lights.enable();
-    this.lights.setAmbientColor(0xffffff);
+    this.lights.setAmbientColor(config?.ambient ?? 0xffffff);
 
     this.light = this.add.rectangle(0, 0, 1, 1, 0xffffff);
     this.light.setOrigin(0, 0);
@@ -73,7 +76,7 @@ export class Scene extends Phaser.Scene {
       AmbiencePipeline,
     ) as AmbiencePipeline;
 
-    const ambience = configs.maps[this.scene.key as MapName]?.ambience;
+    const ambience = config?.ambience;
     if (this.ambience && ambience) this.ambience.setBase(ambience);
     if (this.ambience) this.climate = new ClimateManager(this, this.ambience);
 
@@ -87,9 +90,11 @@ export class Scene extends Phaser.Scene {
 
   setTiles(tiles: TileManager): void {
     if (this.snow) snow.destroy(this.snow);
+    if (this.shadows) shadows.destroy(this.shadows);
 
     this.tileManager = tiles;
     this.snow = snow.create(this, tiles) ?? undefined;
+    this.shadows = shadows.create(this, tiles.map);
     this.bands = location.bands(tiles.map);
     this.band = undefined;
     this.row = -1;
@@ -98,6 +103,7 @@ export class Scene extends Phaser.Scene {
   teardown(): void {
     if (this.snow) snow.destroy(this.snow);
     this.snow = undefined;
+    this.shadows = undefined;
 
     [...this.children.list].forEach((child) => child.destroy());
 
@@ -119,6 +125,7 @@ export class Scene extends Phaser.Scene {
       snow.flush(this.snow);
       snow.fade(this.snow, delta);
     }
+    if (this.shadows) shadows.update(this.shadows, this, delta);
     this.interfaceManager.update();
 
     const { width, height } = this.cameras.main;

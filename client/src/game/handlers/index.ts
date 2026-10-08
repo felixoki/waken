@@ -23,6 +23,8 @@ import { fishing } from "./fishing";
 import { sleep } from "./sleep";
 import { snow } from "./snow";
 import { location } from "./location";
+import { shadows } from "./shadows";
+import { light } from "./light";
 
 export const handlers = {
   state,
@@ -50,4 +52,6 @@ export const handlers = {
   sleep,
   snow,
   location,
+  shadows,
+  light,
 };
