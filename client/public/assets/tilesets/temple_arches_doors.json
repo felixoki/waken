@@ -1,0 +1,444 @@
+{
+  "columns": 20,
+  "image": "../sprites/temple_arches_doors.png",
+  "imageheight": 224,
+  "imagewidth": 320,
+  "margin": 0,
+  "name": "temple_arches_doors",
+  "spacing": 0,
+  "tilecount": 280,
+  "tileheight": 16,
+  "tilewidth": 16,
+  "tiles": [
+    {
+      "id": 27,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 431
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 432
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 444
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 445
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7,
+            "x": 0.00125842331736592,
+            "y": 0
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7,
+            "x": 0.00125842331736592,
+            "y": 8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 448
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7,
+            "x": 9,
+            "y": 0
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7,
+            "x": 9,
+            "y": 8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 449
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 461
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 462
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 465
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "properties": [
+        {
+          "name": "skinOf",
+          "type": "int",
+          "value": 466
+        }
+      ]
+    },
+    {
+      "id": 129,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 130,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 131,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 176,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 6
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 177,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 6
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 178,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 6
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 196,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 197,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 198,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}

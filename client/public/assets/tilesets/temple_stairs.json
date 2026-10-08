@@ -1,0 +1,66 @@
+{
+  "columns": 17,
+  "image": "../sprites/temple_stairs.png",
+  "imageheight": 304,
+  "imagewidth": 272,
+  "margin": 0,
+  "name": "temple_stairs",
+  "spacing": 0,
+  "tilecount": 323,
+  "tileheight": 16,
+  "tilewidth": 16,
+  "tiles": [
+    {
+      "id": 24,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 11.5,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7.5,
+            "x": 8.5,
+            "y": 4.5
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 26,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 11.5,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7.5,
+            "x": 0.00220750551876403,
+            "y": 4.5
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ]
+}
