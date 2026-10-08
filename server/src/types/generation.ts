@@ -451,6 +451,7 @@ export interface AltarConfig {
   skirt?: { tileset: string; layer: string; wall: number; tiles: number[] };
   enemies: EntityGroup[];
   boss?: EntityName;
+  exit?: { entity: EntityName; requires: number };
   loot?: (Item & { chance: number })[];
 }
 

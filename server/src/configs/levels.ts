@@ -16,11 +16,11 @@ export const levels: Level[] = [
     requires: 1,
     biomes: [{ biome: BiomeName.DUNGEON, spawn: true }],
   },
-  { depth: 2, map: MapName.ISLES, requires: 3 },
   {
-    depth: 3,
+    depth: 2,
     map: MapName.TEMPLE,
     requires: 2,
     biomes: [{ biome: BiomeName.TEMPLE, spawn: true }],
   },
+  { depth: 3, map: MapName.ISLES, requires: 3 },
 ];

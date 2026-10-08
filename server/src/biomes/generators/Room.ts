@@ -207,6 +207,19 @@ export class RoomGenerator {
               y: (altar.y + altar.setpiece.height + 1) * tileHeight,
             });
 
+          if (shrine.exit && altar === altars[0]) {
+            const offset = configs.entities[shrine.exit.entity]?.offset;
+
+            entities.push({
+              name: shrine.exit.entity,
+              x:
+                (altar.x + altar.setpiece.width) * tileWidth +
+                tileWidth / 2 +
+                (offset?.x ?? 0),
+              y: room.y * tileHeight - tileHeight / 2 + (offset?.y ?? 0),
+            });
+          }
+
           continue;
         }
 

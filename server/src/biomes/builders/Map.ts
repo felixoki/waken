@@ -139,8 +139,14 @@ export class MapBuilder {
       const shift = (p?: { x: number; y: number }) =>
         p && { x: p.x, y: p.y + dy };
 
-      for (const e of generated.entities)
+      const exit = config.rooms?.altars?.exit;
+
+      for (const e of generated.entities) {
+        if (exit && e.name === exit.entity && exit.requires > this.unlocked)
+          continue;
+
         roomEntities.push({ ...e, y: e.y + dy });
+      }
 
       if (b !== this.host) continue;
 

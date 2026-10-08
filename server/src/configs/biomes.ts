@@ -791,7 +791,6 @@ export const mountain: BiomeConfig = {
     },
   ],
 
-  peak: { entity: EntityName.CLOUDLADDER, requires: 3 },
   sites: [
     {
       entity: EntityName.TEMPLE_ENTRANCE,
@@ -943,6 +942,7 @@ export const temple: BiomeConfig = {
         { entities: [EntityName.APPRENTICE], count: { min: 1, max: 1 } },
       ],
       boss: EntityName.MAGE,
+      exit: { entity: EntityName.CLOUDLADDER, requires: 3 },
       loot: APSE_LOOT,
     },
     templates: [
