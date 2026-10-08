@@ -1,0 +1,157 @@
+/**
+ * Regenerates server/src/configs/setpieces.ts from the hand-drawn setpiece maps.
+ *
+ * A setpiece is a small Tiled map whose tile layers and objects are stamped
+ * into a generated room as one block. The map properties anchorX and anchorY
+ * name the tile that lands on the room's centre column and first floor row.
+ */
+import { readFileSync, writeFileSync } from "node:fs";
+import { resolve, relative } from "node:path";
+
+const ROOT = resolve(import.meta.dirname, "..");
+const SRC = resolve(ROOT, "tiled");
+const OUT = resolve(ROOT, "server/src/configs/setpieces.ts");
+
+const SETS = [{ name: "altar", map: "temple-altar.tmx", backdrop: 36 }];
+const SKIPPED = ["overlay", "void", "objects"];
+const GROUND = "floor";
+const UNDER = "walls";
+
+const attr = (xml, name) => xml.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
+
+const parse = (file) => {
+  const xml = readFileSync(resolve(SRC, file), "utf-8");
+  const head = xml.match(/<map\b[^>]*>/)[0];
+  const width = Number(attr(head, "width"));
+  const height = Number(attr(head, "height"));
+
+  const property = (name) =>
+    Number(xml.match(new RegExp(`<property name="${name}"[^>]*value="(-?\\d+)"`))?.[1]);
+
+  const tilesets = [...xml.matchAll(/<tileset firstgid="(\d+)" name="([^"]+)"[^>]*tilecount="(\d+)"/g)]
+    .map(([, firstgid, name, tilecount]) => ({
+      name,
+      firstgid: Number(firstgid),
+      tilecount: Number(tilecount),
+    }))
+    .sort((a, b) => b.firstgid - a.firstgid);
+
+  const layers = [...xml.matchAll(/<layer id="\d+" name="([^"]+)"[^>]*>([\s\S]*?)<\/layer>/g)].map(
+    ([, name, body]) => ({
+      name,
+      properties: [...body.matchAll(/<property name="([^"]+)"(?: type="([^"]+)")? value="([^"]*)"\/>/g)].map(
+        ([, key, type = "string", value]) => ({ name: key, type, value }),
+      ),
+      data: body
+        .match(/<data encoding="csv">([\s\S]*?)<\/data>/)[1]
+        .split(",")
+        .map((v) => Number(v.trim())),
+    }),
+  );
+
+  const objects = [...xml.matchAll(/<object id="\d+" name="([^"]+)" x="([^"]+)" y="([^"]+)"/g)].map(
+    ([, name, x, y]) => ({ name, x: Math.round(Number(x)), y: Math.round(Number(y)) }),
+  );
+
+  return {
+    width,
+    height,
+    anchor: { x: property("anchorX"), y: property("anchorY") },
+    tilesets,
+    layers,
+    objects,
+  };
+};
+
+const literal = (property) => {
+  const value =
+    property.type === "bool"
+      ? property.value === "true"
+      : property.type === "int"
+        ? Number(property.value)
+        : JSON.stringify(property.value);
+
+  return `{ name: "${property.name}", type: "${property.type}", value: ${value} }`;
+};
+
+const sections = [];
+const summary = [];
+
+for (const set of SETS) {
+  const map = parse(set.map);
+  const { width, height } = map;
+  const used = map.layers.filter((l) => !SKIPPED.includes(l.name));
+  const under = used.findIndex((l) => l.name === UNDER);
+
+  const resolveTile = (gid) => {
+    const tileset = map.tilesets.find((t) => gid >= t.firstgid);
+    return tileset && gid < tileset.firstgid + tileset.tilecount
+      ? { tileset: tileset.name, id: gid - tileset.firstgid }
+      : null;
+  };
+
+  const solid = new Uint8Array(width * height);
+
+  for (const layer of used)
+    layer.data.forEach((gid, i) => {
+      if (!gid) return;
+      if (layer.name === GROUND && resolveTile(gid)?.id === set.backdrop) return;
+      if (layer.name !== GROUND) solid[i] = 1;
+    });
+
+  const out = [];
+
+  used.forEach((layer, index) => {
+    const groups = new Map();
+
+    layer.data.forEach((gid, i) => {
+      const tile = gid ? resolveTile(gid) : null;
+      if (!tile) return;
+      if (layer.name === GROUND && tile.id === set.backdrop && !solid[i]) return;
+
+      const list = groups.get(tile.tileset) ?? [];
+      list.push(`[${i % width}, ${Math.floor(i / width)}, ${tile.id}]`);
+      groups.set(tile.tileset, list);
+    });
+
+    for (const [tileset, tiles] of groups) {
+      const fields = [`name: "${layer.name}"`, `tileset: "${tileset}"`];
+
+      if (under >= 0 && index < under && layer.name !== GROUND)
+        fields.push(`before: "${UNDER}"`);
+      if (layer.properties.length)
+        fields.push(`properties: [${layer.properties.map(literal).join(", ")}]`);
+
+      out.push(
+        `    {\n      ${fields.join(",\n      ")},\n      tiles: [\n        ${tiles.join(",\n        ")},\n      ],\n    },`,
+      );
+    }
+  });
+
+  const entities = map.objects.map(
+    (o) => `    { name: EntityName.${o.name.toUpperCase()}, x: ${o.x}, y: ${o.y} },`,
+  );
+
+  sections.push(
+    `export const ${set.name}: Setpiece = {\n  width: ${width},\n  height: ${height},\n  anchor: { x: ${map.anchor.x}, y: ${map.anchor.y} },\n  layers: [\n${out.join("\n")}\n  ],\n  entities: [\n${entities.join("\n")}\n  ],\n};`,
+  );
+  summary.push(` * ${set.name}: ${width}x${height} from ${set.map}, ${out.length} layers, ${entities.length} entities`);
+}
+
+writeFileSync(
+  OUT,
+  `/**
+ * AUTO-GENERATED by scripts/extract-setpieces.mjs (npm run extract:setpieces).
+ * Do not edit manually.
+${summary.join("\n")}
+ */
+
+import { EntityName } from "../types";
+import { Setpiece } from "../types/generation";
+
+${sections.join("\n\n")}
+`,
+);
+
+console.log(`✓ ${relative(ROOT, OUT)}`);
+for (const line of summary) console.log(line.replace(" * ", "  "));
