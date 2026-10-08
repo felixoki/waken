@@ -791,6 +791,11 @@
 - Add spells ✅
 - Add jar of pickles ✅
 
+#### 8.10.2026
+
+- Add temple biome ✅
+- Refactor lighting ✅
+
 
 ### In progress
 
@@ -805,11 +810,11 @@
 - Ledge corners render above players
 - Direction visibly resets after watering
 - Illuminate breaks ambience pipeline
+- Spawner limits are not persistent
 
 ### Backlog
 
 - UI ⭐
-- Temples ⭐
 - Cooking ⭐
 - Relationships ⭐
 - Ideas
