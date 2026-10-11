@@ -140,6 +140,7 @@ export const item = {
       const existing = player.effects ?? [];
       existing.push(effect);
       world.players.update(player.id, { effects: existing });
+      world.affected.add(player.id);
 
       socket.emit(Event.EFFECT_APPLY, { id: player.id, effect });
     }

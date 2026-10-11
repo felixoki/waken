@@ -21,6 +21,7 @@ export enum Event {
   PLAYER_HEALTH_SYNC = "player_health_sync",
   PLAYER_MAX_HEALTH = "player_max_health",
   PLAYER_MANA = "player_mana",
+  PLAYER_REAP = "player_reap",
   PLAYER_MAX_MANA = "player_max_mana",
   PLAYER_INVENTORY_WIPE = "player_inventory_wipe",
 
@@ -76,6 +77,8 @@ export enum Event {
   SLOT_MOVE = "slot:move",
   INVENTORY_SYNC = "inventory:sync",
   HOTBAR_SYNC = "hotbar:sync",
+  ROBE_SYNC = "robe:sync",
+  PLAYER_ROBE = "player_robe",
   SPELLBOOK_SYNC = "spellbook:sync",
   SEEDS_SELECT = "seeds_select",
 
@@ -161,5 +164,6 @@ export enum Event {
   FADE_OUT_DONE = "fade_out_done",
   FADE_IN = "fade_in",
   LOCATION = "location",
+  CHART = "chart",
   MAP_READY = "map_ready",
 }

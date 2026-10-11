@@ -12,6 +12,7 @@ import {
   RoomDifficulty,
   RoomInterior,
   RoomInteriorOrigin,
+  TERRAIN_INDEX,
   TERRAIN_ORDER,
   TerrainName,
 } from "../types/generation";
@@ -111,6 +112,14 @@ export const generation = {
         }
 
     return null;
+  },
+
+  chart: (grid: TerrainName[]): string => {
+    const bytes = Buffer.allocUnsafe(grid.length);
+
+    for (let i = 0; i < grid.length; i++) bytes[i] = TERRAIN_INDEX[grid[i]];
+
+    return bytes.toString("base64");
   },
 
   getTerrainRank: (terrain: TerrainName): number => {
