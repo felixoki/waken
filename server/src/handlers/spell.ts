@@ -43,7 +43,7 @@ export const spell = {
     if (!player || player.isDead) return;
 
     const config = configs.spells[data.name];
-    if (!config) return;
+    if (!config || player.mana < config.mana) return;
 
     const mana = Math.max(player.mana - config.mana, 0);
     world.players.update(player.id, { mana });

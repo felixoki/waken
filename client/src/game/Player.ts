@@ -133,6 +133,13 @@ export class Player extends Entity {
 
       this.pointerdown = input.pointerdown;
 
+      if (
+        remoteInput &&
+        this.state === StateName.CASTING &&
+        input.state !== StateName.CASTING
+      )
+        this.pointerdown = false;
+
       if (this.inputManager) {
         this.target = this.inputManager.getPointer();
         input.target = this.target;
@@ -166,6 +173,13 @@ export class Player extends Entity {
 
     if (state !== this.state) this.transitionTo(state);
     else this.states?.get(this.state)?.update(this);
+
+    if (
+      this.isControllable &&
+      state === StateName.CASTING &&
+      this.state !== StateName.CASTING
+    )
+      input.target = undefined;
 
     handlers.player.lantern.sync(this, input.equipped);
     handlers.player.compass.sync(this, input.equipped);

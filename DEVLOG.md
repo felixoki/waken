@@ -800,6 +800,7 @@
 
 - Add robes, new spells and equipment ✅
 - Refactor economy ui and item drops ✅
+- Refused casts are broadcast ✅
 
 ### In progress
 
@@ -828,6 +829,7 @@
   - Craft special pillows from goose down
   - Iron ore
   - Refactor comfort need dialogue
+  - Add pigs and pork
 - Crops
   - Corn
   - Eggplant
