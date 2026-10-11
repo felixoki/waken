@@ -70,6 +70,126 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1.5,
     },
   },
+  [EntityName.RASPBERRY_JAM]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 17, end: 18 },
+            { row: 10, start: 17, end: 18 },
+          ],
+        },
+        key: "raspberry_jam_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Raspberry jam",
+      description: "A jar of raspberries boiled down into a sweet preserve.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 10, col: 16 },
+      weight: 0.4,
+    },
+  },
+  [EntityName.STRAWBERRY_JAM]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 29, end: 30 },
+            { row: 10, start: 29, end: 30 },
+          ],
+        },
+        key: "strawberry_jam_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Strawberry jam",
+      description: "A jar of strawberries boiled down into a sweet preserve.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 10, col: 28 },
+      weight: 0.4,
+    },
+  },
+  [EntityName.CHICKEN_MEAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 11, start: 29, end: 30 },
+            { row: 12, start: 29, end: 30 },
+          ],
+        },
+        key: "chicken_meat_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Chicken meat",
+      description: "A lean cut of meat from a farmyard fowl.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 12, col: 28 },
+      weight: 1,
+    },
+  },
+  [EntityName.GOOSE_MEAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 11, start: 29, end: 30 },
+            { row: 12, start: 29, end: 30 },
+          ],
+        },
+        key: "goose_meat_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Goose meat",
+      description: "A dark, fatty cut of meat from a goose.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 12, col: 28 },
+      weight: 1.5,
+    },
+  },
   [EntityName.BEEF]: {
     facing: Direction.DOWN,
     moving: [],

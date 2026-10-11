@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
-import { EconomySnapshot, Event, NeedName } from "@server/types";
+import {
+  ComponentName,
+  EconomySnapshot,
+  EntityName,
+  Event,
+  NeedName,
+} from "@server/types";
 import { MAX_STACK } from "@server/globals";
 import { TierUpgrade } from "@server/configs/tiers";
 import { configs } from "@server/configs";
@@ -33,8 +39,8 @@ export function Economy() {
   const categories = snapshot.needs.map((need) => need.name);
   const active =
     activeTab && categories.includes(activeTab) ? activeTab : categories[0];
-  const items =
-    snapshot.needs.find((need) => need.name === active)?.items ?? [];
+  const need = snapshot.needs.find((need) => need.name === active);
+  const items = need?.items ?? [];
   const nextTier = snapshot.tier + 1;
   const upgradeConfig: TierUpgrade | undefined = configs.tiers.find(
     (tier) => tier.tier === nextTier,
@@ -73,13 +79,23 @@ export function Economy() {
       <ul className="grid grid-cols-[repeat(6,4rem)] gap-1 justify-center">
         {items.map((entry, i) => {
           const locked = entry.tier > snapshot.tier;
+          const hidden = locked && !!need?.consumed;
+          const definition = configs.entities[entry.item];
+          const soul = definition?.components.some(
+            (component) => component.name === ComponentName.CAPTURABLE,
+          );
           return (
             <Item
               key={i}
-              name={entry.item}
-              bar={locked ? undefined : entry.quantity}
+              name={soul ? EntityName.SOULSTONE : entry.item}
+              title={
+                soul
+                  ? `${definition?.metadata?.displayName ?? entry.item} soul`
+                  : undefined
+              }
+              bar={hidden ? undefined : entry.quantity}
               barMax={MAX_STACK}
-              barLabel={locked ? undefined : `${entry.quantity}/${MAX_STACK}`}
+              barLabel={hidden ? undefined : `${entry.quantity}/${MAX_STACK}`}
               disabled={locked}
               hint={locked ? `Unlock with tier ${entry.tier}` : undefined}
               hideWeight
@@ -87,6 +103,12 @@ export function Economy() {
           );
         })}
       </ul>
+
+      {need?.consumed && (
+        <p className="text-white/50 text-xs mt-2">
+          These items are consumed by your villagers
+        </p>
+      )}
 
       {upgradeConfig && (
         <div className="mt-4 pt-3">

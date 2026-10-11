@@ -198,6 +198,66 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.1,
     },
   },
+  [EntityName.BOTTLE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons13",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 2, end: 3 },
+            { row: 8, start: 2, end: 3 },
+          ],
+        },
+        key: "bottle_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bottle",
+      description: "A blown glass bottle for wine and beer.",
+      stackable: true,
+      icon: { spritesheet: "icons13", row: 8, col: 1 },
+      weight: 0.3,
+    },
+  },
+  [EntityName.JAR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons13",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 2, end: 3 },
+            { row: 16, start: 2, end: 3 },
+          ],
+        },
+        key: "jar_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Jar",
+      description: "A wide glass jar with a lid, made for preserves.",
+      stackable: true,
+      icon: { spritesheet: "icons13", row: 16, col: 1 },
+      weight: 0.3,
+    },
+  },
   [EntityName.FISHING_HOOK]: {
     facing: Direction.DOWN,
     moving: [],
@@ -406,6 +466,156 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       stackable: true,
       icon: { spritesheet: "icons9", row: 2, col: 4 },
       weight: 3,
+    },
+  },
+  [EntityName.WOLF_FANG]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 17, start: 32, end: 33 },
+            { row: 18, start: 32, end: 33 },
+          ],
+        },
+        key: "wolf_fang_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wolf fang",
+      description: "A long curved fang pulled from a wolf.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 18, col: 31 },
+      weight: 0.05,
+    },
+  },
+  [EntityName.BEAR_FAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 11, end: 12 },
+            { row: 16, start: 11, end: 12 },
+          ],
+        },
+        key: "bear_fat_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bear fat",
+      description: "Rendered fat from a bear, used in salves and cooking.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 16, col: 10 },
+      weight: 1,
+    },
+  },
+  [EntityName.HERON_BEAK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 32, end: 33 },
+            { row: 20, start: 32, end: 33 },
+          ],
+        },
+        key: "heron_beak_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Heron beak",
+      description: "The long, dagger-sharp beak of a heron.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 20, col: 31 },
+      weight: 0.2,
+    },
+  },
+  [EntityName.PLUME]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons9",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 8, end: 9 },
+            { row: 2, start: 8, end: 9 },
+          ],
+        },
+        key: "plume_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Plume",
+      description: "A long blue-grey plume shed from a heron.",
+      stackable: true,
+      icon: { spritesheet: "icons9", row: 2, col: 7 },
+      weight: 0.02,
+    },
+  },
+  [EntityName.GOOSE_DOWN]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 29, end: 30 },
+            { row: 20, start: 29, end: 30 },
+          ],
+        },
+        key: "goose_down_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Goose down",
+      description: "Soft under-feathers of a goose, used to stuff bedding.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 20, col: 28 },
+      weight: 0.1,
     },
   },
   [EntityName.WANDERERS_GIFT]: {

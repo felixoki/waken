@@ -214,7 +214,7 @@ view for sleeping), which was good enough for all thirteen.
 
 The robes that survived in-game testing are named plainly: entities `ROBE1` to `ROBE4`, sprite
 folders and design files `robe1` to `robe4`. Robe1 "It had no name" (indigo, a No-Face-like
-mask on the back of the hood, crescents), Robe2 "Scales of night" (blue-black troll-scale
+mask on the back of the hood, crescents), Robe2 "Scales and feathers" (blue-black troll-scale
 pattern, blinking blue dots), Robe3 "Moth-eaten" (plain dark torn cloth), Robe4 "Noble garb"
 (warm red with stars and moons). Every other built robe was deleted after the user tried
 it in game; name new ones `robeN` the same way.

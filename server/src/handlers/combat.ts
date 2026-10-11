@@ -324,21 +324,23 @@ export const combat = {
         items.forEach((entry: Item & { chance: number }) => {
           if (Math.random() > entry.chance) return;
 
-          handlers.entity.create(
-            {
-              name: entry.name,
-              map: target.map,
-              x: target.x + (Math.random() - 0.5) * 32,
-              y: target.y + (Math.random() - 0.5) * 32,
-              health: MAX_HEALTH,
-              maxHealth: MAX_HEALTH,
-              isLocked: false,
-            },
-            socket,
-            io,
-            world,
-            partyId,
-          );
+          for (let i = 0; i < entry.quantity; i++) {
+            handlers.entity.create(
+              {
+                name: entry.name,
+                map: target.map,
+                x: target.x + (Math.random() - 0.5) * 32,
+                y: target.y + (Math.random() - 0.5) * 32,
+                health: MAX_HEALTH,
+                maxHealth: MAX_HEALTH,
+                isLocked: false,
+              },
+              socket,
+              io,
+              world,
+              partyId,
+            );
+          }
         });
       }
     },

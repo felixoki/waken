@@ -9,6 +9,7 @@ import {
 
 const BARREL_LOOT = [
   { name: EntityName.ERGOT, quantity: 1, stackable: true, chance: 0.25 },
+  { name: EntityName.WHEAT, quantity: 1, stackable: true, chance: 0.5 },
 ];
 
 const BAG_LOOT = [

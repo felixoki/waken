@@ -198,12 +198,13 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     modifier: {
-      multipliers: { speed: 1.05, manaRegen: 1.25 },
+      multipliers: { damage: 1.1, speed: 1.05, manaRegen: 1.25 },
       bonus: { mana: 50, reflect: 0.15 },
     },
     metadata: {
-      displayName: "Scales of night",
-      description: "A blue-black robe of scales, a few of which glint blue.",
+      displayName: "Scales and feathers",
+      description:
+        "A blue-black robe of scales and heron plumes, a few of which glint blue.",
       stackable: false,
       icon: { spritesheet: "icons12", row: 2, col: 4 },
       weight: 0.6,

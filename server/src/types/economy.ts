@@ -3,10 +3,10 @@ import { Mood } from './dialogue';
 
 export enum NeedName {
   FOOD = 'food',
-  RESOURCES = 'resources',
-  INGREDIENTS = 'ingredients',
-  CLOTHS = 'cloths',
   DRINKS = 'drinks',
+  COMFORT = 'comfort',
+  RESOURCES = 'resources',
+  PLANTS = 'plants',
 }
 
 export interface Tier {
@@ -28,6 +28,7 @@ export type EconomySnapshot = {
   canUpgrade: boolean;
   needs: {
     name: NeedName;
+    consumed: boolean;
     items: { item: EntityName; quantity: number; tier: number }[];
   }[];
 };

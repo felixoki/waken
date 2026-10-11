@@ -29,6 +29,12 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               stackable: true,
               chance: 1,
             },
+            {
+              name: EntityName.BEAR_FAT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
           ],
         },
       },
@@ -94,7 +100,13 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.WOLF_PELT,
               quantity: 1,
               stackable: true,
-              chance: 0.5,
+              chance: 1,
+            },
+            {
+              name: EntityName.WOLF_FANG,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
             },
           ],
         },
@@ -164,6 +176,12 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           loot: [
             {
               name: EntityName.WOLF_PELT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.WOLF_FANG,
               quantity: 1,
               stackable: true,
               chance: 0.5,
@@ -238,7 +256,13 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.WOLF_PELT,
               quantity: 1,
               stackable: true,
-              chance: 0.5,
+              chance: 1,
+            },
+            {
+              name: EntityName.WOLF_FANG,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
             },
           ],
         },
@@ -651,7 +675,25 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.GOOSE_MEAT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.GOOSE_DOWN,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,
@@ -833,7 +875,31 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.HERON_BEAK,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.PLUME,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+            {
+              name: EntityName.PIKE,
+              quantity: 1,
+              stackable: false,
+              chance: 0.25,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,
@@ -881,7 +947,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.CHICKEN_MEAT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.AMBIENT_SOUND,
@@ -928,7 +1006,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 0.85,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.CHICKEN_MEAT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.AMBIENT_SOUND,

@@ -33,11 +33,15 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.BELL, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.HAT1, quantity: 1, stackable: false, chance: 0.01 },
   { name: EntityName.JAR_OF_PICKLES, quantity: 1, stackable: false, chance: 0.005 },
+  { name: EntityName.TRUMPET_SNAIL, quantity: 1, stackable: false, chance: 0.01 },
+  { name: EntityName.SOULSTONE, quantity: 1, stackable: true, chance: 0.05 },
 
   { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.02 },
   { name: EntityName.SPELL_PAGE_CATCH_SOUL, quantity: 1, stackable: false, chance: 0.05 },
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.25 },
   { name: EntityName.SPELL_PAGE_HEAL_PARTY, quantity: 1, stackable: false, chance: 0.25 },
+  { name: EntityName.SPELL_PAGE_ILLUMINATE, quantity: 1, stackable: false, chance: 0.02 },
+  { name: EntityName.SPELL_PAGE_GAIN_MOMENTUM, quantity: 1, stackable: false, chance: 0.02 },
 
   { name: EntityName.CARROT_SEED, quantity: 3, stackable: true, chance: 0.2 },
   { name: EntityName.CABBAGE_SEED, quantity: 3, stackable: true, chance: 0.2 },
@@ -164,6 +168,7 @@ export const forest: BiomeConfig = {
         EntityName.BELLADONNA,
         EntityName.BEARDED_TOOTH_FUNGUS,
         EntityName.RASPBERRY,
+        EntityName.STRAWBERRY_BUSH,
       ],
       terrain: [TerrainName.GRASS],
       density: 0.2,
@@ -817,6 +822,7 @@ const APSE_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.2 },
   { name: EntityName.SPELL_PAGE_BLINK, quantity: 1, stackable: false, chance: 0.1 },
   { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.1 },
+  { name: EntityName.AMULET3, quantity: 1, stackable: false, chance: 0.05 },
 ];
 
 const TEMPLE_FLOOR_DETAILS = [401, 402, 403, 404, 418, 419, 420, 421, 422];

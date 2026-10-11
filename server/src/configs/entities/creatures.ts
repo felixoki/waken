@@ -25,9 +25,9 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           loot: [
             {
               name: EntityName.QUARTZ1,
-              quantity: 1,
+              quantity: 2,
               stackable: true,
-              chance: 0.9,
+              chance: 1,
             },
             {
               name: EntityName.IRON1,
@@ -99,7 +99,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           loot: [
             {
               name: EntityName.QUARTZ1,
-              quantity: 2,
+              quantity: 4,
               stackable: true,
               chance: 1,
             },
@@ -269,6 +269,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               stackable: true,
               chance: 0.75,
             },
+            {
+              name: EntityName.LUMP_OF_SUGAR,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
+            },
           ],
           resistances: [DamageType.COLD],
         },
@@ -332,22 +338,22 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.AMULET1,
-              quantity: 1,
-              stackable: true,
-              chance: 0.25,
-            },
-            {
               name: EntityName.TROLL_SCALES,
               quantity: 1,
               stackable: true,
-              chance: 0.75,
+              chance: 1,
             },
             {
               name: EntityName.PERCH,
               quantity: 2,
               stackable: true,
-              chance: 0.5,
+              chance: 1,
+            },
+            {
+              name: EntityName.AMULET1,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
             },
             {
               name: EntityName.FISHING_HOOK,
@@ -532,16 +538,28 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
+              name: EntityName.WANDERERS_CLOTH,
+              quantity: 2,
+              stackable: true,
+              chance: 1,
+            },
+            {
               name: EntityName.SPELL_PAGE_HURT_SHADOWS,
               quantity: 1,
               stackable: false,
-              chance: 0.25,
+              chance: 0.75,
             },
             {
               name: EntityName.RING1,
               quantity: 1,
               stackable: true,
-              chance: 0.25,
+              chance: 0.75,
+            },
+            {
+              name: EntityName.NECKLACE1,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
             },
           ],
         },
@@ -626,19 +644,25 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.WANDERERS_CLOTH,
               quantity: 1,
               stackable: true,
-              chance: 0.25,
+              chance: 1,
             },
             {
               name: EntityName.SPELL_PAGE_GREASE,
               quantity: 1,
               stackable: false,
-              chance: 0.2,
+              chance: 0.75,
             },
             {
               name: EntityName.SPELL_PAGE_DARK_WAVE,
               quantity: 1,
               stackable: false,
-              chance: 0.15,
+              chance: 0.25,
+            },
+            {
+              name: EntityName.WOOL_SOCK,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
             },
           ],
         },
@@ -700,6 +724,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
+              name: EntityName.BREAD,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
               name: EntityName.WANDERERS_CLOTH,
               quantity: 1,
               stackable: true,
@@ -709,13 +739,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.SPELL_PAGE_HEAL_PARTY,
               quantity: 1,
               stackable: false,
-              chance: 0.08,
-            },
-            {
-              name: EntityName.BREAD,
-              quantity: 1,
-              stackable: true,
-              chance: 0.3,
+              chance: 0.15,
             },
           ],
         },
@@ -798,6 +822,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               stackable: false,
               chance: 1,
             },
+            {
+              name: EntityName.SPELL_PAGE_REFLECT_DAMAGE,
+              quantity: 1,
+              stackable: false,
+              chance: 0.25,
+            },
           ],
         },
       },
@@ -875,19 +905,25 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.WANDERERS_CLOTH,
               quantity: 1,
               stackable: true,
-              chance: 0.25,
+              chance: 1,
             },
             {
               name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE,
               quantity: 1,
               stackable: false,
-              chance: 0.15,
+              chance: 0.5,
             },
             {
               name: EntityName.SPELL_PAGE_SUNDER,
               quantity: 1,
               stackable: false,
-              chance: 0.1,
+              chance: 0.25,
+            },
+            {
+              name: EntityName.WINTER_COAT,
+              quantity: 1,
+              stackable: false,
+              chance: 0.05,
             },
           ],
         },

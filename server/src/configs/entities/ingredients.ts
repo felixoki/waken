@@ -7,80 +7,6 @@ import {
 } from "../../types";
 
 export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
-  [EntityName.FLYAMINATA1]: {
-    facing: Direction.DOWN,
-    moving: [],
-    components: [
-      {
-        name: ComponentName.TEXTURE,
-        config: {
-          spritesheet: "village_home",
-          tileSize: 16,
-          tiles: [
-            { row: 41, start: 5, end: 6 },
-            { row: 42, start: 5, end: 6 },
-          ],
-        },
-        key: "flyaminata1_texture",
-      },
-      {
-        name: ComponentName.BODY,
-        config: { width: 16, height: 16, offsetX: 8, offsetY: 8, static: true },
-      },
-      { name: ComponentName.POINTABLE },
-      {
-        name: ComponentName.PICKABLE,
-      },
-      {
-        name: ComponentName.HOVERABLE,
-      },
-    ],
-    states: [],
-    behaviors: [],
-    metadata: {
-      displayName: "Fly aminata",
-      description:
-        "A small mushroom with a pale red cap dotted with white spots.",
-      stackable: true,
-    },
-  },
-  [EntityName.BASKETFERN]: {
-    facing: Direction.DOWN,
-    moving: [],
-    components: [
-      {
-        name: ComponentName.TEXTURE,
-        config: {
-          spritesheet: "village_home",
-          tileSize: 16,
-          tiles: [
-            { row: 55, start: 2, end: 2 },
-            { row: 56, start: 2, end: 2 },
-          ],
-        },
-        key: "basketfern_texture",
-      },
-      {
-        name: ComponentName.BODY,
-        config: { width: 16, height: 24, offsetX: 0, offsetY: 8, static: true },
-      },
-      {
-        name: ComponentName.POINTABLE,
-      },
-      {
-        name: ComponentName.PICKABLE,
-      },
-      { name: ComponentName.HOVERABLE },
-    ],
-    states: [],
-    behaviors: [],
-    metadata: {
-      displayName: "Basket fern",
-      description:
-        "A lush green fern with broad, arching fronds common to shaded groves.",
-      stackable: true,
-    },
-  },
   [EntityName.BELLADONNA]: {
     facing: Direction.DOWN,
     moving: [],
@@ -228,6 +154,78 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       stackable: true,
       icon: { spritesheet: "icons1", row: 10, col: 13 },
       weight: 0.01,
+    },
+  },
+  [EntityName.STRAWBERRY]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 26, end: 27 },
+            { row: 10, start: 26, end: 27 },
+          ],
+        },
+        key: "strawberry_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Strawberry",
+      description: "A handful of ripe, sweet strawberries.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 10, col: 25 },
+      weight: 0.01,
+    },
+  },
+  [EntityName.STRAWBERRY_BUSH]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "gathering1",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 1, end: 3 },
+            { row: 8, start: 1, end: 3 },
+            { row: 9, start: 1, end: 3 },
+          ],
+        },
+        key: "strawberry_bush_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 32,
+          offsetX: 8,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      { name: ComponentName.BOUNCE },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.STRAWBERRY, quantity: 1 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Strawberry bush",
     },
   },
   [EntityName.DAFFODIL]: {

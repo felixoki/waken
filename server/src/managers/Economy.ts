@@ -97,12 +97,8 @@ export class EconomyManager {
 
   canUpgrade(): boolean {
     for (const need of this.needs.values()) {
-      if (need.tier > this.tier) continue;
+      if (need.tier > this.tier || need.consumption <= 0) continue;
       if (this.getSupply(need) < need.low) return false;
-
-      for (const item of need.items)
-        if (item.tier <= this.tier && this.supply.get(item.item) < 1)
-          return false;
     }
 
     return true;
@@ -145,7 +141,7 @@ export class EconomyManager {
         tier: tier.tier,
       }));
 
-      needs.push({ name: need.name, items });
+      needs.push({ name: need.name, consumed: need.consumption > 0, items });
     });
 
     return { tier: this.tier, canUpgrade: this.canUpgrade(), needs };

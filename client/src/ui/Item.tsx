@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { ComponentName, EntityName, Rarity, SpellName } from "@server/types";
+import { ComponentName, EntityName, SpellName } from "@server/types";
 import { SpellConfig } from "@server/types/spells";
 import { Ingredient } from "@server/types/crafter";
 import { configs } from "@server/configs";
@@ -9,6 +9,7 @@ import { useIsDragging, type DragData } from "./Provider";
 
 interface Props {
   name: EntityName | SpellName | null;
+  title?: string;
   quantity?: number;
   bar?: number;
   barMax?: number;
@@ -30,6 +31,7 @@ interface Props {
 
 export function Item({
   name,
+  title,
   quantity,
   bar,
   barMax = 100,
@@ -75,9 +77,8 @@ export function Item({
     configs.spells[name as SpellName] ||
     null;
 
-  const displayName = config?.metadata?.displayName || name || "";
+  const displayName = title || config?.metadata?.displayName || name || "";
   const description = config?.metadata?.description;
-  const rarity = (config?.metadata as { rarity?: Rarity } | undefined)?.rarity;
   const baseWeight = (config?.metadata as { weight?: number } | undefined)
     ?.weight;
   const shownWeight = hideWeight ? undefined : (weight ?? baseWeight);
@@ -85,30 +86,13 @@ export function Item({
   const baseClass =
     "relative flex items-center justify-center rounded-lg text-xs w-16 aspect-square overflow-hidden transition-colors";
 
-  const rarityRing = rarity && rarity !== Rarity.COMMON
-    ? {
-        [Rarity.UNCOMMON]: "ring-2 ring-green-500",
-        [Rarity.RARE]: "ring-2 ring-blue-500",
-        [Rarity.LEGENDARY]: "ring-2 ring-amber-500",
-      }[rarity as Exclude<Rarity, Rarity.COMMON>]
-    : "";
-
-  const rarityText = rarity
-    ? {
-        [Rarity.COMMON]: "text-white",
-        [Rarity.UNCOMMON]: "text-green-400",
-        [Rarity.RARE]: "text-blue-400",
-        [Rarity.LEGENDARY]: "text-amber-400",
-      }[rarity]
-    : "text-white";
-
   const stateClass = disabled
     ? "bg-gray-200 opacity-50 cursor-not-allowed"
     : active
       ? "bg-gray-200 border-2 border-blue-600"
       : isOver
         ? "bg-gray-200 ring-2 ring-blue-400"
-        : `bg-gray-200 ${rarityRing}`;
+        : "bg-gray-200";
 
   const handleMouseEnter = () => {
     if (ref.current) {
@@ -181,7 +165,7 @@ export function Item({
                 <Icon icon={config.metadata.icon} zoom={2} />
               </div>
             )}
-            <p className={`font-semibold leading-tight ${rarityText}`}>
+            <p className="font-semibold leading-tight text-white">
               {displayName}
             </p>
           </div>

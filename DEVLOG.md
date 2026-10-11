@@ -796,6 +796,10 @@
 - Add temple biome ✅
 - Refactor lighting ✅
 
+#### 11.10.2026
+
+- Add robes, new spells and equipment ✅
+- Refactor economy ui and item drops ✅
 
 ### In progress
 
@@ -817,5 +821,19 @@
 - UI ⭐
 - Cooking ⭐
 - Relationships ⭐
+- Economy
+  - Milkable component for goats and cows
+  - Flour and mill
+  - Craftable candles
+  - Craft special pillows from goose down
+  - Iron ore
+  - Refactor comfort need dialogue
+- Crops
+  - Corn
+  - Eggplant
+  - Pepper
+  - Red beet
+  - Cucumber
+  - Pumpkin
 - Ideas
   - Remove among player collisions
