@@ -39,6 +39,7 @@ import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { Landmark } from "@server/types/generation";
+import type { Chart } from "../handlers/chart";
 import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
 import { GrowableComponent } from "../components/Growable";
@@ -65,6 +66,7 @@ export class MainScene extends Phaser.Scene {
   public buildManager!: BuildManager;
   public socketManager = SocketManager;
   public location?: string;
+  public chart?: Chart;
 
   constructor() {
     super("main");
@@ -205,6 +207,7 @@ export class MainScene extends Phaser.Scene {
         player.speed = handlers.move.speed(
           data.inventory,
           data.effects?.map((effect) => effect.name),
+          player.robe,
         );
 
       const hotbar = player.getComponent<HotbarComponent>(ComponentName.HOTBAR);
@@ -501,6 +504,8 @@ export class MainScene extends Phaser.Scene {
       handlers.combat.knockback(entity, data.knockback);
 
       if (data.reflected) handlers.combat.reflect(entity, data.attackerId);
+      if (data.trigger)
+        handlers.trigger.echo(entity, data.trigger, data.attackerId);
     });
 
     this.managers.socket.on(
@@ -732,8 +737,23 @@ export class MainScene extends Phaser.Scene {
         ComponentName.INVENTORY,
       );
       inventory?.set(data);
-      player.speed = handlers.move.speed(data, player.effects.keys());
+      player.speed = handlers.move.speed(
+        data,
+        player.effects.keys(),
+        player.robe,
+      );
     });
+
+    this.managers.socket.on(Event.ROBE_SYNC, (data: Item | null) => {
+      this.managers.players.player?.setRobe(data);
+    });
+
+    this.managers.socket.on(
+      Event.PLAYER_ROBE,
+      (data: { id: string; robe: Item | null }) => {
+        this.managers.players.others.get(data.id)?.setRobe(data.robe);
+      },
+    );
 
     this.managers.socket.on(Event.HOTBAR_SYNC, (data: (Slot | null)[]) => {
       const player = this.managers.players.player;
@@ -1179,6 +1199,14 @@ export class MainScene extends Phaser.Scene {
       player.mana = mana;
       EventBus.emit(Event.PLAYER_MANA, mana);
     });
+
+    this.managers.socket.on(
+      Event.PLAYER_REAP,
+      (data: { x: number; y: number }) => {
+        const player = this.managers.players.player;
+        if (player) handlers.trigger.reap(player, data.x, data.y);
+      },
+    );
 
     this.managers.socket.on(Event.PLAYER_MAX_MANA, (maxMana: number) => {
       const player = this.managers.players.player;

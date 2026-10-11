@@ -503,6 +503,77 @@ export const emitters = {
     });
   },
 
+  spark: (
+    scene: Scene,
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+  ) => {
+    const flight = 110;
+    const degrees = Phaser.Math.RadToDeg(Math.atan2(toY - fromY, toX - fromX));
+    const speed = (Math.hypot(toX - fromX, toY - fromY) / flight) * 1000;
+
+    const streak = scene.add.particles(fromX, fromY, "particle_diamond", {
+      tint: [0xffffff, 0xfff2a8, 0xffc840],
+      alpha: { start: 1, end: 0.5 },
+      scale: { start: 0.24, end: 0.1 },
+      speed: { min: speed * 0.8, max: speed * 1.1 },
+      angle: { min: degrees - 9, max: degrees + 9 },
+      rotate: degrees + 90,
+      lifespan: flight,
+      blendMode: "ADD",
+      frequency: -1,
+    });
+    streak.setDepth(1500);
+    streak.explode(7);
+
+    scene.time.delayedCall(flight, () => {
+      streak.destroy();
+
+      const burst = scene.add.particles(toX, toY, "particle_diamond", {
+        tint: [0xffffff, 0xfff2a8, 0xffc840],
+        alpha: { start: 1, end: 0 },
+        scale: { start: 0.2, end: 0.02 },
+        speed: { min: 50, max: 150 },
+        gravityY: 260,
+        lifespan: { min: 180, max: 360 },
+        blendMode: "ADD",
+        frequency: -1,
+      });
+      burst.setDepth(1500);
+      burst.explode(10);
+
+      scene.time.delayedCall(360, () => burst.destroy());
+    });
+  },
+
+  drain: (
+    scene: Scene,
+    fromX: number,
+    fromY: number,
+    caster: Entity,
+    tint: number[],
+  ) => {
+    const emitter = scene.add.particles(fromX, fromY, "particle_circle", {
+      tint,
+      x: { min: -8, max: 8 },
+      y: { min: -8, max: 8 },
+      moveToX: caster.x - fromX,
+      moveToY: caster.y - fromY,
+      alpha: { start: 1, end: 0.4 },
+      scale: { start: 0.28, end: 0.08 },
+      lifespan: { min: 340, max: 520 },
+      frequency: 20,
+      quantity: 1,
+      blendMode: "ADD",
+    });
+    emitter.setDepth(1500);
+
+    scene.time.delayedCall(280, () => emitter.stop());
+    scene.time.delayedCall(800, () => emitter.destroy());
+  },
+
   leaf: (scene: Scene, x: number, y: number) => {
     const emitter = scene.add.particles(x, y, "particle_leaf", {
       tint: [0x4caf50, 0x81c784, 0xa5d6a7],

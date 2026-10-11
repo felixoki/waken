@@ -56,9 +56,11 @@ export const combat = {
         e.expiresAt > now && configs.effects[e.name]?.reflect !== undefined,
     );
 
-    if (!ward) return;
+    const worn =
+      "inventory" in target ? handlers.player.stats(target).reflect : 0;
+    const fraction = (ward ? configs.effects[ward.name]!.reflect! : 0) + worn;
 
-    const amount = Math.floor(damage * configs.effects[ward.name]!.reflect!);
+    const amount = Math.floor(damage * fraction);
 
     if (amount <= 0) return;
 
@@ -157,7 +159,12 @@ export const combat = {
     target: PlayerConfig | EntityConfig,
     config: CombatConfig,
     isEntity: boolean,
-    mods?: { damage?: number; crit?: number; defense?: number },
+    mods?: {
+      damage?: number;
+      crit?: number;
+      chance?: number;
+      defense?: number;
+    },
   ): { damage: number; isMiss: boolean; isCritical: boolean } => {
     if (Math.random() < MISS_CHANCE)
       return { damage: 0, isMiss: true, isCritical: false };
@@ -187,12 +194,60 @@ export const combat = {
       if (multiplier !== undefined) damage *= multiplier;
     }
 
-    const isCritical = Math.random() < CRIT_CHANCE;
+    const isCritical = Math.random() < (mods?.chance ?? CRIT_CHANCE);
     if (isCritical) damage *= mods?.crit ?? CRIT_MULTIPLIER;
 
     damage *= mods?.defense ?? 1;
 
     return { damage: Math.floor(damage), isMiss: false, isCritical };
+  },
+
+  reap: (id: string, x: number, y: number, io: Server, world: World) => {
+    const player = world.players.get(id);
+
+    if (!player || player.isDead) return;
+
+    let health = 0;
+    let mana = 0;
+
+    for (const item of handlers.player.carried(player)) {
+      const kill = configs.entities[item.name]?.modifier?.kill;
+
+      if (!kill) continue;
+
+      health += kill.health ?? 0;
+      mana += kill.mana ?? 0;
+    }
+
+    if (health || mana)
+      io.to(player.socketId).emit(Event.PLAYER_REAP, { x, y });
+
+    if (mana) {
+      const restored = Math.min(player.mana + mana, player.maxMana);
+
+      if (restored !== player.mana) {
+        world.players.update(player.id, { mana: restored });
+        io.to(player.socketId).emit(Event.PLAYER_MANA, restored);
+      }
+    }
+
+    if (health) {
+      const restored = Math.min(
+        player.health + health,
+        player.maxHealth || MAX_HEALTH,
+      );
+
+      if (restored !== player.health) {
+        world.players.update(player.id, { health: restored });
+        io.to(player.socketId).emit(Event.PLAYER_HEALTH, restored);
+        io.to(`map:${player.map}`)
+          .except(player.socketId)
+          .emit(Event.PLAYER_HEALTH_SYNC, {
+            id: player.id,
+            health: restored,
+          });
+      }
+    }
   },
 
   kill: {
@@ -316,7 +371,10 @@ export const combat = {
     if ("mana" in config && config.name === SpellName.CATCH_SOUL) {
       if (entity) {
         const capturable = handlers.taming.capturable(entity.name);
-        const threshold = capturable?.threshold ?? 1;
+        const caster = players.get(data.attackerId);
+        const threshold =
+          (capturable?.threshold ?? 1) *
+          (caster ? handlers.player.stats(caster).multipliers.capture : 1);
 
         if (capturable && entity.health / entity.maxHealth <= threshold)
           handlers.taming.pacify(entity, socket, io, world);
@@ -339,6 +397,7 @@ export const combat = {
       {
         damage: attackerStats?.multipliers.damage,
         crit: attackerStats?.multipliers.crit,
+        chance: attackerStats?.crit,
         defense: targetStats?.multipliers.defense,
       },
     );
@@ -395,6 +454,7 @@ export const combat = {
     }
 
     if (entity && health <= 0) {
+      combat.reap(attacker.id, entity.x, entity.y, io, world);
       combat.kill.entity(entity, socket, io, world);
       return;
     }
@@ -424,6 +484,7 @@ export const combat = {
       attackerId: attacker.id,
       isMiss,
       isCritical,
+      trigger: "on" in config ? config.name : undefined,
     };
 
     const emit = entity ? Event.ENTITY_HURT : Event.PLAYER_HURT;
@@ -465,12 +526,10 @@ export const combat = {
       ];
 
       if (attackerId) {
-        const inventory = world.players.get(attackerId)?.inventory ?? [];
+        const attacker = world.players.get(attackerId);
         const isSpell = "mana" in config;
 
-        for (const slot of inventory) {
-          if (!slot) continue;
-
+        for (const slot of attacker ? handlers.player.carried(attacker) : []) {
           for (const bonus of configs.entities[slot.name]?.bonuses ?? []) {
             const isWild =
               isSpell &&
@@ -494,6 +553,8 @@ export const combat = {
 
       for (const [name, duration, chance] of effects) {
         if (chance !== undefined && Math.random() > chance) continue;
+        if (!isEntity && handlers.player.immune(target as PlayerConfig, name))
+          continue;
 
         const effect: Effect = {
           name,
@@ -559,9 +620,10 @@ export const combat = {
             effect.lastTickAt = now;
 
             if (newHealth <= 0) {
-              if (isEntity)
+              if (isEntity) {
+                combat.reap(effect.ownerId, target.x, target.y, io, world);
                 combat.kill.entity(target as EntityConfig, null, io, world);
-              else
+              } else
                 combat.kill.player(
                   target as PlayerConfig,
                   effect.ownerId || id,

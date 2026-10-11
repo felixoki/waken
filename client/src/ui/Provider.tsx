@@ -159,6 +159,8 @@ function parseDropId(
       return { zone: SlotZone.INVENTORY, index };
     case SlotZone.HOTBAR:
       return { zone: SlotZone.HOTBAR, index };
+    case SlotZone.ROBE:
+      return { zone: SlotZone.ROBE, index: 0 };
     case SlotZone.STORAGE:
       return storageEntityId
         ? { zone: SlotZone.STORAGE, index, entityId: storageEntityId }

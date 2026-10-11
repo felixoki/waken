@@ -328,7 +328,10 @@ export class Fishing implements State {
     frameRate: number,
     repeat: number,
   ): void {
-    const textureKey = `player-fishing-${variant}`;
+    const base =
+      entity.getComponent<AnimationComponent>(ComponentName.ANIMATION)?.base ??
+      entity.name;
+    const textureKey = `${base}-fishing-${variant}`;
     if (!entity.scene.textures.exists(textureKey)) return;
 
     const dirIndex = Object.values(Direction).indexOf(this.facing);

@@ -8,9 +8,10 @@ import {
 import { Component } from "./Component";
 import { Player } from "../Player";
 import EventBus from "../EventBus";
+import { HOTBAR_SIZE } from "@server/globals";
 
 export class HotbarComponent extends Component {
-  private slots: (Slot | null)[] = new Array(8).fill(null);
+  private slots: (Slot | null)[] = new Array(HOTBAR_SIZE).fill(null);
   private active: number = 0;
   private entity: Player;
 

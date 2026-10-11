@@ -41,6 +41,7 @@ export enum ComponentName {
   PICKABLE = "pickable",
   POINTABLE = "pointable",
   REVIVEABLE = "reviveable",
+  ROBE = "robe",
   STORAGE = "storage",
   SWITCH = "switch",
   TEXTURE = "texture",
@@ -89,6 +90,7 @@ export type ComponentConfig =
   | { name: ComponentName.PICKABLE; config?: PickableConfig }
   | { name: ComponentName.POINTABLE }
   | { name: ComponentName.REVIVEABLE }
+  | { name: ComponentName.ROBE; config: RobeConfig }
   | { name: ComponentName.SLEEPABLE; config: SleepableConfig }
   | { name: ComponentName.STORAGE; config: StorageConfig }
   | { name: ComponentName.SWITCH; config: SwitchConfig }
@@ -232,6 +234,10 @@ export interface TextureAnimationConfig {
   frameRate: number;
   repeat: number;
   autoplay?: boolean;
+}
+
+export interface RobeConfig {
+  sheet: string;
 }
 
 export interface DamageableConfig {

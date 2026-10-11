@@ -29,6 +29,7 @@ export interface PlayerConfig {
   spells: SpellName[];
   inventory: (Item | null)[];
   hotbar: (Slot | null)[];
+  robe: (Item | null)[];
   active: number;
   effects?: Effect[];
   records?: Partial<Record<FishName, number>>;

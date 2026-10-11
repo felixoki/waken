@@ -289,6 +289,9 @@ export const animations: Partial<
   [EntityName.BAKER]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 12, repeat: -1 },
   },
+  [EntityName.WEAVER]: {
+    [StateName.IDLE]: { frameCount: 8, frameRate: 8, repeat: -1 },
+  },
   [EntityName.BEVERAGE_SALER]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 12, repeat: -1 },
   },

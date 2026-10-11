@@ -59,6 +59,16 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ],
             },
             {
+              tier: 2,
+              output: EntityName.SOUP_OF_THE_HIKER,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.TROLL_SCALES, quantity: 1 },
+                { item: EntityName.BOAR_MEAT, quantity: 1 },
+                { item: EntityName.GOAT_MILK, quantity: 1 },
+              ],
+            },
+            {
               tier: 1,
               output: EntityName.POTION4,
               quantity: 1,
@@ -837,6 +847,86 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Baker",
       description: "A warm-hearted baker who turns grain into bread for all.",
+    },
+    dialogue: {
+      [NodeId.GREETING]: {
+        ref: NodeId.GREETING,
+      },
+    },
+  },
+  [EntityName.WEAVER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.INTERACTABLE },
+      {
+        name: ComponentName.CRAFTER,
+        config: {
+          recipes: [
+            {
+              tier: 1,
+              output: EntityName.ROBE3,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.DEER_HIDE, quantity: 5 },
+                { item: EntityName.RAT_CLAWS, quantity: 10 },
+                { item: EntityName.ERGOT, quantity: 4 },
+              ],
+            },
+            {
+              tier: 1,
+              output: EntityName.ROBE4,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.FOX_PELT, quantity: 5 },
+                { item: EntityName.SUNFLOWER, quantity: 10 },
+                { item: EntityName.DAFFODIL, quantity: 4 },
+              ],
+            },
+            {
+              tier: 2,
+              output: EntityName.ROBE1,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.BLUE_LOTUS, quantity: 20 },
+                { item: EntityName.WOLF_PELT, quantity: 6 },
+                { item: EntityName.WANDERERS_CLOTH, quantity: 4 },
+              ],
+            },
+            {
+              tier: 3,
+              output: EntityName.ROBE2,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.TROLL_SCALES, quantity: 10 },
+                { item: EntityName.CAVEFISH, quantity: 6 },
+                { item: EntityName.BEAR_PELT, quantity: 5 },
+                { item: EntityName.WANDERERS_GIFT, quantity: 1 },
+              ],
+            },
+          ] satisfies Recipe[],
+        },
+      },
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 8,
+          height: 12,
+          offsetX: 12,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+    ],
+    states: [StateName.IDLE],
+    behaviors: [{ name: BehaviorName.STAY }],
+    metadata: {
+      displayName: "Weaver",
+      description: "A quiet weaver who works dreams into cloth.",
     },
     dialogue: {
       [NodeId.GREETING]: {

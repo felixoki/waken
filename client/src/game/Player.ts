@@ -8,6 +8,7 @@ import {
   SoundName,
   SurfaceName,
   EffectName,
+  Item,
 } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
@@ -22,7 +23,8 @@ import { HotbarComponent } from "./components/Hotbar";
 import { DamageableComponent } from "./components/Damageable";
 import { TrailComponent } from "./components/Trail";
 import { TreadComponent } from "./components/Tread";
-import { FOOTSTEP_DISTANCE } from "@server/globals";
+import { FOOTSTEP_DISTANCE, HOTBAR_SIZE } from "@server/globals";
+import EventBus from "./EventBus";
 
 const FOOTSTEPS: Partial<Record<SurfaceName, SoundName>> = {
   [SurfaceName.SNOW]: SoundName.FOOTSTEP_SNOW,
@@ -36,6 +38,7 @@ export class Player extends Entity {
   public isControllable: boolean;
   public isTransitioning: boolean = false;
   public inputManager?: InputManager;
+  public robe: Item | null = null;
 
   private stepAccumulator: number = 0;
 
@@ -81,11 +84,32 @@ export class Player extends Entity {
       }),
     );
     this.addComponent(new InventoryComponent());
-    this.addComponent(new HotbarComponent(this, new Array(8).fill(null)));
+    this.addComponent(
+      new HotbarComponent(this, new Array(HOTBAR_SIZE).fill(null)),
+    );
     this.addComponent(new DamageableComponent());
     this.addComponent(new TreadComponent(this));
 
     if (this.isControllable) this.addComponent(new TrailComponent(this));
+  }
+
+  setRobe(robe: Item | null): void {
+    this.robe = robe;
+
+    this.getComponent<AnimationComponent>(ComponentName.ANIMATION)?.setRobe(
+      handlers.robe.sheet(robe),
+    );
+
+    if (!this.isControllable) return;
+
+    this.speed = handlers.move.speed(
+      this.getComponent<InventoryComponent>(ComponentName.INVENTORY)?.get() ??
+        [],
+      this.effects.keys(),
+      robe,
+    );
+
+    EventBus.emit(Event.ROBE_SYNC, robe);
   }
 
   update(remoteInput?: Input): void {

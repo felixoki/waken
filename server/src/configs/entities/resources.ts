@@ -378,6 +378,96 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 6,
     },
   },
+  [EntityName.WOLF_PELT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons9",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 5, end: 6 },
+            { row: 2, start: 5, end: 6 },
+          ],
+        },
+        key: "wolf_pelt_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wolf pelt",
+      description: "A coarse grey pelt taken from a wolf.",
+      stackable: true,
+      icon: { spritesheet: "icons9", row: 2, col: 4 },
+      weight: 3,
+    },
+  },
+  [EntityName.WANDERERS_GIFT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 14, end: 15 },
+            { row: 4, start: 14, end: 15 },
+          ],
+        },
+        key: "wanderers_gift_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wanderer's gift",
+      description: "A mysterious object with a blue shimmering glow.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 4, col: 13 },
+      weight: 0.5,
+    },
+  },
+  [EntityName.WANDERERS_CLOTH]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 2, end: 3 },
+            { row: 8, start: 2, end: 3 },
+          ],
+        },
+        key: "wanderers_cloth_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wanderer's cloth",
+      description: "A pale garment left behind by those who walk in their sleep.",
+      stackable: true,
+      icon: { spritesheet: "icons8", row: 8, col: 1 },
+      weight: 0.2,
+    },
+  },
   [EntityName.RAT_CLAWS]: {
     facing: Direction.DOWN,
     moving: [],

@@ -1,6 +1,7 @@
 import {
   ComponentName,
   Direction,
+  EntityName,
   Event,
   SleepableConfig,
 } from "@server/types";
@@ -63,14 +64,15 @@ export class SleepableComponent extends Component {
     if (this.sprite) return;
 
     const scene = this.entity.scene;
-    if (!scene.textures.exists(TEXTURE)) return;
+    const texture = this._texture();
+    if (!scene.textures.exists(texture)) return;
 
     const { anchor, facing, depth } = this.config;
-    const key = `${TEXTURE}-${facing}`;
+    const key = `${texture}-${facing}`;
 
     if (!scene.anims.exists(key)) {
       const start = Object.values(Direction).indexOf(facing) * SLEEP_FRAMES;
-      const frames = scene.anims.generateFrameNumbers(TEXTURE, {
+      const frames = scene.anims.generateFrameNumbers(texture, {
         start,
         end: start + SLEEP_FRAMES - 1,
       });
@@ -83,11 +85,29 @@ export class SleepableComponent extends Component {
     this.sprite = scene.add.sprite(
       this.entity.x + anchor.x,
       this.entity.y + anchor.y,
-      TEXTURE,
+      texture,
     );
 
     this.sprite.setDepth(1000 + this.entity.y + depth);
     this.sprite.play(key);
+  }
+
+  private _texture(): string {
+    const { player, others } = this.entity.scene.managers.players;
+    const sleeper =
+      player?.bed === this.entity.id
+        ? player
+        : [...others.values()].find((other) => other.bed === this.entity.id);
+    const sheet = handlers.robe.sheet(sleeper?.robe ?? null);
+
+    if (!sheet) return TEXTURE;
+
+    const texture = TEXTURE.replace(
+      EntityName.PLAYER,
+      handlers.robe.base(EntityName.PLAYER, sheet),
+    );
+
+    return this.entity.scene.textures.exists(texture) ? texture : TEXTURE;
   }
 
   private _hide(): void {

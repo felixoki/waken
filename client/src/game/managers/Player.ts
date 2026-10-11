@@ -102,6 +102,8 @@ export class PlayerManager {
 
     scene.physicsManager.groups.players.add(player);
 
+    if (config.robe) player.setRobe(config.robe[0] ?? null);
+
     if (isLocal) {
       this.player = player;
       return;

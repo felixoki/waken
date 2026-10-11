@@ -46,6 +46,7 @@ export const world = {
               spells: player.spells,
               inventory: player.inventory,
               hotbar: player.hotbar,
+              robe: player.robe,
               active: player.active,
               records: player.records,
             },

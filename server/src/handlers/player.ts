@@ -1,10 +1,15 @@
 import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
 import {
+  ComponentName,
   Direction,
+  EffectName,
+  EntityName,
   Event,
+  Item,
   Modifier,
   Slot,
+  SlotType,
   Input,
   MapName,
   PlayerConfig,
@@ -20,7 +25,9 @@ import { load } from "../db/load.js";
 import {
   MAX_HEALTH,
   MAX_MANA,
+  CRIT_CHANCE,
   CRIT_MULTIPLIER,
+  HOTBAR_SIZE,
   REGEN_HEALTH_PER_SECOND,
   REGEN_INTERVAL,
   REGEN_MANA_PER_SECOND,
@@ -44,6 +51,20 @@ export const player = {
 
       if (WORLD_ID && playerId) saved = await load.player(WORLD_ID, playerId);
 
+      const inventory: (Item | null)[] = saved?.data?.inventory ?? [
+        ...new Array(20).fill(null),
+      ];
+      const hotbar = (saved?.data?.hotbar as (Slot | null)[]) ?? [
+        ...new Array(HOTBAR_SIZE).fill(null),
+      ];
+
+      for (const slot of hotbar.splice(HOTBAR_SIZE)) {
+        const free = inventory.indexOf(null);
+
+        if (slot?.type === SlotType.ENTITY && free !== -1)
+          inventory[free] = slot.item;
+      }
+
       const savedMap = saved?.data?.map as MapName | undefined;
       const isInstanced = savedMap && configs.maps[savedMap].isInstanced;
 
@@ -56,20 +77,24 @@ export const player = {
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
         health: saved?.health || MAX_HEALTH,
         maxHealth: MAX_HEALTH,
-        mana: saved?.mana || 100,
+        mana: MAX_MANA,
         maxMana: MAX_MANA,
         isAuthority,
         isDead: false,
-        spells: (
-          (saved?.data?.spells as SpellName[]) ?? [
+        spells: [
+          ...new Set([
             SpellName.SHARD,
             SpellName.SLASH,
             SpellName.REVIVE,
-          ]
-        ).filter((name) => configs.spells[name]),
-        inventory: saved?.data?.inventory ?? [...new Array(20).fill(null)],
-        hotbar: (saved?.data?.hotbar as (Slot | null)[]) ?? [...new Array(8).fill(null)],
-        active: (saved?.data?.active as number) ?? 0,
+            SpellName.LIGHTNING_STRIKE,
+            SpellName.DELTA_WAVE,
+            ...((saved?.data?.spells as SpellName[]) ?? []),
+          ]),
+        ].filter((name) => configs.spells[name]),
+        inventory,
+        hotbar,
+        robe: (saved?.data?.robe as (Item | null)[]) ?? [null],
+        active: Math.min((saved?.data?.active as number) ?? 0, HOTBAR_SIZE - 1),
         records:
           (saved?.data?.records as PlayerConfig["records"]) ?? {},
       };
@@ -121,6 +146,7 @@ export const player = {
           spells: player.spells,
           inventory: player.inventory,
           hotbar: player.hotbar,
+          robe: player.robe,
           active: player.active,
           records: player.records,
         },
@@ -342,17 +368,45 @@ export const player = {
     }
   },
 
+  robe: {
+    is: (name: EntityName): boolean =>
+      !!configs.entities[name]?.components.some(
+        (component) => component.name === ComponentName.ROBE,
+      ),
+  },
+
+  carried: (player: PlayerConfig): Item[] => {
+    const items: Item[] = [];
+
+    for (const item of player.inventory)
+      if (item && !handlers.player.robe.is(item.name)) items.push(item);
+
+    for (const item of player.robe) if (item) items.push(item);
+
+    return items;
+  },
+
   stats: (player: PlayerConfig) => {
     const stats = {
-      multipliers: { damage: 1, crit: CRIT_MULTIPLIER, defense: 1, speed: 1 },
+      multipliers: {
+        damage: 1,
+        crit: CRIT_MULTIPLIER,
+        defense: 1,
+        speed: 1,
+        capture: 1,
+      },
       regen: { health: REGEN_HEALTH_PER_SECOND, mana: REGEN_MANA_PER_SECOND },
       max: { health: MAX_HEALTH, mana: MAX_MANA },
+      crit: CRIT_CHANCE,
+      reflect: 0,
     };
+    const scale = { health: 1, mana: 1 };
+    const added = { health: 0, mana: 0 };
 
     const apply = (modifier: Modifier | null | undefined) => {
       if (!modifier) return;
 
-      const { multipliers, regen, max } = modifier;
+      const { multipliers, regen, max, bonus } = modifier;
 
       if (multipliers) {
         if (multipliers.damage) stats.multipliers.damage *= multipliers.damage;
@@ -360,6 +414,17 @@ export const player = {
         if (multipliers.defense)
           stats.multipliers.defense *= multipliers.defense;
         if (multipliers.speed) stats.multipliers.speed *= multipliers.speed;
+        if (multipliers.capture)
+          stats.multipliers.capture *= multipliers.capture;
+        if (multipliers.healthRegen) scale.health *= multipliers.healthRegen;
+        if (multipliers.manaRegen) scale.mana *= multipliers.manaRegen;
+      }
+
+      if (bonus) {
+        added.health += bonus.health ?? 0;
+        added.mana += bonus.mana ?? 0;
+        stats.crit += bonus.crit ?? 0;
+        stats.reflect += bonus.reflect ?? 0;
       }
 
       if (regen) {
@@ -376,8 +441,8 @@ export const player = {
       }
     };
 
-    for (const slot of player.inventory)
-      apply(slot && configs.entities[slot.name]?.modifier);
+    for (const item of handlers.player.carried(player))
+      apply(configs.entities[item.name]?.modifier);
 
     if (player.effects) {
       const now = Date.now();
@@ -387,7 +452,31 @@ export const player = {
           apply(configs.effects[effect.name]?.modifier);
     }
 
+    stats.regen.health *= scale.health;
+    stats.regen.mana *= scale.mana;
+    stats.max.health += added.health;
+    stats.max.mana += added.mana;
+
     return stats;
+  },
+
+  immune: (player: PlayerConfig, name: EffectName): boolean => {
+    for (const item of handlers.player.carried(player))
+      if (configs.entities[item.name]?.modifier?.immunities?.includes(name))
+        return true;
+
+    if (!player.effects) return false;
+
+    const now = Date.now();
+
+    for (const effect of player.effects)
+      if (
+        effect.expiresAt > now &&
+        configs.effects[effect.name]?.modifier?.immunities?.includes(name)
+      )
+        return true;
+
+    return false;
   },
 
   regen: (delta: number, world: World) => {

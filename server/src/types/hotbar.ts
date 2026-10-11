@@ -21,6 +21,7 @@ export enum HotbarDirection {
 export enum SlotZone {
   INVENTORY = "inventory",
   HOTBAR = "hotbar",
+  ROBE = "robe",
   STORAGE = "storage",
   SPELLBOOK = "spellbook",
 }
@@ -36,6 +37,7 @@ export type SlotRef = { slots: any[]; index: number };
 export type ZoneHandler = {
   accepts: SlotType | null;
   readonly: boolean;
+  allows?(item: Item): boolean;
   resolve(
     player: PlayerConfig,
     ref: SlotReference,

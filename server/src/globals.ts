@@ -191,6 +191,7 @@ export const RAY_HAZE = 0.1;
 export const DURATION_JUMPING = 800;
 export const DURATION_LIFT = 250;
 export const DURATION_ROLLING = 600;
+export const ROLL_SWEEP_INTERVAL = 60;
 export const DURATION_DASHING = 50;
 export const DURATION_SLASHING = 800;
 export const DURATION_WARNING = 1333;
@@ -293,6 +294,7 @@ export const REGEN_MANA_PER_SECOND = 3;
 export const REGEN_INTERVAL = 1000;
 
 export const MAX_STACK = 50;
+export const HOTBAR_SIZE = 7;
 
 /** Directions */
 export const DIRECTIONS_CARDINAL = [

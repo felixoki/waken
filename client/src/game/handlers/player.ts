@@ -83,6 +83,7 @@ export const player = {
       active: current
         .getComponent<HotbarComponent>(ComponentName.HOTBAR)
         ?.getActive(),
+      robe: current.robe,
       map: current.map,
       scene: current.scene,
     };
@@ -103,10 +104,7 @@ export const player = {
       .getComponent<HotbarComponent>(ComponentName.HOTBAR)
       ?.setActive(prev.active ?? 0);
 
-    updated.speed = handlers.move.speed(
-      prev.inventory ?? [],
-      updated.effects.keys(),
-    );
+    updated.setRobe(prev.robe);
 
     const scene = main.scene.get(data.map);
 

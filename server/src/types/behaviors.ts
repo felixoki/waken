@@ -47,6 +47,7 @@ export interface DefendBehaviorConfig {
 export interface AttackBehaviorConfig {
   spacing?: number;
   recovery?: number;
+  evasive?: boolean;
 }
 
 export type BehaviorConfig =

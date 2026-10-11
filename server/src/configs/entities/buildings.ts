@@ -565,6 +565,42 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.MARKET_STAND4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "village_market_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 25, start: 8, end: 14 },
+            { row: 26, start: 8, end: 14 },
+            { row: 27, start: 8, end: 14 },
+            { row: 28, start: 8, end: 14 },
+            { row: 29, start: 8, end: 14 },
+            { row: 30, start: 8, end: 14 },
+            { row: 31, start: 8, end: 14 },
+            { row: 32, start: 8, end: 14 },
+          ],
+        },
+        key: "market_stand4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 60,
+          height: 20,
+          offsetX: 28,
+          offsetY: 88,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.FISHING_HUT]: {
     facing: Direction.DOWN,
     moving: [],

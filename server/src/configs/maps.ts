@@ -782,6 +782,12 @@ const citizens: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "weaver-idle",
+    file: "weaver_idle.png",
+    frameWidth: 48,
+    frameHeight: 48,
+  },
+  {
     key: "beverage_saler-idle",
     file: "beverage_saler_idle.png",
     frameWidth: 32,
@@ -868,6 +874,20 @@ const icons: Spritesheet[] = [
   {
     key: "icons10",
     file: "icons10.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "icons11",
+    file: "icons11.png",
+    frameWidth: 16,
+    frameHeight: 16,
+    asTileset: true,
+  },
+  {
+    key: "icons12",
+    file: "icons12.png",
     frameWidth: 16,
     frameHeight: 16,
     asTileset: true,

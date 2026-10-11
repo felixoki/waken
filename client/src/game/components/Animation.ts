@@ -9,12 +9,15 @@ import { Entity } from "../Entity";
 import { Component } from "./Component";
 import { configs } from "@server/configs";
 import { SPEED_DEFAULT } from "@server/globals";
+import { handlers } from "../handlers";
 
 export class AnimationComponent extends Component {
   private entity: Entity;
   private config: Partial<Record<StateName, AnimationConfig>>;
   private variant: string | null = null;
   private skin: string | null = null;
+  private robe: string | null = null;
+  private wanted: string | null = null;
   private speed: number;
 
   public name = ComponentName.ANIMATION;
@@ -35,8 +38,12 @@ export class AnimationComponent extends Component {
 
   update(): void {}
 
-  private get base(): string {
-    return this.skin ?? this.entity.name;
+  get base(): string {
+    if (this.skin) return this.skin;
+
+    return this.robe
+      ? handlers.robe.base(this.entity.name, this.robe)
+      : this.entity.name;
   }
 
   private get activeConfig(): Partial<Record<StateName, AnimationConfig>> {
@@ -50,6 +57,25 @@ export class AnimationComponent extends Component {
     if (variant) this._createVariantAnims(variant);
   }
 
+  setRobe(robe: string | null): void {
+    if (robe === this.wanted) return;
+
+    this.wanted = robe;
+
+    if (!robe) return this._wear(null);
+
+    handlers.robe.load(this.entity.scene, robe, () => {
+      if (this.wanted === robe && this.entity.active) this._wear(robe);
+    });
+  }
+
+  private _wear(robe: string | null): void {
+    this.robe = robe;
+    this._createAnims();
+    if (this.variant) this._createVariantAnims(this.variant);
+    this.play(this.entity.state, this.entity.facing);
+  }
+
   setSkin(skin: string | null): void {
     this.skin = skin;
     this._createAnims();
@@ -59,10 +85,9 @@ export class AnimationComponent extends Component {
   play(state: StateName, direction: Direction): void {
     if (!this.activeConfig[state]) return;
 
-    const variantKey = this.variant
-      ? `${this.base}-${state}-${this.variant}`
-      : null;
-    const defaultKey = `${this.base}-${state}`;
+    const base = this._base(state);
+    const variantKey = this.variant ? `${base}-${state}-${this.variant}` : null;
+    const defaultKey = `${base}-${state}`;
     const useVariant =
       variantKey !== null && this.entity.scene.textures.exists(variantKey);
 
@@ -113,12 +138,20 @@ export class AnimationComponent extends Component {
       this.entity.play(animKey);
   }
 
+  private _base(state: StateName): string {
+    if (this.skin || !this.robe) return this.base;
+
+    return this.entity.scene.textures.exists(`${this.base}-${state}`)
+      ? this.base
+      : this.entity.name;
+  }
+
   private _createVariantAnims(variant: string): void {
     const scene = this.entity.scene;
     const directions = Object.values(Direction);
 
     Object.entries(this.config).forEach(([state, config]) => {
-      const key = `${this.entity.name}-${state}-${variant}`;
+      const key = `${this.base}-${state}-${variant}`;
 
       if (!scene.textures.exists(key)) return;
 
@@ -146,6 +179,8 @@ export class AnimationComponent extends Component {
 
     animations.forEach(([state, config]) => {
       const key = `${this.base}-${state}`;
+
+      if (this.robe && !scene.textures.exists(key)) return;
 
       directions.forEach((direction, dirIndex) => {
         const anim = `${key}-${direction}`;

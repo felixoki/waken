@@ -3,6 +3,7 @@ import {
   Effect,
   EffectName,
   EntityConfig,
+  Event,
   PlayerConfig,
   SurfaceName,
 } from "../types/index.js";
@@ -30,7 +31,9 @@ export const climate = {
         climate.instance(world, player),
       );
 
-      if (surface === SurfaceName.SNOW)
+      if (handlers.player.immune(player, EffectName.COLD))
+        climate.warm(player, world, io);
+      else if (surface === SurfaceName.SNOW)
         climate.chill(player.id, world, io, now);
       else if (world.chilled.has(player.id))
         climate.thaw(player.id, world, io, now);
@@ -76,8 +79,26 @@ export const climate = {
     if (!existing) effects.push(effect);
 
     world.players.update(id, { effects });
+    world.affected.add(id);
 
     handlers.weather.announce(id, false, player.socketId, effect, world, io);
+  },
+
+  warm: (player: PlayerConfig, world: World, io: Server): void => {
+    world.chilled.delete(player.id);
+
+    const effects: Effect[] = player.effects ?? [];
+    const index = effects.findIndex((e) => e.name === EffectName.COLD);
+
+    if (index === -1) return;
+
+    effects.splice(index, 1);
+    world.players.update(player.id, { effects });
+
+    handlers.broadcast.room(null, io, player.socketId, Event.EFFECT_REMOVE, {
+      id: player.id,
+      name: EffectName.COLD,
+    });
   },
 
   thaw: (id: string, world: World, io: Server, now: number): void => {

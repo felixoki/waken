@@ -14,6 +14,7 @@ import {
 } from "../types";
 import { configs } from "../configs/index.js";
 import { World } from "../World";
+import { handlers } from "./index.js";
 
 export const storage = {
   stacks: (a: Item, b: Item): boolean =>
@@ -182,6 +183,27 @@ export const storage = {
       },
     },
 
+    [SlotZone.ROBE]: {
+      accepts: SlotType.ENTITY,
+      readonly: false,
+
+      allows: (item: Item) => handlers.player.robe.is(item.name),
+
+      resolve(player: PlayerConfig, ref: SlotReference) {
+        if (ref.index !== 0) return null;
+        return { slots: player.robe, index: 0 };
+      },
+
+      sync(socket: Socket, player: PlayerConfig) {
+        const robe = player.robe[0] ?? null;
+
+        socket.emit(Event.ROBE_SYNC, robe);
+        socket
+          .to(`map:${player.map}`)
+          .emit(Event.PLAYER_ROBE, { id: player.id, robe });
+      },
+    },
+
     [SlotZone.STORAGE]: {
       accepts: SlotType.ENTITY,
       readonly: false,
@@ -267,6 +289,19 @@ export const storage = {
     if (
       value.source === null ||
       (zone.target.accepts !== null && zone.target.accepts !== type)
+    )
+      return;
+
+    if (
+      zone.target.allows &&
+      !zone.target.allows(storage.unwrap(source.zone, value.source).core as Item)
+    )
+      return;
+
+    if (
+      zone.source.allows &&
+      value.target !== null &&
+      !zone.source.allows(storage.unwrap(target.zone, value.target).core as Item)
     )
       return;
 
