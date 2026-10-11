@@ -1238,6 +1238,11 @@ export class MapBuilder {
             })),
           ),
         },
+        {
+          name: "chart",
+          type: "string",
+          value: handlers.generation.chart(grid),
+        },
       ],
       renderorder: "right-down",
       tiledversion: "1.11.0",

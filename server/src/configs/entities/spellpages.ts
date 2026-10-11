@@ -127,6 +127,16 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     "Spell page: Sunder",
     "A page cracked clean through the middle, humming where the halves meet.",
   ),
+  [EntityName.SPELL_PAGE_WELLSPRING]: page(
+    SpellName.WELLSPRING,
+    "Spell page: Wellspring",
+    "A page that never quite dries, the ink rippling when you tilt it.",
+  ),
+  [EntityName.SPELL_PAGE_DELTA_WAVE]: page(
+    SpellName.DELTA_WAVE,
+    "Spell page: Delta wave",
+    "A page ringed like a pond after a single drop, the ink still spreading.",
+  ),
   [EntityName.SPELL_PAGE_HYPNIC_JERK]: page(
     SpellName.HYPNIC_JERK,
     "Spell page: Hypnic jerk",

@@ -26,6 +26,8 @@ export enum SpellName {
   DARK_WAVE = "dark_wave",
   HYPNIC_JERK = "hypnic_jerk",
   SUNDER = "sunder",
+  WELLSPRING = "wellspring",
+  DELTA_WAVE = "delta_wave",
 }
 
 export enum Target {
@@ -85,6 +87,11 @@ export interface SpellConfig {
     tick: number;
     range: number;
     segments: number;
+  };
+  chain?: {
+    range: number;
+    limit: number;
+    falloff: number;
   };
   chargePercent?: number;
   animation?: {

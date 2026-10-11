@@ -11,6 +11,7 @@ import type { MainScene } from "./Main";
 import { Player } from "../Player";
 import { snow, type SnowTracks } from "../handlers/snow";
 import { location } from "../handlers/location";
+import { chart, type Chart } from "../handlers/chart";
 import { shadows, type Shadows } from "../handlers/shadows";
 
 export class Scene extends Phaser.Scene {
@@ -25,6 +26,7 @@ export class Scene extends Phaser.Scene {
   public bands: LocationBand[] = [];
   public band?: LocationBand;
   public row = -1;
+  public chart?: Chart;
 
   private ambience?: AmbiencePipeline;
   private climate?: ClimateManager;
@@ -98,6 +100,7 @@ export class Scene extends Phaser.Scene {
     this.bands = location.bands(tiles.map);
     this.band = undefined;
     this.row = -1;
+    this.chart = chart.create(tiles.map);
   }
 
   teardown(): void {
@@ -108,6 +111,7 @@ export class Scene extends Phaser.Scene {
     [...this.children.list].forEach((child) => child.destroy());
 
     this.landmarks = [];
+    this.chart = undefined;
     this.tileManager?.destroy();
     this.tileManager = undefined!;
   }
@@ -118,8 +122,12 @@ export class Scene extends Phaser.Scene {
     const player = this.managers.players.player;
     this.tileManager.update(delta, player);
 
-    if (player?.scene === this)
-      location.update(this, this.scene.get("main") as MainScene, player.y);
+    if (player?.scene === this) {
+      const main = this.scene.get("main") as MainScene;
+
+      location.update(this, main, player.y);
+      chart.update(this, main, player);
+    }
 
     if (this.snow) {
       snow.flush(this.snow);

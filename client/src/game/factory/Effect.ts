@@ -13,6 +13,7 @@ import { ReflectEffect } from "../effects/Reflect";
 import { ShieldEffect } from "../effects/Shield";
 import { GreaseEffect } from "../effects/Grease";
 import { SearingEffect } from "../effects/Searing";
+import { WarmEffect } from "../effects/Warm";
 
 export class EffectFactory {
   static create(name: EffectName, entity: Entity): Effect {
@@ -41,6 +42,8 @@ export class EffectFactory {
         return new GreaseEffect(entity);
       case EffectName.SEARING:
         return new SearingEffect(entity);
+      case EffectName.WARM:
+        return new WarmEffect();
     }
   }
 }

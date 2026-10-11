@@ -91,12 +91,30 @@ export interface Bonus {
   effects: [EffectName, number, number?][];
 }
 
+export enum TriggerName {
+  ROLL = "roll",
+  BLINK = "blink",
+}
+
+export interface Trigger {
+  name: EntityName;
+  on: TriggerName;
+  damage: Damage;
+  knockback: number;
+  radius: number;
+  lifesteal?: number;
+  effects?: [EffectName, number, number?][];
+}
+
 export interface Modifier {
   multipliers?: {
     damage?: number;
     crit?: number;
     defense?: number;
     speed?: number;
+    capture?: number;
+    healthRegen?: number;
+    manaRegen?: number;
   };
   regen?: {
     health?: number;
@@ -106,6 +124,17 @@ export interface Modifier {
     health?: number;
     mana?: number;
   };
+  bonus?: {
+    health?: number;
+    mana?: number;
+    crit?: number;
+    reflect?: number;
+  };
+  kill?: {
+    health?: number;
+    mana?: number;
+  };
+  immunities?: EffectName[];
 }
 
 export interface EntityDefinition {
@@ -120,6 +149,7 @@ export interface EntityDefinition {
   attacks?: AttackConfig[];
   bonuses?: Bonus[];
   modifier?: Modifier;
+  trigger?: Trigger;
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
   offset?: { x?: number; y?: number };
@@ -153,6 +183,7 @@ export enum EntityName {
   AXE = "axe",
   AMULET1 = "amulet1",
   AMULET2 = "amulet2",
+  AMULET3 = "amulet3",
   BAKER = "baker",
   BALE = "bale",
   BANQUET_TABLE = "banquet_table",
@@ -231,6 +262,7 @@ export enum EntityName {
   CITIZEN16 = "citizen16",
   CLARY_SAGE = "clary_sage",
   COMPASS = "compass",
+  MAP = "map",
   CUPBOARD1 = "cupboard1",
   CUPBOARD2 = "cupboard2",
   DEER = "deer",
@@ -321,11 +353,14 @@ export enum EntityName {
   LADDER = "ladder",
   LEVER = "lever",
   LANTERN = "lantern",
+  LUMP_OF_SUGAR = "lump_of_sugar",
+  NECKLACE1 = "necklace1",
   MARKET_HOUSE = "market_house",
   MARKET_HOUSE_EXIT = "market_house_exit",
   MARKET_STAND1 = "market_stand1",
   MARKET_STAND2 = "market_stand2",
   MARKET_STAND3 = "market_stand3",
+  MARKET_STAND4 = "market_stand4",
   OPIUM_POPPY = "opium_poppy",
   ORC1 = "orc1",
   ORC2 = "orc2",
@@ -363,6 +398,10 @@ export enum EntityName {
   SKULLS1 = "skulls1",
   SLEEPING_BAG1 = "sleeping_bag1",
   SLEEPING_BAG2 = "sleeping_bag2",
+  ROBE1 = "robe1",
+  ROBE2 = "robe2",
+  ROBE3 = "robe3",
+  ROBE4 = "robe4",
   VASES3 = "vases3",
   REED1 = "reed1",
   REED2 = "reed2",
@@ -399,6 +438,7 @@ export enum EntityName {
   TROLL = "troll",
   ANCIENT_TROLL = "ancient_troll",
   TROLL_SCALES = "troll_scales",
+  TRUMPET_SNAIL = "trumpet_snail",
   ANCIENT_TROLL_HEART = "ancient_troll_heart",
   TOMATO_SEED = "tomato_seed",
   TEMPLE_DOOR = "temple_door",
@@ -431,6 +471,8 @@ export enum EntityName {
   SPELL_PAGE_HYPERBEAM = "spell_page_hyperbeam",
   SPELL_PAGE_DARK_WAVE = "spell_page_dark_wave",
   SPELL_PAGE_SUNDER = "spell_page_sunder",
+  SPELL_PAGE_WELLSPRING = "spell_page_wellspring",
+  SPELL_PAGE_DELTA_WAVE = "spell_page_delta_wave",
   SPELL_PAGE_HYPNIC_JERK = "spell_page_hypnic_jerk",
   VENISON_MEAT = "venison_meat",
   VIAL = "vial",
@@ -445,7 +487,11 @@ export enum EntityName {
   VASES2 = "vases2",
   VEST = "vest",
   WATERING_CAN = "watering_can",
+  WINTER_COAT = "winter_coat",
+  WOOL_SOCK = "wool_sock",
+  SOUP_OF_THE_HIKER = "soup_of_the_hiker",
   WEAPONRACK1 = "weaponrack1",
+  WEAVER = "weaver",
   WELL = "well",
   WHEAT = "wheat",
   WHEAT_SEED = "wheat_seed",
@@ -454,6 +500,9 @@ export enum EntityName {
   WOLF1 = "wolf1",
   WOLF2 = "wolf2",
   WOLF3 = "wolf3",
+  WOLF_PELT = "wolf_pelt",
+  WANDERERS_CLOTH = "wanderers_cloth",
+  WANDERERS_GIFT = "wanderers_gift",
   WOOD = "wood",
   VILLAGE_PORTAL = "village_portal",
   VILLAIN = "villain",

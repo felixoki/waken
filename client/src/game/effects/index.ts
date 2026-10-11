@@ -9,3 +9,4 @@ export { MomentumEffect } from "./Momentum";
 export { ReflectEffect } from "./Reflect";
 export { ShieldEffect } from "./Shield";
 export { GreaseEffect } from "./Grease";
+export { WarmEffect } from "./Warm";

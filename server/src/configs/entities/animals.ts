@@ -86,7 +86,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 1.3,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.WOLF_PELT,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,
@@ -146,7 +158,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 1.25,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.WOLF_PELT,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,
@@ -206,7 +230,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 1.2,
     components: [
       { name: ComponentName.ANIMATION },
-      { name: ComponentName.DAMAGEABLE },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.WOLF_PELT,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+          ],
+        },
+      },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.BODY,

@@ -4,6 +4,7 @@ import {
   SpellName,
   SoundName,
   EffectName,
+  TriggerName,
 } from "@server/types";
 import { Entity } from "../Entity";
 import type { Player } from "../Player";
@@ -12,6 +13,7 @@ import { Hitbox } from "../Hitbox";
 import { vfx } from "../vfx";
 import { EffectFactory } from "../factory/Effect";
 import { DELAY_ATTACK } from "@server/globals";
+import { handlers } from ".";
 
 const FIRE_BREATH_MOUTH: Record<Direction, { x: number; y: number }> = {
   [Direction.DOWN]: { x: 0, y: 20 },
@@ -19,6 +21,12 @@ const FIRE_BREATH_MOUTH: Record<Direction, { x: number; y: number }> = {
   [Direction.LEFT]: { x: -50, y: -12 },
   [Direction.RIGHT]: { x: 50, y: -12 },
 };
+
+const STORM_LIFT = 320;
+const STORM_GAP = 110;
+const STORM_SCALES = [1, 0.55, 0.85, 0.5, 1.1, 0.65, 0.9];
+const STORM_CHAIN_LIFT = 150;
+const STORM_CHAIN_SCALE = 0.5;
 
 type SpellHandler = (
   entity: Entity,
@@ -261,8 +269,14 @@ export const spells: Record<SpellName, SpellHandler> = {
     vfx.emitters.puff(entity.scene, entity.x, entity.y);
 
     if ((entity as Player).isControllable) {
+      const fromX = entity.x;
+      const fromY = entity.y;
+
       entity.setPosition(x, y);
       entity.scene.managers.camera.dash();
+
+      for (const trigger of handlers.trigger.resolve(entity, TriggerName.BLINK))
+        handlers.trigger.fire(entity, trigger, fromX, fromY);
     }
 
     vfx.emitters.puff(entity.scene, x, y);
@@ -326,25 +340,91 @@ export const spells: Record<SpellName, SpellHandler> = {
     _direction: { x: number; y: number },
   ) => {
     const scene = entity.scene;
-    const source = {
-      x: target.x + Phaser.Math.Between(-40, 40),
-      y: target.y - 350,
+    const chain = config.chain!;
+    const spread = config.range!;
+    const struck = new Set<string>();
+    let jumps = 0;
+    let seed = (Math.floor(target.x) * 73856093) ^ (Math.floor(target.y) * 19349663);
+
+    const random = () => {
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
 
-    vfx.emitters.lightning(scene, source, target);
+    const strike = (
+      x: number,
+      y: number,
+      scale: number,
+      lift: number,
+      hit: SpellConfig,
+    ) => {
+      if (!scene.sys) return;
 
-    scene.cameras.main.shake(200, 0.003);
-    scene.cameras.main.flash(100, 200, 200, 255);
+      vfx.quads.storm(scene, x, y, config.radius! * scale, lift, () => {
+        if (!scene.sys) return;
 
-    new Hitbox(
+        new Hitbox(
+          scene,
+          x,
+          y,
+          config.hitbox!.width * scale,
+          config.hitbox!.height * scale,
+          entity.id,
+          hit,
+        );
+
+        const weaker: SpellConfig = {
+          ...hit,
+          damage: {
+            ...hit.damage,
+            amount: Math.round(hit.damage.amount * chain.falloff),
+          },
+          knockback: 0,
+        };
+
+        for (const other of scene.managers.entities.entities.values()) {
+          if (jumps >= chain.limit) break;
+          if (other.id === entity.id || struck.has(other.id)) continue;
+          if (!other.active || !other.hasEffect(EffectName.WET)) continue;
+
+          const dx = other.x - x;
+          const dy = other.y - y;
+          if (dx * dx + dy * dy > chain.range * chain.range) continue;
+
+          struck.add(other.id);
+          jumps++;
+
+          vfx.quads.arc(scene, { x, y }, { x: other.x, y: other.y });
+          strike(other.x, other.y, STORM_CHAIN_SCALE, STORM_CHAIN_LIFT, weaker);
+        }
+      });
+    };
+
+    vfx.quads.gale(
       scene,
       target.x,
       target.y,
-      config.hitbox!.width,
-      config.hitbox!.height,
-      entity.id,
-      config,
+      spread * 1.15,
+      STORM_LIFT + STORM_SCALES.length * STORM_GAP,
     );
+
+    for (let i = 0; i < STORM_SCALES.length; i++) {
+      const angle = random() * Math.PI * 2;
+      const reach = i === 0 ? 0 : spread * (0.35 + 0.65 * Math.sqrt(random()));
+      const x = target.x + Math.cos(angle) * reach;
+      const y = target.y + Math.sin(angle) * reach * 0.6;
+      const delay = i * STORM_GAP + (i === 0 ? 0 : random() * STORM_GAP);
+
+      scene.time.delayedCall(delay, () =>
+        strike(x, y, STORM_SCALES[i], STORM_LIFT, config),
+      );
+    }
+
+    scene.time.delayedCall(STORM_LIFT, () => {
+      if (scene.sys) scene.cameras.main.shake(140, 0.002);
+    });
   },
 
   [SpellName.DARK_WAVE]: (
@@ -411,6 +491,50 @@ export const spells: Record<SpellName, SpellHandler> = {
     vfx.quads.sunder(entity.scene, x, y, config.radius!, () =>
       burst(entity, config, x, y),
     );
+  },
+
+  [SpellName.WELLSPRING]: (entity: Entity, config: SpellConfig) => {
+    const { x, y } = entity.body.center;
+
+    vfx.quads.wellspring(entity.scene, x, y, config.radius!, () =>
+      burst(entity, config, x, y),
+    );
+  },
+
+  [SpellName.DELTA_WAVE]: (entity: Entity, config: SpellConfig) => {
+    const scene = entity.scene;
+    const radius = config.radius!;
+    const { x, y } = entity.body.center;
+
+    let hitbox: Hitbox | null = null;
+
+    const splash = vfx.quads.swell(scene, x, y, radius, config.duration!, (front, inner, done) => {
+      if (!scene.sys) return;
+
+      if (!hitbox) {
+        hitbox = new Hitbox(scene, x, y, radius * 2, radius * 2, entity.id, {
+          ...config,
+          duration: 0,
+        });
+        hitbox.onImpact = (target) =>
+          splash(target.body.center.x, target.body.center.y);
+
+        if ((entity as Player).isControllable)
+          scene.managers.camera.shake(160, 0.0016);
+      }
+
+      if (!hitbox.active) return;
+
+      if (done) {
+        hitbox.destroy();
+        return;
+      }
+
+      const r = Math.max(8, front);
+
+      hitbox.inner = inner;
+      hitbox.body.setCircle(r, radius - r, radius - r);
+    });
   },
 
   [SpellName.DRAGON_FORM]: (entity: Entity) => {

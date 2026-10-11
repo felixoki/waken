@@ -175,12 +175,15 @@ export const combat = {
 
     const sound = (hitbox.config as SpellConfig).sounds?.impact;
 
-    if (sound && !hitbox.impacts.has(entity.id)) {
+    if (!hitbox.impacts.has(entity.id)) {
       hitbox.impacts.add(entity.id);
 
-      entity.scene.managers.sound.play.sfx(sound, {
-        position: { x: hitbox.x, y: hitbox.y },
-      });
+      if (sound)
+        entity.scene.managers.sound.play.sfx(sound, {
+          position: { x: hitbox.x, y: hitbox.y },
+        });
+
+      hitbox.onImpact?.(entity);
     }
 
     if (!isAuthority || hitbox.hits.has(entity.id)) return;

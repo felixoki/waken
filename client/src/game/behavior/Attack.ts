@@ -27,6 +27,7 @@ export class AttackBehavior extends Behavior {
   private cooldowns = new Map<StateName | SpellName, number>();
   private spacing: number;
   private recovery: number;
+  private evasive: boolean;
   public alert = { active: false, time: 0, duration: 800 };
   private line = { at: 0, clear: true };
   private mend = { at: 0, needed: false };
@@ -43,6 +44,7 @@ export class AttackBehavior extends Behavior {
     this.repeat = true;
     this.spacing = config?.spacing ?? 0;
     this.recovery = config?.recovery ?? 0;
+    this.evasive = config?.evasive ?? false;
   }
 
   start(targetId: string): void {
@@ -226,6 +228,14 @@ export class AttackBehavior extends Behavior {
         };
       }
 
+      if (this.evasive) {
+        if (!recovering) return { facing, moving: [], isRunning: false };
+
+        const away = handlers.direction.fromAngle(angle + Math.PI);
+
+        return { facing: away, moving: [away], isRunning: canRun };
+      }
+
       if (this.spacing && distance <= this.spacing)
         return { facing, moving: [], isRunning: false };
 
@@ -270,6 +280,12 @@ export class AttackBehavior extends Behavior {
     }
 
     this.lostSightTime += entity.scene.game.loop.delta;
+
+    if (this.evasive) {
+      if (this.lostSightTime > this.lostSightThreshold) this.completed = true;
+
+      return { facing: entity.facing, moving: [], isRunning: false };
+    }
 
     if (this.lostSightTime > this.lostSightThreshold) {
       this.completed = true;

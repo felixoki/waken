@@ -11,6 +11,7 @@ export enum EffectName {
   SHIELD = "shield",
   GREASE = "grease",
   SEARING = "searing",
+  WARM = "warm",
 }
 
 export interface Effect {

@@ -744,4 +744,27 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.2,
     },
   },
+  [EntityName.SOUP_OF_THE_HIKER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { effect: EffectName.WARM, duration: 180000 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Soup of the hiker",
+      description:
+        "A thick broth of boar, goat milk and troll scales that keeps the cold out for a while.",
+      stackable: true,
+      icon: { spritesheet: "icons2", row: 4, col: 28 },
+      weight: 0.4,
+    },
+  },
 };

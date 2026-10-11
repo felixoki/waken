@@ -14,7 +14,11 @@ export interface EffectDefinition {
 export const effects: Record<EffectName, EffectDefinition> = {
   [EffectName.BURNING]: { interval: 1000, damage: 5 },
   [EffectName.WET]: {},
-  [EffectName.COLD]: {},
+  [EffectName.COLD]: {
+    interval: 1000,
+    damage: 4,
+    modifier: { multipliers: { defense: 1.1 } },
+  },
   [EffectName.POISONED]: { interval: 2000, damage: 3 },
   [EffectName.ILLUMINATED]: {},
   [EffectName.REGAIN]: { interval: 1000, restore: { health: 5 } },
@@ -29,6 +33,7 @@ export const effects: Record<EffectName, EffectDefinition> = {
   [EffectName.SHIELD]: { absorb: 50 },
   [EffectName.GREASE]: {},
   [EffectName.SEARING]: { interval: 1000, damage: 20 },
+  [EffectName.WARM]: { modifier: { immunities: [EffectName.COLD] } },
 };
 
 export const interactions: Partial<

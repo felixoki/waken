@@ -1,18 +1,28 @@
 import { DirectionVectors, EffectName, Item } from "@server/types";
 import { configs } from "@server/configs";
 import { Entity } from "../Entity";
+import { robe } from "./robe";
 
 const vector = new Phaser.Math.Vector2(0, 0);
 
 export const move = {
-  speed: (items: (Item | null)[], effects?: Iterable<EffectName>) => {
+  speed: (
+    items: (Item | null)[],
+    effects?: Iterable<EffectName>,
+    worn?: Item | null,
+  ) => {
     let multiplier = 1;
 
     for (const item of items) {
-      const value =
-        item && configs.entities[item.name]?.modifier?.multipliers?.speed;
+      if (!item || robe.is(item.name)) continue;
+
+      const value = configs.entities[item.name]?.modifier?.multipliers?.speed;
       if (value) multiplier *= value;
     }
+
+    const value =
+      worn && configs.entities[worn.name]?.modifier?.multipliers?.speed;
+    if (value) multiplier *= value;
 
     if (effects)
       for (const name of effects) {

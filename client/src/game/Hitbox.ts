@@ -1,5 +1,6 @@
 import { CombatConfig } from "@server/types";
 import { Scene } from "./scenes/Scene";
+import type { Entity } from "./Entity";
 
 export class Hitbox extends Phaser.GameObjects.Rectangle {
   public hits = new Set<string>();
@@ -9,6 +10,7 @@ export class Hitbox extends Phaser.GameObjects.Rectangle {
   public clearance?: number;
   public inner: number = 0;
   public hazard: boolean;
+  public onImpact?: (entity: Entity) => void;
 
   declare body: Phaser.Physics.Arcade.Body;
 
@@ -34,7 +36,7 @@ export class Hitbox extends Phaser.GameObjects.Rectangle {
     scene.physics.add.existing(this);
     scene.physicsManager.groups.hits.add(this);
 
-    if (config.duration)
+    if ("duration" in config && config.duration)
       scene.time.delayedCall(config.duration, () => this.destroy());
   }
 }

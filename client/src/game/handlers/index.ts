@@ -25,6 +25,9 @@ import { snow } from "./snow";
 import { location } from "./location";
 import { shadows } from "./shadows";
 import { light } from "./light";
+import { chart } from "./chart";
+import { trigger } from "./trigger";
+import { robe } from "./robe";
 
 export const handlers = {
   state,
@@ -54,4 +57,7 @@ export const handlers = {
   location,
   shadows,
   light,
+  chart,
+  trigger,
+  robe,
 };

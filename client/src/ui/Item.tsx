@@ -235,7 +235,7 @@ export function Item({
             if (!modifier) return null;
 
             const rows: { label: string; value: string }[] = [];
-            const { multipliers, regen, max } = modifier;
+            const { multipliers, regen, max, bonus, immunities } = modifier;
 
             const percent = (value: number) =>
               `${value >= 0 ? "+" : ""}${Math.round(value * 100)}%`;
@@ -256,6 +256,29 @@ export function Item({
               rows.push({ label: "Max health", value: `${max.health}` });
             if (max?.mana)
               rows.push({ label: "Max mana", value: `${max.mana}` });
+            if (bonus?.health)
+              rows.push({ label: "Health", value: `+${bonus.health}` });
+            if (bonus?.mana)
+              rows.push({ label: "Mana", value: `+${bonus.mana}` });
+            if (multipliers?.healthRegen)
+              rows.push({
+                label: "Health regen",
+                value: percent(multipliers.healthRegen - 1),
+              });
+            if (multipliers?.manaRegen)
+              rows.push({
+                label: "Mana regen",
+                value: percent(multipliers.manaRegen - 1),
+              });
+            if (bonus?.crit)
+              rows.push({ label: "Crit chance", value: percent(bonus.crit) });
+            if (bonus?.reflect)
+              rows.push({
+                label: "Reflect damage",
+                value: percent(bonus.reflect),
+              });
+            for (const name of immunities ?? [])
+              rows.push({ label: `Resist ${name}`, value: "100%" });
 
             if (!rows.length) return null;
 

@@ -308,6 +308,38 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "icons8", row: 21, col: 1 },
     },
   },
+  [SpellName.WELLSPRING]: {
+    name: SpellName.WELLSPRING,
+    sounds: { cast: SoundName.GRASP },
+    damage: { type: DamageType.COLD, amount: 30 },
+    knockback: 40,
+    mana: 25,
+    duration: 600,
+    radius: 110,
+    effects: [[EffectName.WET, 8000]],
+    metadata: {
+      description:
+        "Water wells up from under your feet and soaks everything standing in it.",
+      displayName: "Wellspring",
+      icon: { spritesheet: "icons8", row: 21, col: 14 },
+    },
+  },
+  [SpellName.DELTA_WAVE]: {
+    name: SpellName.DELTA_WAVE,
+    sounds: { cast: SoundName.GRASP },
+    damage: { type: DamageType.COLD, amount: 30 },
+    knockback: 240,
+    mana: 40,
+    duration: 950,
+    radius: 118,
+    effects: [[EffectName.WET, 8000]],
+    metadata: {
+      description:
+        "Water bursts up under you and rolls outward as a ring of waves, shoving back and soaking whatever it reaches.",
+      displayName: "Delta wave",
+      icon: { spritesheet: "icons5", row: 12, col: 9 },
+    },
+  },
   [SpellName.LIGHTNING_STRIKE]: {
     name: SpellName.LIGHTNING_STRIKE,
     sounds: { cast: SoundName.LIGHTNING_STRIKE },
@@ -315,13 +347,20 @@ export const spells: Record<SpellName, SpellConfig> = {
     knockback: 120,
     mana: 90,
     duration: 300,
+    radius: 34,
+    range: 110,
     hitbox: {
       width: 40,
       height: 40,
     },
+    chain: {
+      range: 120,
+      limit: 5,
+      falloff: 0.6,
+    },
     metadata: {
       description:
-        "Strikes a single target with a bolt of high damage lightning.",
+        "Calls a storm of lightning down around a point. Each bolt leaps to anything wet nearby.",
       displayName: "Lightning strike",
       icon: { spritesheet: "icons5", row: 16, col: 18 },
     },

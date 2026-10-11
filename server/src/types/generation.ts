@@ -53,6 +53,10 @@ export const TERRAIN_ORDER = [
   TerrainName.WALL_TOP,
 ];
 
+export const TERRAIN_INDEX = Object.fromEntries(
+  TERRAIN_ORDER.map((terrain, i) => [terrain, i]),
+) as Record<TerrainName, number>;
+
 export enum TileRole {
   FILL = "fill",
   BORDER_OUTER = "border_outer",

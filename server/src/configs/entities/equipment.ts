@@ -1,5 +1,6 @@
 import {
   ComponentName,
+  DamageType,
   Direction,
   EntityDefinition,
   EntityName,
@@ -7,6 +8,7 @@ import {
   Rarity,
   SpellName,
   StateName,
+  TriggerName,
 } from "../../types";
 
 export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
@@ -319,6 +321,37 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.4,
     },
   },
+  [EntityName.MAP]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 26, end: 27 },
+            { row: 8, start: 26, end: 27 },
+          ],
+        },
+        key: "map_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Sleepwanderer's map",
+      description:
+        "A blank map that fills itself in as you wander a dream. Hold it to read it.",
+      icon: { spritesheet: "icons8", row: 8, col: 25 },
+      rarity: Rarity.RARE,
+      weight: 0.2,
+    },
+  },
   [EntityName.HARE_FOOT]: {
     facing: Direction.DOWN,
     moving: [],
@@ -623,6 +656,205 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       icon: { spritesheet: "icons2", row: 4, col: 10 },
       rarity: Rarity.LEGENDARY,
       weight: 2.5,
+    },
+  },
+  [EntityName.LUMP_OF_SUGAR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons4",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 14, end: 15 },
+            { row: 8, start: 14, end: 15 },
+          ],
+        },
+        key: "lump_of_sugar_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { multipliers: { capture: 2 } },
+    metadata: {
+      displayName: "Lump of sugar",
+      description:
+        "A sweet lump that wins a creature over long before it is worn down.",
+      icon: { spritesheet: "icons4", row: 8, col: 13 },
+      weight: 0.05,
+    },
+  },
+  [EntityName.WOOL_SOCK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons7",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 26, end: 27 },
+            { row: 4, start: 26, end: 27 },
+          ],
+        },
+        key: "wool_sock_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    trigger: {
+      name: EntityName.WOOL_SOCK,
+      on: TriggerName.ROLL,
+      damage: { type: DamageType.PHYSICAL, amount: 12 },
+      knockback: 20,
+      radius: 44,
+    },
+    metadata: {
+      displayName: "Wool sock",
+      description:
+        "A scratchy sock full of static. Roll past your enemies and it snaps sparks at them.",
+      icon: { spritesheet: "icons7", row: 4, col: 25 },
+      weight: 0.05,
+    },
+  },
+  [EntityName.NECKLACE1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons11",
+          tileSize: 16,
+          tiles: [
+            { row: 11, start: 2, end: 3 },
+            { row: 12, start: 2, end: 3 },
+          ],
+        },
+        key: "necklace1_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { kill: { mana: 40 } },
+    metadata: {
+      displayName: "Ral Vey",
+      description:
+        "A string of purple pearls that drinks in mana from everything you put to rest.",
+      icon: { spritesheet: "icons11", row: 12, col: 1 },
+      weight: 0.1,
+    },
+  },
+  [EntityName.TRUMPET_SNAIL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 29, end: 30 },
+            { row: 8, start: 29, end: 30 },
+          ],
+        },
+        key: "trumpet_snail_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { multipliers: { speed: 0.85, defense: 0.75 } },
+    metadata: {
+      displayName: "Trumpet snail",
+      description:
+        "Slow and sturdy. It lends you its pace, and its shell.",
+      icon: { spritesheet: "icons1", row: 8, col: 28 },
+      weight: 0.1,
+    },
+  },
+  [EntityName.AMULET3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons11",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 26, end: 27 },
+            { row: 10, start: 26, end: 27 },
+          ],
+        },
+        key: "amulet3_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    trigger: {
+      name: EntityName.AMULET3,
+      on: TriggerName.BLINK,
+      damage: { type: DamageType.PHYSICAL, amount: 40 },
+      knockback: 0,
+      radius: 90,
+      lifesteal: 1,
+    },
+    metadata: {
+      displayName: "Lir Dai",
+      description:
+        "A hungry amulet. Blink away and it drinks the life of everything you leave behind.",
+      icon: { spritesheet: "icons11", row: 10, col: 25 },
+      weight: 0.1,
+    },
+  },
+  [EntityName.WINTER_COAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons7",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 11, end: 12 },
+            { row: 2, start: 11, end: 12 },
+          ],
+        },
+        key: "winter_coat_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { immunities: [EffectName.COLD] },
+    metadata: {
+      displayName: "Winter coat",
+      description:
+        "A thick lined coat. Carry it and the cold cannot get to you.",
+      icon: { spritesheet: "icons7", row: 2, col: 10 },
+      weight: 2,
     },
   },
 };

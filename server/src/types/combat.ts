@@ -1,8 +1,9 @@
 import { SpellConfig } from "./spells";
 import { WeaponConfig } from "./weapons";
 import { TrapConfig } from "./traps";
+import { EntityName, Trigger } from "./entities";
 
-export type CombatConfig = SpellConfig | WeaponConfig | TrapConfig;
+export type CombatConfig = SpellConfig | WeaponConfig | TrapConfig | Trigger;
 
 export interface Hit {
   config: CombatConfig;
@@ -18,6 +19,7 @@ export interface Hurt {
   isMiss?: boolean;
   isCritical?: boolean;
   reflected?: boolean;
+  trigger?: EntityName;
 }
 
 export interface Spot {

@@ -623,6 +623,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
+              name: EntityName.WANDERERS_CLOTH,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            },
+            {
               name: EntityName.SPELL_PAGE_GREASE,
               quantity: 1,
               stackable: false,
@@ -694,6 +700,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
+              name: EntityName.WANDERERS_CLOTH,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            },
+            {
               name: EntityName.SPELL_PAGE_HEAL_PARTY,
               quantity: 1,
               stackable: false,
@@ -751,7 +763,10 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           fov: Math.PI * 2,
         },
       },
-      { name: BehaviorName.ATTACK, config: { spacing: 150, recovery: 2000 } },
+      {
+        name: BehaviorName.ATTACK,
+        config: { spacing: 150, recovery: 2000, evasive: true },
+      },
       { name: BehaviorName.SEARCH },
     ],
   },
@@ -765,6 +780,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.DAMAGEABLE,
         config: {
           loot: [
+            {
+              name: EntityName.WANDERERS_GIFT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
             {
               name: EntityName.AMULET2,
               quantity: 1,
@@ -850,6 +871,12 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.DAMAGEABLE,
         config: {
           loot: [
+            {
+              name: EntityName.WANDERERS_CLOTH,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            },
             {
               name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE,
               quantity: 1,
