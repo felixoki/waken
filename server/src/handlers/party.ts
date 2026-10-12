@@ -294,6 +294,7 @@ export const party = {
           zone: biomeEntity.zone,
           textureSpawner: biomeEntity.textureSpawner,
           link: biomeEntity.link,
+          origin: biomeEntity.origin,
         };
 
         world.entities.add(id, config);

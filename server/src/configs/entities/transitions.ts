@@ -352,6 +352,7 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
   },
   [EntityName.CAVE_EXIT]: {
     facing: Direction.DOWN,
+    offset: { y: 6 },
     moving: [],
     components: [
       {
@@ -377,7 +378,7 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
           width: 16,
           height: 16,
           offsetX: 0,
-          offsetY: 0,
+          offsetY: 18,
         },
       },
     ],

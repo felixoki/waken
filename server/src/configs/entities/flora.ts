@@ -6,6 +6,156 @@ import {
 } from "../../types";
 
 export const flora: Partial<Record<EntityName, EntityDefinition>> = {
+  [EntityName.GLOWSHROOM1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 40,
+          intensity: 0.7,
+          color: 0x7fe8c4,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 48, start: 12, end: 13 },
+            { row: 49, start: 12, end: 13 },
+          ],
+        },
+        key: "glowshroom1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 8,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      { name: ComponentName.BOUNCE },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Glowshroom",
+      description: "A cluster of small mushrooms that glows faintly green.",
+      stackable: true,
+      icon: { spritesheet: "icons9", row: 2, col: 10 },
+      weight: 0.05,
+    },
+  },
+  [EntityName.GLOWSHROOM2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 56,
+          intensity: 0.8,
+          color: 0x7fe8c4,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 48, start: 10, end: 11 },
+            { row: 49, start: 10, end: 11 },
+          ],
+        },
+        key: "glowshroom2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 16,
+          offsetX: 6,
+          offsetY: 14,
+          collides: false,
+          static: true,
+        },
+      },
+      { name: ComponentName.BOUNCE },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.GLOWSHROOM1, quantity: 2 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Glowshroom",
+      description: "A cluster of small mushrooms that glows faintly green.",
+    },
+  },
+  [EntityName.GLOWSHROOM3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.LIGHT,
+        config: {
+          radius: 72,
+          intensity: 0.9,
+          color: 0x7fe8c4,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 48, start: 8, end: 9 },
+            { row: 49, start: 8, end: 9 },
+          ],
+        },
+        key: "glowshroom3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 16,
+          offsetX: 4,
+          offsetY: 14,
+          collides: false,
+          static: true,
+        },
+      },
+      { name: ComponentName.BOUNCE },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.GLOWSHROOM1, quantity: 3 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Glowshroom",
+      description: "A cluster of small mushrooms that glows faintly green.",
+    },
+  },
   [EntityName.TREE1]: {
     facing: Direction.DOWN,
     moving: [],

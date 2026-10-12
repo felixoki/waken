@@ -26,8 +26,8 @@ export function generateBiome(
     active.findIndex((s) => s.spawn),
   );
 
-  const configs = active.map(({ biome }, i) => {
-    const config = biomes[biome];
+  const configs = active.map(({ biome, origin }, i) => {
+    const config = { ...biomes[biome], origin };
     if (!seed) return config;
 
     const noise = i === host ? seed : `${seed}-${biome}`;

@@ -40,10 +40,16 @@ Work through these in order. Paths are stable, line numbers are not.
    `frameWidth`, `frameHeight`. See the judgment call below.
 6. **`server/src/configs/sounds.ts`** — the `SoundName` entry. Multi-take sounds
    use a `variants` array of file basenames.
-7. **Sprites** into `client/public/assets/sprites/`.
-8. **Audio** into `client/public/assets/sounds/<category>/`.
-9. **Tiled** — place an object in the relevant `tiled/*.tmx`, then export from
-   Tiled (File then Export As, or Ctrl+E to repeat the recorded target).
+7. **`server/src/configs/needs.ts`** — if the entity is an item a player can
+   hold (anything pickable: a resource, drop, food, drink, plant, cloth), add it
+   to the `items` of the matching need. That list is what the economy tabs show,
+   so an item left out never appears there: ores, hides and other materials go
+   under `NeedName.RESOURCES`, flowers and herbs under `NeedName.PLANTS`. Always
+   do this in the same change that creates the entity.
+8. **Sprites** into `client/public/assets/sprites/`.
+9. **Audio** into `client/public/assets/sounds/<category>/`.
+10. **Tiled** — place an object in the relevant `tiled/*.tmx`, then export from
+    Tiled (File then Export As, or Ctrl+E to repeat the recorded target).
 
 For asset conversion, naming and frame sizes see `references/assets.md`.
 
@@ -86,6 +92,7 @@ see it. Check the key by hand against the enum values.
 | Wrong or garbled animation | `frameWidth`/`frameHeight` do not match the sheet |
 | Silent entity | `SoundName` enum added but no entry in `sounds.ts`, or variant basenames do not match the files |
 | Not in the world | Tiled object placed but the map never re-exported |
+| Item missing from the economy tab | not listed under a need in `needs.ts` |
 
 ## Verify before handing back
 

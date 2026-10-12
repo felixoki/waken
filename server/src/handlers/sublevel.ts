@@ -38,7 +38,13 @@ export const sublevel = {
 
     if (!pending) {
       pending = handlers.generation.start(
-        [{ biome: config.biome, spawn: true }],
+        [
+          {
+            biome: config.biome,
+            spawn: true,
+            origin: world.entities.get(entranceId)?.origin,
+          },
+        ],
         entranceId,
       );
       world.sublevels.setInstance(entranceId, pending, map);

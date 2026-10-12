@@ -10,6 +10,7 @@ import { WeaponName } from "./weapons";
 import { Effect, EffectName } from "./effects.js";
 import { SoundName } from "./sounds";
 import { ZoneConfig } from "./zones.js";
+import type { BiomeName } from "./generation";
 
 export interface AttackConfig {
   state: StateName;
@@ -62,6 +63,7 @@ export interface EntityConfig {
   zone?: ZoneConfig;
   weight?: number;
   link?: string;
+  origin?: BiomeName;
   isOpen?: boolean;
 }
 
@@ -373,6 +375,18 @@ export enum EntityName {
   PICKAXE = "pickaxe",
   QUARTZ1 = "quartz1",
   QUARTZ_ORE = "quartz_ore",
+  AZURITE1 = "azurite1",
+  AZURITE_ORE = "azurite_ore",
+  IRON_ORE = "iron_ore",
+  CAVE_ROCK1 = "cave_rock1",
+  CAVE_ROCK2 = "cave_rock2",
+  CAVE_ROCK3 = "cave_rock3",
+  CAVE_ROCK4 = "cave_rock4",
+  CAVE_ROCK5 = "cave_rock5",
+  CAVE_ROCK6 = "cave_rock6",
+  GLOWSHROOM1 = "glowshroom1",
+  GLOWSHROOM2 = "glowshroom2",
+  GLOWSHROOM3 = "glowshroom3",
   RAT = "rat",
   RAT_CLAWS = "rat_claws",
   RASPBERRY = "raspberry",

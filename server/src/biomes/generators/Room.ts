@@ -34,6 +34,15 @@ import {
 import { SeparatorGenerator } from "./Separator";
 
 const MIN_WALL_RUN = 6;
+const POND_HEADROOM = 4;
+const EXIT_SPAN = [-2, -1, 0, 1];
+const POND_CHANNEL = 3;
+const POND_MIN_AREA = 28;
+const POND_WOBBLE = 0.5;
+const POND_BODY = 6;
+const POND_SHORE_REACH = 3;
+const TUNNEL_HEADROOM = 3;
+const TUNNEL_BULGE = 0.3;
 const RECESS_CLEARANCE = 2;
 const RECESS_MIN = 5;
 const TRAP_WIDTH = 3;
@@ -46,11 +55,20 @@ export class RoomGenerator {
   private seed: string;
   private rooms: Room[] = [];
   private doors: DoorAnchor[] = [];
-  private lakes: { x: number; y: number; w: number; h: number }[] = [];
+  private lakes: {
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    deep: { x: number; y: number; radius: number };
+  }[] = [];
+  private isles: Uint8Array;
+  private treasures = new Map<Room, { x: number; y: number }>();
 
   constructor(config: BiomeConfig, seed: string) {
     this.config = config;
     this.seed = seed;
+    this.isles = new Uint8Array(config.width * config.height);
   }
 
   generate(): {
@@ -77,8 +95,11 @@ export class RoomGenerator {
     const { edges, centers } = this._connect();
     const depths = this._depths(edges);
 
+    const grid = this.config.rooms?.erosion?.quantize ?? 0;
+
     for (const [a, b] of edges)
-      this._corridor(terrain, centers[a], centers[b], 4);
+      if (grid > 1) this._tunnel(terrain, centers[a], centers[b], grid);
+      else this._corridor(terrain, centers[a], centers[b], 4);
 
     this._bridge(terrain);
 
@@ -91,6 +112,10 @@ export class RoomGenerator {
       height,
     );
     for (let i = 0; i < cleaned.length; i++) terrain[i] = cleaned[i];
+
+    const step = this.config.rooms?.erosion?.step ?? 0;
+    if (step > 1)
+      while (this._level(terrain, step) || this._widenPinches(terrain));
 
     this._walls(terrain);
 
@@ -129,7 +154,12 @@ export class RoomGenerator {
         depths,
         roomConfig,
         rng,
+        this.config.origin,
       );
+
+      if (roomConfig.assignment.uniform) assigned.fill(assigned[0]);
+
+      const lair = depths.lastIndexOf(Math.max(...depths));
 
       const byCorner = new Map<RoomInteriorOrigin, RoomInterior[]>();
 
@@ -150,7 +180,11 @@ export class RoomGenerator {
         const isLarge =
           room.width >= roomConfig.distribution.large.size.width.min;
 
-        const groups = shrine ? shrine.enemies : (template?.enemies ?? []);
+        const groups = shrine
+          ? shrine.enemies
+          : template?.solitary && i !== lair
+            ? []
+            : (template?.enemies ?? []);
 
         for (const piece of groups) {
           const count =
@@ -166,6 +200,7 @@ export class RoomGenerator {
               const oy = room.y + 1 + Math.floor(rng() * (room.height - 2));
 
               if (separators.occupied[oy * width + ox]) continue;
+              if (this._blocked(terrain, oy * width + ox)) continue;
               if (
                 altar &&
                 ox >= altar.x &&
@@ -389,8 +424,10 @@ export class RoomGenerator {
       /** Topmost reachable floor tile inside the spawn room becomes the exit */
       let anchor = -1;
 
+      const lift = this.config.rooms?.erosion?.quantize ?? 0;
+
       for (
-        let y = spawnRoom.y;
+        let y = Math.max(0, spawnRoom.y - lift);
         y < spawnRoom.y + spawnRoom.height && anchor < 0;
         y++
       )
@@ -402,6 +439,41 @@ export class RoomGenerator {
           }
         }
 
+      const faced = (x: number, y: number) =>
+        EXIT_SPAN.every(
+          (dx) =>
+            reachable[y * width + x + dx] &&
+            terrain[(y - 1) * width + x + dx] === TerrainName.WALL_BASE,
+        );
+      const face: number[] = [];
+
+      for (
+        let y = Math.max(1, spawnRoom.y - lift);
+        lift > 0 && y < spawnRoom.y + spawnRoom.height && !face.length;
+        y++
+      )
+        for (let x = spawnRoom.x; x < spawnRoom.x + spawnRoom.width; x++)
+          if (faced(x, y)) face.push(y * width + x);
+
+      if (lift > 0 && !face.length) {
+        const cx = spawnRoom.x + (spawnRoom.width >> 1);
+        let nearest = Infinity;
+
+        for (let y = 1; y < height; y++)
+          for (let x = 2; x < width - 1; x++) {
+            if (!faced(x, y)) continue;
+
+            const dist = Math.abs(x - cx) + Math.abs(y - spawnRoom.y);
+            if (dist >= nearest) continue;
+
+            nearest = dist;
+            face.length = 0;
+            face.push(y * width + x);
+          }
+      }
+
+      if (face.length) anchor = face[face.length >> 1];
+
       if (anchor >= 0) {
         const ay = (anchor / width) | 0;
 
@@ -409,13 +481,24 @@ export class RoomGenerator {
         let right = anchor % width;
         while (left - 1 >= 0 && reachable[ay * width + left - 1]) left--;
         while (right + 1 < width && reachable[ay * width + right + 1]) right++;
-        const col = (left + right) >> 1;
+        const col = face.length ? anchor % width : (left + right) >> 1;
 
         doorX = col * tileWidth;
         exit = { x: doorX, y: Math.max(0, ay - 1) * tileHeight };
         spawn = { x: doorX, y: (ay + 1) * tileHeight };
       }
     }
+
+    const treasure = this.config.rooms?.water?.treasure;
+
+    if (treasure)
+      for (const isle of this.treasures.values())
+        entities.push({
+          name: treasure.entity,
+          x: (isle.x + 0.5) * tileWidth,
+          y: (isle.y + 0.5) * tileHeight,
+          loot: treasure.loot,
+        });
 
     const fish = this.config.rooms?.water?.fish;
 
@@ -429,12 +512,12 @@ export class RoomGenerator {
         });
         entities.push({
           name: EntityName.TEXTURE_SPAWNER,
-          x: lake.x,
-          y: lake.y,
+          x: lake.deep.x,
+          y: lake.deep.y,
           textureSpawner: {
             sprites: fish,
             duration: 15000,
-            radius: Math.min(lake.w, lake.h) / 2,
+            radius: lake.deep.radius,
             frames: 9,
             frameRate: 12,
           },
@@ -637,6 +720,12 @@ export class RoomGenerator {
       this.rooms,
       rng,
     );
+
+    const { limit } = this.config.rooms.distribution;
+    if (!limit) return;
+
+    const count = limit.min + Math.floor(rng() * (limit.max - limit.min + 1));
+    this.rooms.length = Math.min(this.rooms.length, Math.max(1, count));
   }
 
   private _rectify(terrain: TerrainName[], room: Room) {
@@ -692,8 +781,41 @@ export class RoomGenerator {
     this._prune(terrain);
   }
 
-  private _widenPinches(terrain: TerrainName[]) {
+  private _level(terrain: TerrainName[], step: number): boolean {
     const { width, height } = this.config;
+    const floor = (x: number, y: number) =>
+      terrain[y * width + x] === TerrainName.FLOOR;
+    let levelled = false;
+
+    for (let changed = true; changed; ) {
+      changed = false;
+
+      for (let y = 1; y < height - 1; y++)
+        for (let x = 0; x < width - 1; x++)
+          for (const [a, b] of [
+            [x, x + 1],
+            [x + 1, x],
+          ]) {
+            if (floor(a, y) || !floor(a, y + 1)) continue;
+            if (floor(b, y) || floor(b, y + 1)) continue;
+
+            let end = y + 2;
+            while (end <= y + step && end < height && !floor(b, end)) end++;
+            if (end > y + step || end >= height) continue;
+
+            for (let yy = y + 1; yy < end; yy++)
+              terrain[yy * width + b] = TerrainName.FLOOR;
+            changed = true;
+            levelled = true;
+          }
+    }
+
+    return levelled;
+  }
+
+  private _widenPinches(terrain: TerrainName[]): boolean {
+    const { width, height } = this.config;
+    let widened = false;
 
     for (let x = 0; x < width; x++)
       for (let y = 0; y < height; ) {
@@ -712,10 +834,14 @@ export class RoomGenerator {
           end < height - 1 &&
           terrain[(end + 1) * width + x] === TerrainName.FLOOR;
 
-        if (floorAbove && floorBelow && end - start + 1 < MIN_WALL_RUN)
+        if (floorAbove && floorBelow && end - start + 1 < MIN_WALL_RUN) {
           for (let yy = start; yy <= end; yy++)
             terrain[yy * width + x] = TerrainName.FLOOR;
+          widened = true;
+        }
       }
+
+    return widened;
   }
 
   private _prune(terrain: TerrainName[]) {
@@ -836,37 +962,31 @@ export class RoomGenerator {
     for (const room of this.rooms) {
       if (rng() > cfg.chance) continue;
 
-      const radius =
+      let radius =
         cfg.radius.min +
         Math.floor(rng() * (cfg.radius.max - cfg.radius.min + 1));
-      const margin = radius + 2;
 
-      if (room.width < 2 * margin || room.height < 2 * margin) continue;
+      const hugs = rng() < (cfg.edge ?? 0);
+      if (hugs) radius += POND_SHORE_REACH;
 
-      const jitter = 3;
-      const cx =
-        room.x +
-        (room.width >> 1) +
-        Math.floor(rng() * (2 * jitter + 1)) -
-        jitter;
-      const cy =
-        room.y +
-        (room.height >> 1) +
-        Math.floor(rng() * (2 * jitter + 1)) -
-        jitter;
+      const center = hugs
+        ? this._shore(terrain, room, rng)
+        : this._middle(terrain, room, rng);
+      if (!center) continue;
 
-      for (let dy = -radius; dy <= radius; dy++)
-        for (let dx = -radius; dx <= radius; dx++) {
-          const gx = cx + dx;
-          const gy = cy + dy;
-          const idx = gy * width + gx;
-          if (terrain[idx] !== TerrainName.FLOOR) continue;
+      const before = terrain.slice();
 
-          const dist = Math.sqrt(dx * dx + dy * dy) / radius;
-          const n = (noise.generate(gx, gy) + 1) / 2;
-          if (dist < cfg.threshold || n > dist)
-            terrain[idx] = TerrainName.WATER;
-        }
+      for (; radius >= cfg.radius.min; radius -= 2) {
+        this._pond(terrain, room, center, radius, cfg.threshold, noise);
+        if (this._intact(terrain, room)) break;
+
+        for (let i = 0; i < before.length; i++) terrain[i] = before[i];
+      }
+
+      if (radius >= cfg.radius.min && rng() < (cfg.island ?? 0)) {
+        const isle = this._island(terrain, center, radius, noise);
+        if (isle) this.treasures.set(room, isle);
+      }
     }
 
     const cleaned = handlers.generation.enforceMinimumWater(
@@ -874,7 +994,9 @@ export class RoomGenerator {
       width,
       this.config.height,
     );
-    for (let i = 0; i < cleaned.length; i++) terrain[i] = cleaned[i];
+    for (let i = 0; i < cleaned.length; i++)
+      if (cleaned[i] !== TerrainName.WATER && terrain[i] === TerrainName.WATER)
+        terrain[i] = TerrainName.FLOOR;
 
     for (const room of this.rooms) {
       let minx = Infinity;
@@ -896,10 +1018,16 @@ export class RoomGenerator {
 
       if (!cells.length) continue;
 
-      if (maxx - minx + 1 < 4 || maxy - miny + 1 < 4) {
+      if (
+        maxx - minx + 1 < 4 ||
+        maxy - miny + 1 < 4 ||
+        cells.length < POND_MIN_AREA
+      ) {
         for (const idx of cells) terrain[idx] = TerrainName.FLOOR;
         continue;
       }
+
+      if (this.treasures.has(room)) continue;
 
       const { tileWidth, tileHeight } = this.config;
       this.lakes.push({
@@ -907,8 +1035,252 @@ export class RoomGenerator {
         y: (room.y + (miny + maxy) / 2 + 0.5) * tileHeight,
         w: (maxx - minx + 1) * tileWidth,
         h: (maxy - miny + 1) * tileHeight,
+        deep: this._deepest(terrain, cells),
       });
     }
+  }
+
+  private _deepest(terrain: TerrainName[], cells: number[]) {
+    const { width, height, tileWidth, tileHeight } = this.config;
+    let best = cells[0];
+    let reach = 0;
+
+    for (const i of cells) {
+      const x = i % width;
+      const y = (i / width) | 0;
+      let depth = 1;
+
+      for (let open = true; open; ) {
+        for (let dy = -depth; dy <= depth && open; dy++)
+          for (let dx = -depth; dx <= depth && open; dx++) {
+            const nx = x + dx;
+            const ny = y + dy;
+
+            open =
+              nx >= 0 &&
+              nx < width &&
+              ny >= 0 &&
+              ny < height &&
+              terrain[ny * width + nx] === TerrainName.WATER;
+          }
+
+        if (open) depth++;
+      }
+
+      if (depth > reach) {
+        reach = depth;
+        best = i;
+      }
+    }
+
+    return {
+      x: ((best % width) + 0.5) * tileWidth,
+      y: (((best / width) | 0) + 0.5) * tileHeight,
+      radius: Math.max(tileWidth / 4, (reach - 1) * tileWidth),
+    };
+  }
+
+  private _blocked(terrain: TerrainName[], i: number): boolean {
+    const cell = terrain[i];
+
+    return (
+      this.isles[i] === 1 ||
+      cell === TerrainName.VOID ||
+      cell === TerrainName.WATER ||
+      cell === TerrainName.WALL_BASE ||
+      cell === TerrainName.WALL_MID ||
+      cell === TerrainName.WALL_TOP
+    );
+  }
+
+  private _middle(terrain: TerrainName[], room: Room, rng: () => number) {
+    const { width } = this.config;
+    let sx = 0;
+    let sy = 0;
+    let count = 0;
+
+    for (let y = room.y; y < room.y + room.height; y++)
+      for (let x = room.x; x < room.x + room.width; x++) {
+        if (terrain[y * width + x] !== TerrainName.FLOOR) continue;
+
+        sx += x;
+        sy += y;
+        count++;
+      }
+
+    if (!count) return null;
+
+    const jitter = 3;
+
+    return {
+      x: Math.round(sx / count) + Math.floor(rng() * (2 * jitter + 1)) - jitter,
+      y: Math.round(sy / count) + Math.floor(rng() * (2 * jitter + 1)) - jitter,
+    };
+  }
+
+  private _shore(terrain: TerrainName[], room: Room, rng: () => number) {
+    const { width } = this.config;
+    const solid = (x: number, y: number) =>
+      terrain[y * width + x] !== TerrainName.FLOOR;
+    const spots: { x: number; y: number }[] = [];
+
+    for (let y = room.y + POND_HEADROOM + 2; y < room.y + room.height; y++)
+      for (let x = room.x; x < room.x + room.width; x++) {
+        if (solid(x, y)) continue;
+        if (solid(x - 1, y) || solid(x + 1, y) || solid(x, y + 1))
+          spots.push({ x, y });
+      }
+
+    return spots.length ? spots[Math.floor(rng() * spots.length)] : null;
+  }
+
+  private _pond(
+    terrain: TerrainName[],
+    room: Room,
+    center: { x: number; y: number },
+    radius: number,
+    threshold: number,
+    noise: NoiseGenerator,
+  ) {
+    const { width, height } = this.config;
+    const top = room.y + POND_HEADROOM;
+    const cy = Math.max(center.y, top + Math.ceil(radius * threshold));
+    const wet = new Set<number>();
+
+    for (let dy = -radius; dy <= radius; dy++)
+      for (let dx = -radius; dx <= radius; dx++) {
+        const gx = center.x + dx;
+        const gy = cy + dy;
+
+        if (gx < 1 || gx >= width - 1 || gy < top || gy >= height - 1) continue;
+
+        const idx = gy * width + gx;
+        if (terrain[idx] !== TerrainName.FLOOR) continue;
+
+        const dist = Math.sqrt(dx * dx + dy * dy) / radius;
+        const n = (noise.generate(gx, gy) + 1) / 2;
+        if (dist < threshold + (n - 0.5) * POND_WOBBLE) wet.add(idx);
+      }
+
+    const full = (i: number) => wet.has(i) || terrain[i] !== TerrainName.FLOOR;
+    const offsets = [-1, 0, 1];
+
+    for (const i of wet) {
+      const solid = offsets.some((oy) =>
+        offsets.some((ox) => {
+          let painted = 0;
+
+          for (const dy of offsets)
+            for (const dx of offsets) {
+              const n = i + (oy + dy) * width + ox + dx;
+
+              if (!full(n)) return false;
+              if (wet.has(n)) painted++;
+            }
+
+          return painted >= POND_BODY;
+        }),
+      );
+
+      if (solid) terrain[i] = TerrainName.WATER;
+    }
+  }
+
+  private _intact(terrain: TerrainName[], room: Room): boolean {
+    const { width, height } = this.config;
+    const seeds: number[] = [];
+
+    for (let x = room.x; x < room.x + room.width; x++)
+      if (terrain[room.y * width + x] === TerrainName.FLOOR)
+        seeds.push(room.y * width + x);
+
+    const reached = handlers.generation.flood(
+      width,
+      height,
+      (i) => terrain[i] === TerrainName.FLOOR,
+      seeds,
+    );
+
+    for (let i = 0; i < terrain.length; i++) {
+      if (terrain[i] !== TerrainName.FLOOR || reached[i]) continue;
+
+      for (const n of [i - 1, i + 1, i - width, i + width])
+        if (
+          terrain[n] !== TerrainName.FLOOR &&
+          terrain[n] !== TerrainName.WATER
+        )
+          return false;
+    }
+
+    return true;
+  }
+
+  private _island(
+    terrain: TerrainName[],
+    center: { x: number; y: number },
+    radius: number,
+    noise: NoiseGenerator,
+  ) {
+    const { width, height } = this.config;
+    const reach = Math.max(2, radius / 3);
+    const land = new Set<number>();
+
+    const deep = (x: number, y: number) => {
+      for (let dy = -POND_CHANNEL; dy <= POND_CHANNEL; dy++)
+        for (let dx = -POND_CHANNEL; dx <= POND_CHANNEL; dx++) {
+          const nx = x + dx;
+          const ny = y + dy;
+
+          if (nx < 0 || nx >= width || ny < 0 || ny >= height) return false;
+          if (terrain[ny * width + nx] !== TerrainName.WATER) return false;
+        }
+
+      return true;
+    };
+
+    for (let dy = -radius; dy <= radius; dy++)
+      for (let dx = -radius; dx <= radius; dx++) {
+        const gx = center.x + dx;
+        const gy = center.y + dy;
+        const n = (noise.generate(gx + 97, gy + 31) + 1) / 2;
+
+        if (Math.sqrt(dx * dx + dy * dy) > reach * (0.6 + n * 0.8)) continue;
+        if (deep(gx, gy)) land.add(gy * width + gx);
+      }
+
+    const block = (i: number) =>
+      [0, -1, -width, -width - 1].some((o) =>
+        [0, 1, width, width + 1].every((d) => land.has(i + o + d)),
+      );
+
+    for (const i of [...land].filter((i) => !block(i))) land.delete(i);
+    if (land.size < 4) return null;
+
+    let sx = 0;
+    let sy = 0;
+
+    for (const i of land) {
+      terrain[i] = TerrainName.FLOOR;
+      this.isles[i] = 1;
+      sx += i % width;
+      sy += (i / width) | 0;
+    }
+
+    const cx = sx / land.size;
+    const cy = sy / land.size;
+    let best = -1;
+    let nearest = Infinity;
+
+    for (const i of land) {
+      const dist = Math.hypot((i % width) - cx, ((i / width) | 0) - cy);
+
+      if (dist < nearest) {
+        nearest = dist;
+        best = i;
+      }
+    }
+
+    return { x: best % width, y: (best / width) | 0 };
   }
 
   private _connect() {
@@ -1011,6 +1383,50 @@ export class RoomGenerator {
         if (px >= 0 && px < width && py >= 0 && py < height)
           terrain[py * width + px] = TerrainName.FLOOR;
       }
+  }
+
+  private _tunnel(
+    terrain: TerrainName[],
+    from: { x: number; y: number },
+    to: { x: number; y: number },
+    grid: number,
+  ) {
+    const { width, height } = this.config;
+    const rng = handlers.generation.seededRandom(
+      handlers.generation.hash(`${this.seed}-tunnel-${from.x}-${from.y}`),
+    );
+    const columns = Math.floor(width / grid);
+    const rows = Math.floor(height / grid);
+    const end = { x: Math.floor(to.x / grid), y: Math.floor(to.y / grid) };
+    let x = Math.floor(from.x / grid);
+    let y = Math.floor(from.y / grid);
+
+    const dig = (bx: number, by: number, span: number) => {
+      for (let dy = 0; dy < span; dy++)
+        for (let dx = 0; dx < span; dx++) {
+          const cx = bx + dx;
+          const cy = by + dy;
+
+          if (cx < 1 || cx >= columns - 1) continue;
+          if (cy < TUNNEL_HEADROOM || cy >= rows - 1) continue;
+
+          for (let ty = 0; ty < grid; ty++)
+            for (let tx = 0; tx < grid; tx++)
+              terrain[(cy * grid + ty) * width + cx * grid + tx] =
+                TerrainName.FLOOR;
+        }
+    };
+
+    for (let guard = columns * rows; guard > 0; guard--) {
+      dig(x, y, rng() < TUNNEL_BULGE ? 3 : 2);
+      if (x === end.x && y === end.y) break;
+
+      const dx = Math.abs(end.x - x);
+      const dy = Math.abs(end.y - y);
+
+      if (rng() * (dx + dy) < dx) x += Math.sign(end.x - x);
+      else y += Math.sign(end.y - y);
+    }
   }
 
   private _altars(

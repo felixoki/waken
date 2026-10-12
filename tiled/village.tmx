@@ -10293,7 +10293,7 @@
   <object id="1835" name="Market_House" x="592" y="1335" width="1" height="1"/>
   <object id="1837" name="Light" x="1072" y="2038" width="1" height="1"/>
   <object id="1838" name="Potion5" x="483.095" y="648.013" width="1" height="1"/>
-  <object id="1839" name="Robe4" x="472" y="648" width="1" height="1"/>
+  <object id="1839" name="Map" x="472" y="648" width="1" height="1"/>
   <object id="1846" name="Market_stand4" x="696" y="1212" width="1" height="1"/>
   <object id="1847" name="Weaver" x="698" y="1251" width="1" height="1"/>
  </objectgroup>

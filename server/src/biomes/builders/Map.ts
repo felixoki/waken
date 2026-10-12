@@ -23,6 +23,7 @@ import {
   TERRAIN_ORDER,
   TerrainName,
   TileRole,
+  BorderPosition,
 } from "../../types/generation";
 import { BorderGenerator } from "../generators/Border";
 import { DoorGenerator } from "../generators/Door";
@@ -362,6 +363,8 @@ export class MapBuilder {
         ),
       );
 
+    const soaked: number[] = [];
+
     /**
      * Build wall layer
      */
@@ -447,10 +450,38 @@ export class MapBuilder {
           return false;
         };
 
+        const pool = tiledLayers.find((l) => l.name === TerrainName.WATER);
+        const poolTile = pool?.data.find((tile: number) => tile !== 0) ?? 0;
+
+        const wetter = (x: number, y: number) => {
+          let wet = 0;
+          let dry = 0;
+
+          for (let dy = -1; dy <= 1; dy++)
+            for (let dx = -1; dx <= 1; dx++) {
+              const nx = x + dx;
+              const ny = y + dy;
+              if (nx < 0 || nx >= width || ny < 0 || ny >= height) continue;
+
+              const cell = terrain[ny * width + nx];
+              if (cell === TerrainName.WATER) wet++;
+              else if (cell === TerrainName.FLOOR) dry++;
+            }
+
+          return wet > dry;
+        };
+
         for (let i = 0; i < below.length; i++) {
           if (below[i] === 0 && above[i] === 0) continue;
           const x = i % width;
           const y = (i / width) | 0;
+
+          if (pool && poolTile && wetter(x, y)) {
+            pool.data[i] = poolTile;
+            soaked.push(i);
+            continue;
+          }
+
           underlay[i] =
             voidBacked.has(below[i]) ||
             voidBacked.has(above[i]) ||
@@ -708,6 +739,39 @@ export class MapBuilder {
         region,
         band,
       );
+
+      const under = tiledLayers.find((l) => l.name === TerrainName.FLOOR);
+
+      if (under && soaked.length && border.to === TerrainName.WATER) {
+        const edge = (position: BorderPosition) => {
+          const tile = this.loader.queryOne(border.tileset, {
+            role: TileRole.BORDER_OUTER,
+            position,
+            terrain: border.from,
+          });
+
+          return tile ? gid + tile.id : -1;
+        };
+        const upright = [edge(BorderPosition.LEFT), edge(BorderPosition.RIGHT)];
+        const level = [edge(BorderPosition.TOP), edge(BorderPosition.BOTTOM)];
+
+        for (const i of soaked) {
+          const sides: [number, number[]][] = [
+            [i - width, upright],
+            [i + width, upright],
+            [i - 1, level],
+            [i + 1, level],
+          ];
+
+          for (const [n, edges] of sides) {
+            if (n < 0 || n >= grid.length || grid[n] !== border.to) continue;
+            if (!edges.includes(data[n])) continue;
+
+            under.data[i] = data[n];
+            break;
+          }
+        }
+      }
       const name = `${border.from}_${border.to}_border`;
       const existing = borderLayers.get(name);
 
@@ -820,6 +884,7 @@ export class MapBuilder {
           name: site.entity,
           x: (origin.x + site.width / 2) * tileWidth,
           y: (origin.y + site.height / 2) * tileHeight,
+          origin: bands[b].config.id,
         });
       }
 
@@ -1176,10 +1241,12 @@ export class MapBuilder {
      * Cave exit
      */
     if (this.config.id === BiomeName.CAVE && roomExit) {
+      const offset = configs.entities[EntityName.CAVE_EXIT]?.offset;
+
       entities.push({
         name: EntityName.CAVE_EXIT,
-        x: roomExit.x,
-        y: roomExit.y,
+        x: roomExit.x + (offset?.x ?? 0),
+        y: roomExit.y + (offset?.y ?? 0),
       });
     }
 

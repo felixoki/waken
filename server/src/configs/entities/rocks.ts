@@ -47,6 +47,273 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A jagged outcrop studded with raw quartz.",
     },
   },
+  [EntityName.AZURITE_ORE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "crystals",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 1, end: 3 },
+            { row: 6, start: 1, end: 3 },
+            { row: 7, start: 1, end: 3 },
+          ],
+        },
+        key: "azurite_ore_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 16,
+          offsetX: 8,
+          offsetY: 28,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.MINEABLE,
+        config: { drop: { name: EntityName.AZURITE1, quantity: 2 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Azurite Ore",
+      description: "A blocky outcrop of deep blue azurite.",
+    },
+  },
+  [EntityName.IRON_ORE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "crystals",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 7, end: 9 },
+            { row: 6, start: 7, end: 9 },
+            { row: 7, start: 7, end: 9 },
+          ],
+        },
+        key: "iron_ore_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 16,
+          offsetX: 8,
+          offsetY: 28,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.MINEABLE,
+        config: { drop: { name: EntityName.IRON1, quantity: 2 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Iron Ore",
+      description: "A dark, heavy outcrop veined with iron.",
+    },
+  },
+  [EntityName.CAVE_ROCK1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 26, start: 26, end: 27 },
+            { row: 27, start: 26, end: 27 },
+            { row: 28, start: 26, end: 27 },
+            { row: 29, start: 26, end: 27 },
+          ],
+        },
+        key: "cave_rock1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 10,
+          offsetX: 6,
+          offsetY: 50,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_ROCK2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 27, start: 17, end: 18 },
+            { row: 28, start: 17, end: 18 },
+            { row: 29, start: 17, end: 18 },
+          ],
+        },
+        key: "cave_rock2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 10,
+          offsetX: 6,
+          offsetY: 34,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_ROCK3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 27, start: 15, end: 16 },
+            { row: 28, start: 15, end: 16 },
+            { row: 29, start: 15, end: 16 },
+          ],
+        },
+        key: "cave_rock3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 10,
+          offsetX: 6,
+          offsetY: 34,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_ROCK4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 27, start: 9, end: 10 },
+            { row: 28, start: 9, end: 10 },
+            { row: 29, start: 9, end: 10 },
+          ],
+        },
+        key: "cave_rock4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 10,
+          offsetX: 6,
+          offsetY: 34,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_ROCK5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 24, start: 11, end: 12 },
+            { row: 25, start: 11, end: 12 },
+          ],
+        },
+        key: "cave_rock5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 10,
+          offsetX: 6,
+          offsetY: 18,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_ROCK6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "cave_objects",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 11, end: 12 },
+            { row: 29, start: 11, end: 12 },
+          ],
+        },
+        key: "cave_rock6_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 10,
+          offsetX: 6,
+          offsetY: 18,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.ROCK1]: {
     facing: Direction.DOWN,
     moving: [],

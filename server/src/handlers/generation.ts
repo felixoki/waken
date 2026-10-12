@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import { TiledProperty } from "../types";
 import {
   BiomeConfig,
+  BiomeName,
   GeneratedMap,
   LevelBiome,
   Neighbors,
@@ -865,6 +866,7 @@ export const generation = {
       depths: number[],
       config: RoomConfig,
       rng: () => number,
+      origin?: BiomeName,
     ) => {
       const { assignment, templates } = config;
 
@@ -872,6 +874,9 @@ export const generation = {
         const depth = depths[i];
 
         const eligible = templates.filter((t) => {
+          if (t.origin && t.origin !== origin) return false;
+          if (t.excludes && t.excludes === origin) return false;
+
           if (
             depth <= assignment.easyDepth &&
             t.difficulty !== RoomDifficulty.EASY

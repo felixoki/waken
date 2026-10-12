@@ -739,7 +739,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
               name: EntityName.BALE,
               quantity: 1,
               stackable: true,
-              chance: 0.15,
+              chance: 0.25,
             },
           ],
         },

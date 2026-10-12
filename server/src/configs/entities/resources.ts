@@ -33,6 +33,36 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.5,
     },
   },
+  [EntityName.AZURITE1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 5, end: 6 },
+            { row: 16, start: 5, end: 6 },
+          ],
+        },
+        key: "azurite1_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Azurite",
+      description: "Slender blue crystals of a copper mineral.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 16, col: 4 },
+      weight: 0.5,
+    },
+  },
   [EntityName.WOOD]: {
     facing: Direction.DOWN,
     moving: [],

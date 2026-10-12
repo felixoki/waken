@@ -25,6 +25,10 @@ const SETS = [
     sheet: "village_home",
     keep: (f) => !f.plain && (f.within([53, 14, 54, 17]) || f.within([55, 1, 56, 17])),
   },
+  { name: "cavePitStamps", sheet: "cave_details1", keep: (f) => f.within([1, 1, 10, 21]) },
+  { name: "cavePebbleStamps", sheet: "cave_details1", keep: (f) => f.within([11, 1, 20, 21]) },
+  { name: "caveSpikeStamps", sheet: "cave_details2", keep: (f) => f.within([1, 1, 7, 22]) },
+  { name: "caveStoneStamps", sheet: "cave_details2", keep: (f) => f.within([8, 1, 14, 22]) },
 ];
 
 const decode = (path) => {

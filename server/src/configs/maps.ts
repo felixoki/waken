@@ -1978,6 +1978,13 @@ export const maps: Record<MapName, MapConfig> = {
     isIndoor: true,
     isInstanced: true,
     isPersistent: true,
+    ambient: 0x7a7a94,
+    ambience: {
+      brightness: 0.65,
+      coolness: 0.9,
+      vignette: { radius: 0.3, strength: 0.6 },
+      eclipse: { radius: 0.34, softness: 0.3, strength: 0.92 },
+    },
     spritesheets: [
       ...player,
       ...creatures,
@@ -2012,8 +2019,22 @@ export const maps: Record<MapName, MapConfig> = {
         asTileset: true,
       },
       {
-        key: "ground_grass_details",
-        file: "ground_grass_details.png",
+        key: "crystals",
+        file: "crystals.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cave_details1",
+        file: "cave_details1.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "cave_details2",
+        file: "cave_details2.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

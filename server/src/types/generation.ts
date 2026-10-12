@@ -114,6 +114,9 @@ export enum RoomName {
   FEAST2 = "feast2",
   FEAST3 = "feast3",
   CAVE1 = "cave1",
+  CAVE2 = "cave2",
+  CAVE3 = "cave3",
+  CAVE4 = "cave4",
   QUARTERS1 = "quarters1",
   WARD1 = "ward1",
 }
@@ -244,6 +247,7 @@ export interface BorderConfig {
 export interface BiomeConfig {
   id: BiomeName;
   label: string;
+  origin?: BiomeName;
   width: number;
   height: number;
   tileWidth: number;
@@ -342,6 +346,7 @@ export interface SpawnRule {
   spacing: number;
   margin?: number;
   wallAdjacent?: boolean;
+  corner?: boolean;
   cluster?: boolean;
   group?: GroupConfig;
   loot?: (Item & { chance: number })[];
@@ -355,6 +360,7 @@ export interface Entity {
   zone?: ZoneConfig;
   textureSpawner?: TextureSpawnerConfig;
   link?: string;
+  origin?: BiomeName;
 }
 
 export type Landmark = Pick<Entity, "name" | "x" | "y">;
@@ -421,6 +427,9 @@ export interface RoomTemplate {
   weight: number;
   depth?: { min?: number; max?: number };
   enemies?: EntityGroup[];
+  solitary?: boolean;
+  origin?: BiomeName;
+  excludes?: BiomeName;
   water?: {
     coverage: number;
   };
@@ -462,6 +471,7 @@ export interface AltarConfig {
 export interface RoomAssignment {
   easyDepth: number;
   chance: { hidden: number; puzzle: number };
+  uniform?: boolean;
 }
 
 export interface RoomDistribution {
@@ -495,17 +505,22 @@ export interface RoomConfig {
     clearance: number;
     quantize: number;
     north: number;
+    step?: number;
   };
   water?: {
     chance: number;
     scale: number;
     radius: { min: number; max: number };
     threshold: number;
+    edge?: number;
+    island?: number;
+    treasure?: { entity: EntityName; loot: (Item & { chance: number })[] };
     fish?: FishName[];
   };
   distribution: {
     large: RoomDistribution;
     small: RoomDistribution;
+    limit?: Range;
   };
 }
 
@@ -529,6 +544,7 @@ export interface Level {
 
 export interface LevelBiome {
   biome: BiomeName;
+  origin?: BiomeName;
   requires?: number;
   spawn?: boolean;
 }

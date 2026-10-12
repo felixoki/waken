@@ -69,6 +69,7 @@ export class EntitySpawner {
             !this._nearWall(x, y, terrain, rule.terrain)
           )
             continue;
+          if (rule.corner && !this._inCorner(x, y, terrain)) continue;
           if (
             rule.margin &&
             !gen.hasTerrainMargin(
@@ -183,6 +184,7 @@ export class EntitySpawner {
           continue;
         if (rule.wallAdjacent && !this._nearWall(x, y, terrain, rule.terrain))
           continue;
+        if (rule.corner && !this._inCorner(x, y, terrain)) continue;
         candidates.push({ x, y });
       }
 
@@ -348,5 +350,37 @@ export class EntitySpawner {
       }
 
     return false;
+  }
+
+  private _inCorner(
+    x: number,
+    y: number,
+    terrain: TerrainName[],
+    reach = 3,
+  ): boolean {
+    const { width, height } = this.config;
+
+    const solid = (nx: number, ny: number) => {
+      if (nx < 0 || nx >= width || ny < 0 || ny >= height) return true;
+
+      const cell = terrain[ny * width + nx];
+
+      return (
+        cell === TerrainName.VOID ||
+        cell === TerrainName.WALL_BASE ||
+        cell === TerrainName.WALL_MID ||
+        cell === TerrainName.WALL_TOP
+      );
+    };
+
+    let beside = false;
+    let along = false;
+
+    for (let d = 1; d <= reach; d++) {
+      beside ||= solid(x - d, y) || solid(x + d, y);
+      along ||= solid(x, y - d) || solid(x, y + d);
+    }
+
+    return beside && along;
   }
 }

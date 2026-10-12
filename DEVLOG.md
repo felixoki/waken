@@ -802,6 +802,11 @@
 - Refactor economy ui and item drops ✅
 - Refused casts are broadcast ✅
 
+#### 12.10.2026
+
+- Refactor caves ✅
+- Add golem ✅
+
 ### In progress
 
 ### Bugs
@@ -820,7 +825,6 @@
 ### Backlog
 
 - UI ⭐
-- Cooking ⭐
 - Relationships ⭐
 - Economy
   - Milkable component for goats and cows

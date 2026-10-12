@@ -1,0 +1,13 @@
+{
+  "columns": 21,
+  "image": "../sprites/cave_details1.png",
+  "imageheight": 320,
+  "imagewidth": 336,
+  "margin": 0,
+  "name": "cave_details1",
+  "spacing": 0,
+  "tilecount": 420,
+  "tileheight": 16,
+  "tilewidth": 16,
+  "tiles": []
+}
