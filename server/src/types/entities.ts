@@ -63,6 +63,7 @@ export interface EntityConfig {
   zone?: ZoneConfig;
   weight?: number;
   link?: string;
+  parent?: string;
   origin?: BiomeName;
   isOpen?: boolean;
 }

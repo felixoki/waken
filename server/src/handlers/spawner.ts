@@ -52,6 +52,7 @@ export const spawner = {
             health,
             maxHealth: health,
             isLocked: false,
+            parent: id,
           },
           null,
           io,

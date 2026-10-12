@@ -8,11 +8,17 @@ export const world = {
   restore: async (id: string, world: World): Promise<boolean> => {
     const state = await load.world(id);
 
-    if (state?.entities?.length)
+    if (state?.entities?.length) {
       state.entities.forEach((entity: EntityConfig) => {
         world.entities.add(entity.id, entity);
         world.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
       });
+
+      state.entities.forEach((entity: EntityConfig) => {
+        if (entity.parent)
+          world.entities.spawners.get(entity.parent)?.children.add(entity.id);
+      });
+    }
 
     if (state?.time) world.setTime(state.time);
 
