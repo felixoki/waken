@@ -250,6 +250,36 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1,
     },
   },
+  [EntityName.COW_MILK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 23, end: 24 },
+            { row: 20, start: 23, end: 24 },
+          ],
+        },
+        key: "cow_milk_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Cow milk",
+      description: "A pail of rich, full milk from a contented cow.",
+      stackable: true,
+      icon: { spritesheet: "icons1", row: 20, col: 22 },
+      weight: 1,
+    },
+  },
   [EntityName.BREAD]: {
     facing: Direction.DOWN,
     moving: [],

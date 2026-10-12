@@ -456,6 +456,16 @@ export class MainScene extends Phaser.Scene {
     );
 
     this.managers.socket.on(
+      Event.ENTITY_MILK,
+      (data: { id: string; milkedAt: number }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (!entity) return;
+
+        entity.tame.milkedAt = data.milkedAt;
+      },
+    );
+
+    this.managers.socket.on(
       Event.ENTITY_CAPTURE,
       (data: { id: string; x: number; y: number }) => {
         const entity = this.managers.entities.entities.get(data.id);
@@ -679,6 +689,10 @@ export class MainScene extends Phaser.Scene {
 
     this.game.events.on(Event.ENTITY_LAY, (data: { id: string }) => {
       this.managers.socket.emit(Event.ENTITY_LAY, data);
+    });
+
+    this.game.events.on(Event.ENTITY_MILK, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_MILK, data);
     });
 
     this.game.events.on(Event.ENTITY_WITHER, (data: { id: string }) => {

@@ -10,6 +10,7 @@ import {
   WeaponName,
   SoundName,
 } from "../../types";
+import { DAY } from "../../globals";
 
 export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BEAR]: {
@@ -746,6 +747,21 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.COW },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.CARROT, EntityName.CABBAGE],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.MILKABLE,
+        config: { milk: EntityName.COW_MILK, cooldown: 2 * DAY },
+      },
+      {
         name: ComponentName.BODY,
         config: {
           width: 28,
@@ -775,19 +791,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     speed: 0.75,
     components: [
       { name: ComponentName.ANIMATION },
-      {
-        name: ComponentName.DAMAGEABLE,
-        config: {
-          loot: [
-            {
-              name: EntityName.GOAT_MILK,
-              quantity: 1,
-              stackable: true,
-              chance: 1,
-            },
-          ],
-        },
-      },
+      { name: ComponentName.DAMAGEABLE },
       { name: ComponentName.BEHAVIOR_QUEUE },
       {
         name: ComponentName.CAPTURABLE,
@@ -807,6 +811,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           cooldown: 300000,
           range: 96,
         },
+      },
+      {
+        name: ComponentName.MILKABLE,
+        config: { milk: EntityName.GOAT_MILK, cooldown: 2 * DAY },
       },
       {
         name: ComponentName.BODY,

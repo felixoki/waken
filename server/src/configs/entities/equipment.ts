@@ -199,6 +199,35 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1.8,
     },
   },
+  [EntityName.BUCKET]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 32, end: 33 },
+            { row: 8, start: 32, end: 33 },
+          ],
+        },
+        key: "bucket_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bucket",
+      description: "A tin pail. Hold it to milk tamed goats and cows.",
+      icon: { spritesheet: "icons8", row: 8, col: 31 },
+      weight: 1,
+    },
+  },
   [EntityName.AXE]: {
     facing: Direction.DOWN,
     moving: [],

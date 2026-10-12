@@ -380,4 +380,46 @@ export const taming = {
       bredAt: now,
     });
   },
+
+  milk: (data: { id: string }, socket: Socket, io: Server, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
+    const target = world.entities.get(data.id);
+
+    if (!player || !target || !target.tame?.isTamed) return;
+
+    const milkable = configs.entities[target.name]?.components.find(
+      (c): c is Extract<ComponentConfig, { name: ComponentName.MILKABLE }> =>
+        c.name === ComponentName.MILKABLE,
+    )?.config;
+    if (!milkable) return;
+
+    const equipped = player.hotbar[player.active];
+    if (
+      equipped?.type !== SlotType.ENTITY ||
+      equipped.item.name !== EntityName.BUCKET
+    )
+      return;
+
+    const now = Date.now();
+    if (target.tame.milkedAt && now - target.tame.milkedAt < milkable.cooldown)
+      return;
+
+    const item = { name: milkable.milk, quantity: 1, stackable: true };
+    if (!handlers.storage.fits(player.inventory, item)) return;
+
+    player.inventory = handlers.storage.add(player.inventory, item);
+    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+
+    world.entities.update(target.id, {
+      tame: { ...target.tame, milkedAt: now },
+    });
+
+    const key = world.chunks.getChunkByEntity(target.id);
+    const room = key ? `chunk:${key}` : socket.id;
+
+    handlers.broadcast.room(socket, io, room, Event.ENTITY_MILK, {
+      id: target.id,
+      milkedAt: now,
+    });
+  },
 };

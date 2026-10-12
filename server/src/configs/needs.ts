@@ -32,6 +32,7 @@ export const needs: NeedConfig[] = [
     mood: Mood.THIRSTY,
     items: [
       { item: EntityName.GOAT_MILK, tier: 1 },
+      { item: EntityName.COW_MILK, tier: 2 },
       { item: EntityName.WINE, tier: 3 },
       { item: EntityName.BEER, tier: 3 },
     ],

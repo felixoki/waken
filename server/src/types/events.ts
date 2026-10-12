@@ -57,6 +57,7 @@ export enum Event {
   ENTITY_FEED = "entity_feed",
   ENTITY_MATURE = "entity_mature",
   ENTITY_LAY = "entity_lay",
+  ENTITY_MILK = "entity_milk",
   ENTITY_FISH = "entity:fish",
   FISHING_WEIGH = "fishing:weigh",
   FISHING_MINIGAME_START = "fishing:minigame_start",

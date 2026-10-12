@@ -186,6 +186,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: { id: string }) =>
         handlers.taming.lay(data, socket, io, world),
     },
+    {
+      event: Event.ENTITY_MILK,
+      handler: (data: { id: string }) =>
+        handlers.taming.milk(data, socket, io, world),
+    },
     /**
      * Shared
      */

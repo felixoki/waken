@@ -39,6 +39,7 @@ export interface TameState {
   isTamed?: boolean;
   fedAt?: number;
   bredAt?: number;
+  milkedAt?: number;
 }
 
 export interface EntityConfig {
@@ -308,9 +309,11 @@ export enum EntityName {
   FOX = "fox",
   FOX_PELT = "fox_pelt",
   COW = "cow",
+  COW_MILK = "cow_milk",
   GOAT = "goat",
   GOATLING = "goatling",
   GOAT_MILK = "goat_milk",
+  BUCKET = "bucket",
   GRAPE = "grape",
   GRAPE_SEED = "grape_seed",
   GRASS1 = "grass1",

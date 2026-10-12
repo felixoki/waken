@@ -251,6 +251,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               tier: 2,
+              output: EntityName.BUCKET,
+              quantity: 1,
+              ingredients: [{ item: EntityName.IRON1, quantity: 2 }],
+            },
+            {
+              tier: 2,
               output: EntityName.FISHING_ROD,
               quantity: 1,
               ingredients: [

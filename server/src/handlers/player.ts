@@ -52,7 +52,10 @@ export const player = {
       if (WORLD_ID && playerId) saved = await load.player(WORLD_ID, playerId);
 
       const inventory: (Item | null)[] = saved?.data?.inventory ?? [
-        ...new Array(20).fill(null),
+        { name: EntityName.SOULSTONE, quantity: 2, stackable: true },
+        { name: EntityName.CARROT, quantity: 10, stackable: true },
+        { name: EntityName.BUCKET, quantity: 1, stackable: false },
+        ...new Array(17).fill(null),
       ];
       const hotbar = (saved?.data?.hotbar as (Slot | null)[]) ?? [
         ...new Array(HOTBAR_SIZE).fill(null),
@@ -88,6 +91,7 @@ export const player = {
             SpellName.REVIVE,
             SpellName.LIGHTNING_STRIKE,
             SpellName.DELTA_WAVE,
+            SpellName.CATCH_SOUL,
             ...((saved?.data?.spells as SpellName[]) ?? []),
           ]),
         ].filter((name) => configs.spells[name]),

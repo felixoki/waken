@@ -26,6 +26,7 @@ export enum ComponentName {
   BREEDABLE = "breedable",
   MATURABLE = "maturable",
   LAYABLE = "layable",
+  MILKABLE = "milkable",
   FELLABLE = "fellable",
   MINEABLE = "mineable",
   GROWABLE = "growable",
@@ -75,6 +76,7 @@ export type ComponentConfig =
   | { name: ComponentName.BREEDABLE; config: BreedableConfig }
   | { name: ComponentName.MATURABLE; config: MaturableConfig }
   | { name: ComponentName.LAYABLE; config: LayableConfig }
+  | { name: ComponentName.MILKABLE; config: MilkableConfig }
   | { name: ComponentName.FELLABLE; config: ExtractableConfig }
   | { name: ComponentName.MINEABLE; config: ExtractableConfig }
   | { name: ComponentName.GROWABLE; config: GrowableConfig }
@@ -133,6 +135,11 @@ export interface LayableConfig {
   egg: EntityName;
   cooldown: number;
   range: number;
+}
+
+export interface MilkableConfig {
+  milk: EntityName;
+  cooldown: number;
 }
 
 export interface GlimmerConfig {
