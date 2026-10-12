@@ -223,7 +223,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Bucket",
-      description: "A tin pail. Hold it to milk tamed goats and cows.",
+      description: "A tin pail. Hold it to milk tamed goats, sheep and cows.",
       icon: { spritesheet: "icons8", row: 8, col: 31 },
       weight: 1,
     },

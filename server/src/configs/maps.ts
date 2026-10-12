@@ -273,6 +273,30 @@ const animals: Spritesheet[] = [
     frameHeight: 64,
   },
   {
+    key: "calf-idle",
+    file: "calf_idle.png",
+    frameWidth: 64,
+    frameHeight: 64,
+  },
+  {
+    key: "calf-walking",
+    file: "calf_walking.png",
+    frameWidth: 64,
+    frameHeight: 64,
+  },
+  {
+    key: "bull-idle",
+    file: "bull_idle.png",
+    frameWidth: 64,
+    frameHeight: 64,
+  },
+  {
+    key: "bull-walking",
+    file: "bull_walking.png",
+    frameWidth: 64,
+    frameHeight: 64,
+  },
+  {
     key: "goat-idle",
     file: "goat_idle.png",
     frameWidth: 32,
@@ -293,6 +317,30 @@ const animals: Spritesheet[] = [
   {
     key: "goatling-walking",
     file: "goatling_walking.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "sheep-idle",
+    file: "sheep_idle.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "sheep-walking",
+    file: "sheep_walking.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "lamb-idle",
+    file: "lamb_idle.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "lamb-walking",
+    file: "lamb_walking.png",
     frameWidth: 32,
     frameHeight: 32,
   },

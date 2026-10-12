@@ -209,8 +209,14 @@ export const taming = {
 
     if (onCooldown(target.tame)) return;
 
+    const sire = breedable.config.sire;
+
     const partner = world.entities.getByMap(target.map).find((e) => {
-      if (e.id === target.id || e.name !== target.name) return false;
+      if (e.id === target.id || e.name !== (sire ?? target.name)) return false;
+      if (sire)
+        return (
+          Math.hypot(e.x - target.x, e.y - target.y) <= breedable.config.range
+        );
       if (!e.tame?.isTamed) return false;
       if (!e.tame.fedAt || now - e.tame.fedAt >= feedable.config.duration)
         return false;
@@ -250,9 +256,10 @@ export const taming = {
     world.entities.update(target.id, {
       tame: { ...target.tame, bredAt: now },
     });
-    world.entities.update(partner.id, {
-      tame: { ...partner.tame, bredAt: now },
-    });
+    if (!sire)
+      world.entities.update(partner.id, {
+        tame: { ...partner.tame, bredAt: now },
+      });
   },
 
   mature: (data: { id: string }, socket: Socket, io: Server, world: World) => {

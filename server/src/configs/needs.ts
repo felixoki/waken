@@ -31,8 +31,7 @@ export const needs: NeedConfig[] = [
     tier: 1,
     mood: Mood.THIRSTY,
     items: [
-      { item: EntityName.GOAT_MILK, tier: 1 },
-      { item: EntityName.COW_MILK, tier: 2 },
+      { item: EntityName.MILK, tier: 1 },
       { item: EntityName.WINE, tier: 3 },
       { item: EntityName.BEER, tier: 3 },
     ],
@@ -66,6 +65,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.JAR, tier: 1 },
       { item: EntityName.DEER_HIDE, tier: 1 },
       { item: EntityName.FOX_PELT, tier: 1 },
+      { item: EntityName.WOOL, tier: 2 },
       { item: EntityName.WOLF_PELT, tier: 1 },
       { item: EntityName.WOLF_FANG, tier: 1 },
       { item: EntityName.BEAR_PELT, tier: 1 },

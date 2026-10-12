@@ -758,8 +758,115 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       {
+        name: ComponentName.BREEDABLE,
+        config: {
+          child: EntityName.CALF,
+          cooldown: 300000,
+          range: 96,
+          sire: EntityName.BULL,
+        },
+      },
+      {
         name: ComponentName.MILKABLE,
-        config: { milk: EntityName.COW_MILK, cooldown: 2 * DAY },
+        config: { milk: EntityName.MILK, cooldown: 2 * DAY },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 28,
+          height: 18,
+          offsetX: 18,
+          offsetY: 34,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.COW_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.CALF]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 30,
+    speed: 0.6,
+    scale: 0.7,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.COW, duration: 30000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 12,
+          offsetX: 22,
+          offsetY: 40,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.COW_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.BULL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 60,
+    speed: 0.6,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.BEEF,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.BALE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.BULL },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.CARROT, EntityName.CABBAGE],
+          duration: 60000,
+        },
       },
       {
         name: ComponentName.BODY,
@@ -814,7 +921,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.MILKABLE,
-        config: { milk: EntityName.GOAT_MILK, cooldown: 2 * DAY },
+        config: { milk: EntityName.MILK, cooldown: 2 * DAY },
       },
       {
         name: ComponentName.BODY,
@@ -866,6 +973,102 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.AMBIENT_SOUND,
         config: { name: SoundName.GOAT_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.SHEEP]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 30,
+    speed: 0.75,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.WOOL,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.SHEEP },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.CARROT, EntityName.CABBAGE],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.BREEDABLE,
+        config: {
+          child: EntityName.LAMB,
+          cooldown: 300000,
+          range: 96,
+        },
+      },
+      {
+        name: ComponentName.MILKABLE,
+        config: { milk: EntityName.MILK, cooldown: 2 * DAY },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 10,
+          offsetX: 10,
+          offsetY: 12,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.LAMB]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 15,
+    speed: 0.75,
+    scale: 0.7,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.SHEEP, duration: 30000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 8,
+          offsetX: 10,
+          offsetY: 14,
+          pushable: false,
+        },
       },
     ],
     states: [StateName.IDLE, StateName.WALKING],

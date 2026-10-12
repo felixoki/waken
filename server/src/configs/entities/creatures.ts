@@ -264,7 +264,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
               chance: 1,
             },
             {
-              name: EntityName.GOAT_MILK,
+              name: EntityName.MILK,
               quantity: 1,
               stackable: true,
               chance: 0.75,

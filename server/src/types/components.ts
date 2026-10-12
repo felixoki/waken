@@ -124,6 +124,7 @@ export interface BreedableConfig {
   child: EntityName;
   cooldown: number;
   range: number;
+  sire?: EntityName;
 }
 
 export interface MaturableConfig {

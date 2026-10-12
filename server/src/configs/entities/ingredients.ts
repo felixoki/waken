@@ -759,7 +759,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Soup of the hiker",
       description:
-        "A thick broth of boar, goat milk and troll scales that keeps the cold out for a while.",
+        "A thick broth of boar, milk and troll scales that keeps the cold out for a while.",
       stackable: true,
       icon: { spritesheet: "icons2", row: 4, col: 28 },
       weight: 0.4,

@@ -438,6 +438,36 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1,
     },
   },
+  [EntityName.WOOL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons4",
+          tileSize: 16,
+          tiles: [
+            { row: 0, start: 19, end: 20 },
+            { row: 1, start: 19, end: 20 },
+          ],
+        },
+        key: "wool_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wool",
+      description: "A tuft of thick, soft wool from a mountain sheep.",
+      stackable: true,
+      icon: { spritesheet: "icons4", row: 1, col: 18 },
+      weight: 1,
+    },
+  },
   [EntityName.BEAR_PELT]: {
     facing: Direction.DOWN,
     moving: [],

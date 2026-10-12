@@ -175,11 +175,27 @@ export const animations: Partial<
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
+  [EntityName.CALF]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.BULL]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
   [EntityName.GOAT]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
   [EntityName.GOATLING]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.SHEEP]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.LAMB]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },

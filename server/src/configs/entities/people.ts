@@ -65,7 +65,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               ingredients: [
                 { item: EntityName.TROLL_SCALES, quantity: 1 },
                 { item: EntityName.BOAR_MEAT, quantity: 1 },
-                { item: EntityName.GOAT_MILK, quantity: 1 },
+                { item: EntityName.MILK, quantity: 1 },
               ],
             },
             {
