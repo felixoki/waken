@@ -806,6 +806,9 @@
 
 - Refactor caves ✅
 - Add golem ✅
+- Spawner limits are not persistent ✅
+- Add milkable component ✅
+- Add sheep, bull, lamb and calf ✅
 
 ### In progress
 
@@ -820,26 +823,16 @@
 - Ledge corners render above players
 - Direction visibly resets after watering
 - Illuminate breaks ambience pipeline
-- Spawner limits are not persistent
+
 
 ### Backlog
 
 - UI ⭐
 - Relationships ⭐
 - Economy
-  - Milkable component for goats and cows
-  - Flour and mill
-  - Craftable candles
-  - Craft special pillows from goose down
-  - Iron ore
-  - Refactor comfort need dialogue
-  - Add pigs and pork
-- Crops
-  - Corn
-  - Eggplant
-  - Pepper
-  - Red beet
-  - Cucumber
-  - Pumpkin
+  - Add flour and mill
+  - Craft candles from bear fat
+  - Craft pillows from goose down and wool
+  - Add pigs
 - Ideas
   - Remove among player collisions
