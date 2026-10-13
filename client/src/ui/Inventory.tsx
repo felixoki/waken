@@ -30,10 +30,16 @@ export function Inventory() {
     x: number;
     y: number;
   } | null>(null);
+  const [known, setKnown] = useState<SpellName[]>([]);
   const { party, inRealm } = useParty();
 
   useEffect(() => {
     const add = (items: (ItemInterface | null)[]) => setItems(items);
+
+    const sync = (spells: SpellName[]) => setKnown(spells);
+
+    const learn = (spell: SpellName) =>
+      setKnown((prev) => (prev.includes(spell) ? prev : [...prev, spell]));
 
     const toggle = () => {
       if (transformedRef.current) return;
@@ -69,6 +75,9 @@ export function Inventory() {
     EventBus.on(Event.STORAGE_CLOSE, onStorageClose);
     EventBus.on(Event.CRAFTER_OPEN, onCrafterOpen);
     EventBus.on(Event.TRANSFORM_TOGGLE, transform);
+    EventBus.on(Event.SPELLS_SYNC, sync);
+    EventBus.on(Event.SPELLBOOK_SYNC, sync);
+    EventBus.on(Event.SPELL_LEARN_CONFIRM, learn);
 
     return () => {
       EventBus.off(Event.INVENTORY_UPDATE, add);
@@ -77,6 +86,9 @@ export function Inventory() {
       EventBus.off(Event.STORAGE_CLOSE, onStorageClose);
       EventBus.off(Event.CRAFTER_OPEN, onCrafterOpen);
       EventBus.off(Event.TRANSFORM_TOGGLE, transform);
+      EventBus.off(Event.SPELLS_SYNC, sync);
+      EventBus.off(Event.SPELLBOOK_SYNC, sync);
+      EventBus.off(Event.SPELL_LEARN_CONFIRM, learn);
     };
   }, []);
 
@@ -94,25 +106,28 @@ export function Inventory() {
           getUnlock(item.name) !== undefined &&
           !canUnlock;
 
+        const spell = action === Action.LEARN ? getSpell(item.name) : null;
+        const learned = spell !== null && known.includes(spell);
+
         return {
           label: action,
-          disabled: gated,
-          title: gated ? "Only in the village, with a party" : undefined,
+          disabled: gated || learned,
+          title: gated
+            ? "Only in the village, with a party"
+            : learned
+              ? "Already known"
+              : undefined,
           onClick: () => {
-            if (gated) return;
+            if (gated || learned) return;
 
             if (action === Action.CONSUME)
               EventBus.emit(Event.ITEM_CONSUME, { name: item.name });
 
-            if (action === Action.LEARN) {
-              const spell = getSpell(item.name);
-
-              if (spell)
-                EventBus.emit(Event.SPELL_LEARN, {
-                  entityName: item.name,
-                  spell,
-                });
-            }
+            if (spell)
+              EventBus.emit(Event.SPELL_LEARN, {
+                entityName: item.name,
+                spell,
+              });
 
             if (action === Action.DEPOSIT && storageEntityId)
               EventBus.emit(Event.SLOT_MOVE, {
