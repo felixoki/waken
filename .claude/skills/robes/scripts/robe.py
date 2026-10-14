@@ -28,7 +28,8 @@ SHEETS = {
     "felling": 64, "mining": 64, "raking": 64, "watering": 64,
 }
 ROWS = ["front", "back", "side", "side"]
-ITEM_SHEET = "icons12"
+ITEM_SHEET = "icons6"
+ITEM_ROW = 5
 FREE = {
     "sleeping": lambda row, frame: "sleep",
     "rolling": lambda row, frame: "ball" if 3 <= frame <= 4 else None,
@@ -293,13 +294,18 @@ def cmd_items(args):
         if slot in slots:
             sys.exit(f"ITEM_SLOT {slot} is used by both {slots[slot][0]} and {name}")
         slots[slot] = (name, design)
-    sheet = Image.new("RGBA", (48 * (max(slots) + 1), 32), (0, 0, 0, 0))
-    for slot, (name, design) in sorted(slots.items()):
-        sheet.paste(item_block(design), (slot * 48, 0))
-        col = slot * 3 + 1
-        print(f"{name}: icon {{ spritesheet: \"{ITEM_SHEET}\", row: 2, col: {col} }}, "
-              f"texture rows 1-2, cols {col + 1}-{col + 2}")
     out = Path(args.out) if args.out else SPRITES / f"{ITEM_SHEET}.png"
+    top = (ITEM_ROW - 1) * 16
+    current = Image.open(SPRITES / f"{ITEM_SHEET}.png").convert("RGBA")
+    width = max(current.width, 48 * (max(slots) + 1))
+    sheet = Image.new("RGBA", (width, max(current.height, top + 32)), (0, 0, 0, 0))
+    sheet.paste(current, (0, 0))
+    sheet.paste(Image.new("RGBA", (width, 32), (0, 0, 0, 0)), (0, top))
+    for slot, (name, design) in sorted(slots.items()):
+        sheet.paste(item_block(design), (slot * 48, top))
+        col = slot * 3 + 1
+        print(f"{name}: icon {{ spritesheet: \"{ITEM_SHEET}\", row: {ITEM_ROW + 1}, col: {col} }}, "
+              f"texture rows {ITEM_ROW}-{ITEM_ROW + 1}, cols {col + 1}-{col + 2}")
     sheet.save(out)
     print(out)
     if args.preview:

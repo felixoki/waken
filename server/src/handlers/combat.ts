@@ -4,6 +4,7 @@ import {
   ComponentName,
   CombatConfig,
   EntityConfig,
+  EntityName,
   Event,
   Hit,
   Item,
@@ -23,6 +24,11 @@ import {
   MAX_HEALTH,
 } from "../globals";
 import { handlers } from ".";
+
+const TICK_DAMAGE_TYPES: Partial<Record<EffectName, DamageType>> = {
+  [EffectName.BURNING]: DamageType.BURNING,
+  [EffectName.COLD]: DamageType.COLD,
+};
 
 export const combat = {
   getKnockback: (
@@ -305,6 +311,8 @@ export const combat = {
     ) => {
       const partyId = world.chunks.getPartyByEntity(target.id);
 
+      if (target.name === EntityName.BELLAN) world.relics.spend(target.name);
+
       handlers.entity.remove(
         target.id,
         Event.ENTITY_DESTROY,
@@ -400,7 +408,10 @@ export const combat = {
         damage: attackerStats?.multipliers.damage,
         crit: attackerStats?.multipliers.crit,
         chance: attackerStats?.crit,
-        defense: targetStats?.multipliers.defense,
+        defense: targetStats
+          ? targetStats.multipliers.defense *
+            (targetStats.taken[config.damage.type] ?? 1)
+          : undefined,
       },
     );
 
@@ -618,7 +629,15 @@ export const combat = {
             effect.lastTickAt !== undefined &&
             now - effect.lastTickAt >= definition.interval
           ) {
-            const newHealth = Math.max(0, target.health - definition.damage);
+            const type = TICK_DAMAGE_TYPES[effect.name];
+            const damage = isEntity
+              ? definition.damage
+              : definition.damage *
+                (1 - handlers.player.resist(target as PlayerConfig, effect.name)) *
+                (type
+                  ? (handlers.player.stats(target as PlayerConfig).taken[type] ?? 1)
+                  : 1);
+            const newHealth = Math.max(0, target.health - damage);
             effect.lastTickAt = now;
 
             if (newHealth <= 0) {

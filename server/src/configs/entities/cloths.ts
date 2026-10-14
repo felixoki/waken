@@ -1,5 +1,6 @@
 import {
   ComponentName,
+  DamageType,
   Direction,
   EffectName,
   EntityDefinition,
@@ -74,11 +75,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons12",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 11, end: 12 },
-            { row: 2, start: 11, end: 12 },
+            { row: 5, start: 11, end: 12 },
+            { row: 6, start: 11, end: 12 },
           ],
         },
         key: "robe4_texture",
@@ -99,7 +100,43 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Noble garb",
       description: "A warm red robe scattered with yellow stars and moons.",
       stackable: false,
-      icon: { spritesheet: "icons12", row: 2, col: 10 },
+      icon: { spritesheet: "icons6", row: 6, col: 10 },
+      weight: 0.6,
+    },
+  },
+  [EntityName.ROBE5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 14, end: 15 },
+            { row: 6, start: 14, end: 15 },
+          ],
+        },
+        key: "robe5_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.ROBE, config: { sheet: "robe5" } },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: {
+      multipliers: { damage: 1.15, defense: 0.85 },
+      immunities: [EffectName.COLD],
+      taken: { [DamageType.BURNING]: 1.1 },
+    },
+    metadata: {
+      displayName: "Bellan's fleece",
+      description: "A leather robe under a pelt hood and a ragged mantle, with fleece round the face.",
+      stackable: false,
+      icon: { spritesheet: "icons6", row: 6, col: 13 },
       weight: 0.6,
     },
   },
@@ -110,11 +147,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons12",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 2, end: 3 },
-            { row: 2, start: 2, end: 3 },
+            { row: 5, start: 2, end: 3 },
+            { row: 6, start: 2, end: 3 },
           ],
         },
         key: "robe1_texture",
@@ -135,7 +172,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "It had no name",
       description: "An indigo robe with a pale mask on the back of the hood and a crescent on each side.",
       stackable: false,
-      icon: { spritesheet: "icons12", row: 2, col: 1 },
+      icon: { spritesheet: "icons6", row: 6, col: 1 },
       weight: 0.6,
     },
   },
@@ -146,11 +183,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons12",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 8, end: 9 },
-            { row: 2, start: 8, end: 9 },
+            { row: 5, start: 8, end: 9 },
+            { row: 6, start: 8, end: 9 },
           ],
         },
         key: "robe3_texture",
@@ -170,7 +207,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Moth-eaten",
       description: "A dark robe, frayed at the hem and full of moth holes.",
       stackable: false,
-      icon: { spritesheet: "icons12", row: 2, col: 7 },
+      icon: { spritesheet: "icons6", row: 6, col: 7 },
       weight: 0.6,
     },
   },
@@ -181,11 +218,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons12",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 5, end: 6 },
-            { row: 2, start: 5, end: 6 },
+            { row: 5, start: 5, end: 6 },
+            { row: 6, start: 5, end: 6 },
           ],
         },
         key: "robe2_texture",
@@ -206,7 +243,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A blue-black robe of scales and heron plumes, a few of which glint blue.",
       stackable: false,
-      icon: { spritesheet: "icons12", row: 2, col: 4 },
+      icon: { spritesheet: "icons6", row: 6, col: 4 },
       weight: 0.6,
     },
   },

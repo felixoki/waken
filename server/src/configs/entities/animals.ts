@@ -6,6 +6,7 @@ import {
   EffectName,
   EntityDefinition,
   EntityName,
+  Rarity,
   StateName,
   WeaponName,
   SoundName,
@@ -67,6 +68,81 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 40 },
+        range: 45,
+        sound: SoundName.BEAR_SLASH,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.BELLAN]: {
+    facing: Direction.DOWN,
+    metadata: { displayName: "Bellan", rarity: Rarity.LEGENDARY },
+    moving: [],
+    maxHealth: 600,
+    speed: 1.1,
+    scale: 1.15,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.BELLAN_PELT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.BEAR_FAT,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 18,
+          offsetX: 20,
+          offsetY: 32,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.BEAR_IDLE, interval: [4000, 9000] },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.WARNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 60 },
         range: 45,
         sound: SoundName.BEAR_SLASH,
       },

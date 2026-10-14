@@ -14,7 +14,7 @@ type WorldState = {
   entities: any[];
   chunks: Record<string, any>;
   time: Record<string, any>;
-  relics: [EntityName, string][];
+  relics: [EntityName, string | null][];
 };
 
 export const save = {

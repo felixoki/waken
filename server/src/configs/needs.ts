@@ -80,6 +80,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.SHADOW_WANDERER, tier: 1 },
       { item: EntityName.CAVEFISH, tier: 2 },
       { item: EntityName.ANCIENT_TROLL_HEART, tier: 2 },
+      { item: EntityName.BELLAN_PELT, tier: 2 },
       { item: EntityName.WANDERERS_CLOTH, tier: 2 },
       { item: EntityName.WANDERERS_GIFT, tier: 2 },
     ],

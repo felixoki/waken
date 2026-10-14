@@ -126,6 +126,18 @@ slow: change every second frame at most, a few pixels at a time, blinking in pla
 scattered moments rather than moving across the robe. The flame robe that first used
 `at` was removed.
 
+The drafts folder was never committed. The files `forty.py`, `sixty.py`, `hundred.py`, `garments.py`, `feathers.py` and
+`playful.py` described below were lost on 2026-10-14, along with `previews/`, so every mention of them below is history.
+`robe1`, `robe3` and `robe4` import from those files and no longer load until their designs are rewritten. Their built
+sheets in `sprites/robes/` are intact. Because `items` loads every design, it fails for now. To add a robe's icon, call
+`robe.item_block(design)` and paste its block onto the robe band of `icons6.png` (rows 5-6, y = 64) at `ITEM_SLOT * 48`, as robe5 was added.
+
+`robe5.py` is standalone and is the reference for a fur texture. It copies the dark pelt on the drying rack in
+`sprites/village_hunter_interior.png`, rows 7-9 and cols 2-4, after a flat black fur with lighter strands was rejected.
+The pelt is seven blue-greys (`PELT`), mottled per pixel by about one shade through four shifted ramps
+(`fur-2` to `fur+1`). It is lightest where the cloth catches light and has an outline-dark `EDGES` rim and ragged tufts.
+The leather and fleece come from the rack and the fleece below it.
+
 `designs/drafts/` holds unapproved one-frame ideas, shown together in `previews/`. They
 were only checked on idle frame 0 and have no `paint_free` or item. Pass the full path to
 run one (`zoom .claude/skills/robes/designs/drafts/rings_mail.py out.png`), and move it
@@ -212,11 +224,12 @@ taken. A design with no `paint_free` now gets a fallback on the curled-up rollin
 sleeping frames: its normal `paint` is stretched over them (back view for the ball, side
 view for sleeping), which was good enough for all thirteen.
 
-The robes that survived in-game testing are named plainly: entities `ROBE1` to `ROBE4`, sprite
-folders and design files `robe1` to `robe4`. Robe1 "It had no name" (indigo, a No-Face-like
+The robes that survived in-game testing are named plainly: entities `ROBE1` to `ROBE5`, sprite
+folders and design files `robe1` to `robe5`. Item slots 0 to 4 are taken. Robe1 "It had no name" (indigo, a No-Face-like
 mask on the back of the hood, crescents), Robe2 "Scales and feathers" (blue-black troll-scale
 pattern, blinking blue dots), Robe3 "Moth-eaten" (plain dark torn cloth), Robe4 "Noble garb"
-(warm red with stars and moons). Every other built robe was deleted after the user tried
+(warm red with stars and moons), Robe5 "Bellan's fleece" (leather under a pelt hood and a ragged
+mantle, fleece round the face; tier 3, crafted from Bellan's pelt). Every other built robe was deleted after the user tried
 it in game; name new ones `robeN` the same way.
 
 `sheet` is the quickest way to show many drafts: idle frame 0, four directions each. In
@@ -239,7 +252,7 @@ red), asking for the rings to be connected and for the hood to carry part of the
 ## Inventory icon and world texture
 
 Items in Waken take a 48x32 block on an icon sheet: a 16px icon bottom-left and a 32px
-world texture to its right. `items` rebuilds `sprites/icons12.png`, one block per design,
+world texture to its right. `items` rebuilds the robe band (rows 5-6) of `sprites/icons6.png`, one block per design, leaving the other bands untouched,
 by recolouring the hood block at rows 1-2, cols 1-3 of `icons2.png` in the design's own
 `BASE` and `MATERIALS`, so the item matches the worn robe.
 
@@ -248,7 +261,7 @@ The user chose this after rejecting three drawn shapes (a recoloured Tunic, a wi
 cloak that "looked fat", a tall cloak). Do not redraw the shape.
 
 ```python
-ITEM_SLOT = 0                      # block position on icons12.png; never reuse or renumber
+ITEM_SLOT = 0                      # block position in the icons6.png robe band; never reuse or renumber
 
 def paint_item(kind, x, y, part):  # kind is "texture" (32x32) or "icon" (16x16), local coords
     ...
@@ -256,7 +269,7 @@ def paint_item(kind, x, y, part):  # kind is "texture" (32x32) or "icon" (16x16)
 
 ```
 python3 .claude/skills/robes/scripts/robe.py items --out /tmp/i.png --preview /tmp/i_z.png
-python3 .claude/skills/robes/scripts/robe.py items      # writes icons12.png, prints row and col per robe
+python3 .claude/skills/robes/scripts/robe.py items      # writes the icons6.png robe band, prints row and col per robe
 ```
 
 `part` says which piece of the hood the pixel belongs to: `shell` (the outer cloth),
@@ -278,7 +291,7 @@ early (the fur) still shades across the shell.
 
 Robes are real items now. A robe is an entity in `server/src/configs/entities/cloths.ts`
 named `ROBEn`, with `{ name: ComponentName.ROBE, config: { sheet: "robeN" } }` pointing at
-its folder under `sprites/robes/`, its hood icon and texture on `icons12`, `stackable:
+its folder under `sprites/robes/`, its hood icon and texture on `icons6` (rows 5-6), `stackable:
 false`, and its effects in `modifier`. Players have one robe slot of their own, drawn as
 the eighth hotbar cell; only the worn robe's effects count. The client loads a robe's
 sheets the first time someone wears it. Robes are crafted at the Weaver
