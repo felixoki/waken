@@ -1,6 +1,8 @@
 import { Scene } from "../scenes/Scene";
+import { Entity } from "../Entity";
 import { getWaveFrag } from "../pipelines/frags/wave";
 import { getTideFrag } from "../pipelines/frags/tide";
+import { getWardFrag } from "../pipelines/frags/ward";
 import { getWellspringFrag } from "../pipelines/frags/wellspring";
 import { getNovaFrag } from "../pipelines/frags/nova";
 import { getSunderFrag } from "../pipelines/frags/sunder";
@@ -45,6 +47,19 @@ const TIDE: QuadDefinition = {
 };
 
 const TIDE_GROUND = 84;
+
+const WARD: QuadDefinition = {
+  key: "quad_ward",
+  width: 64,
+  height: 64,
+  frag: getWardFrag,
+  uniforms: ["uTime", "uSeed", "uRadius", "uAppear", "uBreak"],
+};
+
+const WARD_RADIUS = 20;
+const WARD_DELAY = 220;
+const WARD_APPEAR = 480;
+const WARD_BREAK = 320;
 
 const WELLSPRING: QuadDefinition = {
   key: "quad_wellspring",
@@ -991,17 +1006,6 @@ export const quads = {
     set(quad, "uSeed", Math.random() * 10);
     set(quad, "uGround", TIDE_GROUND);
 
-    const drops = scene.add.particles(0, 0, "particle_circle", {
-      tint: [0xffffff, 0xdcefff, 0xfff8e6],
-      blendMode: "ADD",
-      alpha: { start: 0.6, end: 0 },
-      scale: { start: 0.11, end: 0.03 },
-      gravityY: 260,
-      lifespan: { min: 260, max: 520 },
-      emitting: false,
-    });
-    drops.setDepth(1000 + y + 21);
-
     const progress = { t: 0 };
 
     scene.tweens.add({
@@ -1018,25 +1022,54 @@ export const quads = {
         set(quad, "uTime", ms * 0.001);
         set(quad, "uRadius", r);
         set(quad, "uErode", clamp((ms - duration * 0.6) / (total - duration * 0.6)));
-
-        if (ms < duration && Math.random() < 0.7) {
-          const a = Math.random() * Math.PI * 2;
-          const p = drops.emitParticleAt(
-            x + Math.cos(a) * r,
-            y - Math.sin(a) * r * 0.5 - r * 0.3,
-            1,
-          );
-          if (!p) return;
-
-          p.velocityX = Math.cos(a) * 50;
-          p.velocityY = -60 - Math.random() * 70;
-        }
       },
       onComplete: () => {
         quad.setOrigin(0.5, 0.5);
         release(scene, TIDE, quad);
-        scene.time.delayedCall(600, () => drops.destroy());
       },
     });
+  },
+
+  ward: (entity: Entity): (() => void) => {
+    const scene = entity.scene;
+    const scale = entity.displayHeight / 32;
+    const quad = acquire(scene, WARD, entity.x, entity.y);
+    quad.setScale(scale);
+    set(quad, "uSeed", Math.random() * 10);
+    set(quad, "uRadius", WARD_RADIUS);
+
+    const start = scene.time.now;
+    let broke = -1;
+
+    const follow = () => {
+      if (!quad.scene) return scene.events.off("postupdate", follow);
+
+      const ms = scene.time.now - start;
+      quad.setPosition(entity.x, entity.y - 2 * scale);
+      quad.setDepth(entity.depth + 1);
+      set(quad, "uTime", ms * 0.001);
+      set(quad, "uAppear", cubic((ms - WARD_DELAY) / WARD_APPEAR));
+
+      if (broke < 0) return;
+
+      const t = (ms - broke) / WARD_BREAK;
+      set(quad, "uBreak", clamp(t));
+      if (t >= 1) done();
+    };
+
+    const done = () => {
+      scene.events.off("postupdate", follow);
+      quad.setScale(1);
+      release(scene, WARD, quad);
+    };
+
+    scene.events.on("postupdate", follow);
+    follow();
+
+    return () => {
+      if (broke >= 0) return;
+      if (!entity.active || !scene.sys.isActive()) return done();
+      broke = scene.time.now - start;
+    };
   },
 };

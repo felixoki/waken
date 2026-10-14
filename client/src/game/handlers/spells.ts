@@ -204,7 +204,14 @@ export const spells: Record<SpellName, SpellHandler> = {
   },
 
   [SpellName.SHIELD]: (entity: Entity) => {
-    vfx.emitters.puff(entity.scene, entity.x, entity.y);
+    const size = entity.displayHeight;
+    vfx.quads.tide(
+      entity.scene,
+      entity.x,
+      entity.y + Math.round(size * 0.44),
+      size * 0.8,
+      650,
+    );
   },
 
   [SpellName.HURT_SHADOWS]: (

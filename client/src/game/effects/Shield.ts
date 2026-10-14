@@ -1,18 +1,22 @@
 import { EffectName } from "@server/types";
 import { Entity } from "../Entity";
 import { Effect } from "./Effect";
+import { quads } from "../vfx/quads";
 
 export class ShieldEffect extends Effect {
   name = EffectName.SHIELD;
+
+  private _stop?: () => void;
 
   constructor(private entity: Entity) {
     super();
   }
 
   attach(): void {
-    this.tint = 0xffe066;
-    this.entity.setTint(this.tint);
+    this._stop = quads.ward(this.entity);
   }
 
-  detach(): void {}
+  detach(): void {
+    this._stop?.();
+  }
 }
