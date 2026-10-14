@@ -810,6 +810,15 @@
 - Add milkable component ✅
 - Add sheep, bull, lamb and calf ✅
 
+#### 13.10.2026
+
+- Prevent learning spell duplicates ✅
+
+#### 14.10.2026
+
+- Add legendary bear ✅
+- Add item dropping, new seeds ✅
+
 ### In progress
 
 ### Bugs
