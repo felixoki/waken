@@ -76,6 +76,13 @@ export const animations: Partial<
     [StateName.WARNING]: { frameCount: 8, frameRate: 6, repeat: 0 },
     [StateName.SLASHING]: { frameCount: 6, frameRate: 8, repeat: 0 },
   },
+  [EntityName.BELLAN]: {
+    [StateName.IDLE]: { frameCount: 16, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 5, frameRate: 8, repeat: -1 },
+    [StateName.WARNING]: { frameCount: 8, frameRate: 6, repeat: 0 },
+    [StateName.SLASHING]: { frameCount: 6, frameRate: 8, repeat: 0 },
+  },
   [EntityName.WOLF1]: {
     [StateName.IDLE]: { frameCount: 10, frameRate: 8, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 8, repeat: -1 },

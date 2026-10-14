@@ -294,6 +294,7 @@ export const REGEN_MANA_PER_SECOND = 3;
 export const REGEN_INTERVAL = 1000;
 
 export const MAX_STACK = 50;
+export const DROP_LIFETIME = 10 * 60 * 1000;
 export const HOTBAR_SIZE = 7;
 
 /** Directions */

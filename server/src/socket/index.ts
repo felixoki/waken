@@ -122,6 +122,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
         handlers.taming.solidify(data, socket, io, world),
     },
     {
+      event: Event.ITEM_DROP,
+      handler: (data: { index: number }) =>
+        handlers.item.drop(data, socket, world),
+    },
+    {
       event: Event.BUILD_PLACE,
       handler: (data: PlaceBuildData) =>
         handlers.build.place(data, socket, io, world),

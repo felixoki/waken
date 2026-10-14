@@ -85,7 +85,23 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.HOE]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 29, end: 30 },
+            { row: 10, start: 29, end: 30 },
+          ],
+        },
+        key: "hoe_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
@@ -188,14 +204,30 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.WATERING_CAN]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 17, end: 18 },
+            { row: 2, start: 17, end: 18 },
+          ],
+        },
+        key: "watering_can_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Watering can",
       description:
         "A tin watering can. Equip it to water young crops as they grow.",
-      icon: { spritesheet: "icons6", row: 1, col: 6 },
+      icon: { spritesheet: "icons6", row: 2, col: 16 },
       weight: 1.8,
     },
   },
@@ -291,6 +323,35 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     moving: [],
     components: [
       {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons8",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 17, end: 18 },
+            { row: 8, start: 17, end: 18 },
+          ],
+        },
+        key: "lantern_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Lantern",
+      description: "A lantern that casts a warm glow in the dark.",
+      icon: { spritesheet: "icons8", row: 8, col: 16 },
+      weight: 0.8,
+    },
+  },
+  [EntityName.LANTERN_LIGHT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
         name: ComponentName.LIGHT,
         config: {
           color: 0xffa040,
@@ -312,12 +373,6 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     states: [StateName.IDLE],
     behaviors: [],
-    metadata: {
-      displayName: "Lantern",
-      description: "A lantern that casts a warm glow in the dark.",
-      icon: { spritesheet: "icons8", row: 8, col: 16 },
-      weight: 0.8,
-    },
   },
   [EntityName.COMPASS]: {
     facing: Direction.DOWN,

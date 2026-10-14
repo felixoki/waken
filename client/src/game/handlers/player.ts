@@ -179,7 +179,7 @@ export const player = {
     },
 
     equip: (p: Player): void => {
-      const def = configs.entities[EntityName.LANTERN];
+      const def = configs.entities[EntityName.LANTERN_LIGHT];
       if (!def) return;
 
       const id = `lantern-${p.id}`;
@@ -189,7 +189,7 @@ export const player = {
         map: p.map,
         x: p.x,
         y: p.y,
-        name: EntityName.LANTERN,
+        name: EntityName.LANTERN_LIGHT,
         health: 1,
         maxHealth: 1,
         createdAt: 0,

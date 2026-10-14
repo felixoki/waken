@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { ComponentName, EntityName, Event } from "../types/index.js";
+import { ComponentName, EntityName } from "../types/index.js";
 import { World } from "../World.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
@@ -44,13 +44,12 @@ export const crafter = {
     const outputDef = configs.entities[data.output];
     const stackable = outputDef?.metadata?.stackable ?? false;
 
-    player.inventory = handlers.storage.add(player.inventory, {
-      name: data.output,
-      quantity: recipe.quantity,
-      stackable,
-    });
-
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.item.give(
+      player,
+      [{ name: data.output, quantity: recipe.quantity, stackable }],
+      socket,
+      world,
+    );
     handlers.broadcast.store(io, world);
     handlers.broadcast.economy(io, world);
   },

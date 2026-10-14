@@ -3,7 +3,6 @@ import { World } from "../World";
 import { randomUUID } from "crypto";
 import {
   EntityConfig,
-  EntityName,
   Event,
   MapName,
   Party,
@@ -267,7 +266,7 @@ export const party = {
         .map(({ name, x, y }) => ({ name, x, y }));
 
       biome.entities.forEach((biomeEntity) => {
-        if (biomeEntity.name === EntityName.SILVER_SWORD) {
+        if (configs.relics.has(biomeEntity.name)) {
           if (
             world.relics.has(biomeEntity.name) ||
             Math.random() >= RELIC_CHANCE

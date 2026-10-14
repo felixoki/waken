@@ -281,4 +281,5 @@ export enum Action {
   LEARN = "learn",
   DEPOSIT = "deposit",
   SOLIDIFY = "solidify",
+  DROP = "drop",
 }

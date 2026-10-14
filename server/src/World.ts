@@ -49,6 +49,7 @@ export class World {
   public readonly zones: ZoneManager;
   public readonly surfaces: SurfaceManager;
   public readonly affected: Set<string> = new Set();
+  public readonly dropped: Set<string> = new Set();
   public readonly chilled: Set<string> = new Set();
 
   public server: Server;
@@ -120,6 +121,7 @@ export class World {
 
     handlers.spawner.entity.tick(this, this.server, Date.now());
     handlers.spawner.texture.tick(this, this.server, Date.now());
+    handlers.item.decay(this, Date.now());
   }
 
   getTime(): TimeState {

@@ -746,6 +746,21 @@ export const cave: BiomeConfig = {
         weight: 3,
         depth: { min: 0, max: undefined },
       },
+      {
+        id: RoomName.CAVE5,
+        type: RoomType.CAVE,
+        difficulty: RoomDifficulty.EASY,
+        weight: 1.1,
+        depth: { min: 0, max: undefined },
+        enemies: [
+          {
+            entities: [EntityName.BELLAN],
+            count: { min: 1, max: 1 },
+          },
+        ],
+        solitary: true,
+        origin: BiomeName.MOUNTAIN,
+      },
     ],
     interior: [],
   },

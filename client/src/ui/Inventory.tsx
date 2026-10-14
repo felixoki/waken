@@ -100,7 +100,7 @@ export function Inventory() {
     !!party && party.status === PartyStatus.LOBBY && !inRealm;
 
   const actions: ContextMenuAction[] = item
-    ? getActions(item.name, !!storageEntityId, item.soul).map((action) => {
+    ? getActions(item.name, !!storageEntityId, item.soul, inRealm).map((action) => {
         const gated =
           action === Action.CONSUME &&
           getUnlock(item.name) !== undefined &&
@@ -142,6 +142,9 @@ export function Inventory() {
             if (action === Action.SOLIDIFY)
               EventBus.emit(Event.ITEM_SOLIDIFY, { index: menu!.index });
 
+            if (action === Action.DROP)
+              EventBus.emit(Event.ITEM_DROP, { index: menu!.index });
+
             setMenu(null);
           },
         };
@@ -173,6 +176,7 @@ export function Inventory() {
                   item.name,
                   !!storageEntityId,
                   item.soul,
+                  inRealm,
                 );
                 if (actions.length === 0) return;
                 setMenu({ index: i, x: e.clientX, y: e.clientY });
@@ -198,6 +202,7 @@ function getActions(
   name: EntityName,
   storageOpen = false,
   soul?: EntityName | null,
+  inRealm = false,
 ): Action[] {
   const def = configs.entities[name];
   if (!def) return [];
@@ -215,7 +220,20 @@ function getActions(
 
   if (storageOpen) actions.push(Action.DEPOSIT);
 
+  if (isDroppable(name) && !(inRealm && configs.relics.has(name)))
+    actions.push(Action.DROP);
+
   return actions;
+}
+
+function isDroppable(name: EntityName): boolean {
+  const pickable = configs.entities[name]?.components.find(
+    (c): c is Extract<ComponentConfig, { name: ComponentName.PICKABLE }> =>
+      c.name === ComponentName.PICKABLE,
+  );
+  if (!pickable) return false;
+
+  return !pickable.config || pickable.config.item === name;
 }
 
 function isSolidifiable(soul: EntityName): boolean {

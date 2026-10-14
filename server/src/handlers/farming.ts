@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { EntityName, Event, Item, seeds } from "../types";
+import { ComponentName, EntityName, Event, Item, seeds } from "../types";
 import { World } from "../World";
 import { handlers } from ".";
 import { configs } from "../configs";
@@ -44,13 +44,19 @@ export const farming = {
   },
 
   harvest: (
-    data: { entityId: string; yield: Item[] },
+    data: { entityId: string },
     socket: Socket,
     io: Server,
     world: World,
   ) => {
     const player = world.players.getBySocketId(socket.id);
-    if (!player) return;
+    const target = world.entities.get(data.entityId);
+    if (!player || !target) return;
+
+    const growable = configs.entities[target.name]?.components.find(
+      (c) => c.name === ComponentName.GROWABLE,
+    );
+    if (!growable || growable.name !== ComponentName.GROWABLE) return;
 
     handlers.entity.remove(
       data.entityId,
@@ -61,10 +67,7 @@ export const farming = {
       false,
     );
 
-    for (const item of data.yield)
-      player.inventory = handlers.storage.add(player.inventory, item);
-
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.item.give(player, growable.config.yield, socket, world);
   },
 
   water: (data: { id: string }, socket: Socket, _io: Server, world: World) => {

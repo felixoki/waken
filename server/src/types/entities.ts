@@ -1,4 +1,4 @@
-import { Damage } from "./damage.js";
+import { Damage, DamageType } from "./damage.js";
 import { Direction } from "./directions";
 import { MapName } from "./maps";
 import { ComponentConfig, Item } from "./components";
@@ -63,6 +63,9 @@ export interface EntityConfig {
   textureSpawner?: TextureSpawnerConfig;
   zone?: ZoneConfig;
   weight?: number;
+  quantity?: number;
+  soul?: EntityName;
+  dropped?: boolean;
   link?: string;
   parent?: string;
   origin?: BiomeName;
@@ -111,6 +114,7 @@ export interface Trigger {
 }
 
 export interface Modifier {
+  unique?: boolean;
   multipliers?: {
     damage?: number;
     crit?: number;
@@ -139,6 +143,8 @@ export interface Modifier {
     mana?: number;
   };
   immunities?: EffectName[];
+  resist?: Partial<Record<EffectName, number>>;
+  taken?: Partial<Record<DamageType, number>>;
 }
 
 export interface EntityDefinition {
@@ -201,6 +207,8 @@ export enum EntityName {
   BEAR_FAT = "bear_fat",
   BEAR_PELT = "bear_pelt",
   BEARDED_TOOTH_FUNGUS = "bearded_tooth_fungus",
+  BELLAN = "bellan",
+  BELLAN_PELT = "bellan_pelt",
   BEEF = "beef",
   BEER = "beer",
   BELL = "bell",
@@ -236,12 +244,14 @@ export enum EntityName {
   BUSH3 = "bush3",
   BUSH4 = "bush4",
   CABBAGE = "cabbage",
+  CABBAGE_PLANT = "cabbage_plant",
   CABBAGE_SEED = "cabbage_seed",
   CANDLE = "candle",
   CANDLES1 = "candles1",
   CANDLES2 = "candles2",
   CANDLES3 = "candles3",
   CARROT = "carrot",
+  CARROT_PLANT = "carrot_plant",
   CARROT_SEED = "carrot_seed",
   CAVE_ENTRANCE = "cave_entrance",
   CAVE_EXIT = "cave_exit",
@@ -294,18 +304,10 @@ export enum EntityName {
   PERCH = "perch",
   PIKE = "pike",
   CAVEFISH = "cavefish",
-  CARP_TROPHY1 = "carp_trophy1",
-  CARP_TROPHY2 = "carp_trophy2",
-  CARP_TROPHY3 = "carp_trophy3",
-  PERCH_TROPHY1 = "perch_trophy1",
-  PERCH_TROPHY2 = "perch_trophy2",
-  PERCH_TROPHY3 = "perch_trophy3",
-  PIKE_TROPHY1 = "pike_trophy1",
-  PIKE_TROPHY2 = "pike_trophy2",
-  PIKE_TROPHY3 = "pike_trophy3",
-  CAVEFISH_TROPHY1 = "cavefish_trophy1",
-  CAVEFISH_TROPHY2 = "cavefish_trophy2",
-  CAVEFISH_TROPHY3 = "cavefish_trophy3",
+  CARP_TROPHY = "carp_trophy",
+  PERCH_TROPHY = "perch_trophy",
+  PIKE_TROPHY = "pike_trophy",
+  CAVEFISH_TROPHY = "cavefish_trophy",
   FOX = "fox",
   FOX_PELT = "fox_pelt",
   COW = "cow",
@@ -319,6 +321,7 @@ export enum EntityName {
   WOOL = "wool",
   BUCKET = "bucket",
   GRAPE = "grape",
+  GRAPE_PLANT = "grape_plant",
   GRAPE_SEED = "grape_seed",
   GRASS1 = "grass1",
   CHICKEN = "chicken",
@@ -357,6 +360,7 @@ export enum EntityName {
   HEXGEIST = "hexgeist",
   HOE = "hoe",
   HOPS = "hops",
+  HOPS_PLANT = "hops_plant",
   HOPS_SEED = "hops_seed",
   HOST = "host",
   HOUSE1 = "house1",
@@ -368,6 +372,7 @@ export enum EntityName {
   LADDER = "ladder",
   LEVER = "lever",
   LANTERN = "lantern",
+  LANTERN_LIGHT = "lantern_light",
   LUMP_OF_SUGAR = "lump_of_sugar",
   NECKLACE1 = "necklace1",
   MARKET_HOUSE = "market_house",
@@ -430,6 +435,7 @@ export enum EntityName {
   ROBE2 = "robe2",
   ROBE3 = "robe3",
   ROBE4 = "robe4",
+  ROBE5 = "robe5",
   VASES3 = "vases3",
   REED1 = "reed1",
   REED2 = "reed2",
@@ -466,6 +472,7 @@ export enum EntityName {
   TABLE2 = "table2",
   TABLE3 = "table3",
   TOMATO = "tomato",
+  TOMATO_PLANT = "tomato_plant",
   TROLL = "troll",
   ANCIENT_TROLL = "ancient_troll",
   TROLL_SCALES = "troll_scales",
@@ -526,6 +533,7 @@ export enum EntityName {
   WEAVER = "weaver",
   WELL = "well",
   WHEAT = "wheat",
+  WHEAT_PLANT = "wheat_plant",
   WHEAT_SEED = "wheat_seed",
   WINE = "wine",
   WINDMILL = "windmill",

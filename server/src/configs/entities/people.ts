@@ -957,6 +957,18 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
                 { item: EntityName.PLUME, quantity: 4 },
               ],
             },
+            {
+              tier: 3,
+              output: EntityName.ROBE5,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.BELLAN_PELT, quantity: 1 },
+                { item: EntityName.BEAR_PELT, quantity: 4 },
+                { item: EntityName.WOOL, quantity: 10 },
+                { item: EntityName.AZURITE1, quantity: 5 },
+                { item: EntityName.WANDERERS_GIFT, quantity: 1 },
+              ],
+            },
           ] satisfies Recipe[],
         },
       },

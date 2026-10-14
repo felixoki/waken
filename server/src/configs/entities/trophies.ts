@@ -1,115 +1,84 @@
 import {
   ComponentName,
   Direction,
+  EffectName,
   EntityDefinition,
   EntityName,
-  Icon,
+  Modifier,
   Rarity,
 } from "../../types";
 
 const trophy = (
+  key: string,
+  index: number,
   displayName: string,
   description: string,
   rarity: Rarity,
-  icon: Icon,
+  modifier: Modifier,
 ): EntityDefinition => ({
   facing: Direction.DOWN,
   moving: [],
   components: [
+    {
+      name: ComponentName.TEXTURE,
+      config: {
+        spritesheet: "icons14",
+        tileSize: 16,
+        tiles: [
+          { row: 1, start: index * 2 + 1, end: index * 2 + 2 },
+          { row: 2, start: index * 2 + 1, end: index * 2 + 2 },
+        ],
+      },
+      key: `${key}_texture`,
+    },
     { name: ComponentName.POINTABLE },
+    { name: ComponentName.PICKABLE },
     { name: ComponentName.HOVERABLE },
   ],
   states: [],
   behaviors: [],
+  modifier,
   metadata: {
     displayName,
     description,
     stackable: false,
     rarity,
-    icon,
+    icon: { spritesheet: "icons14", row: 3, col: index + 1 },
     weight: 1.5,
   },
 });
 
-const PERCH_ICON: Icon = { spritesheet: "icons1", row: 2, col: 25 };
-const CARP_ICON: Icon = { spritesheet: "icons1", row: 4, col: 13 };
-const PIKE_ICON: Icon = { spritesheet: "icons1", row: 4, col: 7 };
-const CAVEFISH_ICON: Icon = { spritesheet: "icons1", row: 2, col: 1 };
-
 export const trophies: Partial<Record<EntityName, EntityDefinition>> = {
-  [EntityName.PERCH_TROPHY1]: trophy(
+  [EntityName.PERCH_TROPHY]: trophy(
+    EntityName.PERCH_TROPHY,
+    0,
     "Mounted Perch",
     "A respectable perch, cleaned and mounted on a board.",
     Rarity.COMMON,
-    PERCH_ICON,
+    { unique: true, bonus: { health: 15 } },
   ),
-  [EntityName.PERCH_TROPHY2]: trophy(
-    "Silver Perch",
-    "A perch large enough that the fishwife raised an eyebrow.",
-    Rarity.UNCOMMON,
-    PERCH_ICON,
-  ),
-  [EntityName.PERCH_TROPHY3]: trophy(
-    "Perch of the Deep Reeds",
-    "The kind of perch the old anglers swore was a story.",
-    Rarity.RARE,
-    PERCH_ICON,
-  ),
-
-  [EntityName.CARP_TROPHY1]: trophy(
+  [EntityName.CARP_TROPHY]: trophy(
+    EntityName.CARP_TROPHY,
+    1,
     "Mounted Carp",
     "A heavy river carp, preserved with some pride.",
     Rarity.COMMON,
-    CARP_ICON,
+    { unique: true, bonus: { health: 25 } },
   ),
-  [EntityName.CARP_TROPHY2]: trophy(
-    "Silver Carp",
-    "A carp that fought hard enough to be worth remembering.",
-    Rarity.UNCOMMON,
-    CARP_ICON,
-  ),
-  [EntityName.CARP_TROPHY3]: trophy(
-    "Carp of the Still Water",
-    "Broad as a shield. The fishwife weighed it twice.",
-    Rarity.RARE,
-    CARP_ICON,
-  ),
-
-  [EntityName.PIKE_TROPHY1]: trophy(
+  [EntityName.PIKE_TROPHY]: trophy(
+    EntityName.PIKE_TROPHY,
+    2,
     "Mounted Pike",
     "All teeth and temper, fixed behind glass.",
     Rarity.UNCOMMON,
-    PIKE_ICON,
+    { unique: true, bonus: { health: 35 }, multipliers: { damage: 1.05 } },
   ),
-  [EntityName.PIKE_TROPHY2]: trophy(
-    "Silver Pike",
-    "A pike that took the line twice before it tired.",
-    Rarity.RARE,
-    PIKE_ICON,
-  ),
-  [EntityName.PIKE_TROPHY3]: trophy(
-    "Pike of the Black Channel",
-    "A monster of a fish. Few have landed its equal.",
-    Rarity.LEGENDARY,
-    PIKE_ICON,
-  ),
-
-  [EntityName.CAVEFISH_TROPHY1]: trophy(
+  [EntityName.CAVEFISH_TROPHY]: trophy(
+    EntityName.CAVEFISH_TROPHY,
+    3,
     "Mounted Cavefish",
     "Pale and strange, kept out of the light.",
     Rarity.UNCOMMON,
-    CAVEFISH_ICON,
-  ),
-  [EntityName.CAVEFISH_TROPHY2]: trophy(
-    "Silver Cavefish",
-    "Grown far past what the sunless pools should allow.",
-    Rarity.RARE,
-    CAVEFISH_ICON,
-  ),
-  [EntityName.CAVEFISH_TROPHY3]: trophy(
-    "Cavefish of the Sunless Pool",
-    "The fishwife had no name for something this size.",
-    Rarity.LEGENDARY,
-    CAVEFISH_ICON,
+    { unique: true, bonus: { health: 25 }, resist: { [EffectName.POISONED]: 0.5 } },
   ),
 };

@@ -801,6 +801,10 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.ITEM_SOLIDIFY, data);
     });
 
+    EventBus.on(Event.ITEM_DROP, (data: { index: number }) => {
+      this.managers.socket.emit(Event.ITEM_DROP, data);
+    });
+
     EventBus.on(
       Event.SLOT_MOVE,
       (data: {

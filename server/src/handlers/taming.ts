@@ -84,14 +84,12 @@ export const taming = {
     player.hotbar = hotbar;
     socket.emit(Event.HOTBAR_SYNC, player.hotbar);
 
-    player.inventory = handlers.storage.add(player.inventory, {
-      name: EntityName.SOULSTONE,
-      quantity: 1,
-      stackable: false,
-      soul,
-    });
-
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.item.give(
+      player,
+      [{ name: EntityName.SOULSTONE, quantity: 1, stackable: false, soul }],
+      socket,
+      world,
+    );
   },
 
   solidify: (

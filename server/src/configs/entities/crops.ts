@@ -42,18 +42,34 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.CARROT_SEED]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 2, end: 3 },
+            { row: 8, start: 2, end: 3 },
+          ],
+        },
+        key: "carrot_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Carrot Seed",
       description: "A humble seed that grows into a crunchy carrot.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 7 },
+      icon: { spritesheet: "icons6", row: 8, col: 1 },
       weight: 0.01,
     },
   },
-  [EntityName.CARROT]: {
+  [EntityName.CARROT_PLANT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -64,7 +80,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
           tileSize: 16,
           tiles: [{ row: 21, start: 12, end: 12 }],
         },
-        key: "carrot_texture",
+        key: "carrot_plant_texture",
       },
       {
         name: ComponentName.BODY,
@@ -120,26 +136,69 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Carrot",
       description: "A crunchy orange root vegetable grown from seed.",
+    },
+  },
+  [EntityName.CARROT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 2, end: 3 },
+            { row: 2, start: 2, end: 3 },
+          ],
+        },
+        key: "carrot_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Carrot",
+      description: "A crunchy orange root vegetable grown from seed.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 1 },
+      icon: { spritesheet: "icons6", row: 2, col: 1 },
       weight: 0.1,
     },
   },
   [EntityName.TOMATO_SEED]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 5, end: 6 },
+            { row: 8, start: 5, end: 6 },
+          ],
+        },
+        key: "tomato_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Tomato Seed",
       description: "A small seed that ripens into a plump red tomato.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 7 },
+      icon: { spritesheet: "icons6", row: 8, col: 4 },
       weight: 0.01,
     },
   },
-  [EntityName.TOMATO]: {
+  [EntityName.TOMATO_PLANT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -150,7 +209,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
           tileSize: 16,
           tiles: [{ row: 19, start: 2, end: 2 }],
         },
-        key: "tomato_texture",
+        key: "tomato_plant_texture",
       },
       {
         name: ComponentName.BODY,
@@ -207,26 +266,69 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Tomato",
       description: "A plump red fruit grown on a low-lying vine.",
+    },
+  },
+  [EntityName.TOMATO]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 5, end: 6 },
+            { row: 2, start: 5, end: 6 },
+          ],
+        },
+        key: "tomato_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Tomato",
+      description: "A plump red fruit grown on a low-lying vine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 2 },
+      icon: { spritesheet: "icons6", row: 2, col: 4 },
       weight: 0.15,
     },
   },
   [EntityName.CABBAGE_SEED]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 8, end: 9 },
+            { row: 8, start: 8, end: 9 },
+          ],
+        },
+        key: "cabbage_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Cabbage Seed",
       description: "A seed that grows into a full head of cabbage.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 7 },
+      icon: { spritesheet: "icons6", row: 8, col: 7 },
       weight: 0.01,
     },
   },
-  [EntityName.CABBAGE]: {
+  [EntityName.CABBAGE_PLANT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -237,7 +339,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
           tileSize: 16,
           tiles: [{ row: 20, start: 7, end: 7 }],
         },
-        key: "cabbage_texture",
+        key: "cabbage_plant_texture",
       },
       {
         name: ComponentName.BODY,
@@ -297,26 +399,69 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Cabbage",
       description: "A dense leafy green vegetable grown in rows.",
+    },
+  },
+  [EntityName.CABBAGE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 8, end: 9 },
+            { row: 2, start: 8, end: 9 },
+          ],
+        },
+        key: "cabbage_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Cabbage",
+      description: "A dense leafy green vegetable grown in rows.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 3 },
+      icon: { spritesheet: "icons6", row: 2, col: 7 },
       weight: 1,
     },
   },
   [EntityName.WHEAT_SEED]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 11, end: 12 },
+            { row: 8, start: 11, end: 12 },
+          ],
+        },
+        key: "wheat_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Wheat seed",
       description: "A small seed that grows into a stalk of wheat.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 7 },
+      icon: { spritesheet: "icons6", row: 8, col: 10 },
       weight: 0.01,
     },
   },
-  [EntityName.WHEAT]: {
+  [EntityName.WHEAT_PLANT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -330,7 +475,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 24, start: 5, end: 6 },
           ],
         },
-        key: "wheat_texture",
+        key: "wheat_plant_texture",
       },
       {
         name: ComponentName.BODY,
@@ -390,26 +535,69 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Wheat",
       description: "A stalk of wheat grown in fields.",
+    },
+  },
+  [EntityName.WHEAT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 14, end: 15 },
+            { row: 2, start: 14, end: 15 },
+          ],
+        },
+        key: "wheat_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wheat",
+      description: "A stalk of wheat grown in fields.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 5 },
+      icon: { spritesheet: "icons6", row: 2, col: 13 },
       weight: 0.05,
     },
   },
   [EntityName.GRAPE_SEED]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 14, end: 15 },
+            { row: 8, start: 14, end: 15 },
+          ],
+        },
+        key: "grape_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Grape seed",
       description: "A small seed that grows into a grapevine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 7 },
+      icon: { spritesheet: "icons6", row: 8, col: 13 },
       weight: 0.01,
     },
   },
-  [EntityName.GRAPE]: {
+  [EntityName.GRAPE_PLANT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -424,7 +612,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 3, start: 5, end: 6 },
           ],
         },
-        key: "grape_texture",
+        key: "grape_plant_texture",
       },
       {
         name: ComponentName.BODY,
@@ -487,6 +675,33 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Grape",
       description: "A bunch of grapes grown on a vine.",
+    },
+  },
+  [EntityName.GRAPE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons1",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 20, end: 21 },
+            { row: 10, start: 20, end: 21 },
+          ],
+        },
+        key: "grape_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Grape",
+      description: "A bunch of grapes grown on a vine.",
       stackable: true,
       icon: { spritesheet: "icons1", row: 10, col: 19 },
       weight: 0.4,
@@ -495,18 +710,34 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.HOPS_SEED]: {
     facing: Direction.DOWN,
     moving: [],
-    components: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 7, start: 17, end: 18 },
+            { row: 8, start: 17, end: 18 },
+          ],
+        },
+        key: "hops_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
     states: [],
     behaviors: [],
     metadata: {
       displayName: "Hops seed",
       description: "A small seed that grows into a climbing hop bine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 7 },
+      icon: { spritesheet: "icons6", row: 8, col: 16 },
       weight: 0.01,
     },
   },
-  [EntityName.HOPS]: {
+  [EntityName.HOPS_PLANT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -521,7 +752,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 6, start: 5, end: 6 },
           ],
         },
-        key: "hops_texture",
+        key: "hops_plant_texture",
       },
       {
         name: ComponentName.BODY,
@@ -584,8 +815,35 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Hops",
       description: "Fragrant cones grown on a climbing hop bine.",
+    },
+  },
+  [EntityName.HOPS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 23, end: 24 },
+            { row: 2, start: 23, end: 24 },
+          ],
+        },
+        key: "hops_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hops",
+      description: "Fragrant cones grown on a climbing hop bine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 8 },
+      icon: { spritesheet: "icons6", row: 2, col: 22 },
       weight: 0.05,
     },
   },

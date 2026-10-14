@@ -25,6 +25,8 @@ const landmarks = new Set(
     .map(([name]) => name),
 );
 
+const relics = new Set<EntityName>([EntityName.SILVER_SWORD]);
+
 const collectables = new Set<EntityName>([
   ...needs.flatMap((need) => need.items.map((entry) => entry.item)),
   ...tiers.flatMap((tier) => tier.requirements.map((entry) => entry.item)),
@@ -43,6 +45,7 @@ export const configs = {
   animations,
   buildable,
   collectables,
+  relics,
   dialogue: { choices: COMMON_CHOICES, nodes: COMMON_NODES },
   effects,
   entities,

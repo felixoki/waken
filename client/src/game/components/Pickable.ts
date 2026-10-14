@@ -1,4 +1,9 @@
-import { ComponentName, Event, PickableConfig } from "@server/types";
+import {
+  ComponentName,
+  EntityName,
+  Event,
+  PickableConfig,
+} from "@server/types";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
 import { Player } from "../Player";
@@ -8,15 +13,24 @@ import { vfx } from "../vfx";
 export class PickableComponent extends Component {
   private entity: Entity;
   private config?: PickableConfig;
+  private quantity?: number;
+  private soul?: EntityName;
   private isPicking = false;
 
   public name = ComponentName.PICKABLE;
 
-  constructor(entity: Entity, config?: PickableConfig) {
+  constructor(
+    entity: Entity,
+    config?: PickableConfig,
+    quantity?: number,
+    soul?: EntityName,
+  ) {
     super();
 
     this.entity = entity;
     this.config = config;
+    this.quantity = quantity;
+    this.soul = soul;
   }
 
   attach(): void {
@@ -37,9 +51,9 @@ export class PickableComponent extends Component {
     );
 
     const item = this.config?.item ?? this.entity.name;
-    const quantity = this.config?.quantity ?? 1;
+    const quantity = this.quantity ?? this.config?.quantity ?? 1;
 
-    if (!inventory?.add(item, quantity)) return;
+    if (!inventory?.add(item, quantity, this.soul)) return;
 
     this.isPicking = true;
 

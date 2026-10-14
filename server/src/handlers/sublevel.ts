@@ -3,6 +3,7 @@ import {
   Transition,
   Event,
   EntityConfig,
+  EntityName,
   PlayerConfig,
   TiledMap,
 } from "../types";
@@ -65,6 +66,11 @@ export const sublevel = {
 
     if (isNew) {
       biome.entities.forEach((e) => {
+        if (e.name === EntityName.BELLAN) {
+          if (world.relics.has(e.name)) return;
+          world.relics.reserve(e.name);
+        }
+
         const id = randomUUID();
         const health = configs.entities[e.name]?.maxHealth ?? MAX_HEALTH;
 

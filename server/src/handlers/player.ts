@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { randomUUID } from "crypto";
 import {
   ComponentName,
+  DamageType,
   Direction,
   EffectName,
   EntityName,
@@ -51,12 +52,8 @@ export const player = {
 
       if (WORLD_ID && playerId) saved = await load.player(WORLD_ID, playerId);
 
-      const inventory: (Item | null)[] = saved?.data?.inventory ?? [
-        { name: EntityName.SOULSTONE, quantity: 2, stackable: true },
-        { name: EntityName.CARROT, quantity: 10, stackable: true },
-        { name: EntityName.BUCKET, quantity: 1, stackable: false },
-        ...new Array(17).fill(null),
-      ];
+      const inventory: (Item | null)[] =
+        saved?.data?.inventory ?? new Array(20).fill(null);
       const hotbar = (saved?.data?.hotbar as (Slot | null)[]) ?? [
         ...new Array(HOTBAR_SIZE).fill(null),
       ];
@@ -381,11 +378,21 @@ export const player = {
 
   carried: (player: PlayerConfig): Item[] => {
     const items: Item[] = [];
+    const seen = new Set<EntityName>();
+
+    const counts = (item: Item) => {
+      if (!configs.entities[item.name]?.modifier?.unique) return true;
+      if (seen.has(item.name)) return false;
+
+      seen.add(item.name);
+      return true;
+    };
 
     for (const item of player.inventory)
-      if (item && !handlers.player.robe.is(item.name)) items.push(item);
+      if (item && !handlers.player.robe.is(item.name) && counts(item))
+        items.push(item);
 
-    for (const item of player.robe) if (item) items.push(item);
+    for (const item of player.robe) if (item && counts(item)) items.push(item);
 
     return items;
   },
@@ -403,6 +410,7 @@ export const player = {
       max: { health: MAX_HEALTH, mana: MAX_MANA },
       crit: CRIT_CHANCE,
       reflect: 0,
+      taken: {} as Partial<Record<DamageType, number>>,
     };
     const scale = { health: 1, mana: 1 };
     const added = { health: 0, mana: 0 };
@@ -410,7 +418,11 @@ export const player = {
     const apply = (modifier: Modifier | null | undefined) => {
       if (!modifier) return;
 
-      const { multipliers, regen, max, bonus } = modifier;
+      const { multipliers, regen, max, bonus, taken } = modifier;
+
+      if (taken)
+        for (const [type, value] of Object.entries(taken) as [DamageType, number][])
+          stats.taken[type] = (stats.taken[type] ?? 1) * value;
 
       if (multipliers) {
         if (multipliers.damage) stats.multipliers.damage *= multipliers.damage;
@@ -481,6 +493,23 @@ export const player = {
         return true;
 
     return false;
+  },
+
+  resist: (player: PlayerConfig, name: EffectName): number => {
+    let taken = 1;
+
+    for (const item of handlers.player.carried(player))
+      taken *= 1 - (configs.entities[item.name]?.modifier?.resist?.[name] ?? 0);
+
+    if (player.effects) {
+      const now = Date.now();
+
+      for (const effect of player.effects)
+        if (effect.expiresAt > now)
+          taken *= 1 - (configs.effects[effect.name]?.modifier?.resist?.[name] ?? 0);
+    }
+
+    return 1 - taken;
   },
 
   regen: (delta: number, world: World) => {

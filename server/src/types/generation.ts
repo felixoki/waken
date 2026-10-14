@@ -117,6 +117,7 @@ export enum RoomName {
   CAVE2 = "cave2",
   CAVE3 = "cave3",
   CAVE4 = "cave4",
+  CAVE5 = "cave5",
   QUARTERS1 = "quarters1",
   WARD1 = "ward1",
 }

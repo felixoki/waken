@@ -112,12 +112,13 @@ export const entity = {
     const metadata = configs.entities[name]?.metadata;
     const item: Item = {
       name,
-      quantity: pickable?.config?.quantity ?? 1,
+      quantity: entity.quantity ?? pickable?.config?.quantity ?? 1,
       stackable: metadata?.stackable ?? false,
+      soul: entity.soul,
       weight: entity.weight ?? metadata?.weight,
     };
 
-    if (!handlers.storage.fits(player.inventory, item)) return;
+    if (handlers.storage.room(player.inventory, item) < item.quantity) return;
 
     player.inventory = handlers.storage.add(player.inventory, item);
     socket.emit(Event.INVENTORY_SYNC, player.inventory);

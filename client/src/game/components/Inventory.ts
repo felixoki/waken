@@ -13,38 +13,45 @@ export class InventoryComponent extends Component {
   update(): void {}
   detach(): void {}
 
-  add(name: EntityName, quantity: number = 1): boolean {
+  add(name: EntityName, quantity: number = 1, soul?: EntityName): boolean {
     const def = configs.entities[name];
 
     if (!def || !def.metadata) return false;
 
-    if (def.metadata.stackable) {
-      const existing = this.items.findIndex(
-        (item) => item?.name === name && item.stackable && item.quantity < MAX_STACK,
-      );
+    const stackable = def.metadata.stackable || false;
+    let room = 0;
 
-      if (existing !== -1) {
-        this.items[existing]!.quantity += quantity;
+    for (const item of this.items) {
+      if (!item) room += stackable ? MAX_STACK : 1;
+      else if (stackable && this.stacks(item, name, soul))
+        room += MAX_STACK - item.quantity;
+    }
 
-        this.emit();
-        return true;
+    if (room < quantity) return false;
+
+    let remaining = quantity;
+
+    if (stackable)
+      for (const item of this.items) {
+        if (!item || !this.stacks(item, name, soul)) continue;
+        const added = Math.min(MAX_STACK - item.quantity, remaining);
+
+        item.quantity += added;
+        remaining -= added;
+        if (remaining === 0) break;
       }
+
+    if (remaining > 0) {
+      const empty = this.items.findIndex((item) => item === null);
+      this.items[empty] = { name, quantity: remaining, stackable, soul };
     }
 
-    const empty = this.items.findIndex((item) => item === null);
+    this.emit();
+    return true;
+  }
 
-    if (empty !== -1) {
-      this.items[empty] = {
-        name,
-        quantity,
-        stackable: def.metadata.stackable || false,
-      };
-
-      this.emit();
-      return true;
-    }
-
-    return false;
+  private stacks(item: Item, name: EntityName, soul?: EntityName): boolean {
+    return item.name === name && item.stackable && item.soul === soul;
   }
 
   remove(name: EntityName, quantity: number = 1): boolean {

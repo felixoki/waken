@@ -70,6 +70,7 @@ export enum Event {
   ITEM_HAND_OVER = "item_hand_over",
   ITEM_CONSUME = "item_consume",
   ITEM_SOLIDIFY = "item_solidify",
+  ITEM_DROP = "item_drop",
 
   /** Inventory & Hotbar */
   INVENTORY_UPDATE = "inventory_update",

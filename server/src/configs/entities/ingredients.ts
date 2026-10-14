@@ -102,7 +102,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A tall, golden flower with a broad face that follows the sun.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 4 },
+      icon: { spritesheet: "icons6", row: 2, col: 10 },
       weight: 0.05,
     },
   },
@@ -518,7 +518,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Edelweiss",
       description: "A star of pale felted petals that only opens above the snowline.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 1, col: 9 },
+      icon: { spritesheet: "icons6", row: 2, col: 25 },
       weight: 0.02,
     },
   },
@@ -575,6 +575,18 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 29, end: 30 },
+            { row: 4, start: 29, end: 30 },
+          ],
+        },
+        key: "potion1_texture",
+      },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },
@@ -598,6 +610,18 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 13, start: 29, end: 30 },
+            { row: 14, start: 29, end: 30 },
+          ],
+        },
+        key: "potion2_texture",
+      },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },
@@ -621,6 +645,18 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 29, end: 30 },
+            { row: 2, start: 29, end: 30 },
+          ],
+        },
+        key: "potion3_texture",
+      },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },
@@ -746,6 +782,18 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons2",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 29, end: 30 },
+            { row: 4, start: 29, end: 30 },
+          ],
+        },
+        key: "soup_of_the_hiker_texture",
+      },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },

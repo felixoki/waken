@@ -1,7 +1,6 @@
 import { Server, Socket } from "socket.io";
 import {
   EntityName,
-  Event,
   FishName,
   Item,
   ZoneName,
@@ -141,9 +140,9 @@ export const fishing = {
       const previous = records[name] ?? 0;
       if (weight <= previous) continue;
 
-      for (const trophy of configs.fish[name].trophies)
-        if (trophy.minWeight > previous && trophy.minWeight <= weight)
-          awarded.push(trophy.item);
+      const { trophy } = configs.fish[name];
+      if (trophy.minWeight > previous && trophy.minWeight <= weight)
+        awarded.push(trophy.item);
 
       records[name] = weight;
       beaten.push(
@@ -160,16 +159,13 @@ export const fishing = {
 
     player.records = records;
 
-    if (awarded.length) {
-      for (const item of awarded)
-        player.inventory = handlers.storage.add(player.inventory, {
-          name: item,
-          quantity: 1,
-          stackable: false,
-        });
-
-      socket.emit(Event.INVENTORY_SYNC, player.inventory);
-    }
+    if (awarded.length)
+      handlers.item.give(
+        player,
+        awarded.map((name) => ({ name, quantity: 1, stackable: false })),
+        socket,
+        world,
+      );
 
     const parts = [
       `New best: ${beaten.join(", ")}.`,

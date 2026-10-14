@@ -12,6 +12,7 @@ export const world = {
       state.entities.forEach((entity: EntityConfig) => {
         world.entities.add(entity.id, entity);
         world.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
+        if (entity.dropped) world.dropped.add(entity.id);
       });
 
       state.entities.forEach((entity: EntityConfig) => {

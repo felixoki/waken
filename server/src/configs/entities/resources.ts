@@ -3,6 +3,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  Rarity,
 } from "../../types";
 
 export const resources: Partial<Record<EntityName, EntityDefinition>> = {
@@ -184,6 +185,18 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 5, end: 6 },
+            { row: 4, start: 5, end: 6 },
+          ],
+        },
+        key: "glass_texture",
+      },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
       { name: ComponentName.HOVERABLE },
@@ -415,11 +428,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons9",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 2, end: 3 },
-            { row: 2, start: 2, end: 3 },
+            { row: 3, start: 2, end: 3 },
+            { row: 4, start: 2, end: 3 },
           ],
         },
         key: "fox_pelt_texture",
@@ -434,7 +447,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Fox pelt",
       description: "A soft pelt obtained from a cunning fox.",
       stackable: true,
-      icon: { spritesheet: "icons9", row: 2, col: 1 },
+      icon: { spritesheet: "icons6", row: 4, col: 1 },
       weight: 1,
     },
   },
@@ -498,6 +511,37 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 6,
     },
   },
+  [EntityName.BELLAN_PELT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons6",
+          tileSize: 16,
+          tiles: [
+            { row: 3, start: 14, end: 15 },
+            { row: 4, start: 14, end: 15 },
+          ],
+        },
+        key: "bellan_pelt_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bellan's pelt",
+      description: "The black pelt of Bellan.",
+      stackable: true,
+      rarity: Rarity.LEGENDARY,
+      icon: { spritesheet: "icons6", row: 4, col: 13 },
+      weight: 6,
+    },
+  },
   [EntityName.WOLF_PELT]: {
     facing: Direction.DOWN,
     moving: [],
@@ -505,11 +549,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons9",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 5, end: 6 },
-            { row: 2, start: 5, end: 6 },
+            { row: 3, start: 5, end: 6 },
+            { row: 4, start: 5, end: 6 },
           ],
         },
         key: "wolf_pelt_texture",
@@ -524,7 +568,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wolf pelt",
       description: "A coarse grey pelt taken from a wolf.",
       stackable: true,
-      icon: { spritesheet: "icons9", row: 2, col: 4 },
+      icon: { spritesheet: "icons6", row: 4, col: 4 },
       weight: 3,
     },
   },
@@ -625,11 +669,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons9",
+          spritesheet: "icons6",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 8, end: 9 },
-            { row: 2, start: 8, end: 9 },
+            { row: 3, start: 8, end: 9 },
+            { row: 4, start: 8, end: 9 },
           ],
         },
         key: "plume_texture",
@@ -644,7 +688,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Plume",
       description: "A long blue-grey plume shed from a heron.",
       stackable: true,
-      icon: { spritesheet: "icons9", row: 2, col: 7 },
+      icon: { spritesheet: "icons6", row: 4, col: 7 },
       weight: 0.02,
     },
   },

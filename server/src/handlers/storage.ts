@@ -69,6 +69,17 @@ export const storage = {
     return slots.some((s) => s === null);
   },
 
+  room(slots: (Item | null)[], item: Item): number {
+    let room = 0;
+
+    for (const s of slots) {
+      if (!s) room += item.stackable ? MAX_STACK : 1;
+      else if (storage.stacks(s, item)) room += MAX_STACK - s.quantity;
+    }
+
+    return room;
+  },
+
   has(slots: (Item | null)[], item: Item): boolean {
     const total = slots
       .filter((s): s is Item => s?.name === item.name && s.soul === item.soul)

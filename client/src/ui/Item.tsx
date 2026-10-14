@@ -219,7 +219,8 @@ export function Item({
             if (!modifier) return null;
 
             const rows: { label: string; value: string }[] = [];
-            const { multipliers, regen, max, bonus, immunities } = modifier;
+            const { multipliers, regen, max, bonus, immunities, resist, taken } =
+              modifier;
 
             const percent = (value: number) =>
               `${value >= 0 ? "+" : ""}${Math.round(value * 100)}%`;
@@ -263,6 +264,13 @@ export function Item({
               });
             for (const name of immunities ?? [])
               rows.push({ label: `Resist ${name}`, value: "100%" });
+            for (const [name, value] of Object.entries(resist ?? {}))
+              rows.push({ label: `Resist ${name}`, value: percent(value) });
+            for (const [type, value] of Object.entries(taken ?? {}))
+              rows.push({
+                label: `${value > 1 ? "Weak to" : "Resist"} ${type}`,
+                value: percent(Math.abs(value - 1)),
+              });
 
             if (!rows.length) return null;
 

@@ -52,7 +52,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Glowshroom",
       description: "A cluster of small mushrooms that glows faintly green.",
       stackable: true,
-      icon: { spritesheet: "icons9", row: 2, col: 10 },
+      icon: { spritesheet: "icons6", row: 4, col: 10 },
       weight: 0.05,
     },
   },
