@@ -10,7 +10,6 @@ import { TextureComponent } from "../components/Texture";
 import type { Entity } from "../Entity";
 import type { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
-import type { InventoryComponent } from "../components/Inventory";
 
 const TOLERANCE = 4;
 
@@ -86,22 +85,11 @@ export const build = {
     };
   },
 
-  affordable(name: EntityName, player: Entity): boolean {
+  affordable(name: EntityName, store: Record<string, number>): boolean {
     const config = configs.buildable[name];
     if (!config) return false;
 
-    const inventory =
-      player.getComponent<InventoryComponent>(ComponentName.INVENTORY)?.get() ??
-      [];
-
-    return config.cost.every((c) => {
-      const total = inventory.reduce(
-        (sum, item) => (item?.name === c.item ? sum + item.quantity : sum),
-        0,
-      );
-
-      return total >= c.quantity;
-    });
+    return config.cost.every((c) => (store[c.item] ?? 0) >= c.quantity);
   },
 
   placeable(
@@ -110,8 +98,9 @@ export const build = {
     y: number,
     player: Entity,
     main: MainScene,
+    store: Record<string, number>,
   ): boolean {
-    if (!build.affordable(name, player)) return false;
+    if (!build.affordable(name, store)) return false;
 
     const rect = bounds(name, x, y);
     if (!rect) return false;

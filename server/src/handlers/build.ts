@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { DestroyBuildData, Event, Item, PlaceBuildData } from "../types";
+import { DestroyBuildData, Event, PlaceBuildData } from "../types";
 import { BUILD_MAPS } from "../globals";
 import { World } from "../World";
 import { handlers } from ".";
@@ -15,17 +15,13 @@ export const build = {
     const config = configs.buildable[data.name];
     if (!config) return;
 
-    const items: Item[] = config.cost.map((c) => ({
-      name: c.item,
-      quantity: c.quantity,
-      stackable: true,
-    }));
-    for (const item of items)
-      if (!handlers.storage.has(player.inventory, item)) return;
+    const canAfford = config.cost.every((c) =>
+      world.items.has(c.item, c.quantity),
+    );
+    if (!canAfford) return;
 
-    for (const item of items)
-      player.inventory = handlers.storage.remove(player.inventory, item);
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    for (const c of config.cost) world.items.remove(c.item, c.quantity);
+    handlers.broadcast.store(io, world);
 
     handlers.entity.create(
       {

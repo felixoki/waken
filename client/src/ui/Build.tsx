@@ -3,24 +3,29 @@ import { EntityName, Event } from "@server/types";
 import { BuildableConfig } from "@server/types/build";
 import { configs } from "@server/configs";
 import EventBus from "../game/EventBus";
+import { handlers } from "../game/handlers";
 import { Item } from "./Item";
 
 export function Build() {
   const [active, setActive] = useState<EntityName | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [store, setStore] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const toggle = () => setIsOpen((prev) => !prev);
     const transform = (active: boolean) => {
       if (active) setIsOpen(false);
     };
+    const sync = (data: Record<string, number>) => setStore(data);
 
     EventBus.on(Event.UI_TOGGLE, toggle);
     EventBus.on(Event.TRANSFORM_TOGGLE, transform);
+    EventBus.on(Event.STORE_SYNC, sync);
 
     return () => {
       EventBus.off(Event.UI_TOGGLE, toggle);
       EventBus.off(Event.TRANSFORM_TOGGLE, transform);
+      EventBus.off(Event.STORE_SYNC, sync);
     };
   }, []);
 
@@ -49,6 +54,7 @@ export function Build() {
             recipe={config.cost}
             onClick={() => pick(name)}
             active={name === active}
+            disabled={!handlers.build.affordable(name, store)}
           />
         ))}
         {!entries.length && (

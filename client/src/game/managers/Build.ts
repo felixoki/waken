@@ -19,6 +19,7 @@ export class BuildManager {
   private highlight: Phaser.GameObjects.Graphics | null = null;
   private pulse: Phaser.Tweens.Tween | null = null;
   private valid = false;
+  private store: Record<string, number> = {};
 
   constructor(main: MainScene) {
     this.main = main;
@@ -26,6 +27,10 @@ export class BuildManager {
     EventBus.on(Event.BUILD_SELECT, (name: EntityName | null) => {
       this.active = name;
       this._destroyGhost();
+    });
+
+    EventBus.on(Event.STORE_SYNC, (store: Record<string, number>) => {
+      this.store = store;
     });
   }
 
@@ -53,7 +58,14 @@ export class BuildManager {
     this._ensureVisuals(scene);
     if (!this.ghost || !this.highlight) return;
 
-    this.valid = handlers.build.placeable(this.active, x, y, player, this.main);
+    this.valid = handlers.build.placeable(
+      this.active,
+      x,
+      y,
+      player,
+      this.main,
+      this.store,
+    );
     this.ghost.setTint(this.valid ? VALID_TINT : INVALID_TINT);
 
     this.ghost
