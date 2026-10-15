@@ -66,6 +66,7 @@ export interface EntityConfig {
   quantity?: number;
   soul?: EntityName;
   dropped?: boolean;
+  built?: boolean;
   link?: string;
   parent?: string;
   origin?: BiomeName;

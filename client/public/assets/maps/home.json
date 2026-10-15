@@ -193,47 +193,47 @@
                 }, 
                 {
                  "height":1,
-                 "id":6,
+                 "id":14,
                  "name":"Bed",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":64,
-                 "y":83
+                 "x":320,
+                 "y":88
                 }, 
                 {
                  "height":1,
-                 "id":7,
-                 "name":"Bed",
+                 "id":15,
+                 "name":"Chest1",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":112,
-                 "y":83
+                 "x":352,
+                 "y":80
                 }, 
                 {
                  "height":1,
-                 "id":8,
+                 "id":16,
                  "name":"Bed",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":160.002103061654,
-                 "y":83.0010504440077
+                 "x":128,
+                 "y":296
                 }, 
                 {
                  "height":1,
-                 "id":9,
-                 "name":"Bed",
+                 "id":17,
+                 "name":"Chest1",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":1,
-                 "x":208.000210917467,
-                 "y":83.0041164454008
+                 "x":160,
+                 "y":288
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -242,7 +242,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":10,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

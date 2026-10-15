@@ -36,6 +36,7 @@ export const build = {
         health: 1,
         maxHealth: 1,
         isLocked: false,
+        built: true,
       },
       socket,
       io,
@@ -55,7 +56,13 @@ export const build = {
     if (!BUILD_MAPS.has(data.map) || player.map !== data.map) return;
 
     const target = world.entities.get(data.id);
-    if (!target || target.map !== data.map || !configs.buildable[target.name])
+    if (
+      !target ||
+      target.map !== data.map ||
+      !target.built ||
+      target.isLocked ||
+      !configs.buildable[target.name]
+    )
       return;
 
     handlers.entity.remove(

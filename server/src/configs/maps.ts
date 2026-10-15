@@ -1594,6 +1594,7 @@ export const maps: Record<MapName, MapConfig> = {
     spritesheets: [
       ...player,
       ...interior,
+      ...icons,
       {
         key: "village_home_interior",
         file: "village_home_interior.png",

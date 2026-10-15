@@ -1418,7 +1418,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 32,
-          height: 39,
+          height: 20,
           offsetX: 0,
           offsetY: 0,
           static: true,

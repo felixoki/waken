@@ -1,5 +1,5 @@
 import { ComponentName, EntityName, Event, SlotType } from "@server/types";
-import { BUILD_MAPS, TILE_SIZE } from "@server/globals";
+import { BUILD_MAPS } from "@server/globals";
 import { handlers } from "../handlers";
 import EventBus from "../EventBus";
 import type { MainScene } from "../scenes/Main";
@@ -48,8 +48,7 @@ export class BuildManager {
     const scene = player.scene as Scene;
     const world = input?.getPointer() ?? { x: player.x, y: player.y };
 
-    const x = Math.floor(world.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2;
-    const y = Math.floor(world.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2;
+    const { x, y } = handlers.build.snap(this.active, world.x, world.y);
 
     this._ensureVisuals(scene);
     if (!this.ghost || !this.highlight) return;

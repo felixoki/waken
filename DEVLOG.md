@@ -819,6 +819,10 @@
 - Add legendary bear ✅
 - Add item dropping, new seeds ✅
 
+#### 15.10.2026
+
+- Add bed to build menu ✅
+
 ### In progress
 
 ### Bugs

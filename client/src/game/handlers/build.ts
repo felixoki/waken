@@ -5,6 +5,7 @@ import {
   Rect,
 } from "@server/types";
 import { configs } from "@server/configs";
+import { TILE_SIZE } from "@server/globals";
 import { TextureComponent } from "../components/Texture";
 import type { Entity } from "../Entity";
 import type { Scene } from "../scenes/Scene";
@@ -13,15 +14,8 @@ import type { InventoryComponent } from "../components/Inventory";
 
 const TOLERANCE = 4;
 
-const bounds = (name: EntityName, x: number, y: number): Rect | null => {
-  const def = configs.entities[name];
-  if (!def) return null;
-
-  const body = def.components.find(
-    (c): c is Extract<ComponentConfig, { name: ComponentName.BODY }> =>
-      c.name === ComponentName.BODY,
-  );
-  const texture = def.components.find(
+const texture = (name: EntityName) =>
+  configs.entities[name]?.components.find(
     (
       c,
     ): c is Extract<
@@ -31,13 +25,31 @@ const bounds = (name: EntityName, x: number, y: number): Rect | null => {
       c.name === ComponentName.TEXTURE ||
       c.name === ComponentName.TEXTURE_ANIMATION,
   );
-  if (!body || !texture) return null;
 
-  const { tiles, tileSize } = texture.config;
-  const cols = tiles.length
-    ? Math.max(...tiles.map((t) => t.end - t.start + 1))
-    : 1;
-  const rows = tiles.length || 1;
+const footprint = (name: EntityName): { cols: number; rows: number } => {
+  const tiles = texture(name)?.config.tiles ?? [];
+
+  return {
+    cols: tiles.length ? Math.max(...tiles.map((t) => t.end - t.start + 1)) : 1,
+    rows: tiles.length || 1,
+  };
+};
+
+const snap = (v: number, n: number): number =>
+  n % 2 === 0
+    ? Math.round(v / TILE_SIZE) * TILE_SIZE
+    : Math.floor(v / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2;
+
+const bounds = (name: EntityName, x: number, y: number): Rect | null => {
+  const body = configs.entities[name]?.components.find(
+    (c): c is Extract<ComponentConfig, { name: ComponentName.BODY }> =>
+      c.name === ComponentName.BODY,
+  );
+  const tex = texture(name);
+  if (!body || !tex) return null;
+
+  const { tileSize } = tex.config;
+  const { cols, rows } = footprint(name);
 
   const left = x - (cols * tileSize) / 2 + body.config.offsetX;
   const top = y - (rows * tileSize) / 2 + body.config.offsetY;
@@ -57,6 +69,11 @@ const intersects = (a: Rect, b: Rect): boolean =>
   a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 
 export const build = {
+  snap(name: EntityName, x: number, y: number): { x: number; y: number } {
+    const { cols, rows } = footprint(name);
+    return { x: snap(x, cols), y: snap(y, rows) };
+  },
+
   bodyRect(entity: Entity): Rect | null {
     const body = entity.body;
     if (!body) return null;
@@ -147,17 +164,7 @@ export const build = {
   },
 
   ghostTexture(scene: Scene, name: EntityName): string | null {
-    const def = configs.entities[name];
-    const comp = def?.components.find(
-      (
-        c,
-      ): c is Extract<
-        ComponentConfig,
-        { name: ComponentName.TEXTURE | ComponentName.TEXTURE_ANIMATION }
-      > =>
-        c.name === ComponentName.TEXTURE ||
-        c.name === ComponentName.TEXTURE_ANIMATION,
-    );
+    const comp = texture(name);
     if (!comp) return null;
 
     const { spritesheet, tileSize, tiles } = comp.config;
