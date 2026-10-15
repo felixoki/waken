@@ -177,7 +177,13 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 56, height: 56, offsetX: 40, offsetY: 72, static: true },
+        config: {
+          width: 56,
+          height: 56,
+          offsetX: 40,
+          offsetY: 72,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -204,7 +210,13 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 80, height: 32, offsetX: 0, offsetY: 32, static: true },
+        config: {
+          width: 80,
+          height: 32,
+          offsetX: 0,
+          offsetY: 32,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -671,7 +683,13 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 80, height: 32, offsetX: 0, offsetY: 32, static: true },
+        config: {
+          width: 80,
+          height: 32,
+          offsetX: 0,
+          offsetY: 32,
+          static: true,
+        },
       },
     ],
     states: [],
@@ -700,10 +718,53 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.BODY,
-        config: { width: 80, height: 32, offsetX: 0, offsetY: 32, static: true },
+        config: {
+          width: 80,
+          height: 32,
+          offsetX: 0,
+          offsetY: 32,
+          static: true,
+        },
       },
     ],
     states: [],
     behaviors: [],
+  },
+  [EntityName.FENCE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "fences",
+          tileSize: 16,
+          tiles: [{ row: 1, start: 1, end: 1 }],
+        },
+        key: "fence_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          static: true,
+          collides: true,
+        },
+      },
+      { name: ComponentName.JUMPABLE, config: { clearance: 12 } },
+      {
+        name: ComponentName.CONNECTABLE,
+        config: { spritesheet: "fences", tileSize: 16 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Fence",
+      description: "A wooden fence. Joins up with the fences beside it.",
+    },
   },
 };

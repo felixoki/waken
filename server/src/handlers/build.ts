@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { DestroyBuildData, Event, PlaceBuildData } from "../types";
-import { BUILD_MAPS } from "../globals";
+import { BUILD_MAPS, TILE_SIZE } from "../globals";
 import { World } from "../World";
 import { handlers } from ".";
 import { configs } from "../configs";
@@ -10,10 +10,10 @@ export const build = {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    if (!BUILD_MAPS.has(data.map) || player.map !== data.map) return;
+    if (player.map !== data.map) return;
 
     const config = configs.buildable[data.name];
-    if (!config) return;
+    if (!config || !config.maps.includes(data.map)) return;
 
     const canAfford = config.cost.every((c) =>
       world.items.has(c.item, c.quantity),
@@ -22,6 +22,22 @@ export const build = {
 
     for (const c of config.cost) world.items.remove(c.item, c.quantity);
     handlers.broadcast.store(io, world);
+    handlers.broadcast.economy(io, world);
+
+    for (const id of data.clears ?? []) {
+      const target = world.entities.get(id);
+
+      if (
+        !target ||
+        target.map !== data.map ||
+        !config.replaces?.includes(target.name) ||
+        Math.abs(target.x - data.x) > TILE_SIZE * 2 ||
+        Math.abs(target.y - data.y) > TILE_SIZE * 2
+      )
+        continue;
+
+      handlers.entity.remove(id, Event.ENTITY_DESPAWN, socket, io, world);
+    }
 
     handlers.entity.create(
       {

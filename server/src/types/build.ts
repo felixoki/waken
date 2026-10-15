@@ -11,6 +11,8 @@ export enum BuildCategory {
 export interface BuildableConfig {
   category: BuildCategory;
   cost: Ingredient[];
+  maps: MapName[];
+  replaces?: EntityName[];
 }
 
 export interface PlaceBuildData {
@@ -18,6 +20,7 @@ export interface PlaceBuildData {
   map: MapName;
   x: number;
   y: number;
+  clears?: string[];
 }
 
 export interface DestroyBuildData {

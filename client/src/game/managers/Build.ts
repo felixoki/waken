@@ -54,9 +54,19 @@ export class BuildManager {
     const world = input?.getPointer() ?? { x: player.x, y: player.y };
 
     const { x, y } = handlers.build.snap(this.active, world.x, world.y);
+    const key = handlers.build.ghostTexture(
+      scene,
+      this.active,
+      x,
+      y,
+      player,
+      this.main,
+    );
+    if (!key) return;
 
-    this._ensureVisuals(scene);
+    this._ensureVisuals(scene, key);
     if (!this.ghost || !this.highlight) return;
+    if (this.ghost.texture.key !== key) this.ghost.setTexture(key);
 
     this.valid = handlers.build.placeable(
       this.active,
@@ -95,6 +105,7 @@ export class BuildManager {
         map: player.map,
         x,
         y,
+        clears: handlers.build.clears(this.active, x, y, player, this.main),
       });
   }
 
@@ -108,14 +119,14 @@ export class BuildManager {
     );
   }
 
-  private _ensureVisuals(scene: Scene): void {
+  private _ensureVisuals(scene: Scene, key: string): void {
     if (this.scene !== scene) {
       this._destroyAll();
       this.scene = scene;
     }
 
     if (!this.highlight) this._buildHighlight(scene);
-    if (!this.ghost && this.active) this._buildGhost(scene, this.active);
+    if (!this.ghost) this._buildGhost(scene, key);
   }
 
   private _buildHighlight(scene: Scene): void {
@@ -145,10 +156,7 @@ export class BuildManager {
     this.highlight = g;
   }
 
-  private _buildGhost(scene: Scene, name: EntityName): void {
-    const key = handlers.build.ghostTexture(scene, name);
-    if (!key) return;
-
+  private _buildGhost(scene: Scene, key: string): void {
     this.ghost = scene.add
       .sprite(0, 0, key)
       .setOrigin(0.5, 0.5)

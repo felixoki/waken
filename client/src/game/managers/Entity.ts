@@ -13,6 +13,8 @@ import { CHUNK_ACTIVATION_BUDGET, CHUNK_PIXEL_SIZE } from "@server/globals";
 import { Villain } from "../Villain";
 import { vfx } from "../vfx";
 import { SwitchComponent } from "../components/Switch";
+import { handlers } from "../handlers";
+import type { ConnectIndex } from "../handlers/connect";
 
 type Rect = { x: number; y: number; width: number; height: number };
 
@@ -33,6 +35,7 @@ export class EntityManager {
   > = new Map();
 
   public entities: Map<string, Entity> = new Map();
+  public readonly connected: ConnectIndex = new Map();
   public snapshotReady = false;
 
   constructor(main: MainScene) {
@@ -191,6 +194,7 @@ export class EntityManager {
 
     if (entity.isStatic) this._registerStatic(entity, config, scene);
     if (config.isOpen) this.toggle(config.id, true);
+    handlers.connect.link(this.connected, entity, true);
   }
 
   private _registerStatic(
@@ -291,6 +295,10 @@ export class EntityManager {
       const collider = scene.physics.add.collider(
         scene.managers.physics.groups.players,
         group,
+        undefined,
+        (player, other) =>
+          (other as Entity).clearance === undefined ||
+          (player as Entity).z <= (other as Entity).clearance!,
       );
       this.groups.set(key, { group, collider });
     }
@@ -306,6 +314,7 @@ export class EntityManager {
 
     if (entity) {
       this._unregisterStatic(id, entity);
+      handlers.connect.link(this.connected, entity, false);
       entity.destroy();
       this.entities.delete(id);
     }
@@ -325,6 +334,7 @@ export class EntityManager {
     this.entities.forEach((entity, id) => {
       if (entity.map === map) {
         this._unregisterStatic(id, entity);
+        handlers.connect.link(this.connected, entity, false, false);
         entity.destroy();
         this.entities.delete(id);
       }
@@ -364,6 +374,7 @@ export class EntityManager {
         this._unregisterStatic(id, entity);
       }
 
+      handlers.connect.link(this.connected, entity, false, false);
       entity.destroy();
       this.entities.delete(id);
     }

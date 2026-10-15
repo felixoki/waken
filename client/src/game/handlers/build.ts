@@ -7,6 +7,7 @@ import {
 import { configs } from "@server/configs";
 import { TILE_SIZE } from "@server/globals";
 import { TextureComponent } from "../components/Texture";
+import { handlers } from ".";
 import type { Entity } from "../Entity";
 import type { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
@@ -61,6 +62,21 @@ const bounds = (name: EntityName, x: number, y: number): Rect | null => {
   };
 };
 
+const inset = (name: EntityName, x: number, y: number): Rect | null => {
+  const rect = bounds(name, x, y);
+  if (!rect) return null;
+
+  const ex = Math.min(TOLERANCE, (rect.right - rect.left) / 2);
+  const ey = Math.min(TOLERANCE, (rect.bottom - rect.top) / 2);
+
+  return {
+    left: rect.left + ex,
+    top: rect.top + ey,
+    right: rect.right - ex,
+    bottom: rect.bottom - ey,
+  };
+};
+
 const contains = (rect: Rect, x: number, y: number): boolean =>
   x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
 
@@ -100,25 +116,18 @@ export const build = {
     main: MainScene,
     store: Record<string, number>,
   ): boolean {
+    if (!configs.buildable[name]?.maps.includes(player.map)) return false;
     if (!build.affordable(name, store)) return false;
 
-    const rect = bounds(name, x, y);
-    if (!rect) return false;
+    const area = inset(name, x, y);
+    if (!area) return false;
 
     const scene = player.scene as Scene;
     const tile = scene.managers.tile;
 
     if (!tile) return false;
 
-    const ex = Math.min(TOLERANCE, (rect.right - rect.left) / 2);
-    const ey = Math.min(TOLERANCE, (rect.bottom - rect.top) / 2);
-
-    const inset: Rect = {
-      left: rect.left + ex,
-      top: rect.top + ey,
-      right: rect.right - ex,
-      bottom: rect.bottom - ey,
-    };
+    const replaces = configs.buildable[name]?.replaces;
 
     for (const collider of tile.colliders) {
       const body = collider.body as Phaser.Physics.Arcade.StaticBody;
@@ -130,16 +139,38 @@ export const build = {
         bottom: body.y + body.height,
       };
 
-      if (intersects(inset, wall)) return false;
+      if (intersects(area, wall)) return false;
     }
 
     for (const e of main.managers.entities.all) {
-      if (e.map !== player.map) continue;
+      if (e.map !== player.map || replaces?.includes(e.name)) continue;
       const other = build.bodyRect(e);
-      if (other && intersects(inset, other)) return false;
+      if (other && intersects(area, other)) return false;
     }
 
     return true;
+  },
+
+  clears(
+    name: EntityName,
+    x: number,
+    y: number,
+    player: Entity,
+    main: MainScene,
+  ): string[] {
+    const replaces = configs.buildable[name]?.replaces;
+    const area = inset(name, x, y);
+    if (!replaces?.length || !area) return [];
+
+    const ids: string[] = [];
+
+    for (const e of main.managers.entities.all) {
+      if (e.map !== player.map || !replaces.includes(e.name)) continue;
+      const other = build.bodyRect(e);
+      if (other && intersects(area, other)) ids.push(e.id);
+    }
+
+    return ids;
   },
 
   target(x: number, y: number, player: Entity, main: MainScene): string | null {
@@ -152,7 +183,37 @@ export const build = {
     return null;
   },
 
-  ghostTexture(scene: Scene, name: EntityName): string | null {
+  ghostTexture(
+    scene: Scene,
+    name: EntityName,
+    x: number,
+    y: number,
+    player: Entity,
+    main: MainScene,
+  ): string | null {
+    const connectable = configs.entities[name]?.components.find(
+      (c): c is Extract<ComponentConfig, { name: ComponentName.CONNECTABLE }> =>
+        c.name === ComponentName.CONNECTABLE,
+    );
+
+    if (connectable) {
+      const mask = handlers.connect.mask(
+        main.managers.entities.connected,
+        player.map,
+        name,
+        handlers.connect.tile(x),
+        handlers.connect.tile(y),
+      );
+      const key = handlers.connect.key(name, mask);
+      TextureComponent.ensure(
+        scene,
+        handlers.connect.texture(connectable.config, mask),
+        key,
+      );
+
+      return key;
+    }
+
     const comp = texture(name);
     if (!comp) return null;
 

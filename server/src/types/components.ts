@@ -17,6 +17,7 @@ export enum ComponentName {
   BEHAVIOR_QUEUE = "behaviorQueue",
   BODY = "body",
   BOUNCE = "bounce",
+  CONNECTABLE = "connectable",
   CRAFTER = "crafter",
   CONSUMABLE = "consumable",
   DAMAGEABLE = "damageable",
@@ -103,7 +104,13 @@ export type ComponentConfig =
   | { name: ComponentName.TRACKABLE }
   | { name: ComponentName.CAPTURABLE; config: CapturableConfig }
   | { name: ComponentName.WINDSWAY }
+  | { name: ComponentName.CONNECTABLE; config: ConnectableConfig }
   | { name: ComponentName.ZONE };
+
+export interface ConnectableConfig {
+  spritesheet: string;
+  tileSize: number;
+}
 
 export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };

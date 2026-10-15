@@ -42,6 +42,7 @@ import { LayableComponent } from "../components/Layable";
 import { MilkableComponent } from "../components/Milkable";
 import { ZoneComponent } from "../components/Zone";
 import { SleepableComponent } from "../components/Sleepable";
+import { ConnectableComponent } from "../components/Connectable";
 
 export class ComponentFactory {
   static create(
@@ -168,6 +169,9 @@ export class ComponentFactory {
           break;
         case ComponentName.SLEEPABLE:
           comp = new SleepableComponent(entity, component.config);
+          break;
+        case ComponentName.CONNECTABLE:
+          comp = new ConnectableComponent(entity, component.config);
           break;
         case ComponentName.ZONE:
           if (definition.zone) comp = new ZoneComponent(entity, definition.zone);

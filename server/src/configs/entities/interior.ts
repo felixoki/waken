@@ -1415,17 +1415,6 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     moving: [],
     components: [
       {
-        name: ComponentName.BODY,
-        config: {
-          width: 32,
-          height: 20,
-          offsetX: 0,
-          offsetY: 0,
-          static: true,
-          collides: true,
-        },
-      },
-      {
         name: ComponentName.TEXTURE,
         config: {
           spritesheet: "village_home_interior",
@@ -1437,6 +1426,17 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           ],
         },
         key: "bed_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 20,
+          offsetX: 0,
+          offsetY: 0,
+          static: true,
+          collides: true,
+        },
       },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },

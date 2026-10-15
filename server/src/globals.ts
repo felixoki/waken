@@ -15,7 +15,7 @@ export const CHUNK_ACTIVATION_RADIUS = 2;
 export const CHUNK_ACTIVATION_BUDGET = 2;
 
 /** Building */
-export const BUILD_MAPS = new Set<MapName>([MapName.HOME]);
+export const BUILD_MAPS = new Set<MapName>([MapName.HOME, MapName.VILLAGE]);
 
 /** Movement */
 export const SPEED_WALKING = 80;

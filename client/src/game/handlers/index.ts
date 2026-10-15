@@ -28,6 +28,7 @@ import { light } from "./light";
 import { chart } from "./chart";
 import { trigger } from "./trigger";
 import { robe } from "./robe";
+import { connect } from "./connect";
 
 export const handlers = {
   state,
@@ -60,4 +61,5 @@ export const handlers = {
   chart,
   trigger,
   robe,
+  connect,
 };
