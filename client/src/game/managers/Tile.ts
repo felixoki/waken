@@ -1,4 +1,5 @@
 import { SurfaceName, TiledProperty } from "@server/types";
+import { HEIGHT_JUMPING } from "@server/globals";
 
 const SURFACES = Object.values(SurfaceName);
 const GRASS = SURFACES.indexOf(SurfaceName.GRASS) + 1;
@@ -27,6 +28,7 @@ export interface Threshold {
 export class TileManager {
   private animations = new Map<number, Animation>();
   private grid?: number[][];
+  private jumps?: number[][];
   private sight?: Uint8Array | null;
   private rails?: Phaser.Geom.Rectangle[];
   private surfaces?: Uint8Array;
@@ -326,5 +328,37 @@ export class TileManager {
     }
 
     return this.grid;
+  }
+
+  getJumpGrid(): number[][] {
+    if (this.jumps) return this.jumps;
+
+    const base = this.getCollisionGrid();
+    const low: string[] = [];
+    const high: string[] = [];
+
+    for (const layer of this.tilemap.layers) {
+      const properties = layer.properties as TiledProperty[] | undefined;
+      if (properties?.some((p) => p.name === "walkable" && p.value === true))
+        continue;
+
+      const clearance = properties?.find((p) => p.name === "clearance")?.value;
+
+      if (typeof clearance === "number" && clearance < HEIGHT_JUMPING)
+        low.push(layer.name);
+      else high.push(layer.name);
+    }
+
+    const hit = (names: string[], x: number, y: number) =>
+      names.some((name) => this.tilemap.getTileAt(x, y, true, name)?.collides);
+
+    this.jumps = base.map((row, y) =>
+      row.map((cell, x) => {
+        if (!cell) return 0;
+        return !hit(high, x, y) && hit(low, x, y) ? 2 : 1;
+      }),
+    );
+
+    return this.jumps;
   }
 }

@@ -876,6 +876,14 @@ export const mountain: BiomeConfig = {
       group: { min: 1, max: 2, radius: 3 },
     },
     {
+      entities: [EntityName.IBEX],
+      terrain: [TerrainName.EARTH, TerrainName.SNOW],
+      elevation: { min: 2, max: 10 },
+      count: { min: 4, max: 8 },
+      spacing: 10,
+      group: { min: 1, max: 2, radius: 3 },
+    },
+    {
       entities: [EntityName.SHEEP],
       terrain: [TerrainName.GRASS, TerrainName.EARTH],
       count: { min: 1, max: 3 },

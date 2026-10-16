@@ -462,6 +462,73 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       { name: BehaviorName.SEARCH },
     ],
   },
+  [EntityName.IBEX]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 70,
+    speed: 1.3,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.IBEX_HORN,
+              quantity: 1,
+              stackable: true,
+              chance: 0.75,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 12,
+          offsetX: 30,
+          offsetY: 50,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.GOAT_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+      StateName.JUMPING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 15 },
+        range: 40,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.WANDER,
+        config: {
+          radius: 120,
+          scan: { interval: 2000 },
+          idle: { range: [3000, 8000] },
+          vision: 200,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.FLEE, config: { chance: 0.6 } },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
   [EntityName.DRAKE]: {
     facing: Direction.DOWN,
     moving: [],

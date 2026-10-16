@@ -1,12 +1,27 @@
 import {
   DIRECTIONS,
   DIRECTIONS_CARDINAL,
+  DURATION_JUMPING,
+  HEIGHT_JUMPING,
+  LEDGE_CLEARANCE,
+  SPEED_JUMPING,
   PATH_DEADZONE,
+  FACING_LOOKAHEAD,
+  PATH_JUMP_ALIGN,
+  PATH_JUMP_COST,
+  PATH_JUMP_MARGIN,
   PATH_MARGIN,
   PATH_SNAP,
 } from "@server/globals";
 import { Entity } from "../Entity";
-import { Direction, Input, Stuck, Waypoint } from "@server/types";
+import {
+  Direction,
+  DirectionVectors,
+  Input,
+  StateName,
+  Stuck,
+  Waypoint,
+} from "@server/types";
 import { handlers } from ".";
 
 interface Node {
@@ -19,6 +34,8 @@ interface Node {
 }
 
 export const MAX_PATH_EXPANSIONS = 2000;
+
+const LIFT = Math.asin(LEDGE_CLEARANCE / HEIGHT_JUMPING) / Math.PI;
 
 interface Space {
   data: Uint8Array;
@@ -253,14 +270,127 @@ export const path = {
     return null;
   },
 
-  getGrid: (entity: Entity): number[][] => {
+  getGrid: (entity: Entity, jump: boolean = false): number[][] => {
     const { tileManager } = entity.scene;
     if (!tileManager) return [];
 
     return entity.scene.managers.entities.getMergedGrid(
       entity.scene,
       entity.map,
+      jump,
     );
+  },
+
+  canJump: (entity: Entity): boolean =>
+    !!entity.states?.has(StateName.JUMPING),
+
+  range: (entity: Entity): number =>
+    (SPEED_JUMPING * entity.speed * DURATION_JUMPING) / 1000,
+
+  spans: (entity: Entity, facing: Direction, distance: number) => {
+    const body = entity.body as Phaser.Physics.Arcade.Body;
+    const { x, y } = DirectionVectors[facing];
+    const hits = entity.scene.physics.overlapRect(
+      x > 0 ? body.right : x < 0 ? body.left - distance : body.left,
+      y > 0 ? body.bottom : y < 0 ? body.top - distance : body.top,
+      x ? distance : body.width,
+      y ? distance : body.height,
+      false,
+      true,
+    );
+
+    return hits
+      .filter((hit) => hit.gameObject instanceof Phaser.GameObjects.Rectangle)
+      .map((hit) => {
+        const clearance = hit.gameObject.getData("clearance");
+
+        return {
+          near:
+            x > 0
+              ? hit.left - body.right
+              : x < 0
+                ? body.left - hit.right
+                : y > 0
+                  ? hit.top - body.bottom
+                  : body.top - hit.bottom,
+          far:
+            x > 0
+              ? hit.right - body.right
+              : x < 0
+                ? body.left - hit.left
+                : y > 0
+                  ? hit.bottom - body.bottom
+                  : body.top - hit.top,
+          jumpable: typeof clearance === "number" && clearance < HEIGHT_JUMPING,
+        };
+      })
+      .filter((span) => span.near >= -PATH_JUMP_MARGIN)
+      .sort((a, b) => a.near - b.near);
+  },
+
+  ledge: (entity: Entity, facing: Direction, to: Waypoint): boolean => {
+    const body = entity.body as Phaser.Physics.Arcade.Body;
+    const { x, y } = DirectionVectors[facing];
+    const dx = to.x - body.center.x;
+    const dy = to.y - body.center.y;
+
+    if (Math.abs(x ? dy : dx) > PATH_JUMP_ALIGN) return false;
+
+    const lead = handlers.path.range(entity) * LIFT;
+    const beyond = dx * x + dy * y - (x ? body.halfWidth : body.halfHeight);
+
+    return handlers.path
+      .spans(entity, facing, lead)
+      .some((span) => span.jumpable && beyond > span.near);
+  },
+
+  reach: (
+    entity: Entity,
+    facing: Direction,
+    to?: { x: number; y: number },
+  ): number => {
+    const max = handlers.path.range(entity);
+    const body = entity.body as Phaser.Physics.Arcade.Body;
+    const { x, y } = DirectionVectors[facing];
+    const length = x ? body.width : body.height;
+    const spans = handlers.path.spans(entity, facing, max + length);
+    const along = to
+      ? (to.x - body.center.x) * x + (to.y - body.center.y) * y
+      : max;
+
+    const first = spans[0];
+    if (!first?.jumpable) return Math.max(0, Math.min(max, along));
+
+    const needed = (end: number) => {
+      const clear = (end + length) / (1 - LIFT);
+      return clear + Math.max(0, clear * LIFT - Math.max(0, first.near));
+    };
+
+    let end = first.far;
+    let i = 1;
+
+    for (;;) {
+      while (
+        i < spans.length &&
+        spans[i].jumpable &&
+        spans[i].near - end < length + PATH_JUMP_MARGIN
+      )
+        end = Math.max(end, spans[i++].far);
+
+      const next = spans[i];
+      if (!next) return Math.max(needed(end), Math.min(max, along));
+
+      if (next.jumpable && needed(end) > next.near - PATH_JUMP_MARGIN) {
+        end = Math.max(end, next.far);
+        i++;
+        continue;
+      }
+
+      return Math.max(
+        needed(end),
+        Math.min(max, next.near - PATH_JUMP_MARGIN, along),
+      );
+    }
   },
 
   position: (entity: Entity): { x: number; y: number } => {
@@ -332,10 +462,21 @@ export const path = {
               : Direction.LEFT,
         );
 
+      const ahead = path[Math.min(FACING_LOOKAHEAD, path.length - 1)];
+      const facing = handlers.direction.fromAngle(
+        Math.atan2(ahead.y - oy, ahead.x - ox),
+        entity.facing,
+      );
+
+      const jump =
+        handlers.path.canJump(entity) &&
+        handlers.path.ledge(entity, direction, path[0]);
+
       return {
-        facing: direction,
-        moving,
+        facing: jump ? direction : facing,
+        moving: jump ? [direction] : moving,
         isRunning,
+        ...(jump && { state: StateName.JUMPING, target: path[0] }),
       };
     }
 
@@ -386,7 +527,7 @@ export const path = {
   space: (entity: Entity): Space | null => {
     const map = entity.scene.tileManager?.map;
     const body = entity.body as Phaser.Physics.Arcade.Body | undefined;
-    const grid = handlers.path.getGrid(entity);
+    const grid = handlers.path.getGrid(entity, handlers.path.canJump(entity));
     if (!map || !grid.length) return null;
 
     const hw = (body ? Math.ceil(body.halfWidth) : 0) + PATH_MARGIN;
@@ -416,19 +557,20 @@ export const path = {
       if (j * step - hh < 0 || j * step + hh > rows * th)
         for (let i = 0; i < width; i++) data[j * width + i] = 1;
 
-    const block = (x: number, y: number, w: number, h: number) => {
+    const block = (x: number, y: number, w: number, h: number, value = 1) => {
       const i0 = Math.max(0, Math.floor((x - hw) / step) + 1);
       const i1 = Math.min(width - 1, Math.ceil((x + w + hw) / step) - 1);
       const j0 = Math.max(0, Math.floor((y - hh) / step) + 1);
       const j1 = Math.min(height - 1, Math.ceil((y + h + hh) / step) - 1);
 
       for (let j = j0; j <= j1; j++)
-        for (let i = i0; i <= i1; i++) data[j * width + i] = 1;
+        for (let i = i0; i <= i1; i++)
+          if (data[j * width + i] !== 1) data[j * width + i] = value;
     };
 
     for (let ty = 0; ty < rows; ty++)
       for (let tx = 0; tx < cols; tx++)
-        if (grid[ty][tx]) block(tx * tw, ty * th, tw, th);
+        if (grid[ty][tx]) block(tx * tw, ty * th, tw, th, grid[ty][tx]);
 
     for (const rail of entity.scene.tileManager.getRails())
       block(rail.x, rail.y, rail.width, rail.height);
@@ -438,7 +580,7 @@ export const path = {
     return space;
   },
 
-  node: (space: Space, x: number, y: number): number => {
+  node: (space: Space, x: number, y: number, strict = false): number => {
     const { data, width, height, step } = space;
     const ci = Math.round(x / step);
     const cj = Math.round(y / step);
@@ -450,7 +592,8 @@ export const path = {
         for (let i = ci - r; i <= ci + r; i++) {
           if (Math.max(Math.abs(i - ci), Math.abs(j - cj)) !== r) continue;
           if (i < 0 || j < 0 || i >= width || j >= height) continue;
-          if (data[j * width + i]) continue;
+          if (data[j * width + i] === 1 || (strict && data[j * width + i]))
+            continue;
 
           const d = Math.hypot(i * step - x, j * step - y);
           if (d < distance) {
@@ -474,7 +617,7 @@ export const path = {
     const { data, width, step } = space;
     const from = handlers.path.position(entity);
     const start = handlers.path.node(space, from.x, from.y);
-    const end = handlers.path.node(space, to.x, to.y);
+    const end = handlers.path.node(space, to.x, to.y, true);
     if (start < 0 || end < 0) return null;
 
     const size = data.length;
@@ -539,7 +682,11 @@ export const path = {
 
     const moves = diagonals ? DIRECTIONS : DIRECTIONS_CARDINAL;
     const free = (i: number, j: number) =>
-      i >= 0 && j >= 0 && i < width && j < space.height && !data[j * width + i];
+      i >= 0 &&
+      j >= 0 &&
+      i < width &&
+      j < space.height &&
+      data[j * width + i] !== 1;
 
     let expansions = 0;
 
@@ -581,7 +728,19 @@ export const path = {
         const n = nj * width + ni;
         if (closed[n] === run) continue;
 
-        const cost = g[current] + (dx && dy ? 1.414 : 1);
+        if (data[current] === 2 || data[n] === 2) {
+          if (dx && dy) continue;
+          if (
+            data[current] === 2 &&
+            parent[current] >= 0 &&
+            n - current !== current - parent[current]
+          )
+            continue;
+        }
+
+        const cost =
+          g[current] +
+          (dx && dy ? 1.414 : 1) * (data[n] === 2 ? PATH_JUMP_COST : 1);
         if (stamp[n] === run && cost >= g[n]) continue;
 
         stamp[n] = run;

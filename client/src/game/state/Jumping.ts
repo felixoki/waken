@@ -3,11 +3,8 @@ import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
 import { handlers } from "../handlers";
-import {
-  DURATION_JUMPING,
-  HEIGHT_JUMPING,
-  SPEED_JUMPING,
-} from "@server/globals";
+import { DURATION_JUMPING, HEIGHT_JUMPING } from "@server/globals";
+import { configs } from "@server/configs";
 
 export class Jumping implements State {
   private timer: Phaser.Time.TimerEvent | null = null;
@@ -30,7 +27,18 @@ export class Jumping implements State {
       position: { x: entity.x, y: entity.y },
     });
 
-    handlers.move.getVelocity(entity, SPEED_JUMPING * entity.speed);
+    const config = configs.animations[entity.name]?.[StateName.JUMPING];
+    const [from, to] = config?.airborne ?? [0, 0];
+    const delay = config && to ? (from / config.frameRate) * 1000 : 0;
+    const air =
+      config && to ? ((to - from) / config.frameRate) * 1000 : DURATION_JUMPING;
+    const distance = entity.getComponent(ComponentName.BEHAVIOR_QUEUE)
+      ? handlers.path.reach(entity, entity.facing, entity.target)
+      : handlers.path.range(entity);
+    const speed = (distance / air) * 1000;
+
+    if (delay) (entity.body as Phaser.Physics.Arcade.Body)?.setVelocity(0, 0);
+    else handlers.move.getVelocity(entity, speed);
 
     this.baseOriginY = entity.displayOriginY;
     this.baseOffsetY = entity.body
@@ -40,17 +48,22 @@ export class Jumping implements State {
     this.tween = entity.scene.tweens.add({
       targets: entity,
       z: HEIGHT_JUMPING,
-      duration: DURATION_JUMPING / 2,
+      delay,
+      duration: air / 2,
       yoyo: true,
       ease: "Sine.easeOut",
 
       onUpdate: () => {
         if (!entity.body) return;
         const body = entity.body as Phaser.Physics.Arcade.Body;
+        handlers.move.getVelocity(entity, speed);
         entity.displayOriginY = this.baseOriginY + entity.z;
         body.offset.y = this.baseOffsetY + entity.z;
         entity.setDepth(1000 + entity.y);
       },
+
+      onComplete: () =>
+        (entity.body as Phaser.Physics.Arcade.Body)?.setVelocity(0, 0),
     });
 
     this.timer = entity.scene.time.delayedCall(DURATION_JUMPING, () => {
@@ -61,9 +74,7 @@ export class Jumping implements State {
     });
   }
 
-  update(entity: Entity): void {
-    handlers.move.getVelocity(entity, SPEED_JUMPING * entity.speed);
-  }
+  update(): void {}
 
   exit(entity: Entity): void {
     if (this.timer) {

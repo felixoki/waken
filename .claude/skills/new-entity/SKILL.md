@@ -83,6 +83,29 @@ The spritesheet key is the entity name and state name joined with a hyphen.
 Break any leg of this and it fails at runtime with no type error. `tsc` cannot
 see it. Check the key by hand against the enum values.
 
+## Icon and texture coordinates are 1-indexed
+
+An item has two references into an icon sheet: `metadata.icon` (`row`, `col`)
+for the UI, and a `TEXTURE` component (`tiles: [{ row, start, end }]`) for the
+world sprite. Both are **1-indexed**: `Icon.tsx` and `Texture.ts` subtract 1.
+Pixel tools, `tmx.py render --grid` and Pillow crops count from 0, so convert
+before writing the config.
+
+The icon sheets put the world texture next to its icon: a 2×2 block in the two
+columns to the right, whose bottom row is the icon's row. For an icon at col
+`c`, row `r` the texture is cols `c+1`–`c+2`, rows `r-1`–`r`:
+
+```ts
+icon: { spritesheet: "icons3", row: 10, col: 13 },
+tiles: [
+  { row: 9, start: 14, end: 15 },
+  { row: 10, start: 14, end: 15 },
+],
+```
+
+The ibex horn, azurite and wolf fang all follow this. When the user names an
+icon position, take it as 1-indexed and render the cells to confirm.
+
 ## Silent failures to check for
 
 | Symptom | Almost always |
@@ -93,6 +116,7 @@ see it. Check the key by hand against the enum values.
 | Silent entity | `SoundName` enum added but no entry in `sounds.ts`, or variant basenames do not match the files |
 | Not in the world | Tiled object placed but the map never re-exported |
 | Item missing from the economy tab | not listed under a need in `needs.ts` |
+| Item icon or world sprite shows the wrong tile, or nothing | `icon`/`tiles` written 0-indexed instead of 1-indexed |
 
 ## Verify before handing back
 

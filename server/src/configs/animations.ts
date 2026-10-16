@@ -247,6 +247,18 @@ export const animations: Partial<
     [StateName.RUNNING]: { frameCount: 5, frameRate: 5, repeat: -1 },
     [StateName.SLASHING]: { frameCount: 5, frameRate: 5, repeat: 0 },
   },
+  [EntityName.IBEX]: {
+    [StateName.IDLE]: { frameCount: 5, frameRate: 5, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 5, frameRate: 8, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 9, frameRate: 12, repeat: 0 },
+    [StateName.JUMPING]: {
+      frameCount: 13,
+      frameRate: 16.25,
+      repeat: 0,
+      airborne: [3, 10],
+    },
+  },
   [EntityName.RAT]: {
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },

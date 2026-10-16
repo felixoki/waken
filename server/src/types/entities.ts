@@ -369,6 +369,7 @@ export enum EntityName {
   HOUSE1_EXIT = "house1_exit",
   HOUSE2 = "house2",
   IBEX = "ibex",
+  IBEX_HORN = "ibex_horn",
   IRON1 = "iron1",
   JAR = "jar",
   JAR_OF_PICKLES = "jar_of_pickles",

@@ -25,7 +25,7 @@ export const vision = {
   ): RayHit => {
     const map = scene.tileManager.map;
     const blocks = (tx: number, ty: number) =>
-      !!grid[ty]?.[tx] && !clear?.[ty * map.width + tx];
+      grid[ty]?.[tx] === 1 && !clear?.[ty * map.width + tx];
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
     const tan = Math.tan(angle);
@@ -115,7 +115,7 @@ export const vision = {
   ): boolean => {
     if (!vision.inRange(from, to, distance)) return false;
 
-    const grid = handlers.path.getGrid(from);
+    const grid = handlers.path.getGrid(from, handlers.path.canJump(from));
     const clear = scene.tileManager?.getSightMask();
     const actualDist = Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y);
 

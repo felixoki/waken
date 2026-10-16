@@ -447,6 +447,36 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "ibex-idle",
+    file: "ibex_idle.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "ibex-walking",
+    file: "ibex_walking.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "ibex-running",
+    file: "ibex_running.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "ibex-slashing",
+    file: "ibex_slashing.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "ibex-jumping",
+    file: "ibex_jumping.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
     key: "rat-idle",
     file: "rat_idle.png",
     frameWidth: 128,
@@ -1175,6 +1205,13 @@ export const maps: Record<MapName, MapConfig> = {
         file: "pike_jumping.png",
         frameWidth: 48,
         frameHeight: 32,
+      },
+      {
+        key: "fences",
+        file: "fences.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
       },
       {
         key: "village_home",

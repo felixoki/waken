@@ -226,10 +226,14 @@ export const RANGE_HITBOX_DETECTION = 100;
 /** Vision */
 export const VISION_PROXIMITY = 200;
 export const PATH_DEADZONE = 2;
+export const FACING_LOOKAHEAD = 3;
 export const LINE_INTERVAL = 150;
 export const PATH_MARGIN = 1;
 export const PATH_ARRIVAL = 4;
 export const PATH_SNAP = 4;
+export const PATH_JUMP_COST = 4;
+export const PATH_JUMP_MARGIN = 2;
+export const PATH_JUMP_ALIGN = 8;
 
 export const DISTANCE_DASHING = (SPEED_DASHING * DURATION_DASHING) / 1000;
 

@@ -15976,6 +15976,17 @@
                  "width":1,
                  "x":698,
                  "y":1251
+                }, 
+                {
+                 "height":0,
+                 "id":1858,
+                 "name":"Ibex",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":439.205796234158,
+                 "y":703.584175767809
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -16135,7 +16146,7 @@
          "y":0
         }],
  "nextlayerid":66,
- "nextobjectid":1858,
+ "nextobjectid":1859,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

@@ -270,7 +270,10 @@ export class AttackBehavior extends Behavior {
         target.x,
         target.y,
       );
-      const direction = handlers.direction.fromAngle(chaseAngle);
+      const direction = handlers.direction.fromAngle(
+        chaseAngle,
+        entity.facing,
+      );
 
       return {
         facing: direction,

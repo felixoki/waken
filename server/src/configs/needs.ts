@@ -76,6 +76,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.GOOSE_DOWN, tier: 1 },
       { item: EntityName.RAT_CLAWS, tier: 1 },
       { item: EntityName.TROLL_SCALES, tier: 1 },
+      { item: EntityName.IBEX_HORN, tier: 2 },
       { item: EntityName.FISHING_HOOK, tier: 1 },
       { item: EntityName.SHADOW_WANDERER, tier: 1 },
       { item: EntityName.CAVEFISH, tier: 2 },

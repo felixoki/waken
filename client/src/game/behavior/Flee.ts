@@ -24,9 +24,11 @@ export class FleeBehavior extends Behavior {
   private flying: boolean = false;
 
   public name = BehaviorName.FLEE;
+  public chance: number;
 
   constructor(config?: FleeBehaviorConfig) {
     super();
+    this.chance = config?.chance ?? 1;
     this.repeat = config?.repeat ?? false;
     this.flying = config?.flying ?? false;
   }

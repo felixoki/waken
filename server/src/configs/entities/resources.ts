@@ -602,6 +602,36 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.05,
     },
   },
+  [EntityName.IBEX_HORN]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "icons3",
+          tileSize: 16,
+          tiles: [
+            { row: 9, start: 14, end: 15 },
+            { row: 10, start: 14, end: 15 },
+          ],
+        },
+        key: "ibex_horn_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Ibex horn",
+      description: "A heavy ridged horn from a mountain ibex.",
+      stackable: true,
+      icon: { spritesheet: "icons3", row: 10, col: 13 },
+      weight: 0.5,
+    },
+  },
   [EntityName.BEAR_FAT]: {
     facing: Direction.DOWN,
     moving: [],

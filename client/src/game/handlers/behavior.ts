@@ -20,8 +20,15 @@ export const behavior: {
     if (!queue) return;
 
     const flee = queue.get<FleeBehavior>(BehaviorName.FLEE);
+    const attack = queue.get<AttackBehavior>(BehaviorName.ATTACK);
+    const engaged =
+      !!attack &&
+      queue.active === attack &&
+      attack.target.id === targetId &&
+      !attack.completed;
+    const fleeing = !!flee && queue.active === flee && !flee.completed;
 
-    if (flee) {
+    if (flee && !engaged && (fleeing || Math.random() < flee.chance)) {
       flee.start(targetId);
       queue.shiftTo(BehaviorName.FLEE);
       return;
@@ -34,14 +41,7 @@ export const behavior: {
       return;
     }
 
-    const attack = queue.get<AttackBehavior>(BehaviorName.ATTACK);
-
     if (attack) {
-      const engaged =
-        queue.active === attack &&
-        attack.target.id === targetId &&
-        !attack.completed;
-
       if (!engaged) attack.start(targetId);
       queue.shiftTo(BehaviorName.ATTACK);
     }

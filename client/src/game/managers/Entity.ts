@@ -25,6 +25,7 @@ export class EntityManager {
   private fresh: Set<string> = new Set();
   private grid: Map<string, Map<string, Rect>> = new Map();
   private merged: Map<MapName, number[][]> = new Map();
+  private jumps: Map<MapName, number[][]> = new Map();
   private dirty: Set<MapName> = new Set();
   private groups: Map<
     string,
@@ -240,14 +241,21 @@ export class EntityManager {
     this.dirty.add(entity.map);
   }
 
-  getMergedGrid(scene: Scene, map: MapName): number[][] {
-    const cached = this.merged.get(map);
-    if (cached && !this.dirty.has(map)) return cached;
+  getMergedGrid(scene: Scene, map: MapName, jump = false): number[][] {
+    if (this.dirty.has(map)) {
+      this.dirty.delete(map);
+      this.merged.delete(map);
+      this.jumps.delete(map);
+    }
+
+    const cache = jump ? this.jumps : this.merged;
+    const cached = cache.get(map);
+    if (cached) return cached;
 
     const tile = scene.managers.tile;
-    if (!tile) return cached ?? [];
+    if (!tile) return [];
 
-    const base = tile.getCollisionGrid();
+    const base = jump ? tile.getJumpGrid() : tile.getCollisionGrid();
     const grid = base.map((row) => [...row]);
 
     const prefix = `${map}:`;
@@ -261,8 +269,7 @@ export class EntityManager {
             if (grid[y + dy]?.[x + dx] !== undefined) grid[y + dy][x + dx] = 1;
     }
 
-    this.merged.set(map, grid);
-    this.dirty.delete(map);
+    cache.set(map, grid);
 
     return grid;
   }

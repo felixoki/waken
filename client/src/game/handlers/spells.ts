@@ -211,6 +211,7 @@ export const spells: Record<SpellName, SpellHandler> = {
       entity.y + Math.round(size * 0.44),
       size * 0.8,
       650,
+      entity,
     );
   },
 

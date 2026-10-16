@@ -997,14 +997,29 @@ export const quads = {
     };
   },
 
-  tide: (scene: Scene, x: number, y: number, radius: number, duration: number) => {
+  tide: (
+    scene: Scene,
+    x: number,
+    y: number,
+    radius: number,
+    duration: number,
+    follow?: Entity,
+  ) => {
     const total = duration + 320;
+    const offset = follow ? y - follow.y : 0;
+
+    const track = () => {
+      if (!quad.scene || !follow?.active) return;
+      quad.setPosition(follow.x, follow.y + offset);
+      quad.setDepth(follow.depth + offset + 20);
+    };
 
     const quad = acquire(scene, TIDE, x, y);
     quad.setOrigin(0.5, 1 - TIDE_GROUND / TIDE.height);
     quad.setDepth(1000 + y + 20);
     set(quad, "uSeed", Math.random() * 10);
     set(quad, "uGround", TIDE_GROUND);
+    if (follow) scene.events.on("postupdate", track);
 
     const progress = { t: 0 };
 
@@ -1024,6 +1039,7 @@ export const quads = {
         set(quad, "uErode", clamp((ms - duration * 0.6) / (total - duration * 0.6)));
       },
       onComplete: () => {
+        scene.events.off("postupdate", track);
         quad.setOrigin(0.5, 0.5);
         release(scene, TIDE, quad);
       },

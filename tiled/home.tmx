@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="28" height="28" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="18">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="28" height="28" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="24">
  <editorsettings>
   <export target="../client/public/assets/maps/home.json" format="json"/>
  </editorsettings>
@@ -285,5 +285,31 @@
   <object id="15" name="Chest1" x="352" y="80" width="1" height="1"/>
   <object id="16" name="Bed" x="128" y="296" width="1" height="1"/>
   <object id="17" name="Chest1" x="160" y="288" width="1" height="1"/>
+  <object id="18" name="Hammer" x="136" y="136" width="1" height="1"/>
+  <object id="19" name="Wood" x="160" y="136" width="1" height="1">
+   <properties>
+    <property name="quantity" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="21" name="Wood" x="136" y="152" width="1" height="1">
+   <properties>
+    <property name="quantity" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="22" name="Wood" x="160" y="152" width="1" height="1">
+   <properties>
+    <property name="quantity" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="23" name="Wood" x="184" y="152" width="1" height="1">
+   <properties>
+    <property name="quantity" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="20" name="Deer_Hide" x="184" y="136" width="1" height="1">
+   <properties>
+    <property name="quantity" type="int" value="4"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
