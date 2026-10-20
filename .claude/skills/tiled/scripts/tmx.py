@@ -32,6 +32,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
 SPRITES = ROOT / "client/public/assets/sprites"
+
+
+def sprite(name: str) -> Path:
+    """A sprite file by name: the sprites root first, then its subfolders and the collection."""
+    direct = SPRITES / name
+    if direct.exists():
+        return direct
+    return next(SPRITES.rglob(Path(name).name), direct)
 ENTITIES = ROOT / "server/src/configs/entities"
 TILED = "/Applications/Tiled.app/Contents/MacOS/Tiled"
 
@@ -286,7 +294,7 @@ class Map:
         if have:
             return have
         from PIL import Image as _Image
-        src = ROOT / "client/public/assets/sprites" / image
+        src = sprite(image)
         w, h = _Image.open(src).size
         first = max((t["firstgid"] + t["tilecount"] for t in self.tilesets()), default=1)
         rel = os.path.relpath(src, self.path.parent)
@@ -495,7 +503,7 @@ def cmd_render(m: Map, a) -> None:
                         canvas.alpha_composite(im, (int(x), int(y) - im.height))
                     continue
                 tex = texture(name) if a.entities and name else None
-                path = SPRITES / f"{tex['spritesheet']}.png" if tex else None
+                path = sprite(f"{tex['spritesheet']}.png") if tex else None
                 if tex and path.exists():
                     src, size = sheet(path), tex["tileSize"]
                     cols = src.width // size

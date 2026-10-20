@@ -1,12 +1,12 @@
 {
-  "columns": 21,
-  "image": "../sprites/snow_details.png",
+  "columns": 24,
+  "image": "../sprites/tiles/snow_details.png",
   "imageheight": 160,
-  "imagewidth": 336,
+  "imagewidth": 384,
   "margin": 0,
   "name": "snow_details",
   "spacing": 0,
-  "tilecount": 210,
+  "tilecount": 240,
   "tileheight": 16,
   "tilewidth": 16
 }

@@ -51,6 +51,7 @@ export class BorderGenerator {
           role: position.role,
           position: position.position,
           terrain: border.from,
+          over: border.to,
         };
 
         const tile = this.loader.queryOne(border.tileset, query);

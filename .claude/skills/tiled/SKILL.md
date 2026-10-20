@@ -17,7 +17,7 @@ python3 $T render  mountain out.png --grid     # look at it; then Read the png
 python3 $T cell    mountain 40 26              # every layer's gid at one tile
 python3 $T gids    mountain grass              # which tiles a layer uses
 python3 $T stamp   mountain Tree1              # entity texture as a gid grid + object offset
-python3 $T tileset mountain --from village --name village_home
+python3 $T tileset mountain --from village --name village_terrain
 python3 $T scatter mountain --entity Tree1 --on grass --avoid ledges,cliffs --count 10 --dry-run --preview p.png
 python3 $T export  village                     # Tiled CLI -> client/public/assets/maps/village.json
 python3 $T new     temple --width 64 --height 48 --from dungeon --tilesets dungeon_walls_floor --layers floor,walls
@@ -74,6 +74,37 @@ zooms in (in tiles).
   load every sheet its entities' `TEXTURE` components use, and the sheet of
   anything they drop. If one is missing, the entity is invisible, with no error.
 
+## Painting tiles: collection in, compact sheets out
+
+The game loads only compact tilesets. `sprites/buildings/` has each interior's
+still tiles (`blacksmith`, `tavern`, ...) with every tile animation in its own
+file (`blacksmith_forge`, `farm_fireplace`). `sprites/tiles/` has one file per
+kind of outdoor art: `grass_ground` (grass, earth, ledges, stairs),
+`grass_ground_details`, `snow`, `snow_details`, `water_coasts`, `water_details`,
+`water_lilies`, `road`, `walls`, `fences`, `field`, `dock`, `bridges`, `benches`,
+`ship`, `chimney`, `bonfire`, `isles_*`, plus the cave, dungeon and temple sets. Paint new art in Tiled from a sheet in `sprites/collection/`
+(add it as a tileset with `tmx.py tileset`), then:
+
+```sh
+npm run tiles          # copies every painted collection tile onto its compact sheet, rewrites and exports the map
+npm run verify:tiles   # fails while a game map still renders a collection tile
+```
+
+Placements live in `tiled/tiles.json`; a sheet only grows, so existing gids never
+move. `RULES` (per collection sheet, sometimes per tile) and `MAPS` (a building's
+default) in `scripts/tiles.py` decide the sheet; a new source sheet or map needs
+an entry. Layers named `objects` (editor stamps) stay on the collection sheet,
+and so does a tileset with the bool property `editorOnly`: art painted for
+reference that the game must not draw (the market's NPC stand-ins, the village's
+`upper_boats`).
+
+Generation tags are written against the collection sheets in
+`scripts/extract-tilesets.mjs` and mapped onto the compact ones; run
+`npm run extract:tilesets` and `npm run extract:details` after `npm run tiles`.
+Grass borders carry `over` (`ground` in the village set, `earth` on mountain
+terraces) because both live in `grass_ground`; a border query passes the
+terrain it borders as `over`.
+
 ## Placing entities: object plus editor-only tile stamp
 
 The village convention, which `scatter` automates, has two parts:
@@ -101,9 +132,8 @@ python3 -c "from PIL import Image,ImageChops as C;print(C.difference(Image.open(
 
 Before stamping, the map needs the entity's spritesheet as a tileset. `stamp`
 tells you if it is missing, and `tileset --from <map> --name <sheet>` copies it
-(with its per-tile collisions) at the next free firstgid. Then add the same
-sheet to the map's `spritesheets` in `maps.ts`. Trees need `village_home`, and
-`...icons` too, because felling drops `WOOD` (`icons3`).
+(with its per-tile collisions) at the next free firstgid. Stamps are editor-only, so
+the collection sheet does not go into `maps.ts`. Trees stamp from `village_terrain`.
 
 ## Scatter rules
 
@@ -197,7 +227,7 @@ group**, not a tile layer — the village pattern:
 <objectgroup id="16" name="ground_grass_details">
  <properties>
   <property name="renders" type="bool" value="true"/>
-  <property name="texture" value="ground_grass_details"/>
+  <property name="texture" value="grass_ground_details"/>
  </properties>
  <object id="52" gid="4130" x="442.084" y="655.89" width="16" height="16"/>
 ```
@@ -212,7 +242,7 @@ even 3x3, and placing their tiles independently tears them apart. You do not hav
 to write the groups out: connected runs of opaque pixels recover them
 (`detail_formations`), and `village.tmx` confirms the result — 400 of its detail
 object pairs sit at exactly the offsets those formations imply.
-`ground_grass_details` has 135 formations (90 multi-tile), `snow_details` 103.
+`ground_grass_details` (collection) has 135 formations (90 multi-tile), `snow_details` 103.
 A formation is placed whole or not at all, so one never straddles a cliff edge.
 
 `terraces.py --details N` (formations per 1000 eligible tiles, default 22, the
@@ -252,7 +282,7 @@ caught between two ledges holds a stand of a few trees. Each places both halves 
 entity in the `objects` object group and the same sprite stamped into the tile
 layer also named `objects`. Placements come in clusters, the bottom two rows of a
 sprite have to be on the right surface and clear of rock, and canopies may overlap
-nothing. Trees and rocks come from `village_home`, snowy trees (`Tree6`-`Tree8`)
+nothing. Trees and rocks come from `village_terrain`, snowy trees (`Tree6`-`Tree8`)
 from `snow_objects`, reeds from `reed`; the generator adds whichever tilesets it
 needs. `Map.stamp` reads each footprint out of the TEXTURE component in
 `server/src/configs/entities`, so a new entity needs nothing here beyond its
@@ -314,12 +344,11 @@ name a tile: they classify a cell's neighbourhood and call
 `anchor_x`, `anchor_y` describe multi-tile pieces.
 
 What is tagged today, in tiles carrying a `role`:
-`dungeon_walls_floor` 54, `water_coasts` 24, `village_home` 26,
-`cave_water_coasts` 17, `cave_walls_floor` 14,
-`dungeon_decorative_cracks_floor` 12, `village_farm_ground_grass` 1.
-`dungeon_coasts`, `ground_grass`, `ground_grass_details`, `reed` and
-`plants_bushes` have **no tiles at all** in their json, so nothing can query
-them yet.
+`grass_ground` 69, `dungeon_walls_floor` 54, `snow` 33, `water_coasts` 25,
+`cave_water` 17, `cave_walls_floor` 14, `dungeon_floor_cracks` 12 (plus its
+`variantOf` tiles). `grass_ground_details` and `snow_details` have **no tagged
+tiles**; detail stamps reference them by tile id (`server/src/configs/details.ts`,
+written by `npm run extract:details` through `tiled/tiles.json`).
 
 For a generated biome, tagging a new tileset this way is the work — after that
 the existing wall, border and ledge generators draw it. For a hand-painted map it
@@ -348,6 +377,7 @@ tagged, and that was a mistake worth not repeating** — see `plans/mountain.md`
 ```sh
 python3 $T export <map>     # byte-identical to exporting from the editor
 npm run verify:maps         # every tmx has a current export
+npm run verify:tiles        # game maps render compact sheets only
 npm run typecheck           # if maps.ts changed
 ```
 

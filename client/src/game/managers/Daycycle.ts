@@ -242,10 +242,13 @@ export class DaycycleManager {
     const entities = this.scene.managers.entities.entities;
 
     for (const [_, entity] of entities) {
+      const indoor =
+        !!configs.maps[entity.scene?.scene.key as MapName]?.isIndoor;
+      const scale = indoor ? 1 : multiplier;
       const light = entity.getComponent<LightComponent>(ComponentName.LIGHT);
 
       if (light) {
-        const target = light.intensity * multiplier;
+        const target = light.intensity * scale;
 
         if (animate)
           this.scene.tweens.add({
@@ -262,7 +265,7 @@ export class DaycycleManager {
       );
 
       if (glimmer) {
-        const target = glimmer.intensity * multiplier;
+        const target = glimmer.intensity * scale;
 
         if (animate)
           this.scene.tweens.add({

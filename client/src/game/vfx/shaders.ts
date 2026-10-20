@@ -1,5 +1,9 @@
 import { PipelineName } from "@server/types";
-import { DURATION_EXTRACTION_BOUNCE } from "@server/globals";
+import {
+  DURATION_EXTRACTION_BOUNCE,
+  ILLUMINATE_BOOST,
+  ILLUMINATE_FADE,
+} from "@server/globals";
 import { Scene } from "../scenes/Scene";
 import { Entity } from "../Entity";
 import { StretchPipeline } from "../pipelines/Stretch";
@@ -9,11 +13,17 @@ const timers = new Map<string, Phaser.Time.TimerEvent>();
 
 export const shaders = {
   illuminate: (scene: Scene, duration: number) => {
-    const camera = scene.cameras.main;
-    camera.setPostPipeline(PipelineName.ILLUMINATE);
+    const target = scene.illumination;
 
-    scene.time.delayedCall(duration, () => {
-      camera.resetPostPipeline();
+    scene.tweens.killTweensOf(target);
+    scene.tweens.add({
+      targets: target,
+      boost: ILLUMINATE_BOOST,
+      duration: ILLUMINATE_FADE,
+      hold: Math.max(duration - ILLUMINATE_FADE * 2, 0),
+      yoyo: true,
+      ease: "Sine.easeInOut",
+      onComplete: () => (target.boost = 1),
     });
   },
 

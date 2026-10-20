@@ -21,11 +21,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 48, start: 12, end: 13 },
-            { row: 49, start: 12, end: 13 },
+            { row: 7, start: 5, end: 6 },
+            { row: 8, start: 5, end: 6 },
           ],
         },
         key: "glowshroom1_texture",
@@ -33,9 +33,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 8,
+          width: 10,
+          height: 6,
+          offsetX: 11,
           offsetY: 16,
           collides: false,
           static: true,
@@ -52,7 +52,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Glowshroom",
       description: "A cluster of small mushrooms that glows faintly green.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 4, col: 10 },
+      icon: { spritesheet: "nature", row: 8, col: 4 },
       weight: 0.05,
     },
   },
@@ -71,11 +71,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 48, start: 10, end: 11 },
-            { row: 49, start: 10, end: 11 },
+            { row: 7, start: 7, end: 8 },
+            { row: 8, start: 7, end: 8 },
           ],
         },
         key: "glowshroom2_texture",
@@ -83,10 +83,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 20,
-          height: 16,
+          width: 17,
+          height: 8,
           offsetX: 6,
-          offsetY: 14,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -121,11 +121,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 48, start: 8, end: 9 },
-            { row: 49, start: 8, end: 9 },
+            { row: 7, start: 9, end: 10 },
+            { row: 8, start: 9, end: 10 },
           ],
         },
         key: "glowshroom3_texture",
@@ -163,14 +163,14 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 24, start: 6, end: 9 },
-            { row: 25, start: 6, end: 9 },
-            { row: 26, start: 6, end: 9 },
-            { row: 27, start: 6, end: 9 },
-            { row: 28, start: 6, end: 9 },
+            { row: 23, start: 5, end: 8 },
+            { row: 24, start: 5, end: 8 },
+            { row: 25, start: 5, end: 8 },
+            { row: 26, start: 5, end: 8 },
+            { row: 27, start: 5, end: 8 },
           ],
         },
         key: "tree1_texture",
@@ -180,9 +180,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 24,
+          height: 25,
           offsetX: 24,
-          offsetY: 48,
+          offsetY: 47,
           static: true,
         },
       },
@@ -203,13 +203,13 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 15, start: 13, end: 16 },
-            { row: 16, start: 13, end: 16 },
-            { row: 17, start: 13, end: 16 },
-            { row: 18, start: 13, end: 16 },
+            { row: 23, start: 9, end: 12 },
+            { row: 24, start: 9, end: 12 },
+            { row: 25, start: 9, end: 12 },
+            { row: 26, start: 9, end: 12 },
           ],
         },
         key: "tree2_texture",
@@ -242,14 +242,14 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 35, start: 11, end: 16 },
-            { row: 36, start: 11, end: 16 },
-            { row: 37, start: 11, end: 16 },
-            { row: 38, start: 11, end: 16 },
-            { row: 39, start: 11, end: 16 },
+            { row: 23, start: 13, end: 18 },
+            { row: 24, start: 13, end: 18 },
+            { row: 25, start: 13, end: 18 },
+            { row: 26, start: 13, end: 18 },
+            { row: 27, start: 13, end: 18 },
           ],
         },
         key: "tree4_texture",
@@ -259,9 +259,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 24,
+          height: 25,
           offsetX: 36,
-          offsetY: 48,
+          offsetY: 47,
           static: true,
         },
       },
@@ -282,14 +282,14 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 43, start: 13, end: 16 },
-            { row: 44, start: 13, end: 16 },
-            { row: 45, start: 13, end: 16 },
-            { row: 46, start: 13, end: 16 },
-            { row: 47, start: 13, end: 16 },
+            { row: 23, start: 19, end: 22 },
+            { row: 24, start: 19, end: 22 },
+            { row: 25, start: 19, end: 22 },
+            { row: 26, start: 19, end: 22 },
+            { row: 27, start: 19, end: 22 },
           ],
         },
         key: "tree5_texture",
@@ -299,9 +299,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 24,
+          height: 25,
           offsetX: 24,
-          offsetY: 48,
+          offsetY: 47,
           static: true,
         },
       },
@@ -322,14 +322,14 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "snow_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 28, start: 15, end: 19 },
-            { row: 29, start: 15, end: 19 },
-            { row: 30, start: 15, end: 19 },
-            { row: 31, start: 15, end: 19 },
-            { row: 32, start: 15, end: 19 },
+            { row: 23, start: 23, end: 27 },
+            { row: 24, start: 23, end: 27 },
+            { row: 25, start: 23, end: 27 },
+            { row: 26, start: 23, end: 27 },
+            { row: 27, start: 23, end: 27 },
           ],
         },
         key: "tree6_texture",
@@ -339,9 +339,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 24,
+          height: 25,
           offsetX: 28,
-          offsetY: 48,
+          offsetY: 47,
           static: true,
         },
       },
@@ -362,15 +362,15 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "snow_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 27, start: 9, end: 13 },
-            { row: 28, start: 9, end: 13 },
-            { row: 29, start: 9, end: 13 },
-            { row: 30, start: 9, end: 13 },
-            { row: 31, start: 9, end: 13 },
-            { row: 32, start: 9, end: 13 },
+            { row: 23, start: 28, end: 32 },
+            { row: 24, start: 28, end: 32 },
+            { row: 25, start: 28, end: 32 },
+            { row: 26, start: 28, end: 32 },
+            { row: 27, start: 28, end: 32 },
+            { row: 28, start: 28, end: 32 },
           ],
         },
         key: "tree7_texture",
@@ -380,9 +380,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 24,
+          height: 33,
           offsetX: 32,
-          offsetY: 64,
+          offsetY: 55,
           static: true,
         },
       },
@@ -403,14 +403,14 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "snow_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 2, start: 2, end: 6 },
-            { row: 3, start: 2, end: 6 },
-            { row: 4, start: 2, end: 6 },
-            { row: 5, start: 2, end: 6 },
-            { row: 6, start: 2, end: 6 },
+            { row: 28, start: 1, end: 5 },
+            { row: 29, start: 1, end: 5 },
+            { row: 30, start: 1, end: 5 },
+            { row: 31, start: 1, end: 5 },
+            { row: 32, start: 1, end: 5 },
           ],
         },
         key: "tree8_texture",
@@ -420,9 +420,9 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 24,
+          height: 25,
           offsetX: 32,
-          offsetY: 48,
+          offsetY: 47,
           static: true,
         },
       },
@@ -443,13 +443,13 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 25, start: 10, end: 13 },
-            { row: 26, start: 10, end: 13 },
-            { row: 27, start: 10, end: 13 },
-            { row: 28, start: 10, end: 13 },
+            { row: 23, start: 1, end: 4 },
+            { row: 24, start: 1, end: 4 },
+            { row: 25, start: 1, end: 4 },
+            { row: 26, start: 1, end: 4 },
           ],
         },
         key: "appletree2_texture",
@@ -482,11 +482,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 43, start: 7, end: 9 },
-            { row: 44, start: 7, end: 9 },
+            { row: 21, start: 1, end: 3 },
+            { row: 22, start: 1, end: 3 },
           ],
         },
         key: "stump1_texture",
@@ -506,11 +506,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 51, start: 12, end: 13 },
-            { row: 52, start: 12, end: 13 },
+            { row: 21, start: 4, end: 5 },
+            { row: 22, start: 4, end: 5 },
           ],
         },
         key: "stump2_texture",
@@ -530,12 +530,12 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 25, start: 14, end: 16 },
-            { row: 26, start: 14, end: 16 },
-            { row: 27, start: 14, end: 16 },
+            { row: 1, start: 1, end: 3 },
+            { row: 2, start: 1, end: 3 },
+            { row: 3, start: 1, end: 3 },
           ],
         },
         key: "bush1_texture",
@@ -566,11 +566,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 29, start: 5, end: 6 },
-            { row: 30, start: 5, end: 6 },
+            { row: 1, start: 4, end: 5 },
+            { row: 2, start: 4, end: 5 },
           ],
         },
         key: "bush2_texture",
@@ -601,12 +601,12 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "plants_bushes",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 16, end: 18 },
-            { row: 2, start: 16, end: 18 },
-            { row: 3, start: 16, end: 18 },
+            { row: 1, start: 6, end: 8 },
+            { row: 2, start: 6, end: 8 },
+            { row: 3, start: 6, end: 8 },
           ],
         },
         key: "bush3_texture",
@@ -615,10 +615,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 4,
-          height: 4,
-          offsetX: 24,
-          offsetY: 20,
+          width: 27,
+          height: 14,
+          offsetX: 10,
+          offsetY: 24,
           collides: false,
           static: true,
         },
@@ -637,11 +637,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "plants_bushes",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 4, start: 25, end: 26 },
-            { row: 5, start: 25, end: 26 },
+            { row: 1, start: 9, end: 10 },
+            { row: 2, start: 9, end: 10 },
           ],
         },
         key: "bush4_texture",
@@ -650,10 +650,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 4,
-          height: 4,
-          offsetX: 16,
-          offsetY: 12,
+          width: 15,
+          height: 8,
+          offsetX: 8,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -672,9 +672,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "reed",
+          spritesheet: "nature",
           tileSize: 16,
-          tiles: [{ row: 2, start: 2, end: 2 }],
+          tiles: [
+            { row: 15, start: 1, end: 1 },
+          ],
         },
         key: "reed1_texture",
       },
@@ -704,9 +706,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "reed",
+          spritesheet: "nature",
           tileSize: 16,
-          tiles: [{ row: 2, start: 4, end: 4 }],
+          tiles: [
+            { row: 15, start: 2, end: 2 },
+          ],
         },
         key: "reed2_texture",
       },
@@ -737,11 +741,11 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "reed",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 6, end: 6 },
-            { row: 2, start: 6, end: 6 },
+            { row: 15, start: 3, end: 3 },
+            { row: 16, start: 3, end: 3 },
           ],
         },
         key: "reed3_texture",

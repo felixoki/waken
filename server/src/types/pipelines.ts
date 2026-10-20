@@ -1,6 +1,5 @@
 export enum PipelineName {
   OUTLINE = "outline",
-  ILLUMINATE = "illuminate",
   AMBIENCE = "ambience",
   BOUNCE = "bounce",
   STRETCH = "stretch",
@@ -8,4 +7,5 @@ export enum PipelineName {
   WIND = "wind",
   BEAM = "beam",
   SHEEN = "sheen",
+  LIGHT = "light",
 }

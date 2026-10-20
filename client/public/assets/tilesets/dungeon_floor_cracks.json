@@ -1,6 +1,6 @@
 {
   "columns": 8,
-  "image": "../sprites/dungeon_floor_cracks.png",
+  "image": "../sprites/tiles/dungeon_floor_cracks.png",
   "imageheight": 240,
   "imagewidth": 128,
   "margin": 0,
@@ -123,6 +123,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 159
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
       ]
     },
@@ -156,6 +171,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 155
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
         }
       ]
     },
@@ -189,6 +219,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 155
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
         }
       ]
     },
@@ -288,6 +333,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 137
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
       ]
     },
@@ -354,6 +414,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 137
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
       ]
     },
@@ -420,6 +495,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 139
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
       ]
     },
@@ -519,6 +609,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 139
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
       ]
     },
@@ -843,8 +948,89 @@
           "name": "variantOf",
           "type": "int",
           "value": 176
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
-      ]
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 18,
+            "x": 0,
+            "y": 8
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 8,
+            "x": -0.00471286822732075,
+            "y": -8
+          },
+          {
+            "height": 24,
+            "id": 3,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 8,
+            "y": -8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": 31,
@@ -1005,6 +1191,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 120
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
         }
       ]
     },
@@ -1549,6 +1750,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 154
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
         }
       ]
     },
@@ -1813,6 +2029,21 @@
           "name": "variantOf",
           "type": "int",
           "value": 156
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 2
         }
       ]
     },
@@ -2187,6 +2418,74 @@
           "value": 160
         }
       ]
+    },
+    {
+      "id": 2,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "ledge_outer"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "height",
+          "type": "int",
+          "value": 1
+        }
+      ],
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": true
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 8
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "properties": [
+              {
+                "name": "rendersAbove",
+                "type": "bool",
+                "value": false
+              }
+            ],
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": -8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
     }
   ]
 }

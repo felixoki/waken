@@ -13,6 +13,8 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[4]
 SPRITES = ROOT / "client/public/assets/sprites"
+PEOPLE = SPRITES / "people"
+COLLECTION = SPRITES / "collection"
 DESIGNS = Path(__file__).resolve().parents[1] / "designs"
 
 ROBE = [0x121930, 0x1F2B51, 0x27274E, 0x2D274E, 0x2A3F6E, 0x364D82, 0x406591, 0x436EA0, 0x4C84B1, 0x7594DB]
@@ -106,7 +108,7 @@ def anchor(mask):
 
 
 def references():
-    im = Image.open(SPRITES / "player_idle.png").convert("RGBA")
+    im = Image.open(PEOPLE / "player_idle.png").convert("RGBA")
     px = im.load()
     return [anchor(robe_mask(px, 0, row * 32, 32)) for row in range(4)]
 
@@ -215,13 +217,13 @@ def flatten(im, zoom):
 def cmd_build(args):
     name, design = load_design(args.design)
     refs = references()
-    out = Path(args.out) if args.out else SPRITES / "robes" / name
+    out = Path(args.out) if args.out else PEOPLE / "robes" / name
     out.mkdir(parents=True, exist_ok=True)
     preview = Path(args.preview) if args.preview else None
     if preview:
         preview.mkdir(parents=True, exist_ok=True)
     for sheet in args.sheets or SHEETS:
-        im = Image.open(SPRITES / f"player_{sheet}.png").convert("RGBA")
+        im = Image.open(PEOPLE / f"player_{sheet}.png").convert("RGBA")
         result = apply(design, sheet, im, refs)
         result.save(out / f"player_{sheet}.png")
         if preview:
@@ -238,7 +240,7 @@ HOOD_INSIDE = {0x544E40: 0, 0x605B48: 0.5, 0x6A664E: 1, 0x747155: 2.5}
 def hood():
     """The hood block from icons2: {(x, y): (part, ramp index)}, part is shell, rim, inside or outline."""
     file, bx, by = HOOD
-    px = Image.open(SPRITES / file).convert("RGBA").crop((bx, by, bx + 48, by + 32)).load()
+    px = Image.open(COLLECTION / file).convert("RGBA").crop((bx, by, bx + 48, by + 32)).load()
     codes = {(x, y): (px[x, y][0] << 16) | (px[x, y][1] << 8) | px[x, y][2]
              for y in range(32) for x in range(48) if px[x, y][3] == 255}
     near = lambda x, y: ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))
@@ -294,9 +296,9 @@ def cmd_items(args):
         if slot in slots:
             sys.exit(f"ITEM_SLOT {slot} is used by both {slots[slot][0]} and {name}")
         slots[slot] = (name, design)
-    out = Path(args.out) if args.out else SPRITES / f"{ITEM_SHEET}.png"
+    out = Path(args.out) if args.out else COLLECTION / f"{ITEM_SHEET}.png"
     top = (ITEM_ROW - 1) * 16
-    current = Image.open(SPRITES / f"{ITEM_SHEET}.png").convert("RGBA")
+    current = Image.open(COLLECTION / f"{ITEM_SHEET}.png").convert("RGBA")
     width = max(current.width, 48 * (max(slots) + 1))
     sheet = Image.new("RGBA", (width, max(current.height, top + 32)), (0, 0, 0, 0))
     sheet.paste(current, (0, 0))
@@ -315,7 +317,7 @@ def cmd_items(args):
 def cmd_zoom(args):
     name, design = load_design(args.design)
     size = SHEETS[args.sheet]
-    im = apply(design, args.sheet, Image.open(SPRITES / f"player_{args.sheet}.png").convert("RGBA"), references())
+    im = apply(design, args.sheet, Image.open(PEOPLE / f"player_{args.sheet}.png").convert("RGBA"), references())
     frames = args.frames or [0]
     rows = im.height // size
     out = Image.new("RGBA", (rows * size * args.zoom, len(frames) * size * args.zoom), BG)
@@ -338,7 +340,7 @@ def cmd_sheet(args):
             names.append(name)
     names = names[args.skip:args.skip + args.limit] if args.limit else names[args.skip:]
     refs = references()
-    src = Image.open(SPRITES / "player_idle.png").convert("RGBA")
+    src = Image.open(PEOPLE / "player_idle.png").convert("RGBA")
     z, pad, label = args.zoom, 8, 14
     cw, ch = 4 * 32 * z + pad, 32 * z + label
     rows = (len(names) + args.cols - 1) // args.cols
@@ -358,7 +360,7 @@ def cmd_sheet(args):
 
 def cmd_grid(args):
     size = SHEETS[args.sheet]
-    im = Image.open(SPRITES / f"player_{args.sheet}.png").convert("RGBA")
+    im = Image.open(PEOPLE / f"player_{args.sheet}.png").convert("RGBA")
     px = im.load()
     cx, cy = args.frame * size, args.row * size
     legend = {}

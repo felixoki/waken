@@ -7,7 +7,7 @@ description: Create a new player robe for Waken by editing the pixels of the pla
 
 A robe is a **design file** (`designs/<name>.py`) that says how to recolour the blue robe and
 what to paint on it. `scripts/robe.py` applies it to every player sheet and writes
-`client/public/assets/sprites/robes/<name>/player_*.png`, same file names and frame layout
+`client/public/assets/sprites/people/robes/<name>/player_*.png`, same file names and frame layout
 as the originals. Needs Python 3 with Pillow.
 
 ```
@@ -15,7 +15,7 @@ python3 .claude/skills/robes/scripts/robe.py grid idle --row 1          # look a
 python3 .claude/skills/robes/scripts/robe.py zoom fox /tmp/z.png        # 10x, one column per direction
 python3 .claude/skills/robes/scripts/robe.py zoom fox /tmp/z.png --sheet walking --frames 0 3 5
 python3 .claude/skills/robes/scripts/robe.py build fox --preview /tmp/p # all 17 sheets + 4x previews
-python3 .claude/skills/robes/scripts/robe.py palette client/public/assets/sprites/fox_idle.png
+python3 .claude/skills/robes/scripts/robe.py palette client/public/assets/sprites/animals/fox_idle.png
 ```
 
 `build` without `--out` writes straight into the sprites folder. While drafting, pass
@@ -129,11 +129,11 @@ scattered moments rather than moving across the robe. The flame robe that first 
 The drafts folder was never committed. The files `forty.py`, `sixty.py`, `hundred.py`, `garments.py`, `feathers.py` and
 `playful.py` described below were lost on 2026-10-14, along with `previews/`, so every mention of them below is history.
 `robe1`, `robe3` and `robe4` import from those files and no longer load until their designs are rewritten. Their built
-sheets in `sprites/robes/` are intact. Because `items` loads every design, it fails for now. To add a robe's icon, call
+sheets in `sprites/people/robes/` are intact. Because `items` loads every design, it fails for now. To add a robe's icon, call
 `robe.item_block(design)` and paste its block onto the robe band of `icons6.png` (rows 5-6, y = 64) at `ITEM_SLOT * 48`, as robe5 was added.
 
 `robe5.py` is standalone and is the reference for a fur texture. It copies the dark pelt on the drying rack in
-`sprites/village_hunter_interior.png`, rows 7-9 and cols 2-4, after a flat black fur with lighter strands was rejected.
+`sprites/collection/hunter_interior.png`, rows 7-9 and cols 2-4, after a flat black fur with lighter strands was rejected.
 The pelt is seven blue-greys (`PELT`), mottled per pixel by about one shade through four shifted ramps
 (`fur-2` to `fur+1`). It is lightest where the cloth catches light and has an outline-dark `EDGES` rim and ragged tufts.
 The leather and fleece come from the rack and the fleece below it.
@@ -252,7 +252,7 @@ red), asking for the rings to be connected and for the hood to carry part of the
 ## Inventory icon and world texture
 
 Items in Waken take a 48x32 block on an icon sheet: a 16px icon bottom-left and a 32px
-world texture to its right. `items` rebuilds the robe band (rows 5-6) of `sprites/icons6.png`, one block per design, leaving the other bands untouched,
+world texture to its right. `items` rebuilds the robe band (rows 5-6) of `sprites/collection/icons6.png`, one block per design, leaving the other bands untouched,
 by recolouring the hood block at rows 1-2, cols 1-3 of `icons2.png` in the design's own
 `BASE` and `MATERIALS`, so the item matches the worn robe.
 
@@ -291,7 +291,7 @@ early (the fur) still shades across the shell.
 
 Robes are real items now. A robe is an entity in `server/src/configs/entities/cloths.ts`
 named `ROBEn`, with `{ name: ComponentName.ROBE, config: { sheet: "robeN" } }` pointing at
-its folder under `sprites/robes/`, its hood icon and texture on `icons6` (rows 5-6), `stackable:
+its folder under `sprites/people/robes/`, its hood icon and texture on `icons6` (rows 5-6), `stackable:
 false`, and its effects in `modifier`. Players have one robe slot of their own, drawn as
 the eighth hotbar cell; only the worn robe's effects count. The client loads a robe's
 sheets the first time someone wears it. Robes are crafted at the Weaver

@@ -20,11 +20,11 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from tmx import ROOT, SPRITES, Map  # noqa: E402
+from tmx import ROOT, SPRITES, Map, sprite  # noqa: E402
 
-FOREST, MOUNTAINS, STAIRS = "forest_ground_grass", "mountains_ground", "stairs_grass"
+FOREST, MOUNTAINS, STAIRS = "forest_ground", "mountain_ground", "grass_stairs"
 GROUND_DETAILS, SNOW_DETAILS = "ground_grass_details", "snow_details"
-VILLAGE, SNOW_OBJECTS, REEDSHEET = "village_home", "snow_objects", "reed"
+VILLAGE, SNOW_OBJECTS, REEDSHEET = "village", "snow_exterior", "reed"
 
 """Which rows of each detail sheet suit which surface. Details are tile objects in
 an object group carrying `renders: true` and `texture: <sheet>`, the way the
@@ -129,7 +129,7 @@ def detail_formations(sheet: str) -> list[list[tuple[int, int]]]:
     """
     from PIL import Image
     from collections import deque
-    im = Image.open(SPRITES / f"{sheet}.png").convert("RGBA")
+    im = Image.open(sprite(f"{sheet}.png")).convert("RGBA")
     w, h = im.size
     px = im.load()
     seen = [[False] * w for _ in range(h)]

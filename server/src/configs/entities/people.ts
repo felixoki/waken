@@ -273,8 +273,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 8,
           height: 12,
-          offsetX: 12,
-          offsetY: 12,
+          offsetX: 20,
+          offsetY: 20,
           pushable: false,
         },
       },
@@ -333,8 +333,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 8,
           height: 12,
-          offsetX: 12,
-          offsetY: 12,
+          offsetX: 20,
+          offsetY: 20,
           pushable: false,
         },
       },
@@ -484,7 +484,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 10,
           height: 8,
-          offsetX: 15,
+          offsetX: 7,
           offsetY: 26,
           pushable: false,
         },
@@ -532,8 +532,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 8,
           height: 12,
-          offsetX: 12,
-          offsetY: 12,
+          offsetX: 23,
+          offsetY: 22,
           pushable: false,
         },
       },
@@ -978,8 +978,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 8,
           height: 12,
-          offsetX: 12,
-          offsetY: 12,
+          offsetX: 20,
+          offsetY: 20,
           pushable: false,
         },
       },
@@ -1807,8 +1807,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 8,
           height: 12,
-          offsetX: 12,
-          offsetY: 12,
+          offsetX: 20,
+          offsetY: 20,
           pushable: false,
         },
       },

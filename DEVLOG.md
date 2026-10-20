@@ -823,6 +823,15 @@
 
 - Add bed to build menu ✅
 
+#### 16.10.2026
+
+- Add ibex ✅
+- Add fence building ✅
+
+#### 17.10.2026
+
+- Chests don't close when walking away ✅
+
 ### In progress
 
 ### Bugs
@@ -849,3 +858,5 @@
   - Add pigs
 - Ideas
   - Remove among player collisions
+- Bodies
+  - Anchor bodies to the sprite centre on frame size changes: dragon form skin (player and villain) and carrot/tomato growth stages shift the body

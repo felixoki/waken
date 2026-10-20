@@ -23,23 +23,28 @@ export function Storage() {
       if (data.entityId === ref.current) setSlots(data.slots);
     };
 
-    const toggle = () => {
-      if (!ref.current) return;
+    const close = (entityId: string) => {
+      if (entityId !== ref.current) return;
 
-      EventBus.emit(Event.STORAGE_CLOSE, ref.current);
       ref.current = null;
 
       setId(null);
       setIsOpen(false);
     };
 
+    const toggle = () => {
+      if (ref.current) EventBus.emit(Event.STORAGE_CLOSE, ref.current);
+    };
+
     EventBus.on(Event.STORAGE_OPEN, open);
     EventBus.on(Event.STORAGE_SYNC, sync);
+    EventBus.on(Event.STORAGE_CLOSE, close);
     EventBus.on(Event.UI_TOGGLE, toggle);
 
     return () => {
       EventBus.off(Event.STORAGE_OPEN, open);
       EventBus.off(Event.STORAGE_SYNC, sync);
+      EventBus.off(Event.STORAGE_CLOSE, close);
       EventBus.off(Event.UI_TOGGLE, toggle);
     };
   }, []);

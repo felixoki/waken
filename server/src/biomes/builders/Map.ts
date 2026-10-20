@@ -328,11 +328,17 @@ export class MapBuilder {
     for (const band of this.ordered()) {
       const masked = this.mask(grid, region, bands.indexOf(band));
 
-      for (const detailConfig of band.config.details ?? []) {
+      for (const [index, detailConfig] of (band.config.details ?? []).entries()) {
         const detailGid = firstgids.get(detailConfig.tileset);
         if (detailGid === undefined) continue;
 
-        detailSpawner.spawn(masked, detailConfig, detailGid, overlay);
+        detailSpawner.spawn(
+          masked,
+          detailConfig,
+          detailGid,
+          overlay,
+          `${band.config.id}-${index}`,
+        );
       }
     }
 
@@ -498,7 +504,10 @@ export class MapBuilder {
           width,
           height,
           below,
-          [{ name: "collides", type: "bool", value: true }],
+          [
+            { name: "collides", type: "bool", value: true },
+            { name: "opaque", type: "bool", value: true },
+          ],
         ),
       );
 
@@ -511,6 +520,7 @@ export class MapBuilder {
           above,
           [
             { name: "collides", type: "bool", value: true },
+            { name: "opaque", type: "bool", value: true },
             { name: "rendersAbove", type: "bool", value: true },
           ],
         ),
@@ -623,7 +633,10 @@ export class MapBuilder {
           width,
           height,
           doorsBelow,
-          [{ name: "collides", type: "bool", value: true }],
+          [
+            { name: "collides", type: "bool", value: true },
+            { name: "opaque", type: "bool", value: true },
+          ],
         ),
       );
 
@@ -636,6 +649,7 @@ export class MapBuilder {
           doorsAbove,
           [
             { name: "collides", type: "bool", value: true },
+            { name: "opaque", type: "bool", value: true },
             { name: "rendersAbove", type: "bool", value: true },
           ],
         ),
@@ -672,9 +686,13 @@ export class MapBuilder {
             rendersAbove
               ? [
                   { name: "collides", type: "bool", value: true },
+                  { name: "opaque", type: "bool", value: true },
                   { name: "rendersAbove", type: "bool", value: true },
                 ]
-              : [{ name: "collides", type: "bool", value: true }],
+              : [
+                  { name: "collides", type: "bool", value: true },
+                  { name: "opaque", type: "bool", value: true },
+                ],
           );
           tiledLayers.push(layer);
         }
@@ -748,6 +766,7 @@ export class MapBuilder {
             role: TileRole.BORDER_OUTER,
             position,
             terrain: border.from,
+            over: border.to,
           });
 
           return tile ? gid + tile.id : -1;
@@ -1106,7 +1125,10 @@ export class MapBuilder {
                 width,
                 height,
                 data,
-                [{ name: "collides", type: "bool", value: true }],
+                [
+                  { name: "collides", type: "bool", value: true },
+                  { name: "opaque", type: "bool", value: true },
+                ],
               ),
             );
           }

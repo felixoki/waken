@@ -1,6 +1,6 @@
 {
   "columns": 20,
-  "image": "../sprites/temple_arches_doors.png",
+  "image": "../sprites/tiles/temple_arches_doors.png",
   "imageheight": 224,
   "imagewidth": 320,
   "margin": 0,

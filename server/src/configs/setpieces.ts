@@ -210,7 +210,7 @@ export const altar: Setpiece = {
     {
       name: "walls",
       tileset: "temple_walls_floor",
-      properties: [{ name: "collides", type: "bool", value: true }],
+      properties: [{ name: "collides", type: "bool", value: true }, { name: "opaque", type: "bool", value: true }],
       tiles: [
         [4, 0, 53],
         [4, 1, 70],
@@ -220,7 +220,7 @@ export const altar: Setpiece = {
     {
       name: "arches",
       tileset: "temple_arches_doors",
-      properties: [{ name: "collides", type: "bool", value: true }],
+      properties: [{ name: "collides", type: "bool", value: true }, { name: "opaque", type: "bool", value: true }],
       tiles: [
         [2, 0, 101],
         [3, 0, 102],

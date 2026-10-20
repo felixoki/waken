@@ -41,6 +41,7 @@ export class TextureAnimationComponent extends Component {
     const scene = this.entity.scene;
     const { tileSize, tiles, spritesheet, frames, direction } = this.config;
     const stride = this.config.stride ?? tiles.length;
+    const wrap = this.config.wrap ?? frames;
 
     const texture = scene.textures.get(spritesheet);
     const columns = Math.floor(texture.source[0].width / tileSize);
@@ -58,12 +59,21 @@ export class TextureAnimationComponent extends Component {
         false,
       );
 
+      const step = f % wrap;
+      const lane = Math.floor(f / wrap);
+
       tiles.forEach((r, rowIndex) => {
+        const width = r.end - r.start + 1;
+
         for (let col = r.start; col <= r.end; col++) {
           const row =
-            direction === "vertical" ? r.row + f * stride : r.row;
+            direction === "vertical"
+              ? r.row + step * stride
+              : r.row + lane * stride;
           const c =
-            direction === "horizontal" ? col + f * (r.end - r.start + 1) : col;
+            direction === "horizontal"
+              ? col + step * width
+              : col + lane * width;
 
           const frameIndex = (row - 1) * columns + (c - 1);
           const destX = (col - r.start) * tileSize;

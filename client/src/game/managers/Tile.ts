@@ -1,5 +1,5 @@
 import { SurfaceName, TiledProperty } from "@server/types";
-import { HEIGHT_JUMPING } from "@server/globals";
+import { HEIGHT_JUMPING, LIGHT_ALPHA } from "@server/globals";
 
 const SURFACES = Object.values(SurfaceName);
 const GRASS = SURFACES.indexOf(SurfaceName.GRASS) + 1;
@@ -16,6 +16,13 @@ interface Animation {
   }>;
 }
 
+export interface LightMask {
+  width: number;
+  height: number;
+  solid: Uint8Array;
+  drop: Uint8Array;
+}
+
 export interface Threshold {
   body?: Phaser.GameObjects.Rectangle;
   tileY: number;
@@ -30,6 +37,7 @@ export class TileManager {
   private grid?: number[][];
   private jumps?: number[][];
   private sight?: Uint8Array | null;
+  private opaque?: LightMask;
   private rails?: Phaser.Geom.Rectangle[];
   private surfaces?: Uint8Array;
   private base?: Phaser.Tilemaps.TilemapLayer;
@@ -204,7 +212,6 @@ export class TileManager {
 
       if (found) this.exposures.set(SURFACES[i], table);
     }
-
   }
 
   private _getAnimations(): void {
@@ -288,6 +295,87 @@ export class TileManager {
     for (let i = 0; i < through.length; i++) if (opaque[i]) through[i] = 0;
 
     return (this.sight = through);
+  }
+
+  getLightMask(): LightMask {
+    if (this.opaque) return this.opaque;
+
+    const {
+      widthInPixels: width,
+      heightInPixels: height,
+      tileHeight,
+    } = this.tilemap;
+    const solid = new Uint8Array(width * height);
+    const drop = new Uint8Array(width * height);
+    const pixels = new Map<Phaser.Tilemaps.Tileset, Uint8ClampedArray>();
+
+    const read = (tileset: Phaser.Tilemaps.Tileset): Uint8ClampedArray => {
+      let data = pixels.get(tileset);
+      if (data) return data;
+
+      const image = tileset.image!.getSourceImage() as CanvasImageSource & {
+        width: number;
+        height: number;
+      };
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const context = canvas.getContext("2d", { willReadFrequently: true })!;
+      context.drawImage(image, 0, 0);
+      data = context.getImageData(0, 0, image.width, image.height).data;
+      pixels.set(tileset, data);
+
+      return data;
+    };
+
+    for (const layer of this.tilemap.layers) {
+      const properties = layer.properties as TiledProperty[] | undefined;
+      if (!properties?.some((p) => p.name === "opaque" && p.value === true))
+        continue;
+
+      for (const row of layer.data)
+        for (const tile of row) {
+          const tileset = tile?.tileset;
+          if (!tile || tile.index <= 0 || !tileset?.image) continue;
+
+          const data = read(tileset);
+          const stride = tileset.image.getSourceImage().width;
+          const origin = tileset.getTileTextureCoordinates(tile.index) as {
+            x: number;
+            y: number;
+          } | null;
+          if (!origin) continue;
+
+          const w = tileset.tileWidth;
+          const h = tileset.tileHeight;
+          const left = tile.pixelX;
+          const top = tile.pixelY + tileHeight - h;
+
+          for (let y = 0; y < h; y++) {
+            const wy = top + y;
+            if (wy < 0 || wy >= height) continue;
+
+            const sy = origin.y + (tile.flipY ? h - 1 - y : y);
+
+            for (let x = 0; x < w; x++) {
+              const wx = left + x;
+              if (wx < 0 || wx >= width) continue;
+
+              const sx = origin.x + (tile.flipX ? w - 1 - x : x);
+              if (data[(sy * stride + sx) * 4 + 3] >= LIGHT_ALPHA)
+                solid[wy * width + wx] = 1;
+            }
+          }
+        }
+    }
+
+    for (let x = 0; x < width; x++)
+      for (let y = height - 2; y >= 0; y--) {
+        const i = y * width + x;
+        if (solid[i]) drop[i] = Math.min(drop[i + width] + 1, 255);
+      }
+
+    return (this.opaque = { width, height, solid, drop });
   }
 
   getCollisionGrid(): number[][] {

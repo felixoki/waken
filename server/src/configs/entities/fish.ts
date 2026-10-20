@@ -14,11 +14,11 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 14, end: 15 },
-            { row: 4, start: 14, end: 15 },
+            { row: 15, start: 2, end: 3 },
+            { row: 16, start: 2, end: 3 },
           ],
         },
         key: "carp_texture",
@@ -34,7 +34,7 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A sturdy river carp.",
       stackable: false,
       rarity: Rarity.COMMON,
-      icon: { spritesheet: "icons1", row: 4, col: 13 },
+      icon: { spritesheet: "items", row: 16, col: 1 },
       weight: 3.8,
     },
   },
@@ -45,11 +45,11 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 26, end: 27 },
-            { row: 2, start: 26, end: 27 },
+            { row: 15, start: 8, end: 9 },
+            { row: 16, start: 8, end: 9 },
           ],
         },
         key: "perch_texture",
@@ -65,7 +65,7 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A small striped perch, common in these waters.",
       stackable: false,
       rarity: Rarity.COMMON,
-      icon: { spritesheet: "icons1", row: 2, col: 25 },
+      icon: { spritesheet: "items", row: 16, col: 7 },
       weight: 0.8,
     },
   },
@@ -76,11 +76,11 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 8, end: 9 },
-            { row: 4, start: 8, end: 9 },
+            { row: 15, start: 11, end: 12 },
+            { row: 16, start: 11, end: 12 },
           ],
         },
         key: "pike_texture",
@@ -96,7 +96,7 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A large predatory pike, common in freshwater lakes.",
       stackable: false,
       rarity: Rarity.RARE,
-      icon: { spritesheet: "icons1", row: 4, col: 7 },
+      icon: { spritesheet: "items", row: 16, col: 10 },
       weight: 5.6,
     },
   },
@@ -107,11 +107,11 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 2, end: 3 },
-            { row: 2, start: 2, end: 3 },
+            { row: 15, start: 5, end: 6 },
+            { row: 16, start: 5, end: 6 },
           ],
         },
         key: "cavefish_texture",
@@ -127,7 +127,7 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A pale, eyeless fish from the sunless pools.",
       stackable: false,
       rarity: Rarity.RARE,
-      icon: { spritesheet: "icons1", row: 2, col: 1 },
+      icon: { spritesheet: "items", row: 16, col: 4 },
       weight: 1.1,
     },
   },

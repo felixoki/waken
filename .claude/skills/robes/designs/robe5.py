@@ -1,5 +1,5 @@
 """Bellan's fleece: a leather robe under a pelt hood and a ragged mantle half way down, fleece round the face.
-The fur texture copies the dark pelt on the drying rack in village_hunter_interior.png (rows 7-9, cols 2-4);
+The fur texture copies the dark pelt on the drying rack in hunter_interior.png (rows 7-9, cols 2-4);
 leather and fleece come from the rack and the fleece below it."""
 
 

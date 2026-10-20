@@ -66,7 +66,7 @@ export const Fishing = () => {
         />
         <img
           ref={fishRef}
-          src="./assets/sprites/fish_placeholder.png"
+          src="./assets/images/fish_placeholder.png"
           alt=""
           className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-none"
           style={{ left: "50%", width: 96, height: 96, imageRendering: "pixelated" }}

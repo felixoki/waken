@@ -1,6 +1,6 @@
 {
   "columns": 62,
-  "image": "../sprites/cave_walls_floor.png",
+  "image": "../sprites/tiles/cave_walls_floor.png",
   "imageheight": 176,
   "imagewidth": 992,
   "margin": 0,

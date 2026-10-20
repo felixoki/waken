@@ -1,6 +1,8 @@
 /**
- * Extracts the mountain tilesets embedded in tiled/*.tmx into tagged tileset
+ * Extracts the terrain tilesets embedded in tiled/*.tmx into tagged tileset
  * files under client/public/assets/tilesets, the format TilesetLoader reads.
+ * Tags are written against the collection sheets; INTO names the compact sheet
+ * each one lands on, and ids are mapped through tiled/tiles.json.
  *
  * Image, dimensions and per-tile collision shapes come from the tmx. Semantic
  * tags come from TAGS below, written as 1-based (row, col) the way the Tiled
@@ -14,7 +16,7 @@ const ROOT = resolve(import.meta.dirname, "..");
 const SOURCES = ["tiled/large-mountain.tmx", "tiled/mountain.tmx"].map((p) => resolve(ROOT, p));
 const OUT = resolve(ROOT, "client/public/assets/tilesets");
 
-const blob = (terrain, r, c) => [
+const blob = (terrain, r, c, over) => [
   [[r, c], { role: "border_outer", position: "top_left", terrain }],
   [[r, c + 1], { role: "border_outer", position: "top", terrain }],
   [[r, c + 2], { role: "border_outer", position: "top_right", terrain }],
@@ -27,7 +29,7 @@ const blob = (terrain, r, c) => [
   [[r, c + 4], { role: "border_inner", position: "top_right", terrain }],
   [[r + 1, c + 3], { role: "border_inner", position: "bottom_left", terrain }],
   [[r + 1, c + 4], { role: "border_inner", position: "bottom_right", terrain }],
-];
+].map(([rc, p]) => [rc, over ? { ...p, over } : p]);
 
 const earthBase = (over, t) => [
   [t.flat, { role: "base", position: "flat", terrain: "earth", over }],
@@ -64,10 +66,17 @@ const snowStair = (over, c) => [
 ];
 
 const TAGS = {
-  forest_ground_grass: [
+  village_terrain: [
+    ...blob("grass", 18, 2, "ground"),
+    [[19, 3], { role: "fill", terrain: "grass", over: "ground" }],
+    ...blob("ground", 21, 2),
+    [[22, 3], { role: "fill", terrain: "ground" }],
+  ],
+
+  forest_ground: [
     [[21, 3], { role: "fill", terrain: "earth" }],
-    [[26, 3], { role: "fill", terrain: "grass" }],
-    ...blob("grass", 25, 2),
+    [[26, 3], { role: "fill", terrain: "grass", over: "earth" }],
+    ...blob("grass", 25, 2, "earth"),
 
     [[6, 5], { role: "rim", position: "flat", terrain: "earth" }],
     [[6, 2], { role: "rim", position: "left", terrain: "earth" }],
@@ -88,7 +97,7 @@ const TAGS = {
     [[21, 4], { role: "crack", position: "east", terrain: "earth" }],
   ],
 
-  mountains_ground: [
+  mountain_ground: [
     [[5, 4], { role: "fill", terrain: "snow" }],
     ...snowFace("earth", 5),
     ...snowFace("snow", 11),
@@ -100,7 +109,7 @@ const TAGS = {
     ...snowStair("snow", 20),
   ],
 
-  stairs_grass: [
+  grass_stairs: [
     [[7, 6], { role: "stair", position: "top_left", terrain: "earth" }],
     [[7, 7], { role: "stair", position: "top_right", terrain: "earth" }],
     [[5, 6], { role: "stair", position: "left", terrain: "earth", over: "grass" }],
@@ -114,8 +123,18 @@ const TAGS = {
   snow_details: [],
 };
 
+const INTO = {
+  village_terrain: "grass_ground",
+  forest_ground: "grass_ground",
+  grass_stairs: "grass_ground",
+  mountain_ground: "snow",
+  snow_details: "snow_details",
+};
+
+const NO_SHAPES = new Set(["village_terrain"]);
+
 const SHAPES = {
-  mountains_ground: [[[6, 7], { x: 6, y: 0, width: 10, height: 10 }]],
+  mountain_ground: [[[6, 7], { x: 6, y: 0, width: 10, height: 10 }]],
 };
 
 const SOLID = new Set(["rim", "crack", "face", "end", "wall", "corner"]);
@@ -154,7 +173,7 @@ const parseTilesets = (path) => {
       tileheight: num(head, "tileheight"),
       margin: num(head, "margin"),
       spacing: num(head, "spacing"),
-      file: attr(image, "source").split("/").pop(),
+      file: attr(image, "source").split("/sprites/").pop(),
       imagewidth: num(image, "width"),
       imageheight: num(image, "height"),
       shapes,
@@ -273,7 +292,23 @@ const build = (ts, tags, extra) => {
   return { json, problems, tagged: props.size, shaped: ts.shapes.size };
 };
 
+const MANIFEST = JSON.parse(readFileSync(resolve(ROOT, "tiled/tiles.json"), "utf8"));
+
+const compact = (sheet, source, id) => {
+  const m = MANIFEST[sheet];
+  const at = Object.entries(m.cells).find(([, [s, t]]) => s === source && t === id)?.[0];
+  if (!at) throw new Error(`${source} tile ${id} is not on ${sheet}; run npm run tiles`);
+  const [x, y] = at.split(",").map(Number);
+  return y * m.columns + x;
+};
+
+const pngSize = (path) => {
+  const buf = readFileSync(path);
+  return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+};
+
 const tilesets = merge(SOURCES);
+const outputs = new Map();
 let failed = false;
 
 for (const [name, tags] of Object.entries(TAGS)) {
@@ -284,7 +319,8 @@ for (const [name, tags] of Object.entries(TAGS)) {
     continue;
   }
 
-  const { json, problems, tagged, shaped } = build(ts, tags, SHAPES[name] ?? []);
+  const source = NO_SHAPES.has(name) ? { ...ts, shapes: new Map() } : ts;
+  const { json, problems, tagged, shaped } = build(source, tags, SHAPES[name] ?? []);
 
   if (problems.length) {
     failed = true;
@@ -293,9 +329,38 @@ for (const [name, tags] of Object.entries(TAGS)) {
     continue;
   }
 
-  const path = resolve(OUT, `${name}.json`);
+  const into = INTO[name];
+  const out = outputs.get(into) ?? { tiles: [], ids: new Set(), tagged: 0, shaped: 0 };
+  for (const tile of json.tiles ?? []) {
+    const id = compact(into, name, tile.id);
+    if (out.ids.has(id)) throw new Error(`${into}: tile ${id} is tagged by two sources`);
+    out.ids.add(id);
+    out.tiles.push({ ...tile, id });
+  }
+  out.tagged += tagged;
+  out.shaped += shaped;
+  outputs.set(into, out);
+}
+
+for (const [into, out] of outputs) {
+  const { width, height } = pngSize(resolve(ROOT, `client/public/assets/sprites/tiles/${into}.png`));
+  const columns = width / 16;
+  const json = {
+    columns,
+    image: `../sprites/tiles/${into}.png`,
+    imageheight: height,
+    imagewidth: width,
+    margin: 0,
+    name: into,
+    spacing: 0,
+    tilecount: columns * (height / 16),
+    tileheight: 16,
+    ...(out.tiles.length ? { tiles: out.tiles } : {}),
+    tilewidth: 16,
+  };
+  const path = resolve(OUT, `${into}.json`);
   writeFileSync(path, JSON.stringify(json, null, 2) + "\n");
-  console.log(`✓ ${relative(ROOT, path)}  ${tagged} tagged, ${shaped} with collision`);
+  console.log(`✓ ${relative(ROOT, path)}  ${out.tagged} tagged, ${out.shaped} with collision`);
 }
 
 process.exit(failed ? 1 : 0);

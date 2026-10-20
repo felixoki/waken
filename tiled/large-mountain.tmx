@@ -3,8 +3,8 @@
  <properties>
   <property name="reference" type="bool" value="true"/>
  </properties>
- <tileset firstgid="1" name="forest_ground_grass" tilewidth="16" tileheight="16" tilecount="651" columns="21">
-  <image source="../client/public/assets/sprites/forest_ground_grass.png" width="336" height="496"/>
+ <tileset firstgid="1" name="forest_ground" tilewidth="16" tileheight="16" tilecount="651" columns="21">
+  <image source="../client/public/assets/sprites/collection/forest_ground.png" width="336" height="496"/>
   <tile id="66">
    <objectgroup draworder="index" id="2">
     <object id="1" x="9" y="0" width="7" height="10"/>
@@ -107,8 +107,8 @@
    </objectgroup>
   </tile>
  </tileset>
- <tileset firstgid="652" name="mountains_ground" tilewidth="16" tileheight="16" tilecount="1536" columns="32">
-  <image source="../client/public/assets/sprites/mountains_ground.png" width="512" height="768"/>
+ <tileset firstgid="652" name="mountain_ground" tilewidth="16" tileheight="16" tilecount="1536" columns="32">
+  <image source="../client/public/assets/sprites/collection/mountain_ground.png" width="512" height="768"/>
   <tile id="143">
    <objectgroup draworder="index" id="2">
     <object id="1" x="6" y="0" width="10" height="10"/>
@@ -226,17 +226,17 @@
    </objectgroup>
   </tile>
  </tileset>
- <tileset firstgid="2188" name="stairs_grass" tilewidth="16" tileheight="16" tilecount="357" columns="21">
-  <image source="../client/public/assets/sprites/stairs_grass.png" width="336" height="272"/>
+ <tileset firstgid="2188" name="grass_stairs" tilewidth="16" tileheight="16" tilecount="357" columns="21">
+  <image source="../client/public/assets/sprites/collection/grass_stairs.png" width="336" height="272"/>
  </tileset>
  <tileset firstgid="2545" name="ground_grass_details" tilewidth="16" tileheight="16" tilecount="378" columns="21">
-  <image source="../client/public/assets/sprites/ground_grass_details.png" width="336" height="288"/>
+  <image source="../client/public/assets/sprites/collection/ground_grass_details.png" width="336" height="288"/>
  </tileset>
  <tileset firstgid="2923" name="snow_details" tilewidth="16" tileheight="16" tilecount="210" columns="21">
-  <image source="../client/public/assets/sprites/snow_details.png" width="336" height="160"/>
+  <image source="../client/public/assets/sprites/collection/snow_details.png" width="336" height="160"/>
  </tileset>
- <tileset firstgid="3133" name="village_home" tilewidth="16" tileheight="16" tilecount="969" columns="17">
-  <image source="../client/public/assets/sprites/village_home.png" width="272" height="912"/>
+ <tileset firstgid="3133" name="village_terrain" tilewidth="16" tileheight="16" tilecount="969" columns="17">
+  <image source="../client/public/assets/sprites/collection/village_terrain.png" width="272" height="912"/>
   <tile id="45">
    <objectgroup draworder="index" id="2">
     <object id="1" x="3" y="0" width="13" height="16">
@@ -508,11 +508,11 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="4102" name="snow_objects" tilewidth="16" tileheight="16" tilecount="3293" columns="37">
-  <image source="../client/public/assets/sprites/snow_objects.png" width="592" height="1424"/>
+ <tileset firstgid="4102" name="snow_exterior" tilewidth="16" tileheight="16" tilecount="3293" columns="37">
+  <image source="../client/public/assets/sprites/collection/snow_exterior.png" width="592" height="1424"/>
  </tileset>
  <tileset firstgid="7395" name="reed" tilewidth="16" tileheight="16" tilecount="36" columns="12">
-  <image source="../client/public/assets/sprites/reed.png" width="192" height="48"/>
+  <image source="../client/public/assets/sprites/collection/reed.png" width="192" height="48"/>
  </tileset>
  <layer id="1" name="ground" width="800" height="150">
   <data encoding="csv">

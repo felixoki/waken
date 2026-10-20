@@ -3,8 +3,8 @@ import { OutlinePipeline } from "./pipelines/Outline";
 import { MainScene } from "./scenes/Main";
 import VillageScene from "./scenes/Village";
 import { HerbalistScene } from "./scenes/Herbalist";
-import { IlluminatePipeline } from "./pipelines/Illuminate";
 import { AmbiencePipeline } from "./pipelines/Ambience";
+import { OccludedLightPipeline } from "./pipelines/Light";
 import { VortexPipeline } from "./pipelines/Vortex";
 import { WindPipeline } from "./pipelines/Wind";
 import {
@@ -77,10 +77,6 @@ export const config: Phaser.Types.Core.GameConfig = {
       const renderer = game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
       renderer.pipelines.addPostPipeline(PipelineName.OUTLINE, OutlinePipeline);
       renderer.pipelines.addPostPipeline(
-        PipelineName.ILLUMINATE,
-        IlluminatePipeline,
-      );
-      renderer.pipelines.addPostPipeline(
         PipelineName.AMBIENCE,
         AmbiencePipeline,
       );
@@ -88,6 +84,10 @@ export const config: Phaser.Types.Core.GameConfig = {
       renderer.pipelines.addPostPipeline(PipelineName.BEAM, BeamPipeline);
       renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
       renderer.pipelines.add(PipelineName.SHEEN, new SheenPipeline(game));
+      renderer.pipelines.add(
+        PipelineName.LIGHT,
+        new OccludedLightPipeline(game),
+      );
 
       for (let i = 0; i < BOUNCE_POOL_SIZE; i++) {
         const name = bounceSlotName(i);

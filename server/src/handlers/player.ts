@@ -89,6 +89,7 @@ export const player = {
             SpellName.LIGHTNING_STRIKE,
             SpellName.DELTA_WAVE,
             SpellName.CATCH_SOUL,
+            SpellName.ILLUMINATE,
             ...((saved?.data?.spells as SpellName[]) ?? []),
           ]),
         ].filter((name) => configs.spells[name]),

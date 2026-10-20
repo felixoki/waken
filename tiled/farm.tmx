@@ -3,8 +3,73 @@
  <editorsettings>
   <export target="../client/public/assets/maps/farm_house.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="fireplace" tilewidth="16" tileheight="16" tilecount="36" columns="12">
-  <image source="../client/public/assets/sprites/fireplace.png" width="192" height="48"/>
+ <tileset firstgid="370" name="farm" tilewidth="16" tileheight="16" tilecount="216" columns="24">
+  <image source="../client/public/assets/sprites/buildings/farm.png" width="384" height="144"/>
+  <tile id="6">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0.00480288" y="5" width="16" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="33">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="34">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="35">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="46">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="58">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="59">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="5" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="82">
+   <objectgroup draworder="index" id="2">
+    <object id="2" x="0" y="0" width="11" height="16"/>
+    <object id="3" x="11" y="5" width="5" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="83">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="5" y="0" width="11" height="16"/>
+    <object id="2" x="0" y="5" width="5" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="110">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="5" width="16" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="112">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="5" width="16" height="11"/>
+   </objectgroup>
+  </tile>
+  <tile id="118">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="5" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+ </tileset>
+ <tileset firstgid="586" name="farm_fireplace" tilewidth="16" tileheight="16" tilecount="36" columns="12">
+  <image source="../client/public/assets/sprites/buildings/farm_fireplace.png" width="192" height="48"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="100"/>
@@ -66,144 +131,57 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="37" name="village_farm_walls_floor" tilewidth="16" tileheight="16" tilecount="180" columns="10">
-  <image source="../client/public/assets/sprites/village_farm_walls_floor.png" width="160" height="288"/>
-  <tile id="1">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0.00480288" y="5" width="16" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="10">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="5" y="0" width="11" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="12">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="11" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="13">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="14">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="23">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="11" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="24">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="5" y="0" width="11" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="31">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="33">
-   <objectgroup draworder="index" id="2">
-    <object id="2" x="0" y="0" width="11" height="16"/>
-    <object id="3" x="11" y="5" width="5" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="34">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="5" y="0" width="11" height="16"/>
-    <object id="2" x="0" y="5" width="5" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="47">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="5" width="16" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="49">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="5" width="16" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="60">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="61">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="62">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="63">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
- </tileset>
- <tileset firstgid="217" name="village_farm_interior" tilewidth="16" tileheight="16" tilecount="153" columns="17">
-  <image source="../client/public/assets/sprites/village_farm_interior.png" width="272" height="144"/>
- </tileset>
  <layer id="2" name="floor" width="16" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,42,42,42,42,42,42,42,42,42,42,42,42,42,42,0,
-0,52,52,42,52,52,52,52,52,52,52,52,52,52,52,0,
-0,62,62,52,62,62,62,62,62,62,62,62,62,62,62,0,
-0,72,72,62,72,72,72,72,72,72,72,72,72,72,72,0,
-0,82,82,72,82,82,82,82,82,82,82,82,82,82,82,0,
-0,52,52,82,82,82,52,52,52,52,52,52,52,52,52,0,
-0,62,62,72,62,62,62,62,62,62,62,62,62,62,62,0,
-0,72,72,82,72,72,72,72,72,72,72,72,72,72,72,0,
-0,82,82,82,82,82,82,82,82,82,82,82,82,82,82,0,
+0,382,382,382,382,382,382,382,382,382,382,382,382,382,382,0,
+0,406,406,382,406,406,406,406,406,406,406,406,406,406,406,0,
+0,430,430,406,430,430,430,430,430,430,430,430,430,430,430,0,
+0,454,454,430,454,454,454,454,454,454,454,454,454,454,454,0,
+0,478,478,454,478,478,478,478,478,478,478,478,478,478,478,0,
+0,406,406,478,478,478,406,406,406,406,406,406,406,406,406,0,
+0,430,430,454,430,430,430,430,430,430,430,430,430,430,430,0,
+0,454,454,478,454,454,454,454,454,454,454,454,454,454,454,0,
+0,478,478,478,478,478,478,478,478,478,478,478,478,478,478,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="1" name="walls" width="16" height="13">
   <properties>
    <property name="collides" type="bool" value="true"/>
+   <property name="opaque" type="bool" value="true"/>
   </properties>
   <data encoding="csv">
-91,92,92,92,92,92,92,92,92,92,92,92,92,92,92,93,
-101,40,58,58,58,58,58,58,58,58,58,58,58,58,41,103,
-101,50,68,68,68,68,68,68,68,68,68,68,68,68,51,103,
-101,60,78,78,78,78,78,78,78,78,78,78,78,78,61,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,49,0,0,0,0,0,0,0,0,0,0,0,0,47,103,
-101,70,38,38,38,38,84,85,85,86,38,38,38,38,71,103,
-111,112,112,112,112,112,94,95,95,96,112,112,112,112,112,113
+501,502,502,502,502,502,502,502,502,502,502,502,502,502,502,503,
+525,380,392,392,392,392,392,392,392,392,392,392,392,392,381,527,
+525,404,416,416,416,416,416,416,416,416,416,416,416,416,405,527,
+525,428,440,440,440,440,440,440,440,440,440,440,440,440,429,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,403,0,0,0,0,0,0,0,0,0,0,0,0,488,527,
+525,452,376,376,376,376,480,481,481,482,376,376,376,376,453,527,
+549,550,550,550,550,550,504,505,505,506,550,550,550,550,550,551
 </data>
  </layer>
  <layer id="4" name="interior2" width="16" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,226,227,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,243,244,0,0,0,223,224,225,0,0,
-0,0,0,0,0,0,260,261,0,0,348,240,241,242,348,0,
-0,0,0,0,0,0,277,278,0,0,365,257,258,259,365,0,
-0,0,2684354845,2684354828,2684354811,1610612989,1610612989,1610613006,1610613023,0,0,274,275,276,0,0,
-0,0,2684354846,2684354829,2684354812,1610612988,1610612988,1610613005,1610613022,0,0,0,0,0,0,0,
-0,0,2684354847,2684354830,2684354813,1610612987,1610612987,1610613004,1610613021,0,0,0,232,233,0,0,
-0,0,0,0,0,0,0,0,0,0,0,248,249,250,0,0,
-0,0,0,0,0,0,0,0,0,0,0,265,266,267,0,0,
-0,0,0,0,0,0,0,0,0,0,0,282,0,284,0,0,
+0,0,0,0,0,0,373,374,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,397,398,0,0,0,370,371,372,0,0,
+0,0,0,0,0,0,421,422,0,0,544,394,395,396,544,0,
+0,0,0,0,0,0,445,446,0,0,568,418,419,420,568,0,
+0,0,2684354992,2684354968,2684354944,1610613122,1610613122,1610613146,1610613170,0,0,442,443,444,0,0,
+0,0,2684354993,2684354969,2684354945,1610613121,1610613121,1610613145,1610613169,0,0,0,0,0,0,0,
+0,0,2684354994,2684354970,2684354946,1610613120,1610613120,1610613144,1610613168,0,0,0,389,390,0,0,
+0,0,0,0,0,0,0,0,0,0,0,412,413,414,0,0,
+0,0,0,0,0,0,0,0,0,0,0,436,437,438,0,0,
+0,0,0,0,0,0,0,0,0,0,0,460,0,462,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -212,15 +190,15 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,300,301,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,317,318,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,334,335,0,0,0,0,0,0,
-0,0,0,294,295,296,297,298,0,0,0,0,0,0,0,0,
-0,0,0,311,312,313,314,315,0,0,0,0,0,0,0,0,
-0,0,0,0,329,330,331,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,485,486,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,509,510,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,533,534,0,0,0,0,0,0,
+0,0,0,469,470,471,472,473,0,0,0,0,0,0,0,0,
+0,0,0,493,494,495,496,497,0,0,0,0,0,0,0,0,
+0,0,0,0,518,519,520,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,262,263,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,279,280,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,423,424,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,447,448,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -229,9 +207,9 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,13,14,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,25,26,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,586,587,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,598,599,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,610,611,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

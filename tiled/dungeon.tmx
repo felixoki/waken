@@ -4,28 +4,28 @@
   <export target="dungeon.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="dungeon_walls_floor" tilewidth="16" tileheight="16" tilecount="493" columns="17">
-  <image source="../client/public/assets/sprites/dungeon_walls_floor.png" width="272" height="464"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_walls_floor.png" width="272" height="464"/>
  </tileset>
- <tileset firstgid="494" name="dungeon_objects1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
-  <image source="../client/public/assets/sprites/dungeon_objects1.png" width="384" height="144"/>
+ <tileset firstgid="494" name="dungeon_interior1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
+  <image source="../client/public/assets/sprites/collection/dungeon_interior1.png" width="384" height="144"/>
  </tileset>
- <tileset firstgid="710" name="dungeon_objects2" tilewidth="16" tileheight="16" tilecount="555" columns="15">
-  <image source="../client/public/assets/sprites/dungeon_objects2.png" width="240" height="592"/>
+ <tileset firstgid="710" name="dungeon_interior2" tilewidth="16" tileheight="16" tilecount="555" columns="15">
+  <image source="../client/public/assets/sprites/collection/dungeon_interior2.png" width="240" height="592"/>
  </tileset>
  <tileset firstgid="1265" name="firebowl" tilewidth="16" tileheight="16" tilecount="198" columns="11">
-  <image source="../client/public/assets/sprites/firebowl.png" width="176" height="288"/>
+  <image source="../client/public/assets/sprites/collection/firebowl.png" width="176" height="288"/>
  </tileset>
- <tileset firstgid="1463" name="village_tavern_house" tilewidth="16" tileheight="16" tilecount="812" columns="28">
-  <image source="../client/public/assets/sprites/village_tavern_house.png" width="448" height="464"/>
+ <tileset firstgid="1463" name="tavern_exterior" tilewidth="16" tileheight="16" tilecount="812" columns="28">
+  <image source="../client/public/assets/sprites/collection/tavern_exterior.png" width="448" height="464"/>
  </tileset>
- <tileset firstgid="2275" name="village_market_objects" tilewidth="16" tileheight="16" tilecount="1080" columns="30">
-  <image source="../client/public/assets/sprites/village_market_objects.png" width="480" height="576"/>
+ <tileset firstgid="2275" name="market_stalls" tilewidth="16" tileheight="16" tilecount="1080" columns="30">
+  <image source="../client/public/assets/sprites/collection/market_stalls.png" width="480" height="576"/>
  </tileset>
  <tileset firstgid="3355" name="chests" tilewidth="16" tileheight="16" tilecount="160" columns="20">
-  <image source="../client/public/assets/sprites/chests.png" width="320" height="128"/>
+  <image source="../client/public/assets/sprites/collection/chests.png" width="320" height="128"/>
  </tileset>
- <tileset firstgid="3515" name="village_tavern_interior" tilewidth="16" tileheight="16" tilecount="462" columns="21">
-  <image source="../client/public/assets/sprites/village_tavern_interior.png" width="336" height="352"/>
+ <tileset firstgid="3515" name="tavern_interior" tilewidth="16" tileheight="16" tilecount="462" columns="21">
+  <image source="../client/public/assets/sprites/collection/tavern_interior.png" width="336" height="352"/>
  </tileset>
  <layer id="2" name="floor" width="16" height="16">
   <data encoding="csv">

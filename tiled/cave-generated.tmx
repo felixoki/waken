@@ -4,7 +4,7 @@
   <property name="reference" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" name="cave_walls_floor" tilewidth="16" tileheight="16" tilecount="682" columns="62">
-  <image source="../client/public/assets/sprites/cave_walls_floor.png" width="992" height="176"/>
+  <image source="../client/public/assets/sprites/tiles/cave_walls_floor.png" width="992" height="176"/>
   <tile id="63">
    <properties>
     <property name="role" value="wall_outer"/>
@@ -534,8 +534,8 @@
    </objectgroup>
   </tile>
  </tileset>
- <tileset firstgid="683" name="cave_water_coasts" tilewidth="16" tileheight="16" tilecount="1147" columns="37">
-  <image source="../client/public/assets/sprites/cave_water_coasts.png" width="592" height="496"/>
+ <tileset firstgid="683" name="cave_water" tilewidth="16" tileheight="16" tilecount="1147" columns="37">
+  <image source="../client/public/assets/sprites/tiles/cave_water.png" width="592" height="496"/>
   <tile id="51">
    <properties>
     <property name="role" value="border_outer"/>
@@ -850,19 +850,19 @@
   </tile>
  </tileset>
  <tileset firstgid="1830" name="cave_details1" tilewidth="16" tileheight="16" tilecount="420" columns="21">
-  <image source="../client/public/assets/sprites/cave_details1.png" width="336" height="320"/>
+  <image source="../client/public/assets/sprites/tiles/cave_details1.png" width="336" height="320"/>
  </tileset>
  <tileset firstgid="2250" name="cave_details2" tilewidth="16" tileheight="16" tilecount="308" columns="22">
-  <image source="../client/public/assets/sprites/cave_details2.png" width="352" height="224"/>
+  <image source="../client/public/assets/sprites/tiles/cave_details2.png" width="352" height="224"/>
  </tileset>
  <tileset firstgid="2558" name="crystals" tilewidth="16" tileheight="16" tilecount="360" columns="40">
-  <image source="../client/public/assets/sprites/crystals.png" width="640" height="144"/>
+  <image source="../client/public/assets/sprites/collection/crystals.png" width="640" height="144"/>
  </tileset>
  <tileset firstgid="2918" name="chests" tilewidth="16" tileheight="16" tilecount="160" columns="20">
-  <image source="../client/public/assets/sprites/chests.png" width="320" height="128"/>
+  <image source="../client/public/assets/sprites/collection/chests.png" width="320" height="128"/>
  </tileset>
- <tileset firstgid="3078" name="cave_objects" tilewidth="16" tileheight="16" tilecount="2142" columns="42">
-  <image source="../client/public/assets/sprites/cave_objects.png" width="672" height="816"/>
+ <tileset firstgid="3078" name="cave_interior" tilewidth="16" tileheight="16" tilecount="2142" columns="42">
+  <image source="../client/public/assets/sprites/collection/cave_interior.png" width="672" height="816"/>
  </tileset>
  <layer id="1" name="water" width="498" height="201">
   <data encoding="csv">

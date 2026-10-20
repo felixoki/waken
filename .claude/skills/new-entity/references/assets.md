@@ -5,7 +5,26 @@ produced it. Where a number can be measured, measure it rather than assuming.
 
 ## Sprites
 
-Entity spritesheets live in `client/public/assets/sprites/` and are named:
+`client/public/assets/sprites/` holds only art the game loads:
+
+| where | what |
+| --- | --- |
+| root | only the four category atlases: `items`, `interior`, `nature`, `buildings`. Still textures, animations (`TEXTURE_ANIMATION`), growth stages and connecting pieces all live here |
+| `animals/` | `animals.ts` entities and the jumping fish |
+| `creatures/` | `creatures.ts` and `villain.ts` entities, the dragon included |
+| `people/` | `people.ts` NPCs, the player, and `people/robes/<name>/` |
+| `buildings/` | one compact tileset per building interior, built by `npm run tiles` |
+| `tiles/` | outdoor compact tilesets and the generation tilesets |
+| `effects/` | spell and transform sheets (`tornado`) |
+| `collection/` | everything not loaded: source sheets, icon sheets, unused packs. The art library to draw from, never loaded by `maps.ts` |
+
+A `maps.ts` `file` carries the subfolder (`file: "animals/dog_idle.png"`). A
+sheet's key matches its file stem. Collection names follow one scheme: a place
+then a kind (`_interior` for prop sheets, `_exterior` for outsides,
+`_walls_floor`, `_ground`, `_details`), no `village_` prefix. Art that stops being
+used moves to `collection/`; `python3 scripts/sheets.py unused` lists strays.
+
+Entity spritesheets are named:
 
 ```
 <entity>_<state>.png      dog_idle.png
@@ -21,7 +40,7 @@ Never assume. Frame sizes in `maps.ts` range from 16 to 160 and vary per sheet.
 Measure the sheet and divide by the frame count from `animations.ts`:
 
 ```sh
-sips -g pixelWidth -g pixelHeight client/public/assets/sprites/dog_idle.png
+sips -g pixelWidth -g pixelHeight client/public/assets/sprites/animals/dog_idle.png
 ```
 
 A horizontal strip of 6 frames at 192x32 is `frameWidth: 32, frameHeight: 32`.

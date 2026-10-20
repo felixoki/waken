@@ -15,7 +15,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering4",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [],
         },
@@ -46,11 +46,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 2, end: 3 },
-            { row: 8, start: 2, end: 3 },
+            { row: 3, start: 11, end: 12 },
+            { row: 4, start: 11, end: 12 },
           ],
         },
         key: "carrot_seed_texture",
@@ -65,7 +65,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Carrot Seed",
       description: "A humble seed that grows into a crunchy carrot.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 8, col: 1 },
+      icon: { spritesheet: "items", row: 4, col: 10 },
       weight: 0.01,
     },
   },
@@ -76,19 +76,21 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering5",
+          spritesheet: "nature",
           tileSize: 16,
-          tiles: [{ row: 21, start: 12, end: 12 }],
+          tiles: [
+            { row: 4, start: 2, end: 2 },
+          ],
         },
         key: "carrot_plant_texture",
       },
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 10,
+          height: 11,
+          offsetX: 2,
+          offsetY: 16,
           collides: false,
           static: false,
         },
@@ -96,20 +98,22 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.GROWABLE,
         config: {
-          spritesheet: "gathering4",
+          spritesheet: "nature",
           tileSize: 16,
           stages: [
             {
               stage: GrowthStage.SEED,
               at: 0.0,
-              tiles: [{ row: 7, start: 1, end: 1 }],
+              tiles: [
+                { row: 4, start: 16, end: 16 },
+              ],
             },
             {
               stage: GrowthStage.SPROUT,
               at: 0.5,
               tiles: [
-                { row: 6, start: 2, end: 2 },
-                { row: 7, start: 2, end: 2 },
+                { row: 4, start: 17, end: 17 },
+                { row: 5, start: 17, end: 17 },
               ],
               offsetY: -8,
             },
@@ -117,8 +121,8 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.MATURE,
               at: 1.0,
               tiles: [
-                { row: 6, start: 3, end: 3 },
-                { row: 7, start: 3, end: 3 },
+                { row: 4, start: 18, end: 18 },
+                { row: 5, start: 18, end: 18 },
               ],
               offsetY: -8,
             },
@@ -145,11 +149,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 2, end: 3 },
-            { row: 2, start: 2, end: 3 },
+            { row: 3, start: 8, end: 9 },
+            { row: 4, start: 8, end: 9 },
           ],
         },
         key: "carrot_texture",
@@ -164,7 +168,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Carrot",
       description: "A crunchy orange root vegetable grown from seed.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 1 },
+      icon: { spritesheet: "items", row: 4, col: 7 },
       weight: 0.1,
     },
   },
@@ -175,11 +179,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 5, end: 6 },
-            { row: 8, start: 5, end: 6 },
+            { row: 5, start: 5, end: 6 },
+            { row: 6, start: 5, end: 6 },
           ],
         },
         key: "tomato_seed_texture",
@@ -194,7 +198,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tomato Seed",
       description: "A small seed that ripens into a plump red tomato.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 8, col: 4 },
+      icon: { spritesheet: "items", row: 6, col: 4 },
       weight: 0.01,
     },
   },
@@ -205,19 +209,21 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering5",
+          spritesheet: "nature",
           tileSize: 16,
-          tiles: [{ row: 19, start: 2, end: 2 }],
+          tiles: [
+            { row: 4, start: 7, end: 7 },
+          ],
         },
         key: "tomato_plant_texture",
       },
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 17,
+          height: 20,
+          offsetX: 6,
+          offsetY: 24,
           collides: false,
           static: false,
         },
@@ -225,20 +231,22 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.GROWABLE,
         config: {
-          spritesheet: "gathering4",
+          spritesheet: "nature",
           tileSize: 16,
           stages: [
             {
               stage: GrowthStage.SEED,
               at: 0.0,
-              tiles: [{ row: 3, start: 17, end: 18 }],
+              tiles: [
+                { row: 4, start: 31, end: 32 },
+              ],
             },
             {
               stage: GrowthStage.SPROUT,
               at: 0.5,
               tiles: [
-                { row: 2, start: 19, end: 20 },
-                { row: 3, start: 19, end: 20 },
+                { row: 5, start: 1, end: 2 },
+                { row: 6, start: 1, end: 2 },
               ],
               offsetY: -8,
             },
@@ -246,9 +254,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.MATURE,
               at: 1.0,
               tiles: [
-                { row: 1, start: 23, end: 24 },
-                { row: 2, start: 23, end: 24 },
-                { row: 3, start: 23, end: 24 },
+                { row: 33, start: 1, end: 2 },
+                { row: 34, start: 1, end: 2 },
+                { row: 35, start: 1, end: 2 },
               ],
               offsetY: -16,
             },
@@ -275,11 +283,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 5, end: 6 },
-            { row: 2, start: 5, end: 6 },
+            { row: 5, start: 2, end: 3 },
+            { row: 6, start: 2, end: 3 },
           ],
         },
         key: "tomato_texture",
@@ -294,7 +302,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tomato",
       description: "A plump red fruit grown on a low-lying vine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 4 },
+      icon: { spritesheet: "items", row: 6, col: 1 },
       weight: 0.15,
     },
   },
@@ -305,11 +313,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 8, end: 9 },
-            { row: 8, start: 8, end: 9 },
+            { row: 3, start: 5, end: 6 },
+            { row: 4, start: 5, end: 6 },
           ],
         },
         key: "cabbage_seed_texture",
@@ -324,7 +332,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Cabbage Seed",
       description: "A seed that grows into a full head of cabbage.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 8, col: 7 },
+      icon: { spritesheet: "items", row: 4, col: 4 },
       weight: 0.01,
     },
   },
@@ -335,19 +343,21 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering5",
+          spritesheet: "nature",
           tileSize: 16,
-          tiles: [{ row: 20, start: 7, end: 7 }],
+          tiles: [
+            { row: 4, start: 1, end: 1 },
+          ],
         },
         key: "cabbage_plant_texture",
       },
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 14,
+          height: 9,
+          offsetX: 8,
+          offsetY: 16,
           collides: false,
           static: false,
         },
@@ -355,15 +365,15 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.GROWABLE,
         config: {
-          spritesheet: "gathering4",
+          spritesheet: "nature",
           tileSize: 16,
           stages: [
             {
               stage: GrowthStage.SEED,
               at: 0.0,
               tiles: [
-                { row: 4, start: 1, end: 2 },
-                { row: 5, start: 1, end: 2 },
+                { row: 4, start: 10, end: 11 },
+                { row: 5, start: 10, end: 11 },
               ],
               offsetY: -4,
             },
@@ -371,8 +381,8 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.SPROUT,
               at: 0.5,
               tiles: [
-                { row: 4, start: 3, end: 4 },
-                { row: 5, start: 3, end: 4 },
+                { row: 4, start: 12, end: 13 },
+                { row: 5, start: 12, end: 13 },
               ],
               offsetY: -4,
             },
@@ -380,8 +390,8 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.MATURE,
               at: 1.0,
               tiles: [
-                { row: 4, start: 5, end: 6 },
-                { row: 5, start: 5, end: 6 },
+                { row: 4, start: 14, end: 15 },
+                { row: 5, start: 14, end: 15 },
               ],
               offsetY: -4,
             },
@@ -408,11 +418,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 8, end: 9 },
-            { row: 2, start: 8, end: 9 },
+            { row: 3, start: 2, end: 3 },
+            { row: 4, start: 2, end: 3 },
           ],
         },
         key: "cabbage_texture",
@@ -427,7 +437,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Cabbage",
       description: "A dense leafy green vegetable grown in rows.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 7 },
+      icon: { spritesheet: "items", row: 4, col: 1 },
       weight: 1,
     },
   },
@@ -438,11 +448,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 11, end: 12 },
-            { row: 8, start: 11, end: 12 },
+            { row: 5, start: 11, end: 12 },
+            { row: 6, start: 11, end: 12 },
           ],
         },
         key: "wheat_seed_texture",
@@ -457,7 +467,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wheat seed",
       description: "A small seed that grows into a stalk of wheat.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 8, col: 10 },
+      icon: { spritesheet: "items", row: 6, col: 10 },
       weight: 0.01,
     },
   },
@@ -468,11 +478,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 23, start: 5, end: 6 },
-            { row: 24, start: 5, end: 6 },
+            { row: 4, start: 8, end: 9 },
+            { row: 5, start: 8, end: 9 },
           ],
         },
         key: "wheat_plant_texture",
@@ -481,9 +491,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          height: 11,
+          offsetX: 7,
+          offsetY: 16,
           collides: false,
           static: false,
         },
@@ -491,15 +501,15 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.GROWABLE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           stages: [
             {
               stage: GrowthStage.SEED,
               at: 0.0,
               tiles: [
-                { row: 23, start: 1, end: 2 },
-                { row: 24, start: 1, end: 2 },
+                { row: 5, start: 31, end: 32 },
+                { row: 6, start: 31, end: 32 },
               ],
               offsetY: -8,
             },
@@ -507,8 +517,8 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.SPROUT,
               at: 0.5,
               tiles: [
-                { row: 23, start: 3, end: 4 },
-                { row: 24, start: 3, end: 4 },
+                { row: 33, start: 3, end: 4 },
+                { row: 34, start: 3, end: 4 },
               ],
               offsetY: -8,
             },
@@ -516,8 +526,8 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.MATURE,
               at: 1.0,
               tiles: [
-                { row: 23, start: 5, end: 6 },
-                { row: 24, start: 5, end: 6 },
+                { row: 33, start: 5, end: 6 },
+                { row: 34, start: 5, end: 6 },
               ],
               offsetY: -8,
             },
@@ -544,11 +554,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 14, end: 15 },
-            { row: 2, start: 14, end: 15 },
+            { row: 5, start: 8, end: 9 },
+            { row: 6, start: 8, end: 9 },
           ],
         },
         key: "wheat_texture",
@@ -563,7 +573,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wheat",
       description: "A stalk of wheat grown in fields.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 13 },
+      icon: { spritesheet: "items", row: 6, col: 7 },
       weight: 0.05,
     },
   },
@@ -574,11 +584,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 14, end: 15 },
-            { row: 8, start: 14, end: 15 },
+            { row: 3, start: 17, end: 18 },
+            { row: 4, start: 17, end: 18 },
           ],
         },
         key: "grape_seed_texture",
@@ -593,7 +603,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Grape seed",
       description: "A small seed that grows into a grapevine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 8, col: 13 },
+      icon: { spritesheet: "items", row: 4, col: 16 },
       weight: 0.01,
     },
   },
@@ -604,12 +614,12 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 5, end: 6 },
-            { row: 2, start: 5, end: 6 },
-            { row: 3, start: 5, end: 6 },
+            { row: 4, start: 3, end: 4 },
+            { row: 5, start: 3, end: 4 },
+            { row: 6, start: 3, end: 4 },
           ],
         },
         key: "grape_plant_texture",
@@ -618,9 +628,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          height: 20,
+          offsetX: 8,
+          offsetY: 24,
           collides: false,
           static: false,
         },
@@ -628,16 +638,16 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.GROWABLE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           stages: [
             {
               stage: GrowthStage.SEED,
               at: 0.0,
               tiles: [
-                { row: 1, start: 1, end: 2 },
-                { row: 2, start: 1, end: 2 },
-                { row: 3, start: 1, end: 2 },
+                { row: 4, start: 19, end: 20 },
+                { row: 5, start: 19, end: 20 },
+                { row: 6, start: 19, end: 20 },
               ],
               offsetY: -16,
             },
@@ -645,9 +655,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.SPROUT,
               at: 0.5,
               tiles: [
-                { row: 1, start: 3, end: 4 },
-                { row: 2, start: 3, end: 4 },
-                { row: 3, start: 3, end: 4 },
+                { row: 4, start: 21, end: 22 },
+                { row: 5, start: 21, end: 22 },
+                { row: 6, start: 21, end: 22 },
               ],
               offsetY: -16,
             },
@@ -655,9 +665,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.MATURE,
               at: 1.0,
               tiles: [
-                { row: 1, start: 5, end: 6 },
-                { row: 2, start: 5, end: 6 },
-                { row: 3, start: 5, end: 6 },
+                { row: 4, start: 23, end: 24 },
+                { row: 5, start: 23, end: 24 },
+                { row: 6, start: 23, end: 24 },
               ],
               offsetY: -16,
             },
@@ -684,11 +694,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 20, end: 21 },
-            { row: 10, start: 20, end: 21 },
+            { row: 3, start: 14, end: 15 },
+            { row: 4, start: 14, end: 15 },
           ],
         },
         key: "grape_texture",
@@ -703,7 +713,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Grape",
       description: "A bunch of grapes grown on a vine.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 10, col: 19 },
+      icon: { spritesheet: "items", row: 4, col: 13 },
       weight: 0.4,
     },
   },
@@ -714,11 +724,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 17, end: 18 },
-            { row: 8, start: 17, end: 18 },
+            { row: 3, start: 23, end: 24 },
+            { row: 4, start: 23, end: 24 },
           ],
         },
         key: "hops_seed_texture",
@@ -733,7 +743,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Hops seed",
       description: "A small seed that grows into a climbing hop bine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 8, col: 16 },
+      icon: { spritesheet: "items", row: 4, col: 22 },
       weight: 0.01,
     },
   },
@@ -744,7 +754,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
             { row: 4, start: 5, end: 6 },
@@ -757,10 +767,10 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 9,
+          height: 20,
+          offsetX: 11,
+          offsetY: 24,
           collides: false,
           static: false,
         },
@@ -768,16 +778,16 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.GROWABLE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           stages: [
             {
               stage: GrowthStage.SEED,
               at: 0.0,
               tiles: [
-                { row: 4, start: 1, end: 2 },
-                { row: 5, start: 1, end: 2 },
-                { row: 6, start: 1, end: 2 },
+                { row: 4, start: 25, end: 26 },
+                { row: 5, start: 25, end: 26 },
+                { row: 6, start: 25, end: 26 },
               ],
               offsetY: -16,
             },
@@ -785,9 +795,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.SPROUT,
               at: 0.5,
               tiles: [
-                { row: 4, start: 3, end: 4 },
-                { row: 5, start: 3, end: 4 },
-                { row: 6, start: 3, end: 4 },
+                { row: 4, start: 27, end: 28 },
+                { row: 5, start: 27, end: 28 },
+                { row: 6, start: 27, end: 28 },
               ],
               offsetY: -16,
             },
@@ -795,9 +805,9 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
               stage: GrowthStage.MATURE,
               at: 1.0,
               tiles: [
-                { row: 4, start: 5, end: 6 },
-                { row: 5, start: 5, end: 6 },
-                { row: 6, start: 5, end: 6 },
+                { row: 4, start: 29, end: 30 },
+                { row: 5, start: 29, end: 30 },
+                { row: 6, start: 29, end: 30 },
               ],
               offsetY: -16,
             },
@@ -824,11 +834,11 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 23, end: 24 },
-            { row: 2, start: 23, end: 24 },
+            { row: 3, start: 20, end: 21 },
+            { row: 4, start: 20, end: 21 },
           ],
         },
         key: "hops_texture",
@@ -843,7 +853,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Hops",
       description: "Fragrant cones grown on a climbing hop bine.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 22 },
+      icon: { spritesheet: "items", row: 4, col: 19 },
       weight: 0.05,
     },
   },

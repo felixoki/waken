@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { basename, dirname, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { generateBiome } from "../server/src/biomes/index";
 import { configs } from "../server/src/configs";
@@ -108,7 +108,7 @@ const tileset = (ts: any) => {
 
   return (
     ` <tileset firstgid="${ts.firstgid}" name="${ts.name}" tilewidth="${ts.tilewidth}" tileheight="${ts.tileheight}" tilecount="${ts.tilecount}" columns="${ts.columns}">\n` +
-    `  <image source="../client/public/assets/sprites/${basename(ts.image)}" width="${ts.imagewidth}" height="${ts.imageheight}"/>\n` +
+    `  <image source="../client/public/assets/sprites/${ts.image.replace(/^.*?sprites\//, "")}" width="${ts.imagewidth}" height="${ts.imageheight}"/>\n` +
     body.join("") +
     ` </tileset>\n`
   );
@@ -121,7 +121,10 @@ const sheet = (name: string) => {
   const existing = tilesets.find((ts) => ts.name === name);
   if (existing) return existing;
 
-  const png = readFileSync(resolve(SPRITES, `${name}.png`));
+  const root = resolve(SPRITES, `${name}.png`);
+  const png = readFileSync(
+    existsSync(root) ? root : resolve(SPRITES, "collection", `${name}.png`),
+  );
   const imagewidth = png.readUInt32BE(16);
   const imageheight = png.readUInt32BE(20);
   const columns = Math.floor(imagewidth / tilewidth);

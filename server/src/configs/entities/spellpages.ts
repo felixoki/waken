@@ -6,6 +6,38 @@ import {
   SpellName,
 } from "../../types";
 
+const PAGES: SpellName[] = [
+  SpellName.SHARD,
+  SpellName.SLASH,
+  SpellName.ILLUMINATE,
+  SpellName.HURT_SHADOWS,
+  SpellName.METEOR_SHOWER,
+  SpellName.LIGHTNING_STRIKE,
+  SpellName.DRAGON_FORM,
+  SpellName.REVIVE,
+  SpellName.CATCH_SOUL,
+  SpellName.GAIN_MOMENTUM,
+  SpellName.REFLECT_DAMAGE,
+  SpellName.HEAL_PARTY,
+  SpellName.SHIELD,
+  SpellName.GREASE,
+  SpellName.BLINK,
+  SpellName.HYPERBEAM,
+  SpellName.SUNDER,
+  SpellName.WELLSPRING,
+  SpellName.DELTA_WAVE,
+  SpellName.HYPNIC_JERK,
+  SpellName.DARK_WAVE,
+];
+
+const FIRST_ROW = 30;
+const ACROSS = 8;
+
+const slot = (spell: SpellName): number => PAGES.indexOf(spell);
+const col = (spell: SpellName): number => (slot(spell) % ACROSS) * 3 + 1;
+const row = (spell: SpellName): number =>
+  FIRST_ROW + Math.floor(slot(spell) / ACROSS) * 2 + 2;
+
 const page = (
   spell: SpellName,
   displayName: string,
@@ -17,14 +49,14 @@ const page = (
     {
       name: ComponentName.TEXTURE,
       config: {
-        spritesheet: "icons4",
+        spritesheet: "items",
         tileSize: 16,
         tiles: [
-          { row: 5, start: 2, end: 3 },
-          { row: 6, start: 2, end: 3 },
+          { row: row(spell) - 1, start: col(spell) + 1, end: col(spell) + 2 },
+          { row: row(spell), start: col(spell) + 1, end: col(spell) + 2 },
         ],
       },
-      key: "spell_page_texture",
+      key: `spell_page_${spell}_texture`,
     },
     { name: ComponentName.POINTABLE },
     { name: ComponentName.PICKABLE },
@@ -36,6 +68,7 @@ const page = (
   metadata: {
     displayName,
     description,
+    icon: { spritesheet: "items", row: row(spell), col: col(spell) },
     stackable: false,
     weight: 0.05,
   },

@@ -3,132 +3,110 @@
  <editorsettings>
   <export target="../client/public/assets/maps/fishing_hut.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="village_fishing_dock_house_walls_floor" tilewidth="16" tileheight="16" tilecount="100" columns="10">
-  <image source="../client/public/assets/sprites/village_fishing_dock_house_walls_floor.png" width="160" height="160"/>
-  <tile id="1">
+ <tileset firstgid="374" name="fishing_hut" tilewidth="16" tileheight="16" tilecount="176" columns="16">
+  <image source="../client/public/assets/sprites/buildings/fishing_hut.png" width="256" height="176"/>
+  <tile id="3">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="5" width="16" height="11"/>
    </objectgroup>
   </tile>
-  <tile id="10">
+  <tile id="5">
    <objectgroup draworder="index" id="2">
-    <object id="1" x="5.0023" y="0" width="11" height="16"/>
+    <object id="1" x="0" y="5" width="16" height="11"/>
    </objectgroup>
   </tile>
-  <tile id="12">
+  <tile id="11">
    <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="11" height="16"/>
+    <object id="1" x="0" y="5" width="16" height="11"/>
    </objectgroup>
   </tile>
   <tile id="13">
    <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
+    <object id="1" x="5.0023" y="0" width="11" height="16"/>
    </objectgroup>
   </tile>
-  <tile id="14">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="23">
+  <tile id="128">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="11" height="16"/>
    </objectgroup>
   </tile>
-  <tile id="24">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="5" y="0" width="11" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="31">
+  <tile id="129">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="16" height="16"/>
    </objectgroup>
   </tile>
-  <tile id="33">
+  <tile id="130">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="145">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="146">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="5" y="0" width="11" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="155">
+   <objectgroup draworder="index" id="2">
+    <object id="1" x="0" y="0" width="16" height="16"/>
+   </objectgroup>
+  </tile>
+  <tile id="161">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="11" height="16"/>
     <object id="2" x="11.0048" y="5.0048" width="5" height="11"/>
    </objectgroup>
   </tile>
-  <tile id="34">
+  <tile id="162">
    <objectgroup draworder="index" id="2">
     <object id="1" x="5" y="0" width="11" height="16"/>
     <object id="2" x="0" y="5" width="5" height="11"/>
    </objectgroup>
   </tile>
-  <tile id="47">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="5" width="16" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="49">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="5" width="16" height="11"/>
-   </objectgroup>
-  </tile>
-  <tile id="60">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="61">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="62">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
-  <tile id="63">
-   <objectgroup draworder="index" id="2">
-    <object id="1" x="0" y="0" width="16" height="16"/>
-   </objectgroup>
-  </tile>
- </tileset>
- <tileset firstgid="101" name="village_fishing_dock_interior" tilewidth="16" tileheight="16" tilecount="273" columns="21">
-  <image source="../client/public/assets/sprites/village_fishing_dock_interior.png" width="336" height="208"/>
  </tileset>
  <layer id="2" name="floor" width="11" height="9">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
-0,95,95,95,95,95,95,95,95,85,0,
-0,97,95,95,85,95,98,95,95,87,0,
-0,95,95,95,87,95,95,97,95,95,0,
-0,95,85,95,95,95,95,95,85,95,0,
-0,95,95,98,95,97,95,95,95,95,0,
+0,454,454,454,454,454,454,454,454,438,0,
+0,456,454,454,438,454,457,454,454,440,0,
+0,454,454,454,440,454,454,456,454,454,0,
+0,454,438,454,454,454,454,454,438,454,0,
+0,454,454,457,454,456,454,454,454,454,0,
 0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="1" name="walls" width="11" height="9">
   <properties>
    <property name="collides" type="bool" value="true"/>
+   <property name="opaque" type="bool" value="true"/>
   </properties>
   <data encoding="csv">
-55,56,56,56,56,56,56,56,56,56,57,
-65,4,22,22,22,22,22,22,22,5,67,
-65,14,32,32,32,32,32,32,32,15,67,
-65,24,42,42,42,42,42,42,42,25,67,
-65,13,0,0,0,0,0,0,0,11,67,
-65,13,0,0,0,0,0,0,0,11,67,
-65,13,0,0,0,0,0,0,0,11,67,
-65,34,2,2,48,49,50,2,2,35,67,
-75,76,76,76,58,59,60,60,76,76,77
+390,391,391,391,391,391,391,391,391,391,392,
+406,487,513,513,513,513,513,513,513,488,408,
+406,503,529,529,529,529,529,529,529,504,408,
+406,519,545,545,545,545,545,545,545,520,408,
+406,502,0,0,0,0,0,0,0,387,408,
+406,502,0,0,0,0,0,0,0,387,408,
+406,502,0,0,0,0,0,0,0,387,408,
+406,535,385,385,377,378,379,385,385,536,408,
+422,423,423,423,393,394,395,395,423,423,424
 </data>
  </layer>
  <layer id="3" name="interior2" width="11" height="9">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,
-0,101,102,103,104,0,108,109,110,111,0,
-0,122,123,124,125,0,129,130,131,132,0,
-0,143,144,145,146,0,150,151,152,153,0,
-0,164,165,166,167,0,171,172,173,174,0,
-0,0,0,0,311,312,313,0,0,0,0,
-0,0,0,0,332,333,334,0,0,0,0,
+0,427,428,429,430,0,389,435,436,437,0,
+0,443,444,445,446,0,389,451,452,453,0,
+0,459,460,461,462,0,389,467,468,469,0,
+0,475,476,477,478,0,482,483,484,485,0,
+0,0,0,0,381,382,383,0,0,0,0,
+0,0,0,0,397,398,399,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0
 </data>
@@ -136,13 +114,13 @@
  <layer id="4" name="interior1" width="11" height="9">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,105,106,107,0,0,0,0,
-0,0,0,0,126,127,128,0,0,0,0,
-0,0,0,0,147,148,149,0,0,0,0,
-0,0,0,0,168,169,170,0,0,0,0,
-0,260,261,262,0,0,0,263,264,265,0,
-0,281,282,283,0,0,0,284,285,286,0,
-0,302,303,304,0,0,0,305,306,307,0,
+0,0,0,0,431,432,433,0,0,0,0,
+0,0,0,0,447,448,449,0,0,0,0,
+0,0,0,0,463,464,465,0,0,0,0,
+0,0,0,0,479,480,481,0,0,0,0,
+0,389,507,389,0,0,0,509,510,511,0,
+0,522,523,524,0,0,0,525,526,527,0,
+0,538,539,540,0,0,0,541,542,543,0,
 0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>

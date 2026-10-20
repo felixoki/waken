@@ -29,7 +29,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "A chargeable projectile that grows stronger the longer you hold.",
       displayName: "Shard",
-      icon: { spritesheet: "icons5", row: 16, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 11 },
     },
   },
   [SpellName.SLASH]: {
@@ -72,7 +72,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "A melee combo that deals escalating damage. Double-tap the third strike for a flurry of quick hits.",
       displayName: "Slash",
-      icon: { spritesheet: "icons5", row: 2, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 5 },
     },
   },
   [SpellName.REVIVE]: {
@@ -87,7 +87,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Channel life into a fallen ally, reviving them where they fell.",
       displayName: "Revive",
-      icon: { spritesheet: "icons5", row: 8, col: 18 },
+      icon: { spritesheet: "items", row: 39, col: 7 },
     },
   },
   [SpellName.GAIN_MOMENTUM]: {
@@ -104,7 +104,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Rallies your party, everyone hits harder and moves faster for a time.",
       displayName: "Gain momentum",
-      icon: { spritesheet: "icons2", row: 21, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 3 },
     },
   },
   [SpellName.REFLECT_DAMAGE]: {
@@ -121,7 +121,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Wraps you in a shard ward, halving incoming damage and flinging part of it back.",
       displayName: "Reflect damage",
-      icon: { spritesheet: "icons2", row: 21, col: 6 },
+      icon: { spritesheet: "items", row: 39, col: 2 },
     },
   },
   [SpellName.HEAL_PARTY]: {
@@ -138,7 +138,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Mends your party over time, weaving dream light that closes wounds.",
       displayName: "Heal party",
-      icon: { spritesheet: "icons8", row: 21, col: 15 },
+      icon: { spritesheet: "items", row: 39, col: 20 },
     },
   },
   [SpellName.SHIELD]: {
@@ -155,7 +155,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Conjures a ward that absorbs a burst of damage before it shatters.",
       displayName: "Shield",
-      icon: { spritesheet: "icons2", row: 21, col: 5 },
+      icon: { spritesheet: "items", row: 39, col: 1 },
     },
   },
   [SpellName.ILLUMINATE]: {
@@ -169,7 +169,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Casts a bright light that illuminates the surroundings.",
       displayName: "Illuminate",
-      icon: { spritesheet: "icons8", row: 21, col: 6 },
+      icon: { spritesheet: "items", row: 39, col: 15 },
     },
   },
   [SpellName.HURT_SHADOWS]: {
@@ -186,7 +186,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Damages all shadow enemies in a wide area around you.",
       displayName: "Hurt shadows",
-      icon: { spritesheet: "icons8", row: 21, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 16 },
     },
   },
   [SpellName.METEOR_SHOWER]: {
@@ -211,7 +211,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Rains burning meteors down onto enemies in an area.",
       displayName: "Meteor shower",
-      icon: { spritesheet: "icons5", row: 10, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 8 },
     },
   },
   [SpellName.GREASE]: {
@@ -229,7 +229,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Coats enemies in oil and weakens them to fire.",
       displayName: "Grease",
-      icon: { spritesheet: "icons8", row: 21, col: 2 },
+      icon: { spritesheet: "items", row: 39, col: 14 },
     },
   },
   [SpellName.BLINK]: {
@@ -243,7 +243,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Blink a short distance toward your cursor.",
       displayName: "Blink",
-      icon: { spritesheet: "icons5", row: 14, col: 18 },
+      icon: { spritesheet: "items", row: 39, col: 10 },
     },
   },
   [SpellName.HYPERBEAM]: {
@@ -260,7 +260,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Channels a searing beam that scorches everything in its path.",
       displayName: "Hyperbeam",
-      icon: { spritesheet: "icons8", row: 21, col: 13 },
+      icon: { spritesheet: "items", row: 39, col: 18 },
     },
   },
   [SpellName.DARK_WAVE]: {
@@ -275,7 +275,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Sweeps a crescent of dark matter outward. It bites deeper into anything already cold.",
       displayName: "Dark wave",
-      icon: { spritesheet: "icons8", row: 21, col: 14 },
+      icon: { spritesheet: "items", row: 39, col: 19 },
     },
   },
   [SpellName.HYPNIC_JERK]: {
@@ -290,7 +290,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "The jolt that tears you out of sleep, loosed on everything around you in a violet shockwave.",
       displayName: "Hypnic jerk",
-      icon: { spritesheet: "icons2", row: 21, col: 15 },
+      icon: { spritesheet: "items", row: 39, col: 4 },
     },
   },
   [SpellName.SUNDER]: {
@@ -305,7 +305,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "A shockwave bursts from where you stand and splits the earth around you into glowing fissures.",
       displayName: "Sunder",
-      icon: { spritesheet: "icons8", row: 21, col: 1 },
+      icon: { spritesheet: "items", row: 39, col: 13 },
     },
   },
   [SpellName.WELLSPRING]: {
@@ -321,7 +321,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Water wells up from under your feet and soaks everything standing in it.",
       displayName: "Wellspring",
-      icon: { spritesheet: "icons8", row: 21, col: 14 },
+      icon: { spritesheet: "items", row: 39, col: 19 },
     },
   },
   [SpellName.DELTA_WAVE]: {
@@ -337,7 +337,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Water bursts up under you and rolls outward as a ring of waves, shoving back and soaking whatever it reaches.",
       displayName: "Delta wave",
-      icon: { spritesheet: "icons5", row: 12, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 9 },
     },
   },
   [SpellName.LIGHTNING_STRIKE]: {
@@ -362,7 +362,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Calls a storm of lightning down around a point. Each bolt leaps to anything wet nearby.",
       displayName: "Lightning strike",
-      icon: { spritesheet: "icons5", row: 16, col: 18 },
+      icon: { spritesheet: "items", row: 39, col: 12 },
     },
   },
   [SpellName.DRAGON_FORM]: {
@@ -382,7 +382,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "Transform into a sinuous river dragon, coiling weightless through the air.",
       displayName: "Dragon form",
-      icon: { spritesheet: "icons10", row: 14, col: 9 },
+      icon: { spritesheet: "items", row: 39, col: 21 },
     },
   },
   [SpellName.FIRE_BREATH]: {
@@ -406,7 +406,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Exhale a torrent of flame, scorching all before it.",
       displayName: "Fire breath",
-      icon: { spritesheet: "icons10", row: 14, col: 18 },
+      icon: { spritesheet: "items", row: 39, col: 22 },
     },
   },
   [SpellName.BITE]: {
@@ -429,7 +429,7 @@ export const spells: Record<SpellName, SpellConfig> = {
     metadata: {
       description: "Clamp down with crushing jaws.",
       displayName: "Bite",
-      icon: { spritesheet: "icons8", row: 21, col: 11 },
+      icon: { spritesheet: "items", row: 39, col: 17 },
     },
   },
   [SpellName.CATCH_SOUL]: {
@@ -448,7 +448,7 @@ export const spells: Record<SpellName, SpellConfig> = {
       description:
         "A soothing bolt that pacifies a weakened creature so its soul can be caught.",
       displayName: "Catch Soul",
-      icon: { spritesheet: "icons5", row: 4, col: 18 },
+      icon: { spritesheet: "items", row: 39, col: 6 },
     },
   },
 };

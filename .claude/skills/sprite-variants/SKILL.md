@@ -7,12 +7,13 @@ description: Copy an existing Waken entity's spritesheets and recolour them with
 
 A variant is a **design file** (`designs/<target>.py`) that holds a per-pixel `remap`
 function. `scripts/variant.py` runs it over the source entity's sheets and writes
-`client/public/assets/sprites/<target>_<sheet>.png`. The frame layout stays identical,
+`client/public/assets/sprites/<folder>/<target>_<sheet>.png`, in the same
+`animals/`, `creatures/` or `people/` folder as the source. The frame layout stays identical,
 so frame sizes and frame counts carry over from the source unchanged. Needs Python 3
 with Pillow. Run it without `-I`, because Pillow lives in the user site-packages.
 
 ```
-python3 .claude/skills/sprite-variants/scripts/variant.py palette client/public/assets/sprites/bear_idle.png
+python3 .claude/skills/sprite-variants/scripts/variant.py palette client/public/assets/sprites/animals/bear_idle.png
 python3 .claude/skills/sprite-variants/scripts/variant.py compare bellan /tmp/c.png --sheet walking --frames 3
 python3 .claude/skills/sprite-variants/scripts/variant.py build bellan
 ```

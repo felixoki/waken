@@ -4,7 +4,7 @@
   <export target="../client/public/assets/maps/generated-dungeon.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="dungeon_walls_floor" tilewidth="16" tileheight="16" tilecount="493" columns="17">
-  <image source="../client/public/assets/sprites/dungeon_walls_floor.png" width="272" height="464"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_walls_floor.png" width="272" height="464"/>
   <tile id="18">
    <properties>
     <property name="position" value="top_left"/>
@@ -776,14 +776,14 @@
    </objectgroup>
   </tile>
  </tileset>
- <tileset firstgid="494" name="dungeon_objects1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
-  <image source="../client/public/assets/sprites/dungeon_objects1.png" width="384" height="144"/>
+ <tileset firstgid="494" name="dungeon_interior1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
+  <image source="../client/public/assets/sprites/collection/dungeon_interior1.png" width="384" height="144"/>
  </tileset>
  <tileset firstgid="710" name="candles" tilewidth="16" tileheight="16" tilecount="72" columns="6">
-  <image source="../client/public/assets/sprites/candles.png" width="96" height="192"/>
+  <image source="../client/public/assets/sprites/collection/candles.png" width="96" height="192"/>
  </tileset>
  <tileset firstgid="782" name="dungeon_walls_cracks" tilewidth="16" tileheight="16" tilecount="256" columns="8">
-  <image source="../client/public/assets/sprites/dungeon_walls_cracks.png" width="128" height="512"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_walls_cracks.png" width="128" height="512"/>
   <tile id="0">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="0" width="16" height="16"/>
@@ -1334,7 +1334,7 @@
   </tile>
  </tileset>
  <tileset firstgid="1038" name="dungeon_floor_cracks" tilewidth="16" tileheight="16" tilecount="120" columns="8">
-  <image source="../client/public/assets/sprites/dungeon_floor_cracks.png" width="128" height="240"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_floor_cracks.png" width="128" height="240"/>
   <tile id="1">
    <objectgroup draworder="index" id="2">
     <object id="1" x="0" y="8" width="16" height="8">
@@ -1721,16 +1721,16 @@
   </tile>
  </tileset>
  <tileset firstgid="1158" name="temple_walls_floor" tilewidth="16" tileheight="16" tilecount="442" columns="17">
-  <image source="../client/public/assets/sprites/temple_walls_floor.png" width="272" height="416"/>
+  <image source="../client/public/assets/sprites/tiles/temple_walls_floor.png" width="272" height="416"/>
  </tileset>
  <tileset firstgid="1600" name="temple_arches_doors" tilewidth="16" tileheight="16" tilecount="280" columns="20">
-  <image source="../client/public/assets/sprites/temple_arches_doors.png" width="320" height="224"/>
+  <image source="../client/public/assets/sprites/tiles/temple_arches_doors.png" width="320" height="224"/>
  </tileset>
- <tileset firstgid="1880" name="temple_objects" tilewidth="16" tileheight="16" tilecount="288" columns="12">
-  <image source="../client/public/assets/sprites/temple_objects.png" width="192" height="384"/>
+ <tileset firstgid="1880" name="temple_interior" tilewidth="16" tileheight="16" tilecount="288" columns="12">
+  <image source="../client/public/assets/sprites/collection/temple_interior.png" width="192" height="384"/>
  </tileset>
  <tileset firstgid="2168" name="temple_stairs" tilewidth="16" tileheight="16" tilecount="323" columns="17">
-  <image source="../client/public/assets/sprites/temple_stairs.png" width="272" height="304"/>
+  <image source="../client/public/assets/sprites/tiles/temple_stairs.png" width="272" height="304"/>
  </tileset>
  <layer id="1" name="void" width="128" height="128">
   <data encoding="csv">

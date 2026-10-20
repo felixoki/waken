@@ -13,11 +13,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 35, end: 36 },
-            { row: 12, start: 35, end: 36 },
+            { row: 19, start: 5, end: 6 },
+            { row: 20, start: 5, end: 6 },
           ],
         },
         key: "venison_meat_texture",
@@ -36,7 +36,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Venison",
       description: "A cut of fresh venison taken from wild game.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 34 },
+      icon: { spritesheet: "items", row: 20, col: 4 },
       weight: 1.5,
     },
   },
@@ -47,11 +47,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 29, end: 30 },
-            { row: 12, start: 29, end: 30 },
+            { row: 17, start: 8, end: 9 },
+            { row: 18, start: 8, end: 9 },
           ],
         },
         key: "boar_meat_texture",
@@ -66,7 +66,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Boar meat",
       description: "A cut of tough meat taken from a wild boar.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 28 },
+      icon: { spritesheet: "items", row: 18, col: 16 },
       weight: 1.5,
     },
   },
@@ -77,11 +77,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 17, end: 18 },
-            { row: 10, start: 17, end: 18 },
+            { row: 17, start: 23, end: 24 },
+            { row: 18, start: 23, end: 24 },
           ],
         },
         key: "raspberry_jam_texture",
@@ -96,7 +96,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Raspberry jam",
       description: "A jar of raspberries boiled down into a sweet preserve.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 10, col: 16 },
+      icon: { spritesheet: "items", row: 18, col: 22 },
       weight: 0.4,
     },
   },
@@ -107,11 +107,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 29, end: 30 },
-            { row: 10, start: 29, end: 30 },
+            { row: 19, start: 2, end: 3 },
+            { row: 20, start: 2, end: 3 },
           ],
         },
         key: "strawberry_jam_texture",
@@ -126,7 +126,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Strawberry jam",
       description: "A jar of strawberries boiled down into a sweet preserve.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 10, col: 28 },
+      icon: { spritesheet: "items", row: 20, col: 1 },
       weight: 0.4,
     },
   },
@@ -137,11 +137,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 29, end: 30 },
-            { row: 12, start: 29, end: 30 },
+            { row: 17, start: 14, end: 15 },
+            { row: 18, start: 14, end: 15 },
           ],
         },
         key: "chicken_meat_texture",
@@ -156,7 +156,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Chicken meat",
       description: "A lean cut of meat from a farmyard fowl.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 28 },
+      icon: { spritesheet: "items", row: 18, col: 16 },
       weight: 1,
     },
   },
@@ -167,11 +167,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 29, end: 30 },
-            { row: 12, start: 29, end: 30 },
+            { row: 17, start: 17, end: 18 },
+            { row: 18, start: 17, end: 18 },
           ],
         },
         key: "goose_meat_texture",
@@ -186,7 +186,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Goose meat",
       description: "A dark, fatty cut of meat from a goose.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 28 },
+      icon: { spritesheet: "items", row: 18, col: 16 },
       weight: 1.5,
     },
   },
@@ -197,11 +197,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 32, end: 33 },
-            { row: 12, start: 32, end: 33 },
+            { row: 17, start: 2, end: 3 },
+            { row: 18, start: 2, end: 3 },
           ],
         },
         key: "beef_texture",
@@ -216,7 +216,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Beef",
       description: "A heavy cut of meat taken from cattle.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 31 },
+      icon: { spritesheet: "items", row: 18, col: 1 },
       weight: 1.5,
     },
   },
@@ -227,11 +227,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 19, start: 23, end: 24 },
-            { row: 20, start: 23, end: 24 },
+            { row: 17, start: 20, end: 21 },
+            { row: 18, start: 20, end: 21 },
           ],
         },
         key: "milk_texture",
@@ -246,7 +246,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Milk",
       description: "A pail of fresh, creamy milk.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 20, col: 22 },
+      icon: { spritesheet: "items", row: 18, col: 19 },
       weight: 1,
     },
   },
@@ -257,11 +257,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 26, end: 27 },
-            { row: 12, start: 26, end: 27 },
+            { row: 17, start: 11, end: 12 },
+            { row: 18, start: 11, end: 12 },
           ],
         },
         key: "bread_texture",
@@ -276,7 +276,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bread",
       description: "A freshly baked loaf of bread.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 25 },
+      icon: { spritesheet: "items", row: 18, col: 10 },
       weight: 0.5,
     },
   },
@@ -287,11 +287,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 20, end: 21 },
-            { row: 12, start: 20, end: 21 },
+            { row: 17, start: 5, end: 6 },
+            { row: 18, start: 5, end: 6 },
           ],
         },
         key: "beer_texture",
@@ -306,7 +306,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Beer",
       description: "A frothy mug of home-brewed beer.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 19 },
+      icon: { spritesheet: "items", row: 18, col: 4 },
       weight: 0.5,
     },
   },
@@ -317,11 +317,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 23, end: 24 },
-            { row: 12, start: 23, end: 24 },
+            { row: 19, start: 8, end: 9 },
+            { row: 20, start: 8, end: 9 },
           ],
         },
         key: "wine_texture",
@@ -336,7 +336,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wine",
       description: "A bottle of fine wine.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 12, col: 22 },
+      icon: { spritesheet: "items", row: 20, col: 7 },
       weight: 0.75,
     },
   },

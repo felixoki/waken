@@ -8,6 +8,15 @@ from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
 SPRITES = os.path.join(ROOT, "client", "public", "assets", "sprites")
+FOLDERS = ("animals", "creatures", "people")
+
+
+def sheet_path(name):
+    for folder in FOLDERS:
+        path = os.path.join(SPRITES, folder, name)
+        if os.path.exists(path):
+            return path
+    raise SystemExit(f"{name} not found in {', '.join(FOLDERS)}")
 DESIGNS = os.path.join(os.path.dirname(__file__), "..", "designs")
 GRASS = (120, 160, 90, 255)
 
@@ -49,7 +58,7 @@ def cmd_palette(args):
 
 def cmd_compare(args):
     d = load_design(args.design)
-    src = Image.open(os.path.join(SPRITES, f"{d.SOURCE}_{args.sheet}.png")).convert("RGBA")
+    src = Image.open(sheet_path(f"{d.SOURCE}_{args.sheet}.png")).convert("RGBA")
     fw = src.height // args.rows
     w = fw * args.frames
     a = src.crop((0, 0, w, src.height))
@@ -65,8 +74,8 @@ def cmd_compare(args):
 def cmd_build(args):
     d = load_design(args.design)
     for sheet in d.SHEETS:
-        src = os.path.join(SPRITES, f"{d.SOURCE}_{sheet}.png")
-        out = os.path.join(SPRITES, f"{d.TARGET}_{sheet}.png")
+        src = sheet_path(f"{d.SOURCE}_{sheet}.png")
+        out = os.path.join(os.path.dirname(src), f"{d.TARGET}_{sheet}.png")
         apply(d, Image.open(src)).save(out)
         print(os.path.relpath(out, ROOT))
 

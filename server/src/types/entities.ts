@@ -479,6 +479,7 @@ export enum EntityName {
   TOMATO_PLANT = "tomato_plant",
   TROLL = "troll",
   ANCIENT_TROLL = "ancient_troll",
+  GOLEM = "golem",
   TROLL_SCALES = "troll_scales",
   TRUMPET_SNAIL = "trumpet_snail",
   ANCIENT_TROLL_HEART = "ancient_troll_heart",

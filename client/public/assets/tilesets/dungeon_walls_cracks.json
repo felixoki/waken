@@ -1,6 +1,6 @@
 {
   "columns": 8,
-  "image": "../sprites/dungeon_walls_cracks.png",
+  "image": "../sprites/tiles/dungeon_walls_cracks.png",
   "imageheight": 512,
   "imagewidth": 128,
   "margin": 0,

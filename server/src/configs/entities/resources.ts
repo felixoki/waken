@@ -14,9 +14,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "crystals",
+          spritesheet: "items",
           tileSize: 16,
-          tiles: [{ row: 8, start: 18, end: 18 }],
+          tiles: [
+            { row: 26, start: 2, end: 2 },
+          ],
         },
         key: "quartz1_texture",
       },
@@ -30,7 +32,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Quartz",
       description: "A small translucent crystal with a faint pale glow.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 14, col: 19 },
+      icon: { spritesheet: "items", row: 26, col: 1 },
       weight: 0.5,
     },
   },
@@ -41,11 +43,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 15, start: 5, end: 6 },
-            { row: 16, start: 5, end: 6 },
+            { row: 23, start: 5, end: 6 },
+            { row: 24, start: 5, end: 6 },
           ],
         },
         key: "azurite1_texture",
@@ -60,7 +62,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Azurite",
       description: "Slender blue crystals of a copper mineral.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 16, col: 4 },
+      icon: { spritesheet: "items", row: 24, col: 4 },
       weight: 0.5,
     },
   },
@@ -71,11 +73,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 29, end: 30 },
-            { row: 2, start: 29, end: 30 },
+            { row: 29, start: 11, end: 12 },
+            { row: 30, start: 11, end: 12 },
           ],
         },
         key: "wood_texture",
@@ -90,7 +92,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wood",
       description: "A rough-cut log split from a felled tree.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 2, col: 28 },
+      icon: { spritesheet: "items", row: 30, col: 10 },
       weight: 2,
     },
   },
@@ -101,9 +103,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
-          tiles: [{ row: 8, start: 19, end: 19 }],
+          tiles: [
+            { row: 25, start: 2, end: 2 },
+          ],
         },
         key: "candle_texture",
       },
@@ -117,7 +121,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Candle",
       description: "A stub of tallow with a wick, still good for a few hours.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 8, col: 19 },
+      icon: { spritesheet: "items", row: 25, col: 1 },
       weight: 0.1,
     },
   },
@@ -128,11 +132,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 14, end: 15 },
-            { row: 2, start: 14, end: 15 },
+            { row: 23, start: 20, end: 21 },
+            { row: 24, start: 20, end: 21 },
           ],
         },
         key: "bone_texture",
@@ -147,7 +151,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bone",
       description: "A cracked bone stripped clean by tooth and claw.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 2, col: 13 },
+      icon: { spritesheet: "items", row: 24, col: 19 },
       weight: 0.3,
     },
   },
@@ -158,11 +162,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 20, end: 21 },
-            { row: 10, start: 20, end: 21 },
+            { row: 27, start: 5, end: 6 },
+            { row: 28, start: 5, end: 6 },
           ],
         },
         key: "iron1_texture",
@@ -177,7 +181,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Iron",
       description: "A rough chunk of iron ore pulled from the earth.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 10, col: 19 },
+      icon: { spritesheet: "items", row: 28, col: 4 },
       weight: 1.5,
     },
   },
@@ -188,11 +192,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 5, end: 6 },
-            { row: 4, start: 5, end: 6 },
+            { row: 25, start: 16, end: 17 },
+            { row: 26, start: 16, end: 17 },
           ],
         },
         key: "glass_texture",
@@ -207,7 +211,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Glass",
       description: "A shard of refined glass, smooth and transparent.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 4, col: 4 },
+      icon: { spritesheet: "items", row: 26, col: 15 },
       weight: 0.4,
     },
   },
@@ -221,11 +225,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 27, end: 28 },
-            { row: 6, start: 27, end: 28 },
+            { row: 27, start: 20, end: 21 },
+            { row: 28, start: 20, end: 21 },
           ],
         },
         key: "vial_texture",
@@ -237,7 +241,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Vial",
       description: "A slender glass vial used for storing liquids.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 6, col: 28 },
+      icon: { spritesheet: "items", row: 28, col: 19 },
       weight: 0.1,
     },
   },
@@ -248,11 +252,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons13",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 2, end: 3 },
-            { row: 8, start: 2, end: 3 },
+            { row: 23, start: 23, end: 24 },
+            { row: 24, start: 23, end: 24 },
           ],
         },
         key: "bottle_texture",
@@ -267,7 +271,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bottle",
       description: "A blown glass bottle for wine and beer.",
       stackable: true,
-      icon: { spritesheet: "icons13", row: 8, col: 1 },
+      icon: { spritesheet: "items", row: 24, col: 22 },
       weight: 0.3,
     },
   },
@@ -278,11 +282,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons13",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 15, start: 2, end: 3 },
-            { row: 16, start: 2, end: 3 },
+            { row: 27, start: 8, end: 9 },
+            { row: 28, start: 8, end: 9 },
           ],
         },
         key: "jar_texture",
@@ -297,7 +301,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Jar",
       description: "A wide glass jar with a lid, made for preserves.",
       stackable: true,
-      icon: { spritesheet: "icons13", row: 16, col: 1 },
+      icon: { spritesheet: "items", row: 28, col: 7 },
       weight: 0.3,
     },
   },
@@ -308,11 +312,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 29, end: 30 },
-            { row: 6, start: 29, end: 30 },
+            { row: 25, start: 10, end: 11 },
+            { row: 26, start: 10, end: 11 },
           ],
         },
         key: "fishing_hook_texture",
@@ -327,7 +331,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Fishing hook",
       description: "A sharp metal hook for rigging a fishing line.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 6, col: 28 },
+      icon: { spritesheet: "items", row: 26, col: 9 },
       weight: 0.01,
     },
   },
@@ -338,11 +342,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 11, end: 12 },
-            { row: 10, start: 11, end: 12 },
+            { row: 25, start: 4, end: 5 },
+            { row: 26, start: 4, end: 5 },
           ],
         },
         key: "deer_hide_texture",
@@ -357,7 +361,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Deer hide",
       description: "A supple hide stripped from a forest deer.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 10, col: 10 },
+      icon: { spritesheet: "items", row: 26, col: 3 },
       weight: 2,
     },
   },
@@ -368,11 +372,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 23, end: 24 },
-            { row: 2, start: 23, end: 24 },
+            { row: 27, start: 17, end: 18 },
+            { row: 28, start: 17, end: 18 },
           ],
         },
         key: "troll_scales_texture",
@@ -387,7 +391,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Troll scales",
       description: "A handful of coarse green scales torn from a fallen troll.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 2, col: 22 },
+      icon: { spritesheet: "items", row: 28, col: 16 },
       weight: 1,
     },
   },
@@ -398,11 +402,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 17, end: 18 },
-            { row: 2, start: 17, end: 18 },
+            { row: 23, start: 2, end: 3 },
+            { row: 24, start: 2, end: 3 },
           ],
         },
         key: "ancient_troll_heart_texture",
@@ -417,7 +421,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Ancient troll heart",
       description: "Still warm, and heavier than any heart should be.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 2, col: 16 },
+      icon: { spritesheet: "items", row: 24, col: 1 },
       weight: 1,
     },
   },
@@ -428,11 +432,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 2, end: 3 },
-            { row: 4, start: 2, end: 3 },
+            { row: 25, start: 13, end: 14 },
+            { row: 26, start: 13, end: 14 },
           ],
         },
         key: "fox_pelt_texture",
@@ -447,7 +451,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Fox pelt",
       description: "A soft pelt obtained from a cunning fox.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 4, col: 1 },
+      icon: { spritesheet: "items", row: 26, col: 12 },
       weight: 1,
     },
   },
@@ -458,11 +462,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons4",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 20, end: 21 },
-            { row: 2, start: 20, end: 21 },
+            { row: 29, start: 14, end: 15 },
+            { row: 30, start: 14, end: 15 },
           ],
         },
         key: "wool_texture",
@@ -477,7 +481,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wool",
       description: "A tuft of thick, soft wool from a mountain sheep.",
       stackable: true,
-      icon: { spritesheet: "icons4", row: 2, col: 19 },
+      icon: { spritesheet: "items", row: 30, col: 13 },
       weight: 1,
     },
   },
@@ -488,11 +492,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 11, end: 12 },
-            { row: 10, start: 11, end: 12 },
+            { row: 23, start: 14, end: 15 },
+            { row: 24, start: 14, end: 15 },
           ],
         },
         key: "bear_pelt_texture",
@@ -507,7 +511,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bear pelt",
       description: "A thick pelt obtained from a wild bear.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 10, col: 10 },
+      icon: { spritesheet: "items", row: 26, col: 3 },
       weight: 6,
     },
   },
@@ -518,11 +522,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 14, end: 15 },
-            { row: 4, start: 14, end: 15 },
+            { row: 23, start: 17, end: 18 },
+            { row: 24, start: 17, end: 18 },
           ],
         },
         key: "bellan_pelt_texture",
@@ -538,7 +542,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       description: "The black pelt of Bellan.",
       stackable: true,
       rarity: Rarity.LEGENDARY,
-      icon: { spritesheet: "icons6", row: 4, col: 13 },
+      icon: { spritesheet: "items", row: 24, col: 16 },
       weight: 6,
     },
   },
@@ -549,11 +553,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 5, end: 6 },
-            { row: 4, start: 5, end: 6 },
+            { row: 29, start: 8, end: 9 },
+            { row: 30, start: 8, end: 9 },
           ],
         },
         key: "wolf_pelt_texture",
@@ -568,7 +572,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wolf pelt",
       description: "A coarse grey pelt taken from a wolf.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 4, col: 4 },
+      icon: { spritesheet: "items", row: 30, col: 7 },
       weight: 3,
     },
   },
@@ -579,11 +583,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 17, start: 32, end: 33 },
-            { row: 18, start: 32, end: 33 },
+            { row: 29, start: 5, end: 6 },
+            { row: 30, start: 5, end: 6 },
           ],
         },
         key: "wolf_fang_texture",
@@ -598,7 +602,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wolf fang",
       description: "A long curved fang pulled from a wolf.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 18, col: 31 },
+      icon: { spritesheet: "items", row: 30, col: 4 },
       weight: 0.05,
     },
   },
@@ -609,11 +613,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 14, end: 15 },
-            { row: 10, start: 14, end: 15 },
+            { row: 27, start: 2, end: 3 },
+            { row: 28, start: 2, end: 3 },
           ],
         },
         key: "ibex_horn_texture",
@@ -628,7 +632,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Ibex horn",
       description: "A heavy ridged horn from a mountain ibex.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 10, col: 13 },
+      icon: { spritesheet: "items", row: 28, col: 1 },
       weight: 0.5,
     },
   },
@@ -639,11 +643,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 15, start: 11, end: 12 },
-            { row: 16, start: 11, end: 12 },
+            { row: 23, start: 11, end: 12 },
+            { row: 24, start: 11, end: 12 },
           ],
         },
         key: "bear_fat_texture",
@@ -658,7 +662,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bear fat",
       description: "Rendered fat from a bear, used in salves and cooking.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 16, col: 10 },
+      icon: { spritesheet: "items", row: 24, col: 10 },
       weight: 1,
     },
   },
@@ -669,11 +673,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 19, start: 32, end: 33 },
-            { row: 20, start: 32, end: 33 },
+            { row: 25, start: 22, end: 23 },
+            { row: 26, start: 22, end: 23 },
           ],
         },
         key: "heron_beak_texture",
@@ -688,7 +692,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Heron beak",
       description: "The long, dagger-sharp beak of a heron.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 20, col: 31 },
+      icon: { spritesheet: "items", row: 26, col: 21 },
       weight: 0.2,
     },
   },
@@ -699,11 +703,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 8, end: 9 },
-            { row: 4, start: 8, end: 9 },
+            { row: 27, start: 11, end: 12 },
+            { row: 28, start: 11, end: 12 },
           ],
         },
         key: "plume_texture",
@@ -718,7 +722,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Plume",
       description: "A long blue-grey plume shed from a heron.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 4, col: 7 },
+      icon: { spritesheet: "items", row: 28, col: 10 },
       weight: 0.02,
     },
   },
@@ -729,11 +733,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 19, start: 29, end: 30 },
-            { row: 20, start: 29, end: 30 },
+            { row: 25, start: 19, end: 20 },
+            { row: 26, start: 19, end: 20 },
           ],
         },
         key: "goose_down_texture",
@@ -748,7 +752,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Goose down",
       description: "Soft under-feathers of a goose, used to stuff bedding.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 20, col: 28 },
+      icon: { spritesheet: "items", row: 26, col: 18 },
       weight: 0.1,
     },
   },
@@ -759,11 +763,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 14, end: 15 },
-            { row: 4, start: 14, end: 15 },
+            { row: 29, start: 2, end: 3 },
+            { row: 30, start: 2, end: 3 },
           ],
         },
         key: "wanderers_gift_texture",
@@ -778,7 +782,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wanderer's gift",
       description: "A mysterious object with a blue shimmering glow.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 4, col: 13 },
+      icon: { spritesheet: "items", row: 30, col: 1 },
       weight: 0.5,
     },
   },
@@ -789,11 +793,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 2, end: 3 },
-            { row: 8, start: 2, end: 3 },
+            { row: 27, start: 23, end: 24 },
+            { row: 28, start: 23, end: 24 },
           ],
         },
         key: "wanderers_cloth_texture",
@@ -808,7 +812,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Wanderer's cloth",
       description: "A pale garment left behind by those who walk in their sleep.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 8, col: 1 },
+      icon: { spritesheet: "items", row: 28, col: 22 },
       weight: 0.2,
     },
   },
@@ -819,11 +823,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons3",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 17, start: 14, end: 15 },
-            { row: 18, start: 14, end: 15 },
+            { row: 27, start: 14, end: 15 },
+            { row: 28, start: 14, end: 15 },
           ],
         },
         key: "rat_claws_texture",
@@ -838,7 +842,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Rat claws",
       description: "Jagged claws torn from a filthy sewer rat.",
       stackable: true,
-      icon: { spritesheet: "icons3", row: 18, col: 13 },
+      icon: { spritesheet: "items", row: 28, col: 13 },
       weight: 0.05,
     },
   },
@@ -849,11 +853,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 13, start: 14, end: 15 },
-            { row: 14, start: 14, end: 15 },
+            { row: 25, start: 7, end: 8 },
+            { row: 26, start: 7, end: 8 },
           ],
         },
         key: "ergot_texture",
@@ -868,7 +872,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Ergot",
       description: "Dark, spur-shaped fungus picked from spoiled grain.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 14, col: 13 },
+      icon: { spritesheet: "items", row: 26, col: 6 },
       weight: 0.05,
     },
   },
@@ -879,11 +883,11 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 17, start: 17, end: 18 },
-            { row: 18, start: 17, end: 18 },
+            { row: 23, start: 8, end: 9 },
+            { row: 24, start: 8, end: 9 },
           ],
         },
         key: "bale_texture",
@@ -898,7 +902,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bale",
       description: "A dish of thick amber fat taken from cattle.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 18, col: 16 },
+      icon: { spritesheet: "items", row: 24, col: 7 },
       weight: 0.5,
     },
   },

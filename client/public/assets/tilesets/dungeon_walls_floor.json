@@ -1,6 +1,6 @@
 {
   "columns": 17,
-  "image": "../sprites/dungeon_walls_floor.png",
+  "image": "../sprites/tiles/dungeon_walls_floor.png",
   "imageheight": 464,
   "imagewidth": 272,
   "margin": 0,

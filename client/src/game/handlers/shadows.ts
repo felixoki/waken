@@ -28,6 +28,7 @@ import { StateName, type TiledProperty } from "@server/types";
 export interface Shadows {
   graphics: Phaser.GameObjects.Graphics;
   crouches: WeakMap<Entity, number>;
+  occlusion: WeakMap<Phaser.GameObjects.Light, WeakMap<Entity, number>>;
 }
 
 export const shadows = {
@@ -35,7 +36,7 @@ export const shadows = {
     const graphics = scene.add.graphics();
     graphics.setDepth(shadows.depth(map));
 
-    return { graphics, crouches: new WeakMap() };
+    return { graphics, crouches: new WeakMap(), occlusion: new WeakMap() };
   },
 
   destroy: (state: Shadows): void => {
@@ -76,6 +77,44 @@ export const shadows = {
 
     state.crouches.set(entity, next);
     return next;
+  },
+
+  occluded: (
+    state: Shadows,
+    scene: Scene,
+    light: Phaser.GameObjects.Light,
+    entity: Entity,
+    x: number,
+    y: number,
+  ): boolean => {
+    const map = scene.tileManager.map;
+    const { width, height, tileWidth, tileHeight } = map;
+    const from =
+      Math.floor(light.y / tileHeight) * width +
+      Math.floor(light.x / tileWidth);
+    const to = Math.floor(y / tileHeight) * width + Math.floor(x / tileWidth);
+    const key = (from * width * height + to) * 2;
+
+    let cache = state.occlusion.get(light);
+    if (!cache) {
+      cache = new WeakMap();
+      state.occlusion.set(light, cache);
+    }
+
+    const cached = cache.get(entity);
+    if (cached !== undefined && cached - (cached % 2) === key)
+      return cached % 2 === 1;
+
+    const blocked = lighting.blocked(
+      scene.tileManager.getLightMask(),
+      light.x,
+      light.y,
+      x,
+      y,
+    );
+
+    cache.set(entity, key + (blocked ? 1 : 0));
+    return blocked;
   },
 
   update: (state: Shadows, scene: Scene, delta: number): void => {
@@ -125,6 +164,7 @@ export const shadows = {
     const half = Math.min(entity.body.width * SHADOW_SCALE, SHADOW_WIDTH) / 2;
     const lights = scene.lights.lights;
     const floor = lighting.floor(scene);
+    const boost = scene.illumination.boost;
     const lift = entity.z * SHADOW_LIFT;
     const head = Math.min(lift, SHADOW_HEAD);
     const air = 1 - SHADOW_AIR_FADE * Math.min(entity.z / HEIGHT_JUMPING, 1);
@@ -144,19 +184,18 @@ export const shadows = {
       );
 
       if (distance < SHADOW_MIN_DISTANCE || distance >= reach) continue;
+      if (shadows.occluded(state, scene, light, entity, x, y)) continue;
 
       const intensity =
-        (light.intensity * reach * reach) / (light.radius * light.radius);
+        (light.intensity * boost * reach * reach) /
+        (light.radius * light.radius);
 
       const near = Math.min(
         (distance - SHADOW_MIN_DISTANCE) / SHADOW_FADE_DISTANCE,
         1,
       );
       const alpha =
-        Math.min(
-          strength * (1 - distance / reach) * intensity,
-          strength,
-        ) *
+        Math.min(strength * (1 - distance / reach) * intensity, strength) *
         near *
         air;
       const length =

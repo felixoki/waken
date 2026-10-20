@@ -26,14 +26,14 @@ export const robe = {
 
   sheets: (sheet: string): Spritesheet[] =>
     configs.maps[MapName.VILLAGE].spritesheets
-      .filter((entry) => entry.file.startsWith("player_"))
+      .filter((entry) => entry.file.startsWith("people/player_"))
       .map((entry) => ({
         ...entry,
         key: entry.key.replace(
           EntityName.PLAYER,
           robe.base(EntityName.PLAYER, sheet),
         ),
-        file: `robes/${sheet}/${entry.file}`,
+        file: entry.file.replace("people/", `people/robes/${sheet}/`),
       })),
 
   load: (scene: Phaser.Scene, sheet: string, done: () => void): void => {

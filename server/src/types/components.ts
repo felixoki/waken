@@ -110,6 +110,8 @@ export type ComponentConfig =
 export interface ConnectableConfig {
   spritesheet: string;
   tileSize: number;
+  row: number;
+  col: number;
 }
 
 export interface ExtractableConfig {
@@ -244,6 +246,7 @@ export interface TextureAnimationConfig {
   offset?: { x: number; y: number };
   tiles: { row: number; start: number; end: number }[];
   stride?: number;
+  wrap?: number;
   frames: number;
   direction: "horizontal" | "vertical";
   frameRate: number;

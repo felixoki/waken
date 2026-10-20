@@ -4,7 +4,7 @@
   <export target="../client/public/assets/maps/generated-dungeon-preview.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="dungeon_walls_floor" tilewidth="16" tileheight="16" tilecount="493" columns="17">
-  <image source="../client/public/assets/sprites/dungeon_walls_floor.png" width="272" height="464"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_walls_floor.png" width="272" height="464"/>
   <tile id="18">
    <properties>
     <property name="position" value="top_left"/>
@@ -777,7 +777,7 @@
   </tile>
  </tileset>
  <tileset firstgid="494" name="dungeon_walls_cracks" tilewidth="16" tileheight="16" tilecount="256" columns="8">
-  <image source="../client/public/assets/sprites/dungeon_walls_cracks.png" width="128" height="512"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_walls_cracks.png" width="128" height="512"/>
   <tile id="0">
    <properties>
     <property name="variantOf" type="int" value="70"/>
@@ -2302,7 +2302,7 @@
   </tile>
  </tileset>
  <tileset firstgid="750" name="dungeon_floor_cracks" tilewidth="16" tileheight="16" tilecount="120" columns="8">
-  <image source="../client/public/assets/sprites/dungeon_floor_cracks.png" width="128" height="240"/>
+  <image source="../client/public/assets/sprites/tiles/dungeon_floor_cracks.png" width="128" height="240"/>
   <tile id="1">
    <properties>
     <property name="variantOf" type="int" value="159"/>
@@ -2902,37 +2902,37 @@
   </tile>
  </tileset>
  <tileset firstgid="870" name="dungeon_doors_lever" tilewidth="16" tileheight="16" tilecount="150" columns="10">
-  <image source="../client/public/assets/sprites/dungeon_doors_lever.png" width="160" height="240"/>
+  <image source="../client/public/assets/sprites/collection/dungeon_doors_lever.png" width="160" height="240"/>
  </tileset>
  <tileset firstgid="1020" name="chests" tilewidth="16" tileheight="16" tilecount="160" columns="20">
-  <image source="../client/public/assets/sprites/chests.png" width="320" height="128"/>
+  <image source="../client/public/assets/sprites/collection/chests.png" width="320" height="128"/>
  </tileset>
  <tileset firstgid="1180" name="spike_trap" tilewidth="16" tileheight="16" tilecount="403" columns="13">
-  <image source="../client/public/assets/sprites/spike_trap.png" width="208" height="496"/>
+  <image source="../client/public/assets/sprites/collection/spike_trap.png" width="208" height="496"/>
  </tileset>
- <tileset firstgid="1583" name="dungeon_objects2" tilewidth="16" tileheight="16" tilecount="555" columns="15">
-  <image source="../client/public/assets/sprites/dungeon_objects2.png" width="240" height="592"/>
+ <tileset firstgid="1583" name="dungeon_interior2" tilewidth="16" tileheight="16" tilecount="555" columns="15">
+  <image source="../client/public/assets/sprites/collection/dungeon_interior2.png" width="240" height="592"/>
  </tileset>
- <tileset firstgid="2138" name="village_tavern_interior" tilewidth="16" tileheight="16" tilecount="462" columns="21">
-  <image source="../client/public/assets/sprites/village_tavern_interior.png" width="336" height="352"/>
+ <tileset firstgid="2138" name="tavern_interior" tilewidth="16" tileheight="16" tilecount="462" columns="21">
+  <image source="../client/public/assets/sprites/collection/tavern_interior.png" width="336" height="352"/>
  </tileset>
- <tileset firstgid="2600" name="village_market_objects" tilewidth="16" tileheight="16" tilecount="1080" columns="30">
-  <image source="../client/public/assets/sprites/village_market_objects.png" width="480" height="576"/>
+ <tileset firstgid="2600" name="market_stalls" tilewidth="16" tileheight="16" tilecount="1080" columns="30">
+  <image source="../client/public/assets/sprites/collection/market_stalls.png" width="480" height="576"/>
  </tileset>
- <tileset firstgid="3680" name="village_tavern_house" tilewidth="16" tileheight="16" tilecount="812" columns="28">
-  <image source="../client/public/assets/sprites/village_tavern_house.png" width="448" height="464"/>
+ <tileset firstgid="3680" name="tavern_exterior" tilewidth="16" tileheight="16" tilecount="812" columns="28">
+  <image source="../client/public/assets/sprites/collection/tavern_exterior.png" width="448" height="464"/>
  </tileset>
- <tileset firstgid="4492" name="dungeon_objects1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
-  <image source="../client/public/assets/sprites/dungeon_objects1.png" width="384" height="144"/>
+ <tileset firstgid="4492" name="dungeon_interior1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
+  <image source="../client/public/assets/sprites/collection/dungeon_interior1.png" width="384" height="144"/>
  </tileset>
  <tileset firstgid="4708" name="firebowl" tilewidth="16" tileheight="16" tilecount="198" columns="11">
-  <image source="../client/public/assets/sprites/firebowl.png" width="176" height="288"/>
+  <image source="../client/public/assets/sprites/collection/firebowl.png" width="176" height="288"/>
  </tileset>
  <tileset firstgid="4906" name="torch" tilewidth="16" tileheight="16" tilecount="162" columns="9">
-  <image source="../client/public/assets/sprites/torch.png" width="144" height="288"/>
+  <image source="../client/public/assets/sprites/collection/torch.png" width="144" height="288"/>
  </tileset>
  <tileset firstgid="5068" name="candles" tilewidth="16" tileheight="16" tilecount="72" columns="6">
-  <image source="../client/public/assets/sprites/candles.png" width="96" height="192"/>
+  <image source="../client/public/assets/sprites/collection/candles.png" width="96" height="192"/>
  </tileset>
  <layer id="1" name="void" width="128" height="128" visible="0">
   <data encoding="csv">

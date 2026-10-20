@@ -75,7 +75,7 @@ export const forest: BiomeConfig = {
 
   tilesets: [
     "dungeon_walls_floor",
-    "dungeon_decorative_cracks_floor",
+    "dungeon_floor_cracks",
     "cave_walls_floor",
   ],
 
@@ -89,13 +89,13 @@ export const forest: BiomeConfig = {
   layers: [
     {
       terrain: TerrainName.WATER,
-      tileset: "village_farm_ground_grass",
+      tileset: "water_coasts",
       threshold: -0.5,
     },
-    { terrain: TerrainName.GROUND, tileset: "village_home", threshold: -0.3 },
+    { terrain: TerrainName.GROUND, tileset: "grass_ground", threshold: -0.3 },
     {
       terrain: TerrainName.GRASS,
-      tileset: "village_home",
+      tileset: "grass_ground",
       threshold: null,
       surface: SurfaceName.GRASS,
     },
@@ -117,7 +117,7 @@ export const forest: BiomeConfig = {
     {
       from: TerrainName.GRASS,
       to: TerrainName.GROUND,
-      tileset: "village_home",
+      tileset: "grass_ground",
     },
   ],
 
@@ -270,7 +270,7 @@ export const forest: BiomeConfig = {
 
   details: [
     {
-      tileset: "ground_grass_details",
+      tileset: "grass_ground_details",
       terrains: [TerrainName.GROUND],
       density: 0.4,
       stamps: groundStamps,
@@ -278,14 +278,14 @@ export const forest: BiomeConfig = {
       cluster: true,
     },
     {
-      tileset: "village_home",
+      tileset: "grass_ground_details",
       terrains: [TerrainName.GRASS],
       density: 0.03,
       stamps: flowerStamps,
       gap: 1,
     },
     {
-      tileset: "ground_grass_details",
+      tileset: "grass_ground_details",
       terrains: [TerrainName.GRASS],
       density: 0.45,
       stamps: grassStamps,
@@ -518,7 +518,7 @@ export const cave: BiomeConfig = {
     { terrain: TerrainName.VOID, tileset: "cave_walls_floor", threshold: null },
     {
       terrain: TerrainName.WATER,
-      tileset: "cave_water_coasts",
+      tileset: "cave_water",
       threshold: null,
     },
     {
@@ -545,7 +545,7 @@ export const cave: BiomeConfig = {
     {
       from: TerrainName.FLOOR,
       to: TerrainName.WATER,
-      tileset: "cave_water_coasts",
+      tileset: "cave_water",
       collides: true,
     },
   ],
@@ -784,19 +784,19 @@ export const mountain: BiomeConfig = {
   layers: [
     {
       terrain: TerrainName.GRASS,
-      tileset: "village_home",
+      tileset: "grass_ground",
       threshold: null,
       surface: SurfaceName.GRASS,
     },
     {
       terrain: TerrainName.EARTH,
-      tileset: "forest_ground_grass",
+      tileset: "grass_ground",
       threshold: null,
       surface: SurfaceName.DIRT,
     },
     {
       terrain: TerrainName.SNOW,
-      tileset: "mountains_ground",
+      tileset: "snow",
       threshold: null,
       surface: SurfaceName.SNOW,
     },
@@ -813,11 +813,11 @@ export const mountain: BiomeConfig = {
     scarps: 2,
     ridge: 5,
     tread: 3,
-    stairs: { every: 40, tilesets: ["stairs_grass", "mountains_ground"] },
+    stairs: { every: 40, tilesets: ["grass_ground", "snow"] },
     patches: 6,
   },
 
-  tilesets: ["stairs_grass"],
+  tilesets: ["grass_ground"],
 
   borders: [],
 
@@ -918,7 +918,7 @@ export const mountain: BiomeConfig = {
 
   details: [
     {
-      tileset: "ground_grass_details",
+      tileset: "grass_ground_details",
       terrains: [TerrainName.EARTH],
       density: 0.5,
       stamps: groundStamps,
@@ -926,14 +926,14 @@ export const mountain: BiomeConfig = {
       cluster: true,
     },
     {
-      tileset: "village_home",
+      tileset: "grass_ground_details",
       terrains: [TerrainName.GRASS],
       density: 0.03,
       stamps: flowerStamps,
       gap: 1,
     },
     {
-      tileset: "ground_grass_details",
+      tileset: "grass_ground_details",
       terrains: [TerrainName.GRASS],
       density: 0.45,
       stamps: grassStamps,
@@ -1107,6 +1107,7 @@ export const temple: BiomeConfig = {
         { entities: [EntityName.HEXGEIST], count: { min: 1, max: 1 } },
         { entities: [EntityName.BLOODGEIST1], count: { min: 1, max: 2 } },
         { entities: [EntityName.APPRENTICE], count: { min: 1, max: 1 } },
+        { entities: [EntityName.GOLEM], count: { min: 0, max: 1 } },
       ],
       boss: EntityName.MAGE,
       exit: { entity: EntityName.CLOUDLADDER, requires: 3 },
@@ -1133,6 +1134,7 @@ export const temple: BiomeConfig = {
           { entities: [EntityName.BLOODGEIST1], count: { min: 1, max: 2 } },
           { entities: [EntityName.HEXGEIST], count: { min: 0, max: 1 } },
           { entities: [EntityName.APPRENTICE], count: { min: 1, max: 1 } },
+          { entities: [EntityName.GOLEM], count: { min: 0, max: 1 } },
         ],
       },
     ],

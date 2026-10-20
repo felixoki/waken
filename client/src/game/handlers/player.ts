@@ -16,6 +16,7 @@ import { AnimationComponent } from "../components/Animation";
 import { FollowComponent } from "../components/Follow";
 import { LightComponent } from "../components/Light";
 import { TrailComponent } from "../components/Trail";
+import { StorageComponent } from "../components/Storage";
 import type { MainScene } from "../scenes/Main";
 import { Entity } from "../Entity";
 import { Factory } from "../factory/Factory";
@@ -233,6 +234,7 @@ export const player = {
     if (!main.managers.players.player) return;
 
     EventBus.emit(Event.ENTITY_DIALOGUE_END);
+    StorageComponent.close();
 
     main.managers.players.player.isLocked = true;
     main.managers.players.player.isTransitioning = true;

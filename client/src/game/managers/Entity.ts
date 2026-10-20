@@ -13,6 +13,7 @@ import { CHUNK_ACTIVATION_BUDGET, CHUNK_PIXEL_SIZE } from "@server/globals";
 import { Villain } from "../Villain";
 import { vfx } from "../vfx";
 import { SwitchComponent } from "../components/Switch";
+import { StorageComponent } from "../components/Storage";
 import { handlers } from "../handlers";
 import type { ConnectIndex } from "../handlers/connect";
 
@@ -89,6 +90,8 @@ export class EntityManager {
     this.entities.forEach((entity) => {
       if (!entity.isStatic) entity.update();
     });
+
+    StorageComponent.tick();
   }
 
   add(config: EntityConfig, fresh = true): void {
@@ -190,7 +193,10 @@ export class EntityManager {
     entity.isLocked = config.isLocked;
     this.entities.set(config.id, entity);
 
-    if (this.fresh.delete(config.id) && entity.getComponent(ComponentName.PICKABLE))
+    if (
+      this.fresh.delete(config.id) &&
+      entity.getComponent(ComponentName.PICKABLE)
+    )
       vfx.shaders.jump(entity);
 
     if (entity.isStatic) this._registerStatic(entity, config, scene);

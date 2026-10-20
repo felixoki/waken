@@ -4,7 +4,7 @@
   <export target="../client/public/assets/maps/temple-generated.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="temple_walls_floor" tilewidth="16" tileheight="16" tilecount="442" columns="17">
-  <image source="../client/public/assets/sprites/temple_walls_floor.png" width="272" height="416"/>
+  <image source="../client/public/assets/sprites/tiles/temple_walls_floor.png" width="272" height="416"/>
   <tile id="18">
    <properties>
     <property name="role" value="wall_outer"/>
@@ -1329,7 +1329,7 @@
   </tile>
  </tileset>
  <tileset firstgid="936" name="temple_stairs" tilewidth="16" tileheight="16" tilecount="323" columns="17">
-  <image source="../client/public/assets/sprites/temple_stairs.png" width="272" height="304"/>
+  <image source="../client/public/assets/sprites/tiles/temple_stairs.png" width="272" height="304"/>
   <tile id="24">
    <objectgroup draworder="index" id="2">
     <object id="1" x="8.5" y="4.5" width="7.5" height="11.5"/>
@@ -1342,7 +1342,7 @@
   </tile>
  </tileset>
  <tileset firstgid="1259" name="temple_arches_doors" tilewidth="16" tileheight="16" tilecount="280" columns="20">
-  <image source="../client/public/assets/sprites/temple_arches_doors.png" width="320" height="224"/>
+  <image source="../client/public/assets/sprites/tiles/temple_arches_doors.png" width="320" height="224"/>
   <tile id="27">
    <properties>
     <property name="skinOf" type="int" value="431"/>
@@ -1464,43 +1464,43 @@
   </tile>
  </tileset>
  <tileset firstgid="1539" name="temple_doors" tilewidth="16" tileheight="16" tilecount="144" columns="8">
-  <image source="../client/public/assets/sprites/temple_doors.png" width="128" height="288"/>
+  <image source="../client/public/assets/sprites/collection/temple_doors.png" width="128" height="288"/>
  </tileset>
  <tileset firstgid="1683" name="dungeon_doors_lever" tilewidth="16" tileheight="16" tilecount="150" columns="10">
-  <image source="../client/public/assets/sprites/dungeon_doors_lever.png" width="160" height="240"/>
+  <image source="../client/public/assets/sprites/collection/dungeon_doors_lever.png" width="160" height="240"/>
  </tileset>
- <tileset firstgid="1833" name="dungeon_objects1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
-  <image source="../client/public/assets/sprites/dungeon_objects1.png" width="384" height="144"/>
+ <tileset firstgid="1833" name="dungeon_interior1" tilewidth="16" tileheight="16" tilecount="216" columns="24">
+  <image source="../client/public/assets/sprites/collection/dungeon_interior1.png" width="384" height="144"/>
  </tileset>
- <tileset firstgid="2049" name="village_camp_objects" tilewidth="16" tileheight="16" tilecount="1274" columns="26">
-  <image source="../client/public/assets/sprites/village_camp_objects.png" width="416" height="784"/>
+ <tileset firstgid="2049" name="camp_exterior" tilewidth="16" tileheight="16" tilecount="1274" columns="26">
+  <image source="../client/public/assets/sprites/collection/camp_exterior.png" width="416" height="784"/>
  </tileset>
  <tileset firstgid="3323" name="firebowl" tilewidth="16" tileheight="16" tilecount="198" columns="11">
-  <image source="../client/public/assets/sprites/firebowl.png" width="176" height="288"/>
+  <image source="../client/public/assets/sprites/collection/firebowl.png" width="176" height="288"/>
  </tileset>
  <tileset firstgid="3521" name="candelabra" tilewidth="16" tileheight="16" tilecount="12" columns="6">
-  <image source="../client/public/assets/sprites/candelabra.png" width="96" height="32"/>
+  <image source="../client/public/assets/sprites/collection/candelabra.png" width="96" height="32"/>
  </tileset>
- <tileset firstgid="3533" name="village_herbalist_interior" tilewidth="16" tileheight="16" tilecount="360" columns="40">
-  <image source="../client/public/assets/sprites/village_herbalist_interior.png" width="640" height="144"/>
+ <tileset firstgid="3533" name="herbalist_interior" tilewidth="16" tileheight="16" tilecount="360" columns="40">
+  <image source="../client/public/assets/sprites/collection/herbalist_interior.png" width="640" height="144"/>
  </tileset>
- <tileset firstgid="3893" name="temple_objects" tilewidth="16" tileheight="16" tilecount="288" columns="12">
-  <image source="../client/public/assets/sprites/temple_objects.png" width="192" height="384"/>
+ <tileset firstgid="3893" name="temple_interior" tilewidth="16" tileheight="16" tilecount="288" columns="12">
+  <image source="../client/public/assets/sprites/collection/temple_interior.png" width="192" height="384"/>
  </tileset>
- <tileset firstgid="4181" name="village_home_interior" tilewidth="16" tileheight="16" tilecount="378" columns="14">
-  <image source="../client/public/assets/sprites/village_home_interior.png" width="224" height="432"/>
+ <tileset firstgid="4181" name="home_interior" tilewidth="16" tileheight="16" tilecount="378" columns="14">
+  <image source="../client/public/assets/sprites/collection/home_interior.png" width="224" height="432"/>
  </tileset>
  <tileset firstgid="4559" name="candles" tilewidth="16" tileheight="16" tilecount="72" columns="6">
-  <image source="../client/public/assets/sprites/candles.png" width="96" height="192"/>
+  <image source="../client/public/assets/sprites/collection/candles.png" width="96" height="192"/>
  </tileset>
  <tileset firstgid="4631" name="temple_coffins" tilewidth="16" tileheight="16" tilecount="300" columns="30">
-  <image source="../client/public/assets/sprites/temple_coffins.png" width="480" height="160"/>
+  <image source="../client/public/assets/sprites/collection/temple_coffins.png" width="480" height="160"/>
  </tileset>
  <tileset firstgid="4931" name="chests" tilewidth="16" tileheight="16" tilecount="160" columns="20">
-  <image source="../client/public/assets/sprites/chests.png" width="320" height="128"/>
+  <image source="../client/public/assets/sprites/collection/chests.png" width="320" height="128"/>
  </tileset>
  <tileset firstgid="5091" name="torch" tilewidth="16" tileheight="16" tilecount="162" columns="9">
-  <image source="../client/public/assets/sprites/torch.png" width="144" height="288"/>
+  <image source="../client/public/assets/sprites/collection/torch.png" width="144" height="288"/>
  </tileset>
  <layer id="1" name="floor" width="128" height="128">
   <properties>

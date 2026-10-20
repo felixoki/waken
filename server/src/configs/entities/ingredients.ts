@@ -14,11 +14,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering1",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 15, start: 7, end: 8 },
-            { row: 16, start: 7, end: 8 },
+            { row: 12, start: 2, end: 3 },
+            { row: 13, start: 2, end: 3 },
           ],
         },
         key: "belladonna_texture",
@@ -26,10 +26,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 14,
+          height: 14,
+          offsetX: 6,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -52,7 +52,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A poisonous plant with dark berries and bold purple blossoms.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 16, col: 13 },
+      icon: { spritesheet: "nature", row: 13, col: 1 },
       weight: 0.02,
     },
   },
@@ -63,12 +63,12 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering3",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 25, start: 5, end: 6 },
-            { row: 26, start: 5, end: 6 },
-            { row: 27, start: 5, end: 6 },
+            { row: 12, start: 23, end: 24 },
+            { row: 13, start: 23, end: 24 },
+            { row: 14, start: 23, end: 24 },
           ],
         },
         key: "sunflower_texture",
@@ -76,10 +76,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 17,
+          height: 20,
+          offsetX: 7,
+          offsetY: 24,
           collides: false,
           static: true,
         },
@@ -102,7 +102,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A tall, golden flower with a broad face that follows the sun.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 10 },
+      icon: { spritesheet: "nature", row: 14, col: 22 },
       weight: 0.05,
     },
   },
@@ -113,12 +113,12 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering1",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 10, start: 1, end: 3 },
-            { row: 11, start: 1, end: 3 },
-            { row: 12, start: 1, end: 3 },
+            { row: 1, start: 12, end: 14 },
+            { row: 2, start: 12, end: 14 },
+            { row: 3, start: 12, end: 14 },
           ],
         },
         key: "raspberry_texture",
@@ -152,7 +152,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A thorny bush bearing clusters of small, bright red berries.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 10, col: 13 },
+      icon: { spritesheet: "nature", row: 3, col: 11 },
       weight: 0.01,
     },
   },
@@ -163,11 +163,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons1",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 9, start: 26, end: 27 },
-            { row: 10, start: 26, end: 27 },
+            { row: 21, start: 23, end: 24 },
+            { row: 22, start: 23, end: 24 },
           ],
         },
         key: "strawberry_texture",
@@ -182,7 +182,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Strawberry",
       description: "A handful of ripe, sweet strawberries.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 10, col: 25 },
+      icon: { spritesheet: "items", row: 22, col: 22 },
       weight: 0.01,
     },
   },
@@ -193,12 +193,12 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering1",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 1, end: 3 },
-            { row: 8, start: 1, end: 3 },
-            { row: 9, start: 1, end: 3 },
+            { row: 1, start: 15, end: 17 },
+            { row: 2, start: 15, end: 17 },
+            { row: 3, start: 15, end: 17 },
           ],
         },
         key: "strawberry_bush_texture",
@@ -235,11 +235,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering6",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 1, end: 1 },
-            { row: 8, start: 1, end: 1 },
+            { row: 12, start: 11, end: 11 },
+            { row: 13, start: 11, end: 11 },
           ],
         },
         key: "daffodil_texture",
@@ -247,10 +247,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 11,
+          height: 10,
+          offsetX: 3,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -273,7 +273,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A bright yellow flower with a cheerful trumpet-shaped centre.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 16, col: 7 },
+      icon: { spritesheet: "nature", row: 14, col: 15 },
       weight: 0.03,
     },
   },
@@ -284,11 +284,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering6",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 3, end: 4 },
-            { row: 2, start: 3, end: 4 },
+            { row: 12, start: 5, end: 6 },
+            { row: 13, start: 5, end: 6 },
           ],
         },
         key: "blue_lotus_texture",
@@ -296,10 +296,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 11,
+          height: 8,
+          offsetX: 11,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -322,7 +322,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A rare aquatic flower with bold blue petals and a sweet scent.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 4, col: 31 },
+      icon: { spritesheet: "nature", row: 13, col: 4 },
       weight: 0.04,
     },
   },
@@ -333,11 +333,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering6",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 3, end: 4 },
-            { row: 6, start: 3, end: 4 },
+            { row: 12, start: 8, end: 9 },
+            { row: 13, start: 8, end: 9 },
           ],
         },
         key: "clary_sage_texture",
@@ -345,10 +345,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 13,
+          height: 11,
+          offsetX: 10,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -371,7 +371,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "An aromatic herb with soft leaves and delicate purple blooms.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 14, col: 31 },
+      icon: { spritesheet: "nature", row: 13, col: 7 },
       weight: 0.02,
     },
   },
@@ -382,11 +382,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering1",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 17, start: 7, end: 8 },
-            { row: 18, start: 7, end: 8 },
+            { row: 7, start: 2, end: 3 },
+            { row: 8, start: 2, end: 3 },
           ],
         },
         key: "bearded_tooth_fungus_texture",
@@ -394,10 +394,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 20,
+          height: 14,
+          offsetX: 5,
+          offsetY: 16,
           collides: false,
           static: true,
         },
@@ -420,7 +420,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A peculiar white fungus adorned with cascading tooth-like spines.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 18, col: 13 },
+      icon: { spritesheet: "nature", row: 8, col: 1 },
       weight: 0.1,
     },
   },
@@ -431,12 +431,12 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering1",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 13, end: 15 },
-            { row: 8, start: 13, end: 15 },
-            { row: 9, start: 13, end: 15 },
+            { row: 12, start: 16, end: 18 },
+            { row: 13, start: 16, end: 18 },
+            { row: 14, start: 16, end: 18 },
           ],
         },
         key: "henbane_texture",
@@ -444,10 +444,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 25,
+          height: 21,
+          offsetX: 12,
+          offsetY: 24,
           collides: false,
           static: true,
         },
@@ -470,7 +470,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A poisonous weed with pale yellow flowers and clammy leaves.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 16, col: 7 },
+      icon: { spritesheet: "nature", row: 14, col: 15 },
       weight: 0.02,
     },
   },
@@ -481,11 +481,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "snow_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 36, start: 19, end: 20 },
-            { row: 37, start: 19, end: 20 },
+            { row: 12, start: 13, end: 14 },
+            { row: 13, start: 13, end: 14 },
           ],
         },
         key: "edelweiss_texture",
@@ -518,7 +518,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Edelweiss",
       description: "A star of pale felted petals that only opens above the snowline.",
       stackable: true,
-      icon: { spritesheet: "icons6", row: 2, col: 25 },
+      icon: { spritesheet: "nature", row: 13, col: 12 },
       weight: 0.02,
     },
   },
@@ -529,12 +529,12 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "gathering1",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 10, start: 19, end: 20 },
-            { row: 11, start: 19, end: 20 },
-            { row: 12, start: 19, end: 20 },
+            { row: 12, start: 20, end: 21 },
+            { row: 13, start: 20, end: 21 },
+            { row: 14, start: 20, end: 21 },
           ],
         },
         key: "opium_poppy_texture",
@@ -542,10 +542,10 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 16,
-          height: 16,
-          offsetX: 0,
-          offsetY: 0,
+          width: 14,
+          height: 22,
+          offsetX: 9,
+          offsetY: 24,
           collides: false,
           static: true,
         },
@@ -567,7 +567,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Opium poppy",
       description: "A bare stalk hung with swollen pods of milky sap.",
       stackable: true,
-      icon: { spritesheet: "icons1", row: 16, col: 1 },
+      icon: { spritesheet: "nature", row: 14, col: 19 },
       weight: 0.02,
     },
   },
@@ -578,11 +578,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 29, end: 30 },
-            { row: 4, start: 29, end: 30 },
+            { row: 21, start: 2, end: 3 },
+            { row: 22, start: 2, end: 3 },
           ],
         },
         key: "potion1_texture",
@@ -602,7 +602,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A mysterious potion crafted from rare aquatic flowers and forest herbs.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 4, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 19 },
       weight: 0.3,
     },
   },
@@ -613,11 +613,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 13, start: 29, end: 30 },
-            { row: 14, start: 29, end: 30 },
+            { row: 21, start: 5, end: 6 },
+            { row: 22, start: 5, end: 6 },
           ],
         },
         key: "potion2_texture",
@@ -637,7 +637,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A warm golden potion distilled from sunflowers and belladonna.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 14, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 4 },
       weight: 0.3,
     },
   },
@@ -648,11 +648,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 1, start: 29, end: 30 },
-            { row: 2, start: 29, end: 30 },
+            { row: 21, start: 8, end: 9 },
+            { row: 22, start: 8, end: 9 },
           ],
         },
         key: "potion3_texture",
@@ -672,7 +672,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A thick, potent brew rendered from troll scales and deadly herbs.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 2, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 7 },
       weight: 0.3,
     },
   },
@@ -690,11 +690,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 11, start: 29, end: 30 },
-            { row: 12, start: 29, end: 30 },
+            { row: 21, start: 11, end: 12 },
+            { row: 22, start: 11, end: 12 },
           ],
         },
         key: "potion4_texture",
@@ -706,7 +706,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "The Further",
       description: "A pale draught brewed from henbane and opium poppy.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 12, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 10 },
       weight: 0.2,
     },
   },
@@ -724,11 +724,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 7, start: 29, end: 30 },
-            { row: 8, start: 29, end: 30 },
+            { row: 21, start: 14, end: 15 },
+            { row: 22, start: 14, end: 15 },
           ],
         },
         key: "potion5_texture",
@@ -740,7 +740,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Rimewake",
       description: "A frost-cold draught brewed in the wake of rime.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 8, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 13 },
       weight: 0.2,
     },
   },
@@ -758,11 +758,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 15, start: 29, end: 30 },
-            { row: 16, start: 29, end: 30 },
+            { row: 21, start: 17, end: 18 },
+            { row: 22, start: 17, end: 18 },
           ],
         },
         key: "potion6_texture",
@@ -774,7 +774,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Giant's Stalk",
       description: "A draught that climbs through the night, rooted in an ancient troll's heart.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 16, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 16 },
       weight: 0.2,
     },
   },
@@ -785,11 +785,11 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons2",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 3, start: 29, end: 30 },
-            { row: 4, start: 29, end: 30 },
+            { row: 21, start: 20, end: 21 },
+            { row: 22, start: 20, end: 21 },
           ],
         },
         key: "soup_of_the_hiker_texture",
@@ -809,7 +809,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A thick broth of boar, milk and troll scales that keeps the cold out for a while.",
       stackable: true,
-      icon: { spritesheet: "icons2", row: 4, col: 28 },
+      icon: { spritesheet: "items", row: 22, col: 19 },
       weight: 0.4,
     },
   },

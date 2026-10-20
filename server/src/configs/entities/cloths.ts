@@ -15,11 +15,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 29, end: 30 },
-            { row: 6, start: 29, end: 30 },
+            { row: 1, start: 20, end: 21 },
+            { row: 2, start: 20, end: 21 },
           ],
         },
         key: "vest_texture",
@@ -34,7 +34,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Vest",
       description: "A sturdy vest made from tough materials.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 6, col: 28 },
+      icon: { spritesheet: "items", row: 2, col: 19 },
       weight: 1.2,
     },
   },
@@ -45,11 +45,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons8",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 26, end: 27 },
-            { row: 6, start: 26, end: 27 },
+            { row: 1, start: 17, end: 18 },
+            { row: 2, start: 17, end: 18 },
           ],
         },
         key: "tunic_texture",
@@ -64,7 +64,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Tunic",
       description: "A sturdy tunic made from tough materials.",
       stackable: true,
-      icon: { spritesheet: "icons8", row: 6, col: 25 },
+      icon: { spritesheet: "items", row: 2, col: 16 },
       weight: 0.6,
     },
   },
@@ -75,11 +75,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 11, end: 12 },
-            { row: 6, start: 11, end: 12 },
+            { row: 1, start: 11, end: 12 },
+            { row: 2, start: 11, end: 12 },
           ],
         },
         key: "robe4_texture",
@@ -100,7 +100,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Noble garb",
       description: "A warm red robe scattered with yellow stars and moons.",
       stackable: false,
-      icon: { spritesheet: "icons6", row: 6, col: 10 },
+      icon: { spritesheet: "items", row: 2, col: 10 },
       weight: 0.6,
     },
   },
@@ -111,11 +111,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 14, end: 15 },
-            { row: 6, start: 14, end: 15 },
+            { row: 1, start: 14, end: 15 },
+            { row: 2, start: 14, end: 15 },
           ],
         },
         key: "robe5_texture",
@@ -136,7 +136,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bellan's fleece",
       description: "A leather robe under a pelt hood and a ragged mantle, with fleece round the face.",
       stackable: false,
-      icon: { spritesheet: "icons6", row: 6, col: 13 },
+      icon: { spritesheet: "items", row: 2, col: 13 },
       weight: 0.6,
     },
   },
@@ -147,11 +147,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 2, end: 3 },
-            { row: 6, start: 2, end: 3 },
+            { row: 1, start: 2, end: 3 },
+            { row: 2, start: 2, end: 3 },
           ],
         },
         key: "robe1_texture",
@@ -172,7 +172,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "It had no name",
       description: "An indigo robe with a pale mask on the back of the hood and a crescent on each side.",
       stackable: false,
-      icon: { spritesheet: "icons6", row: 6, col: 1 },
+      icon: { spritesheet: "items", row: 2, col: 1 },
       weight: 0.6,
     },
   },
@@ -183,11 +183,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 8, end: 9 },
-            { row: 6, start: 8, end: 9 },
+            { row: 1, start: 8, end: 9 },
+            { row: 2, start: 8, end: 9 },
           ],
         },
         key: "robe3_texture",
@@ -207,7 +207,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Moth-eaten",
       description: "A dark robe, frayed at the hem and full of moth holes.",
       stackable: false,
-      icon: { spritesheet: "icons6", row: 6, col: 7 },
+      icon: { spritesheet: "items", row: 2, col: 7 },
       weight: 0.6,
     },
   },
@@ -218,11 +218,11 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "icons6",
+          spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 5, end: 6 },
-            { row: 6, start: 5, end: 6 },
+            { row: 1, start: 5, end: 6 },
+            { row: 2, start: 5, end: 6 },
           ],
         },
         key: "robe2_texture",
@@ -243,7 +243,7 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A blue-black robe of scales and heron plumes, a few of which glint blue.",
       stackable: false,
-      icon: { spritesheet: "icons6", row: 6, col: 4 },
+      icon: { spritesheet: "items", row: 2, col: 4 },
       weight: 0.6,
     },
   },

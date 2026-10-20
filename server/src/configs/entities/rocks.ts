@@ -13,12 +13,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "crystals",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 22, end: 24 },
-            { row: 6, start: 22, end: 24 },
-            { row: 7, start: 22, end: 24 },
+            { row: 9, start: 7, end: 9 },
+            { row: 10, start: 7, end: 9 },
+            { row: 11, start: 7, end: 9 },
           ],
         },
         key: "quartz_ore_texture",
@@ -54,12 +54,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "crystals",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 1, end: 3 },
-            { row: 6, start: 1, end: 3 },
-            { row: 7, start: 1, end: 3 },
+            { row: 9, start: 1, end: 3 },
+            { row: 10, start: 1, end: 3 },
+            { row: 11, start: 1, end: 3 },
           ],
         },
         key: "azurite_ore_texture",
@@ -95,12 +95,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "crystals",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 5, start: 7, end: 9 },
-            { row: 6, start: 7, end: 9 },
-            { row: 7, start: 7, end: 9 },
+            { row: 9, start: 4, end: 6 },
+            { row: 10, start: 4, end: 6 },
+            { row: 11, start: 4, end: 6 },
           ],
         },
         key: "iron_ore_texture",
@@ -136,13 +136,13 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 26, start: 26, end: 27 },
-            { row: 27, start: 26, end: 27 },
-            { row: 28, start: 26, end: 27 },
-            { row: 29, start: 26, end: 27 },
+            { row: 17, start: 1, end: 2 },
+            { row: 18, start: 1, end: 2 },
+            { row: 19, start: 1, end: 2 },
+            { row: 20, start: 1, end: 2 },
           ],
         },
         key: "cave_rock1_texture",
@@ -150,10 +150,10 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.BODY,
         config: {
-          width: 20,
-          height: 10,
+          width: 22,
+          height: 16,
           offsetX: 6,
-          offsetY: 50,
+          offsetY: 39,
           static: true,
         },
       },
@@ -168,12 +168,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 27, start: 17, end: 18 },
-            { row: 28, start: 17, end: 18 },
-            { row: 29, start: 17, end: 18 },
+            { row: 17, start: 3, end: 4 },
+            { row: 18, start: 3, end: 4 },
+            { row: 19, start: 3, end: 4 },
           ],
         },
         key: "cave_rock2_texture",
@@ -182,9 +182,9 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 20,
-          height: 10,
+          height: 13,
           offsetX: 6,
-          offsetY: 34,
+          offsetY: 31,
           static: true,
         },
       },
@@ -199,12 +199,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 27, start: 15, end: 16 },
-            { row: 28, start: 15, end: 16 },
-            { row: 29, start: 15, end: 16 },
+            { row: 17, start: 5, end: 6 },
+            { row: 18, start: 5, end: 6 },
+            { row: 19, start: 5, end: 6 },
           ],
         },
         key: "cave_rock3_texture",
@@ -213,9 +213,9 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 20,
-          height: 10,
+          height: 13,
           offsetX: 6,
-          offsetY: 34,
+          offsetY: 31,
           static: true,
         },
       },
@@ -230,12 +230,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 27, start: 9, end: 10 },
-            { row: 28, start: 9, end: 10 },
-            { row: 29, start: 9, end: 10 },
+            { row: 17, start: 7, end: 8 },
+            { row: 18, start: 7, end: 8 },
+            { row: 19, start: 7, end: 8 },
           ],
         },
         key: "cave_rock4_texture",
@@ -244,9 +244,9 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.BODY,
         config: {
           width: 20,
-          height: 10,
+          height: 13,
           offsetX: 6,
-          offsetY: 34,
+          offsetY: 31,
           static: true,
         },
       },
@@ -261,11 +261,11 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 24, start: 11, end: 12 },
-            { row: 25, start: 11, end: 12 },
+            { row: 17, start: 9, end: 10 },
+            { row: 18, start: 9, end: 10 },
           ],
         },
         key: "cave_rock5_texture",
@@ -291,11 +291,11 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "cave_objects",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 28, start: 11, end: 12 },
-            { row: 29, start: 11, end: 12 },
+            { row: 17, start: 11, end: 12 },
+            { row: 18, start: 11, end: 12 },
           ],
         },
         key: "cave_rock6_texture",
@@ -321,13 +321,13 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 45, start: 2, end: 5 },
-            { row: 46, start: 2, end: 5 },
-            { row: 47, start: 2, end: 5 },
-            { row: 48, start: 2, end: 5 },
+            { row: 17, start: 13, end: 16 },
+            { row: 18, start: 13, end: 16 },
+            { row: 19, start: 13, end: 16 },
+            { row: 20, start: 13, end: 16 },
           ],
         },
         key: "rock1_texture",
@@ -353,12 +353,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 45, start: 6, end: 8 },
-            { row: 46, start: 6, end: 8 },
-            { row: 47, start: 6, end: 8 },
+            { row: 17, start: 17, end: 19 },
+            { row: 18, start: 17, end: 19 },
+            { row: 19, start: 17, end: 19 },
           ],
         },
         key: "rock2_texture",
@@ -384,12 +384,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 45, start: 9, end: 11 },
-            { row: 46, start: 9, end: 11 },
-            { row: 47, start: 9, end: 11 },
+            { row: 17, start: 20, end: 22 },
+            { row: 18, start: 20, end: 22 },
+            { row: 19, start: 20, end: 22 },
           ],
         },
         key: "rock3_texture",
@@ -415,13 +415,13 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 49, start: 2, end: 5 },
-            { row: 50, start: 2, end: 5 },
-            { row: 51, start: 2, end: 5 },
-            { row: 52, start: 2, end: 5 },
+            { row: 17, start: 23, end: 26 },
+            { row: 18, start: 23, end: 26 },
+            { row: 19, start: 23, end: 26 },
+            { row: 20, start: 23, end: 26 },
           ],
         },
         key: "rock4_texture",
@@ -447,11 +447,11 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 53, start: 6, end: 7 },
-            { row: 54, start: 6, end: 7 },
+            { row: 17, start: 27, end: 28 },
+            { row: 18, start: 27, end: 28 },
           ],
         },
         key: "rock8_texture",
@@ -471,12 +471,12 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 29, start: 11, end: 13 },
-            { row: 30, start: 11, end: 13 },
-            { row: 31, start: 11, end: 13 },
+            { row: 17, start: 29, end: 31 },
+            { row: 18, start: 29, end: 31 },
+            { row: 19, start: 29, end: 31 },
           ],
         },
         key: "rocks1_texture",
@@ -502,11 +502,11 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 33, start: 2, end: 3 },
-            { row: 34, start: 2, end: 3 },
+            { row: 19, start: 9, end: 10 },
+            { row: 20, start: 9, end: 10 },
           ],
         },
         key: "rocks3_texture",
@@ -532,11 +532,11 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 33, start: 8, end: 9 },
-            { row: 34, start: 8, end: 9 },
+            { row: 19, start: 11, end: 12 },
+            { row: 20, start: 11, end: 12 },
           ],
         },
         key: "rocks5_texture",
@@ -562,11 +562,11 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.TEXTURE,
         config: {
-          spritesheet: "village_home",
+          spritesheet: "nature",
           tileSize: 16,
           tiles: [
-            { row: 33, start: 10, end: 11 },
-            { row: 34, start: 10, end: 11 },
+            { row: 19, start: 27, end: 28 },
+            { row: 20, start: 27, end: 28 },
           ],
         },
         key: "rocks6_texture",

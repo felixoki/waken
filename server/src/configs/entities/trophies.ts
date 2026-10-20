@@ -8,6 +8,8 @@ import {
   Rarity,
 } from "../../types";
 
+const FIRST_ROW = 36;
+
 const trophy = (
   key: string,
   index: number,
@@ -22,11 +24,11 @@ const trophy = (
     {
       name: ComponentName.TEXTURE,
       config: {
-        spritesheet: "icons14",
+        spritesheet: "items",
         tileSize: 16,
         tiles: [
-          { row: 1, start: index * 2 + 1, end: index * 2 + 2 },
-          { row: 2, start: index * 2 + 1, end: index * 2 + 2 },
+          { row: FIRST_ROW + 1, start: index * 3 + 2, end: index * 3 + 3 },
+          { row: FIRST_ROW + 2, start: index * 3 + 2, end: index * 3 + 3 },
         ],
       },
       key: `${key}_texture`,
@@ -43,7 +45,7 @@ const trophy = (
     description,
     stackable: false,
     rarity,
-    icon: { spritesheet: "icons14", row: 3, col: index + 1 },
+    icon: { spritesheet: "items", row: FIRST_ROW + 2, col: index * 3 + 1 },
     weight: 1.5,
   },
 });
@@ -79,6 +81,10 @@ export const trophies: Partial<Record<EntityName, EntityDefinition>> = {
     "Mounted Cavefish",
     "Pale and strange, kept out of the light.",
     Rarity.UNCOMMON,
-    { unique: true, bonus: { health: 25 }, resist: { [EffectName.POISONED]: 0.5 } },
+    {
+      unique: true,
+      bonus: { health: 25 },
+      resist: { [EffectName.POISONED]: 0.5 },
+    },
   ),
 };

@@ -1,6 +1,6 @@
 {
   "columns": 17,
-  "image": "../sprites/temple_stairs.png",
+  "image": "../sprites/tiles/temple_stairs.png",
   "imageheight": 304,
   "imagewidth": 272,
   "margin": 0,

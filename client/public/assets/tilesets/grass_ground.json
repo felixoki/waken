@@ -1,0 +1,2102 @@
+{
+  "columns": 24,
+  "image": "../sprites/tiles/grass_ground.png",
+  "imageheight": 208,
+  "imagewidth": 384,
+  "margin": 0,
+  "name": "grass_ground",
+  "spacing": 0,
+  "tilecount": 312,
+  "tileheight": 16,
+  "tiles": [
+    {
+      "id": 8,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "fill"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "ground"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "fill"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 129,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 130,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "ground"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7,
+            "x": 9,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 3,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 4,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 6,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 48,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 12,
+            "x": 4,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "rim"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 13,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "rim"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 7,
+            "x": 9,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "cap_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "rim"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "flat"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "rim"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 8,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "cap_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "rim"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "inner_west"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "inner_east"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "junction_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 161,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "cap_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 162,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "flat"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 163,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "cap_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 99,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 101,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 102,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 10,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 146,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "cap_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 147,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "flat"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 148,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "cap_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 195,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "junction_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "inner_west"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "inner_east"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "junction_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "junction_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "base"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 158,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 8,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 180,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 6,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "west"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "crack"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 181,
+      "properties": [
+        {
+          "name": "role",
+          "type": "string",
+          "value": "fill"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 182,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      },
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "east"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "crack"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 183,
+      "objectgroup": {
+        "draworder": "index",
+        "id": 2,
+        "name": "",
+        "objects": [
+          {
+            "height": 16,
+            "id": 1,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 10,
+            "x": 0,
+            "y": 0
+          },
+          {
+            "height": 8,
+            "id": 2,
+            "name": "",
+            "rotation": 0,
+            "type": "",
+            "visible": true,
+            "width": 16,
+            "x": 0,
+            "y": 8
+          }
+        ],
+        "opacity": 1,
+        "type": "objectgroup",
+        "visible": true,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 18,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "fill"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_inner"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "border_outer"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "grass"
+        }
+      ]
+    },
+    {
+      "id": 176,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 177,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "earth"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 142,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 143,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 166,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 167,
+      "properties": [
+        {
+          "name": "over",
+          "type": "string",
+          "value": "grass"
+        },
+        {
+          "name": "position",
+          "type": "string",
+          "value": "bottom_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 190,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_left"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    },
+    {
+      "id": 191,
+      "properties": [
+        {
+          "name": "position",
+          "type": "string",
+          "value": "top_right"
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "value": "stair"
+        },
+        {
+          "name": "terrain",
+          "type": "string",
+          "value": "earth"
+        }
+      ]
+    }
+  ],
+  "tilewidth": 16
+}

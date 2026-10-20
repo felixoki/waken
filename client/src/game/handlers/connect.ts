@@ -88,8 +88,8 @@ export const connect = {
   },
 
   texture(config: ConnectableConfig, mask: number): TextureConfig {
-    const row = Math.floor(mask / 4) + 1;
-    const col = (mask % 4) + 1;
+    const row = Math.floor(mask / 4) + config.row;
+    const col = (mask % 4) + config.col;
 
     return {
       spritesheet: config.spritesheet,

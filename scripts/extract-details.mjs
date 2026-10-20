@@ -5,7 +5,7 @@
  * Connected runs of opaque pixels recover each clump (a formation), and blobs
  * sharing a tile are merged. Formations are then sorted into surfaces by colour.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, relative } from "node:path";
 import { inflateSync } from "node:zlib";
 
@@ -17,12 +17,13 @@ const OPAQUE = 40;
 const FAINT = 128;
 
 const SETS = [
-  { name: "groundStamps", sheet: "ground_grass_details", keep: (f) => !f.green },
-  { name: "grassStamps", sheet: "ground_grass_details", keep: (f) => f.green },
-  { name: "snowStamps", sheet: "snow_details", keep: () => true },
+  { name: "groundStamps", sheet: "ground_grass_details", into: "grass_ground_details", keep: (f) => !f.green },
+  { name: "grassStamps", sheet: "ground_grass_details", into: "grass_ground_details", keep: (f) => f.green },
+  { name: "snowStamps", sheet: "snow_details", into: "snow_details", keep: () => true },
   {
     name: "flowerStamps",
-    sheet: "village_home",
+    sheet: "village_terrain",
+    into: "grass_ground_details",
     keep: (f) => !f.plain && (f.within([53, 14, 54, 17]) || f.within([55, 1, 56, 17])),
   },
   { name: "cavePitStamps", sheet: "cave_details1", keep: (f) => f.within([1, 1, 10, 21]) },
@@ -89,8 +90,11 @@ const decode = (path) => {
   return { width, height, pixels };
 };
 
-const formations = (sheet) => {
-  const { width, height, pixels } = decode(resolve(SPRITES, `${sheet}.png`));
+const formations = (sheet, source) => {
+  const path = (source ? ["collection"] : ["tiles", "collection"])
+    .map((dir) => resolve(SPRITES, dir, `${sheet}.png`))
+    .find((p) => existsSync(p));
+  const { width, height, pixels } = decode(path);
   const columns = width / TILE;
   const seen = new Uint8Array(width * height);
   const alpha = (x, y) => pixels[(y * width + x) * 4 + 3];
@@ -179,21 +183,36 @@ const formations = (sheet) => {
   });
 };
 
+const MANIFEST = JSON.parse(readFileSync(resolve(ROOT, "tiled/tiles.json"), "utf8"));
+
+const compact = (sheet, source, id) => {
+  const m = MANIFEST[sheet];
+  const at = m.aliases?.[`${source}:${id}`] ??
+    Object.entries(m.cells).find(([, [s, t]]) => s === source && t === id)?.[0];
+  if (!at) throw new Error(`${source} tile ${id} is not on ${sheet}; run npm run tiles`);
+  const [x, y] = at.split(",").map(Number);
+  return y * m.columns + x;
+};
+
 const cache = new Map();
 const sections = [];
 const summary = [];
 
-for (const { name, sheet, keep } of SETS) {
-  if (!cache.has(sheet)) cache.set(sheet, formations(sheet));
+for (const { name, sheet, into, keep } of SETS) {
+  if (!cache.has(sheet)) cache.set(sheet, formations(sheet, Boolean(into)));
   const stamps = cache
     .get(sheet)
     .filter((f) => !f.faint && keep(f))
-    .map((f) => f.stamp);
+    .map((f) =>
+      into
+        ? { ...f.stamp, tiles: f.stamp.tiles.map((t) => ({ ...t, tileId: compact(into, sheet, t.tileId) })) }
+        : f.stamp,
+    );
 
   if (!stamps.length) throw new Error(`${name}: no formations found in ${sheet}`);
 
   const multi = stamps.filter((s) => s.tiles.length > 1).length;
-  summary.push(` * ${name}: ${stamps.length} from ${sheet} (${multi} multi-tile)`);
+  summary.push(` * ${name}: ${stamps.length} from ${into ?? sheet} (${multi} multi-tile)`);
 
   const body = stamps
     .map(

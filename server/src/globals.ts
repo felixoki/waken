@@ -394,6 +394,16 @@ export const SEAM_MARGIN = 8;
 /** Lights */
 
 export const LIGHT_FLOOR = 0.05;
+export const LIGHT_ALPHA = 240;
+export const LIGHT_ANGLES = 1024;
+export const LIGHT_MARCH = 512;
+export const LIGHT_SOFTNESS = 0.06;
+export const LIGHT_BIAS = 1.5;
+export const LIGHT_FACE = 96;
+export const LIGHT_OFFSET = 8;
+export const LIGHT_SURFACE = 4;
+export const ILLUMINATE_BOOST = 1.6;
+export const ILLUMINATE_FADE = 300;
 
 /** Shadows */
 

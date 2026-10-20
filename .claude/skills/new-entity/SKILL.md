@@ -46,7 +46,8 @@ Work through these in order. Paths are stable, line numbers are not.
    so an item left out never appears there: ores, hides and other materials go
    under `NeedName.RESOURCES`, flowers and herbs under `NeedName.PLANTS`. Always
    do this in the same change that creates the entity.
-8. **Sprites** into `client/public/assets/sprites/`.
+8. **Sprites** into `client/public/assets/sprites/animals/`, `creatures/` or `people/`
+   (see `references/assets.md`); the `maps.ts` `file` includes that folder.
 9. **Audio** into `client/public/assets/sounds/<category>/`.
 10. **Tiled** — place an object in the relevant `tiled/*.tmx`, then export from
     Tiled (File then Export As, or Ctrl+E to repeat the recorded target).
@@ -106,6 +107,74 @@ tiles: [
 The ibex horn, azurite and wolf fang all follow this. When the user names an
 icon position, take it as 1-indexed and render the cells to confirm.
 
+## Category sheets: textures, icons and shadows
+
+Every textured entity, animated (`TEXTURE_ANIMATION`), growing (`GROWABLE`) and
+connecting (`CONNECTABLE`) ones included, lives on one of four tile-grid sheets in
+`client/public/assets/sprites/`, grouped by kind (all barrels, all trees, ...):
+
+| sheet | holds |
+| --- | --- |
+| `items` | anything with an icon-sheet texture: drops, tools, food, seeds, resources; plus loose UI icons |
+| `interior` | `configs/entities/interior.ts` |
+| `nature` | flora, rocks, crop plants, gathering plants |
+| `buildings` | buildings, and textured entities in `transitions.ts` (well, ladders) |
+
+An item's icon sits left of its texture's bottom row, the same convention as the
+icon sheets. All four load on every map through the `entities` pool in `maps.ts`,
+so a still-textured entity needs no `maps.ts` entry of its own.
+
+To add one, write its `TEXTURE` (and `metadata.icon`) against whatever source
+sheet the art is on, then:
+
+```sh
+npm run sheets          # moves it onto its category sheet, bakes its shadow, rewrites the config
+                        # (animations are laid out vertically and wrap into columns past 24 rows)
+npm run verify:sheets   # fails while any entity still points outside its category sheet
+python3 scripts/sheets.py preview <sheet> out.png   # labelled view; Read it
+python3 scripts/sheets.py unused   # sheet loads and files nothing references any more
+```
+
+Placement is stable: entities already on a sheet keep their tiles, new ones go in
+free space in their group's rows. Groups come from `PATTERNS` and `GROUPS` in the
+script. The source sheets (`icons*`, `gathering*`, ...) live in `sprites/collection/` as
+the art library to draw from; the game never loads from there.
+
+**Ground shadows are baked, never painted by hand.** A sprite gets the house
+shadow (its silhouette shifted 1px right, 2px down, `(42,40,61)` at alpha 100)
+when it has no painted shadow and its solid art is at most 32px tall. Trees, big
+rocks and buildings are left alone, and so is anything `flat`. `NO_SHADOW` opts out.
+
+Textures built by a helper function (the spell pages, the trophies) are not
+moved; edit those by hand.
+
+## Collision bodies and draw order
+
+Draw order follows the sprite centre (`entity.y`), so a body has to straddle it.
+The player's body runs from 4px above its centre to 8px below it, so for a prop:
+
+- its body's bottom edge must sit below `centre - 4`, or a player blocked from
+  below can stop while still drawn behind it;
+- its body's top edge must sit above `centre + 8`, or a player blocked from above
+  can stop while already drawn in front.
+
+`barrels1` (32x10 at 8,20 on a 48px sprite) is the reference. Get the numbers from
+the pixels:
+
+```sh
+python3 scripts/bodies.py fit <entity>   # suggested body next to the current one
+python3 scripts/bodies.py audit out.png  # every entity's body against its art; Read the sheet
+```
+
+A non-colliding body (`collides: false`) is still read: bounce and trap fire on
+its overlap, and a moving entity's light shadow sits at its bottom edge. Fit it
+under the lower half of the art, never leave the 16x16 at 0,0 placeholder. Floor
+props a player could walk into (bowls, chairs, sacks) get a colliding body;
+flat, wall-mounted and table-top props do not.
+
+Two entities may share a TEXTURE `key` only if their art is identical: textures
+are composed once per key, so the second one silently shows the first one's sprite.
+
 ## Silent failures to check for
 
 | Symptom | Almost always |
@@ -117,6 +186,8 @@ icon position, take it as 1-indexed and render the cells to confirm.
 | Not in the world | Tiled object placed but the map never re-exported |
 | Item missing from the economy tab | not listed under a need in `needs.ts` |
 | Item icon or world sprite shows the wrong tile, or nothing | `icon`/`tiles` written 0-indexed instead of 1-indexed |
+| Player draws behind a prop while standing in front of it, or the reverse | body does not straddle the sprite centre (run `bodies.py fit`) |
+| An item shows another item's sprite | two entities share a TEXTURE `key` with different art |
 
 ## Verify before handing back
 

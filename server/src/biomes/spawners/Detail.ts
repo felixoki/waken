@@ -20,13 +20,14 @@ export class DetailSpawner {
     config: DetailConfig,
     firstgid: number,
     data: number[],
+    name: string,
   ): number {
     const { width, height, occupied } = this;
     const gen = handlers.generation;
 
     if (!config.stamps.length) return 0;
 
-    const key = `${this.seed}-detail-${config.tileset}-${config.terrains.join(",")}`;
+    const key = `${this.seed}-detail-${name}`;
     const rng = gen.seededRandom(gen.hash(key));
     const noise = config.cluster
       ? new NoiseGenerator({ seed: key, scale: 0.08, octaves: 2 })
