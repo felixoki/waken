@@ -832,7 +832,20 @@
 
 - Chests don't close when walking away ✅
 
-### In progress
+#### 20.10.2026
+
+- Refactor light pipeline ✅
+- Clean up assets folder structure ✅
+
+### To Do
+
+- Add flour and mill
+- Add craftable candles from bear fat
+- Add craftable pillows from goose down and wool
+- Add craftable beds by tier
+- Empty mana outside dreams
+- Add pigs
+- Add village improvement unlocks
 
 ### Bugs
 
@@ -851,12 +864,5 @@
 
 - UI ⭐
 - Relationships ⭐
-- Economy
-  - Add flour and mill
-  - Craft candles from bear fat
-  - Craft pillows from goose down and wool
-  - Add pigs
 - Ideas
   - Remove among player collisions
-- Bodies
-  - Anchor bodies to the sprite centre on frame size changes: dragon form skin (player and villain) and carrot/tomato growth stages shift the body
