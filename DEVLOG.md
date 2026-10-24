@@ -837,9 +837,15 @@
 - Refactor light pipeline ✅
 - Clean up assets folder structure ✅
 
+#### 24.10.2026
+
+- Add flour and mill ✅
+- Add player stories ✅
+- Add villager relationships and schedules ✅
+
+
 ### To Do
 
-- Add flour and mill
 - Add craftable candles from bear fat
 - Add craftable pillows from goose down and wool
 - Add craftable beds by tier
@@ -855,14 +861,12 @@
 🔵 Low
 
 - Effect tint doesn't reset for other clients
-- Ledge corners render above players
+- Southern dungeon ledge corners render above players
 - Direction visibly resets after watering
-- Illuminate breaks ambience pipeline
 
 
 ### Backlog
 
 - UI ⭐
-- Relationships ⭐
 - Ideas
   - Remove among player collisions
