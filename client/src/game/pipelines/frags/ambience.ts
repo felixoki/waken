@@ -26,7 +26,7 @@ uniform float rainStrength;
 uniform float rainSpeed;
 uniform float rainScale;
 uniform float rainDensity;
-uniform float rainRush;
+uniform float rainClock;
 
 uniform vec3 snowColor;
 uniform float snowStrength;
@@ -101,8 +101,7 @@ float rain(vec2 uv, float t, float intensity) {
     /** Per-column random drives fall speed and phase so columns don't scroll in lockstep. */
     float col = floor(st.x);
     float cr = hash(vec2(col, fi + 1.0));
-    float rush = 1.0 - rainRush + intensity * rainRush;
-    st.y += t * rainSpeed * (5.0 + cr * 8.0) * rush + cr * 90.0;
+    st.y += t * rainSpeed * (5.0 + cr * 8.0) + cr * 90.0;
 
     vec2 id = floor(st);
     vec2 f = fract(st);
@@ -249,7 +248,7 @@ void main(void) {
   // --- Rain (world-anchored so camera movement doesn't alter apparent speed) ---
   if (rainStrength > 0.0) {
     vec2 rainUv = vec2(world.x, -world.y) * 0.003;
-    float r = rain(rainUv, time, rainStrength);
+    float r = rain(rainUv, rainClock, rainStrength);
     graded += r * min(rainStrength, 1.5) * 0.12;
   }
 

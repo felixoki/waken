@@ -256,7 +256,7 @@ export class SoundManager {
     pan: number;
   } {
     const listener = this.scene.managers.players?.player;
-    if (!listener) return { volume: 1, pan: 0 };
+    if (!listener) return { volume: 0, pan: 0 };
 
     const dx = position.x - listener.x;
     const dy = position.y - listener.y;

@@ -1,4 +1,5 @@
 import { AmbientSoundConfig, ComponentName } from "@server/types";
+import { CROSSFADE_DURATION } from "@server/globals";
 import { Component } from "./Component";
 import { Entity } from "../Entity";
 
@@ -9,6 +10,7 @@ export class AmbientSoundComponent extends Component {
   private config: AmbientSoundConfig;
   private timer?: Phaser.Time.TimerEvent;
   private sound: Phaser.Sound.WebAudioSound | null = null;
+  private gain = { value: 0 };
 
   constructor(entity: Entity, config: AmbientSoundConfig) {
     super();
@@ -26,6 +28,12 @@ export class AmbientSoundComponent extends Component {
         },
       );
 
+      this.entity.scene.tweens.add({
+        targets: this.gain,
+        value: 1,
+        duration: CROSSFADE_DURATION,
+      });
+
       return;
     }
     
@@ -40,13 +48,14 @@ export class AmbientSoundComponent extends Component {
       { x: this.entity.x, y: this.entity.y },
     );
 
-    this.sound.setVolume(volume);
+    this.sound.setVolume(volume * this.gain.value);
     this.sound.setPan(pan);
   }
 
   detach(): void {
     this.timer?.destroy();
     this.timer = undefined;
+    this.entity.scene?.tweens.killTweensOf(this.gain);
     this.sound?.stop();
     this.sound?.destroy();
     this.sound = null;

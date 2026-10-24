@@ -105,6 +105,7 @@ export class AmbiencePipeline extends PostFXPipeline {
   private layers: Map<AmbienceLayer, AmbienceModifier>;
   private camera: { x: number; y: number; zoom: number };
   private sunlight: AmbienceSun;
+  private rainClock = 0;
 
   constructor(game: Phaser.Game) {
     super({
@@ -246,6 +247,9 @@ export class AmbiencePipeline extends PostFXPipeline {
     snow *= frost;
     rain *= 1 - frost;
 
+    const rush = 1 - this.base.rain.rush + rain * this.base.rain.rush;
+    this.rainClock += (this.game.loop.delta / 1000) * rush;
+
     this.set1f("coolness", coolness);
     this.set1f("saturation", saturation);
     this.set1f("contrast", contrast);
@@ -262,7 +266,7 @@ export class AmbiencePipeline extends PostFXPipeline {
     this.set1f("rainSpeed", this.base.rain.speed);
     this.set1f("rainScale", this.base.rain.scale);
     this.set1f("rainDensity", this.base.rain.density);
-    this.set1f("rainRush", this.base.rain.rush);
+    this.set1f("rainClock", this.rainClock);
     this.set3f(
       "snowColor",
       this.base.snow.color[0],

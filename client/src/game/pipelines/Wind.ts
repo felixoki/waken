@@ -6,6 +6,7 @@ const MultiPipeline = Phaser.Renderer.WebGL.Pipelines.MultiPipeline;
 
 export class WindPipeline extends MultiPipeline {
   public readonly wind = { amplitude: WIND_AMPLITUDE, speed: WIND_SPEED };
+  private clock = 0;
 
   constructor(game: Phaser.Game, name: string = PipelineName.WIND) {
     super({
@@ -22,9 +23,8 @@ export class WindPipeline extends MultiPipeline {
 
         uniform mat4 uProjectionMatrix;
 
-        uniform float current_time;
+        uniform float wind_clock;
         uniform float wind_amplitude;
-        uniform float wind_speed;
 
         attribute vec2 inPosition;
         attribute vec2 inTexCoord;
@@ -42,8 +42,8 @@ export class WindPipeline extends MultiPipeline {
 
           float vertexFactor = 1.0 - inTexCoord.y;
           float phase = inPosition.x * 0.03;
-          float sway = sin(current_time * wind_speed + phase)
-                     + 0.3 * sin(current_time * wind_speed * 2.3 + phase);
+          float sway = sin(wind_clock + phase)
+                     + 0.3 * sin(wind_clock * 2.3 + phase);
 
           position.x += sway * wind_amplitude * vertexFactor * vertexFactor;
 
@@ -61,8 +61,10 @@ export class WindPipeline extends MultiPipeline {
   onPreRender() {
     super.onPreRender();
 
-    this.set1f("current_time", this.game.loop.time);
+    this.clock =
+      (this.clock + this.game.loop.delta * this.wind.speed) % (Math.PI * 20);
+
+    this.set1f("wind_clock", this.clock);
     this.set1f("wind_amplitude", this.wind.amplitude);
-    this.set1f("wind_speed", this.wind.speed);
   }
 }
