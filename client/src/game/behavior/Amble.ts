@@ -92,6 +92,11 @@ export class AmbleBehavior extends Behavior {
     this.idle.time = 0;
   }
 
+  settle(): void {
+    this.spawn = { x: 0, y: 0 };
+    this.reset();
+  }
+
   private _getRandomPoint(): Waypoint {
     const angle = Math.random() * 2 * Math.PI;
     const distance = Math.random() * this.radius;

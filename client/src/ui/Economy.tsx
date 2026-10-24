@@ -5,12 +5,44 @@ import {
   EconomySnapshot,
   EntityName,
   Event,
+  GroupName,
+  Mood,
   NeedName,
 } from "@server/types";
 import { MAX_STACK } from "@server/globals";
 import { TierUpgrade } from "@server/configs/tiers";
 import { configs } from "@server/configs";
 import { Item } from "./Item";
+
+type Entry =
+  EconomySnapshot["needs"][number]["groups"][number]["items"][number];
+
+const moods: Record<Mood, string> = {
+  [Mood.HAPPY]: "Content",
+  [Mood.HUNGRY]: "Hungry",
+  [Mood.THIRSTY]: "Thirsty",
+  [Mood.COLD]: "Cold",
+  [Mood.SLEEPLESS]: "Sleepless",
+};
+
+const groups: Record<GroupName, string> = {
+  [GroupName.FRUIT]: "Fruit",
+  [GroupName.PROTEIN]: "Protein",
+  [GroupName.VEGETABLES]: "Vegetables",
+  [GroupName.BAKED]: "Baked goods",
+  [GroupName.MILK]: "Milk",
+  [GroupName.ALCOHOL]: "Alcohol",
+  [GroupName.CLOTHING]: "Clothing",
+  [GroupName.LIGHT]: "Light",
+  [GroupName.BEDDING]: "Bedding",
+  [GroupName.MATERIALS]: "Materials",
+  [GroupName.ANIMAL_PARTS]: "Animal parts",
+  [GroupName.RARE]: "Rare",
+  [GroupName.FLOWERS]: "Flowers",
+  [GroupName.HERBS]: "Herbs",
+  [GroupName.CROPS]: "Crops",
+  [GroupName.FUNGI]: "Fungi",
+};
 
 export function Economy() {
   const [snapshot, setSnapshot] = useState<EconomySnapshot | null>(null);
@@ -40,7 +72,7 @@ export function Economy() {
   const active =
     activeTab && categories.includes(activeTab) ? activeTab : categories[0];
   const need = snapshot.needs.find((need) => need.name === active);
-  const items = need?.items ?? [];
+  const isContent = snapshot.mood === Mood.HAPPY;
   const nextTier = snapshot.tier + 1;
   const upgradeConfig: TierUpgrade | undefined = configs.tiers.find(
     (tier) => tier.tier === nextTier,
@@ -56,12 +88,47 @@ export function Economy() {
     EventBus.emit(Event.ECONOMY_UPGRADE);
   };
 
+  const renderItem = (entry: Entry, i: number) => {
+    const locked = entry.tier > snapshot.tier;
+    const hidden = locked && !!need?.consumed;
+    const definition = configs.entities[entry.item];
+    const soul = definition?.components.some(
+      (component) => component.name === ComponentName.CAPTURABLE,
+    );
+
+    return (
+      <Item
+        key={i}
+        name={soul ? EntityName.SOULSTONE : entry.item}
+        title={
+          soul
+            ? `${definition?.metadata?.displayName ?? entry.item} soul`
+            : undefined
+        }
+        bar={hidden ? undefined : entry.quantity}
+        barMax={MAX_STACK}
+        barLabel={hidden ? undefined : `${entry.quantity}/${MAX_STACK}`}
+        disabled={locked}
+        hint={locked ? `Unlock with tier ${entry.tier}` : undefined}
+        hideWeight
+      />
+    );
+  };
+
   return (
     <div className="fixed bottom-4 right-4 p-4 bg-black/10 rounded-lg">
-      <h3 className="text-white mb-2">Economy</h3>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-white">Economy</h3>
+        <span className="flex items-center gap-1.5 text-sm text-white/70">
+          <span
+            className={`w-2 h-2 rounded-full ${isContent ? "bg-green-400" : "bg-amber-400"}`}
+          />
+          {moods[snapshot.mood]}
+        </span>
+      </div>
 
       <div className="flex mb-3 bg-black/20 rounded-lg p-0.5 gap-0.5">
-        {categories.map((name) => (
+        {snapshot.needs.map(({ name, met }) => (
           <button
             key={name}
             onClick={() => setActiveTab(name)}
@@ -72,37 +139,40 @@ export function Economy() {
             }`}
           >
             {name}
+            {!met && <span className="ml-1 text-amber-400">•</span>}
           </button>
         ))}
       </div>
 
-      <ul className="grid grid-cols-[repeat(6,4rem)] gap-1 justify-center">
-        {items.map((entry, i) => {
-          const locked = entry.tier > snapshot.tier;
-          const hidden = locked && !!need?.consumed;
-          const definition = configs.entities[entry.item];
-          const soul = definition?.components.some(
-            (component) => component.name === ComponentName.CAPTURABLE,
-          );
-          return (
-            <Item
-              key={i}
-              name={soul ? EntityName.SOULSTONE : entry.item}
-              title={
-                soul
-                  ? `${definition?.metadata?.displayName ?? entry.item} soul`
-                  : undefined
-              }
-              bar={hidden ? undefined : entry.quantity}
-              barMax={MAX_STACK}
-              barLabel={hidden ? undefined : `${entry.quantity}/${MAX_STACK}`}
-              disabled={locked}
-              hint={locked ? `Unlock with tier ${entry.tier}` : undefined}
-              hideWeight
-            />
-          );
-        })}
-      </ul>
+      <div className="flex flex-col gap-2">
+        {need?.groups
+          .filter((group) => group.items.length)
+          .map((group) => (
+            <div key={group.name}>
+              <p className="flex justify-between text-xs mb-1 text-white/70">
+                <span>{groups[group.name]}</span>
+                {need.consumed && (
+                  <span
+                    className={
+                      !group.required
+                        ? "text-white/30"
+                        : group.met
+                          ? "text-green-400"
+                          : "text-amber-400"
+                    }
+                  >
+                    {!group.required
+                      ? "Not needed yet"
+                      : `${group.stocked} of ${group.needed}`}
+                  </span>
+                )}
+              </p>
+              <ul className="grid grid-cols-[repeat(6,4rem)] gap-1">
+                {group.items.map((entry, i) => renderItem(entry, i))}
+              </ul>
+            </div>
+          ))}
+      </div>
 
       {need?.consumed && (
         <p className="text-white/50 text-xs mt-2">

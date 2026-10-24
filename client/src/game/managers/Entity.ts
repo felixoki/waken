@@ -9,11 +9,16 @@ import { Factory } from "../factory/Factory";
 import { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
 import { configs } from "@server/configs";
-import { CHUNK_ACTIVATION_BUDGET, CHUNK_PIXEL_SIZE } from "@server/globals";
+import {
+  CHUNK_ACTIVATION_BUDGET,
+  CHUNK_PIXEL_SIZE,
+  ENTITY_FADE,
+} from "@server/globals";
 import { Villain } from "../Villain";
 import { vfx } from "../vfx";
 import { SwitchComponent } from "../components/Switch";
 import { StorageComponent } from "../components/Storage";
+import { TextureAnimationComponent } from "../components/TextureAnimation";
 import { handlers } from "../handlers";
 import type { ConnectIndex } from "../handlers/connect";
 
@@ -24,6 +29,7 @@ export class EntityManager {
   private queue: EntityConfig[] = [];
   private queued: Set<string> = new Set();
   private fresh: Set<string> = new Set();
+  private arriving: Set<string> = new Set();
   private grid: Map<string, Map<string, Rect>> = new Map();
   private merged: Map<MapName, number[][]> = new Map();
   private jumps: Map<MapName, number[][]> = new Map();
@@ -100,6 +106,40 @@ export class EntityManager {
     this.queue.push(config);
     this.queued.add(config.id);
     if (fresh) this.fresh.add(config.id);
+  }
+
+  animate(id: string, playing: boolean): void {
+    const queued = this.queue.find((config) => config.id === id);
+    if (queued) queued.playing = playing;
+
+    this.entities
+      .get(id)
+      ?.getComponent<TextureAnimationComponent>(ComponentName.TEXTURE_ANIMATION)
+      ?.setPlaying(playing);
+  }
+
+  arrive(config: EntityConfig): void {
+    this.arriving.add(config.id);
+    this.add(config, false);
+  }
+
+  leave(id: string): void {
+    const entity = this.entities.get(id);
+    if (!entity) return this.remove(id);
+
+    this.queued.delete(id);
+    this.fresh.delete(id);
+    this.arriving.delete(id);
+    this._unregisterStatic(id, entity);
+    handlers.connect.link(this.connected, entity, false);
+    this.entities.delete(id);
+
+    entity.scene.tweens.add({
+      targets: entity,
+      alpha: 0,
+      duration: ENTITY_FADE,
+      onComplete: () => entity.destroy(),
+    });
   }
 
   batch(configs: EntityConfig[]): void {
@@ -198,6 +238,16 @@ export class EntityManager {
       entity.getComponent(ComponentName.PICKABLE)
     )
       vfx.shaders.jump(entity);
+
+    if (config.playing)
+      entity
+        .getComponent<TextureAnimationComponent>(ComponentName.TEXTURE_ANIMATION)
+        ?.setPlaying(true);
+
+    if (this.arriving.delete(config.id)) {
+      entity.setAlpha(0);
+      scene.tweens.add({ targets: entity, alpha: 1, duration: ENTITY_FADE });
+    }
 
     if (entity.isStatic) this._registerStatic(entity, config, scene);
     if (config.isOpen) this.toggle(config.id, true);
@@ -322,6 +372,7 @@ export class EntityManager {
   remove(id: string): void {
     this.queued.delete(id);
     this.fresh.delete(id);
+    this.arriving.delete(id);
 
     const entity = this.entities.get(id);
 

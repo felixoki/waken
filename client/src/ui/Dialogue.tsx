@@ -84,7 +84,14 @@ export const Dialogue = () => {
 
   return (
     <div className="fixed bottom-1/5 left-1/2 transform -translate-x-1/2 flex flex-col gap-8 rounded-lg w-175 bg-black/25 p-4">
-      <p className="text-white text-lg">{data.text as string}</p>
+      <div className="flex flex-col gap-2">
+        {data.speaker && (
+          <p className="text-white/60 text-sm uppercase tracking-wide">
+            {data.speaker}
+          </p>
+        )}
+        <p className="text-white text-lg">{data.text as string}</p>
+      </div>
       <ul className="flex flex-col gap-2">
         {data.choices.map((choice, i) => (
           <li key={i}>

@@ -23,11 +23,18 @@ export class FeedableComponent extends Component {
   }
 
   attach(): void {
-    if (this.entity.tame?.isTamed) this._enable();
+    if (this.entity.tame?.isTamed || this.config.follows) this._enable();
   }
 
   update(): void {
     if (this.isHovered) this._refresh();
+  }
+
+  private get feedable(): boolean {
+    return (
+      !!this.entity.tame?.isTamed ||
+      (!!this.config.follows && !this.entity.tame?.settled)
+    );
   }
 
   detach(): void {
@@ -57,6 +64,8 @@ export class FeedableComponent extends Component {
   }
 
   private _onHover(): void {
+    if (!this.feedable) return;
+
     this.isHovered = true;
     this._refresh();
   }
@@ -83,7 +92,7 @@ export class FeedableComponent extends Component {
   }
 
   private _onPointed(player: Entity): void {
-    if (!this.entity.tame?.isTamed || player.isLocked) return;
+    if (!this.feedable || player.isLocked) return;
 
     const hotbar = player.getComponent<HotbarComponent>(ComponentName.HOTBAR);
     const slot = hotbar?.get();

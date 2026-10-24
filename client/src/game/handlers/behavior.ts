@@ -5,11 +5,13 @@ import { FleeBehavior } from "../behavior/Flee";
 import { AttackBehavior } from "../behavior/Attack";
 import { DefendBehavior } from "../behavior/Defend";
 import { SearchBehavior } from "../behavior/Search";
+import { FollowBehavior } from "../behavior/Follow";
 import { handlers } from "./index";
 
 export const behavior: {
   react: (entity: Entity, targetId: string) => void;
   search: (entity: Entity, position: Waypoint | null) => void;
+  follow: (entity: Entity) => void;
   lookAround: (entity: Entity, attack: AttackBehavior) => Partial<Input>;
   retarget: (entity: Entity, attack: AttackBehavior) => boolean;
 } = {
@@ -45,6 +47,16 @@ export const behavior: {
       if (!engaged) attack.start(targetId);
       queue.shiftTo(BehaviorName.ATTACK);
     }
+  },
+
+  follow: (entity: Entity) => {
+    const queue = entity.getComponent<BehaviorQueue>(
+      ComponentName.BEHAVIOR_QUEUE,
+    );
+    if (!queue || queue.active?.name === BehaviorName.FOLLOW) return;
+
+    queue.get<FollowBehavior>(BehaviorName.FOLLOW)?.reset();
+    queue.shiftTo(BehaviorName.FOLLOW);
   },
 
   search: (entity: Entity, position: Waypoint | null) => {

@@ -8,6 +8,7 @@ import { AmbleBehavior } from "../behavior/Amble";
 import { WanderBehavior } from "../behavior/Wander";
 import { FleeBehavior } from "../behavior/Flee";
 import { SearchBehavior } from "../behavior/Search";
+import { FollowBehavior } from "../behavior/Follow";
 
 export class BehaviorFactory {
   static create(behaviors: BehaviorConfig[]): Behavior[] {
@@ -40,6 +41,9 @@ export class BehaviorFactory {
           break;
         case BehaviorName.SEARCH:
           be = new SearchBehavior();
+          break;
+        case BehaviorName.FOLLOW:
+          be = new FollowBehavior();
           break;
       }
 

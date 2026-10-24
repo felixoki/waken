@@ -30,6 +30,7 @@ import {
   SlotZone,
   SoundName,
   WeatherName,
+  TameState,
 } from "@server/types";
 import EventBus from "../EventBus";
 import { handlers } from "../handlers";
@@ -110,6 +111,7 @@ export class MainScene extends Phaser.Scene {
       MapName.GLASSBLOWER_HOUSE,
       MapName.FISHING_HUT,
       MapName.FARM_HOUSE,
+      MapName.WINDMILL,
       MapName.ISLES,
     ];
     const ready = new Set<string>();
@@ -159,6 +161,21 @@ export class MainScene extends Phaser.Scene {
   }
 
   private _registerEvents(): void {
+    /**
+     * Dev
+     */
+    if (import.meta.env.DEV) {
+      window.dev = (name, ...args) =>
+        this.managers.socket.emit(Event.DEV_COMMAND, {
+          name,
+          args: args.map(String),
+        });
+
+      this.managers.socket.on(Event.DEV_OUTPUT, (lines: string[]) =>
+        console.log(lines.join("\n")),
+      );
+    }
+
     /**
      * World
      */
@@ -364,6 +381,21 @@ export class MainScene extends Phaser.Scene {
       });
     });
 
+    this.managers.socket.on(Event.ENTITY_ARRIVE, (data: EntityConfig) => {
+      this.managers.entities.arrive(data);
+    });
+
+    this.managers.socket.on(
+      Event.ENTITY_ANIMATE,
+      (data: { id: string; playing: boolean }) => {
+        this.managers.entities.animate(data.id, data.playing);
+      },
+    );
+
+    this.managers.socket.on(Event.ENTITY_LEAVE, (data: string) => {
+      this.managers.entities.leave(data);
+    });
+
     this.managers.socket.on(Event.ENTITY_DESPAWN, (data: string) => {
       if (this.managers.players.player?.isTransitioning) return;
 
@@ -434,6 +466,17 @@ export class MainScene extends Phaser.Scene {
 
         entity.tame.fedAt = data.fedAt;
         vfx.emitters.hearts(entity.scene, entity.x, entity.y);
+      },
+    );
+
+    this.managers.socket.on(
+      Event.ENTITY_FOLLOW,
+      (data: { id: string; tame: TameState }) => {
+        const entity = this.managers.entities.entities.get(data.id);
+        if (!entity) return;
+
+        entity.tame = { ...data.tame };
+        if (entity.tame.follows) handlers.behavior.follow(entity);
       },
     );
 

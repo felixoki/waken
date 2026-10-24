@@ -37,6 +37,16 @@ export class TextureAnimationComponent extends Component {
     this.entity.play(this.animKey);
   }
 
+  setPlaying(playing: boolean): void {
+    if (playing) {
+      if (!this.entity.anims.isPlaying) this.entity.play(this.animKey);
+      return;
+    }
+
+    this.entity.stop();
+    this.entity.setTexture(`${this.animKey}_0`);
+  }
+
   private _createFrames(): void {
     const scene = this.entity.scene;
     const { tileSize, tiles, spritesheet, frames, direction } = this.config;

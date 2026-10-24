@@ -527,7 +527,8 @@ export const path = {
   space: (entity: Entity): Space | null => {
     const map = entity.scene.tileManager?.map;
     const body = entity.body as Phaser.Physics.Arcade.Body | undefined;
-    const grid = handlers.path.getGrid(entity, handlers.path.canJump(entity));
+    const jump = handlers.path.canJump(entity);
+    const grid = handlers.path.getGrid(entity, jump);
     if (!map || !grid.length) return null;
 
     const hw = (body ? Math.ceil(body.halfWidth) : 0) + PATH_MARGIN;
@@ -568,12 +569,30 @@ export const path = {
           if (data[j * width + i] !== 1) data[j * width + i] = value;
     };
 
+    const { tileManager } = entity.scene;
+    const tiles = jump ? null : tileManager.getCollisionGrid();
+
     for (let ty = 0; ty < rows; ty++)
       for (let tx = 0; tx < cols; tx++)
-        if (grid[ty][tx]) block(tx * tw, ty * th, tw, th, grid[ty][tx]);
+        if (grid[ty][tx] && !tiles?.[ty][tx])
+          block(tx * tw, ty * th, tw, th, grid[ty][tx]);
 
-    for (const rail of entity.scene.tileManager.getRails())
-      block(rail.x, rail.y, rail.width, rail.height);
+    if (tiles) {
+      const shapes = [
+        ...tileManager.colliders,
+        ...tileManager.thresholds.flatMap((t) => (t.body ? [t.body] : [])),
+      ];
+
+      for (const shape of shapes)
+        block(
+          shape.x - shape.width / 2,
+          shape.y - shape.height / 2,
+          shape.width,
+          shape.height,
+        );
+    } else
+      for (const rail of tileManager.getRails())
+        block(rail.x, rail.y, rail.width, rail.height);
 
     const space = { data, width, height, step };
     sizes.set(key, space);
