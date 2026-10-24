@@ -259,6 +259,7 @@ export interface BiomeConfig {
   borders: BorderConfig[];
   terrain: TerrainName[];
   objects: SpawnRule[];
+  cult?: TerrainName[];
   exclusion: number;
   smoothing: { iterations: number; threshold: number } | null;
   details?: DetailConfig[];

@@ -1,7 +1,8 @@
 import { Direction } from "./directions";
 import { EntityName } from "./entities";
 import { MapName } from "./maps";
-import { CrafterConfig } from "./crafter";
+import { CrafterConfig, Ingredient } from "./crafter";
+import type { StoryFlag } from "./story";
 import { LightConfig } from "./ambience";
 import { GrowthStageConfig } from "./farming";
 import { DamageType } from "./damage.js";
@@ -18,6 +19,7 @@ export enum ComponentName {
   BODY = "body",
   BOUNCE = "bounce",
   CONNECTABLE = "connectable",
+  CONVERTER = "converter",
   CRAFTER = "crafter",
   CONSUMABLE = "consumable",
   DAMAGEABLE = "damageable",
@@ -96,6 +98,7 @@ export type ComponentConfig =
   | { name: ComponentName.ROBE; config: RobeConfig }
   | { name: ComponentName.SLEEPABLE; config: SleepableConfig }
   | { name: ComponentName.STORAGE; config: StorageConfig }
+  | { name: ComponentName.CONVERTER; config: ConverterConfig }
   | { name: ComponentName.SWITCH; config: SwitchConfig }
   | { name: ComponentName.TEXTURE; config: TextureConfig; key: string }
   | { name: ComponentName.TEXTURE_ANIMATION; config: TextureAnimationConfig }
@@ -127,6 +130,7 @@ export interface CapturableConfig {
 export interface FeedableConfig {
   foods: EntityName[];
   duration: number;
+  follows?: boolean;
 }
 
 export interface BreedableConfig {
@@ -279,6 +283,14 @@ export interface ConsumableConfig {
   duration?: number;
   restore?: { health?: number; mana?: number };
   unlock?: number;
+}
+
+export interface ConverterConfig {
+  inputs: Ingredient[];
+  output: Ingredient;
+  days: number;
+  requires?: StoryFlag;
+  drives?: EntityName;
 }
 
 export interface StorageConfig {

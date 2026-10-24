@@ -1,9 +1,11 @@
 import { World } from "../World";
+import { Condition, StoryEffect } from "./story";
 
 export enum Mood {
   HUNGRY = "HUNGRY",
   COLD = "COLD",
   THIRSTY = "THIRSTY",
+  SLEEPLESS = "SLEEPLESS",
   HAPPY = "HAPPY",
 }
 
@@ -31,6 +33,7 @@ export interface DialogueChoice {
   text: DialogueText;
   next?: string;
   effects?: DialogueEffect[];
+  when?: Condition;
 }
 
 export enum DialogueEffectName {
@@ -49,10 +52,15 @@ export interface DialogueNode {
   text: DialogueText;
   choices?: Array<DialogueChoice | DialogueReference>;
   salience?: number;
+  when?: Condition;
+  story?: StoryEffect[];
 }
 
 export interface Dialogue {
-  [nodeId: string]: DialogueNode | DialogueNode[] | DialogueReference;
+  [nodeId: string]:
+    | DialogueNode
+    | Array<DialogueNode | DialogueReference>
+    | DialogueReference;
 }
 
 export interface DialogueContext {
@@ -64,6 +72,7 @@ export interface DialogueContext {
 export interface DialogueResponse {
   entityId: string;
   nodeId: string;
+  speaker?: string;
   text: DialogueText;
   choices: DialogueChoice[];
 }

@@ -11,6 +11,7 @@ import { Effect, EffectName } from "./effects.js";
 import { SoundName } from "./sounds";
 import { ZoneConfig } from "./zones.js";
 import type { BiomeName } from "./generation";
+import type { Position } from "./schedule";
 
 export interface AttackConfig {
   state: StateName;
@@ -40,6 +41,8 @@ export interface TameState {
   fedAt?: number;
   bredAt?: number;
   milkedAt?: number;
+  follows?: string;
+  settled?: boolean;
 }
 
 export interface EntityConfig {
@@ -71,6 +74,11 @@ export interface EntityConfig {
   parent?: string;
   origin?: BiomeName;
   isOpen?: boolean;
+  anchor?: Position;
+  away?: boolean;
+  placement?: string;
+  converting?: { at: number; amount: number };
+  playing?: boolean;
 }
 
 export interface SpawnerConfig {
@@ -133,6 +141,9 @@ export interface Modifier {
     health?: number;
     mana?: number;
   };
+  depth?: number;
+  keep?: boolean;
+  calm?: boolean;
   bonus?: {
     health?: number;
     mana?: number;
@@ -181,6 +192,7 @@ export enum Rarity {
 }
 
 export interface EntityMetadata {
+  name?: string;
   displayName?: string;
   description?: string;
   icon?: Icon;
@@ -240,6 +252,7 @@ export enum EntityName {
   BOXES_FISH2 = "boxes_fish2",
   BOXES_FISH3 = "boxes_fish3",
   BREAD = "bread",
+  FLOUR = "flour",
   BUSH1 = "bush1",
   BUSH2 = "bush2",
   BUSH3 = "bush3",
@@ -292,6 +305,7 @@ export enum EntityName {
   DUNGEON_ENTRANCE = "dungeon_entrance",
   FARM_HOUSE = "farm_house",
   FARM_HOUSE_EXIT = "farm_house_exit",
+  WINDMILL_EXIT = "windmill_exit",
   FARMPLOT = "farmplot",
   FEATHER = "feather",
   FIREBOWL1 = "firebowl1",
@@ -395,6 +409,17 @@ export enum EntityName {
   AZURITE1 = "azurite1",
   AZURITE_ORE = "azurite_ore",
   IRON_ORE = "iron_ore",
+  IRON_VEIN = "iron_vein",
+  MILL_HOPPER = "mill_hopper",
+  FORGE = "forge",
+  WINDMILL_SAILS = "windmill_sails",
+  VISITOR1 = "visitor1",
+  VISITOR2 = "visitor2",
+  CULT_TENT = "cult_tent",
+  NIGHTCAP = "nightcap",
+  LEFT_BOOT = "left_boot",
+  CARVED_CHARM = "carved_charm",
+  OLD_FRAME = "old_frame",
   CAVE_ROCK1 = "cave_rock1",
   CAVE_ROCK2 = "cave_rock2",
   CAVE_ROCK3 = "cave_rock3",
@@ -457,6 +482,7 @@ export enum EntityName {
   ROCKS5 = "rocks5",
   ROCKS6 = "rocks6",
   SHADOW_WANDERER = "shadow_wanderer",
+  GRANDMOTHER = "grandmother",
   SILVER_SWORD = "silver_sword",
   SPAWNER = "spawner",
   TEXTURE_SPAWNER = "texture_spawner",

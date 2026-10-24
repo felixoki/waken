@@ -5,6 +5,7 @@ import { Slot } from './hotbar';
 import { MapName } from './maps';
 import { SpellName } from './spells';
 import { Effect } from './effects.js';
+import { PlayerStory } from './story';
 
 export interface SleepState {
   bed: string;
@@ -33,4 +34,5 @@ export interface PlayerConfig {
   active: number;
   effects?: Effect[];
   records?: Partial<Record<FishName, number>>;
+  story: PlayerStory;
 }

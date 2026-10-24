@@ -1,6 +1,7 @@
 import { BiomeName } from "./generation";
 import { SoundConfig } from "./sounds";
 import { MapAmbienceConfig } from "./ambience";
+import type { StoryFlag } from "./story";
 
 export enum MapName {
   VILLAGE = "village",
@@ -9,6 +10,7 @@ export enum MapName {
   MARKET_HOUSE = "market_house",
   GLASSBLOWER_HOUSE = "glassblower_house",
   FARM_HOUSE = "farm_house",
+  WINDMILL = "windmill",
   FISHING_HUT = "fishing_hut",
   TAVERN = "tavern",
   HOME = "home",
@@ -40,6 +42,7 @@ export interface MapConfig {
   sound?: SoundConfig;
   ambience?: MapAmbienceConfig;
   ambient?: number;
+  requires?: StoryFlag;
 }
 
 export interface Spritesheet {

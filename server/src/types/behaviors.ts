@@ -7,6 +7,7 @@ export enum BehaviorName {
   WANDER = "wander",
   FLEE = "flee",
   SEARCH = "search",
+  FOLLOW = "follow",
 }
 
 export interface PatrolBehaviorConfig {
@@ -59,7 +60,8 @@ export type BehaviorConfig =
   | { name: BehaviorName.AMBLE; config?: AmbleBehaviorConfig }
   | { name: BehaviorName.WANDER; config?: WanderBehaviorConfig }
   | { name: BehaviorName.FLEE; config?: FleeBehaviorConfig }
-  | { name: BehaviorName.SEARCH };
+  | { name: BehaviorName.SEARCH }
+  | { name: BehaviorName.FOLLOW };
 
 export interface BehaviorInput {
   targetX: number;

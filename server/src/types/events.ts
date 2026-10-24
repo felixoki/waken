@@ -55,6 +55,7 @@ export enum Event {
   ENTITY_RESISTED = "entity_resisted",
   ENTITY_CAPTURE = "entity_capture",
   ENTITY_FEED = "entity_feed",
+  ENTITY_FOLLOW = "entity_follow",
   ENTITY_MATURE = "entity_mature",
   ENTITY_LAY = "entity_lay",
   ENTITY_MILK = "entity_milk",
@@ -168,4 +169,13 @@ export enum Event {
   LOCATION = "location",
   CHART = "chart",
   MAP_READY = "map_ready",
+
+  /** Schedules */
+  ENTITY_ARRIVE = "entity_arrive",
+  ENTITY_LEAVE = "entity_leave",
+  ENTITY_ANIMATE = "entity_animate",
+
+  /** Dev */
+  DEV_COMMAND = "dev_command",
+  DEV_OUTPUT = "dev_output",
 }
