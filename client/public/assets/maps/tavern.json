@@ -365,6 +365,40 @@
                  "width":1,
                  "x":90,
                  "y":116
+                }, 
+                {
+                 "height":1,
+                 "id":21,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.tarro"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":256,
+                 "y":116
+                }, 
+                {
+                 "height":1,
+                 "id":22,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.esken"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":184,
+                 "y":132
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -423,7 +457,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":21,
+ "nextobjectid":23,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="12" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="3">
+ <editorsettings>
+  <export target="../client/public/assets/maps/windmill.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="181" name="farm" tilewidth="16" tileheight="16" tilecount="384" columns="24">
+  <image source="../client/public/assets/sprites/buildings/farm.png" width="384" height="256"/>
+ </tileset>
+ <layer id="2" name="floor" width="12" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,391,391,415,391,391,391,391,415,391,391,0,
+0,415,415,439,415,415,415,415,439,415,415,0,
+0,439,439,463,439,439,439,439,463,439,439,0,
+0,463,463,487,463,463,463,463,487,463,463,0,
+0,487,487,391,487,487,487,487,391,487,487,0,
+0,391,391,415,391,391,391,391,415,391,391,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="1" name="walls" width="12" height="10">
+  <properties>
+   <property name="collides" value="true"/>
+   <property name="opaque" value="true"/>
+  </properties>
+  <data encoding="csv">
+510,511,511,511,511,511,511,511,511,511,511,512,
+534,389,301,301,301,301,301,301,301,301,390,536,
+534,413,325,325,325,325,325,325,325,325,414,536,
+534,437,349,349,349,349,349,349,349,349,438,536,
+534,412,0,0,0,0,0,0,0,0,347,536,
+534,412,0,0,0,0,0,0,0,0,347,536,
+534,412,0,0,0,0,0,0,0,0,347,536,
+534,412,0,0,0,0,0,0,0,0,347,536,
+534,461,310,310,489,490,490,491,310,310,462,536,
+558,559,559,559,513,514,514,515,559,559,559,560
+</data>
+ </layer>
+ <objectgroup id="3" name="objects">
+  <object id="1" name="Windmill_Exit" x="96" y="144" width="1" height="1"/>
+  <object id="2" name="Mill_Hopper" x="56" y="40" width="1" height="1"/>
+ </objectgroup>
+</map>

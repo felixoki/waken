@@ -2604,6 +2604,18 @@
     "farm_interior",
     57
    ],
+   "0,5": [
+    "farm_walls_floor",
+    101
+   ],
+   "0,6": [
+    "farm_walls_floor",
+    111
+   ],
+   "0,7": [
+    "farm_walls_floor",
+    121
+   ],
    "1,0": [
     "farm_interior",
     7
@@ -2744,6 +2756,10 @@
     "farm_walls_floor",
     58
    ],
+   "15,9": [
+    "farm_walls_floor",
+    92
+   ],
    "16,0": [
     "farm_interior",
     36
@@ -2751,6 +2767,14 @@
    "16,1": [
     "farm_interior",
     53
+   ],
+   "16,10": [
+    "farm_walls_floor",
+    103
+   ],
+   "16,11": [
+    "farm_walls_floor",
+    113
    ],
    "16,2": [
     "farm_interior",
@@ -2764,9 +2788,65 @@
     "farm_walls_floor",
     59
    ],
+   "16,8": [
+    "farm_walls_floor",
+    83
+   ],
+   "16,9": [
+    "farm_walls_floor",
+    93
+   ],
+   "17,10": [
+    "farm_walls_floor",
+    104
+   ],
+   "17,11": [
+    "farm_walls_floor",
+    114
+   ],
+   "17,13": [
+    "farm_walls_floor",
+    134
+   ],
+   "17,14": [
+    "farm_walls_floor",
+    144
+   ],
+   "17,15": [
+    "farm_walls_floor",
+    154
+   ],
+   "17,8": [
+    "farm_walls_floor",
+    84
+   ],
+   "17,9": [
+    "farm_walls_floor",
+    94
+   ],
    "18,1": [
     "farm_interior",
     31
+   ],
+   "18,10": [
+    "farm_walls_floor",
+    105
+   ],
+   "18,11": [
+    "farm_walls_floor",
+    115
+   ],
+   "18,12": [
+    "farm_walls_floor",
+    125
+   ],
+   "18,13": [
+    "farm_walls_floor",
+    135
+   ],
+   "18,15": [
+    "farm_walls_floor",
+    155
    ],
    "18,2": [
     "farm_interior",
@@ -2776,6 +2856,14 @@
     "farm_interior",
     65
    ],
+   "18,8": [
+    "farm_walls_floor",
+    85
+   ],
+   "18,9": [
+    "farm_walls_floor",
+    95
+   ],
    "19,0": [
     "farm_interior",
     15
@@ -2783,6 +2871,18 @@
    "19,1": [
     "farm_interior",
     32
+   ],
+   "19,13": [
+    "farm_walls_floor",
+    136
+   ],
+   "19,14": [
+    "farm_walls_floor",
+    146
+   ],
+   "19,15": [
+    "farm_walls_floor",
+    156
    ],
    "19,2": [
     "farm_interior",
@@ -2824,6 +2924,14 @@
     "farm_interior",
     33
    ],
+   "20,12": [
+    "farm_walls_floor",
+    127
+   ],
+   "20,13": [
+    "farm_walls_floor",
+    137
+   ],
    "20,2": [
     "farm_interior",
     50
@@ -2844,6 +2952,14 @@
     "farm_interior",
     118
    ],
+   "21,12": [
+    "farm_walls_floor",
+    128
+   ],
+   "21,13": [
+    "farm_walls_floor",
+    138
+   ],
    "22,0": [
     "farm_walls_floor",
     21
@@ -2852,6 +2968,14 @@
     "farm_walls_floor",
     31
    ],
+   "22,12": [
+    "farm_walls_floor",
+    129
+   ],
+   "22,13": [
+    "farm_walls_floor",
+    139
+   ],
    "22,2": [
     "farm_walls_floor",
     41
@@ -2859,6 +2983,10 @@
    "22,4": [
     "farm_walls_floor",
     10
+   ],
+   "22,6": [
+    "farm_walls_floor",
+    90
    ],
    "3,0": [
     "farm_interior",
@@ -2975,6 +3103,10 @@
    "9,1": [
     "farm_walls_floor",
     12
+   ],
+   "9,5": [
+    "farm_walls_floor",
+    81
    ]
   },
   "columns": 24

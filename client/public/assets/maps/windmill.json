@@ -1,0 +1,115 @@
+{ "compressionlevel":-1,
+ "height":10,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 211, 211, 235, 211, 211, 211, 211, 235, 211, 211, 0,
+            0, 235, 235, 259, 235, 235, 235, 235, 259, 235, 235, 0,
+            0, 259, 259, 283, 259, 259, 259, 259, 283, 259, 259, 0,
+            0, 283, 283, 307, 283, 283, 283, 283, 307, 283, 283, 0,
+            0, 307, 307, 211, 307, 307, 307, 307, 211, 307, 307, 0,
+            0, 211, 211, 235, 211, 211, 211, 211, 235, 211, 211, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":10,
+         "id":2,
+         "name":"floor",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[330, 331, 331, 331, 331, 331, 331, 331, 331, 331, 331, 332,
+            354, 209, 121, 121, 121, 121, 121, 121, 121, 121, 210, 356,
+            354, 233, 145, 145, 145, 145, 145, 145, 145, 145, 234, 356,
+            354, 257, 169, 169, 169, 169, 169, 169, 169, 169, 258, 356,
+            354, 232, 0, 0, 0, 0, 0, 0, 0, 0, 167, 356,
+            354, 232, 0, 0, 0, 0, 0, 0, 0, 0, 167, 356,
+            354, 232, 0, 0, 0, 0, 0, 0, 0, 0, 167, 356,
+            354, 232, 0, 0, 0, 0, 0, 0, 0, 0, 167, 356,
+            354, 281, 130, 130, 309, 310, 310, 311, 130, 130, 282, 356,
+            378, 379, 379, 379, 333, 334, 334, 335, 379, 379, 379, 380],
+         "height":10,
+         "id":1,
+         "name":"walls",
+         "opacity":1,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"string",
+                 "value":"true"
+                }, 
+                {
+                 "name":"opaque",
+                 "type":"string",
+                 "value":"true"
+                }],
+         "type":"tilelayer",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"objects",
+         "objects":[
+                {
+                 "height":1,
+                 "id":1,
+                 "name":"Windmill_Exit",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":96,
+                 "y":144
+                }, 
+                {
+                 "height":1,
+                 "id":2,
+                 "name":"Mill_Hopper",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":56,
+                 "y":40
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":4,
+ "nextobjectid":3,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.11.2",
+ "tileheight":16,
+ "tilesets":[
+        {
+         "columns":24,
+         "firstgid":1,
+         "image":"..\/sprites\/buildings\/farm.png",
+         "imageheight":256,
+         "imagewidth":384,
+         "margin":0,
+         "name":"farm",
+         "spacing":0,
+         "tilecount":384,
+         "tileheight":16,
+         "tilewidth":16
+        }],
+ "tilewidth":16,
+ "type":"map",
+ "version":"1.10",
+ "width":12
+}

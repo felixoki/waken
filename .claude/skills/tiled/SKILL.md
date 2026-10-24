@@ -44,7 +44,10 @@ if one is missing:
 5. `client/src/game/scenes/<Name>.ts` — six lines; copy `Herbalist.ts`, which is
    the minimal indoor scene (`Texture.load`, `MapFactory.create`, `TileManager`,
    `setBounds`, `cameraManager.fitZoom()`).
-6. The scene added to the list in `client/src/game/config.ts`.
+6. The scene added to the list in `client/src/game/config.ts`, **and** to the `scenes`
+   list in `MainScene.create` (`client/src/game/scenes/Main.ts`). Main waits for every
+   scene in that list before it starts; a scene missing from it never gets its physics
+   manager, and entering it crashes in `BodyComponent.attach`.
 7. A way in: a `ComponentName.TRANSITION` on some entity, with `to`, the landing
    `x`/`y`, and the trigger box (`width`/`height`/`offsetX`/`offsetY`) relative to
    that entity's sprite. `HOUSE1` in `configs/entities/buildings.ts` is the
