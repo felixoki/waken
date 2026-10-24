@@ -7,6 +7,7 @@ import {
   MapName,
   Party,
   PartyStatus,
+  PlayerConfig,
   TiledMap,
   Transition,
 } from "../types";
@@ -52,7 +53,8 @@ export const party = {
 
       handlers.sleep.clear(memberId, world, io);
 
-      world.relics.forfeit(member.inventory);
+      const keeps = party.keeps(member);
+      if (!keeps) world.relics.forfeit(member.inventory);
 
       handlers.player.transfer(
         memberSocket,
@@ -65,7 +67,7 @@ export const party = {
         {
           health: MAX_HEALTH,
           isDead: false,
-          inventory: new Array(20).fill(null),
+          inventory: keeps ? member.inventory : new Array(20).fill(null),
         },
         data.members,
         data.id,
@@ -196,7 +198,8 @@ export const party = {
 
       handlers.sleep.clear(player.id, world, io);
 
-      world.relics.forfeit(player.inventory);
+      const keeps = party.keeps(player);
+      if (!keeps) world.relics.forfeit(player.inventory);
 
       handlers.player.transfer(
         socket,
@@ -209,7 +212,7 @@ export const party = {
         {
           isDead: false,
           health: MAX_HEALTH,
-          inventory: new Array(20).fill(null),
+          inventory: keeps ? player.inventory : new Array(20).fill(null),
         },
         undefined,
         data.id,
@@ -250,7 +253,12 @@ export const party = {
       const seed = `${data.id}-${data.depth}-${Date.now()}`;
 
       const { data: biome, error } = await tryCatch(
-        handlers.generation.start(level.biomes, seed, data.unlocked),
+        handlers.generation.start(
+          level.biomes,
+          seed,
+          data.unlocked,
+          handlers.village.cult(world),
+        ),
       );
 
       if (error || !biome) {
@@ -421,11 +429,33 @@ export const party = {
     await party.begin(io, world, data);
   },
 
+  keeps: (player: PlayerConfig): boolean =>
+    player.inventory.some(
+      (item) => item && configs.entities[item.name]?.modifier?.keep,
+    ),
+
+  depthBonus: (world: World, data: Party): number =>
+    Math.max(
+      0,
+      ...data.members.map((id) => {
+        const member = world.players.get(id);
+        if (!member) return 0;
+
+        return Math.max(
+          0,
+          ...handlers.player
+            .carried(member)
+            .map((item) => configs.entities[item.name]?.modifier?.depth ?? 0),
+        );
+      }),
+    ),
+
   begin: async (io: Server, world: World, data: Party): Promise<boolean> => {
     if (data.status !== PartyStatus.LOBBY) return false;
 
     data.depth = 0;
     data.status = PartyStatus.IN_GAME;
+    data.unlocked += party.depthBonus(world, data);
 
     const map = levels[data.depth].map;
     io.to(`party:${data.id}`).emit(Event.PARTY_START_LOADING, map);

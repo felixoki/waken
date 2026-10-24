@@ -7,7 +7,9 @@ import {
   FishName,
   Item,
   MapName,
+  Position,
   SpawnerConfig,
+  SpotName,
   TextureSpawnerConfig,
   TiledMap,
   ZoneConfig,
@@ -20,12 +22,31 @@ import { MAX_HEALTH } from "../globals.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, "..");
 const __maps = "../../../client/public/assets/maps";
+const SPOT = "Spot";
 
 export class MapLoader {
   load(map: string): TiledMap {
     const path = join(__dirname, __maps, map);
     const content = readFileSync(path, "utf-8");
     return JSON.parse(content) as TiledMap;
+  }
+
+  parseSpots(id: MapName, data: TiledMap): [SpotName, Position][] {
+    const spots: [SpotName, Position][] = [];
+
+    for (const layer of data.layers) {
+      if (layer.type !== "objectgroup" || !layer.objects) continue;
+
+      for (const obj of layer.objects) {
+        if (obj.name !== SPOT) continue;
+
+        const name = obj.properties?.find((p: any) => p.name === "spot")?.value;
+        if (Object.values(SpotName).includes(name))
+          spots.push([name, { map: id, x: obj.x, y: obj.y }]);
+      }
+    }
+
+    return spots;
   }
 
   parseEntities(id: MapName, data: TiledMap): EntityConfig[] {
@@ -60,6 +81,10 @@ export class MapLoader {
       map: id,
       x: obj.x,
       y: obj.y,
+      anchor:
+        configs.entities[name]?.dialogue || configs.schedules[name]
+          ? { map: id, x: obj.x, y: obj.y }
+          : undefined,
       createdAt: Date.now(),
       isLocked: false,
       loot: this._parseContents(obj),

@@ -10,6 +10,7 @@ import {
   Item,
   PlayerConfig,
   SpellName,
+  StoryFlag,
 } from "../types";
 import { Effect, EffectName } from "../types/effects.js";
 import { DamageType } from "../types/damage.js";
@@ -312,6 +313,17 @@ export const combat = {
       const partyId = world.chunks.getPartyByEntity(target.id);
 
       if (target.name === EntityName.BELLAN) world.relics.spend(target.name);
+
+      if (target.name === EntityName.GRANDMOTHER) {
+        world.relics.spend(target.name);
+        world.story.set(StoryFlag.GRANDMOTHER_FREED);
+
+        for (const id of world.parties.get(partyId ?? "")?.members ?? []) {
+          const member = world.players.get(id);
+          if (member)
+            handlers.story.remember(member, StoryFlag.GRANDMOTHER_SEEN, world);
+        }
+      }
 
       handlers.entity.remove(
         target.id,

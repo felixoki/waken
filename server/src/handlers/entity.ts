@@ -1,11 +1,13 @@
 import { Server, Socket } from "socket.io";
 import {
+  BehaviorName,
   ComponentName,
   EntityConfig,
   Event,
   Input,
   Item,
   PickableConfig,
+  PlayerConfig,
   Spot,
 } from "../types";
 import { randomUUID } from "crypto";
@@ -143,12 +145,29 @@ export const entity = {
     );
   },
 
+  calms: (entity: EntityConfig, player: PlayerConfig): boolean => {
+    const behaviors = configs.entities[entity.name]?.behaviors ?? [];
+    const flees = behaviors.some((b) => b.name === BehaviorName.FLEE);
+    const attacks = behaviors.some((b) => b.name === BehaviorName.ATTACK);
+
+    return (
+      flees &&
+      !attacks &&
+      handlers.player
+        .carried(player)
+        .some((item) => configs.entities[item.name]?.modifier?.calm)
+    );
+  },
+
   spot: (data: Spot, socket: Socket, world: World) => {
     const entity = world.entities.get(data.entityId);
     if (!entity) return;
 
     const key = world.chunks.getChunkByEntity(data.entityId);
     if (!key || !world.chunks.isChunkActive(key)) return;
+
+    const player = world.players.get(data.playerId);
+    if (player && handlers.entity.calms(entity, player)) return;
 
     socket.to(`chunk:${key}`).emit(Event.ENTITY_SPOTTED_PLAYER, data);
     socket.emit(Event.ENTITY_SPOTTED_PLAYER, data);

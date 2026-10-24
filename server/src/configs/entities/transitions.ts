@@ -486,6 +486,26 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.WINDMILL_EXIT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.VILLAGE,
+          x: 560,
+          y: 176,
+          width: 32,
+          height: 16,
+          offsetX: 0,
+          offsetY: 16,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.FISHING_HUT_EXIT]: {
     facing: Direction.DOWN,
     moving: [],

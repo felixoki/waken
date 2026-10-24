@@ -1,9 +1,9 @@
 import { generateBiome } from "../biomes";
 import { tryCatchSync } from "../utils/tryCatch";
 
-process.on("message", ({ biomes, seed, unlocked }) => {
+process.on("message", ({ biomes, seed, unlocked, cult }) => {
   const { data, error } = tryCatchSync(() =>
-    generateBiome(biomes, seed, unlocked),
+    generateBiome(biomes, seed, unlocked, cult),
   );
 
   if (error) {

@@ -179,10 +179,70 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Iron",
-      description: "A rough chunk of iron ore pulled from the earth.",
+      description: "A bar of iron, worked out of the ore at the forge.",
       stackable: true,
       icon: { spritesheet: "items", row: 28, col: 4 },
       weight: 1.5,
+    },
+  },
+  [EntityName.IRON_ORE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 29, start: 20, end: 21 },
+            { row: 30, start: 20, end: 21 },
+          ],
+        },
+        key: "iron_ore_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Iron ore",
+      description: "A rough chunk of iron ore pulled from the earth.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 30, col: 19 },
+      weight: 1.5,
+    },
+  },
+  [EntityName.FLOUR]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 29, start: 17, end: 18 },
+            { row: 30, start: 17, end: 18 },
+          ],
+        },
+        key: "flour_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Flour",
+      description: "Wheat ground fine at the windmill.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 30, col: 16 },
+      weight: 0.5,
     },
   },
   [EntityName.GLASS]: {

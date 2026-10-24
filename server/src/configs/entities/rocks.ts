@@ -88,7 +88,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A blocky outcrop of deep blue azurite.",
     },
   },
-  [EntityName.IRON_ORE]: {
+  [EntityName.IRON_VEIN]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -103,7 +103,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 11, start: 4, end: 6 },
           ],
         },
-        key: "iron_ore_texture",
+        key: "iron_vein_texture",
       },
       {
         name: ComponentName.BODY,
@@ -119,7 +119,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.MINEABLE,
-        config: { drop: { name: EntityName.IRON1, quantity: 2 } },
+        config: { drop: { name: EntityName.IRON_ORE, quantity: 2 } },
       },
     ],
     states: [],

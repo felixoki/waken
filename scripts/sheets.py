@@ -65,6 +65,8 @@ PATTERNS = [
 ]
 
 NO_SHADOW: set[str] = set()
+NO_SHADOW_FILES = {"crops", "ingredients"}
+NO_SHADOW_PATTERN = re.compile(r"^(bush\d*|glowshroom\d*|reed\d*)$")
 SHADOW_MAX_HEIGHT = 32
 SOLID = 200
 SHADOW = (42, 40, 61, 100)
@@ -119,6 +121,14 @@ def icon_image(ref: dict) -> Image.Image:
     src = image(ref["spritesheet"])
     x, y = (ref["col"] - 1) * TILE, (ref["row"] - 1) * TILE
     return src.crop((x, y, x + TILE, y + TILE))
+
+
+def unshadowed(v: dict) -> bool:
+    return (
+        v["name"] in NO_SHADOW
+        or v["file"] in NO_SHADOW_FILES
+        or bool(NO_SHADOW_PATTERN.match(v["name"]))
+    )
 
 
 def has_shadow(img: Image.Image) -> bool:
@@ -428,7 +438,7 @@ def plan() -> tuple[dict, dict, dict]:
 
     def block_of(v: dict) -> tuple[Image.Image, Image.Image | None]:
         tex = compose(v["texture"])
-        if not v.get("flat") and v["name"] not in NO_SHADOW and solid_height(tex) <= SHADOW_MAX_HEIGHT and not has_shadow(tex):
+        if not v.get("flat") and not unshadowed(v) and solid_height(tex) <= SHADOW_MAX_HEIGHT and not has_shadow(tex):
             tex = shadowed(tex)
         icon = icon_image(v["icon"]) if v.get("icon") else None
         return tex, icon

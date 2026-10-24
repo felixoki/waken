@@ -123,6 +123,7 @@ export const forest: BiomeConfig = {
 
   terrain: [TerrainName.GROUND, TerrainName.GRASS],
 
+  cult: [TerrainName.GRASS, TerrainName.GROUND],
   objects: [
     {
       entities: [
@@ -262,6 +263,19 @@ export const forest: BiomeConfig = {
       spacing: 4,
       margin: 2,
     },
+    {
+      entities: [EntityName.LEFT_BOOT],
+      terrain: [TerrainName.GRASS],
+      count: { min: 1, max: 1 },
+      spacing: 4,
+      margin: 2,
+    },
+    {
+      entities: [EntityName.GRANDMOTHER],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 1, max: 1 },
+      spacing: 10,
+    },
   ],
 
   generator: GeneratorName.TERRAIN,
@@ -344,6 +358,7 @@ export const dungeon: BiomeConfig = {
     { tileset: "dungeon_floor_cracks", of: "dungeon_walls_floor", chance: 0.1 },
   ],
   terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
+  cult: [TerrainName.FLOOR],
   objects: [],
   generator: GeneratorName.ROOM,
   exclusion: 0,
@@ -585,6 +600,7 @@ export const cave: BiomeConfig = {
     },
   ],
   terrain: [TerrainName.FLOOR, TerrainName.ELEVATED, TerrainName.RECESSED],
+  cult: [TerrainName.FLOOR],
   objects: [
     {
       entities: [EntityName.QUARTZ_ORE],
@@ -595,7 +611,7 @@ export const cave: BiomeConfig = {
       wallAdjacent: true,
     },
     {
-      entities: [EntityName.IRON_ORE],
+      entities: [EntityName.IRON_VEIN],
       terrain: [TerrainName.FLOOR],
       count: { min: 1, max: 4 },
       spacing: 3,
@@ -823,6 +839,7 @@ export const mountain: BiomeConfig = {
 
   terrain: [TerrainName.GRASS],
 
+  cult: [TerrainName.GRASS, TerrainName.EARTH, TerrainName.SNOW],
   objects: [
     {
       entities: [
@@ -1063,6 +1080,7 @@ export const temple: BiomeConfig = {
     },
   ],
   terrain: [TerrainName.FLOOR, TerrainName.RECESSED],
+  cult: [TerrainName.FLOOR],
   objects: [],
   generator: GeneratorName.ROOM,
   exclusion: 0,

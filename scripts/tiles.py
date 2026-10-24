@@ -47,6 +47,7 @@ MAPS = {
     "isles.tmx": None,
     "blacksmith.tmx": "blacksmith",
     "farm.tmx": "farm",
+    "windmill.tmx": "farm",
     "fishing_hut.tmx": "fishing_hut",
     "glassblower.tmx": "glassblower",
     "herbalist.tmx": "herbalist",

@@ -1,14 +1,24 @@
 import { configs } from "../configs";
-import { DAY } from "../globals";
+import { DAY, ECONOMY_GROWTH, MEATS } from "../globals";
 import { ItemsStore } from "../stores/Items";
-import { EconomySnapshot, Mood, NeedConfig, NeedName } from "../types";
+import {
+  EconomySnapshot,
+  EntityName,
+  GroupName,
+  Mood,
+  NeedConfig,
+  NeedGroup,
+  NeedItem,
+  NeedName,
+  TimePhase,
+} from "../types";
 
 export class EconomyManager {
   private needs: Map<NeedName, NeedConfig> = new Map();
   private tier: number = 1;
-  private updated: number = 0;
   private accumulator: number = 0;
   public dirty: boolean = false;
+  public meatEaten: boolean = false;
 
   constructor(private supply: ItemsStore) {
     this._init();
@@ -20,61 +30,115 @@ export class EconomyManager {
     });
   }
 
-  update(delta: number) {
+  update(delta: number, phase?: TimePhase, raining = false) {
     this.accumulator += delta;
     if (this.accumulator < 1000) return;
-    this.accumulator -= 1000;
 
-    const now = Date.now();
-
-    if (!this.updated) {
-      this.updated = now;
-      return;
-    }
-
-    const elapsed = now - this.updated;
-    this.updated = now;
-
-    const days = elapsed / DAY;
+    const days = this.accumulator / DAY;
+    this.accumulator = 0;
 
     this.needs.forEach((need) => {
-      if (need.tier > this.tier) return;
-      if (need.consumption <= 0) return;
+      if (!this._isActive(need) || need.consumption <= 0) return;
 
-      const available = this.getSupply(need);
-      if (available <= 0) return;
+      const rate =
+        need.consumption *
+        (1 + ECONOMY_GROWTH * (this.tier - need.tier)) *
+        this._demand(need, phase, raining);
 
-      const rate = need.consumption * 2 ** (this.tier - need.tier);
-      this._consume(need, rate * days);
-      this.dirty = true;
+      for (const group of need.groups) {
+        const items = this._counted(need, group.name);
+        if (this._supplyOf(items) <= 0) continue;
+
+        this._consume(items, rate * days);
+        this.dirty = true;
+      }
     });
   }
 
-  getSupply(need: NeedConfig): number {
-    return need.items
-      .filter((tier) => tier.tier <= this.tier)
-      .reduce((sum, tier) => sum + this.supply.get(tier.item), 0);
+  private _demand(
+    need: NeedConfig,
+    phase: TimePhase | undefined,
+    raining: boolean,
+  ): number {
+    const time = phase ? (need.demand?.phases?.[phase] ?? 1) : 1;
+    const weather = raining ? (need.demand?.rain ?? 1) : 1;
+
+    return time * weather;
   }
 
-  private _consume(need: NeedConfig, amount: number) {
-    const items = need.items
-      .filter((item) => item.tier <= this.tier)
+  private _isActive(need: NeedConfig): boolean {
+    return need.tier <= this.tier;
+  }
+
+  private _counted(need: NeedConfig, group: GroupName): NeedItem[] {
+    return need.items.filter(
+      (item) => item.group === group && item.tier <= this.tier,
+    );
+  }
+
+  private _supplyOf(items: NeedItem[]): number {
+    return items.reduce((sum, item) => sum + this.supply.get(item.item), 0);
+  }
+
+  isRequired(need: NeedConfig, group: NeedGroup): boolean {
+    return (
+      this._isActive(need) &&
+      need.consumption > 0 &&
+      this._counted(need, group.name).length > 0
+    );
+  }
+
+  isStocked(group: NeedGroup, item: NeedItem): boolean {
+    return this.supply.get(item.item) >= group.low;
+  }
+
+  private _slots(need: NeedConfig, group: NeedGroup): NeedItem[][] {
+    const slots = new Map<number, NeedItem[]>();
+
+    for (const item of this._counted(need, group.name))
+      slots.set(item.tier, [...(slots.get(item.tier) ?? []), item]);
+
+    return [...slots.values()];
+  }
+
+  needed(need: NeedConfig, group: NeedGroup): number {
+    if (!this.isRequired(need, group)) return 0;
+
+    return this._slots(need, group).length;
+  }
+
+  stocked(need: NeedConfig, group: NeedGroup): number {
+    return this._slots(need, group).filter((slot) =>
+      slot.some((item) => this.isStocked(group, item)),
+    ).length;
+  }
+
+  isGroupMet(need: NeedConfig, group: NeedGroup): boolean {
+    return this.stocked(need, group) >= this.needed(need, group);
+  }
+
+  isMet(need: NeedConfig): boolean {
+    return need.groups.every((group) => this.isGroupMet(need, group));
+  }
+
+  private _consume(items: NeedItem[], amount: number) {
+    const stocked = items
       .map((item) => ({
         name: item.item,
         available: this.supply.get(item.item),
       }))
       .filter((item) => item.available > 0);
 
-    if (!items.length) return;
+    if (!stocked.length) return;
 
-    const total = items.reduce((sum, item) => sum + item.available, 0);
+    const total = stocked.reduce((sum, item) => sum + item.available, 0);
     if (total <= 0) return;
 
     const target = Math.min(amount, total);
     let consumedTotal = 0;
 
-    items.forEach((item, index) => {
-      const isLast = index === items.length - 1;
+    stocked.forEach((item, index) => {
+      const isLast = index === stocked.length - 1;
       const share = isLast
         ? Math.max(0, target - consumedTotal)
         : Math.min(item.available, (item.available / total) * target);
@@ -82,6 +146,7 @@ export class EconomyManager {
       if (share <= 0) return;
 
       this.supply.remove(item.name, share);
+      if (MEATS.includes(item.name)) this.meatEaten = true;
       consumedTotal += share;
     });
   }
@@ -90,60 +155,118 @@ export class EconomyManager {
     return this.tier;
   }
 
+  setTier(tier: number): void {
+    this.tier = tier;
+    this.dirty = true;
+  }
+
   upgradeTier(): void {
     this.tier++;
     this.dirty = true;
   }
 
   canUpgrade(): boolean {
-    for (const need of this.needs.values()) {
-      if (need.tier > this.tier || need.consumption <= 0) continue;
-      if (this.getSupply(need) < need.low) return false;
-    }
+    for (const need of this.needs.values()) if (!this.isMet(need)) return false;
 
     return true;
   }
 
   isLow(name: NeedName): boolean {
     const need = this.needs.get(name);
-    if (!need || need.tier > this.tier) return false;
-
-    return this.getSupply(need) < need.low;
+    return !!need && !this.isMet(need);
   }
 
-  getMood(): Mood {
-    let mood = Mood.HAPPY;
-    let lowest = Infinity;
+  getMood(villager?: EntityName): Mood {
+    const preferred = villager && this._preferred(villager);
+    if (preferred) return preferred;
+
+    const unmet = this._unmet();
+    if (!unmet.length) return Mood.HAPPY;
+    if (!villager) return unmet[0].mood;
+
+    return unmet[this._hash(villager) % unmet.length].mood;
+  }
+
+  craves(villager: EntityName): boolean {
+    return this._preferred(villager) !== null;
+  }
+
+  private _preferred(villager: EntityName): Mood | null {
+    const preference = configs.preferences[villager];
+    if (!preference) return null;
+
+    for (const need of this.needs.values())
+      for (const group of need.groups)
+        for (const item of this._counted(need, group.name))
+          if (
+            item.item === preference &&
+            need.mood &&
+            this.isRequired(need, group) &&
+            !this.isStocked(group, item)
+          )
+            return need.mood;
+
+    return null;
+  }
+
+  private _unmet(): { mood: Mood; ratio: number }[] {
+    const unmet: { mood: Mood; ratio: number }[] = [];
 
     this.needs.forEach((need) => {
-      if (!need.mood || need.tier > this.tier || need.low <= 0) return;
+      if (!need.mood) return;
 
-      const supply = this.getSupply(need);
-      if (supply >= need.low) return;
+      let ratio = Infinity;
 
-      const ratio = supply / need.low;
-      if (ratio < lowest) {
-        lowest = ratio;
-        mood = need.mood;
-      }
+      for (const group of need.groups)
+        if (!this.isGroupMet(need, group))
+          ratio = Math.min(
+            ratio,
+            this.stocked(need, group) / this.needed(need, group),
+          );
+
+      if (ratio !== Infinity) unmet.push({ mood: need.mood, ratio });
     });
 
-    return mood;
+    return unmet.sort((a, b) => a.ratio - b.ratio);
+  }
+
+  private _hash(villager: EntityName): number {
+    let hash = 0;
+    for (const char of villager) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+
+    return hash;
   }
 
   getSnapshot(): EconomySnapshot {
-    const needs: EconomySnapshot["needs"] = [];
 
-    this.needs.forEach((need) => {
-      const items = need.items.map((tier) => ({
-        item: tier.item,
-        quantity: Math.floor(this.supply.get(tier.item)),
-        tier: tier.tier,
-      }));
+    const needs: EconomySnapshot["needs"] = [...this.needs.values()].map(
+      (need) => ({
+        name: need.name,
+        consumed: need.consumption > 0,
+        met: this.isMet(need),
+        groups: need.groups.map((group) => ({
+          name: group.name,
+          required: this.isRequired(need, group),
+          met: this.isGroupMet(need, group),
+          needed: this.needed(need, group),
+          stocked: this.stocked(need, group),
+          items: need.items
+            .filter((item) => item.group === group.name)
+            .map((item) => ({
+              item: item.item,
+              quantity: Math.floor(this.supply.get(item.item)),
+              tier: item.tier,
+              stocked: this.isStocked(group, item),
+            })),
+        })),
+      }),
+    );
 
-      needs.push({ name: need.name, consumed: need.consumption > 0, items });
-    });
-
-    return { tier: this.tier, canUpgrade: this.canUpgrade(), needs };
+    return {
+      tier: this.tier,
+      canUpgrade: this.canUpgrade(),
+      mood: this.getMood(),
+      needs,
+    };
   }
 }

@@ -4,6 +4,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  Rarity,
   SpellName,
   StateName,
   WeaponName,
@@ -628,6 +629,90 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     metadata: {
       displayName: "Shadow wanderer",
+    },
+  },
+  [EntityName.GRANDMOTHER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 600,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.OLD_FRAME,
+              quantity: 1,
+              stackable: false,
+              chance: 1,
+            },
+            {
+              name: EntityName.WANDERERS_CLOTH,
+              quantity: 4,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.AURA,
+        config: {
+          tints: [0x1c1826, 0x2a2438, 0x3a324c, 0x4a4060, 0x5c5274],
+        },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 12,
+          offsetX: 26,
+          offsetY: 22,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.SHADOW_WANDERER_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.DASHING,
+      StateName.CASTING,
+    ],
+    attacks: [
+      {
+        state: StateName.CASTING,
+        spell: SpellName.HURT_SHADOWS,
+        range: 150,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 500 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      {
+        name: BehaviorName.DEFEND,
+        config: {
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+    ],
+    metadata: {
+      displayName: "Faded wanderer",
+      rarity: Rarity.LEGENDARY,
     },
   },
   [EntityName.BLOODGEIST1]: {

@@ -152,6 +152,50 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.WINDMILL_SAILS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "buildings",
+          tileSize: 16,
+          offset: { x: 0, y: -16 },
+          tiles: [
+            { row: 156, start: 1, end: 10 },
+            { row: 157, start: 1, end: 10 },
+            { row: 158, start: 1, end: 10 },
+            { row: 159, start: 1, end: 10 },
+            { row: 160, start: 1, end: 10 },
+            { row: 161, start: 1, end: 10 },
+            { row: 162, start: 1, end: 10 },
+            { row: 163, start: 1, end: 10 },
+            { row: 164, start: 1, end: 10 },
+          ],
+          frames: 6,
+          wrap: 2,
+          direction: "vertical",
+          frameRate: 6,
+          repeat: -1,
+          autoplay: false,
+        },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 1,
+          height: 1,
+          offsetX: 0,
+          offsetY: 0,
+          static: true,
+          collides: false,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
   [EntityName.WINDMILL]: {
     facing: Direction.DOWN,
     moving: [],
@@ -183,6 +227,18 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 40,
           offsetY: 72,
           static: true,
+        },
+      },
+      {
+        name: ComponentName.TRANSITION,
+        config: {
+          to: MapName.WINDMILL,
+          x: 96,
+          y: 128,
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 64,
         },
       },
     ],
@@ -696,6 +752,41 @@ export const buildings: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.TENT2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "buildings",
+          tileSize: 16,
+          tiles: [
+            { row: 113, start: 6, end: 13 },
+            { row: 114, start: 6, end: 13 },
+            { row: 115, start: 6, end: 13 },
+            { row: 116, start: 6, end: 13 },
+            { row: 117, start: 6, end: 13 },
+            { row: 118, start: 6, end: 13 },
+            { row: 119, start: 6, end: 13 },
+          ],
+        },
+        key: "tent2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 80,
+          height: 32,
+          offsetX: 26,
+          offsetY: 32,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CULT_TENT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [

@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false src/lobby.ts",
-    "dev:world": "tsx watch --clear-screen=false src/index.ts",
+    "dev": "DEV_COMMANDS=1 tsx watch --clear-screen=false src/lobby.ts",
+    "dev:world": "DEV_COMMANDS=1 tsx watch --clear-screen=false src/index.ts",
     "build": "tsc",
-    "start": "node dist/lobby.js"
+    "start": "node dist/lobby.js",
+    "test": "tsx --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "dotenv": "^17.2.3",

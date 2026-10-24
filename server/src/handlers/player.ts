@@ -14,6 +14,7 @@ import {
   Input,
   MapName,
   PlayerConfig,
+  PlayerStory,
   SpellName,
   Transition,
 } from "../types/index.js";
@@ -99,6 +100,15 @@ export const player = {
         active: Math.min((saved?.data?.active as number) ?? 0, HOTBAR_SIZE - 1),
         records:
           (saved?.data?.records as PlayerConfig["records"]) ?? {},
+        story: {
+          flags: [],
+          facts: {},
+          bond: {},
+          caps: {},
+          talked: {},
+          days: {},
+          ...(saved?.data?.story as Partial<PlayerStory>),
+        },
       };
 
       world.players.add(player.id, player);
@@ -137,6 +147,8 @@ export const player = {
 
     if (player.sleep?.isAsleep) handlers.sleep.wake(player.id, io, world);
 
+    handlers.taming.release(player.id, io, world);
+
     if (WORLD_ID && !configs.maps[player.map].isInstanced)
       await save.player(WORLD_ID, {
         playerId: player.id,
@@ -151,6 +163,7 @@ export const player = {
           robe: player.robe,
           active: player.active,
           records: player.records,
+          story: player.story,
         },
       });
 
@@ -250,6 +263,7 @@ export const player = {
 
     const from = player.map;
 
+    handlers.taming.release(playerId, io, world);
     handlers.chunks.clear(socket, world, playerId);
 
     const fromPartyId = configs.maps[from].isInstanced ? partyId : undefined;
@@ -327,6 +341,11 @@ export const player = {
     const party = world.parties.getByPlayerId(p.id);
     const from = configs.maps[p.map];
     const to = configs.maps[data.to];
+
+    if (to.requires && !world.story.has(to.requires)) {
+      socket.emit(Event.PLAYER_TRANSITION_DENIED);
+      return;
+    }
 
     if (from.isInstanced && !from.isPartyInstance) {
       await handlers.sublevel.exit(data, io, socket, world);

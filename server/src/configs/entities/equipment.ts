@@ -709,6 +709,132 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.2,
     },
   },
+  [EntityName.NIGHTCAP]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 13, start: 20, end: 21 },
+            { row: 14, start: 20, end: 21 },
+          ],
+        },
+        key: "nightcap_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: {
+      unique: true,
+      bonus: { health: 50, mana: 50 },
+      depth: 1,
+      keep: true,
+    },
+    metadata: {
+      displayName: "Nightcap",
+      description: "A soft cap for long nights. Whoever wears it sleeps deeper than anyone.",
+      icon: { spritesheet: "items", row: 14, col: 19 },
+      rarity: Rarity.LEGENDARY,
+      weight: 0.1,
+    },
+  },
+  [EntityName.CARVED_CHARM]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 13, start: 23, end: 24 },
+            { row: 14, start: 23, end: 24 },
+          ],
+        },
+        key: "carved_charm_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { unique: true, calm: true },
+    metadata: {
+      displayName: "Carved charm",
+      description: "A hare carved from birch, worn smooth by many hands. Animals seem to know it.",
+      icon: { spritesheet: "items", row: 14, col: 22 },
+      rarity: Rarity.LEGENDARY,
+      weight: 0.1,
+    },
+  },
+  [EntityName.OLD_FRAME]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 40, start: 2, end: 3 },
+            { row: 41, start: 2, end: 3 },
+          ],
+        },
+        key: "old_frame_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    modifier: { unique: true },
+    metadata: {
+      displayName: "Old frame",
+      description: "A faded portrait in a worn wooden frame. Someone kept this close for a long time.",
+      icon: { spritesheet: "items", row: 41, col: 1 },
+      weight: 0.4,
+    },
+  },
+  [EntityName.LEFT_BOOT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 13, start: 17, end: 18 },
+            { row: 14, start: 17, end: 18 },
+          ],
+        },
+        key: "left_boot_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Left boot",
+      description: "A single worn boot. Somebody is missing it.",
+      icon: { spritesheet: "items", row: 14, col: 16 },
+      weight: 0.8,
+    },
+  },
   [EntityName.SILVER_SWORD]: {
     facing: Direction.DOWN,
     moving: [],

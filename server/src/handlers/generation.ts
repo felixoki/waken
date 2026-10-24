@@ -542,6 +542,7 @@ export const generation = {
     biomes: LevelBiome[],
     seed: string,
     unlocked = 0,
+    cult = 0,
   ): Promise<GeneratedMap | null> => {
     return new Promise((resolve, reject) => {
       const worker = fork(join(__dirname, `../workers/generate.${__ext}`), [], {
@@ -570,7 +571,7 @@ export const generation = {
         if (code !== 0) reject(new Error(`Worker exited with code ${code}`));
       });
 
-      worker.send({ biomes, seed, unlocked });
+      worker.send({ biomes, seed, unlocked, cult });
     });
   },
 

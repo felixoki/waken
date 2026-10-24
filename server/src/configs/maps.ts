@@ -4,6 +4,7 @@ import {
   MapName,
   MusicName,
   Spritesheet,
+  StoryFlag,
 } from "../types";
 import { BiomeName } from "../types/generation";
 
@@ -840,6 +841,10 @@ const creatures: Spritesheet[] = [
     key: "shadow_wanderer-casting",
     file: "creatures/shadow_wanderer_casting.png",
   },
+  { key: "grandmother-idle", file: "creatures/grandmother_idle.png" },
+  { key: "grandmother-walking", file: "creatures/grandmother_walking.png" },
+  { key: "grandmother-dashing", file: "creatures/grandmother_dashing.png" },
+  { key: "grandmother-casting", file: "creatures/grandmother_casting.png" },
   {
     key: "bloodgeist1-idle",
     file: "creatures/bloodgeist1_idle.png",
@@ -966,6 +971,24 @@ export const maps: Record<MapName, MapConfig> = {
         file: "people/student_idle.png",
         frameWidth: 48,
         frameHeight: 48,
+      },
+      {
+        key: "visitor1-idle",
+        file: "creatures/apprentice_idle.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "visitor2-idle",
+        file: "creatures/bloodgeist1_idle.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
+        key: "visitor2-walking",
+        file: "creatures/bloodgeist1_walking.png",
+        frameWidth: 32,
+        frameHeight: 32,
       },
       {
         key: "perch",
@@ -1264,6 +1287,25 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "fishing_hut",
         file: "buildings/fishing_hut.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+    ],
+  },
+  [MapName.WINDMILL]: {
+    id: MapName.WINDMILL,
+    spawn: { x: 96, y: 128 },
+    json: "windmill.json",
+    isIndoor: true,
+    isInstanced: false,
+    requires: StoryFlag.WINDMILL_OPEN,
+    spritesheets: [
+      ...player,
+      ...entities,
+      {
+        key: "farm",
+        file: "buildings/farm.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

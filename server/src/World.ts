@@ -8,6 +8,8 @@ import {
   MapName,
   TimePhase,
   TimeState,
+  Position,
+  SpotName,
   WeatherName,
   WeatherState,
   ClimateState,
@@ -27,6 +29,7 @@ import { combat } from "./handlers/combat.js";
 import { handlers } from "./handlers/index.js";
 import { SublevelStore } from "./stores/Sublevel.js";
 import { RelicStore } from "./stores/Relic.js";
+import { StoryStore } from "./stores/Story.js";
 
 export class World {
   private time: TimeState = { current: 0, days: 0, phase: TimePhase.DAWN };
@@ -44,6 +47,7 @@ export class World {
   public readonly parties: PartyStore;
   public readonly sublevels: SublevelStore;
   public readonly relics: RelicStore;
+  public readonly story: StoryStore;
   public readonly chunks: ChunkManager;
   public readonly authority: AuthorityManager;
   public readonly zones: ZoneManager;
@@ -51,6 +55,10 @@ export class World {
   public readonly affected: Set<string> = new Set();
   public readonly dropped: Set<string> = new Set();
   public readonly chilled: Set<string> = new Set();
+  public readonly spots: Map<SpotName, Position> = new Map();
+  private scheduling = true;
+  private driving = 0;
+  private ticks = 0;
 
   public server: Server;
   public economy: EconomyManager;
@@ -64,12 +72,26 @@ export class World {
     this.parties = new PartyStore();
     this.sublevels = new SublevelStore();
     this.relics = new RelicStore();
+    this.story = new StoryStore();
     this.chunks = new ChunkManager();
     this.authority = new AuthorityManager();
     this.zones = new ZoneManager();
     this.surfaces = new SurfaceManager();
 
     this.economy = new EconomyManager(this.items);
+  }
+
+  loadSpots() {
+    const loader = new MapLoader();
+
+    for (const [name, config] of Object.entries(configs.maps)) {
+      if (config.isInstanced) continue;
+
+      const tilemap = loader.load(config.json);
+
+      for (const [spot, position] of loader.parseSpots(name as MapName, tilemap))
+        this.spots.set(spot, position);
+    }
   }
 
   load() {
@@ -96,6 +118,7 @@ export class World {
     if (this.time.current >= DAY) {
       this.time.current = 0;
       this.time.days++;
+      handlers.village.day(this);
     }
 
     const phase = this._getPhase(this.time.current);
@@ -103,6 +126,18 @@ export class World {
     if (phase !== this.time.phase) {
       this.time.phase = phase;
       this.server.emit(Event.WORLD_PHASE, this.time.phase);
+      this.scheduling = true;
+    }
+
+    if (this.scheduling)
+      this.scheduling = handlers.schedule.apply(this, this.server);
+
+    this.driving += delta;
+    if (this.driving >= 1000) {
+      this.driving = 0;
+      handlers.storage.drive(this, this.server);
+
+      if (++this.ticks % 10 === 0) this.scheduling = true;
     }
 
     handlers.weather.tick(delta, this, this.server);
@@ -110,7 +145,12 @@ export class World {
 
     handlers.player.regen(delta, this);
 
-    this.economy.update(delta);
+    this.economy.update(
+      delta,
+      this.time.phase,
+      this.weather.current === WeatherName.RAIN ||
+        this.weather.current === WeatherName.STORM,
+    );
 
     if (this.economy.dirty) {
       this.economy.dirty = false;
@@ -134,6 +174,7 @@ export class World {
 
   setTime(time: TimeState): void {
     this.time = time;
+    this.scheduling = true;
   }
 
   private _getPhase(current: number): TimePhase {

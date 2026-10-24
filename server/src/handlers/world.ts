@@ -10,8 +10,15 @@ export const world = {
 
     if (state?.entities?.length) {
       state.entities.forEach((entity: EntityConfig) => {
+        if (
+          configs.entities[entity.name]?.dialogue ||
+          configs.schedules[entity.name]
+        )
+          entity.anchor ??= { map: entity.map, x: entity.x, y: entity.y };
+
         world.entities.add(entity.id, entity);
-        world.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
+        if (!entity.away)
+          world.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
         if (entity.dropped) world.dropped.add(entity.id);
       });
 
@@ -25,6 +32,8 @@ export const world = {
 
     if (state?.relics) world.relics.hydrate(state.relics);
 
+    if (state?.story) world.story.hydrate(state.story);
+
     return !!state?.entities?.length;
   },
 
@@ -37,6 +46,7 @@ export const world = {
         const holder = world.players.get(playerId);
         return !holder || !configs.maps[holder.map].isInstanced;
       }),
+      story: world.story.snapshot(),
     });
 
     await Promise.all(
@@ -56,6 +66,7 @@ export const world = {
               robe: player.robe,
               active: player.active,
               records: player.records,
+              story: player.story,
             },
           }),
         ),

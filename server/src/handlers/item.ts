@@ -4,6 +4,7 @@ import {
   ConsumableConfig,
   EntityName,
   Event,
+  FactName,
   Item,
   PartyStatus,
   PlayerConfig,
@@ -65,6 +66,8 @@ export const item = {
     );
 
     const total = given.reduce((sum, slot) => sum + slot.quantity, 0);
+
+    player.story.facts[FactName.LAST_HAND_IN] = total;
 
     handlers.dialogue.respond(
       socket,

@@ -1,7 +1,9 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { MAX_STACK } from "../globals";
 import {
   ComponentName,
+  ConverterConfig,
+  EntityName,
   Item,
   Event,
   Slot,
@@ -15,6 +17,7 @@ import {
 import { configs } from "../configs/index.js";
 import { World } from "../World";
 import { handlers } from "./index.js";
+import { converter } from "../story/converter.js";
 
 export const storage = {
   stacks: (a: Item, b: Item): boolean =>
@@ -111,6 +114,9 @@ export const storage = {
 
     if (!entity || entity.isLocked || !player) return;
 
+    const recipe = storage.converter(entity.name);
+    if (recipe?.requires && !world.story.has(recipe.requires)) return;
+
     if (!entity.storing) {
       const def = configs.entities[entity.name];
       const comp = def?.components.find(
@@ -146,6 +152,19 @@ export const storage = {
       entity.storing = storing;
     }
 
+    if (
+      recipe &&
+      entity.converting &&
+      converter.ready(
+        entity.converting.at,
+        converter.clock(world.getTime()),
+        recipe,
+      )
+    ) {
+      entity.storing = converter.convert(entity.storing, recipe);
+      entity.converting = undefined;
+    }
+
     entity.isLocked = true;
     entity.lockedBy = player.id;
 
@@ -155,7 +174,12 @@ export const storage = {
     });
   },
 
-  close: (data: { entityId: string }, socket: Socket, world: World) => {
+  close: (
+    data: { entityId: string },
+    socket: Socket,
+    io: Server,
+    world: World,
+  ) => {
     const entity = world.entities.get(data.entityId);
     const player = world.players.getBySocketId(socket.id);
 
@@ -163,6 +187,56 @@ export const storage = {
 
     entity.isLocked = false;
     entity.lockedBy = undefined;
+
+    const recipe = storage.converter(entity.name);
+    if (!recipe || !entity.storing) return;
+
+    const amount = converter.amount(entity.storing, recipe);
+
+    if (!amount) entity.converting = undefined;
+    else if (!entity.converting || amount > entity.converting.amount)
+      entity.converting = { at: converter.clock(world.getTime()), amount };
+    else entity.converting.amount = amount;
+
+    storage.drive(world, io);
+  },
+
+  drive: (world: World, io: Server) => {
+    const now = converter.clock(world.getTime());
+
+    for (const entity of world.entities.all) {
+      const recipe = storage.converter(entity.name);
+      if (!recipe?.drives) continue;
+
+      const running =
+        !!entity.converting &&
+        !converter.ready(entity.converting.at, now, recipe);
+
+      for (const target of world.entities.all) {
+        if (target.name !== recipe.drives || !!target.playing === running)
+          continue;
+
+        target.playing = running;
+        handlers.broadcast.entity(
+          io,
+          world,
+          Event.ENTITY_ANIMATE,
+          { id: target.id, playing: running },
+          target.map,
+          world.chunks.getChunkByEntity(target.id),
+        );
+      }
+    }
+  },
+
+  converter: (name: EntityName): ConverterConfig | undefined => {
+    const component = configs.entities[name]?.components.find(
+      (c) => c.name === ComponentName.CONVERTER,
+    );
+
+    return component?.name === ComponentName.CONVERTER
+      ? component.config
+      : undefined;
   },
 
   zone: {

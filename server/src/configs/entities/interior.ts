@@ -5,6 +5,7 @@ import {
   EntityDefinition,
   EntityName,
   SoundName,
+  StoryFlag,
 } from "../../types";
 
 const BARREL_LOOT = [
@@ -1591,6 +1592,113 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Chest",
       description: "A sturdy wooden chest used to store valuables.",
+    },
+  },
+  [EntityName.MILL_HOPPER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 8,
+          offsetX: 4,
+          offsetY: 20,
+          static: true,
+          collides: false,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "interior",
+          tileSize: 16,
+          tiles: [
+            { row: 59, start: 27, end: 28 },
+            { row: 60, start: 27, end: 28 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 8,
+          repeat: 0,
+          autoplay: false,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8 } },
+      {
+        name: ComponentName.CONVERTER,
+        config: {
+          inputs: [{ item: EntityName.WHEAT, quantity: 2 }],
+          output: { item: EntityName.FLOUR, quantity: 1 },
+          days: 1,
+          drives: EntityName.WINDMILL_SAILS,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hopper",
+      description: "Pour wheat in, and the millstones grind it to flour by the next day.",
+    },
+  },
+  [EntityName.FORGE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 44,
+          height: 30,
+          offsetX: 2,
+          offsetY: 30,
+          static: true,
+          collides: true,
+        },
+      },
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "interior",
+          tileSize: 16,
+          tiles: [
+            { row: 59, start: 29, end: 31 },
+            { row: 60, start: 29, end: 31 },
+            { row: 61, start: 29, end: 31 },
+            { row: 62, start: 29, end: 31 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 10,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      { name: ComponentName.STORAGE, config: { slots: 8 } },
+      {
+        name: ComponentName.CONVERTER,
+        config: {
+          inputs: [
+            { item: EntityName.IRON_ORE, quantity: 2 },
+            { item: EntityName.WOOD, quantity: 1 },
+          ],
+          output: { item: EntityName.IRON1, quantity: 1 },
+          days: 1,
+          requires: StoryFlag.FORGE_OPEN,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Forge",
+      description: "Ore and wood go in. By the next day there is iron.",
     },
   },
   [EntityName.SPIKE_TRAP1]: {

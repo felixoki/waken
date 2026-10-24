@@ -24,6 +24,7 @@ const io = new Server(server, {
 });
 
 const world = new World(io);
+world.loadSpots();
 
 const restored = WORLD_ID
   ? await handlers.world.restore(WORLD_ID, world)

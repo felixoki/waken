@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { handlers } from "../handlers/index.js";
 import { tryCatch } from "../utils/tryCatch.js";
 import {
+  DevCommand,
   Direction,
   Event,
   Input,
@@ -94,6 +95,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
         handlers.dialogue.iterate(
           data.entityId,
           socket,
+          io,
           world,
           data.nodeId,
           data.facing,
@@ -264,7 +266,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     {
       event: Event.STORAGE_CLOSE,
       handler: (data: { entityId: string }) =>
-        handlers.storage.close(data, socket, world),
+        handlers.storage.close(data, socket, io, world),
     },
     {
       event: Event.SLOT_MOVE,
@@ -282,6 +284,14 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     {
       event: Event.ECONOMY_UPGRADE,
       handler: () => handlers.economy.upgrade(io, world),
+    },
+    /**
+     * Dev
+     */
+    {
+      event: Event.DEV_COMMAND,
+      handler: (data: { name: DevCommand; args: string[] }) =>
+        handlers.dev.run(data, socket, io, world),
     },
   ];
 

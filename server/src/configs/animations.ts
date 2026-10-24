@@ -127,6 +127,12 @@ export const animations: Partial<
     [StateName.DASHING]: { frameCount: 5, frameRate: 5, repeat: 0 },
     [StateName.CASTING]: { frameCount: 6, frameRate: 6, repeat: 0 },
   },
+  [EntityName.GRANDMOTHER]: {
+    [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.DASHING]: { frameCount: 5, frameRate: 5, repeat: 0 },
+    [StateName.CASTING]: { frameCount: 6, frameRate: 6, repeat: 0 },
+  },
   [EntityName.BLOODGEIST1]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
@@ -136,6 +142,13 @@ export const animations: Partial<
     [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
     [StateName.WALKING]: { frameCount: 12, frameRate: 8, repeat: -1 },
     [StateName.CASTING]: { frameCount: 12, frameRate: 14, repeat: 0 },
+  },
+  [EntityName.VISITOR1]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+  },
+  [EntityName.VISITOR2]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
   [EntityName.MAGE]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },

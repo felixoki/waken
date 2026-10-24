@@ -11,7 +11,7 @@ import {
   WeaponName,
   SoundName,
 } from "../../types";
-import { DAY } from "../../globals";
+import { DAY, MEATS } from "../../globals";
 
 export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.BEAR]: {
@@ -803,9 +803,14 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.AMBIENT_SOUND,
         config: { name: SoundName.DOG_IDLE, interval: [8000, 18000] },
       },
+      {
+        name: ComponentName.FEEDABLE,
+        config: { foods: MEATS, duration: 60000, follows: true },
+      },
     ],
     states: [StateName.IDLE, StateName.WALKING],
     behaviors: [
+      { name: BehaviorName.FOLLOW },
       {
         name: BehaviorName.AMBLE,
         config: { radius: 60, idle: { range: [10000, 20000] } },

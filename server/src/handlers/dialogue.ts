@@ -1,7 +1,8 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { configs } from "../configs";
 import { World } from "../World";
 import { handlers } from ".";
+import { conditions, StoryContext } from "../story/conditions.js";
 import {
   BehaviorName,
   ChoiceId,
@@ -20,7 +21,8 @@ import {
 
 export const dialogue = {
   getMood: (context: DialogueContext): Mood => {
-    return context.world.economy.getMood();
+    const entity = context.world.entities.get(context.entityId);
+    return context.world.economy.getMood(entity?.name);
   },
 
   resolve: {
@@ -58,36 +60,40 @@ export const dialogue = {
       return choice;
     },
 
+    ref: (node: DialogueReference): DialogueNode | null => {
+      const common =
+        configs.dialogue.nodes[
+          node.ref as keyof typeof configs.dialogue.nodes
+        ];
+      if (!common || !common.length) return null;
+
+      const resolved = common[Math.floor(Math.random() * common.length)];
+
+      if (node.individual)
+        return {
+          ...resolved,
+          choices: [...(resolved.choices || []), ...node.individual],
+        };
+
+      return resolved;
+    },
+
     node: (
-      node: DialogueNode | DialogueNode[] | DialogueReference,
+      node: DialogueNode | Array<DialogueNode | DialogueReference> | DialogueReference,
+      context: StoryContext,
     ): DialogueNode | null => {
-      if ("ref" in node) {
-        const common =
-          configs.dialogue.nodes[
-            node.ref as keyof typeof configs.dialogue.nodes
-          ];
-        if (!common || !common.length) return null;
-
-        const resolved = common[Math.floor(Math.random() * common.length)];
-
-        if (node.individual)
-          return {
-            ...resolved,
-            choices: [...(resolved.choices || []), ...node.individual],
-          };
-
-        return resolved;
-      }
-
-      if (Array.isArray(node)) {
-        const sorted = [...node].sort(
-          (a, b) => (b.salience || 0) - (a.salience || 0),
+      if (Array.isArray(node))
+        return conditions.pick(
+          node.flatMap((entry) => {
+            const resolved = "ref" in entry ? dialogue.resolve.ref(entry) : entry;
+            return resolved ? [resolved] : [];
+          }),
+          context,
         );
 
-        return sorted[0];
-      }
+      if ("ref" in node) return dialogue.resolve.ref(node);
 
-      return node;
+      return conditions.passes(node.when, context) ? node : null;
     },
   },
 
@@ -108,6 +114,7 @@ export const dialogue = {
   iterate: (
     entityId: string,
     socket: Socket,
+    io: Server,
     world: World,
     nodeId: NodeId,
     facing?: Direction,
@@ -120,6 +127,14 @@ export const dialogue = {
 
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
+
+    const def = definition.dialogue?.[nodeId];
+    if (!def) return;
+
+    const story = handlers.story.context(world, player, entity.name);
+
+    const node = dialogue.resolve.node(def, story);
+    if (!node) return;
 
     if (nodeId === NodeId.GREETING) {
       if (player.locked && player.locked !== entityId) {
@@ -177,20 +192,32 @@ export const dialogue = {
 
     const mood = dialogue.getMood(context);
 
-    const def = definition.dialogue?.[nodeId];
-    if (!def) return;
+    if (nodeId === NodeId.GREETING)
+      handlers.story.talk(player, entity.name, world);
 
-    const node = dialogue.resolve.node(def);
-    if (!node) return;
+    handlers.story.apply(node.story ?? [], {
+      player,
+      world,
+      socket,
+      io,
+      villager: entity.name,
+    });
 
-    const text = dialogue.resolve.text(node.text, mood);
+    const text = handlers.story.errand.fill(
+      dialogue.resolve.text(node.text, mood),
+      player,
+    );
 
     const resolved = (node.choices || [])
       .map((choice) => ({
         isGoodbye: "ref" in choice && choice.ref === ChoiceId.GOODBYE,
         choice: dialogue.resolve.choice(choice),
       }))
-      .filter((entry) => entry.choice !== null);
+      .filter(
+        (entry) =>
+          entry.choice !== null &&
+          conditions.passes(entry.choice.when, story),
+      );
 
     const goodbye = resolved.find((entry) => entry.isGoodbye)?.choice ?? null;
 
@@ -228,6 +255,8 @@ export const dialogue = {
     socket.emit(Event.ENTITY_DIALOGUE_RESPONSE, {
       entityId,
       nodeId,
+      speaker:
+        definition.metadata?.name ?? definition.metadata?.displayName,
       text,
       choices,
     });

@@ -1,4 +1,4 @@
-import { MapName, TimePhase } from "./types/index.js";
+import { EntityName, MapName, TimePhase } from "./types/index.js";
 
 /** Server */
 export const HEARTBEAT_INTERVAL = 30_000;
@@ -228,8 +228,8 @@ export const VISION_PROXIMITY = 200;
 export const PATH_DEADZONE = 2;
 export const FACING_LOOKAHEAD = 3;
 export const LINE_INTERVAL = 150;
-export const PATH_MARGIN = 1;
 export const PATH_ARRIVAL = 4;
+export const PATH_MARGIN = PATH_ARRIVAL;
 export const PATH_SNAP = 4;
 export const PATH_JUMP_COST = 4;
 export const PATH_JUMP_MARGIN = 2;
@@ -431,3 +431,37 @@ export const SHADOW_CULL = 48;
 
 export const LOCATION_MARGIN = 4;
 export const LOCATION_HOLD = 2500;
+
+/** Story */
+
+export const BIG_HAND_IN = 50;
+export const BOND_FRIEND = 5;
+export const BOND_MAX = 10;
+export const LEAN_TAKEN = 3;
+export const LEAN_MAX = 7;
+export const CULT_MAX = 6;
+export const CULT_KNOWN_DAYS = 7;
+
+/** Economy */
+
+export const ECONOMY_GROWTH = 0.25;
+
+/** Schedules */
+
+export const ENTITY_FADE = 600;
+
+/** Errands */
+export const ERRAND_RARE_CHANCE = 0.1;
+
+/** Animals */
+export const FOLLOW_NEAR = 32;
+export const FOLLOW_LEASH = 56;
+export const FOLLOW_FAR = 96;
+export const FOLLOW_REPLAN = 24;
+export const MEATS = [
+  EntityName.VENISON_MEAT,
+  EntityName.BOAR_MEAT,
+  EntityName.BEEF,
+  EntityName.CHICKEN_MEAT,
+  EntityName.GOOSE_MEAT,
+];

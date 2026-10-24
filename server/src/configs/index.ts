@@ -3,9 +3,12 @@ import { buildable } from "./buildable.js";
 import { COMMON_CHOICES, COMMON_NODES } from "./dialogue.js";
 import { effects, interactions } from "./effects.js";
 import { entities } from "./entities/index.js";
+import { errandRewards, errands } from "./errands.js";
 import { fish } from "./fish.js";
 import { maps } from "./maps.js";
 import { needs } from "./needs.js";
+import { preferences } from "./preferences.js";
+import { schedules } from "./schedules.js";
 import { sounds } from "./sounds.js";
 import { spells } from "./spells.js";
 import { tiers } from "./tiers.js";
@@ -25,7 +28,11 @@ const landmarks = new Set(
     .map(([name]) => name),
 );
 
-const relics = new Set<EntityName>([EntityName.SILVER_SWORD]);
+const relics = new Set<EntityName>([
+  EntityName.SILVER_SWORD,
+  EntityName.LEFT_BOOT,
+  EntityName.GRANDMOTHER,
+]);
 
 const collectables = new Set<EntityName>([
   ...needs.flatMap((need) => need.items.map((entry) => entry.item)),
@@ -49,11 +56,15 @@ export const configs = {
   dialogue: { choices: COMMON_CHOICES, nodes: COMMON_NODES },
   effects,
   entities,
+  errands,
+  errandRewards,
   fish,
   interactions,
   landmarks,
   maps,
   needs,
+  preferences,
+  schedules,
   sounds,
   spells,
   tiers,

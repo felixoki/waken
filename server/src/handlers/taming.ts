@@ -7,6 +7,7 @@ import {
   EntityName,
   Event,
   SlotType,
+  StoryFlag,
   TameState,
 } from "../types";
 import { World } from "../World";
@@ -33,6 +34,34 @@ export const taming = {
     handlers.broadcast.room(socket, io, room, Event.ENTITY_PACIFIED, {
       id: entity.id,
     });
+  },
+
+  follow: (entity: EntityConfig, io: Server, world: World) =>
+    handlers.broadcast.entity(
+      io,
+      world,
+      Event.ENTITY_FOLLOW,
+      { id: entity.id, tame: entity.tame },
+      entity.map,
+      world.chunks.getChunkByEntity(entity.id),
+    ),
+
+  settle: (entity: EntityConfig, io: Server, world: World) => {
+    world.entities.update(entity.id, {
+      tame: { ...entity.tame, follows: undefined, settled: true },
+    });
+    taming.follow(world.entities.get(entity.id) ?? entity, io, world);
+  },
+
+  release: (playerId: string, io: Server, world: World) => {
+    for (const entity of world.entities.all) {
+      if (entity.tame?.follows !== playerId) continue;
+
+      world.entities.update(entity.id, {
+        tame: { ...entity.tame, follows: undefined },
+      });
+      taming.follow(world.entities.get(entity.id) ?? entity, io, world);
+    }
   },
 
   capture: (data: { id: string }, socket: Socket, io: Server, world: World) => {
@@ -83,6 +112,9 @@ export const taming = {
         : null;
     player.hotbar = hotbar;
     socket.emit(Event.HOTBAR_SYNC, player.hotbar);
+
+    if (soul === EntityName.SHADOW_WANDERER)
+      handlers.story.remember(player, StoryFlag.SOULS_CAUGHT, world);
 
     handlers.item.give(
       player,
@@ -147,7 +179,7 @@ export const taming = {
     const player = world.players.getBySocketId(socket.id);
     const target = world.entities.get(data.id);
 
-    if (!player || !target || !target.tame?.isTamed) return;
+    if (!player || !target) return;
 
     const def = configs.entities[target.name];
     const feedable = def?.components.find(
@@ -156,6 +188,14 @@ export const taming = {
 
     if (!feedable || feedable.name !== ComponentName.FEEDABLE) return;
     if (!feedable.config.foods.includes(data.food)) return;
+
+    const follows =
+      !!feedable.config.follows &&
+      !target.tame?.isTamed &&
+      !target.tame?.settled;
+
+    if (!target.tame?.isTamed && !follows) return;
+    if (follows && target.tame?.follows === player.id) return;
 
     if (
       target.tame?.fedAt &&
@@ -185,7 +225,7 @@ export const taming = {
 
     const fedAt = Date.now();
     world.entities.update(target.id, {
-      tame: { ...target.tame, fedAt },
+      tame: { ...target.tame, fedAt, ...(follows && { follows: player.id }) },
     });
 
     const key = world.chunks.getChunkByEntity(target.id);
@@ -195,6 +235,11 @@ export const taming = {
       id: target.id,
       fedAt,
     });
+
+    if (follows) {
+      taming.follow(target, io, world);
+      return;
+    }
 
     const breedable = def?.components.find(
       (c: ComponentConfig) => c.name === ComponentName.BREEDABLE,
