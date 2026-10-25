@@ -842,6 +842,10 @@
 - Add flour and mill ✅
 - Add player stories ✅
 - Add villager relationships and schedules ✅
+- Sound volume doesn't fade in ✅
+- Wind animations break over weather transition ✅
+- Add village improvement unlocks ✅
+- Add economy groups ✅
 
 
 ### To Do
@@ -851,7 +855,6 @@
 - Add craftable beds by tier
 - Empty mana outside dreams
 - Add pigs
-- Add village improvement unlocks
 
 ### Bugs
 
