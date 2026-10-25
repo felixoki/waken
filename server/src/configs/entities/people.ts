@@ -193,6 +193,10 @@ const bookkeeperChoices: Array<DialogueChoice | DialogueReference> = [
     text: "Hand over collectables",
     effects: [{ name: DialogueEffectName.ITEM_HAND_OVER }],
   },
+  {
+    text: "Improve the village",
+    effects: [{ name: DialogueEffectName.IMPROVEMENTS_OPEN }],
+  },
   { text: "What do you keep in all these books?", next: NodeId.STORY },
   { ref: ChoiceId.GOODBYE },
 ];
@@ -340,11 +344,20 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             },
             {
               tier: 2,
+              output: EntityName.SMELLING_SALTS,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.VIAL, quantity: 1 },
+                { item: EntityName.BONE, quantity: 2 },
+              ],
+            },
+            {
+              tier: 2,
               output: EntityName.SOUP_OF_THE_HIKER,
               quantity: 1,
               ingredients: [
                 { item: EntityName.TROLL_SCALES, quantity: 1 },
-                { item: EntityName.BOAR_MEAT, quantity: 1 },
+                { item: EntityName.GAME_MEAT, quantity: 1 },
                 { item: EntityName.MILK, quantity: 1 },
               ],
             },
@@ -700,6 +713,22 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },
       { name: ComponentName.INTERACTABLE },
+      {
+        name: ComponentName.CRAFTER,
+        config: {
+          recipes: [
+            {
+              tier: 2,
+              output: EntityName.BACKPACK,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.DEER_HIDE, quantity: 6 },
+                { item: EntityName.WOOD, quantity: 4 },
+              ],
+            },
+          ] satisfies Recipe[],
+        },
+      },
       { name: ComponentName.ANIMATION },
       {
         name: ComponentName.BODY,
@@ -813,6 +842,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             {
               text: "Hand over collectables",
               effects: [{ name: DialogueEffectName.ITEM_HAND_OVER }],
+            },
+            {
+              text: "Improve the village",
+              effects: [{ name: DialogueEffectName.IMPROVEMENTS_OPEN }],
             },
             {
               text: "What do you keep in all these books?",
@@ -1177,6 +1210,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               output: EntityName.CABBAGE_SEED,
               quantity: 5,
               ingredients: [{ item: EntityName.CABBAGE, quantity: 1 }],
+            },
+            {
+              tier: 2,
+              output: EntityName.BEAN_SEED,
+              quantity: 5,
+              ingredients: [{ item: EntityName.BEANS, quantity: 1 }],
             },
             {
               tier: 3,

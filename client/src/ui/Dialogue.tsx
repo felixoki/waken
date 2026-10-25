@@ -29,6 +29,11 @@ export const Dialogue = () => {
           EventBus.emit(Event.ENTITY_DIALOGUE_END, data.entityId);
         if (effect.params) EventBus.emit(Event.CRAFTER_OPEN, effect.params);
       },
+      [DialogueEffectName.IMPROVEMENTS_OPEN]: () => {
+        if (data?.entityId)
+          EventBus.emit(Event.ENTITY_DIALOGUE_END, data.entityId);
+        EventBus.emit(Event.IMPROVEMENTS_OPEN);
+      },
       [DialogueEffectName.FISH_WEIGH]: (effect: DialogueEffect) => {
         if (data?.entityId)
           EventBus.emit(Event.FISHING_WEIGH, {

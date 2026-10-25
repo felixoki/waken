@@ -40,6 +40,7 @@ export enum DialogueEffectName {
   CONVERSATION_END = "conversation:end",
   ITEM_HAND_OVER = "item:handover",
   CRAFTER_OPEN = "crafter:open",
+  IMPROVEMENTS_OPEN = "improvements:open",
   FISH_WEIGH = "fish:weigh",
 }
 

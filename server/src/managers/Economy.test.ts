@@ -2,8 +2,15 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { EconomyManager } from "./Economy";
 import { ItemsStore } from "../stores/Items";
-import { EntityName, GroupName, Mood, NeedName, TimePhase } from "../types";
-import { DAY } from "../globals";
+import {
+  EntityName,
+  GroupName,
+  ImprovementName,
+  Mood,
+  NeedName,
+  TimePhase,
+} from "../types";
+import { DAY, STORE_CAPACITY, STORE_CAPACITY_EXPANDED } from "../globals";
 
 const stocked = (items: Partial<Record<EntityName, number>>) => {
   const supply = new ItemsStore();
@@ -15,7 +22,7 @@ const stocked = (items: Partial<Record<EntityName, number>>) => {
 
 const tierOne = {
   [EntityName.RASPBERRY]: 10,
-  [EntityName.VENISON_MEAT]: 10,
+  [EntityName.GAME_MEAT]: 10,
   [EntityName.MILK]: 10,
   [EntityName.TUNIC]: 10,
   [EntityName.CANDLE]: 10,
@@ -37,7 +44,7 @@ describe("groups", () => {
   });
 
   test("fruit alone doesn't satisfy food", () => {
-    const { economy } = stocked({ ...tierOne, [EntityName.VENISON_MEAT]: 0 });
+    const { economy } = stocked({ ...tierOne, [EntityName.GAME_MEAT]: 0 });
 
     assert.equal(economy.isLow(NeedName.FOOD), true);
     assert.equal(economy.getMood(), Mood.HUNGRY);
@@ -47,8 +54,8 @@ describe("groups", () => {
   test("at tier 1 any tier 1 item fills a group", () => {
     const { economy } = stocked({
       ...tierOne,
-      [EntityName.VENISON_MEAT]: 0,
-      [EntityName.BOAR_MEAT]: 10,
+      [EntityName.RASPBERRY]: 0,
+      [EntityName.STRAWBERRY]: 10,
     });
 
     assert.equal(economy.isLow(NeedName.FOOD), false);
@@ -61,7 +68,7 @@ describe("groups", () => {
       [EntityName.VEST]: 10,
     };
 
-    const twoOld = stocked({ ...tierTwo, [EntityName.BOAR_MEAT]: 10 });
+    const twoOld = stocked(tierTwo);
     twoOld.economy.setTier(2);
     assert.equal(twoOld.economy.isLow(NeedName.FOOD), true);
 
@@ -128,7 +135,7 @@ describe("game time", () => {
 
     assert.ok(Math.abs(supply.get(EntityName.MILK) - 9.5) < 0.001);
     assert.ok(Math.abs(supply.get(EntityName.RASPBERRY) - 9.5) < 0.001);
-    assert.ok(Math.abs(supply.get(EntityName.VENISON_MEAT) - 9.5) < 0.001);
+    assert.ok(Math.abs(supply.get(EntityName.GAME_MEAT) - 9.5) < 0.001);
   });
 
   test("small ticks add up before anything is consumed", () => {
@@ -209,5 +216,43 @@ describe("demand", () => {
     assert.ok(
       wet.supply.get(EntityName.TUNIC) < dry.supply.get(EntityName.TUNIC),
     );
+  });
+});
+
+describe("improvements", () => {
+  test("the store fills up to its capacity", () => {
+    const { economy } = stocked({ [EntityName.WOOD]: 45.5 });
+
+    assert.equal(economy.capacity(), STORE_CAPACITY);
+    assert.equal(economy.room(EntityName.WOOD), 4);
+    assert.equal(economy.room(EntityName.GLASS), STORE_CAPACITY);
+  });
+
+  test("storage raises the capacity", () => {
+    const { economy } = stocked({ [EntityName.WOOD]: 50 });
+
+    economy.improve(ImprovementName.STORAGE);
+
+    assert.equal(economy.has(ImprovementName.STORAGE), true);
+    assert.equal(economy.capacity(), STORE_CAPACITY_EXPANDED);
+    assert.equal(economy.room(EntityName.WOOD), STORE_CAPACITY_EXPANDED - 50);
+    assert.deepEqual(economy.getSnapshot().improvements, [
+      ImprovementName.STORAGE,
+    ]);
+  });
+
+  test("tier, improvements and store survive a save", () => {
+    const { economy } = stocked({ [EntityName.WOOD]: 120 });
+
+    economy.setTier(3);
+    economy.improve(ImprovementName.STORAGE);
+
+    const saved = JSON.parse(JSON.stringify(economy.state()));
+    const restored = stocked({});
+    restored.economy.hydrate(saved);
+
+    assert.equal(restored.economy.getTier(), 3);
+    assert.equal(restored.economy.has(ImprovementName.STORAGE), true);
+    assert.equal(restored.supply.get(EntityName.WOOD), 120);
   });
 });

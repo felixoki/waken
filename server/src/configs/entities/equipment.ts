@@ -1067,4 +1067,37 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 2,
     },
   },
+  [EntityName.BACKPACK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 40, start: 5, end: 6 },
+            { row: 41, start: 5, end: 6 },
+          ],
+        },
+        key: "backpack_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { slots: 5 },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Backpack",
+      description: "A leather pack on a wooden frame. Room for five more things.",
+      icon: { spritesheet: "items", row: 41, col: 4 },
+      weight: 1,
+    },
+  },
 };

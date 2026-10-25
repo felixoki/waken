@@ -99,13 +99,13 @@ describe("passes", () => {
 
   test("carrying any needs one of the items", () => {
     const when: Condition = {
-      carryingAny: [EntityName.BOAR_MEAT, EntityName.VENISON_MEAT],
+      carryingAny: [EntityName.BEEF, EntityName.GAME_MEAT],
     };
-    const onlyBoar = (name: EntityName) => name === EntityName.BOAR_MEAT;
+    const onlyBeef = (name: EntityName) => name === EntityName.BEEF;
 
     assert.equal(conditions.passes(when, context()), false);
     assert.equal(
-      conditions.passes(when, context({ carrying: onlyBoar })),
+      conditions.passes(when, context({ carrying: onlyBeef })),
       true,
     );
   });

@@ -9,7 +9,7 @@ import {
   SfxConfig,
   SoundName,
 } from "@server/types";
-import { CROSSFADE_DURATION } from "@server/globals";
+import { CROSSFADE_DURATION, MASTER_FADE_OUT } from "@server/globals";
 import {
   SFX_FALLOFF_NEAR,
   SFX_FALLOFF_FAR,
@@ -20,6 +20,8 @@ type Sound = Phaser.Sound.WebAudioSound;
 
 export class SoundManager {
   private scene: MainScene;
+  private manager: Phaser.Sound.WebAudioSoundManager;
+  private bus: GainNode;
   private current: { name: MusicName; sound: Sound } | null = null;
   private layers: Map<AmbienceName, Sound> = new Map();
   private domains: Map<AmbienceName, AmbienceDomain> = new Map();
@@ -32,7 +34,16 @@ export class SoundManager {
   constructor(scene: MainScene) {
     this.scene = scene;
     this.volume = this._load();
+    this.manager = scene.sound as Phaser.Sound.WebAudioSoundManager;
+    this.bus = this.manager.context.createGain();
+    this.bus.gain.value = 0;
+    this.bus.connect(this.manager.destination);
   }
+
+  fade = {
+    in: () => this._ramp(1, CROSSFADE_DURATION),
+    out: () => this._ramp(0, MASTER_FADE_OUT),
+  };
 
   play = {
     sfx: (
@@ -62,12 +73,14 @@ export class SoundManager {
         ? config.variants[Math.floor(Math.random() * config.variants.length)]
         : name;
 
-      this.scene.sound.play(key, {
-        volume,
-        pan,
-        rate: opts?.rate ?? 0.95 + Math.random() * 0.1,
-        seek: opts?.seek ?? 0,
-      });
+      this._routed(() =>
+        this.manager.play(key, {
+          volume,
+          pan,
+          rate: opts?.rate ?? 0.95 + Math.random() * 0.1,
+          seek: opts?.seek ?? 0,
+        }),
+      );
     },
 
     loop: (
@@ -96,11 +109,14 @@ export class SoundManager {
         ? config.variants[Math.floor(Math.random() * config.variants.length)]
         : name;
 
-      const sound = this.scene.sound.add(key, {
-        volume,
-        pan,
-        loop: true,
-      }) as Sound;
+      const sound = this._routed(
+        () =>
+          this.manager.add(key, {
+            volume,
+            pan,
+            loop: true,
+          }) as Sound,
+      );
       sound.play();
 
       return sound;
@@ -126,10 +142,13 @@ export class SoundManager {
         ? config.variants[Math.floor(Math.random() * config.variants.length)]
         : name;
       const target = config.volume * this.volume.ambience;
-      const sound = this.scene.sound.add(key, {
-        volume: 0,
-        loop: true,
-      }) as Sound;
+      const sound = this._routed(
+        () =>
+          this.manager.add(key, {
+            volume: 0,
+            loop: true,
+          }) as Sound,
+      );
       sound.play();
 
       this.scene.tweens.add({
@@ -226,6 +245,25 @@ export class SoundManager {
   getActiveMusic(): MusicName[] | null {
     if (!this.current) return null;
     return this.queue.music.length ? [...this.queue.music] : null;
+  }
+
+  private _ramp(volume: number, duration: number) {
+    const gain = this.bus.gain;
+    const now = this.manager.context.currentTime;
+
+    gain.cancelScheduledValues(now);
+    gain.setValueAtTime(gain.value, now);
+    gain.linearRampToValueAtTime(volume, now + duration / 1000);
+  }
+
+  private _routed<T>(create: () => T): T {
+    const destination = this.manager.destination;
+
+    this.manager.destination = this.bus;
+    const result = create();
+    this.manager.destination = destination;
+
+    return result;
   }
 
   private _fade(sound: Sound) {

@@ -857,4 +857,144 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.05,
     },
   },
+  [EntityName.BEAN_SEED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 14, end: 15 },
+            { row: 6, start: 14, end: 15 },
+          ],
+        },
+        key: "bean_seed_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bean seed",
+      description: "A dried, speckled bean that grows into a climbing bean plant.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 6, col: 13 },
+      weight: 0.01,
+    },
+  },
+  [EntityName.BEAN_PLANT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 33, start: 11, end: 12 },
+            { row: 34, start: 11, end: 12 },
+            { row: 35, start: 11, end: 12 },
+          ],
+        },
+        key: "bean_plant_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 9,
+          height: 20,
+          offsetX: 11,
+          offsetY: 24,
+          collides: false,
+          static: false,
+        },
+      },
+      {
+        name: ComponentName.GROWABLE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          stages: [
+            {
+              stage: GrowthStage.SEED,
+              at: 0.0,
+              tiles: [
+                { row: 33, start: 7, end: 8 },
+                { row: 34, start: 7, end: 8 },
+                { row: 35, start: 7, end: 8 },
+              ],
+              offsetY: -16,
+            },
+            {
+              stage: GrowthStage.SPROUT,
+              at: 0.5,
+              tiles: [
+                { row: 33, start: 9, end: 10 },
+                { row: 34, start: 9, end: 10 },
+                { row: 35, start: 9, end: 10 },
+              ],
+              offsetY: -16,
+            },
+            {
+              stage: GrowthStage.MATURE,
+              at: 1.0,
+              tiles: [
+                { row: 33, start: 11, end: 12 },
+                { row: 34, start: 11, end: 12 },
+                { row: 35, start: 11, end: 12 },
+              ],
+              offsetY: -16,
+            },
+          ],
+          duration: 1 * DAY,
+          yield: [{ name: EntityName.BEANS, quantity: 1, stackable: true }],
+          regrows: false,
+          needsWater: true,
+        },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Beans",
+      description: "A climbing bean plant hung with green pods.",
+    },
+  },
+  [EntityName.BEANS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 5, start: 17, end: 18 },
+            { row: 6, start: 17, end: 18 },
+          ],
+        },
+        key: "beans_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Green beans",
+      description: "A tender green pod picked from a climbing bean plant.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 6, col: 16 },
+      weight: 0.05,
+    },
+  },
 };

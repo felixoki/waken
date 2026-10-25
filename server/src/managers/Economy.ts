@@ -1,10 +1,18 @@
 import { configs } from "../configs";
-import { DAY, ECONOMY_GROWTH, MEATS } from "../globals";
+import {
+  DAY,
+  ECONOMY_GROWTH,
+  MEATS,
+  STORE_CAPACITY,
+  STORE_CAPACITY_EXPANDED,
+} from "../globals";
 import { ItemsStore } from "../stores/Items";
 import {
   EconomySnapshot,
+  EconomyState,
   EntityName,
   GroupName,
+  ImprovementName,
   Mood,
   NeedConfig,
   NeedGroup,
@@ -16,6 +24,7 @@ import {
 export class EconomyManager {
   private needs: Map<NeedName, NeedConfig> = new Map();
   private tier: number = 1;
+  private improvements: Set<ImprovementName> = new Set();
   private accumulator: number = 0;
   public dirty: boolean = false;
   public meatEaten: boolean = false;
@@ -165,6 +174,44 @@ export class EconomyManager {
     this.dirty = true;
   }
 
+  has(name: ImprovementName): boolean {
+    return this.improvements.has(name);
+  }
+
+  improve(name: ImprovementName): void {
+    this.improvements.add(name);
+    this.dirty = true;
+  }
+
+  state(): EconomyState {
+    return {
+      tier: this.tier,
+      improvements: [...this.improvements],
+      store: this.supply.snapshot(),
+    };
+  }
+
+  hydrate(state: EconomyState): void {
+    const names = Object.values(ImprovementName);
+
+    this.tier = state.tier ?? this.tier;
+    this.improvements = new Set(
+      (state.improvements ?? []).filter((name) => names.includes(name)),
+    );
+    if (state.store) this.supply.hydrate(state.store);
+    this.dirty = true;
+  }
+
+  capacity(): number {
+    return this.has(ImprovementName.STORAGE)
+      ? STORE_CAPACITY_EXPANDED
+      : STORE_CAPACITY;
+  }
+
+  room(name: EntityName): number {
+    return Math.max(0, Math.floor(this.capacity() - this.supply.get(name)));
+  }
+
   canUpgrade(): boolean {
     for (const need of this.needs.values()) if (!this.isMet(need)) return false;
 
@@ -238,7 +285,6 @@ export class EconomyManager {
   }
 
   getSnapshot(): EconomySnapshot {
-
     const needs: EconomySnapshot["needs"] = [...this.needs.values()].map(
       (need) => ({
         name: need.name,
@@ -252,6 +298,7 @@ export class EconomyManager {
           stocked: this.stocked(need, group),
           items: need.items
             .filter((item) => item.group === group.name)
+            .sort((a, b) => a.tier - b.tier)
             .map((item) => ({
               item: item.item,
               quantity: Math.floor(this.supply.get(item.item)),
@@ -266,6 +313,8 @@ export class EconomyManager {
       tier: this.tier,
       canUpgrade: this.canUpgrade(),
       mood: this.getMood(),
+      capacity: this.capacity(),
+      improvements: [...this.improvements],
       needs,
     };
   }

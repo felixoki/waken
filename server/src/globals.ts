@@ -284,6 +284,7 @@ export const REEL_WEIGHT_DRAIN = 0.2;
 /** Sounds */
 
 export const CROSSFADE_DURATION = 1000;
+export const MASTER_FADE_OUT = 300;
 export const FOOTSTEP_DISTANCE = 30;
 
 export const SFX_FALLOFF_NEAR = 80;
@@ -298,8 +299,12 @@ export const REGEN_MANA_PER_SECOND = 3;
 export const REGEN_INTERVAL = 1000;
 
 export const MAX_STACK = 50;
+export const STORE_CAPACITY = 50;
+export const STORE_CAPACITY_EXPANDED = 150;
 export const DROP_LIFETIME = 10 * 60 * 1000;
 export const HOTBAR_SIZE = 7;
+export const INVENTORY_SIZE = 20;
+export const INVENTORY_MAX_SIZE = 30;
 
 /** Directions */
 export const DIRECTIONS_CARDINAL = [
@@ -458,10 +463,4 @@ export const FOLLOW_NEAR = 32;
 export const FOLLOW_LEASH = 56;
 export const FOLLOW_FAR = 96;
 export const FOLLOW_REPLAN = 24;
-export const MEATS = [
-  EntityName.VENISON_MEAT,
-  EntityName.BOAR_MEAT,
-  EntityName.BEEF,
-  EntityName.CHICKEN_MEAT,
-  EntityName.GOOSE_MEAT,
-];
+export const MEATS = [EntityName.GAME_MEAT, EntityName.BEEF, EntityName.POULTRY];

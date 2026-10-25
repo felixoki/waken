@@ -35,4 +35,13 @@ export class ItemsStore {
   snapshot(): Record<string, number> {
     return Object.fromEntries(this.items);
   }
+
+  hydrate(items: Partial<Record<EntityName, number>>): void {
+    this.items = new Map(
+      Object.entries(items).filter(
+        (entry): entry is [EntityName, number] =>
+          typeof entry[1] === "number" && entry[1] > 0,
+      ),
+    );
+  }
 }

@@ -5,6 +5,7 @@ import { effects, interactions } from "./effects.js";
 import { entities } from "./entities/index.js";
 import { errandRewards, errands } from "./errands.js";
 import { fish } from "./fish.js";
+import { improvements } from "./improvements.js";
 import { maps } from "./maps.js";
 import { needs } from "./needs.js";
 import { preferences } from "./preferences.js";
@@ -59,6 +60,7 @@ export const configs = {
   errands,
   errandRewards,
   fish,
+  improvements,
   interactions,
   landmarks,
   maps,

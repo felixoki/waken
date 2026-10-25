@@ -34,6 +34,8 @@ export const world = {
 
     if (state?.story) world.story.hydrate(state.story);
 
+    if (state?.economy) world.economy.hydrate(state.economy);
+
     return !!state?.entities?.length;
   },
 
@@ -47,6 +49,7 @@ export const world = {
         return !holder || !configs.maps[holder.map].isInstanced;
       }),
       story: world.story.snapshot(),
+      economy: world.economy.state(),
     });
 
     await Promise.all(

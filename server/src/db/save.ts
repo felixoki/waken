@@ -1,7 +1,7 @@
 import { pg } from "./postgres.js";
 import { redis } from "./redis.js";
 import { tryCatch } from "../utils/tryCatch.js";
-import { EntityName, WorldStory } from "../types/index.js";
+import { EconomyState, EntityName, WorldStory } from "../types/index.js";
 
 type PlayerData = {
   playerId: string;
@@ -16,6 +16,7 @@ type WorldState = {
   time: Record<string, any>;
   relics: [EntityName, string | null][];
   story: WorldStory;
+  economy: EconomyState;
 };
 
 export const save = {
@@ -64,10 +65,10 @@ export const save = {
 
     const { error: pgError } = await tryCatch(
       pg.query(
-        `INSERT INTO world_state (world_id, entities, chunks, time, relics, story, updated_at)
-     VALUES ($1, $2, $3, $4, $5, $6, NOW())
+        `INSERT INTO world_state (world_id, entities, chunks, time, relics, story, economy, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
      ON CONFLICT (world_id)
-     DO UPDATE SET entities = $2, chunks = $3, time = $4, relics = $5, story = $6, updated_at = NOW()`,
+     DO UPDATE SET entities = $2, chunks = $3, time = $4, relics = $5, story = $6, economy = $7, updated_at = NOW()`,
         [
           worldId,
           JSON.stringify(state.entities),
@@ -75,6 +76,7 @@ export const save = {
           JSON.stringify(state.time),
           JSON.stringify(state.relics),
           JSON.stringify(state.story),
+          JSON.stringify(state.economy),
         ],
       ),
     );

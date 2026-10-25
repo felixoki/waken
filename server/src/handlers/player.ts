@@ -30,6 +30,7 @@ import {
   CRIT_CHANCE,
   CRIT_MULTIPLIER,
   HOTBAR_SIZE,
+  INVENTORY_SIZE,
   REGEN_HEALTH_PER_SECOND,
   REGEN_INTERVAL,
   REGEN_MANA_PER_SECOND,
@@ -54,7 +55,7 @@ export const player = {
       if (WORLD_ID && playerId) saved = await load.player(WORLD_ID, playerId);
 
       const inventory: (Item | null)[] =
-        saved?.data?.inventory ?? new Array(20).fill(null);
+        saved?.data?.inventory ?? new Array(INVENTORY_SIZE).fill(null);
       const hotbar = (saved?.data?.hotbar as (Slot | null)[]) ?? [
         ...new Array(HOTBAR_SIZE).fill(null),
       ];

@@ -6,7 +6,7 @@ import {
 } from "../../types";
 
 export const food: Partial<Record<EntityName, EntityDefinition>> = {
-  [EntityName.VENISON_MEAT]: {
+  [EntityName.GAME_MEAT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -20,7 +20,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 20, start: 5, end: 6 },
           ],
         },
-        key: "venison_meat_texture",
+        key: "game_meat_texture",
       },
       { name: ComponentName.POINTABLE },
       {
@@ -33,40 +33,10 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Venison",
-      description: "A cut of fresh venison taken from wild game.",
+      displayName: "Game",
+      description: "A cut of wild meat from deer or boar.",
       stackable: true,
       icon: { spritesheet: "items", row: 20, col: 4 },
-      weight: 1.5,
-    },
-  },
-  [EntityName.BOAR_MEAT]: {
-    facing: Direction.DOWN,
-    moving: [],
-    components: [
-      {
-        name: ComponentName.TEXTURE,
-        config: {
-          spritesheet: "items",
-          tileSize: 16,
-          tiles: [
-            { row: 17, start: 8, end: 9 },
-            { row: 18, start: 8, end: 9 },
-          ],
-        },
-        key: "boar_meat_texture",
-      },
-      { name: ComponentName.POINTABLE },
-      { name: ComponentName.PICKABLE },
-      { name: ComponentName.HOVERABLE },
-    ],
-    states: [],
-    behaviors: [],
-    metadata: {
-      displayName: "Boar meat",
-      description: "A cut of tough meat taken from a wild boar.",
-      stackable: true,
-      icon: { spritesheet: "items", row: 18, col: 16 },
       weight: 1.5,
     },
   },
@@ -130,7 +100,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.4,
     },
   },
-  [EntityName.CHICKEN_MEAT]: {
+  [EntityName.POULTRY]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -144,7 +114,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
             { row: 18, start: 14, end: 15 },
           ],
         },
-        key: "chicken_meat_texture",
+        key: "poultry_texture",
       },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
@@ -153,14 +123,14 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Chicken meat",
-      description: "A lean cut of meat from a farmyard fowl.",
+      displayName: "Poultry",
+      description: "Meat from a chicken or goose.",
       stackable: true,
-      icon: { spritesheet: "items", row: 18, col: 16 },
+      icon: { spritesheet: "items", row: 18, col: 13 },
       weight: 1,
     },
   },
-  [EntityName.GOOSE_MEAT]: {
+  [EntityName.FISH_MEAT]: {
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -170,11 +140,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
           spritesheet: "items",
           tileSize: 16,
           tiles: [
-            { row: 17, start: 17, end: 18 },
-            { row: 18, start: 17, end: 18 },
+            { row: 17, start: 8, end: 9 },
+            { row: 18, start: 8, end: 9 },
           ],
         },
-        key: "goose_meat_texture",
+        key: "fish_meat_texture",
       },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.PICKABLE },
@@ -183,11 +153,11 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
-      displayName: "Goose meat",
-      description: "A dark, fatty cut of meat from a goose.",
+      displayName: "Fish",
+      description: "A cleaned cut of freshwater fish.",
       stackable: true,
-      icon: { spritesheet: "items", row: 18, col: 16 },
-      weight: 1.5,
+      icon: { spritesheet: "items", row: 18, col: 7 },
+      weight: 0.5,
     },
   },
   [EntityName.BEEF]: {

@@ -72,6 +72,7 @@ export enum Event {
   ITEM_CONSUME = "item_consume",
   ITEM_SOLIDIFY = "item_solidify",
   ITEM_DROP = "item_drop",
+  ITEM_COURIER = "item_courier",
 
   /** Inventory & Hotbar */
   INVENTORY_UPDATE = "inventory_update",
@@ -93,6 +94,8 @@ export enum Event {
   /** Economy */
   ECONOMY_UPDATE = "economy_update",
   ECONOMY_UPGRADE = "economy_upgrade",
+  ECONOMY_IMPROVE = "economy_improve",
+  IMPROVEMENTS_OPEN = "improvements_open",
 
   /** Crafter */
   CRAFTER_OPEN = "crafter_open",

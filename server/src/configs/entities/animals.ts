@@ -408,7 +408,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.BOAR_MEAT,
+              name: EntityName.GAME_MEAT,
               quantity: 1,
               stackable: true,
               chance: 0.9,
@@ -739,7 +739,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.VENISON_MEAT,
+              name: EntityName.GAME_MEAT,
               quantity: 1,
               stackable: true,
               chance: 1,
@@ -829,7 +829,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.GOOSE_MEAT,
+              name: EntityName.POULTRY,
               quantity: 1,
               stackable: true,
               chance: 1,
@@ -1311,7 +1311,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.CHICKEN_MEAT,
+              name: EntityName.POULTRY,
               quantity: 1,
               stackable: true,
               chance: 1,
@@ -1370,7 +1370,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           loot: [
             {
-              name: EntityName.CHICKEN_MEAT,
+              name: EntityName.POULTRY,
               quantity: 1,
               stackable: true,
               chance: 1,
@@ -1465,9 +1465,19 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           pushable: false,
         },
       },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
     ],
     states: [StateName.IDLE],
     behaviors: [],
+    metadata: {
+      displayName: "Egg",
+      description: "A fresh hen's egg, collected before it could hatch.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 39, col: 23 },
+      weight: 0.06,
+    },
   },
   [EntityName.RAT]: {
     facing: Direction.DOWN,

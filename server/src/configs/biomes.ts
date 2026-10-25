@@ -56,6 +56,7 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.CABBAGE_SEED, quantity: 3, stackable: true, chance: 0.2 },
   { name: EntityName.WHEAT_SEED, quantity: 4, stackable: true, chance: 0.2 },
   { name: EntityName.TOMATO_SEED, quantity: 2, stackable: true, chance: 0.12 },
+  { name: EntityName.BEAN_SEED, quantity: 3, stackable: true, chance: 0.12 },
   { name: EntityName.GRAPE_SEED, quantity: 2, stackable: true, chance: 0.06 },
   { name: EntityName.HOPS_SEED, quantity: 2, stackable: true, chance: 0.06 },
 ];
@@ -177,6 +178,7 @@ export const forest: BiomeConfig = {
         EntityName.CLARY_SAGE,
         EntityName.BELLADONNA,
         EntityName.BEARDED_TOOTH_FUNGUS,
+        EntityName.HAZELNUT,
         EntityName.RASPBERRY,
         EntityName.STRAWBERRY_BUSH,
       ],

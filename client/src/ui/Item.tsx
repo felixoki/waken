@@ -177,12 +177,14 @@ export function Item({
               (c) => c.name === ComponentName.CONSUMABLE,
             );
             if (!comp || comp.name !== ComponentName.CONSUMABLE) return null;
-            const { effect, restore, unlock } = comp.config;
+            const { effect, restore, unlock, wake, slots } = comp.config;
             if (
               !effect &&
               !restore?.health &&
               !restore?.mana &&
-              unlock === undefined
+              unlock === undefined &&
+              !wake &&
+              !slots
             )
               return null;
             return (
@@ -197,6 +199,18 @@ export function Item({
                   <div className="flex justify-between">
                     <span className="text-white/50">Effect</span>
                     <span className="text-white">Expands dream depth</span>
+                  </div>
+                )}
+                {wake && (
+                  <div className="flex justify-between">
+                    <span className="text-white/50">Effect</span>
+                    <span className="text-white">Wake up, keep your items</span>
+                  </div>
+                )}
+                {slots && (
+                  <div className="flex justify-between">
+                    <span className="text-white/50">Inventory</span>
+                    <span className="text-white">+{slots} slots</span>
                   </div>
                 )}
                 {restore?.health && (

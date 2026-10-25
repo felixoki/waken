@@ -5,25 +5,79 @@ import {
   EntityName,
   Event,
   FactName,
+  ImprovementName,
   Item,
   PartyStatus,
   PlayerConfig,
 } from "../types";
-import { DROP_LIFETIME } from "../globals.js";
+import { DROP_LIFETIME, INVENTORY_MAX_SIZE } from "../globals.js";
 import { World } from "../World";
 import { handlers } from ".";
 import { configs } from "../configs/index.js";
 
 export const item = {
-  donate: (
-    entries: { name: EntityName; quantity: number }[],
+  ledgered: (slot: Item): { name: EntityName; per: number } => {
+    const name = slot.soul ?? slot.name;
+    const species = handlers.fishing.toFishName(name);
+    const meat = species ? configs.fish[species].meat : undefined;
+
+    return meat ? { name: EntityName.FISH_MEAT, per: meat } : { name, per: 1 };
+  },
+
+  collectable: (slot: Item | null): slot is Item =>
+    !!slot &&
+    slot.quantity > 0 &&
+    configs.collectables.has(item.ledgered(slot).name),
+
+  deposit: (
+    player: PlayerConfig,
+    indices: number[],
+    socket: Socket,
+    io: Server,
+    world: World,
+  ): number => {
+    const inventory = handlers.storage.clone(player.inventory);
+    let total = 0;
+
+    for (const index of indices) {
+      const slot = inventory[index];
+      if (!item.collectable(slot)) continue;
+
+      const { name, per } = item.ledgered(slot);
+      const moved = Math.min(
+        slot.quantity,
+        Math.floor(world.economy.room(name) / per),
+      );
+      if (moved <= 0) continue;
+
+      world.items.add(name, moved * per);
+      inventory[index] =
+        moved < slot.quantity
+          ? { ...slot, quantity: slot.quantity - moved }
+          : null;
+      total += moved * per;
+    }
+
+    if (!total) return 0;
+
+    player.inventory = inventory;
+    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.broadcast.economy(io, world);
+    handlers.broadcast.store(io, world);
+
+    return total;
+  },
+
+  courier: (
+    data: { index: number },
+    socket: Socket,
     io: Server,
     world: World,
   ) => {
-    for (const entry of entries) world.items.add(entry.name, entry.quantity);
+    const player = world.players.getBySocketId(socket.id);
+    if (!player || !world.economy.has(ImprovementName.COURIER)) return;
 
-    handlers.broadcast.economy(io, world);
-    handlers.broadcast.store(io, world);
+    item.deposit(player, [data.index], socket, io, world);
   },
 
   handOver: (
@@ -35,14 +89,11 @@ export const item = {
     const player = world.players.getBySocketId(socket.id);
     if (!player || player.locked !== data.entityId) return;
 
-    const given = player.inventory.filter(
-      (slot): slot is Item =>
-        !!slot &&
-        slot.quantity > 0 &&
-        configs.collectables.has(slot.soul ?? slot.name),
+    const indices = player.inventory.flatMap((slot, index) =>
+      item.collectable(slot) ? [index] : [],
     );
 
-    if (!given.length) {
+    if (!indices.length) {
       handlers.dialogue.respond(
         socket,
         data.entityId,
@@ -51,21 +102,16 @@ export const item = {
       return;
     }
 
-    player.inventory = player.inventory.map((slot) =>
-      slot && given.includes(slot) ? null : slot,
-    );
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    const total = item.deposit(player, indices, socket, io, world);
 
-    item.donate(
-      given.map((slot) => ({
-        name: slot.soul ?? slot.name,
-        quantity: slot.quantity,
-      })),
-      io,
-      world,
-    );
-
-    const total = given.reduce((sum, slot) => sum + slot.quantity, 0);
+    if (!total) {
+      handlers.dialogue.respond(
+        socket,
+        data.entityId,
+        "The store is full. There is no room for any of it.",
+      );
+      return;
+    }
 
     player.story.facts[FactName.LAST_HAND_IN] = total;
 
@@ -221,12 +267,30 @@ export const item = {
       io.to(`party:${party.id}`).emit(Event.PARTY_UPDATE, party);
     }
 
+    if (config.wake) {
+      const party = world.parties.getByPlayerId(player.id);
+      if (!configs.maps[player.map].isInstanced) return;
+      if (!party || party.status !== PartyStatus.IN_GAME) return;
+    }
+
+    const room = INVENTORY_MAX_SIZE - player.inventory.length;
+    if (config.slots && room <= 0) return;
+
     player.inventory = handlers.storage.remove(player.inventory, {
       name: data.name as EntityName,
       quantity: 1,
       stackable: true,
     });
+
+    if (config.slots)
+      player.inventory = [
+        ...player.inventory,
+        ...new Array(Math.min(config.slots, room)).fill(null),
+      ];
+
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
+
+    if (config.wake) handlers.party.leave(socket, io, world, true);
 
     const { restore } = config;
 

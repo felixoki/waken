@@ -283,6 +283,8 @@ export interface ConsumableConfig {
   duration?: number;
   restore?: { health?: number; mana?: number };
   unlock?: number;
+  wake?: boolean;
+  slots?: number;
 }
 
 export interface ConverterConfig {

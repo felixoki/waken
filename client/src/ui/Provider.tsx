@@ -38,6 +38,8 @@ export interface DragData {
   item?: ItemType | null;
 }
 
+export const ECONOMY_DROP_ID = "economy-zone";
+
 const IsDraggingContext = createContext(false);
 
 export function useIsDragging() {
@@ -84,6 +86,12 @@ export function Provider({ children }: { children: ReactNode }) {
 
     const overId = event.over?.id as string | undefined;
     if (!overId) return;
+
+    if (overId === ECONOMY_DROP_ID) {
+      if (source.zone === SlotZone.INVENTORY)
+        EventBus.emit(Event.ITEM_COURIER, { index: source.index });
+      return;
+    }
 
     const target = parseDropId(overId, storageEntityId);
     if (!target) return;

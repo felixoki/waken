@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDroppable } from "@dnd-kit/core";
 import EventBus from "../game/EventBus";
 import {
   ComponentName,
@@ -6,13 +7,14 @@ import {
   EntityName,
   Event,
   GroupName,
+  ImprovementName,
   Mood,
   NeedName,
 } from "@server/types";
-import { MAX_STACK } from "@server/globals";
 import { TierUpgrade } from "@server/configs/tiers";
 import { configs } from "@server/configs";
 import { Item } from "./Item";
+import { ECONOMY_DROP_ID } from "./Provider";
 
 type Entry =
   EconomySnapshot["needs"][number]["groups"][number]["items"][number];
@@ -30,6 +32,7 @@ const groups: Record<GroupName, string> = {
   [GroupName.PROTEIN]: "Protein",
   [GroupName.VEGETABLES]: "Vegetables",
   [GroupName.BAKED]: "Baked goods",
+  [GroupName.SWEETS]: "Sweets",
   [GroupName.MILK]: "Milk",
   [GroupName.ALCOHOL]: "Alcohol",
   [GroupName.CLOTHING]: "Clothing",
@@ -43,6 +46,13 @@ const groups: Record<GroupName, string> = {
   [GroupName.CROPS]: "Crops",
   [GroupName.FUNGI]: "Fungi",
 };
+
+const crafters = (Object.keys(configs.entities) as EntityName[]).filter(
+  (name) =>
+    configs.entities[name]?.components.some(
+      (component) => component.name === ComponentName.CRAFTER,
+    ),
+);
 
 export function Economy() {
   const [snapshot, setSnapshot] = useState<EconomySnapshot | null>(null);
@@ -65,6 +75,14 @@ export function Economy() {
       EventBus.off(Event.UI_TOGGLE, toggle);
     };
   }, []);
+
+  const courier = !!snapshot?.improvements.includes(ImprovementName.COURIER);
+  const orders = !!snapshot?.improvements.includes(ImprovementName.ORDERS);
+
+  const { setNodeRef, isOver } = useDroppable({
+    id: ECONOMY_DROP_ID,
+    disabled: !isOpen || !courier,
+  });
 
   if (!isOpen || !snapshot?.needs.length) return null;
 
@@ -106,8 +124,8 @@ export function Economy() {
             : undefined
         }
         bar={hidden ? undefined : entry.quantity}
-        barMax={MAX_STACK}
-        barLabel={hidden ? undefined : `${entry.quantity}/${MAX_STACK}`}
+        barMax={snapshot.capacity}
+        barLabel={hidden ? undefined : `${entry.quantity}/${snapshot.capacity}`}
         disabled={locked}
         hint={locked ? `Unlock with tier ${entry.tier}` : undefined}
         hideWeight
@@ -116,7 +134,12 @@ export function Economy() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 p-4 bg-black/10 rounded-lg">
+    <div
+      ref={setNodeRef}
+      className={`fixed bottom-4 right-4 p-4 rounded-lg transition-colors ${
+        isOver ? "bg-white/15" : "bg-black/10"
+      }`}
+    >
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-white">Economy</h3>
         <span className="flex items-center gap-1.5 text-sm text-white/70">
@@ -167,7 +190,7 @@ export function Economy() {
                   </span>
                 )}
               </p>
-              <ul className="grid grid-cols-[repeat(6,4rem)] gap-1">
+              <ul className="grid grid-cols-[repeat(7,4rem)] gap-1">
                 {group.items.map((entry, i) => renderItem(entry, i))}
               </ul>
             </div>
@@ -178,6 +201,31 @@ export function Economy() {
         <p className="text-white/50 text-xs mt-2">
           These items are consumed by your villagers
         </p>
+      )}
+
+      {courier && (
+        <p className="text-white/50 text-xs mt-2">
+          Drop goods here to send them to the store
+        </p>
+      )}
+
+      {orders && (
+        <div className="mt-4">
+          <p className="text-white/70 text-sm mb-2">Orders</p>
+          <div className="flex flex-wrap gap-1">
+            {crafters.map((name) => (
+              <button
+                key={name}
+                onClick={() =>
+                  EventBus.emit(Event.CRAFTER_OPEN, { entityName: name })
+                }
+                className="px-3 py-1.5 rounded-md bg-black/20 text-sm text-white/70 hover:text-white hover:bg-white/10"
+              >
+                {configs.entities[name]?.metadata?.displayName ?? name}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
       {upgradeConfig && (

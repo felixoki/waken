@@ -338,6 +338,11 @@ export class MainScene extends Phaser.Scene {
 
     EventBus.on(Event.FADE_OUT, () => {
       this.managers.entities.snapshotReady = false;
+      this.managers.sound.fade.out();
+    });
+
+    EventBus.on(Event.FADE_IN, () => {
+      this.managers.sound.fade.in();
     });
 
     this.managers.socket.on(Event.ENTITY_DESTROY, (data: string) => {
@@ -848,6 +853,11 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.ITEM_DROP, data);
     });
 
+    EventBus.on(Event.ITEM_COURIER, (data: { index: number }) => {
+      this.managers.socket.emit(Event.ITEM_COURIER, data);
+      this.managers.sound.play.sfx(SoundName.COLLECT);
+    });
+
     EventBus.on(
       Event.SLOT_MOVE,
       (data: {
@@ -920,7 +930,7 @@ export class MainScene extends Phaser.Scene {
      */
     EventBus.on(
       Event.CRAFTER_CRAFT,
-      (data: { entityId: string; output: string }) => {
+      (data: { crafter: string; output: string; entityId?: string }) => {
         this.managers.socket.emit(Event.CRAFTER_CRAFT, data);
         this.managers.sound.play.sfx(SoundName.COLLECT);
       },
@@ -928,6 +938,10 @@ export class MainScene extends Phaser.Scene {
 
     EventBus.on(Event.ECONOMY_UPGRADE, () => {
       this.managers.socket.emit(Event.ECONOMY_UPGRADE);
+    });
+
+    EventBus.on(Event.ECONOMY_IMPROVE, (data: { name: string }) => {
+      this.managers.socket.emit(Event.ECONOMY_IMPROVE, data);
     });
 
     this.managers.socket.on(
@@ -1202,7 +1216,7 @@ export class MainScene extends Phaser.Scene {
             ComponentName.INVENTORY,
           );
 
-        if (inventory) inventory.set(new Array(20).fill(null));
+        inventory?.clear();
 
         EventBus.emit(Event.PLAYER_HEALTH, 0);
       }
@@ -1284,7 +1298,7 @@ export class MainScene extends Phaser.Scene {
       const inventory = player.getComponent<InventoryComponent>(
         ComponentName.INVENTORY,
       );
-      inventory?.set(new Array(20).fill(null));
+      inventory?.clear();
     });
 
     this.managers.socket.on(Event.PARTY_WIPE, () => {
@@ -1294,7 +1308,7 @@ export class MainScene extends Phaser.Scene {
       const inventory = player.getComponent<InventoryComponent>(
         ComponentName.INVENTORY,
       );
-      inventory?.set(new Array(20).fill(null));
+      inventory?.clear();
 
       EventBus.emit(Event.PARTY_WIPE);
     });

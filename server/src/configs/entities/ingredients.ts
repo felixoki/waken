@@ -522,6 +522,54 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.02,
     },
   },
+  [EntityName.HAZELNUT]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 42, start: 5, end: 6 },
+            { row: 43, start: 5, end: 6 },
+          ],
+        },
+        key: "hazelnut_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 8,
+          offsetX: 9,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+      {
+        name: ComponentName.POINTABLE,
+      },
+      {
+        name: ComponentName.PICKABLE,
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Hazelnut",
+      description: "A small, hard-shelled nut fallen from a hazel shrub.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 43, col: 4 },
+      weight: 0.01,
+    },
+  },
   [EntityName.OPIUM_POPPY]: {
     facing: Direction.DOWN,
     moving: [],
@@ -811,6 +859,41 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       stackable: true,
       icon: { spritesheet: "items", row: 22, col: 19 },
       weight: 0.4,
+    },
+  },
+  [EntityName.SMELLING_SALTS]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 42, start: 2, end: 3 },
+            { row: 43, start: 2, end: 3 },
+          ],
+        },
+        key: "smelling_salts_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { wake: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Smelling salts",
+      description:
+        "Spirit of hartshorn, distilled from bone. One sharp breath pulls you out of any dream.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 43, col: 1 },
+      weight: 0.1,
     },
   },
 };

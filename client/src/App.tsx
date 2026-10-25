@@ -18,6 +18,7 @@ import { Build } from "./ui/Build";
 import { SpellBook } from "./ui/SpellBook";
 import { Storage } from "./ui/Storage";
 import { Crafter } from "./ui/Crafter";
+import { Improvements } from "./ui/Improvements";
 import { Effects } from "./ui/Effects";
 import { DamageNumbers } from "./ui/DamageNumbers";
 import { Settings } from "./ui/Settings";
@@ -81,7 +82,6 @@ function App() {
         <Effects />
         <Stats />
       </div>
-      <Economy />
       <div className="fixed top-4 left-4 flex flex-row gap-4">
         <Provider>
         <div className="flex flex-col gap-4">
@@ -96,6 +96,8 @@ function App() {
         </div>
         <Storage />
         <Crafter />
+        <Improvements />
+        <Economy />
         </Provider>
       </div>
       <Settings />

@@ -20,4 +20,5 @@ export const seeds: Partial<Record<EntityName, EntityName>> = {
   [EntityName.WHEAT_SEED]: EntityName.WHEAT_PLANT,
   [EntityName.GRAPE_SEED]: EntityName.GRAPE_PLANT,
   [EntityName.HOPS_SEED]: EntityName.HOPS_PLANT,
+  [EntityName.BEAN_SEED]: EntityName.BEAN_PLANT,
 };

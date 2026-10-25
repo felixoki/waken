@@ -3,6 +3,7 @@ import {
   Action,
   ComponentConfig,
   ComponentName,
+  ConsumableConfig,
   EntityName,
   Event,
   Item as ItemInterface,
@@ -12,6 +13,7 @@ import {
 } from "@server/types";
 import EventBus from "../game/EventBus";
 import { configs } from "@server/configs";
+import { INVENTORY_MAX_SIZE } from "@server/globals";
 import { ContextMenu, ContextMenuAction } from "./ContextMenu";
 import { useParty } from "./useParty";
 import { Item } from "./Item";
@@ -74,6 +76,7 @@ export function Inventory() {
     EventBus.on(Event.STORAGE_OPEN, onStorageOpen);
     EventBus.on(Event.STORAGE_CLOSE, onStorageClose);
     EventBus.on(Event.CRAFTER_OPEN, onCrafterOpen);
+    EventBus.on(Event.IMPROVEMENTS_OPEN, onCrafterOpen);
     EventBus.on(Event.TRANSFORM_TOGGLE, transform);
     EventBus.on(Event.SPELLS_SYNC, sync);
     EventBus.on(Event.SPELLBOOK_SYNC, sync);
@@ -85,6 +88,7 @@ export function Inventory() {
       EventBus.off(Event.STORAGE_OPEN, onStorageOpen);
       EventBus.off(Event.STORAGE_CLOSE, onStorageClose);
       EventBus.off(Event.CRAFTER_OPEN, onCrafterOpen);
+      EventBus.off(Event.IMPROVEMENTS_OPEN, onCrafterOpen);
       EventBus.off(Event.TRANSFORM_TOGGLE, transform);
       EventBus.off(Event.SPELLS_SYNC, sync);
       EventBus.off(Event.SPELLBOOK_SYNC, sync);
@@ -101,10 +105,18 @@ export function Inventory() {
 
   const actions: ContextMenuAction[] = item
     ? getActions(item.name, !!storageEntityId, item.soul, inRealm).map((action) => {
-        const gated =
-          action === Action.CONSUME &&
-          getUnlock(item.name) !== undefined &&
-          !canUnlock;
+        const consumable = getConsumable(item.name);
+        const reason =
+          action !== Action.CONSUME
+            ? undefined
+            : consumable?.unlock !== undefined && !canUnlock
+              ? "Only in the village, with a party"
+              : consumable?.wake && !inRealm
+                ? "Only in a dream"
+                : consumable?.slots && items.length >= INVENTORY_MAX_SIZE
+                  ? "Your pack can't get any bigger"
+                  : undefined;
+        const gated = reason !== undefined;
 
         const spell = action === Action.LEARN ? getSpell(item.name) : null;
         const learned = spell !== null && known.includes(spell);
@@ -113,7 +125,7 @@ export function Inventory() {
           label: action,
           disabled: gated || learned,
           title: gated
-            ? "Only in the village, with a party"
+            ? reason
             : learned
               ? "Already known"
               : undefined,
@@ -244,12 +256,12 @@ function isSolidifiable(soul: EntityName): boolean {
   return capturable?.config.solidifiable !== false;
 }
 
-function getUnlock(name: EntityName): number | undefined {
+function getConsumable(name: EntityName): ConsumableConfig | undefined {
   const comp = configs.entities[name]?.components.find(
     (c) => c.name === ComponentName.CONSUMABLE,
   );
 
-  return comp?.name === ComponentName.CONSUMABLE ? comp.config.unlock : undefined;
+  return comp?.name === ComponentName.CONSUMABLE ? comp.config : undefined;
 }
 
 function getSpell(name: EntityName): SpellName | null {

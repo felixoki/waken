@@ -12,10 +12,16 @@ import { conditions } from "../story/conditions.js";
 import { configs } from "../configs/index.js";
 import { timetable } from "../story/schedule.js";
 import { handlers } from ".";
+import { DAY } from "../globals.js";
 
 export const schedule = {
   apply: (world: World, io: Server): boolean => {
-    const phase = world.getTime().phase;
+    const time = world.getTime();
+    const clock = {
+      phase: time.phase,
+      progress: time.current / DAY,
+      day: time.days,
+    };
     const context = handlers.story.world(world);
     const passes = (when: Condition | undefined) =>
       conditions.passes(when, context);
@@ -26,7 +32,13 @@ export const schedule = {
       if (!entry || !entity.anchor) continue;
 
       const sleepless = world.economy.getMood(entity.name) === Mood.SLEEPLESS;
-      const placement = timetable.place(entry, phase, sleepless, passes);
+      const placement = timetable.place(
+        entry,
+        clock,
+        entity.name,
+        sleepless,
+        passes,
+      );
       const key = schedule.key(placement);
 
       if (entity.placement === key) continue;

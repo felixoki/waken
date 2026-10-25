@@ -2,10 +2,10 @@ import { ComponentName, EntityName, Event, Item } from "@server/types";
 import { Component } from "./Component";
 import EventBus from "../EventBus";
 import { configs } from "@server/configs";
-import { MAX_STACK } from "@server/globals";
+import { INVENTORY_SIZE, MAX_STACK } from "@server/globals";
 
 export class InventoryComponent extends Component {
-  private items: (Item | null)[] = new Array(20).fill(null);
+  private items: (Item | null)[] = new Array(INVENTORY_SIZE).fill(null);
 
   public name = ComponentName.INVENTORY;
 
@@ -76,6 +76,10 @@ export class InventoryComponent extends Component {
   set(items: (Item | null)[]): void {
     this.items = items;
     this.emit();
+  }
+
+  clear(): void {
+    this.set(new Array(this.items.length).fill(null));
   }
 
   emit(): void {

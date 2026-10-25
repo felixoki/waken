@@ -1,6 +1,7 @@
 import { EntityName } from './entities';
 import { Mood } from './dialogue';
 import { TimePhase } from './time';
+import { ImprovementName } from './improvements';
 
 export enum NeedName {
   FOOD = 'food',
@@ -16,6 +17,7 @@ export enum GroupName {
   PROTEIN = 'protein',
   VEGETABLES = 'vegetables',
   BAKED = 'baked',
+  SWEETS = 'sweets',
   MILK = 'milk',
   ALCOHOL = 'alcohol',
   CLOTHING = 'clothing',
@@ -56,10 +58,18 @@ export interface NeedConfig {
   demand?: NeedDemand;
 }
 
+export type EconomyState = {
+  tier?: number;
+  improvements?: ImprovementName[];
+  store?: Partial<Record<EntityName, number>>;
+};
+
 export type EconomySnapshot = {
   tier: number;
   canUpgrade: boolean;
   mood: Mood;
+  capacity: number;
+  improvements: ImprovementName[];
   needs: {
     name: NeedName;
     consumed: boolean;

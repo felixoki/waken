@@ -399,6 +399,91 @@
                  "width":1,
                  "x":184,
                  "y":132
+                }, 
+                {
+                 "height":1,
+                 "id":23,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.duneas"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":316,
+                 "y":130
+                }, 
+                {
+                 "height":1,
+                 "id":24,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.tellis"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":143,
+                 "y":104
+                }, 
+                {
+                 "height":1,
+                 "id":25,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.glimblid"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":236,
+                 "y":148
+                }, 
+                {
+                 "height":1,
+                 "id":26,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.faire"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":76,
+                 "y":130
+                }, 
+                {
+                 "height":1,
+                 "id":27,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"tavern.emy"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":207,
+                 "y":104
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -457,7 +542,7 @@
          "y":0
         }],
  "nextlayerid":16,
- "nextobjectid":23,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

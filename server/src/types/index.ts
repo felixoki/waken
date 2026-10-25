@@ -11,6 +11,7 @@ export * from "./chunks.js";
 export * from "./dialogue.js";
 export * from "./directions.js";
 export * from "./economy.js";
+export * from "./improvements.js";
 export * from "./entities.js";
 export * from "./farming.js";
 export * from "./fish.js";

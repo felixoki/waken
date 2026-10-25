@@ -1,12 +1,13 @@
 import { Server, Socket } from "socket.io";
-import { ComponentName, EntityName } from "../types/index.js";
+import { ComponentName, EntityName, ImprovementName } from "../types/index.js";
+import { RANGE_INTERACTING } from "../globals.js";
 import { World } from "../World.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
 
 export const crafter = {
   craft: (
-    data: { entityId: string; output: EntityName },
+    data: { crafter: EntityName; output: EntityName; entityId?: string },
     socket: Socket,
     io: Server,
     world: World,
@@ -14,10 +15,16 @@ export const crafter = {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    const entity = world.entities.get(data.entityId);
-    if (!entity) return;
+    const entity = data.entityId && world.entities.get(data.entityId);
+    const near =
+      !!entity &&
+      entity.name === data.crafter &&
+      entity.map === player.map &&
+      Math.hypot(entity.x - player.x, entity.y - player.y) <= RANGE_INTERACTING;
 
-    const def = configs.entities[entity.name];
+    if (!near && !world.economy.has(ImprovementName.ORDERS)) return;
+
+    const def = configs.entities[data.crafter];
     if (!def) return;
 
     const component = def.components.find(

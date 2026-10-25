@@ -18,6 +18,7 @@ export interface FishConfig {
   weight: { min: number; max: number; skew: number };
   difficulty: FishDifficulty;
   trophy: FishTrophy;
+  meat?: number;
 }
 
 export enum FishingPhase {

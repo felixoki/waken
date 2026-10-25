@@ -67,7 +67,9 @@ export const party = {
         {
           health: MAX_HEALTH,
           isDead: false,
-          inventory: keeps ? member.inventory : new Array(20).fill(null),
+          inventory: keeps
+            ? member.inventory
+            : new Array(member.inventory.length).fill(null),
         },
         data.members,
         data.id,
@@ -174,7 +176,7 @@ export const party = {
     party.broadcast(socket, world);
   },
 
-  leave: (socket: Socket, io: Server, world: World) => {
+  leave: (socket: Socket, io: Server, world: World, keep = false) => {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
@@ -198,7 +200,7 @@ export const party = {
 
       handlers.sleep.clear(player.id, world, io);
 
-      const keeps = party.keeps(player);
+      const keeps = keep || party.keeps(player);
       if (!keeps) world.relics.forfeit(player.inventory);
 
       handlers.player.transfer(
@@ -212,13 +214,15 @@ export const party = {
         {
           isDead: false,
           health: MAX_HEALTH,
-          inventory: keeps ? player.inventory : new Array(20).fill(null),
+          inventory: keeps
+            ? player.inventory
+            : new Array(player.inventory.length).fill(null),
         },
         undefined,
         data.id,
       );
 
-      socket.emit(Event.PLAYER_INVENTORY_WIPE);
+      if (!keeps) socket.emit(Event.PLAYER_INVENTORY_WIPE);
 
       world.sublevels.takeReturn(player.id);
 

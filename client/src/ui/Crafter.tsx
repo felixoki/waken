@@ -12,7 +12,7 @@ import EventBus from "../game/EventBus";
 import { Item } from "./Item";
 
 interface CrafterData {
-  entityId: string;
+  entityId?: string;
   entityName: EntityName;
 }
 
@@ -39,7 +39,7 @@ export function Crafter() {
     };
 
     const end = (entityId: string) => {
-      if (dataRef.current?.entityId === entityId) {
+      if (dataRef.current?.entityId && dataRef.current.entityId === entityId) {
         dataRef.current = null;
         setData(null);
       }
@@ -90,8 +90,9 @@ export function Crafter() {
     if (!data) return;
 
     EventBus.emit(Event.CRAFTER_CRAFT, {
-      entityId: data.entityId,
+      crafter: data.entityName,
       output: recipe.output,
+      entityId: data.entityId,
     });
   };
 

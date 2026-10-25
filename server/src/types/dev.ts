@@ -1,5 +1,6 @@
 export enum DevCommand {
   TIER = "tier",
+  IMPROVE = "improve",
   PHASE = "phase",
   DAY = "day",
   GIVE = "give",

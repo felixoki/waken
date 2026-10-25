@@ -12,6 +12,7 @@ import {
   EntityConfig,
   SpellName,
   EntityName,
+  ImprovementName,
   SlotReference,
   SlotType,
   PlaceBuildData,
@@ -127,6 +128,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.ITEM_DROP,
       handler: (data: { index: number }) =>
         handlers.item.drop(data, socket, world),
+    },
+    {
+      event: Event.ITEM_COURIER,
+      handler: (data: { index: number }) =>
+        handlers.item.courier(data, socket, io, world),
     },
     {
       event: Event.BUILD_PLACE,
@@ -278,12 +284,20 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
      */
     {
       event: Event.CRAFTER_CRAFT,
-      handler: (data: { entityId: string; output: EntityName }) =>
-        handlers.crafter.craft(data, socket, io, world),
+      handler: (data: {
+        crafter: EntityName;
+        output: EntityName;
+        entityId?: string;
+      }) => handlers.crafter.craft(data, socket, io, world),
     },
     {
       event: Event.ECONOMY_UPGRADE,
       handler: () => handlers.economy.upgrade(io, world),
+    },
+    {
+      event: Event.ECONOMY_IMPROVE,
+      handler: (data: { name: ImprovementName }) =>
+        handlers.economy.improve(data, io, world),
     },
     /**
      * Dev

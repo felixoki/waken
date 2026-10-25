@@ -5,6 +5,7 @@ import {
   DialogueText,
   EntityName,
   Event,
+  ImprovementName,
   StoryEffectName,
   StoryFlag,
   StoryScope,
@@ -70,6 +71,18 @@ export const dev = {
       world.economy.setTier(value);
       handlers.broadcast.store(io, world);
       dev.reply(_socket, `tier ${value}`);
+    },
+
+    [DevCommand.IMPROVE]: ([name], socket, _io, world) => {
+      const names = Object.values(ImprovementName) as string[];
+      if (!names.includes(name))
+        return dev.reply(
+          socket,
+          `improvement must be one of ${names.join(", ")}`,
+        );
+
+      world.economy.improve(name as ImprovementName);
+      dev.reply(socket, `improved ${name}`);
     },
 
     [DevCommand.PHASE]: ([phase], _socket, io, world) => {
