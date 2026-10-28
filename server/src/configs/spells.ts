@@ -423,8 +423,8 @@ export const spells: Record<SpellName, SpellConfig> = {
       repeat: 0,
     },
     hitbox: {
-      width: 64,
-      height: 56,
+      width: 110,
+      height: 64,
     },
     metadata: {
       description: "Clamp down with crushing jaws.",

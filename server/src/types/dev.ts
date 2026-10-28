@@ -9,4 +9,5 @@ export enum DevCommand {
   BOND = "bond",
   LEAN = "lean",
   VILLAGE = "village",
+  FREECAST = "freecast",
 }

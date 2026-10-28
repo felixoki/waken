@@ -9,6 +9,7 @@ import {
   SurfaceName,
   EffectName,
   Item,
+  Cutscene,
 } from "@server/types";
 import { AnimationComponent } from "./components/Animation";
 import { Entity } from "./Entity";
@@ -37,8 +38,11 @@ export class Player extends Entity {
   public isAuthority: boolean;
   public isControllable: boolean;
   public isTransitioning: boolean = false;
+  public isFreecast: boolean = false;
+  public falling: Promise<void> | null = null;
   public inputManager?: InputManager;
   public robe: Item | null = null;
+  public cutscene: Cutscene | null = null;
 
   private stepAccumulator: number = 0;
 
@@ -117,7 +121,10 @@ export class Player extends Entity {
 
     this.inputManager?.update();
 
-    if (this.isControllable) this._footsteps();
+    if (this.isControllable) {
+      this._footsteps();
+      handlers.player.footing(this);
+    }
 
     const input = remoteInput || this._getInput();
 
@@ -246,6 +253,24 @@ export class Player extends Entity {
 
     const hotbar = this.getComponent<HotbarComponent>(ComponentName.HOTBAR);
     const equipped = hotbar?.get();
+
+    if (this.cutscene)
+      return {
+        id: this.id,
+        x: this.x,
+        y: this.y,
+        isRunning: false,
+        isFlying: false,
+        isJumping: false,
+        isRolling: false,
+        pointerdown: false,
+        bed: this.bed,
+        state: this.state,
+        equipped: equipped,
+        active: hotbar?.getActive() ?? 0,
+        speed: this.speed,
+        ...handlers.cutscene.walk(this, this.cutscene),
+      };
 
     return {
       id: this.id,

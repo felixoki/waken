@@ -976,6 +976,75 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
       { name: BehaviorName.SEARCH },
     ],
   },
+  [EntityName.BLADE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 600,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.WANDERERS_CLOTH,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.WANDERERS_GIFT,
+              quantity: 1,
+              stackable: true,
+              chance: 0.5,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 16,
+          offsetX: 24,
+          offsetY: 24,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 35 },
+        range: 40,
+        windup: 250,
+        sound: SoundName.ORC_SLASH,
+        swing: SoundName.SWORD_SWING,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 60,
+          scan: { interval: 1500 },
+          idle: { duration: 1500 },
+          vision: 320,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK, config: { recovery: 500 } },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
   [EntityName.HEXGEIST]: {
     facing: Direction.DOWN,
     moving: [],

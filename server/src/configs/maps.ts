@@ -952,6 +952,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "village.json",
     isIndoor: false,
     isInstanced: false,
+    isSacred: true,
     sound: {
       music: [
         MusicName.AFTER_RAIN,
@@ -1121,6 +1122,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "herbalist_house.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1158,6 +1160,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "blacksmith_house.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1201,6 +1204,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "market-house.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1237,6 +1241,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "glassblower_house.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1275,6 +1280,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "fishing_hut.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1299,6 +1305,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "windmill.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     requires: StoryFlag.WINDMILL_OPEN,
     spritesheets: [
       ...player,
@@ -1318,6 +1325,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "farm_house.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1343,6 +1351,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "home.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1361,6 +1370,7 @@ export const maps: Record<MapName, MapConfig> = {
     json: "tavern.json",
     isIndoor: true,
     isInstanced: false,
+    isSacred: true,
     spritesheets: [
       ...player,
       ...entities,
@@ -1647,16 +1657,21 @@ export const maps: Record<MapName, MapConfig> = {
   [MapName.ISLES]: {
     id: MapName.ISLES,
     label: "Isles",
-    spawn: { x: 262, y: 773 },
+    spawn: { x: 360, y: 1432 },
     json: "isles.json",
     isIndoor: false,
     isInstanced: true,
     isPartyInstance: true,
+    ground: ["ground3", "water", "edges", "coast"],
     spritesheets: [
       ...player,
       ...entities,
       ...villain,
       ...creatures,
+      { key: "blade-idle", file: "creatures/blade_idle.png" },
+      { key: "blade-walking", file: "creatures/blade_walking.png" },
+      { key: "blade-running", file: "creatures/blade_running.png" },
+      { key: "blade-slashing", file: "creatures/blade_slashing.png" },
       {
         key: "isles_clouds",
         file: "tiles/isles_clouds.png",

@@ -53,6 +53,7 @@ export const spawner = {
             maxHealth: health,
             isLocked: false,
             parent: id,
+            tame: handlers.taming.native({ ...entity, name }),
           },
           null,
           io,

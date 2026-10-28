@@ -264,6 +264,7 @@ export const combat = {
       knockback: { x: number; y: number },
       io: Server,
       world: World,
+      fell = false,
     ) => {
       if (player.sleep?.isAsleep) handlers.sleep.wake(player.id, io, world);
 
@@ -292,7 +293,12 @@ export const combat = {
       handlers.broadcast.room(null, io, room, Event.PLAYER_HURT, event);
 
       if (party) {
-        const event = { id: player.id, x: player.x, y: player.y };
+        const event = {
+          id: player.id,
+          x: player.x,
+          y: player.y,
+          ...(fell && { fell }),
+        };
         handlers.broadcast.room(
           null,
           io,
@@ -386,9 +392,21 @@ export const combat = {
       !target ||
       !config ||
       (player && player.isDead) ||
-      attacker.health <= 0
+      attacker.health <= 0 ||
+      configs.maps[target.map]?.isSacred
     )
       return;
+
+    if (
+      entity &&
+      entities.get(data.attackerId)?.name === EntityName.VILLAIN &&
+      configs.entities[entity.name]?.components.some(
+        (c: ComponentConfig) => c.name === ComponentName.DESTRUCTIBLE,
+      )
+    ) {
+      combat.kill.entity(entity, socket, io, world);
+      return;
+    }
 
     if ("mana" in config && config.name === SpellName.CATCH_SOUL) {
       if (entity) {
@@ -638,6 +656,7 @@ export const combat = {
           if (
             definition.interval &&
             definition.damage &&
+            !configs.maps[target.map]?.isSacred &&
             effect.lastTickAt !== undefined &&
             now - effect.lastTickAt >= definition.interval
           ) {

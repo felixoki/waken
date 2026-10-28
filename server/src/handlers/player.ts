@@ -247,6 +247,46 @@ export const player = {
     );
   },
 
+  fall: (socket: Socket, io: Server, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
+    if (!player || player.isDead) return;
+
+    const map = configs.maps[player.map];
+    if (!map.ground) return;
+
+    const party = world.parties.getByPlayerId(player.id);
+    const survivors = party?.members.some(
+      (id) => id !== player.id && world.players.get(id)?.isDead === false,
+    );
+
+    if (survivors) {
+      const partyId = map.isInstanced
+        ? (world.sublevels.entranceOf(player.id) ?? party?.id)
+        : undefined;
+
+      world.players.update(player.id, { x: map.spawn.x, y: map.spawn.y });
+      handlers.chunks.sync.player(
+        socket,
+        world,
+        player.id,
+        player.map,
+        map.spawn.x,
+        map.spawn.y,
+        io,
+        partyId,
+      );
+    }
+
+    handlers.combat.kill.player(
+      player,
+      player.id,
+      { x: 0, y: 0 },
+      io,
+      world,
+      true,
+    );
+  },
+
   transfer: (
     socket: Socket,
     io: Server,

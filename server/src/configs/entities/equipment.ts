@@ -260,6 +260,36 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1,
     },
   },
+  [EntityName.BUTCHERS_KNIFE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 40, start: 8, end: 9 },
+            { row: 41, start: 8, end: 9 },
+          ],
+        },
+        key: "butchers_knife_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Butcher's knife",
+      description:
+        "A broad iron cleaver. Hold it to slaughter livestock for meat.",
+      icon: { spritesheet: "items", row: 41, col: 7 },
+      weight: 0.8,
+    },
+  },
   [EntityName.AXE]: {
     facing: Direction.DOWN,
     moving: [],

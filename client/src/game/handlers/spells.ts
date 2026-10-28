@@ -22,6 +22,8 @@ const FIRE_BREATH_MOUTH: Record<Direction, { x: number; y: number }> = {
   [Direction.RIGHT]: { x: 50, y: -12 },
 };
 
+const FIRE_BREATH_SPREAD = 0.3;
+
 const STORM_LIFT = 320;
 const STORM_GAP = 110;
 const STORM_SCALES = [1, 0.55, 0.85, 0.5, 1.1, 0.65, 0.9];
@@ -300,45 +302,38 @@ export const spells: Record<SpellName, SpellHandler> = {
     target: { x: number; y: number },
     _direction: { x: number; y: number },
   ) => {
-    const count = 6;
-    const radius = config.radius!;
     let isShaking = false;
 
-    for (let i = 0; i < count; i++) {
-      const delay = Phaser.Math.Between(0, 1500);
-      const impact = {
-        x: target.x + Phaser.Math.Between(-radius, radius),
-        y: target.y + Phaser.Math.Between(-radius, radius),
-      };
-
-      entity.scene.time.delayedCall(delay, () => {
-        entity.scene.managers.sound.play.sfx(SoundName.METEOR, {
+    vfx.quads.meteors(
+      entity.scene,
+      target,
+      config.radius!,
+      6,
+      (impact) => {
+        entity.scene?.managers.sound.play.sfx(SoundName.METEOR, {
           position: impact,
           seek: 1.5,
         });
+      },
+      (impact) => {
+        if (!entity.scene) return;
 
-        vfx.emitters.fall(entity.scene, impact, () => {
-          if (!entity.scene) return;
+        if (!isShaking) {
+          isShaking = true;
+          entity.scene.cameras.main.shake(2000, 0.0004);
+        }
 
-          if (!isShaking) {
-            isShaking = true;
-            entity.scene.cameras.main.shake(2000, 0.0004);
-          }
-
-          new Hitbox(
-            entity.scene,
-            impact.x,
-            impact.y,
-            config.hitbox!.width,
-            config.hitbox!.height,
-            entity.id,
-            config,
-          );
-
-          vfx.emitters.impact(entity.scene, impact);
-        });
-      });
-    }
+        new Hitbox(
+          entity.scene,
+          impact.x,
+          impact.y,
+          config.hitbox!.width,
+          config.hitbox!.height,
+          entity.id,
+          config,
+        );
+      },
+    );
   },
 
   [SpellName.LIGHTNING_STRIKE]: (
@@ -556,11 +551,15 @@ export const spells: Record<SpellName, SpellHandler> = {
     direction: { x: number; y: number },
   ) => {
     const reach = config.hitbox!.width;
-    const girth = config.hitbox!.height;
+    const girth = reach * FIRE_BREATH_SPREAD * 2;
     const horizontal = direction.x !== 0;
 
     const w = horizontal ? reach : girth;
     const h = horizontal ? girth : reach;
+
+    const length = Math.hypot(direction.x, direction.y) || 1;
+    const dx = direction.x / length;
+    const dy = direction.y / length;
 
     const startFrame = 10;
     const frameRate = config.animation?.frameRate ?? 12;
@@ -569,29 +568,48 @@ export const spells: Record<SpellName, SpellHandler> = {
     entity.scene.time.delayedCall(delay, () => {
       if (!entity.scene) return;
 
-      new Hitbox(
+      const mouth = FIRE_BREATH_MOUTH[entity.facing];
+      const x = entity.x + mouth.x;
+      const y = entity.y + mouth.y;
+
+      const hitbox = new Hitbox(
         entity.scene,
-        entity.x + direction.x * (reach / 2 + 12),
-        entity.y + direction.y * (reach / 2 + 12),
+        x + dx * (reach / 2),
+        y + dy * (reach / 2),
         w,
         h,
         entity.id,
-        config,
+        { ...config, duration: 0 },
       );
 
-      const mouth = FIRE_BREATH_MOUTH[entity.facing];
+      hitbox.cone = { x, y, dx, dy, reach: 0, spread: FIRE_BREATH_SPREAD };
+
+      const onReach = (front: number, done: boolean) => {
+        if (!hitbox.active) return;
+
+        if (done) {
+          hitbox.destroy();
+          return;
+        }
+
+        hitbox.cone!.reach = Math.min(front, reach);
+        hitbox.drawCone();
+      };
 
       const depth =
         entity.facing === Direction.DOWN ? entity.depth : entity.depth - 10;
 
-      vfx.emitters.fireBreath(
+      vfx.emitters.fireBreath(entity.scene, x, y, direction, reach, 600, depth);
+
+      vfx.quads.breath(
         entity.scene,
-        entity.x + mouth.x,
-        entity.y + mouth.y,
+        x,
+        y,
         direction,
         reach,
         600,
         depth,
+        onReach,
       );
     });
   },
@@ -603,32 +621,27 @@ export const spells: Record<SpellName, SpellHandler> = {
     direction: { x: number; y: number },
   ) => {
     const reach = config.hitbox!.width;
+    const girth = config.hitbox!.height;
+    const horizontal = direction.x !== 0;
 
-    const bx = entity.x + direction.x * (reach * 0.5 + 8);
-    const by = entity.y + direction.y * (reach * 0.5 + 8);
+    const bx = entity.x + direction.x * (reach * 0.5 + 12);
+    const by = entity.y + direction.y * (reach * 0.5 + 12);
 
     const biteFrame = 8;
-    const chompMs = 120;
     const frameRate = config.animation?.frameRate ?? 14;
     const impactMs = (biteFrame / frameRate) * 1000;
-    const spawnDelay = Math.max(0, impactMs - chompMs - DELAY_ATTACK);
     const hitDelay = Math.max(0, impactMs - DELAY_ATTACK);
 
-    const depth = entity.depth + 4;
+    vfx.quads.spikes(entity.scene, bx, by, direction, reach * 0.55, hitDelay);
 
-    entity.scene.time.delayedCall(spawnDelay, () => {
-      if (!entity.scene) return;
-      vfx.emitters.bite(entity.scene, bx, by, reach, depth);
-    });
-
-    entity.scene.time.delayedCall(hitDelay, () => {
+    entity.scene.time.delayedCall(hitDelay + 110, () => {
       if (!entity.scene) return;
       new Hitbox(
         entity.scene,
         bx,
         by,
-        config.hitbox!.width,
-        config.hitbox!.height,
+        horizontal ? reach : girth,
+        horizontal ? girth : reach,
         entity.id,
         config,
       );

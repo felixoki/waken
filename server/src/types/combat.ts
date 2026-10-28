@@ -31,4 +31,5 @@ export interface Death {
   id: string;
   x: number;
   y: number;
+  fell?: boolean;
 }

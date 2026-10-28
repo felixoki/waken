@@ -769,4 +769,234 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.TREE9]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 43, start: 1, end: 6 },
+            { row: 44, start: 1, end: 6 },
+            { row: 45, start: 1, end: 6 },
+            { row: 46, start: 1, end: 6 },
+            { row: 47, start: 1, end: 6 },
+            { row: 48, start: 1, end: 6 },
+            { row: 49, start: 1, end: 6 },
+          ],
+        },
+        key: "tree9_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 33,
+          offsetX: 40,
+          offsetY: 63,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE10]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 43, start: 7, end: 11 },
+            { row: 44, start: 7, end: 11 },
+            { row: 45, start: 7, end: 11 },
+            { row: 46, start: 7, end: 11 },
+            { row: 47, start: 7, end: 11 },
+            { row: 48, start: 7, end: 11 },
+          ],
+        },
+        key: "tree10_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 18,
+          height: 25,
+          offsetX: 24,
+          offsetY: 55,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE11]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 27, start: 9, end: 12 },
+            { row: 28, start: 9, end: 12 },
+            { row: 29, start: 9, end: 12 },
+            { row: 30, start: 9, end: 12 },
+          ],
+        },
+        key: "tree11_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 9,
+          offsetX: 29,
+          offsetY: 39,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 18, end: 20 },
+            { row: 2, start: 18, end: 20 },
+            { row: 3, start: 18, end: 20 },
+          ],
+        },
+        key: "bush5_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 34,
+          height: 10,
+          offsetX: 7,
+          offsetY: 20,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 21, end: 23 },
+            { row: 2, start: 21, end: 23 },
+            { row: 3, start: 21, end: 23 },
+          ],
+        },
+        key: "bush6_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 30,
+          height: 9,
+          offsetX: 9,
+          offsetY: 22,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH7]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 24, end: 25 },
+            { row: 2, start: 24, end: 25 },
+            { row: 3, start: 24, end: 25 },
+          ],
+        },
+        key: "bush7_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 18,
+          height: 5,
+          offsetX: 6,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
 };

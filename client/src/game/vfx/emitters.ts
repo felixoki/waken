@@ -160,9 +160,9 @@ export const emitters = {
     const lifespan = 450;
 
     const flame = scene.add.particles(x, y, "particle_glow", {
-      color: [0xffffff, 0xffe070, 0xff8c1a, 0xd92b00, 0x7a1500],
+      color: [0xfff4d6, 0xffd060, 0xff8c1a, 0xd92b00, 0x7a1500],
       colorEase: "quad.out",
-      alpha: { start: 1, end: 0 },
+      alpha: { start: 0.7, end: 0 },
       lifespan,
       angle: { min: base - spread, max: base + spread },
       scale: { start: 0.25, end: 0.9, ease: "sine.out" },
@@ -252,7 +252,7 @@ export const emitters = {
     let front = 0;
 
     const flame = scene.add.particles(x, y, "particle_glow", {
-      color: [0xffffff, 0xffe070, 0xff8c1a, 0xd92b00, 0x7a1500],
+      color: [0xfff4d6, 0xffd060, 0xff8c1a, 0xd92b00, 0x7a1500],
       colorEase: "quad.out",
       alpha: { start: 1, end: 0 },
       lifespan: duration,

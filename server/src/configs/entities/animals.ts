@@ -844,6 +844,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
       {
         name: ComponentName.BODY,
         config: {
@@ -894,6 +895,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
       {
         name: ComponentName.CAPTURABLE,
         config: { soul: EntityName.COW },
@@ -1005,6 +1007,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
       {
         name: ComponentName.CAPTURABLE,
         config: { soul: EntityName.BULL },
@@ -1152,6 +1155,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
       {
         name: ComponentName.CAPTURABLE,
         config: { soul: EntityName.SHEEP },
@@ -1320,6 +1324,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
       {
         name: ComponentName.AMBIENT_SOUND,
         config: { name: SoundName.CHICKEN_IDLE, interval: [5000, 12000] },
@@ -1379,6 +1384,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         },
       },
       { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
       {
         name: ComponentName.AMBIENT_SOUND,
         config: { name: SoundName.CHICKEN_IDLE, interval: [5000, 12000] },

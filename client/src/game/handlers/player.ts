@@ -25,6 +25,10 @@ import EventBus from "../EventBus";
 import { configs } from "@server/configs";
 import type { Player } from "../Player";
 import ForestScene from "../scenes/Forest";
+import { DURATION_JUMPING, HEIGHT_JUMPING } from "@server/globals";
+
+const FALL_DURATION = 450;
+const FALL_GRAVITY = 0.0006;
 
 export const player = {
   nearest: (
@@ -122,6 +126,7 @@ export const player = {
 
     EventBus.emit(Event.PLAYER_HEALTH, updated.health);
     EventBus.emit(Event.PLAYER_MANA, updated.mana);
+    EventBus.emit(Event.PLAYER_MAP, data.map);
 
     main.managers.entities.removeByMap(prev.map as MapName);
 
@@ -228,6 +233,111 @@ export const player = {
           equipped.item.name === EntityName.COMPASS,
       );
     },
+  },
+
+  footing: (player: Player): void => {
+    const ground = configs.maps[player.map]?.ground;
+    const tiles = player.scene.tileManager;
+
+    if (
+      !ground ||
+      !tiles ||
+      player.falling ||
+      player.isTransitioning ||
+      player.cutscene ||
+      player.z > 0 ||
+      player.state === StateName.JUMPING ||
+      player.state === StateName.FLYING ||
+      player.state === StateName.DEAD
+    )
+      return;
+
+    const map = tiles.map;
+    const { x, y } = handlers.path.position(player);
+    const tx = Math.floor(x / map.tileWidth);
+    const ty = Math.floor(y / map.tileHeight);
+
+    if (ground.some((layer) => (map.getTileAt(tx, ty, false, layer)?.index ?? -1) > 0))
+      return;
+
+    player.scene.game.events.emit(Event.PLAYER_FALL);
+    handlers.player.fall(player);
+  },
+
+  fall: (player: Player): Promise<void> => {
+    if (player.falling) return player.falling;
+
+    player.transitionTo(StateName.IDLE);
+    player.isLocked = true;
+    (player.body as Phaser.Physics.Arcade.Body)?.setVelocity(0, 0);
+
+    const origin = player.displayOriginY;
+    const speed = (HEIGHT_JUMPING * Math.PI) / DURATION_JUMPING;
+    const behind = handlers.player.behind(
+      player,
+      speed * FALL_DURATION + 0.5 * FALL_GRAVITY * FALL_DURATION ** 2,
+    );
+    if (behind !== null) player.setDepth(behind);
+
+    player.falling = new Promise((resolve) => {
+      player.scene.tweens.addCounter({
+        from: 0,
+        to: FALL_DURATION,
+        duration: FALL_DURATION,
+        onUpdate: (tween) => {
+          const ms = tween.getValue() ?? 0;
+          const t = ms / FALL_DURATION;
+          player.displayOriginY =
+            origin - speed * ms - 0.5 * FALL_GRAVITY * ms * ms;
+          player.setAlpha(1 - t * t);
+        },
+        onComplete: () => {
+          player.displayOriginY = origin;
+          resolve();
+        },
+      });
+    });
+
+    return player.falling;
+  },
+
+  behind: (player: Player, drop: number): number | null => {
+    const ground = configs.maps[player.map]?.ground;
+    const tiles = player.scene.tileManager;
+    if (!ground || !tiles) return null;
+
+    const map = tiles.map;
+    const { x, y } = handlers.path.position(player);
+    const tx = Math.floor(x / map.tileWidth);
+    const ty = Math.floor(y / map.tileHeight);
+    const reach = Math.ceil(drop / map.tileHeight);
+
+    for (let dy = 1; dy <= reach; dy++)
+      if (ground.some((layer) => (map.getTileAt(tx, ty + dy, false, layer)?.index ?? -1) > 0))
+        return (
+          Math.min(
+            ...ground.map(
+              (layer) => map.getLayer(layer)?.tilemapLayer?.depth ?? Infinity,
+            ),
+          ) - 1
+        );
+
+    return null;
+  },
+
+  land: (player: Player, x: number, y: number): void => {
+    handlers.player.fall(player).then(() => {
+      if (!player.scene) return;
+
+      const spawn = configs.maps[player.map].spawn;
+
+      player.falling = null;
+      player.transitionTo(StateName.DEAD);
+      player.setDepth(1000 + y);
+
+      if (x === spawn.x && y === spawn.y) player.setPosition(x, y);
+      else player.setAlpha(0);
+    });
   },
 
   transition: (data: PlayerConfig, main: MainScene): void => {

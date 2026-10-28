@@ -111,6 +111,8 @@ export const party = {
           world,
         );
 
+      handlers.encounter.clear(data.id, world);
+
       data.status = PartyStatus.LOBBY;
       data.unlocked = 0;
       data.ready = [];
@@ -230,12 +232,15 @@ export const party = {
     }
 
     if (!data.members.length) {
+      handlers.encounter.clear(data.id, world);
       world.parties.remove(data.id);
       party.broadcast(socket, world);
       return;
     }
 
     if (data.leader === player.id) data.leader = data.members[0];
+
+    handlers.encounter.leave(data.id, io, world);
 
     socket.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
     party.broadcast(socket, world);

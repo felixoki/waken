@@ -233,6 +233,9 @@ export class EntityManager {
     entity.isLocked = config.isLocked;
     this.entities.set(config.id, entity);
 
+    if (entity.isStatic && entity.hasComponent(ComponentName.DESTRUCTIBLE))
+      scene.physicsManager.groups.wrecks.add(entity);
+
     if (
       this.fresh.delete(config.id) &&
       entity.getComponent(ComponentName.PICKABLE)

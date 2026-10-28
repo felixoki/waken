@@ -40,6 +40,7 @@ import { FeedableComponent } from "../components/Feedable";
 import { MaturableComponent } from "../components/Maturable";
 import { LayableComponent } from "../components/Layable";
 import { MilkableComponent } from "../components/Milkable";
+import { ButcherableComponent } from "../components/Butcherable";
 import { ZoneComponent } from "../components/Zone";
 import { SleepableComponent } from "../components/Sleepable";
 import { ConnectableComponent } from "../components/Connectable";
@@ -166,6 +167,9 @@ export class ComponentFactory {
           break;
         case ComponentName.MILKABLE:
           comp = new MilkableComponent(entity, component.config);
+          break;
+        case ComponentName.BUTCHERABLE:
+          comp = new ButcherableComponent(entity);
           break;
         case ComponentName.SLEEPABLE:
           comp = new SleepableComponent(entity, component.config);

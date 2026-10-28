@@ -95,7 +95,7 @@ export class Casting implements State {
       if (!entity.pointerdown) return this.exit(entity);
 
       const player = entity.scene.managers.players.get(entity.id);
-      if (player?.isControllable && player.mana < (this.config?.mana ?? 0))
+      if (player?.isControllable && !player.isFreecast && player.mana < (this.config?.mana ?? 0))
         this.exit(entity);
 
       return;

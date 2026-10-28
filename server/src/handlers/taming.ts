@@ -13,6 +13,7 @@ import {
 import { World } from "../World";
 import { configs } from "../configs";
 import { handlers } from ".";
+import { RANGE_CAPTURE } from "../globals";
 
 export const taming = {
   capturable: (name: EntityName): CapturableConfig | undefined =>
@@ -20,6 +21,11 @@ export const taming = {
       (c): c is Extract<ComponentConfig, { name: ComponentName.CAPTURABLE }> =>
         c.name === ComponentName.CAPTURABLE,
     )?.config,
+
+  native: (entity: EntityConfig): TameState | undefined =>
+    configs.maps[entity.map]?.isSacred && taming.capturable(entity.name)
+      ? { ...entity.tame, isTamed: true }
+      : entity.tame,
 
   pacify: (entity: EntityConfig, socket: Socket, io: Server, world: World) => {
     if (entity.tame?.isPacified || entity.tame?.isTamed) return;
@@ -471,5 +477,34 @@ export const taming = {
       id: target.id,
       milkedAt: now,
     });
+  },
+
+  butcher: (
+    data: { id: string },
+    socket: Socket,
+    io: Server,
+    world: World,
+  ) => {
+    const player = world.players.getBySocketId(socket.id);
+    const target = world.entities.get(data.id);
+
+    if (!player || player.isDead || !target || target.isLocked) return;
+
+    const butcherable = configs.entities[target.name]?.components.some(
+      (c) => c.name === ComponentName.BUTCHERABLE,
+    );
+    if (!butcherable) return;
+
+    const equipped = player.hotbar[player.active];
+    if (
+      equipped?.type !== SlotType.ENTITY ||
+      equipped.item.name !== EntityName.BUTCHERS_KNIFE
+    )
+      return;
+
+    if (Math.hypot(target.x - player.x, target.y - player.y) > RANGE_CAPTURE)
+      return;
+
+    handlers.combat.kill.entity(target, socket, io, world);
   },
 };

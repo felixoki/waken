@@ -92,6 +92,11 @@ RULES = {
     "water_details": lambda i: "water_details",
     "water_lilies": lambda i: "water_lilies",
     "isles_ground_grass": lambda i: "isles_ground",
+    "isles_ground_grass_full": lambda i: "isles_ground",
+    "isles_coasts": lambda i: "isles_ground",
+    "isles_coasts2": lambda i: "isles_ground",
+    "isles_waterfalls": lambda i: "isles_ground",
+    "isles_details": lambda i: "isles_ground",
     "isles_rocks": lambda i: "isles_rocks",
     "isles_clouds": lambda i: "isles_clouds",
     "isles_clouds_animated": lambda i: "isles_clouds_animated",
@@ -103,6 +108,61 @@ RULES = {
     "herbalist_boiler": lambda i: "herbalist_boiler",
     "fireplace": lambda i: "farm_fireplace",
 }
+
+
+ANIMATED = {
+    "isles_coasts": (29, 145),
+    "isles_coasts2": (29, 145),
+    "isles_waterfalls": (0, 209),
+}
+FRAMES = 6
+FRAME_MS = 100
+
+
+def frames_of(sources: dict, source: str, tid: int) -> list[int] | None:
+    """The frame cycle of a tile on a sheet that stacks its animation frames, starting at that tile; None if it never changes."""
+    if source not in ANIMATED:
+        return None
+    first, stride = ANIMATED[source]
+    if tid < first:
+        return None
+    f = (tid - first) // stride
+    base = tid - stride * f
+    frames = [base + stride * ((f + i) % FRAMES) for i in range(FRAMES)]
+    src = sources[source]
+    if len({src.tile(t).tobytes() for t in frames}) == 1:
+        return None
+    return frames
+
+
+def animate(m: Map, compact: dict, sheet: str, manifest: dict, sources: dict) -> None:
+    el = compact["el"]
+    columns = manifest[sheet]["columns"]
+    metas = tile_meta(el)
+    for key, (source, tid) in manifest[sheet]["cells"].items():
+        frames = frames_of(sources, source, tid)
+        if not frames:
+            continue
+        x, y = map(int, key.split(","))
+        dst = y * columns + x
+        meta = metas.get(dst)
+        if meta is not None and meta.find("animation") is not None:
+            continue
+        cells = [resolve_cell(manifest, sheet, source, f) for f in frames]
+        if None in cells:
+            continue
+        if meta is None:
+            meta = ET.Element("tile", {"id": str(dst)})
+            later = [c for c in el if c.tag == "tile" and int(c.get("id")) > dst]
+            m.insert(el, list(el).index(later[0]) if later else len(el), meta)
+            metas[dst] = meta
+        anim = ET.Element("animation")
+        for c in cells:
+            ET.SubElement(anim, "frame", {"tileid": str(c), "duration": str(FRAME_MS)})
+        m.insert(meta, len(meta), anim)
+        for i, f in enumerate(anim):
+            f.tail = "\n" + " " * (m.depth(meta) + 2) if i < len(anim) - 1 else "\n" + " " * (m.depth(meta) + 1)
+        anim.text = "\n" + " " * (m.depth(meta) + 2)
 
 
 def folder(sheet: str) -> str:
@@ -256,6 +316,14 @@ def pack(sheet: str, manifest: dict, wanted: dict[str, set[int]], keep_meta: set
             (x + i, y + j) not in taken for j in range(-GAP, h + GAP) for i in range(-GAP, w + GAP)
         )
 
+    fitted = []
+    for source, group, c, blank in blocks:
+        x0 = min(t % c for t in group)
+        chunks: dict[int, list[int]] = {}
+        for t in group:
+            chunks.setdefault((t % c - x0) // columns, []).append(t)
+        fitted.extend((source, sorted(part), c, blank) for part in chunks.values())
+    blocks = fitted
     order = sorted(blocks, key=lambda b: (b[3], -(max(t // b[2] for t in b[1]) - min(t // b[2] for t in b[1])), b[0], b[1][0]))
     for source, group, c, blank in order:
         src = sources[source]
@@ -426,6 +494,14 @@ def cmd_build(args: list[str]) -> None:
     for sheet in manifest.values():
         for s, _ in sheet["cells"].values():
             sources.setdefault(s, Source(s, SPRITES / known[s]))
+    for sheet, info in list(manifest.items()):
+        for s, t in info["cells"].values():
+            if s in ANIMATED:
+                wanted.setdefault(sheet, {}).setdefault(s, set()).add(t)
+    for by_source in wanted.values():
+        for s, ids in by_source.items():
+            for t in list(ids):
+                ids.update(frames_of(sources, s, t) or [])
     for sheet, by_source in sorted(wanted.items()):
         pack(sheet, manifest, by_source, keep_meta, sources)
     images = {}
@@ -486,6 +562,8 @@ def cmd_build(args: list[str]) -> None:
             if meta is not None:
                 name = source_name(ts)
                 copy_meta(m, compact[dest]["el"], cell, meta, lambda f, n=name: resolve_cell(manifest, target(map_sheet, n, f), n, f))
+        for sheet in compact:
+            animate(m, m.tileset(sheet), sheet, manifest, sources)
         used = set()
         for el in m.layers():
             for g in gids(m, el, "layer" if el.tag == "layer" else "objects"):

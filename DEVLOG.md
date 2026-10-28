@@ -847,13 +847,15 @@
 - Add village improvement unlocks ✅
 - Add economy groups ✅
 
+#### 25.10.2026
+
+- Empty mana outside dreams ✅
 
 ### To Do
 
 - Add craftable candles from bear fat
 - Add craftable pillows from goose down and wool
 - Add craftable beds by tier
-- Empty mana outside dreams
 - Add pigs
 
 ### Bugs

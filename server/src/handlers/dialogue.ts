@@ -119,6 +119,10 @@ export const dialogue = {
     nodeId: NodeId,
     facing?: Direction,
   ) => {
+    const scripted = handlers.encounter.find(world, entityId);
+    if (scripted)
+      return handlers.encounter.choose(scripted, nodeId, socket, io, world);
+
     const entity = world.entities.get(entityId);
     if (!entity) return;
 
@@ -262,7 +266,10 @@ export const dialogue = {
     });
   },
 
-  end: (entityId: string, socket: Socket, world: World) => {
+  end: (entityId: string, socket: Socket, io: Server, world: World) => {
+    const scripted = handlers.encounter.find(world, entityId);
+    if (scripted) return handlers.encounter.end(scripted, socket, io, world);
+
     const entity = world.entities.get(entityId);
     if (!entity) return;
 

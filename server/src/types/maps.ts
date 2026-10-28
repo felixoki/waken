@@ -36,8 +36,10 @@ export interface MapConfig {
   json: string;
   isIndoor: boolean;
   isInstanced: boolean;
+  isSacred?: boolean;
   isPersistent?: boolean;
   isPartyInstance?: boolean;
+  ground?: string[];
   spritesheets: Spritesheet[];
   sound?: SoundConfig;
   ambience?: MapAmbienceConfig;

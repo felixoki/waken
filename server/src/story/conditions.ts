@@ -3,6 +3,7 @@ import {
   EntityName,
   ErrandState,
   FactName,
+  FishName,
   Facts,
   Mood,
   StoryFlag,
@@ -21,6 +22,7 @@ export interface StoryContext {
   stock: (name: EntityName) => number;
   present: (name: EntityName) => number;
   errand: ErrandState;
+  record: (fish: FishName) => number;
 }
 
 export const conditions = {
@@ -50,6 +52,13 @@ export const conditions = {
 
     if (when.carryingAny && !when.carryingAny.some((name) => context.carrying(name)))
       failures.push(`not carrying any of ${when.carryingAny.join(", ")}`);
+
+    for (const [fish, min] of Object.entries(when.record ?? {}) as [
+      FishName,
+      number,
+    ][])
+      if (context.record(fish) < min)
+        failures.push(`record ${min} for ${fish} needed, is ${context.record(fish)}`);
 
     if (when.errand && context.errand !== when.errand)
       failures.push(`errand ${when.errand} needed, is ${context.errand}`);

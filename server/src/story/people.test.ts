@@ -43,6 +43,7 @@ const context = (options: {
   carrying: (name) => options.carrying?.includes(name) ?? false,
   followed: (name) => options.followed?.includes(name) ?? false,
   errand: ErrandState.NONE,
+  record: () => 0,
   bond: (name) => options.bond?.[name] ?? 0,
   since: () => undefined,
   craving: options.craving ?? false,

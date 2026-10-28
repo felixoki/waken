@@ -3,6 +3,7 @@ import { PlayerManager } from "../managers/Player";
 import SocketManager from "../managers/Socket";
 import {
   Direction,
+  EncounterStart,
   EconomySnapshot,
   EntityConfig,
   EntityName,
@@ -174,6 +175,11 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.on(Event.DEV_OUTPUT, (lines: string[]) =>
         console.log(lines.join("\n")),
       );
+
+      this.managers.socket.on(Event.DEV_FREECAST, (on: boolean) => {
+        const player = this.managers.players.player;
+        if (player) player.isFreecast = on;
+      });
     }
 
     /**
@@ -215,6 +221,7 @@ export class MainScene extends Phaser.Scene {
       EventBus.emit(Event.PLAYER_MAX_HEALTH, player.maxHealth);
       EventBus.emit(Event.PLAYER_MANA, player.mana);
       EventBus.emit(Event.PLAYER_MAX_MANA, player.maxMana);
+      EventBus.emit(Event.PLAYER_MAP, data.map);
 
       const inventory = player.getComponent<InventoryComponent>(
         ComponentName.INVENTORY,
@@ -668,6 +675,22 @@ export class MainScene extends Phaser.Scene {
       },
     );
 
+    this.managers.socket.on(Event.CUTSCENE_START, (data: EncounterStart) => {
+      handlers.cutscene.start(this, data);
+    });
+
+    this.managers.socket.on(Event.CUTSCENE_END, (data: string) => {
+      handlers.cutscene.end(this, data);
+    });
+
+    this.game.events.on(Event.VILLAIN_ENCOUNTER, (data: string) => {
+      this.managers.socket.emit(Event.VILLAIN_ENCOUNTER, data);
+    });
+
+    this.game.events.on(Event.CUTSCENE_READY, () => {
+      this.managers.socket.emit(Event.CUTSCENE_READY);
+    });
+
     this.managers.socket.on(Event.ENTITY_UNLOCK, (data: string) => {
       this.managers.entities.lock(data, false);
       this.game.events.emit(Event.ENTITY_UNLOCK, data);
@@ -741,6 +764,10 @@ export class MainScene extends Phaser.Scene {
 
     this.game.events.on(Event.ENTITY_MILK, (data: { id: string }) => {
       this.managers.socket.emit(Event.ENTITY_MILK, data);
+    });
+
+    this.game.events.on(Event.ENTITY_BUTCHER, (data: { id: string }) => {
+      this.managers.socket.emit(Event.ENTITY_BUTCHER, data);
     });
 
     this.game.events.on(Event.ENTITY_WITHER, (data: { id: string }) => {
@@ -977,6 +1004,10 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.HIT, data);
     });
 
+    this.game.events.on(Event.PLAYER_FALL, () => {
+      this.managers.socket.emit(Event.PLAYER_FALL);
+    });
+
     this.game.events.on(
       Event.ENTITY_CAST,
       (data: { id: string; name: SpellName }) => {
@@ -1208,7 +1239,8 @@ export class MainScene extends Phaser.Scene {
         ? this.managers.players.player
         : this.managers.players.others.get(data.id);
 
-      if (player) player.transitionTo(StateName.DEAD);
+      if (player && data.fell) handlers.player.land(player, data.x, data.y);
+      else if (player) player.transitionTo(StateName.DEAD);
 
       if (isLocal && this.managers.players.player) {
         const inventory =

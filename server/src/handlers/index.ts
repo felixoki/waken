@@ -8,6 +8,7 @@ import { crafter } from "./crafter.js";
 import { dev } from "./dev.js";
 import { dialogue } from "./dialogue.js";
 import { economy } from "./economy.js";
+import { encounter } from "./encounter.js";
 import { entity } from "./entity.js";
 import { farming } from "./farming.js";
 import { fishing } from "./fishing.js";
@@ -36,6 +37,7 @@ export const handlers = {
   crafter,
   dev,
   economy,
+  encounter,
   player,
   entity,
   farming,

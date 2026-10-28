@@ -9,6 +9,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  FishName,
   FactName,
   Mood,
   NodeId,
@@ -23,7 +24,12 @@ import {
   ErrandState,
   Condition,
 } from "../../types";
-import { BIG_HAND_IN, BOND_FRIEND, MEATS } from "../../globals";
+import {
+  BIG_HAND_IN,
+  BOND_FRIEND,
+  MEATS,
+  VALEN_PERCH,
+} from "../../globals";
 
 const GLIMBLID = "glimblid";
 const LISTEN = "listen";
@@ -42,6 +48,7 @@ const TELLIS_GIVE = "tellis:give";
 const TELLIS_REFUSE = "tellis:refuse";
 const FENN_DOG = "fenn:dog";
 const VALEN_DOG = "valen:dog";
+const VALEN_HOOK = "valen:hook";
 const EMY_FRAME = "emy:frame";
 const EMY_PEACE = "emy:peace";
 const EMY_TELL = "emy:tell";
@@ -609,6 +616,15 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               output: EntityName.BUCKET,
               quantity: 1,
               ingredients: [{ item: EntityName.IRON1, quantity: 2 }],
+            },
+            {
+              tier: 2,
+              output: EntityName.BUTCHERS_KNIFE,
+              quantity: 1,
+              ingredients: [
+                { item: EntityName.WOOD, quantity: 1 },
+                { item: EntityName.IRON1, quantity: 1 },
+              ],
             },
             {
               tier: 2,
@@ -2480,9 +2496,48 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           text: "*sighs* How am I going to get another fishing hook...",
           choices: [
             {
+              text: "Here, I've got a spare hook.",
+              next: VALEN_HOOK,
+              when: {
+                carrying: [EntityName.FISHING_HOOK],
+                unflags: [StoryFlag.VALEN_HOOK],
+              },
+            },
+            {
               ref: ChoiceId.GOODBYE,
             },
           ],
+        },
+        {
+          text: [
+            "Caught three perch today. Small ones. Grandma says they still count.",
+            "Nothing bit today. I think the fish are scared of me now.",
+          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          salience: 0.5,
+          when: { flags: [StoryFlag.VALEN_HOOK] },
+        },
+        {
+          text: "*grins* That's your biggest? I throw those back.",
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          salience: 1,
+          when: {
+            flags: [StoryFlag.VALEN_HOOK],
+            record: { [FishName.PERCH]: 0.01 },
+            fresh: [StoryFlag.VALEN_RECORD],
+          },
+          story: [flagSet(StoryFlag.VALEN_RECORD)],
+        },
+        {
+          text: "Well my perch isn't that heavy. But I'm just a kid so it doesn't really count.",
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          salience: 2,
+          when: {
+            flags: [StoryFlag.VALEN_HOOK],
+            record: { [FishName.PERCH]: VALEN_PERCH },
+            fresh: [StoryFlag.VALEN_RECORD],
+          },
+          story: [flagSet(StoryFlag.VALEN_RECORD)],
         },
         {
           text: "The dog's gone. He used to follow me to the lake and steal the small ones.",
@@ -2501,6 +2556,23 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           },
         },
       ],
+      [VALEN_HOOK]: {
+        text: "*grabs it* A real one! *turns it over in his hands* I'm going to catch the biggest perch this lake has ever seen.",
+        choices: [{ ref: ChoiceId.GOODBYE }],
+        when: {
+          carrying: [EntityName.FISHING_HOOK],
+          unflags: [StoryFlag.VALEN_HOOK],
+        },
+        story: [
+          {
+            name: StoryEffectName.ITEM_TAKE,
+            item: EntityName.FISHING_HOOK,
+            quantity: 1,
+          },
+          { name: StoryEffectName.BOND_ADD, amount: 2 },
+          flagSet(StoryFlag.VALEN_HOOK),
+        ],
+      },
       [VALEN_DOG]: {
         text: "Really? *grins* So he's got someone. Do you think Fenn would let me visit?",
         choices: [{ ref: ChoiceId.GOODBYE }],

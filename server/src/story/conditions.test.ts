@@ -23,6 +23,7 @@ const context = (overrides: Partial<StoryContext> = {}): StoryContext => ({
   carrying: () => false,
   followed: () => false,
   errand: ErrandState.NONE,
+  record: () => 0,
   bond: () => 0,
   since: () => undefined,
   craving: false,

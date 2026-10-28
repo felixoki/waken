@@ -43,12 +43,17 @@ export const spell = {
     if (!player || player.isDead) return;
 
     const config = configs.spells[data.name];
-    if (!config || player.mana < config.mana) return;
+    const free = world.freecast.has(player.id);
+    if (!config) return;
+    if (!free && player.mana < config.mana) return;
+    if (!free && configs.maps[player.map].isSacred) return;
 
-    const mana = Math.max(player.mana - config.mana, 0);
-    world.players.update(player.id, { mana });
+    if (!free) {
+      const mana = Math.max(player.mana - config.mana, 0);
+      world.players.update(player.id, { mana });
 
-    socket.emit(Event.PLAYER_MANA, mana);
+      socket.emit(Event.PLAYER_MANA, mana);
+    }
 
     if (config.buff) spell.buff(player, config.buff, io, world);
 

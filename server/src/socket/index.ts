@@ -45,6 +45,10 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       handler: (data: Input) => handlers.player.input(data, socket, io, world),
     },
     {
+      event: Event.PLAYER_FALL,
+      handler: () => handlers.player.fall(socket, io, world),
+    },
+    {
       event: Event.PLAYER_TRANSITION,
       handler: (data: Transition) =>
         handlers.player.transition(data, io, socket, world),
@@ -104,7 +108,17 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     },
     {
       event: Event.ENTITY_DIALOGUE_END,
-      handler: (data: string) => handlers.dialogue.end(data, socket, world),
+      handler: (data: string) =>
+        handlers.dialogue.end(data, socket, io, world),
+    },
+    {
+      event: Event.VILLAIN_ENCOUNTER,
+      handler: (data: string) =>
+        handlers.encounter.start(data, socket, io, world),
+    },
+    {
+      event: Event.CUTSCENE_READY,
+      handler: () => handlers.encounter.ready(socket, io, world),
     },
     /**
      * Items
@@ -203,6 +217,11 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
       event: Event.ENTITY_MILK,
       handler: (data: { id: string }) =>
         handlers.taming.milk(data, socket, io, world),
+    },
+    {
+      event: Event.ENTITY_BUTCHER,
+      handler: (data: { id: string }) =>
+        handlers.taming.butcher(data, socket, io, world),
     },
     /**
      * Shared

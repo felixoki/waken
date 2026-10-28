@@ -381,8 +381,14 @@ export const TEMPLE_FLOOR_DETAIL_DENSITY = 0.06;
 
 /** Villain */
 
-export const TRANSFORM_RANGE = 50;
+export const TRANSFORM_RANGE = 320;
 export const DRAGON_FORM_DURATION = 10000;
+export const ENCOUNTER_DISTANCE = 72;
+export const ENCOUNTER_SPACING = 28;
+export const ENCOUNTER_APPROACH = 64;
+export const ENCOUNTER_READY_TIMEOUT = 6000;
+export const ENCOUNTER_FADE = 400;
+export const ENCOUNTER_HOLD = 400;
 
 /** Terraces */
 
@@ -454,6 +460,9 @@ export const ECONOMY_GROWTH = 0.25;
 /** Schedules */
 
 export const ENTITY_FADE = 600;
+
+/** Valen */
+export const VALEN_PERCH = 1;
 
 /** Errands */
 export const ERRAND_RARE_CHANCE = 0.1;

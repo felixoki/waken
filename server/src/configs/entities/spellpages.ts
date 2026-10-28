@@ -42,6 +42,7 @@ const page = (
   spell: SpellName,
   displayName: string,
   description: string,
+  art: SpellName = spell,
 ): EntityDefinition => ({
   facing: Direction.DOWN,
   moving: [],
@@ -52,8 +53,8 @@ const page = (
         spritesheet: "items",
         tileSize: 16,
         tiles: [
-          { row: row(spell) - 1, start: col(spell) + 1, end: col(spell) + 2 },
-          { row: row(spell), start: col(spell) + 1, end: col(spell) + 2 },
+          { row: row(art) - 1, start: col(art) + 1, end: col(art) + 2 },
+          { row: row(art), start: col(art) + 1, end: col(art) + 2 },
         ],
       },
       key: `spell_page_${spell}_texture`,
@@ -68,7 +69,7 @@ const page = (
   metadata: {
     displayName,
     description,
-    icon: { spritesheet: "items", row: row(spell), col: col(spell) },
+    icon: { spritesheet: "items", row: row(art), col: col(art) },
     stackable: false,
     weight: 0.05,
   },
@@ -104,6 +105,12 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     SpellName.LIGHTNING_STRIKE,
     "Spell page: Lightning strike",
     "A charred page that crackles with residual static energy.",
+  ),
+  [EntityName.SPELL_PAGE_BITE]: page(
+    SpellName.BITE,
+    "Spell page: Bite",
+    "A torn page that smells of wet stone and old teeth.",
+    SpellName.DRAGON_FORM,
   ),
   [EntityName.SPELL_PAGE_DRAGON_FORM]: page(
     SpellName.DRAGON_FORM,

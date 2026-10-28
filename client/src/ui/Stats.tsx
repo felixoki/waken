@@ -1,27 +1,35 @@
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
-import { Event } from "@server/types";
+import { Event, MapName } from "@server/types";
 import { MAX_HEALTH, MAX_MANA } from "@server/globals";
+import { configs } from "@server/configs";
 
 export function Stats() {
   const [health, setHealth] = useState(MAX_HEALTH);
   const [maxHealth, setMaxHealth] = useState(MAX_HEALTH);
   const [mana, setMana] = useState(MAX_MANA);
   const [maxMana, setMaxMana] = useState(MAX_MANA);
+  const [isSacred, setSacred] = useState(false);
 
   useEffect(() => {
+    const locate = (map: MapName) => setSacred(!!configs.maps[map]?.isSacred);
+
     EventBus.on(Event.PLAYER_HEALTH, setHealth);
     EventBus.on(Event.PLAYER_MAX_HEALTH, setMaxHealth);
     EventBus.on(Event.PLAYER_MANA, setMana);
     EventBus.on(Event.PLAYER_MAX_MANA, setMaxMana);
+    EventBus.on(Event.PLAYER_MAP, locate);
 
     return () => {
       EventBus.off(Event.PLAYER_HEALTH, setHealth);
       EventBus.off(Event.PLAYER_MAX_HEALTH, setMaxHealth);
       EventBus.off(Event.PLAYER_MANA, setMana);
       EventBus.off(Event.PLAYER_MAX_MANA, setMaxMana);
+      EventBus.off(Event.PLAYER_MAP, locate);
     };
   }, []);
+
+  if (isSacred) return null;
 
   return (
     <div className="flex flex-col gap-3">

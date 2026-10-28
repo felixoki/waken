@@ -106,6 +106,18 @@ export const dev = {
       dev.reply(_socket, `day ${days}`);
     },
 
+    [DevCommand.FREECAST]: (_args, socket, _io, world) => {
+      const player = world.players.getBySocketId(socket.id);
+      if (!player) return dev.reply(socket, "no player");
+
+      const on = !world.freecast.has(player.id);
+      if (on) world.freecast.add(player.id);
+      else world.freecast.delete(player.id);
+
+      socket.emit(Event.DEV_FREECAST, on);
+      dev.reply(socket, `freecast ${on ? "on" : "off"}`);
+    },
+
     [DevCommand.GIVE]: ([name, quantity], socket, _io, world) => {
       const player = world.players.getBySocketId(socket.id);
       const definition = configs.entities[name as EntityName];

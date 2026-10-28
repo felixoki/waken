@@ -1,4 +1,4 @@
-import { EntityName } from "./entities";
+import { EntityName, FishName } from "./entities";
 import { Mood } from "./dialogue";
 
 export enum StoryFlag {
@@ -36,6 +36,8 @@ export enum StoryFlag {
   FENN_DOG_SEEN = "fenn.dogSeen",
   VALEN_DOG = "valen.dog",
   MEVY_CAT = "mevy.cat",
+  VALEN_HOOK = "valen.hook",
+  VALEN_RECORD = "valen.record",
   SOULS_CAUGHT = "souls.caught",
   GRANDMOTHER_FREED = "grandmother.freed",
   GRANDMOTHER_SEEN = "grandmother.seen",
@@ -114,6 +116,7 @@ export interface Condition {
   fresh?: StoryFlag[];
   carryingAny?: EntityName[];
   errand?: ErrandState;
+  record?: Partial<Record<FishName, number>>;
   followed?: EntityName[];
   craving?: boolean;
   leaning?: boolean;

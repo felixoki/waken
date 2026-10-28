@@ -98,10 +98,14 @@ export const Dialogue = () => {
         <p className="text-white text-lg">{data.text as string}</p>
       </div>
       <ul className="flex flex-col gap-2">
+        {data.canChoose === false && (
+          <li className="text-white/60 text-sm">The party leader answers.</li>
+        )}
         {data.choices.map((choice, i) => (
           <li key={i}>
             <button
-              className="rounded bg-black/25 px-3 py-2 text-white text-lg hover:bg-black/50"
+              className="rounded bg-black/25 px-3 py-2 text-white text-lg hover:bg-black/50 disabled:opacity-50 disabled:hover:bg-black/25"
+              disabled={data.canChoose === false}
               onClick={() => choose(choice)}
             >
               {choice.text as string}

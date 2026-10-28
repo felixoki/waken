@@ -6,6 +6,7 @@ export class CameraManager {
   private camera: Phaser.Cameras.Scene2D.Camera;
   private scene: Scene;
   private resize?: (size: Phaser.Structs.Size) => void;
+  private base = 0;
 
   constructor(scene: Scene) {
     this.scene = scene;
@@ -19,6 +20,29 @@ export class CameraManager {
   dash(lerp = 0.16, duration = 260): void {
     this.camera.setLerp(lerp, lerp);
     this.scene.time.delayedCall(duration, () => this.camera.setLerp(1, 1));
+  }
+
+  fade(out: boolean, duration: number, done: () => void): void {
+    const callback = (_: Phaser.Cameras.Scene2D.Camera, progress: number) => {
+      if (progress === 1) done();
+    };
+
+    if (out) this.camera.fadeOut(duration, 0, 0, 0, callback);
+    else this.camera.fadeIn(duration, 0, 0, 0, callback);
+  }
+
+  focus(x: number, y: number): void {
+    this.camera.stopFollow();
+    if (!this.base) this.base = this.camera.zoom;
+    this.setZoom(this.base + 1);
+    this.camera.centerOn(x, y);
+  }
+
+  release(target: Entity): void {
+    if (this.base) this.setZoom(this.base);
+    this.base = 0;
+    this.follow(target);
+    this.camera.centerOn(target.x, target.y);
   }
 
   shake(duration = 120, intensity = 0.005): void {

@@ -3,6 +3,7 @@ import { load } from "../db/load.js";
 import { World } from "../World.js";
 import { EntityConfig } from "../types/index.js";
 import { configs } from "../configs/index.js";
+import { handlers } from "./index.js";
 
 export const world = {
   restore: async (id: string, world: World): Promise<boolean> => {
@@ -15,6 +16,8 @@ export const world = {
           configs.schedules[entity.name]
         )
           entity.anchor ??= { map: entity.map, x: entity.x, y: entity.y };
+
+        entity.tame = handlers.taming.native(entity);
 
         world.entities.add(entity.id, entity);
         if (!entity.away)

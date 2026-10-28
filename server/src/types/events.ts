@@ -17,12 +17,14 @@ export enum Event {
   PLAYER_HURT = "player_hurt",
   PLAYER_DEATH = "player_death",
   PLAYER_REVIVE = "player_revive",
+  PLAYER_FALL = "player_fall",
   PLAYER_HEALTH = "player_health",
   PLAYER_HEALTH_SYNC = "player_health_sync",
   PLAYER_MAX_HEALTH = "player_max_health",
   PLAYER_MANA = "player_mana",
   PLAYER_REAP = "player_reap",
   PLAYER_MAX_MANA = "player_max_mana",
+  PLAYER_MAP = "player_map",
   PLAYER_INVENTORY_WIPE = "player_inventory_wipe",
 
   /** Entity */
@@ -44,6 +46,10 @@ export enum Event {
   ENTITY_DIALOGUE_END = "entity_dialogue_end",
   ENTITY_DIALOGUE_CHOICE = "entity_dialogue_choice",
   ENTITY_LOCK = "entity_lock",
+  VILLAIN_ENCOUNTER = "villain_encounter",
+  CUTSCENE_START = "cutscene_start",
+  CUTSCENE_READY = "cutscene_ready",
+  CUTSCENE_END = "cutscene_end",
   ENTITY_UNLOCK = "entity_unlock",
   ENTITY_TOGGLE = "entity_toggle",
   ENTITY_PLANT = "entity_plant",
@@ -59,6 +65,7 @@ export enum Event {
   ENTITY_MATURE = "entity_mature",
   ENTITY_LAY = "entity_lay",
   ENTITY_MILK = "entity_milk",
+  ENTITY_BUTCHER = "entity_butcher",
   ENTITY_FISH = "entity:fish",
   FISHING_WEIGH = "fishing:weigh",
   FISHING_MINIGAME_START = "fishing:minigame_start",
@@ -181,4 +188,5 @@ export enum Event {
   /** Dev */
   DEV_COMMAND = "dev_command",
   DEV_OUTPUT = "dev_output",
+  DEV_FREECAST = "dev_freecast",
 }

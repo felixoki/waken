@@ -15,6 +15,9 @@ import { SPEED_DEFAULT } from "@server/globals";
 
 export class Villain extends Entity {
   public isTransforming: boolean = false;
+  public isEncountered: boolean = false;
+  public isEngaged: boolean = false;
+  public isle: Uint8Array | null = null;
   public actions: DragonAction[] = [];
   public engagements: number = 0;
   public stuck: Stuck = {

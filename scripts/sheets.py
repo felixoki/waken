@@ -61,6 +61,7 @@ PATTERNS = [
     (r"^(glowshroom\d*|bearded_tooth_fungus)$", "mushroom"),
     (r"^reed\d*$", "reed"),
     (r"^stump\d*$", "stump"),
+    (r"^ruin\d*$", "ruin"),
     (r"_plant$", "crop"),
 ]
 

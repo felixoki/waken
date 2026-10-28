@@ -3,6 +3,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  SoundName,
 } from "../../types";
 
 export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
@@ -580,6 +581,186 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
           offsetY: 12,
           static: true,
         },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.RUIN1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 36, start: 1, end: 5 },
+            { row: 37, start: 1, end: 5 },
+            { row: 38, start: 1, end: 5 },
+            { row: 39, start: 1, end: 5 },
+            { row: 40, start: 1, end: 5 },
+            { row: 41, start: 1, end: 5 },
+            { row: 42, start: 1, end: 5 },
+          ],
+        },
+        key: "ruin1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 66,
+          height: 23,
+          offsetX: 8,
+          offsetY: 63,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.MINE },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.RUIN2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 36, start: 6, end: 10 },
+            { row: 37, start: 6, end: 10 },
+            { row: 38, start: 6, end: 10 },
+            { row: 39, start: 6, end: 10 },
+          ],
+        },
+        key: "ruin2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 68,
+          height: 12,
+          offsetX: 6,
+          offsetY: 39,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.MINE },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.RUIN3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 36, start: 11, end: 14 },
+            { row: 37, start: 11, end: 14 },
+            { row: 38, start: 11, end: 14 },
+            { row: 39, start: 11, end: 14 },
+          ],
+        },
+        key: "ruin3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 47,
+          height: 12,
+          offsetX: 9,
+          offsetY: 34,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.MINE },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.RUIN4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 36, start: 15, end: 18 },
+            { row: 37, start: 15, end: 18 },
+            { row: 38, start: 15, end: 18 },
+          ],
+        },
+        key: "ruin4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 37,
+          height: 11,
+          offsetX: 3,
+          offsetY: 24,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.MINE },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.RUIN5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 36, start: 19, end: 20 },
+            { row: 37, start: 19, end: 20 },
+          ],
+        },
+        key: "ruin5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 7,
+          offsetX: 6,
+          offsetY: 8,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.DESTRUCTIBLE,
+        config: { sound: SoundName.MINE },
       },
     ],
     states: [],

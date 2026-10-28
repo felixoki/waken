@@ -17,6 +17,7 @@ import { charge } from "./charge";
 import { beam } from "./beam";
 import { sprites } from "./sprites";
 import { villain } from "./villain";
+import { cutscene } from "./cutscene";
 import { textures } from "./textures";
 import { sound } from "./sound";
 import { fishing } from "./fishing";
@@ -50,6 +51,7 @@ export const handlers = {
   ui,
   sprites,
   villain,
+  cutscene,
   textures,
   sound,
   fishing,

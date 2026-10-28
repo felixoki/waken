@@ -35,6 +35,7 @@ export const combat = {
       const equipped = hotbar?.get();
 
       if (!equipped) return null;
+      if (configs.maps[player.map]?.isSacred && !player.isFreecast) return null;
 
       if (equipped.type === SlotType.SPELL)
         return configs.spells[equipped.name] ?? null;
@@ -102,7 +103,7 @@ export const combat = {
     }
 
     if (!player.isControllable) return true;
-    if (player.mana < config.mana) return false;
+    if (!player.isFreecast && player.mana < config.mana) return false;
 
     entity.scene.game.events.emit(Event.PLAYER_CAST, {
       name: config.name,
@@ -158,6 +159,20 @@ export const combat = {
       if (dx * dx + dy * dy < hitbox.inner * hitbox.inner) return;
     }
 
+    if (hitbox.cone) {
+      const c = hitbox.cone;
+      const px = entity.body.center.x - c.x;
+      const py = entity.body.center.y - c.y;
+      const along = px * c.dx + py * c.dy;
+      const across = Math.abs(px * c.dy - py * c.dx);
+      const hw = entity.body.halfWidth;
+      const hh = entity.body.halfHeight;
+      const ra = Math.abs(c.dx) * hw + Math.abs(c.dy) * hh;
+      const rc = Math.abs(c.dy) * hw + Math.abs(c.dx) * hh;
+      if (along < -ra || along > c.reach + ra) return;
+      if (across - rc > (along + ra) * c.spread) return;
+    }
+
     const isAuthority = entity.scene.managers.players?.player?.isAuthority;
 
     const player = {
@@ -165,11 +180,17 @@ export const combat = {
       attacker: entity.scene.managers.players?.get(hitbox.ownerId),
     };
 
+    const wreck =
+      entity.hasComponent(ComponentName.DESTRUCTIBLE) &&
+      entity.scene.managers.entities.entities.get(hitbox.ownerId)?.name ===
+        EntityName.VILLAIN;
+
     const valid =
       hitbox.ownerId !== entity.id &&
       !(player.target && player.attacker) &&
-      (hitbox.hazard || !!player.target || !!player.attacker) &&
-      entity.hasComponent(ComponentName.DAMAGEABLE);
+      (wreck ||
+        ((hitbox.hazard || !!player.target || !!player.attacker) &&
+          entity.hasComponent(ComponentName.DAMAGEABLE)));
 
     if (!valid) return;
 

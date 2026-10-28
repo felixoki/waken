@@ -13,6 +13,7 @@ import {
   WeatherName,
   WeatherState,
   ClimateState,
+  Encounter,
 } from "./types/index.js";
 import { EconomyManager } from "./managers/Economy";
 import {
@@ -55,7 +56,9 @@ export class World {
   public readonly affected: Set<string> = new Set();
   public readonly dropped: Set<string> = new Set();
   public readonly chilled: Set<string> = new Set();
+  public readonly freecast: Set<string> = new Set();
   public readonly spots: Map<SpotName, Position> = new Map();
+  public readonly encounters: Map<string, Encounter> = new Map();
   private scheduling = true;
   private driving = 0;
   private ticks = 0;
@@ -85,7 +88,7 @@ export class World {
     const loader = new MapLoader();
 
     for (const [name, config] of Object.entries(configs.maps)) {
-      if (config.isInstanced) continue;
+      if (!config.json) continue;
 
       const tilemap = loader.load(config.json);
 
@@ -106,6 +109,7 @@ export class World {
         this.surfaces.register(name as MapName, tilemap);
 
         entities.forEach((entity) => {
+          entity.tame = handlers.taming.native(entity);
           this.entities.add(entity.id, entity);
           this.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
         });

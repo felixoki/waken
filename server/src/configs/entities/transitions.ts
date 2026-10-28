@@ -193,8 +193,8 @@ export const transitions: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.TRANSITION,
         config: {
           to: MapName.ISLES,
-          x: 184,
-          y: 168,
+          x: 360,
+          y: 1432,
           width: 16,
           height: 16,
           offsetX: 0,

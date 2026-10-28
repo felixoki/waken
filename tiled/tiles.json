@@ -33,8 +33,12 @@
   "home_walls_floor": "collection/home_walls_floor.png",
   "isles_clouds": "collection/isles_clouds.png",
   "isles_clouds_animated": "collection/isles_clouds_animated.png",
+  "isles_coasts": "collection/isles_coasts.png",
+  "isles_details": "collection/isles_details.png",
   "isles_ground_grass": "collection/isles_ground_grass.png",
+  "isles_ground_grass_full": "collection/isles_ground_grass_full.png",
   "isles_rocks": "collection/isles_rocks.png",
+  "isles_waterfalls": "collection/isles_waterfalls.png",
   "market_floor": "collection/market_floor.png",
   "market_interior": "collection/market_interior.png",
   "market_walls_floor": "collection/market_walls_floor.png",
@@ -12572,9 +12576,34 @@
  },
  "isles_ground": {
   "aliases": {
+   "isles_coasts:418": "13,20",
+   "isles_coasts:563": "13,20",
+   "isles_coasts:638": "0,8",
+   "isles_coasts:708": "13,20",
+   "isles_coasts:783": "0,8",
+   "isles_coasts:788": "13,45",
+   "isles_coasts:790": "15,45",
+   "isles_coasts:853": "13,20",
    "isles_ground_grass:1189": "0,8",
    "isles_ground_grass:1522": "0,8",
-   "isles_ground_grass:954": "15,5"
+   "isles_ground_grass:954": "15,5",
+   "isles_ground_grass_full:1505": "4,6",
+   "isles_ground_grass_full:1507": "6,6",
+   "isles_ground_grass_full:310": "15,5",
+   "isles_waterfalls:102": "0,8",
+   "isles_waterfalls:1188": "0,8",
+   "isles_waterfalls:121": "0,8",
+   "isles_waterfalls:140": "0,8",
+   "isles_waterfalls:153": "0,8",
+   "isles_waterfalls:159": "0,8",
+   "isles_waterfalls:162": "0,8",
+   "isles_waterfalls:172": "0,8",
+   "isles_waterfalls:174": "0,8",
+   "isles_waterfalls:178": "0,8",
+   "isles_waterfalls:181": "0,8",
+   "isles_waterfalls:183": "0,8",
+   "isles_waterfalls:960": "0,8",
+   "isles_waterfalls:979": "0,8"
   },
   "cells": {
    "0,0": [
@@ -12585,17 +12614,133 @@
     "isles_ground_grass",
     1093
    ],
+   "0,10": [
+    "isles_ground_grass_full",
+    1246
+   ],
+   "0,11": [
+    "isles_ground_grass_full",
+    1274
+   ],
+   "0,12": [
+    "isles_ground_grass_full",
+    1302
+   ],
+   "0,13": [
+    "isles_ground_grass_full",
+    1330
+   ],
+   "0,14": [
+    "isles_ground_grass_full",
+    1358
+   ],
+   "0,16": [
+    "isles_coasts",
+    34
+   ],
+   "0,17": [
+    "isles_coasts",
+    63
+   ],
+   "0,18": [
+    "isles_coasts",
+    92
+   ],
    "0,2": [
     "isles_ground_grass",
     1121
+   ],
+   "0,20": [
+    "isles_ground_grass_full",
+    1445
+   ],
+   "0,21": [
+    "isles_ground_grass_full",
+    1473
+   ],
+   "0,22": [
+    "isles_ground_grass_full",
+    1501
+   ],
+   "0,24": [
+    "isles_ground_grass_full",
+    1293
+   ],
+   "0,26": [
+    "isles_waterfalls",
+    637
+   ],
+   "0,27": [
+    "isles_waterfalls",
+    656
+   ],
+   "0,28": [
+    "isles_waterfalls",
+    675
+   ],
+   "0,29": [
+    "isles_waterfalls",
+    694
    ],
    "0,3": [
     "isles_ground_grass",
     1149
    ],
+   "0,30": [
+    "isles_waterfalls",
+    713
+   ],
+   "0,31": [
+    "isles_waterfalls",
+    732
+   ],
+   "0,32": [
+    "isles_waterfalls",
+    751
+   ],
+   "0,33": [
+    "isles_waterfalls",
+    770
+   ],
+   "0,38": [
+    "isles_coasts",
+    348
+   ],
    "0,4": [
     "isles_ground_grass",
     1177
+   ],
+   "0,42": [
+    "isles_coasts",
+    755
+   ],
+   "0,43": [
+    "isles_coasts",
+    784
+   ],
+   "0,44": [
+    "isles_coasts",
+    813
+   ],
+   "0,45": [
+    "isles_coasts",
+    842
+   ],
+   "0,47": [
+    "isles_coasts",
+    571
+   ],
+   "0,51": [
+    "isles_details",
+    114
+   ],
+   "0,53": [
+    "isles_details",
+    0
+   ],
+   "0,54": [
+    "isles_details",
+    19
    ],
    "0,6": [
     "isles_ground_grass",
@@ -12617,13 +12762,209 @@
     "isles_ground_grass",
     1122
    ],
+   "1,20": [
+    "isles_ground_grass_full",
+    1446
+   ],
+   "1,21": [
+    "isles_ground_grass_full",
+    1474
+   ],
+   "1,22": [
+    "isles_ground_grass_full",
+    1502
+   ],
+   "1,27": [
+    "isles_waterfalls",
+    657
+   ],
+   "1,28": [
+    "isles_waterfalls",
+    676
+   ],
+   "1,29": [
+    "isles_waterfalls",
+    695
+   ],
    "1,3": [
     "isles_ground_grass",
     1150
    ],
+   "1,30": [
+    "isles_waterfalls",
+    714
+   ],
+   "1,31": [
+    "isles_waterfalls",
+    733
+   ],
+   "1,32": [
+    "isles_waterfalls",
+    752
+   ],
+   "1,33": [
+    "isles_waterfalls",
+    771
+   ],
+   "1,34": [
+    "isles_waterfalls",
+    790
+   ],
+   "1,35": [
+    "isles_waterfalls",
+    809
+   ],
+   "1,37": [
+    "isles_coasts",
+    320
+   ],
+   "1,38": [
+    "isles_coasts",
+    349
+   ],
+   "1,39": [
+    "isles_coasts",
+    378
+   ],
    "1,4": [
     "isles_ground_grass",
     1178
+   ],
+   "1,40": [
+    "isles_coasts",
+    407
+   ],
+   "1,44": [
+    "isles_coasts",
+    814
+   ],
+   "1,45": [
+    "isles_coasts",
+    843
+   ],
+   "1,51": [
+    "isles_details",
+    115
+   ],
+   "1,53": [
+    "isles_details",
+    1
+   ],
+   "1,54": [
+    "isles_details",
+    20
+   ],
+   "10,10": [
+    "isles_ground_grass_full",
+    1261
+   ],
+   "10,11": [
+    "isles_ground_grass_full",
+    1289
+   ],
+   "10,12": [
+    "isles_ground_grass_full",
+    1317
+   ],
+   "10,13": [
+    "isles_ground_grass_full",
+    1345
+   ],
+   "10,22": [
+    "isles_coasts",
+    866
+   ],
+   "10,24": [
+    "isles_waterfalls",
+    221
+   ],
+   "10,25": [
+    "isles_waterfalls",
+    240
+   ],
+   "10,26": [
+    "isles_waterfalls",
+    259
+   ],
+   "10,27": [
+    "isles_waterfalls",
+    278
+   ],
+   "10,28": [
+    "isles_waterfalls",
+    297
+   ],
+   "10,29": [
+    "isles_waterfalls",
+    316
+   ],
+   "10,30": [
+    "isles_waterfalls",
+    335
+   ],
+   "10,31": [
+    "isles_waterfalls",
+    354
+   ],
+   "10,32": [
+    "isles_waterfalls",
+    373
+   ],
+   "10,35": [
+    "isles_waterfalls",
+    1057
+   ],
+   "10,36": [
+    "isles_waterfalls",
+    1076
+   ],
+   "10,37": [
+    "isles_waterfalls",
+    1095
+   ],
+   "10,38": [
+    "isles_waterfalls",
+    1114
+   ],
+   "10,39": [
+    "isles_waterfalls",
+    1133
+   ],
+   "10,40": [
+    "isles_waterfalls",
+    1152
+   ],
+   "10,41": [
+    "isles_waterfalls",
+    1171
+   ],
+   "10,42": [
+    "isles_waterfalls",
+    1190
+   ],
+   "10,43": [
+    "isles_waterfalls",
+    1209
+   ],
+   "10,49": [
+    "isles_details",
+    86
+   ],
+   "10,50": [
+    "isles_details",
+    105
+   ],
+   "10,53": [
+    "isles_details",
+    10
+   ],
+   "10,54": [
+    "isles_details",
+    29
+   ],
+   "10,9": [
+    "isles_ground_grass_full",
+    1233
    ],
    "11,0": [
     "isles_ground_grass",
@@ -12633,13 +12974,77 @@
     "isles_ground_grass",
     1466
    ],
+   "11,10": [
+    "isles_ground_grass_full",
+    1262
+   ],
+   "11,11": [
+    "isles_ground_grass_full",
+    1290
+   ],
+   "11,12": [
+    "isles_ground_grass_full",
+    1318
+   ],
+   "11,13": [
+    "isles_ground_grass_full",
+    1346
+   ],
+   "11,15": [
+    "isles_ground_grass_full",
+    1073
+   ],
+   "11,16": [
+    "isles_ground_grass_full",
+    1101
+   ],
+   "11,17": [
+    "isles_ground_grass_full",
+    1129
+   ],
+   "11,18": [
+    "isles_ground_grass_full",
+    1157
+   ],
    "11,2": [
     "isles_ground_grass",
     1494
    ],
+   "11,20": [
+    "isles_coasts",
+    125
+   ],
+   "11,45": [
+    "isles_coasts",
+    281
+   ],
+   "11,47": [
+    "isles_coasts",
+    716
+   ],
+   "11,49": [
+    "isles_details",
+    87
+   ],
    "11,5": [
     "isles_ground_grass",
     1445
+   ],
+   "11,50": [
+    "isles_details",
+    106
+   ],
+   "11,53": [
+    "isles_details",
+    11
+   ],
+   "11,54": [
+    "isles_details",
+    30
+   ],
+   "11,9": [
+    "isles_ground_grass_full",
+    1234
    ],
    "12,0": [
     "isles_ground_grass",
@@ -12649,21 +13054,117 @@
     "isles_ground_grass",
     1467
    ],
+   "12,10": [
+    "isles_ground_grass_full",
+    1263
+   ],
+   "12,11": [
+    "isles_ground_grass_full",
+    1291
+   ],
+   "12,12": [
+    "isles_ground_grass_full",
+    1319
+   ],
+   "12,13": [
+    "isles_ground_grass_full",
+    1347
+   ],
+   "12,15": [
+    "isles_ground_grass_full",
+    1074
+   ],
+   "12,16": [
+    "isles_ground_grass_full",
+    1102
+   ],
+   "12,17": [
+    "isles_ground_grass_full",
+    1130
+   ],
+   "12,18": [
+    "isles_ground_grass_full",
+    1158
+   ],
    "12,2": [
     "isles_ground_grass",
     1495
+   ],
+   "12,22": [
+    "isles_ground_grass_full",
+    1125
+   ],
+   "12,24": [
+    "isles_waterfalls",
+    428
+   ],
+   "12,25": [
+    "isles_waterfalls",
+    447
+   ],
+   "12,26": [
+    "isles_waterfalls",
+    466
+   ],
+   "12,27": [
+    "isles_waterfalls",
+    485
+   ],
+   "12,28": [
+    "isles_waterfalls",
+    504
+   ],
+   "12,29": [
+    "isles_waterfalls",
+    523
    ],
    "12,3": [
     "isles_ground_grass",
     1523
    ],
+   "12,30": [
+    "isles_waterfalls",
+    542
+   ],
+   "12,31": [
+    "isles_waterfalls",
+    561
+   ],
+   "12,36": [
+    "isles_coasts",
+    203
+   ],
+   "12,41": [
+    "isles_coasts",
+    493
+   ],
+   "12,49": [
+    "isles_details",
+    88
+   ],
    "12,5": [
     "isles_ground_grass",
     1446
    ],
+   "12,50": [
+    "isles_details",
+    107
+   ],
+   "12,53": [
+    "isles_details",
+    12
+   ],
+   "12,54": [
+    "isles_details",
+    31
+   ],
    "12,6": [
     "isles_ground_grass",
     1474
+   ],
+   "12,9": [
+    "isles_ground_grass_full",
+    1235
    ],
    "13,0": [
     "isles_ground_grass",
@@ -12677,13 +13178,101 @@
     "isles_ground_grass",
     1496
    ],
+   "13,20": [
+    "isles_coasts",
+    128
+   ],
+   "13,25": [
+    "isles_waterfalls",
+    448
+   ],
+   "13,26": [
+    "isles_waterfalls",
+    467
+   ],
+   "13,27": [
+    "isles_waterfalls",
+    486
+   ],
+   "13,28": [
+    "isles_waterfalls",
+    505
+   ],
+   "13,29": [
+    "isles_waterfalls",
+    524
+   ],
    "13,3": [
     "isles_ground_grass",
     1524
    ],
+   "13,30": [
+    "isles_waterfalls",
+    543
+   ],
+   "13,31": [
+    "isles_waterfalls",
+    562
+   ],
+   "13,32": [
+    "isles_waterfalls",
+    581
+   ],
+   "13,33": [
+    "isles_waterfalls",
+    600
+   ],
+   "13,35": [
+    "isles_coasts",
+    175
+   ],
+   "13,36": [
+    "isles_coasts",
+    204
+   ],
+   "13,37": [
+    "isles_coasts",
+    233
+   ],
+   "13,38": [
+    "isles_coasts",
+    262
+   ],
+   "13,40": [
+    "isles_coasts",
+    465
+   ],
+   "13,41": [
+    "isles_coasts",
+    494
+   ],
+   "13,42": [
+    "isles_coasts",
+    523
+   ],
+   "13,43": [
+    "isles_coasts",
+    552
+   ],
+   "13,45": [
+    "isles_coasts",
+    353
+   ],
+   "13,47": [
+    "isles_coasts",
+    861
+   ],
    "13,5": [
     "isles_ground_grass",
     1447
+   ],
+   "13,53": [
+    "isles_details",
+    13
+   ],
+   "13,54": [
+    "isles_details",
+    32
    ],
    "14,0": [
     "isles_ground_grass",
@@ -12693,17 +13282,117 @@
     "isles_ground_grass",
     1469
    ],
+   "14,10": [
+    "isles_ground_grass_full",
+    1272
+   ],
+   "14,11": [
+    "isles_ground_grass_full",
+    1300
+   ],
+   "14,12": [
+    "isles_ground_grass_full",
+    1328
+   ],
+   "14,13": [
+    "isles_ground_grass_full",
+    1356
+   ],
+   "14,15": [
+    "isles_ground_grass_full",
+    1241
+   ],
+   "14,16": [
+    "isles_ground_grass_full",
+    1269
+   ],
+   "14,17": [
+    "isles_ground_grass_full",
+    1297
+   ],
+   "14,18": [
+    "isles_ground_grass_full",
+    1325
+   ],
    "14,2": [
     "isles_ground_grass",
     1497
+   ],
+   "14,22": [
+    "isles_ground_grass_full",
+    1127
+   ],
+   "14,24": [
+    "isles_waterfalls",
+    430
+   ],
+   "14,25": [
+    "isles_waterfalls",
+    449
+   ],
+   "14,26": [
+    "isles_waterfalls",
+    468
+   ],
+   "14,27": [
+    "isles_waterfalls",
+    487
+   ],
+   "14,28": [
+    "isles_waterfalls",
+    506
+   ],
+   "14,29": [
+    "isles_waterfalls",
+    525
    ],
    "14,3": [
     "isles_ground_grass",
     1525
    ],
+   "14,30": [
+    "isles_waterfalls",
+    544
+   ],
+   "14,31": [
+    "isles_waterfalls",
+    563
+   ],
+   "14,32": [
+    "isles_waterfalls",
+    582
+   ],
+   "14,37": [
+    "isles_coasts",
+    234
+   ],
+   "14,38": [
+    "isles_coasts",
+    263
+   ],
+   "14,42": [
+    "isles_coasts",
+    524
+   ],
+   "14,43": [
+    "isles_coasts",
+    553
+   ],
+   "14,53": [
+    "isles_details",
+    14
+   ],
+   "14,54": [
+    "isles_details",
+    33
+   ],
    "14,7": [
     "isles_ground_grass",
     1819
+   ],
+   "14,9": [
+    "isles_ground_grass_full",
+    1244
    ],
    "15,0": [
     "isles_ground_grass",
@@ -12713,13 +13402,77 @@
     "isles_ground_grass",
     1470
    ],
+   "15,15": [
+    "isles_ground_grass_full",
+    1242
+   ],
+   "15,16": [
+    "isles_ground_grass_full",
+    1270
+   ],
+   "15,17": [
+    "isles_ground_grass_full",
+    1298
+   ],
+   "15,18": [
+    "isles_ground_grass_full",
+    1326
+   ],
    "15,2": [
     "isles_ground_grass",
     1498
    ],
+   "15,20": [
+    "isles_coasts",
+    131
+   ],
+   "15,35": [
+    "isles_coasts",
+    177
+   ],
+   "15,36": [
+    "isles_coasts",
+    206
+   ],
+   "15,37": [
+    "isles_coasts",
+    235
+   ],
+   "15,40": [
+    "isles_coasts",
+    467
+   ],
+   "15,41": [
+    "isles_coasts",
+    496
+   ],
+   "15,42": [
+    "isles_coasts",
+    525
+   ],
+   "15,45": [
+    "isles_coasts",
+    355
+   ],
+   "15,47": [
+    "isles_details",
+    16
+   ],
+   "15,48": [
+    "isles_details",
+    35
+   ],
    "15,5": [
     "isles_ground_grass",
     422
+   ],
+   "15,53": [
+    "isles_details",
+    15
+   ],
+   "15,54": [
+    "isles_details",
+    34
    ],
    "2,0": [
     "isles_ground_grass",
@@ -12729,21 +13482,221 @@
     "isles_ground_grass",
     1095
    ],
+   "2,10": [
+    "isles_waterfalls",
+    48
+   ],
+   "2,11": [
+    "isles_waterfalls",
+    67
+   ],
+   "2,12": [
+    "isles_waterfalls",
+    86
+   ],
+   "2,13": [
+    "isles_waterfalls",
+    105
+   ],
+   "2,14": [
+    "isles_waterfalls",
+    124
+   ],
+   "2,15": [
+    "isles_waterfalls",
+    143
+   ],
    "2,2": [
     "isles_ground_grass",
     1123
+   ],
+   "2,20": [
+    "isles_ground_grass_full",
+    1447
+   ],
+   "2,21": [
+    "isles_ground_grass_full",
+    1475
+   ],
+   "2,22": [
+    "isles_ground_grass_full",
+    1503
+   ],
+   "2,24": [
+    "isles_ground_grass_full",
+    1295
+   ],
+   "2,26": [
+    "isles_waterfalls",
+    639
+   ],
+   "2,27": [
+    "isles_waterfalls",
+    658
+   ],
+   "2,28": [
+    "isles_waterfalls",
+    677
+   ],
+   "2,29": [
+    "isles_waterfalls",
+    696
    ],
    "2,3": [
     "isles_ground_grass",
     1151
    ],
+   "2,30": [
+    "isles_waterfalls",
+    715
+   ],
+   "2,31": [
+    "isles_waterfalls",
+    734
+   ],
+   "2,32": [
+    "isles_waterfalls",
+    753
+   ],
+   "2,33": [
+    "isles_waterfalls",
+    772
+   ],
+   "2,34": [
+    "isles_waterfalls",
+    791
+   ],
+   "2,39": [
+    "isles_coasts",
+    379
+   ],
    "2,4": [
     "isles_ground_grass",
     1179
    ],
+   "2,40": [
+    "isles_coasts",
+    408
+   ],
+   "2,42": [
+    "isles_coasts",
+    757
+   ],
+   "2,43": [
+    "isles_coasts",
+    786
+   ],
+   "2,44": [
+    "isles_coasts",
+    815
+   ],
+   "2,48": [
+    "isles_details",
+    91
+   ],
+   "2,49": [
+    "isles_details",
+    110
+   ],
+   "2,51": [
+    "isles_details",
+    116
+   ],
+   "2,53": [
+    "isles_details",
+    2
+   ],
+   "2,54": [
+    "isles_details",
+    21
+   ],
    "2,6": [
     "isles_ground_grass",
     1127
+   ],
+   "2,8": [
+    "isles_waterfalls",
+    10
+   ],
+   "2,9": [
+    "isles_waterfalls",
+    29
+   ],
+   "3,10": [
+    "isles_waterfalls",
+    49
+   ],
+   "3,11": [
+    "isles_waterfalls",
+    68
+   ],
+   "3,12": [
+    "isles_waterfalls",
+    87
+   ],
+   "3,13": [
+    "isles_waterfalls",
+    106
+   ],
+   "3,14": [
+    "isles_waterfalls",
+    125
+   ],
+   "3,15": [
+    "isles_waterfalls",
+    144
+   ],
+   "3,16": [
+    "isles_waterfalls",
+    163
+   ],
+   "3,17": [
+    "isles_waterfalls",
+    182
+   ],
+   "3,37": [
+    "isles_coasts",
+    322
+   ],
+   "3,38": [
+    "isles_coasts",
+    351
+   ],
+   "3,39": [
+    "isles_coasts",
+    380
+   ],
+   "3,46": [
+    "isles_coasts",
+    426
+   ],
+   "3,48": [
+    "isles_details",
+    92
+   ],
+   "3,49": [
+    "isles_details",
+    111
+   ],
+   "3,51": [
+    "isles_details",
+    117
+   ],
+   "3,53": [
+    "isles_details",
+    3
+   ],
+   "3,54": [
+    "isles_details",
+    22
+   ],
+   "3,8": [
+    "isles_waterfalls",
+    11
+   ],
+   "3,9": [
+    "isles_waterfalls",
+    30
    ],
    "4,0": [
     "isles_ground_grass",
@@ -12753,21 +13706,125 @@
     "isles_ground_grass",
     1104
    ],
+   "4,10": [
+    "isles_waterfalls",
+    50
+   ],
+   "4,11": [
+    "isles_waterfalls",
+    69
+   ],
+   "4,12": [
+    "isles_waterfalls",
+    88
+   ],
+   "4,13": [
+    "isles_waterfalls",
+    107
+   ],
+   "4,14": [
+    "isles_waterfalls",
+    126
+   ],
+   "4,15": [
+    "isles_waterfalls",
+    145
+   ],
+   "4,16": [
+    "isles_waterfalls",
+    164
+   ],
    "4,2": [
     "isles_ground_grass",
     1132
+   ],
+   "4,22": [
+    "isles_coasts",
+    136
+   ],
+   "4,24": [
+    "isles_ground_grass_full",
+    1449
+   ],
+   "4,26": [
+    "isles_waterfalls",
+    846
+   ],
+   "4,27": [
+    "isles_waterfalls",
+    865
+   ],
+   "4,28": [
+    "isles_waterfalls",
+    884
+   ],
+   "4,29": [
+    "isles_waterfalls",
+    903
    ],
    "4,3": [
     "isles_ground_grass",
     1160
    ],
+   "4,30": [
+    "isles_waterfalls",
+    922
+   ],
+   "4,31": [
+    "isles_waterfalls",
+    941
+   ],
    "4,4": [
     "isles_ground_grass",
     1188
    ],
+   "4,41": [
+    "isles_coasts",
+    610
+   ],
+   "4,42": [
+    "isles_coasts",
+    639
+   ],
+   "4,43": [
+    "isles_coasts",
+    668
+   ],
+   "4,44": [
+    "isles_coasts",
+    697
+   ],
+   "4,48": [
+    "isles_details",
+    93
+   ],
+   "4,49": [
+    "isles_details",
+    112
+   ],
+   "4,51": [
+    "isles_details",
+    118
+   ],
+   "4,53": [
+    "isles_details",
+    4
+   ],
+   "4,54": [
+    "isles_details",
+    23
+   ],
    "4,6": [
     "isles_ground_grass",
     1505
+   ],
+   "4,8": [
+    "isles_waterfalls",
+    12
+   ],
+   "4,9": [
+    "isles_waterfalls",
+    31
    ],
    "5,0": [
     "isles_ground_grass",
@@ -12777,9 +13834,97 @@
     "isles_ground_grass",
     1105
    ],
+   "5,18": [
+    "isles_coasts",
+    36
+   ],
+   "5,19": [
+    "isles_coasts",
+    65
+   ],
    "5,2": [
     "isles_ground_grass",
     1133
+   ],
+   "5,20": [
+    "isles_coasts",
+    94
+   ],
+   "5,27": [
+    "isles_waterfalls",
+    866
+   ],
+   "5,28": [
+    "isles_waterfalls",
+    885
+   ],
+   "5,29": [
+    "isles_waterfalls",
+    904
+   ],
+   "5,30": [
+    "isles_waterfalls",
+    923
+   ],
+   "5,31": [
+    "isles_waterfalls",
+    942
+   ],
+   "5,32": [
+    "isles_waterfalls",
+    961
+   ],
+   "5,33": [
+    "isles_waterfalls",
+    980
+   ],
+   "5,34": [
+    "isles_waterfalls",
+    999
+   ],
+   "5,35": [
+    "isles_waterfalls",
+    1018
+   ],
+   "5,37": [
+    "isles_coasts",
+    208
+   ],
+   "5,39": [
+    "isles_coasts",
+    210
+   ],
+   "5,43": [
+    "isles_coasts",
+    669
+   ],
+   "5,44": [
+    "isles_coasts",
+    698
+   ],
+   "5,46": [
+    "isles_coasts",
+    498
+   ],
+   "5,48": [
+    "isles_details",
+    94
+   ],
+   "5,49": [
+    "isles_details",
+    113
+   ],
+   "5,51": [
+    "isles_details",
+    119
+   ],
+   "5,53": [
+    "isles_details",
+    5
+   ],
+   "5,54": [
+    "isles_details",
+    24
    ],
    "6,0": [
     "isles_ground_grass",
@@ -12789,21 +13934,177 @@
     "isles_ground_grass",
     1106
    ],
+   "6,10": [
+    "isles_ground_grass_full",
+    1093
+   ],
+   "6,11": [
+    "isles_ground_grass_full",
+    1121
+   ],
+   "6,12": [
+    "isles_ground_grass_full",
+    1149
+   ],
+   "6,13": [
+    "isles_ground_grass_full",
+    1177
+   ],
+   "6,16": [
+    "isles_coasts",
+    58
+   ],
    "6,2": [
     "isles_ground_grass",
     1134
+   ],
+   "6,22": [
+    "isles_coasts",
+    645
+   ],
+   "6,24": [
+    "isles_ground_grass_full",
+    1451
+   ],
+   "6,26": [
+    "isles_waterfalls",
+    848
+   ],
+   "6,27": [
+    "isles_waterfalls",
+    867
+   ],
+   "6,28": [
+    "isles_waterfalls",
+    886
+   ],
+   "6,29": [
+    "isles_waterfalls",
+    905
    ],
    "6,3": [
     "isles_ground_grass",
     1162
    ],
+   "6,30": [
+    "isles_waterfalls",
+    924
+   ],
+   "6,31": [
+    "isles_waterfalls",
+    943
+   ],
+   "6,32": [
+    "isles_waterfalls",
+    962
+   ],
+   "6,33": [
+    "isles_waterfalls",
+    981
+   ],
+   "6,34": [
+    "isles_waterfalls",
+    1000
+   ],
    "6,4": [
     "isles_ground_grass",
     1190
    ],
+   "6,41": [
+    "isles_coasts",
+    612
+   ],
+   "6,42": [
+    "isles_coasts",
+    641
+   ],
+   "6,43": [
+    "isles_coasts",
+    670
+   ],
+   "6,51": [
+    "isles_details",
+    120
+   ],
+   "6,53": [
+    "isles_details",
+    6
+   ],
+   "6,54": [
+    "isles_details",
+    25
+   ],
    "6,6": [
     "isles_ground_grass",
     1507
+   ],
+   "6,9": [
+    "isles_ground_grass_full",
+    1065
+   ],
+   "7,10": [
+    "isles_ground_grass_full",
+    1094
+   ],
+   "7,11": [
+    "isles_ground_grass_full",
+    1122
+   ],
+   "7,12": [
+    "isles_ground_grass_full",
+    1150
+   ],
+   "7,13": [
+    "isles_ground_grass_full",
+    1178
+   ],
+   "7,15": [
+    "isles_coasts",
+    30
+   ],
+   "7,16": [
+    "isles_coasts",
+    59
+   ],
+   "7,17": [
+    "isles_coasts",
+    88
+   ],
+   "7,18": [
+    "isles_coasts",
+    117
+   ],
+   "7,20": [
+    "isles_coasts",
+    0
+   ],
+   "7,45": [
+    "isles_coasts",
+    273
+   ],
+   "7,47": [
+    "isles_coasts",
+    643
+   ],
+   "7,50": [
+    "isles_details",
+    102
+   ],
+   "7,51": [
+    "isles_details",
+    121
+   ],
+   "7,53": [
+    "isles_details",
+    7
+   ],
+   "7,54": [
+    "isles_details",
+    26
+   ],
+   "7,9": [
+    "isles_ground_grass_full",
+    1066
    ],
    "8,0": [
     "isles_ground_grass",
@@ -12813,17 +14114,125 @@
     "isles_ground_grass",
     1101
    ],
+   "8,10": [
+    "isles_ground_grass_full",
+    1095
+   ],
+   "8,11": [
+    "isles_ground_grass_full",
+    1123
+   ],
+   "8,12": [
+    "isles_ground_grass_full",
+    1151
+   ],
+   "8,13": [
+    "isles_ground_grass_full",
+    1179
+   ],
+   "8,16": [
+    "isles_coasts",
+    60
+   ],
+   "8,17": [
+    "isles_coasts",
+    89
+   ],
+   "8,18": [
+    "isles_coasts",
+    118
+   ],
    "8,2": [
     "isles_ground_grass",
     1129
+   ],
+   "8,22": [
+    "isles_coasts",
+    858
+   ],
+   "8,24": [
+    "isles_waterfalls",
+    219
+   ],
+   "8,25": [
+    "isles_waterfalls",
+    238
+   ],
+   "8,26": [
+    "isles_waterfalls",
+    257
+   ],
+   "8,27": [
+    "isles_waterfalls",
+    276
+   ],
+   "8,28": [
+    "isles_waterfalls",
+    295
+   ],
+   "8,29": [
+    "isles_waterfalls",
+    314
    ],
    "8,3": [
     "isles_ground_grass",
     1157
    ],
+   "8,30": [
+    "isles_waterfalls",
+    333
+   ],
+   "8,31": [
+    "isles_waterfalls",
+    352
+   ],
+   "8,35": [
+    "isles_waterfalls",
+    1055
+   ],
+   "8,36": [
+    "isles_waterfalls",
+    1074
+   ],
+   "8,37": [
+    "isles_waterfalls",
+    1093
+   ],
+   "8,38": [
+    "isles_waterfalls",
+    1112
+   ],
+   "8,39": [
+    "isles_waterfalls",
+    1131
+   ],
+   "8,40": [
+    "isles_waterfalls",
+    1150
+   ],
+   "8,41": [
+    "isles_waterfalls",
+    1169
+   ],
    "8,5": [
     "isles_ground_grass",
     1108
+   ],
+   "8,50": [
+    "isles_details",
+    103
+   ],
+   "8,51": [
+    "isles_details",
+    122
+   ],
+   "8,53": [
+    "isles_details",
+    8
+   ],
+   "8,54": [
+    "isles_details",
+    27
    ],
    "8,6": [
     "isles_ground_grass",
@@ -12833,6 +14242,10 @@
     "isles_ground_grass",
     1164
    ],
+   "8,9": [
+    "isles_ground_grass_full",
+    1067
+   ],
    "9,0": [
     "isles_ground_grass",
     1074
@@ -12841,17 +14254,125 @@
     "isles_ground_grass",
     1102
    ],
+   "9,15": [
+    "isles_coasts",
+    32
+   ],
+   "9,16": [
+    "isles_coasts",
+    61
+   ],
+   "9,17": [
+    "isles_coasts",
+    90
+   ],
    "9,2": [
     "isles_ground_grass",
     1130
+   ],
+   "9,20": [
+    "isles_coasts",
+    38
+   ],
+   "9,25": [
+    "isles_waterfalls",
+    239
+   ],
+   "9,26": [
+    "isles_waterfalls",
+    258
+   ],
+   "9,27": [
+    "isles_waterfalls",
+    277
+   ],
+   "9,28": [
+    "isles_waterfalls",
+    296
+   ],
+   "9,29": [
+    "isles_waterfalls",
+    315
    ],
    "9,3": [
     "isles_ground_grass",
     1158
    ],
+   "9,30": [
+    "isles_waterfalls",
+    334
+   ],
+   "9,31": [
+    "isles_waterfalls",
+    353
+   ],
+   "9,32": [
+    "isles_waterfalls",
+    372
+   ],
+   "9,33": [
+    "isles_waterfalls",
+    391
+   ],
+   "9,36": [
+    "isles_waterfalls",
+    1075
+   ],
+   "9,37": [
+    "isles_waterfalls",
+    1094
+   ],
+   "9,38": [
+    "isles_waterfalls",
+    1113
+   ],
+   "9,39": [
+    "isles_waterfalls",
+    1132
+   ],
+   "9,40": [
+    "isles_waterfalls",
+    1151
+   ],
+   "9,41": [
+    "isles_waterfalls",
+    1170
+   ],
+   "9,42": [
+    "isles_waterfalls",
+    1189
+   ],
+   "9,43": [
+    "isles_waterfalls",
+    1208
+   ],
+   "9,44": [
+    "isles_waterfalls",
+    1227
+   ],
+   "9,46": [
+    "isles_coasts",
+    500
+   ],
+   "9,49": [
+    "isles_details",
+    85
+   ],
    "9,5": [
     "isles_ground_grass",
     1109
+   ],
+   "9,50": [
+    "isles_details",
+    104
+   ],
+   "9,53": [
+    "isles_details",
+    9
+   ],
+   "9,54": [
+    "isles_details",
+    28
    ],
    "9,6": [
     "isles_ground_grass",

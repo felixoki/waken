@@ -76,4 +76,5 @@ export interface DialogueResponse {
   speaker?: string;
   text: DialogueText;
   choices: DialogueChoice[];
+  canChoose?: boolean;
 }
