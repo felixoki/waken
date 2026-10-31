@@ -176,6 +176,7 @@ export interface EntityDefinition {
   dialogue?: Dialogue;
   offset?: { x?: number; y?: number };
   flat?: boolean;
+  floats?: boolean;
 }
 
 export interface Icon {
@@ -276,6 +277,9 @@ export enum EntityName {
   CAVE_ENTRANCE = "cave_entrance",
   CAVE_EXIT = "cave_exit",
   BED = "bed",
+  DOWN_BED = "down_bed",
+  PELT_BED = "pelt_bed",
+  KING_SIZE_BED = "king_size_bed",
   CHEST1 = "chest1",
   CLOSED_DOOR = "closed_door",
   FENCE = "fence",
@@ -486,6 +490,22 @@ export enum EntityName {
   ROCK3 = "rock3",
   ROCK4 = "rock4",
   ROCK8 = "rock8",
+  ROCK9 = "rock9",
+  ROCK10 = "rock10",
+  ROCK11 = "rock11",
+  ROCK12 = "rock12",
+  ROCK13 = "rock13",
+  ROCK14 = "rock14",
+  ROCK15 = "rock15",
+  ROCK16 = "rock16",
+  ROCK17 = "rock17",
+  ROCK18 = "rock18",
+  ROCK19 = "rock19",
+  PEBBLE1 = "pebble1",
+  PEBBLE2 = "pebble2",
+  PEBBLE3 = "pebble3",
+  PEBBLE4 = "pebble4",
+  PEBBLE5 = "pebble5",
   ROCKS1 = "rocks1",
   ROCKS3 = "rocks3",
   ROCKS5 = "rocks5",

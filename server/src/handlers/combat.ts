@@ -596,6 +596,7 @@ export const combat = {
 
       for (const [name, duration, chance] of effects) {
         if (chance !== undefined && Math.random() > chance) continue;
+        if (combat.effects.cancelled(existing, name, now)) continue;
         if (!isEntity && handlers.player.immune(target as PlayerConfig, name))
           continue;
 
@@ -616,6 +617,13 @@ export const combat = {
       store.update(targetId, { effects: existing });
       world.affected.add(targetId);
     },
+
+    cancelled: (effects: Effect[], name: EffectName, now: number): boolean =>
+      effects.some(
+        (e) =>
+          (e.held || e.expiresAt > now) &&
+          !!configs.cancels[e.name]?.includes(name),
+      ),
 
     tick: (world: World, io: Server, now: number) => {
       for (const id of world.affected) {
@@ -646,7 +654,10 @@ export const combat = {
         let killed = false;
 
         for (const effect of target.effects) {
-          if (!effect.held && now >= effect.expiresAt) {
+          if (
+            (!effect.held && now >= effect.expiresAt) ||
+            combat.effects.cancelled(target.effects, effect.name, now)
+          ) {
             emit(Event.EFFECT_REMOVE, { id, name: effect.name });
             continue;
           }

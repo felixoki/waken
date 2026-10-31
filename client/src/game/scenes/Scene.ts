@@ -14,12 +14,16 @@ import { location } from "../handlers/location";
 import { chart, type Chart } from "../handlers/chart";
 import { shadows, type Shadows } from "../handlers/shadows";
 import { light } from "../handlers/light";
+import { water, type Water } from "../handlers/water";
+import { meadow, type Meadow } from "../handlers/meadow";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhysicsManager;
   public tileManager!: TileManager;
   public snow?: SnowTracks;
   public shadows?: Shadows;
+  public water?: Water;
+  public meadows: Meadow[] = [];
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
   public light!: Phaser.GameObjects.Rectangle;
@@ -111,6 +115,10 @@ export class Scene extends Phaser.Scene {
     if (this.snow) snow.destroy(this.snow);
     this.snow = undefined;
     this.shadows = undefined;
+    if (this.water) water.destroy(this, this.water);
+    this.water = undefined;
+    for (const state of this.meadows) meadow.destroy(this, state);
+    this.meadows = [];
 
     [...this.children.list].forEach((child) => child.destroy());
 
@@ -140,6 +148,8 @@ export class Scene extends Phaser.Scene {
       snow.fade(this.snow, delta);
     }
     if (this.shadows) shadows.update(this.shadows, this, delta);
+    if (this.water) water.update(this.water, this, delta);
+    for (const state of this.meadows) meadow.update(state, this, delta);
     this.interfaceManager.update();
 
     const { width, height } = this.cameras.main;

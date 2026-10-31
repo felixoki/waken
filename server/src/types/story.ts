@@ -122,6 +122,7 @@ export interface Condition {
   leaning?: boolean;
   stock?: Partial<Record<EntityName, number>>;
   present?: Partial<Record<EntityName, number>>;
+  raining?: boolean;
 }
 
 export enum StoryScope {

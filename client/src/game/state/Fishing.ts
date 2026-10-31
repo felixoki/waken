@@ -16,12 +16,27 @@ import {
   DURATION_FISHING_WINDOW,
   FISHING_ARC_HEIGHT,
   FISHING_ARC_DURATION,
+  FISHING_CAST_MIN_TILES,
+  FISHING_CAST_MAX_TILES,
+  DURATION_FISHING_CHARGE,
+  DURATION_FISHING_FLIGHT,
+  DURATION_FISHING_FLIGHT_PER_TILE,
+  FISHING_FLIGHT_ARC_PER_TILE,
+  FISHING_SPLASH_FORCE,
+  FISHING_DEPTH_LIFT,
+  FISHING_THROW_FRAMES,
+  FISHING_WINDUP_FRAME,
+  FISHING_WINDUP_FRAMERATE,
+  FISHING_RELEASE_FRAME,
+  FISHING_THROW_FRAMERATE,
+  TILE_SIZE,
 } from "@server/globals";
 import { configs } from "@server/configs";
 import { State } from "./State";
 import { Entity } from "../Entity";
 import { AnimationComponent } from "../components/Animation";
 import { Player } from "../Player";
+import type { Scene } from "../scenes/Scene";
 import { handlers } from "../handlers";
 import EventBus from "../EventBus";
 
@@ -33,8 +48,15 @@ export class Fishing implements State {
   private prevPointerdown = false;
   private bobberX = 0;
   private bobberY = 0;
-  private onThrowComplete:
-    | ((anim: Phaser.Animations.Animation) => void)
+  private bobber = { x: 0, y: 0 };
+  private chargeStart = 0;
+  private line: Phaser.GameObjects.Graphics | null = null;
+  private flight: Phaser.Tweens.Tween | null = null;
+  private onThrowUpdate:
+    | ((
+        anim: Phaser.Animations.Animation,
+        frame: Phaser.Animations.AnimationFrame,
+      ) => void)
     | null = null;
   private waitTimer: Phaser.Time.TimerEvent | null = null;
   private biteTimer: Phaser.Time.TimerEvent | null = null;
@@ -44,11 +66,17 @@ export class Fishing implements State {
   private zoneFish: FishName[] | null = null;
   private reel: Reel | null = null;
   private reelSound: Phaser.Sound.WebAudioSound | null = null;
+  private anchor: { depth: number; x: number; y: number } | null = null;
 
   enter(entity: Entity): void {
-    const water = handlers.fishing.findWater(entity);
-
-    if (!water) {
+    if (
+      !handlers.fishing.grounded(entity) ||
+      !handlers.fishing.findWater(
+        entity,
+        entity.target ?? entity,
+        FISHING_CAST_MAX_TILES * TILE_SIZE,
+      )
+    ) {
       this._returnToIdle(entity);
       return;
     }
@@ -56,27 +84,78 @@ export class Fishing implements State {
     entity.setState(this.name);
     entity.isLocked = true;
 
-    this.phase = FishingPhase.CASTING;
+    this.phase = FishingPhase.CHARGING;
     this.facing = entity.facing;
     this.prevPointerdown = true;
-    this.bobberX = water.x;
-    this.bobberY = water.y;
+    this.chargeStart = entity.scene.time.now;
+    this.line = entity.scene.add.graphics();
 
-    this._playVariant(entity, "throw", 4, 10, 0);
-    entity.scene.managers.sound.play.sfx(SoundName.FISHING_CAST, {
-      position: { x: entity.x, y: entity.y },
-    });
+    const width = entity.frame.realWidth;
+    const height = entity.frame.realHeight;
 
-    this.onThrowComplete = () => {
-      this._startWaiting(entity);
+    this._playVariant(
+      entity,
+      "throw",
+      FISHING_THROW_FRAMES,
+      FISHING_WINDUP_FRAMERATE,
+      0,
+      0,
+      FISHING_WINDUP_FRAME,
+    );
+    this._anchor(entity, width, height);
+  }
+
+  private _anchor(entity: Entity, width: number, height: number): void {
+    const body = entity.body as Phaser.Physics.Arcade.Body | null;
+
+    this.anchor = {
+      depth: entity.depthOffset,
+      x: body?.offset.x ?? 0,
+      y: body?.offset.y ?? 0,
     };
-    entity.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE,
-      this.onThrowComplete,
+
+    entity.depthOffset += FISHING_DEPTH_LIFT;
+    entity.setDepth(1000 + entity.y + entity.depthOffset);
+
+    body?.setOffset(
+      this.anchor.x + (entity.frame.realWidth - width) * entity.originX,
+      this.anchor.y + (entity.frame.realHeight - height) * entity.originY,
     );
   }
 
+  private _release(entity: Entity): void {
+    if (!this.anchor) return;
+
+    (entity.body as Phaser.Physics.Arcade.Body | null)?.setOffset(
+      this.anchor.x,
+      this.anchor.y,
+    );
+    entity.depthOffset = this.anchor.depth;
+    entity.setDepth(1000 + entity.y + entity.depthOffset);
+    this.anchor = null;
+  }
+
   update(entity: Entity): void {
+    this._drawLine(entity);
+
+    if (this.phase === FishingPhase.CHARGING) {
+      if (!entity.pointerdown) {
+        this._cast(entity);
+        return;
+      }
+
+      if (entity.facing !== this.facing) {
+        this.facing = entity.facing;
+        this._holdVariant(
+          entity,
+          "throw",
+          FISHING_THROW_FRAMES,
+          FISHING_WINDUP_FRAME,
+        );
+      }
+      return;
+    }
+
     if (this.phase === FishingPhase.REELING) {
       this._updateReel(entity);
       return;
@@ -92,10 +171,10 @@ export class Fishing implements State {
   }
 
   exit(entity: Entity): void {
-    if (this.onThrowComplete)
+    if (this.onThrowUpdate)
       entity.off(
-        Phaser.Animations.Events.ANIMATION_COMPLETE,
-        this.onThrowComplete,
+        Phaser.Animations.Events.ANIMATION_UPDATE,
+        this.onThrowUpdate,
       );
     if (this.onCatchComplete)
       entity.off(
@@ -104,7 +183,142 @@ export class Fishing implements State {
       );
     this._endReel(entity);
     this._clearTimers();
+    this._clearLine();
+    this._release(entity);
     entity.isLocked = false;
+  }
+
+  private _castReach(entity: Entity): number {
+    const t = Math.min(
+      (entity.scene.time.now - this.chargeStart) / DURATION_FISHING_CHARGE,
+      1,
+    );
+    const eased = 1 - (1 - t) * (1 - t);
+
+    return (
+      Phaser.Math.Linear(FISHING_CAST_MIN_TILES, FISHING_CAST_MAX_TILES, eased) *
+      TILE_SIZE
+    );
+  }
+
+  private _cast(entity: Entity): void {
+    const water = handlers.fishing.findWater(
+      entity,
+      entity.target ?? entity,
+      this._castReach(entity),
+    );
+
+    if (!water) {
+      this._returnToIdle(entity);
+      return;
+    }
+
+    this.phase = FishingPhase.CASTING;
+    this.bobberX = water.x;
+    this.bobberY = water.y;
+
+    this._playVariant(
+      entity,
+      "throw",
+      FISHING_THROW_FRAMES,
+      FISHING_THROW_FRAMERATE,
+      0,
+      FISHING_WINDUP_FRAME + 1,
+    );
+    entity.scene.managers.sound.play.sfx(SoundName.FISHING_CAST, {
+      position: { x: entity.x, y: entity.y },
+    });
+
+    this.onThrowUpdate = (_anim, frame) => {
+      if (Number(frame.frame.name) % FISHING_THROW_FRAMES < FISHING_RELEASE_FRAME)
+        return;
+
+      entity.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.onThrowUpdate!);
+      this.onThrowUpdate = null;
+      this._launch(entity);
+    };
+    entity.on(Phaser.Animations.Events.ANIMATION_UPDATE, this.onThrowUpdate);
+  }
+
+  private _launch(entity: Entity): void {
+    const from = handlers.fishing.rodTip(entity);
+    const tiles =
+      Phaser.Math.Distance.Between(from.x, from.y, this.bobberX, this.bobberY) /
+      TILE_SIZE;
+
+    this.bobber.x = from.x;
+    this.bobber.y = from.y;
+
+    this.flight = entity.scene.tweens.addCounter({
+      from: 0,
+      to: 1,
+      duration: DURATION_FISHING_FLIGHT + tiles * DURATION_FISHING_FLIGHT_PER_TILE,
+      onUpdate: (tween: Phaser.Tweens.Tween) => {
+        const p = tween.getValue() ?? 1;
+        this.bobber.x = Phaser.Math.Linear(from.x, this.bobberX, p);
+        this.bobber.y =
+          Phaser.Math.Linear(from.y, this.bobberY, p) -
+          Math.sin(p * Math.PI) * tiles * FISHING_FLIGHT_ARC_PER_TILE;
+      },
+      onComplete: () => {
+        this.flight = null;
+        this.bobber.x = this.bobberX;
+        this.bobber.y = this.bobberY;
+        entity.scene.managers.sound.play.sfx(SoundName.FISHING_SPLASH, {
+          position: { x: this.bobberX, y: this.bobberY },
+        });
+
+        const water = (entity.scene as Scene).water;
+        if (water)
+          handlers.water.splash(
+            water,
+            entity.scene as Scene,
+            this.bobberX,
+            this.bobberY,
+            3,
+            1.5,
+            FISHING_SPLASH_FORCE,
+            1000 + this.bobberY,
+          );
+
+        this._startWaiting(entity);
+      },
+    });
+  }
+
+  private _drawLine(entity: Entity): void {
+    if (!this.line) return;
+
+    this.line.setDepth(
+      entity.depth + (this.facing === Direction.UP ? -1 : 1),
+    );
+    handlers.fishing.draw(
+      this.line,
+      handlers.fishing.line(this.phase, !!this.flight),
+      entity.scene.time.now,
+      handlers.fishing.rodTip(entity),
+      this.bobber,
+    );
+
+    if (
+      this.phase !== FishingPhase.CHARGING ||
+      entity !== entity.scene.managers.players.player
+    )
+      return;
+
+    const target = handlers.fishing.findWater(
+      entity,
+      entity.target ?? entity,
+      this._castReach(entity),
+    );
+    if (target) handlers.fishing.drawAim(this.line, target);
+  }
+
+  private _clearLine(): void {
+    this.flight?.remove();
+    this.flight = null;
+    this.line?.destroy();
+    this.line = null;
   }
 
   private _startWaiting(entity: Entity): void {
@@ -258,8 +472,12 @@ export class Fishing implements State {
   }
 
   private _returnToIdle(entity: Entity): void {
+    if (this.onThrowUpdate)
+      entity.off(Phaser.Animations.Events.ANIMATION_UPDATE, this.onThrowUpdate);
     this._endReel(entity);
     this._clearTimers();
+    this._clearLine();
+    this._release(entity);
     entity.isLocked = false;
 
     entity.states?.get(StateName.IDLE)?.enter(entity);
@@ -327,20 +545,22 @@ export class Fishing implements State {
     frameCount: number,
     frameRate: number,
     repeat: number,
+    from = 0,
+    to = frameCount - 1,
   ): void {
-    const base =
-      entity.getComponent<AnimationComponent>(ComponentName.ANIMATION)?.base ??
-      entity.name;
-    const textureKey = `${base}-fishing-${variant}`;
+    const textureKey = this._variantKey(entity, variant);
     if (!entity.scene.textures.exists(textureKey)) return;
 
     const dirIndex = Object.values(Direction).indexOf(this.facing);
-    const animKey = `${textureKey}-${this.facing}`;
+    const animKey =
+      from === 0 && to === frameCount - 1
+        ? `${textureKey}-${this.facing}`
+        : `${textureKey}-${this.facing}-${from}-${to}`;
 
     if (!entity.scene.anims.exists(animKey)) {
       const frames = entity.scene.anims.generateFrameNumbers(textureKey, {
-        start: dirIndex * frameCount,
-        end: dirIndex * frameCount + frameCount - 1,
+        start: dirIndex * frameCount + from,
+        end: dirIndex * frameCount + to,
       });
 
       if (!frames.length) return;
@@ -354,8 +574,31 @@ export class Fishing implements State {
     }
   }
 
+  private _holdVariant(
+    entity: Entity,
+    variant: string,
+    frameCount: number,
+    frame: number,
+  ): void {
+    const textureKey = this._variantKey(entity, variant);
+    if (!entity.scene.textures.exists(textureKey)) return;
+
+    const dirIndex = Object.values(Direction).indexOf(this.facing);
+
+    entity.anims.stop();
+    entity.setTexture(textureKey, dirIndex * frameCount + frame);
+  }
+
+  private _variantKey(entity: Entity, variant: string): string {
+    const base =
+      entity.getComponent<AnimationComponent>(ComponentName.ANIMATION)?.base ??
+      entity.name;
+
+    return `${base}-fishing-${variant}`;
+  }
+
   private _clearTimers(): void {
-    this.onThrowComplete = null;
+    this.onThrowUpdate = null;
     this.waitTimer?.destroy();
     this.biteTimer?.destroy();
     this.waitTimer = null;

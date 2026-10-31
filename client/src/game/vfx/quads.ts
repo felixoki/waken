@@ -15,6 +15,7 @@ import { getCraterFrag } from "../pipelines/frags/crater";
 import { getPlumeFrag } from "../pipelines/frags/plume";
 import { getBreathFrag } from "../pipelines/frags/breath";
 import { getSpikesFrag } from "../pipelines/frags/spikes";
+import { getHyperbeamFrag } from "../pipelines/frags/hyperbeam";
 import { SPIKE_FRAMES } from "./spikeFrames";
 
 type Quad = Phaser.GameObjects.Shader;
@@ -354,6 +355,29 @@ const BREATH_RISE = 80;
 const BREATH_TRAVEL = 380;
 const BREATH_OFF = 380;
 const BREATH_AFTER = 2400;
+
+const HYPERBEAM: QuadDefinition = {
+  key: "quad_hyperbeam",
+  width: 420,
+  height: 260,
+  frag: getHyperbeamFrag,
+  uniforms: [
+    "uTime",
+    "uSeed",
+    "uLayer",
+    "uLength",
+    "uOrb",
+    "uReach",
+    "uOn",
+    "uAfter",
+    "uUp",
+  ],
+};
+
+const HYPERBEAM_MARGIN = 60;
+const HYPERBEAM_ORB = 180;
+const HYPERBEAM_OFF = 160;
+const HYPERBEAM_AFTER = 2700;
 
 const PLUME: QuadDefinition = {
   key: "quad_plume",
@@ -839,6 +863,50 @@ export const quads = {
       put("uAfter", Math.max(0, ms - duration) * 0.001);
       onReach?.(reach * 1.08 * length, ms >= duration + BREATH_OFF);
     });
+  },
+
+  hyperbeam: (scene: Scene, length: number, depth: number) => {
+    const seed = Math.random() * 10;
+    const layers = [999, depth].map((d, layer) => {
+      const quad = acquire(scene, HYPERBEAM, 0, 0);
+      quad.setOrigin(HYPERBEAM_MARGIN / HYPERBEAM.width, 0.5);
+      quad.setDepth(d);
+      set(quad, "uSeed", seed);
+      set(quad, "uLayer", layer);
+      set(quad, "uLength", length);
+      return quad;
+    });
+
+    const start = scene.time.now;
+    let reach = 0;
+
+    return {
+      aim: (x: number, y: number, angle: number, extent: number) => {
+        const ms = scene.time.now - start;
+        reach = extent;
+
+        for (const quad of layers) {
+          quad.setPosition(x, y);
+          quad.setRotation(angle);
+          set(quad, "uTime", ms * 0.001);
+          set(quad, "uOrb", cubic(ms / HYPERBEAM_ORB));
+          set(quad, "uReach", reach);
+          set(quad, "uOn", 1);
+          set(quad, "uUp", Math.cos(angle));
+        }
+      },
+      stop: () => {
+        const clock = (scene.time.now - start) * 0.001;
+
+        play(scene, HYPERBEAM, layers, HYPERBEAM_AFTER, (ms, put) => {
+          put("uTime", clock + ms * 0.001);
+          put("uOrb", 1);
+          put("uReach", reach);
+          put("uOn", 1 - cubic(ms / HYPERBEAM_OFF));
+          put("uAfter", Math.max(ms, 1) * 0.001);
+        });
+      },
+    };
   },
 
   meteors: (

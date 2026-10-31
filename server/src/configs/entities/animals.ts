@@ -530,6 +530,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     ],
   },
   [EntityName.DRAKE]: {
+    floats: true,
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
@@ -562,6 +563,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     ],
   },
   [EntityName.DUCK]: {
+    floats: true,
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
@@ -818,6 +820,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     ],
   },
   [EntityName.GOOSE]: {
+    floats: true,
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 20,
@@ -858,6 +861,10 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       {
         name: ComponentName.AMBIENT_SOUND,
         config: { name: SoundName.GOOSE_IDLE, interval: [5000, 12000] },
+      },
+      {
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.GOOSE },
       },
     ],
     states: [StateName.IDLE, StateName.WALKING],

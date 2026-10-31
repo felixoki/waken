@@ -46,6 +46,7 @@ const ERRAND_DROP = "errand:drop";
 const ERRAND_DONE = "errand:done";
 const TELLIS_GIVE = "tellis:give";
 const TELLIS_REFUSE = "tellis:refuse";
+const MEVY_GIVE = "mevy:give";
 const FENN_DOG = "fenn:dog";
 const VALEN_DOG = "valen:dog";
 const VALEN_HOOK = "valen:hook";
@@ -2261,15 +2262,40 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "Wait, did YOU steal my boot?",
-          choices: [{ ref: ChoiceId.GOODBYE }],
+          choices: [
+            { text: "Found it in the woods. It's yours.", next: MEVY_GIVE },
+            { ref: ChoiceId.GOODBYE },
+          ],
           salience: 1,
           when: {
             carrying: [EntityName.LEFT_BOOT],
             unflags: [StoryFlag.MEVY_BOOT],
           },
-          story: [flagSet(StoryFlag.MEVY_BOOT)],
+        },
+        {
+          text: "Two boots. Like a normal person. Don't make it weird.",
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          salience: 1,
+          when: { flags: [StoryFlag.MEVY_BOOT] },
         },
       ],
+      [MEVY_GIVE]: {
+        text: "*snatches it, turns it over, sniffs it* ...It's been in a fox den. Of course it has. Thanks, I suppose.",
+        choices: [{ ref: ChoiceId.GOODBYE }],
+        when: {
+          carrying: [EntityName.LEFT_BOOT],
+          unflags: [StoryFlag.MEVY_BOOT],
+        },
+        story: [
+          {
+            name: StoryEffectName.ITEM_TAKE,
+            item: EntityName.LEFT_BOOT,
+            quantity: 1,
+          },
+          { name: StoryEffectName.BOND_ADD, amount: 1 },
+          flagSet(StoryFlag.MEVY_BOOT),
+        ],
+      },
     },
   },
   [EntityName.CITIZEN6]: {

@@ -178,7 +178,6 @@ export const forest: BiomeConfig = {
         EntityName.CLARY_SAGE,
         EntityName.BELLADONNA,
         EntityName.BEARDED_TOOTH_FUNGUS,
-        EntityName.HAZELNUT,
         EntityName.RASPBERRY,
         EntityName.STRAWBERRY_BUSH,
       ],
@@ -277,6 +276,7 @@ export const forest: BiomeConfig = {
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 1, max: 1 },
       spacing: 10,
+      chance: 0.15,
     },
   ],
 

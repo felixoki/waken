@@ -21,6 +21,7 @@ export interface StoryContext {
   leaning: boolean;
   stock: (name: EntityName) => number;
   present: (name: EntityName) => number;
+  raining: boolean;
   errand: ErrandState;
   record: (fish: FishName) => number;
 }
@@ -111,6 +112,9 @@ export const conditions = {
     ][])
       if (context.present(name) < min)
         failures.push(`${min} ${name} present needed, is ${context.present(name)}`);
+
+    if (when.raining !== undefined && when.raining !== context.raining)
+      failures.push(when.raining ? "not raining" : "raining");
 
     return failures;
   },

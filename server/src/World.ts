@@ -39,6 +39,7 @@ export class World {
     remaining: 0,
     lightning: 0,
     soaked: 0,
+    waded: 0,
   };
   public climate: ClimateState = { chilled: 0 };
 
@@ -174,6 +175,13 @@ export class World {
 
   getWeather(): WeatherName {
     return this.weather.current;
+  }
+
+  isRaining(): boolean {
+    return (
+      this.weather.current === WeatherName.RAIN ||
+      this.weather.current === WeatherName.STORM
+    );
   }
 
   setTime(time: TimeState): void {

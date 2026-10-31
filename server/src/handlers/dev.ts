@@ -3,9 +3,12 @@ import {
   DevCommand,
   DialogueNode,
   DialogueText,
+  Effect,
+  EffectName,
   EntityName,
   Event,
   ImprovementName,
+  MapName,
   StoryEffectName,
   StoryFlag,
   StoryScope,
@@ -18,6 +21,7 @@ import { configs } from "../configs/index.js";
 import { World } from "../World";
 import { handlers } from ".";
 import { conditions } from "../story/conditions.js";
+import { MapLoader } from "../loaders/Map.js";
 
 type Command = (
   args: string[],
@@ -104,6 +108,58 @@ export const dev = {
 
       dev.time(io, world, { days });
       dev.reply(_socket, `day ${days}`);
+    },
+
+    [DevCommand.EFFECT]: ([name, duration], socket, io, world) => {
+      const player = world.players.getBySocketId(socket.id);
+      if (!player) return dev.reply(socket, "no player");
+
+      const names = Object.values(EffectName) as string[];
+      if (!names.includes(name))
+        return dev.reply(socket, `effect must be one of ${names.join(", ")}`);
+
+      const now = Date.now();
+      const effect: Effect = {
+        name: name as EffectName,
+        expiresAt: now + Number(duration ?? 8000),
+        lastTickAt: now,
+        ownerId: player.id,
+      };
+
+      const effects = (player.effects ?? []).filter((e) => e.name !== name);
+      effects.push(effect);
+      world.players.update(player.id, { effects });
+
+      handlers.weather.announce(player.id, false, player.socketId, effect, world, io);
+      dev.reply(socket, `effect ${name}`);
+    },
+
+    [DevCommand.RESEED]: ([name], socket, _io, world) => {
+      const map = Object.values(MapName).find((value) => value === name);
+      if (!map)
+        return dev.reply(
+          socket,
+          `map must be one of ${Object.values(MapName).join(", ")}`,
+        );
+
+      for (const entity of world.entities.getByMap(map)) {
+        world.chunks.removeEntity(entity.id);
+        world.entities.remove(entity.id);
+      }
+
+      const loader = new MapLoader();
+      const entities = loader.parseEntities(map, loader.load(configs.maps[map].json));
+
+      for (const entity of entities) {
+        entity.tame = handlers.taming.native(entity);
+        world.entities.add(entity.id, entity);
+        world.chunks.registerEntity(entity.id, entity.map, entity.x, entity.y);
+      }
+
+      dev.reply(
+        socket,
+        `reseeded ${map} with ${entities.length} entities, leave and re-enter to see them`,
+      );
     },
 
     [DevCommand.FREECAST]: (_args, socket, _io, world) => {
@@ -227,6 +283,24 @@ export const dev = {
 
       world.story.setLean(entity.name, value);
       dev.reply(socket, `lean ${value} for ${entity.name}`);
+    },
+
+    [DevCommand.GO]: ([name, tx, ty], socket, io, world) => {
+      const map = Object.values(MapName).find((value) => value === name);
+      if (!map)
+        return dev.reply(
+          socket,
+          `map must be one of ${Object.values(MapName).join(", ")}`,
+        );
+
+      const spawn = configs.maps[map].spawn;
+      const x = tx === undefined ? spawn.x : Number(tx);
+      const y = ty === undefined ? spawn.y : Number(ty);
+      if (!Number.isFinite(x) || !Number.isFinite(y))
+        return dev.reply(socket, "x and y must be numbers");
+
+      handlers.player.transition({ to: map, x, y }, io, socket, world);
+      dev.reply(socket, `going to ${map}`);
     },
 
     [DevCommand.VILLAGE]: (_args, socket, _io, world) => {

@@ -190,7 +190,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -229,7 +232,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -269,7 +275,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -309,7 +318,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -349,7 +361,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -390,7 +405,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -430,7 +448,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -469,7 +490,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -805,7 +829,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -846,7 +873,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],
@@ -885,7 +915,10 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.FELLABLE,
-        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
       },
     ],
     states: [],

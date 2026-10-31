@@ -591,7 +591,7 @@ export class MainScene extends Phaser.Scene {
             ? this.managers.players.player
             : undefined);
 
-        if (!target) return;
+        if (!target?.scene) return;
 
         target.addEffect(
           EffectFactory.create(data.effect.name as EffectName, target),

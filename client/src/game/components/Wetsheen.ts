@@ -2,10 +2,15 @@ import { ComponentName, EffectName, PipelineName } from "@server/types";
 import {
   SHEEN_DEPTH_BIAS,
   SHEEN_DRY_DURATION,
+  SHEEN_RISE_DURATION,
   SHEEN_SOAK_DURATION,
+  SHEEN_SHALLOW,
+  SINK_MAX,
 } from "@server/globals";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
+import type { Wading } from "../handlers/water";
+import type { Soak } from "../pipelines/Sheen";
 
 export class WetsheenComponent extends Component {
   public name = ComponentName.WETSHEEN;
@@ -15,6 +20,7 @@ export class WetsheenComponent extends Component {
   private phase: number;
   private packed = -1;
   private frame?: Phaser.Textures.Frame;
+  private soak: Soak = { rise: 0 };
 
   constructor(private entity: Entity) {
     super();
@@ -33,6 +39,7 @@ export class WetsheenComponent extends Component {
     );
 
     sheen.setPipeline(PipelineName.SHEEN);
+    sheen.setData("soak", this.soak);
     sheen.setVisible(false);
     sheen.setActive(false);
 
@@ -46,6 +53,8 @@ export class WetsheenComponent extends Component {
 
     const wet = entity.hasEffect(EffectName.WET);
     const delta = entity.scene.game.loop.delta;
+    const wading = entity.getData("wading") as Wading | undefined;
+    const soak = this.soak;
 
     this.level += wet
       ? delta / SHEEN_SOAK_DURATION
@@ -53,7 +62,16 @@ export class WetsheenComponent extends Component {
 
     this.level = Phaser.Math.Clamp(this.level, 0, 1);
 
-    if (!wet && this.level <= 0) {
+    if (wading) {
+      const reach =
+        SHEEN_SHALLOW + (1 - SHEEN_SHALLOW) * Math.min(1, wading.depth / SINK_MAX);
+      if (soak.rise < reach)
+        soak.rise = Math.min(reach, soak.rise + delta / SHEEN_RISE_DURATION);
+    } else if (!wet) soak.rise = Math.max(0, soak.rise - delta / SHEEN_DRY_DURATION);
+
+    soak.wading = wading;
+
+    if (!wet && this.level <= 0 && soak.rise <= 0) {
       entity.removeComponent(ComponentName.WETSHEEN);
       return;
     }
@@ -70,7 +88,9 @@ export class WetsheenComponent extends Component {
     const sheen = this.sheen!;
     const entity = this.entity;
 
-    sheen.setVisible(entity.visible && this.level > 0.004);
+    sheen.setVisible(
+      entity.visible && Math.max(this.level, this.soak.rise) > 0.004,
+    );
 
     if (!sheen.visible) return;
 
@@ -79,7 +99,7 @@ export class WetsheenComponent extends Component {
     sheen.setScale(entity.scaleX, entity.scaleY);
     sheen.setFlip(entity.flipX, entity.flipY);
     sheen.setRotation(entity.rotation);
-    sheen.setAlpha(this.level);
+    sheen.setAlpha(Math.max(this.level, 1 / 255));
 
     const depth = entity.depth + SHEEN_DEPTH_BIAS;
     if (sheen.depth !== depth) sheen.setDepth(depth);

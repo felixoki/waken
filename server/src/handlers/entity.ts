@@ -257,28 +257,31 @@ export const entity = {
       );
     else socket.emit(Event.EXTRACT_MATERIAL, felled);
 
-    const drop = extractable.config.drop;
+    const { drop, bonus } = extractable.config;
+    const drops = [drop];
+    if (bonus && Math.random() < bonus.chance) drops.push(bonus);
+
+    const count = drops.reduce((sum, d) => sum + d.quantity, 0);
+    const jitter = count > 1 ? 10 : 0;
 
     const spawn = () => {
-      for (let i = 0; i < drop.quantity; i++) {
-        const jitter = drop.quantity > 1 ? 10 : 0;
-
-        entity.create(
-          {
-            name: drop.name,
-            map: target.map,
-            x: target.x + (Math.random() * 2 - 1) * jitter,
-            y: target.y + (Math.random() * 2 - 1) * jitter,
-            health: 1,
-            maxHealth: 1,
-            isLocked: false,
-          },
-          socket,
-          io,
-          world,
-          partyId,
-        );
-      }
+      for (const d of drops)
+        for (let i = 0; i < d.quantity; i++)
+          entity.create(
+            {
+              name: d.name,
+              map: target.map,
+              x: target.x + (Math.random() * 2 - 1) * jitter,
+              y: target.y + (Math.random() * 2 - 1) * jitter,
+              health: 1,
+              maxHealth: 1,
+              isLocked: false,
+            },
+            socket,
+            io,
+            world,
+            partyId,
+          );
     };
 
     setTimeout(spawn, DURATION_EXTRACTION_BOUNCE);

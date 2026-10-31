@@ -15,6 +15,7 @@ export enum ComponentName {
   ANIMATION = "animation",
   AMBIENT_SOUND = "ambientSound",
   AURA = "aura",
+  BLAZE = "blaze",
   BEHAVIOR_QUEUE = "behaviorQueue",
   BODY = "body",
   BOUNCE = "bounce",
@@ -121,6 +122,7 @@ export interface ConnectableConfig {
 
 export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };
+  bonus?: { name: EntityName; quantity: number; chance: number };
 }
 
 export interface CapturableConfig {
@@ -185,6 +187,7 @@ export interface SleepableConfig {
   exits: Partial<Record<Direction, { x: number; y: number }>>;
   facing: Direction;
   depth: number;
+  max: { health: number; mana: number };
 }
 
 export interface DestructibleConfig {

@@ -17,6 +17,7 @@ import { Mining } from "../state/Mining";
 import { Raking } from "../state/Raking";
 import { Watering } from "../state/Watering";
 import { Sleeping } from "../state/Sleeping";
+import { Swimming } from "../state/Swimming";
 import { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
 
@@ -89,6 +90,7 @@ export class PlayerManager {
         [StateName.RAKING, new Raking()],
         [StateName.WATERING, new Watering()],
         [StateName.SLEEPING, new Sleeping()],
+        [StateName.SWIMMING, new Swimming()],
         [StateName.DEAD, new Dead()],
       ]),
       config.socketId,

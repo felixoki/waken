@@ -851,11 +851,21 @@
 
 - Empty mana outside dreams ✅
 
+#### 28.10.2026
+
+- Refactor isles and villain fight ✅
+- Add butcherable component ✅
+- Add craftable beds ✅
+
+#### 31.10.2026
+
+- Add water and meadows shader ✅
+- Refactor hyperbeam ✅
+- Improve fishing ✅
+
 ### To Do
 
 - Add craftable candles from bear fat
-- Add craftable pillows from goose down and wool
-- Add craftable beds by tier
 - Add pigs
 
 ### Bugs

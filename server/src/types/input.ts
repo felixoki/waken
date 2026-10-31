@@ -13,6 +13,7 @@ export interface Input {
   isFlying?: boolean;
   isJumping: boolean;
   isRolling: boolean;
+  isSwimming?: boolean;
   speed?: number;
   pointerdown: boolean;
   target?: { x: number; y: number; id?: string };

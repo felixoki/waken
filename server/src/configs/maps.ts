@@ -7,6 +7,7 @@ import {
   StoryFlag,
 } from "../types";
 import { BiomeName } from "../types/generation";
+import { WATER_CAUSTIC_TEXTURE } from "../globals";
 
 const player: Spritesheet[] = [
   {
@@ -162,6 +163,18 @@ const player: Spritesheet[] = [
 ];
 
 const entities: Spritesheet[] = [
+  {
+    key: WATER_CAUSTIC_TEXTURE,
+    file: "tiles/water_caustics.png",
+    frameWidth: 200,
+    frameHeight: 400,
+  },
+  ...["grass_pattern", "isles_pattern"].map((key) => ({
+    key,
+    file: `tiles/${key}.png`,
+    frameWidth: 538,
+    frameHeight: 538,
+  })),
   {
     key: "items",
     file: "items.png",

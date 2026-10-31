@@ -24,6 +24,7 @@ export const SPEED_FLYING = 150;
 export const SPEED_JUMPING = 100;
 export const SPEED_ROLLING = 120;
 export const SPEED_DASHING = 1200;
+export const SPEED_SWIMMING = 55;
 export const SPEED_DEFAULT = 1;
 
 export const HEIGHT_JUMPING = 40;
@@ -81,6 +82,7 @@ export const RAIN_DENSITY = 0.1;
 export const RAIN_RUSH = 0.3;
 export const WET_INTERVAL = 2_000;
 export const WET_DURATION = 30_000;
+export const WADE_INTERVAL = 250;
 
 /** Wetness */
 export const WETNESS_SOAK_DURATION = 75_000;
@@ -152,6 +154,193 @@ export const SHEEN_FACING_HIGH = 0.52;
 export const SHEEN_SOAK_DURATION = 8_000;
 export const SHEEN_DRY_DURATION = 6_000;
 export const SHEEN_DEPTH_BIAS = 0.01;
+export const SHEEN_RISE_DURATION = 1_200;
+export const SHEEN_SHALLOW = 0.35;
+
+/** Blaze */
+export const BLAZE_PAD = 6;
+export const BLAZE_REACH = 6;
+export const BLAZE_SPEED = 9;
+export const BLAZE_SCALE = 0.42;
+export const BLAZE_STRETCH = 0.24;
+export const BLAZE_THRESHOLDS = [0.44, 0.56, 0.68, 0.82];
+export const BLAZE_BODY = 0.1;
+export const BLAZE_GLOW = 0.14;
+export const BLAZE_SOLID = 0.6;
+export const BLAZE_SIDE = 0.7;
+export const BLAZE_INTENSITY = 1.1;
+export const BLAZE_COLORS = [0x7a1f12, 0xd2481c, 0xf59a2a, 0xffe08a];
+export const BLAZE_IGNITE_DURATION = 350;
+export const BLAZE_DOUSE_DURATION = 600;
+export const BLAZE_DEPTH_BIAS = 0.02;
+export const BLAZE_EMBER_COLORS = [0xffe08a, 0xf59a2a, 0xd2481c];
+export const BLAZE_STEAM_PUFF = 6;
+export const BLAZE_STEAM_INTERVAL = 380;
+export const BLAZE_STEAM_LIFESPAN = 1400;
+export const BLAZE_STEAM_ALPHA = 0.75;
+export const BLAZE_STEAM_COLORS = [0xf4f7fb, 0xe2e9f2, 0xcfd9e6];
+
+/** Water */
+export const WATER_PIXELIZATION = 16;
+export const WATER_SHORE = 0.33;
+export const WATER_LAND = 0.5;
+export const WATER_FALLOFF = 6;
+export const WATER_GRADIENT = [
+  { at: 0.094, color: 0x4d64aa },
+  { at: 0.25, color: 0x5472bc },
+  { at: 0.391, color: 0x5b84cc },
+];
+export const WATER_WADE = 3;
+export const WATER_CAUSTIC_TEXTURE = "water_caustics";
+export const WATER_CAUSTIC_SCALE = 0.08;
+export const WATER_CAUSTIC_MOVEMENT_SCALE = 1.63;
+export const WATER_CAUSTIC_MOVEMENT_AMOUNT = 0.018;
+export const WATER_CAUSTIC_SPEED = 0.8;
+export const WATER_CAUSTIC_SQUASH = 1.3;
+export const WATER_CAUSTIC_FADER_MULTIPLIER = 0.05;
+export const WATER_CAUSTIC_FADER_SCALE = 0.17;
+export const WATER_CAUSTIC_COLOR = 0x6ea3df;
+export const WATER_CAUSTIC_ALPHA = 0.06;
+export const WATER_HIGHLIGHT_COLOR = 0x8ad1f7;
+export const WATER_HIGHLIGHT_ALPHA = 0.45;
+export const WATER_SPECULAR_THRESHOLD = -0.79;
+export const WATER_SPECULAR_SPEED = 0.3;
+export const WATER_SPECULAR_SCALE = 0.83;
+export const WATER_SPECULAR_SCALE2 = 3.68;
+export const WATER_SPECULAR_COLOR = 0x8ad1f7;
+export const WATER_SPECULAR_ALPHA = 1;
+export const WATER_FOAM_SCALE = 0.16;
+export const WATER_FOAM_COLOR = 0x56cddc;
+export const WATER_FOAM_ALPHA = 1;
+export const WATER_PALETTES = {
+  lake: {
+    gradient: WATER_GRADIENT,
+    caustic: [WATER_CAUSTIC_COLOR, WATER_CAUSTIC_ALPHA],
+    highlight: [WATER_HIGHLIGHT_COLOR, WATER_HIGHLIGHT_ALPHA],
+    specular: [WATER_SPECULAR_COLOR, WATER_SPECULAR_ALPHA],
+    foam: [WATER_FOAM_COLOR, WATER_FOAM_ALPHA],
+  },
+  cave: {
+    gradient: [
+      { at: 0.094, color: 0x161c1d },
+      { at: 0.25, color: 0x1f2a2a },
+      { at: 0.391, color: 0x2b3a39 },
+    ],
+    caustic: [0x3a4b4a, 0.05],
+    highlight: [0x5d7471, 0.3],
+    specular: [0x6f8b87, 0.7],
+    foam: [0x4a5e5c, 0.8],
+  },
+};
+export type WaterPalette = keyof typeof WATER_PALETTES;
+
+/** Meadows */
+export const MEADOW_PALETTES = {
+  grass: {
+    fill: 0x7aad55,
+    accents: [0xbad362, 0x5b9252],
+    pattern: "grass_pattern",
+  },
+  isles: {
+    fill: 0x60aaa2,
+    accents: [0x62c5a4, 0x4f8688],
+    pattern: "isles_pattern",
+  },
+};
+export type MeadowPalette = keyof typeof MEADOW_PALETTES;
+export const MEADOW_SPACING = 4;
+export const MEADOW_ACCENTS = [0.006, 0.005];
+export const MEADOW_FRAMERATE = 5;
+export const MEADOW_WIND = [0.6, 0.8];
+export const MEADOW_WIND_SCALE = 0.02;
+export const MEADOW_WIND_SPEED = 6;
+export const MEADOW_LEAN = 2.5;
+export const MEADOW_SWAY = 0.6;
+export const MEADOW_SWAY_SPEED = 0.15;
+export const MEADOW_CHARACTERS = 8;
+export const MEADOW_BAKE_RATE = 20;
+export const MEADOW_BAKE_MARGIN = 24;
+export const MEADOW_PUSH_RADIUS = 10;
+export const MEADOW_PUSH = 3.5;
+export const MEADOW_PUSH_SQUASH = 0.55;
+export const MEADOW_BENT = 0.5;
+export const MEADOW_BENT_SHADE = 0.93;
+
+/** Beaches */
+export const BEACH_REACH = 3;
+export const BEACH_INSET = 0.9;
+export const BEACH_RESOLUTION = 4;
+export const BEACH_BLUR = 3;
+export const BEACH_EDGE = 0.5;
+export const BEACH_BANDS = [0.03, 0.08];
+export const BEACH_BAND_ALPHAS = [0.65, 0.85];
+export const BEACH_BAND_NOISE = 0.015;
+export const BEACH_SHALLOW_COLOR = 0x7fc3cf;
+export const BEACH_NOISE = 0.008;
+export const BEACH_NOISE_SCALE = 0.7;
+export const BEACH_PERIOD = 4;
+export const BEACH_RUN = 0.04;
+export const BEACH_FOAM = 0.02;
+export const BEACH_FOAM_COLOR = 0xe6f4f6;
+export const BEACH_FOAM_ALPHA = 0.6;
+export const BEACH_FOAM_BREAK = 0.45;
+export const BEACH_FOAM_SCALE = 2.4;
+export const BEACH_WET_COLOR = 0x3b2f22;
+export const BEACH_WET_ALPHA = 0.1;
+
+/** Water wakes */
+export const WAKE_POINTS = 32;
+export const WAKE_SPACING = 2;
+export const WAKE_LENGTH = 56;
+export const WAKE_RETRACT = 70;
+export const WAKE_STILL = 12;
+export const WAKE_WIDTH = 12;
+export const WAKE_SPREAD = 0.22;
+export const WAKE_RING = 0.8;
+export const WAKE_RIPPLES = 2;
+export const WAKE_RIPPLE_PERIOD = 1.6;
+export const WAKE_RIPPLE_REACH = 1.4;
+export const WAKE_TAIL = 0.35;
+export const WAKE_ENTRY = 1;
+export const WAKE_PHASE = 26;
+export const WAKE_SKEW = 5;
+export const WAKE_SPEED = 10;
+export const WAKE_ALPHA = 0.46;
+export const WAKE_FILL = 0.35;
+export const WAKE_RIPPLE = 0.12;
+export const WAKE_LEVELS = 3;
+export const WAKE_CUTOFF = 0.3;
+export const WAKE_COLOR = 0xffffff;
+
+/** Wading */
+export const SINK_START = 0.5;
+export const SINK_RATIO = 0.2;
+export const SINK_MAX = 6;
+export const SINK_EASE = 6;
+export const SINK_BOB = 1;
+export const SINK_BOB_SPEED = 2.5;
+export const SINK_BAND = 2;
+export const SINK_BAND_ALPHA = 0.4;
+export const SINK_TINT = 0.35;
+
+/** Swimming */
+export const SWIM_DEPTH = 4;
+export const SWIM_EXIT = 3.6;
+export const SWIM_RATIO = 0.45;
+export const SWIM_BOB = 1.5;
+
+/** Water splashes */
+export const PLUNGE_DURATION = 0.75;
+export const PLUNGE_REACH = 2.2;
+export const PLUNGE_RINGS = 2;
+export const PLUNGE_GAP = 0.18;
+export const PLUNGE_LEAP = 0.5;
+export const PLUNGE_DROPS = 14;
+export const PLUNGE_SPEED = 80;
+export const PLUNGE_SPREAD = 36;
+export const PLUNGE_GRAVITY = 320;
+export const PLUNGE_LARGE = 0.3;
+export const PLUNGE_COLORS = [0xffffff, 0xd6f1ff, 0x8ad1f7];
 
 /** Rain splashes */
 export const SPLASH_RATE = 26;
@@ -265,12 +454,33 @@ export const DURATION_FISHING_WAIT_MAX = 8000;
 export const DURATION_FISHING_WINDOW = 1500;
 export const FISHING_ARC_HEIGHT = 48;
 export const FISHING_ARC_DURATION = 600;
-export const FISHING_SCAN_TILES = 1;
+export const FISHING_CAST_MIN_TILES = 1;
+export const FISHING_CAST_MAX_TILES = 6;
+export const DURATION_FISHING_CHARGE = 1200;
+export const DURATION_FISHING_FLIGHT = 260;
+export const DURATION_FISHING_FLIGHT_PER_TILE = 70;
+export const FISHING_FLIGHT_ARC_PER_TILE = 6;
+export const FISHING_LINE_SAG = 0.18;
+export const FISHING_BOBBER_HANG = 5;
+export const FISHING_SCAN_STEP = 4;
+export const FISHING_MIN_DEPTH = 1.5;
+export const FISHING_RIPPLE_RADIUS = 4;
+export const FISHING_RIPPLE_POINTS = 14;
+export const FISHING_RIPPLE_ALPHA = 0.45;
+export const DURATION_FISHING_RIPPLE = 1800;
+export const DURATION_FISHING_RIPPLE_BITE = 520;
+export const FISHING_SPLASH_FORCE = 0.35;
+export const FISHING_DEPTH_LIFT = 16;
+export const FISHING_THROW_FRAMES = 8;
+export const FISHING_WINDUP_FRAME = 3;
+export const FISHING_WINDUP_FRAMERATE = 12;
+export const FISHING_RELEASE_FRAME = 5;
+export const FISHING_THROW_FRAMERATE = 14;
 export const FISHING_LANDING_DISTANCE = 16;
 
 /** Fishing minigame */
-export const REEL_METER_START = 30;
-export const REEL_METER_FILL = 26;
+export const REEL_METER_START = 40;
+export const REEL_METER_FILL = 28;
 export const REEL_BAR_ACCEL = 12;
 export const REEL_BAR_DRAG = 0.88;
 export const REEL_BAR_MAX_SPEED = 1.5;

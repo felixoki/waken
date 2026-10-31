@@ -8,6 +8,10 @@ export const state = {
         state: () => StateName.SLEEPING,
       },
       {
+        condition: () => !!input.isSwimming,
+        state: () => StateName.SWIMMING,
+      },
+      {
         condition: () => input.state === StateName.DASHING,
         state: () => StateName.DASHING,
       },
@@ -54,6 +58,7 @@ export const state = {
       {
         condition: () =>
           !!input.target &&
+          !input.isFlying &&
           input.equipped?.type === SlotType.ENTITY &&
           input.equipped?.item.name === EntityName.FISHING_ROD,
         state: () => StateName.FISHING,

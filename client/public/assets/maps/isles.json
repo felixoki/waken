@@ -611,6 +611,12 @@
          "id":15,
          "name":"water",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"water",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":82,
@@ -1368,9 +1374,24 @@
          "opacity":1,
          "properties":[
                 {
+                 "name":"clearance",
+                 "type":"int",
+                 "value":20
+                }, 
+                {
                  "name":"collides",
                  "type":"bool",
                  "value":true
+                }, 
+                {
+                 "name":"meadow",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
+                 "name":"meadowPalette",
+                 "type":"string",
+                 "value":"isles"
                 }],
          "type":"tilelayer",
          "visible":true,
@@ -1619,6 +1640,16 @@
          "name":"grass",
          "opacity":1,
          "properties":[
+                {
+                 "name":"meadow",
+                 "type":"bool",
+                 "value":true
+                }, 
+                {
+                 "name":"meadowPalette",
+                 "type":"string",
+                 "value":"isles"
+                }, 
                 {
                  "name":"surface",
                  "type":"string",

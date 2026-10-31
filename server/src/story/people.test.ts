@@ -50,6 +50,7 @@ const context = (options: {
   leaning: false,
   stock: (name) => options.stock?.[name] ?? 0,
   present: () => 0,
+  raining: false,
 });
 
 describe("ila's tips", () => {

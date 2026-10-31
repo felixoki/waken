@@ -115,6 +115,27 @@ export const sleep = {
     if (!player?.sleep) return;
 
     player.sleep.isAsleep = false;
+
+    const bed = world.entities.get(player.sleep.bed);
+    const config = bed && sleep.config(bed.name);
+    if (!config) return;
+
+    player.sleep.max = config.max;
+
+    const { max } = handlers.player.stats(player);
+
+    world.players.update(id, {
+      maxHealth: max.health,
+      maxMana: max.mana,
+      health: max.health,
+      mana: max.mana,
+    });
+
+    const socket = world.server.to(player.socketId);
+    socket.emit(Event.PLAYER_MAX_HEALTH, max.health);
+    socket.emit(Event.PLAYER_MAX_MANA, max.mana);
+    socket.emit(Event.PLAYER_HEALTH, max.health);
+    socket.emit(Event.PLAYER_MANA, max.mana);
   },
 
   landing: (

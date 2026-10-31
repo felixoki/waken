@@ -68,14 +68,15 @@ export const player = {
       }
 
       const savedMap = saved?.data?.map as MapName | undefined;
-      const isInstanced = savedMap && configs.maps[savedMap].isInstanced;
+      const respawn =
+        !!savedMap && (!configs.maps[savedMap] || configs.maps[savedMap].isInstanced);
 
       player = {
         id,
         socketId: socket.id,
-        map: isInstanced ? map.id : savedMap || map.id,
-        x: isInstanced ? map.spawn.x : saved?.position?.x || map.spawn.x,
-        y: isInstanced ? map.spawn.y : saved?.position?.y || map.spawn.y,
+        map: respawn || !savedMap ? map.id : savedMap,
+        x: respawn ? map.spawn.x : saved?.position?.x || map.spawn.x,
+        y: respawn ? map.spawn.y : saved?.position?.y || map.spawn.y,
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
         health: saved?.health || MAX_HEALTH,
         maxHealth: MAX_HEALTH,
@@ -528,6 +529,8 @@ export const player = {
         if (effect.expiresAt > now)
           apply(configs.effects[effect.name]?.modifier);
     }
+
+    apply(player.sleep?.max && { max: player.sleep.max });
 
     stats.regen.health *= scale.health;
     stats.regen.mana *= scale.mana;

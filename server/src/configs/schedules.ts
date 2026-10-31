@@ -10,6 +10,8 @@ import {
 
 const night: ScheduleRule = { phases: [TimePhase.NIGHT], target: AWAY };
 
+const rain: ScheduleRule = { when: { raining: true }, target: AWAY };
+
 const closing: ScheduleRule = { from: [0.7, 0.9], target: AWAY };
 
 const tavern = (spot: SpotName, chance: number): ScheduleRule => ({
@@ -30,7 +32,7 @@ export const schedules: Partial<Record<EntityName, Schedule>> = {
   [EntityName.BOOKKEEPER]: [night],
   [EntityName.HELPER1]: [night],
   [EntityName.HELPER2]: [night],
-  [EntityName.STUDENT]: [night],
+  [EntityName.STUDENT]: [rain, night],
   [EntityName.FISHWIFE]: [night],
   [EntityName.CITIZEN1]: [tavern(SpotName.TAVERN_EMY, 0.3), night],
   [EntityName.CITIZEN2]: [tavern(SpotName.TAVERN_FAIRE, 0.3), night],

@@ -21,6 +21,15 @@ export class Texture {
       g.destroy();
     }
 
+    if (!scene.textures.exists("particle_pixel")) {
+      const g = scene.add.graphics();
+
+      g.fillStyle(0xffffff);
+      g.fillRect(0, 0, 1, 1);
+      g.generateTexture("particle_pixel", 1, 1);
+      g.destroy();
+    }
+
     if (!scene.textures.exists("particle_glow")) {
       const g = scene.add.graphics();
 
@@ -50,6 +59,7 @@ export class Texture {
 
     handlers.textures.fangs(scene);
     handlers.textures.clouds(scene);
+    handlers.textures.steam(scene);
 
     if (!scene.textures.exists("particle_ring")) {
       const g = scene.add.graphics();

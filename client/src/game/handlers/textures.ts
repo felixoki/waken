@@ -1,5 +1,10 @@
 import { Scene } from "../scenes/Scene";
 
+export const STEAM_WIDTH = 8;
+export const STEAM_HEIGHT = 16;
+export const STEAM_FRAMES = 6;
+export const STEAM_PHASES = [0, 2.1, 4.2];
+
 type Point = [number, number];
 type Bezier = [Point, Point, Point, Point];
 
@@ -127,6 +132,51 @@ export const textures = {
       g.generateTexture(`particle_fang_${i}`, texW, texH);
       g.destroy();
     });
+  },
+
+  steam: (scene: Scene) => {
+    if (scene.textures.exists("particle_steam")) return;
+
+    const texture = scene.textures.createCanvas(
+      "particle_steam",
+      STEAM_WIDTH * STEAM_FRAMES,
+      STEAM_HEIGHT * STEAM_PHASES.length,
+    );
+    if (!texture) return;
+
+    const context = texture.getContext();
+    const hash = (a: number, b: number, c: number) => {
+      const h = Math.sin(a * 127.1 + b * 311.7 + c * 74.7) * 43758.5453;
+      return h - Math.floor(h);
+    };
+
+    STEAM_PHASES.forEach((phase, v) => {
+      for (let f = 0; f < STEAM_FRAMES; f++) {
+        const p = f / (STEAM_FRAMES - 1);
+        const length = Math.round(5 + p * 9);
+        const bottom = STEAM_HEIGHT - 1 - Math.round(p * p * 5);
+        const ox = f * STEAM_WIDTH;
+        const oy = v * STEAM_HEIGHT;
+
+        for (let i = 0; i < length; i++) {
+          const y = bottom - i;
+          const s = i / length;
+          if (y < 0 || hash(y, f, v) < p * 0.55 * s) continue;
+
+          const x = Math.floor(
+            STEAM_WIDTH / 2 - 0.5 + Math.sin(s * 2.6 + phase + p * 1.5) * (0.6 + s * 1.6),
+          );
+          const alpha = (0.55 + 0.45 * (1 - s)) * (1 - 0.4 * p);
+
+          context.fillStyle = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+          context.fillRect(ox + x, oy + y, s < 0.35 ? 2 : 1, 1);
+        }
+
+        texture.add(`${v}_${f}`, 0, ox, oy, STEAM_WIDTH, STEAM_HEIGHT);
+      }
+    });
+
+    texture.refresh();
   },
 
   clouds: (scene: Scene) => {

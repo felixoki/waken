@@ -1,7 +1,8 @@
-import { EffectName } from "@server/types";
+import { ComponentName, EffectName } from "@server/types";
 import { Entity } from "../Entity";
 import { Effect } from "./Effect";
 import { emitters } from "../vfx/emitters";
+import { BlazeComponent } from "../components/Blaze";
 
 export class BurningEffect extends Effect {
   name = EffectName.BURNING;
@@ -13,9 +14,10 @@ export class BurningEffect extends Effect {
   }
 
   attach(): void {
-    this._stop = emitters.burning(this.entity);
-    this.tint = 0xff6600;
-    this.entity.setTint(this.tint);
+    this._stop = emitters.embers(this.entity);
+
+    if (!this.entity.hasComponent(ComponentName.BLAZE))
+      this.entity.addComponent(new BlazeComponent(this.entity));
   }
 
   detach(): void {

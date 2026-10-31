@@ -16,6 +16,7 @@ export enum StateName {
   WATERING = "watering",
   WARNING = "warning",
   SLEEPING = "sleeping",
+  SWIMMING = "swimming",
   DEAD = "dead",
 }
 

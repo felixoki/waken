@@ -766,4 +766,484 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.ROCK9]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 1, end: 2 },
+            { row: 51, start: 1, end: 2 },
+          ],
+        },
+        key: "rock9_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 7,
+          offsetX: 6,
+          offsetY: 13,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK10]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 3, end: 4 },
+            { row: 51, start: 3, end: 4 },
+          ],
+        },
+        key: "rock10_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 21,
+          height: 6,
+          offsetX: 3,
+          offsetY: 11,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK11]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 5, end: 6 },
+            { row: 51, start: 5, end: 6 },
+          ],
+        },
+        key: "rock11_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 17,
+          height: 5,
+          offsetX: 8,
+          offsetY: 10,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK12]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 7, end: 8 },
+            { row: 51, start: 7, end: 8 },
+          ],
+        },
+        key: "rock12_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 23,
+          height: 7,
+          offsetX: 3,
+          offsetY: 12,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK13]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 9, end: 10 },
+            { row: 51, start: 9, end: 10 },
+          ],
+        },
+        key: "rock13_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 17,
+          height: 5,
+          offsetX: 7,
+          offsetY: 9,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK14]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 11, end: 12 },
+            { row: 51, start: 11, end: 12 },
+          ],
+        },
+        key: "rock14_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 22,
+          height: 7,
+          offsetX: 5,
+          offsetY: 10,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK15]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 13, end: 14 },
+            { row: 51, start: 13, end: 14 },
+          ],
+        },
+        key: "rock15_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 15,
+          height: 4,
+          offsetX: 8,
+          offsetY: 9,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK16]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 15, end: 16 },
+            { row: 51, start: 15, end: 16 },
+          ],
+        },
+        key: "rock16_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 5,
+          offsetX: 10,
+          offsetY: 9,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK17]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 17, end: 18 },
+            { row: 51, start: 17, end: 18 },
+          ],
+        },
+        key: "rock17_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 15,
+          height: 4,
+          offsetX: 7,
+          offsetY: 9,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK18]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 19, end: 20 },
+            { row: 51, start: 19, end: 20 },
+          ],
+        },
+        key: "rock18_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 9,
+          height: 4,
+          offsetX: 9,
+          offsetY: 9,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.ROCK19]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 21, end: 22 },
+            { row: 51, start: 21, end: 22 },
+          ],
+        },
+        key: "rock19_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 5,
+          offsetX: 7,
+          offsetY: 8,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.PEBBLE1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 17, start: 32, end: 32 },
+          ],
+        },
+        key: "pebble1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 4,
+          offsetX: 3,
+          offsetY: 1,
+          collides: false,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.PEBBLE2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 18, start: 32, end: 32 },
+          ],
+        },
+        key: "pebble2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 4,
+          offsetX: 3,
+          offsetY: 1,
+          collides: false,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.PEBBLE3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 32, end: 32 },
+          ],
+        },
+        key: "pebble3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 4,
+          offsetX: 1,
+          offsetY: 1,
+          collides: false,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.PEBBLE4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 20, start: 3, end: 3 },
+          ],
+        },
+        key: "pebble4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 11,
+          height: 4,
+          offsetX: 4,
+          offsetY: 1,
+          collides: false,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.PEBBLE5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 20, start: 4, end: 4 },
+          ],
+        },
+        key: "pebble5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 4,
+          offsetX: 1,
+          offsetY: 1,
+          collides: false,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
 };

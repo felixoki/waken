@@ -10,6 +10,10 @@ export const world = {
     const state = await load.world(id);
 
     if (state?.entities?.length) {
+      state.entities = state.entities.filter(
+        (entity: EntityConfig) => !!configs.maps[entity.map],
+      );
+
       state.entities.forEach((entity: EntityConfig) => {
         if (
           configs.entities[entity.name]?.dialogue ||

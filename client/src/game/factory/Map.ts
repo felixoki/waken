@@ -3,6 +3,8 @@ import { Scene } from "../scenes/Scene";
 import { configs } from "@server/configs";
 import { Threshold } from "../managers/Tile";
 import { Entity } from "../Entity";
+import { handlers } from "../handlers";
+import type { MeadowPalette, WaterPalette } from "@server/globals";
 
 export class MapFactory {
   static create(
@@ -36,6 +38,10 @@ export class MapFactory {
 
     let tileLayerIndex = 0;
     let objectLayerIndex = 0;
+    let beach: Phaser.Tilemaps.TilemapLayer | undefined;
+    const meadows = new Map<MeadowPalette, Phaser.Tilemaps.TilemapLayer[]>();
+    const decks: Phaser.Tilemaps.TilemapLayer[] = [];
+    let waters: { layer: Phaser.Tilemaps.TilemapLayer; palette?: WaterPalette } | undefined;
 
     const thresholds: Threshold[] = [];
     const colliders: Phaser.GameObjects.Rectangle[] = [];
@@ -72,9 +78,37 @@ export class MapFactory {
           (prop) => prop.name === "walkable" && prop.value === true,
         );
 
+        const water = properties?.some(
+          (prop) => prop.name === "water" && prop.value === true,
+        );
+
+        const meadow = properties?.some(
+          (prop) => prop.name === "meadow" && prop.value === true,
+        );
+
+        const lakebed = properties?.some(
+          (prop) => prop.name === "beach" && prop.value === true,
+        );
+
         const layer = tilemap.createLayer(currentIndex, tilesets, 0, 0);
 
         if (!layer) return;
+        if (rawLayer.visible === false) layer.setVisible(false);
+
+        if (lakebed) beach = layer;
+        if (water)
+          waters = {
+            layer,
+            palette: properties?.find((p) => p.name === "waterPalette")
+              ?.value as WaterPalette | undefined,
+          };
+        if (properties?.some((p) => p.name === "deck" && p.value === true))
+          decks.push(layer);
+        if (meadow) {
+          const palette = (properties?.find((p) => p.name === "meadowPalette")
+            ?.value ?? "grass") as MeadowPalette;
+          meadows.set(palette, [...(meadows.get(palette) ?? []), layer]);
+        }
 
         if (hasCollision) {
           layer.setCollisionByExclusion([-1, 0]);
@@ -125,6 +159,11 @@ export class MapFactory {
           );
       }
     });
+
+    if (waters)
+      handlers.water.apply(scene, waters.layer, beach, waters.palette, decks);
+    for (const [palette, layers] of meadows)
+      handlers.meadow.apply(scene, layers, palette);
 
     return { tilemap, thresholds, colliders };
   }

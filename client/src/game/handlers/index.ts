@@ -30,6 +30,8 @@ import { chart } from "./chart";
 import { trigger } from "./trigger";
 import { robe } from "./robe";
 import { connect } from "./connect";
+import { water } from "./water";
+import { meadow } from "./meadow";
 
 export const handlers = {
   state,
@@ -64,4 +66,6 @@ export const handlers = {
   trigger,
   robe,
   connect,
+  water,
+  meadow,
 };

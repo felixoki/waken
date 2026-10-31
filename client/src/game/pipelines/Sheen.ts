@@ -1,6 +1,9 @@
 import { PipelineName } from "@server/types";
-import { getSheenFrag } from "./frags/sheen";
+import { getSheenFrag, getSheenVert } from "./frags/sheen";
+import { water, type Wading } from "../handlers/water";
 import {
+  SINK_BAND,
+  SINK_BAND_ALPHA,
   SHEEN_DARKEN,
   SHEEN_DEEPEN,
   SHEEN_FACING,
@@ -21,7 +24,14 @@ export interface SheenState {
   sky: { r: number; g: number; b: number };
 }
 
+export interface Soak {
+  rise: number;
+  wading?: Wading;
+}
+
 export class SheenPipeline extends MultiPipeline {
+  private soak?: Soak;
+
   public readonly state: SheenState = {
     flash: 0,
     sky: { r: 1, g: 1, b: 1 },
@@ -31,8 +41,43 @@ export class SheenPipeline extends MultiPipeline {
     super({
       name: name,
       game: game,
+      vertShader: getSheenVert(),
       fragShader: getSheenFrag(),
     });
+  }
+
+  boot() {
+    super.boot();
+
+    this.set1f("uBand", SINK_BAND);
+    this.set1f("uBandAlpha", SINK_BAND_ALPHA);
+  }
+
+  onRender(_scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera) {
+    const { x, y } = water.origin(camera);
+
+    this.set2f("uWorldView", x, y);
+    this.set1f("uZoom", camera.zoom);
+  }
+
+  onBind(gameObject?: Phaser.GameObjects.GameObject) {
+    const soak = gameObject?.getData("soak") as Soak | undefined;
+    if (soak === this.soak) return;
+
+    this.flush();
+    this.soak = soak;
+  }
+
+  onBeforeFlush() {
+    const wading = this.soak?.wading;
+
+    this.set1f("uRise", this.soak?.rise ?? 0);
+    this.set1f("uClip", wading ? 1 : 0);
+    this.set1f("uDepth", wading?.depth ?? 0);
+    if (!wading) return;
+
+    this.set2f("uCenter", wading.x, wading.y);
+    this.set2f("uRadius", wading.rx, wading.ry);
   }
 
   onPreRender() {

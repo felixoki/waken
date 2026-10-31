@@ -12,8 +12,11 @@ import {
   BouncePipeline,
   bounceSlotName,
 } from "./pipelines/Bounce";
-import { BeamPipeline } from "./pipelines/Beam";
 import { SheenPipeline } from "./pipelines/Sheen";
+import { WaterPipeline } from "./pipelines/Water";
+import { WadePipeline } from "./pipelines/Wade";
+import { BlazePipeline } from "./pipelines/Blaze";
+import { MeadowPipeline } from "./pipelines/Meadow";
 import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
 import { BlacksmithScene } from "./scenes/Blacksmith";
@@ -83,9 +86,12 @@ export const config: Phaser.Types.Core.GameConfig = {
         AmbiencePipeline,
       );
       renderer.pipelines.addPostPipeline(PipelineName.VORTEX, VortexPipeline);
-      renderer.pipelines.addPostPipeline(PipelineName.BEAM, BeamPipeline);
       renderer.pipelines.add(PipelineName.WIND, new WindPipeline(game));
       renderer.pipelines.add(PipelineName.SHEEN, new SheenPipeline(game));
+      renderer.pipelines.add(PipelineName.WATER, new WaterPipeline(game));
+      renderer.pipelines.add(PipelineName.WADE, new WadePipeline(game));
+      renderer.pipelines.add(PipelineName.BLAZE, new BlazePipeline(game));
+      renderer.pipelines.add(PipelineName.MEADOW, new MeadowPipeline(game));
       renderer.pipelines.add(
         PipelineName.LIGHT,
         new OccludedLightPipeline(game),

@@ -1,7 +1,7 @@
 import { animations } from "./animations.js";
 import { buildable } from "./buildable.js";
 import { COMMON_CHOICES, COMMON_NODES } from "./dialogue.js";
-import { effects, interactions } from "./effects.js";
+import { cancels, effects, interactions } from "./effects.js";
 import { entities } from "./entities/index.js";
 import { errandRewards, errands } from "./errands.js";
 import { fish } from "./fish.js";
@@ -62,6 +62,7 @@ export const configs = {
   fish,
   improvements,
   interactions,
+  cancels,
   landmarks,
   maps,
   needs,

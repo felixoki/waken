@@ -39,6 +39,7 @@ export interface WeatherState {
   remaining: number;
   lightning: number;
   soaked: number;
+  waded: number;
 }
 
 export interface ClimateState {

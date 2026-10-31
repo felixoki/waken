@@ -36,6 +36,10 @@ export const effects: Record<EffectName, EffectDefinition> = {
   [EffectName.WARM]: { modifier: { immunities: [EffectName.COLD] } },
 };
 
+export const cancels: Partial<Record<EffectName, EffectName[]>> = {
+  [EffectName.WET]: [EffectName.BURNING],
+};
+
 export const interactions: Partial<
   Record<EffectName, Partial<Record<DamageType, number>>>
 > = {

@@ -61,6 +61,7 @@ export const story = {
       record: (fish) => player.records?.[fish] ?? 0,
       stock: (name: EntityName) => world.items.get(name),
       present: (name: EntityName) => story.present(world, name),
+      raining: world.isRaining(),
       bond: (name: EntityName) => player.story.bond[name] ?? 0,
       since: (flag: StoryFlag) => {
         const day = player.story.days[flag];
@@ -89,6 +90,7 @@ export const story = {
     leaning: false,
     stock: (name: EntityName) => world.items.get(name),
     present: (name: EntityName) => story.present(world, name),
+    raining: world.isRaining(),
   }),
 
   follower: (

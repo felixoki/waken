@@ -1,3 +1,39 @@
+import { waterline } from "./wade";
+
+export const getSheenVert = (): string => `
+#define SHADER_NAME SHEEN_VS
+
+precision highp float;
+
+uniform mat4 uProjectionMatrix;
+uniform vec2 uWorldView;
+uniform float uZoom;
+uniform float uDepth;
+
+attribute vec2 inPosition;
+attribute vec2 inTexCoord;
+attribute float inTexId;
+attribute float inTintEffect;
+attribute vec4 inTint;
+
+varying vec2 outTexCoord;
+varying float outTexId;
+varying float outTintEffect;
+varying vec4 outTint;
+varying vec2 outWorld;
+
+void main() {
+  vec2 position = inPosition + vec2(0.0, uDepth * uZoom);
+  gl_Position = uProjectionMatrix * vec4(position, 1.0, 1.0);
+
+  outTexCoord = inTexCoord;
+  outTexId = inTexId;
+  outTint = inTint;
+  outTintEffect = inTintEffect;
+  outWorld = uWorldView + position / uZoom;
+}
+`;
+
 export const getSheenFrag = (): string => `
 #define SHADER_NAME SHEEN_FS
 
@@ -22,12 +58,19 @@ uniform float facingLow;
 uniform float facingHigh;
 uniform float flash;
 uniform vec3 skyColor;
+uniform float uRise;
+uniform float uClip;
+uniform vec2 uCenter;
+uniform vec2 uRadius;
+uniform float uBand;
+uniform float uBandAlpha;
 
 varying vec2 outTexCoord;
 varying float outTexId;
 varying float outTintEffect;
 varying vec4 outTint;
-
+varying vec2 outWorld;
+${waterline}
 float hash(vec2 p) {
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
@@ -73,9 +116,11 @@ void main(void) {
     : outTexCoord.y;
 
   float line = wet * (1.0 + fade * 2.0) - fade;
-  float cover = 1.0 - smoothstep(line - fade, line + fade, localV);
-
-  float k = cover * wet;
+  float rise = 1.0 - uRise * (1.0 + fade * 2.0) + fade;
+  float k = max(
+    (1.0 - smoothstep(line - fade, line + fade, localV)) * wet,
+    smoothstep(rise - fade, rise + fade, localV) * min(1.0, uRise * 3.0)
+  );
 
   if (k <= 0.0) {
     gl_FragColor = vec4(0.0);
@@ -99,6 +144,12 @@ void main(void) {
   wetCol += glint * skyColor * strength;
 
   float alpha = k * texture.a;
+
+  if (uClip > 0.0) {
+    float under = waterline(outWorld);
+    if (under > uBand) alpha = 0.0;
+    else if (under > 0.0) alpha *= uBandAlpha;
+  }
 
   gl_FragColor = vec4(wetCol * alpha, alpha);
 }

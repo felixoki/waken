@@ -22,11 +22,27 @@ export interface FishConfig {
 }
 
 export enum FishingPhase {
+  CHARGING = "charging",
   CASTING = "casting",
   WAITING = "waiting",
   BITE = "bite",
   REELING = "reeling",
   CATCHING = "catching",
+}
+
+export enum FishingLine {
+  HANGING = "hanging",
+  FLYING = "flying",
+  FLOATING = "floating",
+  BITE = "bite",
+  TAUT = "taut",
+}
+
+export interface LineShape {
+  x: number;
+  y: number;
+  slack: number;
+  sway: number;
 }
 
 export interface Hooked {

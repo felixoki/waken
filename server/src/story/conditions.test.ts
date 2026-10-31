@@ -30,6 +30,7 @@ const context = (overrides: Partial<StoryContext> = {}): StoryContext => ({
   leaning: false,
   stock: () => 0,
   present: () => 0,
+  raining: false,
   ...overrides,
 });
 
@@ -118,6 +119,17 @@ describe("passes", () => {
     assert.equal(
       conditions.passes(when, context({ followed: () => true })),
       true,
+    );
+  });
+
+  test("raining must match", () => {
+    const when: Condition = { raining: true };
+
+    assert.equal(conditions.passes(when, context()), false);
+    assert.equal(conditions.passes(when, context({ raining: true })), true);
+    assert.equal(
+      conditions.passes({ raining: false }, context({ raining: true })),
+      false,
     );
   });
 

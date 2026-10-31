@@ -1,9 +1,10 @@
 import { fork } from "child_process";
 import { fileURLToPath } from "url";
-import { TiledProperty } from "../types";
+import { SurfaceName, TiledProperty } from "../types";
 import {
   BiomeConfig,
   BiomeName,
+  BorderConfig,
   GeneratedMap,
   LevelBiome,
   Neighbors,
@@ -19,6 +20,7 @@ import {
 } from "../types/generation";
 import { join, dirname } from "path";
 import {
+  LEDGE_CLEARANCE,
   CONTOUR_GONE,
   CORNERS,
   DIRECTIONS_CARDINAL,
@@ -515,6 +517,57 @@ export const generation = {
       }
 
     return result;
+  },
+
+  nearTerrain: (
+    grid: TerrainName[],
+    idx: number,
+    width: number,
+    terrain: TerrainName,
+  ): boolean => {
+    const x = idx % width;
+    const y = (idx - x) / width;
+
+    for (let dy = -1; dy <= 1; dy++)
+      for (let dx = -1; dx <= 1; dx++) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx < 0 || nx >= width || ny < 0) continue;
+        if (grid[ny * width + nx] === terrain) return true;
+      }
+
+    return false;
+  },
+
+  terrainProperties: (
+    terrain: TerrainName,
+    tileset: string | undefined,
+    surface: SurfaceName | undefined,
+  ): TiledProperty[] | undefined => {
+    const properties: TiledProperty[] = [];
+
+    if (surface) properties.push({ name: "surface", type: "string", value: surface });
+    if (terrain === TerrainName.GRASS)
+      properties.push({ name: "meadow", type: "bool", value: true });
+    if (terrain === TerrainName.WATER) {
+      properties.push({ name: "water", type: "bool", value: true });
+      if (tileset === "cave_water")
+        properties.push({ name: "waterPalette", type: "string", value: "cave" });
+    }
+
+    return properties.length ? properties : undefined;
+  },
+
+  borderProperties: (border: BorderConfig): TiledProperty[] | undefined => {
+    const properties: TiledProperty[] = [];
+
+    if (border.collides) properties.push({ name: "collides", type: "bool", value: true });
+    if (border.collides && border.to === TerrainName.WATER)
+      properties.push({ name: "clearance", type: "int", value: LEDGE_CLEARANCE });
+    if (border.from === TerrainName.GRASS)
+      properties.push({ name: "meadow", type: "bool", value: true });
+
+    return properties.length ? properties : undefined;
   },
 
   createLayer: (

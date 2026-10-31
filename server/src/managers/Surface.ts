@@ -12,6 +12,7 @@ interface SurfaceGrid {
 
 const SURFACES = Object.values(SurfaceName);
 const GRASS = SURFACES.indexOf(SurfaceName.GRASS) + 1;
+const WATER = SURFACES.indexOf(SurfaceName.WATER) + 1;
 
 export class SurfaceManager {
   private grids = new Map<string, SurfaceGrid | null>();
@@ -66,8 +67,20 @@ export class SurfaceManager {
     let cells: Uint8Array | null = null;
 
     for (const layer of tiled.layers) {
-      const value = layer.properties?.find((p) => p.name === "surface")?.value;
+      const water = layer.properties?.some(
+        (p) => p.name === "water" && p.value === true,
+      );
+      const value = water
+        ? SurfaceName.WATER
+        : layer.properties?.find((p) => p.name === "surface")?.value;
       const code = SURFACES.indexOf(value) + 1;
+      const deck = layer.properties?.some((p) => p.name === "deck" && p.value === true);
+
+      if (deck && cells && layer.data) {
+        for (let i = 0; i < layer.data.length; i++)
+          if (layer.data[i] && cells[i] === WATER) cells[i] = 0;
+        continue;
+      }
 
       if (!code || !layer.data) continue;
 

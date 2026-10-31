@@ -10,6 +10,7 @@ import { PlayerStory } from './story';
 export interface SleepState {
   bed: string;
   isAsleep: boolean;
+  max?: { health: number; mana: number };
 }
 
 export interface PlayerConfig {

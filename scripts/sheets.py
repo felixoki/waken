@@ -52,10 +52,13 @@ GROUPS = {
     "remains": "remains",
     "sleeping_bag": "bed",
     "pillows": "bed",
+    "down_bed": "bed",
+    "pelt_bed": "bed",
+    "king_size_bed": "bed",
 }
 PATTERNS = [
     (r"^(apple)?tree\d*$", "tree"),
-    (r"^(cave_)?rocks?\d*$", "rock"),
+    (r"^((cave_)?rocks?|pebble)\d*$", "rock"),
     (r"_ore$", "ore"),
     (r"^(bush\d*|raspberry|strawberry_bush)$", "bush"),
     (r"^(glowshroom\d*|bearded_tooth_fungus)$", "mushroom"),
@@ -65,7 +68,24 @@ PATTERNS = [
     (r"_plant$", "crop"),
 ]
 
-NO_SHADOW: set[str] = set()
+NO_SHADOW: set[str] = {
+    "rock9",
+    "rock10",
+    "rock11",
+    "rock12",
+    "rock13",
+    "rock14",
+    "rock15",
+    "rock16",
+    "rock17",
+    "rock18",
+    "rock19",
+    "pebble1",
+    "pebble2",
+    "pebble3",
+    "pebble4",
+    "pebble5",
+}
 NO_SHADOW_FILES = {"crops", "ingredients"}
 NO_SHADOW_PATTERN = re.compile(r"^(bush\d*|glowshroom\d*|reed\d*)$")
 SHADOW_MAX_HEIGHT = 32
@@ -479,6 +499,21 @@ def plan() -> tuple[dict, dict, dict]:
             sheets[sheet].occupy(owner, ICONS, col - 1, row - 1, 1, 1)
             canvases[sheet][owner] = (col - 1, row - 1, None, icon_image({"spritesheet": sheet, "row": row, "col": col}))
 
+    moves = []
+    blocks = extras(entities)
+    for e in sorted(blocks, key=lambda e: (e["kind"] != "connect", natural(e["name"]), e.get("index", 0))):
+        category = extra_category(e, entities)
+        if not category:
+            continue
+        owner = e["name"] + ("" if e["kind"] == "anim" else f"#{e['kind']}{e.get('index', '')}")
+        group = {"stage": "crop", "anim": "animation", "connect": "fence"}[e["kind"]]
+        if e["sheet"] == category and e["aligned"]:
+            x, y = e["origin"]
+            sheets[category].occupy(owner, group, x, y, e["w"], e["h"])
+            canvases[category][owner] = (x, y, extra_image(e), None)
+        else:
+            moves.append((e, category, group, owner))
+
     for name, v, category, group, w, h, has_icon in sorted(pending, key=lambda p: (p[2], p[3], natural(p[0]))):
         tex, icon = block_of(v)
         x, y = sheets[category].place(name, group, w + (1 if has_icon else 0), h)
@@ -508,20 +543,6 @@ def plan() -> tuple[dict, dict, dict]:
         canvases["items"][f"{sheet}:{row}:{col}"] = (x, y, None, icon_image({"spritesheet": sheet, "row": row, "col": col}))
         icons[key] = {"spritesheet": "items", "row": y + 1, "col": x + 1}
 
-    moves = []
-    blocks = extras(entities)
-    for e in sorted(blocks, key=lambda e: (e["kind"] != "connect", natural(e["name"]), e.get("index", 0))):
-        category = extra_category(e, entities)
-        if not category:
-            continue
-        owner = e["name"] + ("" if e["kind"] == "anim" else f"#{e['kind']}{e.get('index', '')}")
-        group = {"stage": "crop", "anim": "animation", "connect": "fence"}[e["kind"]]
-        if e["sheet"] == category and e["aligned"]:
-            x, y = e["origin"]
-            sheets[category].occupy(owner, group, x, y, e["w"], e["h"])
-            canvases[category][owner] = (x, y, extra_image(e), None)
-        else:
-            moves.append((e, category, group, owner))
     pending_growables = {e["name"] for e, *_ in moves if e["kind"] == "stage"}
     for e in blocks:
         if e["kind"] == "stage" and e["name"] in pending_growables and e["sheet"] == extra_category(e, entities):

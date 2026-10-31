@@ -171,6 +171,7 @@ export class Player extends Entity {
     this.moving = input.moving;
     this.pointerdown = input.pointerdown;
 
+    input.isSwimming = handlers.water.swimming(this);
     const { state } = handlers.state.resolve(input);
 
     if (remoteInput) {

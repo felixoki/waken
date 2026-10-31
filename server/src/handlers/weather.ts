@@ -23,6 +23,7 @@ import {
   STRIKE_DISTANCE_BIAS,
   WET_INTERVAL,
   WET_DURATION,
+  WADE_INTERVAL,
   SURFACE_OFFSET,
 } from "../globals.js";
 
@@ -31,7 +32,9 @@ export const weather = {
     world.weather.remaining -= delta;
     if (world.weather.remaining <= 0) weather.roll(world, server);
 
-    weather.soak(world, server, Date.now());
+    const now = Date.now();
+    weather.wade(world, server, now);
+    weather.soak(world, server, now);
 
     if (world.weather.current !== WeatherName.STORM) return;
 
@@ -48,21 +51,40 @@ export const weather = {
       world.weather.current === WeatherName.RAIN ||
       world.weather.current === WeatherName.STORM;
 
-    if (raining) {
+    if (raining)
       for (const player of world.players.all)
         if (weather.rained(world, player))
           weather.drench(player.id, false, world, io, now);
 
-      for (const entity of world.entities.all)
-        if (
-          configs.entities[entity.name]?.behaviors?.length &&
-          weather.rained(world, entity)
-        )
-          weather.drench(entity.id, true, world, io, now);
-    }
+    for (const entity of world.entities.all)
+      if (
+        configs.entities[entity.name]?.behaviors?.length &&
+        ((raining && weather.rained(world, entity)) ||
+          (!configs.entities[entity.name]?.floats &&
+            weather.submerged(world, entity)))
+      )
+        weather.drench(entity.id, true, world, io, now);
 
     weather.dry(world, io, now, raining);
   },
+
+  wade: (world: World, io: Server, now: number): void => {
+    if (now < world.weather.waded) return;
+
+    world.weather.waded = now + WADE_INTERVAL;
+
+    for (const player of world.players.all)
+      if (weather.submerged(world, player))
+        weather.drench(player.id, false, world, io, now);
+  },
+
+  submerged: (world: World, target: EntityConfig | PlayerConfig): boolean =>
+    world.surfaces.at(
+      target.map,
+      target.x,
+      target.y + SURFACE_OFFSET,
+      handlers.climate.instance(world, target),
+    ) === SurfaceName.WATER,
 
   exposed: (map: MapName): boolean => !configs.maps[map]?.isIndoor,
 
@@ -124,6 +146,7 @@ export const weather = {
 
       if (!target || !held) continue;
       if (raining && weather.rained(world, target)) continue;
+      if (weather.submerged(world, target)) continue;
 
       held.held = false;
       held.expiresAt = now + WET_DURATION;

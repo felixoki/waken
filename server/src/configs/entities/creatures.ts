@@ -1026,7 +1026,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         damage: { type: DamageType.PIERCING, amount: 35 },
         range: 40,
         windup: 250,
-        sound: SoundName.ORC_SLASH,
+        sound: SoundName.MAGE_HIT,
         swing: SoundName.SWORD_SWING,
       },
     ],

@@ -4,7 +4,14 @@ import { sprites } from "../handlers/sprites";
 import { VortexPipeline } from "../pipelines/Vortex";
 import { configs } from "@server/configs";
 import { Direction, EntityName, PipelineName, StateName } from "@server/types";
-import { SPLASH_LIFESPAN } from "@server/globals";
+import { STEAM_FRAMES, STEAM_PHASES } from "../handlers/textures";
+import {
+  BLAZE_EMBER_COLORS,
+  BLAZE_STEAM_ALPHA,
+  BLAZE_STEAM_COLORS,
+  BLAZE_STEAM_LIFESPAN,
+  SPLASH_LIFESPAN,
+} from "@server/globals";
 
 export interface RainSplashes {
   ring: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -86,6 +93,69 @@ export const emitters = {
     });
     emitter.setDepth(999);
     return () => emitter.destroy();
+  },
+
+  embers: (entity: Entity): (() => void) => {
+    const emitter = entity.scene.add.particles(0, 0, "particle_pixel", {
+      tint: BLAZE_EMBER_COLORS,
+      alpha: { start: 1, end: 0 },
+      speedX: { min: -6, max: 6 },
+      speedY: { min: -38, max: -18 },
+      lifespan: { min: 500, max: 900 },
+      frequency: 240,
+      quantity: 1,
+      emitZone: {
+        type: "random" as const,
+        source: {
+          getRandomPoint: (point: Phaser.Types.Math.Vector2Like) => {
+            point.x = Math.random() * 12 - 6;
+            point.y = Math.random() * 24 - 12;
+          },
+        },
+      },
+      follow: entity,
+    });
+    emitter.setDepth(entity.depth + 1);
+
+    const sync = () => emitter.setDepth(entity.depth + 1);
+    entity.scene.events.on(Phaser.Scenes.Events.UPDATE, sync);
+
+    return () => {
+      entity.scene?.events.off(Phaser.Scenes.Events.UPDATE, sync);
+      emitter.stop();
+      emitter.scene?.time.delayedCall(900, () => emitter.destroy());
+    };
+  },
+
+  steam: (
+    scene: Scene,
+    side: () => number,
+  ): Phaser.GameObjects.Particles.ParticleEmitter => {
+    const anims = STEAM_PHASES.map((_, v) => {
+      const key = `particle_steam_${v}`;
+
+      if (!scene.anims.exists(key))
+        scene.anims.create({
+          key,
+          frames: Array.from({ length: STEAM_FRAMES }, (_, f) => ({
+            key: "particle_steam",
+            frame: `${v}_${f}`,
+          })),
+          frameRate: (STEAM_FRAMES * 1000) / BLAZE_STEAM_LIFESPAN,
+        });
+
+      return key;
+    });
+
+    return scene.add.particles(0, 0, "particle_steam", {
+      anim: anims,
+      tint: BLAZE_STEAM_COLORS,
+      alpha: { start: BLAZE_STEAM_ALPHA, end: 0, ease: "Quad.easeIn" },
+      speedX: { onEmit: () => side() * (2 + Math.random() * 4) },
+      speedY: { min: -14, max: -8 },
+      lifespan: BLAZE_STEAM_LIFESPAN,
+      emitting: false,
+    });
   },
 
   cold: (entity: Entity): (() => void) => {

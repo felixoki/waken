@@ -1542,6 +1542,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           },
           facing: Direction.DOWN,
           depth: 8,
+          max: { health: 100, mana: 100 },
         },
       },
     ],
@@ -1550,6 +1551,160 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
     metadata: {
       displayName: "Bed",
       description: "A simple bed. Sleep here to slip into the dream.",
+    },
+  },
+  [EntityName.DOWN_BED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "interior",
+          tileSize: 16,
+          tiles: [
+            { row: 10, start: 11, end: 12 },
+            { row: 11, start: 11, end: 12 },
+            { row: 12, start: 11, end: 12 },
+          ],
+        },
+        key: "down_bed_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 21,
+          height: 30,
+          offsetX: 5,
+          offsetY: 2,
+          static: true,
+          collides: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.SLEEPABLE,
+        config: {
+          anchor: { x: -2, y: -7 },
+          exits: {
+            [Direction.LEFT]: { x: -21.5, y: -4.5 },
+            [Direction.RIGHT]: { x: 19.5, y: -4.5 },
+          },
+          facing: Direction.DOWN,
+          depth: 8,
+          max: { health: 125, mana: 125 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Down bed",
+      description: "A bed stuffed with goose down. You enter the dream rested.",
+    },
+  },
+  [EntityName.PELT_BED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "interior",
+          tileSize: 16,
+          tiles: [
+            { row: 10, start: 13, end: 15 },
+            { row: 11, start: 13, end: 15 },
+            { row: 12, start: 13, end: 15 },
+          ],
+        },
+        key: "pelt_bed_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 28,
+          height: 34,
+          offsetX: 10,
+          offsetY: 2,
+          static: true,
+          collides: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.SLEEPABLE,
+        config: {
+          anchor: { x: -1, y: -12 },
+          exits: {
+            [Direction.LEFT]: { x: -26.5, y: -2 },
+            [Direction.RIGHT]: { x: 26.5, y: -2 },
+          },
+          facing: Direction.DOWN,
+          depth: 8,
+          max: { health: 150, mana: 100 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Pelt bed",
+      description: "A bed heaped with hunted pelts. You enter the dream hardened.",
+    },
+  },
+  [EntityName.KING_SIZE_BED]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "interior",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 1, end: 3 },
+            { row: 84, start: 1, end: 3 },
+            { row: 85, start: 1, end: 3 },
+            { row: 86, start: 1, end: 3 },
+          ],
+        },
+        key: "king_size_bed_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 37,
+          height: 32,
+          offsetX: 5,
+          offsetY: 18,
+          static: true,
+          collides: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.SLEEPABLE,
+        config: {
+          anchor: { x: -9, y: -1 },
+          exits: {
+            [Direction.LEFT]: { x: -26.5, y: -2 },
+            [Direction.RIGHT]: { x: 26.5, y: -2 },
+          },
+          facing: Direction.DOWN,
+          depth: 8,
+          max: { health: 200, mana: 200 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "King size bed",
+      description: "A carved bed fit for a lord. You enter the dream at your strongest.",
     },
   },
   [EntityName.CHEST1]: {

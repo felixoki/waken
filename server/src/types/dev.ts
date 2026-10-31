@@ -10,4 +10,7 @@ export enum DevCommand {
   LEAN = "lean",
   VILLAGE = "village",
   FREECAST = "freecast",
+  GO = "go",
+  EFFECT = "effect",
+  RESEED = "reseed",
 }

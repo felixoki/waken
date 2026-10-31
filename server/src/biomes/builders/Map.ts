@@ -253,6 +253,7 @@ export class MapBuilder {
     for (const fillTerrain of fillOrder) {
       let data: number[] | null = null;
       let surface: SurfaceName | undefined;
+      let tileset: string | undefined;
 
       for (const { config, y: top } of bands) {
         const index = config.layers.findIndex((l) => l.terrain === fillTerrain);
@@ -268,6 +269,7 @@ export class MapBuilder {
 
         data ??= new Array(width * height).fill(0);
         surface ??= layerConfig.surface;
+        tileset ??= layerConfig.tileset;
 
         const gid = firstgids.get(layerConfig.tileset)!;
         const isBaseLayer = index === 0;
@@ -281,15 +283,18 @@ export class MapBuilder {
           for (let x = 0; x < width; x++) {
             const idx = handlers.generation.toIndex(x, y, width);
 
-            if (
-              isBaseLayer ||
-              (exact
-                ? grid[idx] === fillTerrain
-                : handlers.generation.isTerrainAtOrAbove(
-                    grid[idx],
-                    layerConfig.terrain,
-                  ))
-            ) {
+            const filled =
+              fillTerrain === TerrainName.WATER
+                ? handlers.generation.nearTerrain(grid, idx, width, fillTerrain)
+                : isBaseLayer ||
+                  (exact
+                    ? grid[idx] === fillTerrain
+                    : handlers.generation.isTerrainAtOrAbove(
+                        grid[idx],
+                        layerConfig.terrain,
+                      ));
+
+            if (filled) {
               let tile = fills[0];
 
               if (fills.length > 1) {
@@ -315,7 +320,7 @@ export class MapBuilder {
           width,
           height,
           data,
-          surface && [{ name: "surface", type: "string", value: surface }],
+          handlers.generation.terrainProperties(fillTerrain, tileset, surface),
         ),
       );
     }
@@ -800,9 +805,7 @@ export class MapBuilder {
         continue;
       }
 
-      const properties = border.collides
-        ? [{ name: "collides", type: "bool", value: true }]
-        : undefined;
+      const properties = handlers.generation.borderProperties(border);
 
       const layer = handlers.generation.createLayer(
         layerId++,

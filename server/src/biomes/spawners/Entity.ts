@@ -164,6 +164,8 @@ export class EntitySpawner {
     const gen = handlers.generation;
     const rng = gen.seededRandom(gen.hash(`${this.seed}-${r}`));
 
+    if (rule.chance !== undefined && rng() >= rule.chance) return;
+
     const candidates: { x: number; y: number }[] = [];
 
     for (let y = 0; y < height; y++)

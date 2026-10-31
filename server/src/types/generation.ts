@@ -345,6 +345,7 @@ export interface SpawnRule {
   elevation?: Range;
   density?: number;
   count?: Range;
+  chance?: number;
   spacing: number;
   margin?: number;
   wallAdjacent?: boolean;

@@ -3831,6 +3831,9 @@
 </data>
  </layer>
  <layer id="15" name="water" width="82" height="112">
+  <properties>
+   <property name="water" type="bool" value="true"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -4535,7 +4538,10 @@
  </layer>
  <layer id="16" name="coast" width="82" height="112">
   <properties>
+   <property name="clearance" type="int" value="20"/>
    <property name="collides" type="bool" value="true"/>
+   <property name="meadow" type="bool" value="true"/>
+   <property name="meadowPalette" value="isles"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -4770,6 +4776,8 @@
  </layer>
  <layer id="6" name="grass" width="82" height="112">
   <properties>
+   <property name="meadow" type="bool" value="true"/>
+   <property name="meadowPalette" value="isles"/>
    <property name="surface" value="grass"/>
   </properties>
   <data encoding="csv">
