@@ -1,4 +1,4 @@
-import { ComponentName, Event, PipelineName, SoundName } from "@server/types";
+import { BounceConfig, ComponentName, Event, SoundName } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
 import {
@@ -44,12 +44,14 @@ export class BounceComponent extends Component {
   private entity: Entity;
   private isAnimating: boolean = false;
   private timer?: Phaser.Time.TimerEvent;
+  private config?: BounceConfig;
 
   public name = ComponentName.BOUNCE;
 
-  constructor(entity: Entity) {
+  constructor(entity: Entity, config?: BounceConfig) {
     super();
     this.entity = entity;
+    this.config = config;
   }
 
   attach(): void {
@@ -62,21 +64,24 @@ export class BounceComponent extends Component {
 
     this.isAnimating = true;
 
-    this.entity.scene.managers.sound.play.sfx(SoundName.RUSTLE, {
-      position: { x: this.entity.x, y: this.entity.y },
-    });
+    if (!this.config?.quiet)
+      this.entity.scene.managers.sound.play.sfx(SoundName.RUSTLE, {
+        position: { x: this.entity.x, y: this.entity.y },
+      });
 
     const game = this.entity.scene.game;
     const renderer = game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
     const name = pool.acquire(game.loop.time);
     const pipeline = renderer.pipelines.get(name) as BouncePipeline;
 
+    const previous = this.entity.pipeline;
+
     pipeline.trigger(0.15, 2.0, 2.5, 10.0);
     this.entity.setPipeline(name);
 
     this.timer = this.entity.scene.time.delayedCall(2000, () => {
       this.timer = undefined;
-      this.entity.setPipeline(PipelineName.WIND);
+      this.entity.setPipeline(previous);
       this.isAnimating = false;
     });
   };

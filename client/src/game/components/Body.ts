@@ -5,6 +5,8 @@ import { Component } from "./Component";
 export class BodyComponent extends Component {
   private entity: Entity;
   private config: BodyConfig;
+  private frame = { width: 0, height: 0 };
+  private applied = { width: 0, height: 0 };
 
   public name: ComponentName = ComponentName.BODY;
 
@@ -33,7 +35,8 @@ export class BodyComponent extends Component {
     }
 
     const body = this.entity.body as Phaser.Physics.Arcade.Body;
-    
+    this.frame = { width: this.entity.frame.width, height: this.entity.frame.height };
+
     body.setSize(this.config.width, this.config.height);
     body.setOffset(this.config.offsetX, this.config.offsetY);
     body.setImmovable(this.config.immovable || false);
@@ -48,7 +51,19 @@ export class BodyComponent extends Component {
     if (this.config.static) this.entity.isStatic = true;
   }
 
-  update(): void {}
+  update(): void {
+    if (this.entity.isStatic || !this.frame.width) return;
+
+    const body = this.entity.body as Phaser.Physics.Arcade.Body | null;
+    const { width, height } = this.entity.frame;
+    if (!body || (width === this.applied.width && height === this.applied.height)) return;
+
+    this.applied = { width, height };
+    body.setOffset(
+      this.config.offsetX + (width - this.frame.width) / 2,
+      this.config.offsetY + (height - this.frame.height) / 2,
+    );
+  }
 
   detach(): void {}
 }

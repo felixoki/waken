@@ -106,7 +106,7 @@ export class ComponentFactory {
           comp = new InteractableComponent(entity);
           break;
         case ComponentName.BOUNCE:
-          comp = new BounceComponent(entity);
+          comp = new BounceComponent(entity, component.config);
           break;
         case ComponentName.LIGHT:
           comp = new LightComponent(entity, component.config);

@@ -100,6 +100,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (!input || this.isLocked) return;
 
     const prepared = { ...input, id: this.id, x: this.x, y: this.y };
+    if (this.z <= 0 && handlers.water.swimming(this)) prepared.state = undefined;
     const { state } = handlers.state.resolve(prepared);
 
     if (input.facing) this.setFacing(input.facing);

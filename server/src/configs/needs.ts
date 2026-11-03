@@ -141,6 +141,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.SUNFLOWER, tier: 1, group: GroupName.FLOWERS },
       { item: EntityName.DAFFODIL, tier: 1, group: GroupName.FLOWERS },
       { item: EntityName.EDELWEISS, tier: 2, group: GroupName.FLOWERS },
+      { item: EntityName.WATER_LILY1, tier: 1, group: GroupName.FLOWERS },
       { item: EntityName.BLUE_LOTUS, tier: 1, group: GroupName.HERBS },
       { item: EntityName.CLARY_SAGE, tier: 1, group: GroupName.HERBS },
       { item: EntityName.BELLADONNA, tier: 1, group: GroupName.HERBS },

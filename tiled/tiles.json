@@ -51,7 +51,8 @@
   "village_terrain": "collection/village_terrain.png",
   "water_coasts": "collection/water_coasts.png",
   "water_details": "collection/water_details.png",
-  "water_lilies": "collection/water_lilies.png"
+  "water_lilies": "collection/water_lilies.png",
+  "waterfalls": "collection/waterfalls.png"
  },
  "benches": {
   "aliases": {
@@ -15330,6 +15331,155 @@
    ]
   },
   "columns": 24
+ },
+ "ledge_waterfalls": {
+  "cells": {
+   "0,0": [
+    "waterfalls",
+    40
+   ],
+   "0,3": [
+    "waterfalls",
+    352
+   ],
+   "0,6": [
+    "waterfalls",
+    588
+   ],
+   "1,0": [
+    "waterfalls",
+    41
+   ],
+   "1,1": [
+    "waterfalls",
+    54
+   ],
+   "1,3": [
+    "waterfalls",
+    353
+   ],
+   "1,4": [
+    "waterfalls",
+    366
+   ],
+   "10,0": [
+    "waterfalls",
+    198
+   ],
+   "10,4": [
+    "waterfalls",
+    534
+   ],
+   "11,2": [
+    "waterfalls",
+    482
+   ],
+   "12,0": [
+    "waterfalls",
+    274
+   ],
+   "12,5": [
+    "waterfalls",
+    586
+   ],
+   "13,0": [
+    "waterfalls",
+    275
+   ],
+   "13,1": [
+    "waterfalls",
+    288
+   ],
+   "13,3": [
+    "waterfalls",
+    510
+   ],
+   "14,0": [
+    "waterfalls",
+    276
+   ],
+   "15,2": [
+    "waterfalls",
+    484
+   ],
+   "15,4": [
+    "waterfalls",
+    536
+   ],
+   "2,0": [
+    "waterfalls",
+    42
+   ],
+   "2,3": [
+    "waterfalls",
+    354
+   ],
+   "3,5": [
+    "waterfalls",
+    560
+   ],
+   "4,0": [
+    "waterfalls",
+    118
+   ],
+   "4,3": [
+    "waterfalls",
+    430
+   ],
+   "5,0": [
+    "waterfalls",
+    119
+   ],
+   "5,1": [
+    "waterfalls",
+    132
+   ],
+   "5,3": [
+    "waterfalls",
+    431
+   ],
+   "5,4": [
+    "waterfalls",
+    444
+   ],
+   "5,6": [
+    "waterfalls",
+    612
+   ],
+   "6,0": [
+    "waterfalls",
+    120
+   ],
+   "6,3": [
+    "waterfalls",
+    432
+   ],
+   "7,5": [
+    "waterfalls",
+    562
+   ],
+   "8,0": [
+    "waterfalls",
+    196
+   ],
+   "8,3": [
+    "waterfalls",
+    508
+   ],
+   "9,0": [
+    "waterfalls",
+    197
+   ],
+   "9,1": [
+    "waterfalls",
+    210
+   ],
+   "9,6": [
+    "waterfalls",
+    614
+   ]
+  },
+  "columns": 16
  },
  "market": {
   "aliases": {

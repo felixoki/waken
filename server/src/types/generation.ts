@@ -274,6 +274,7 @@ export interface BiomeConfig {
   terraces?: TerraceConfig;
   peak?: { entity: EntityName; requires: number };
   sites?: SiteConfig[];
+  water?: boolean;
 }
 
 export interface SiteConfig {
@@ -353,6 +354,7 @@ export interface SpawnRule {
   cluster?: boolean;
   group?: GroupConfig;
   loot?: (Item & { chance: number })[];
+  near?: { terrain: TerrainName; within: number };
 }
 
 export interface Entity {

@@ -564,8 +564,12 @@ export const generation = {
     if (border.collides) properties.push({ name: "collides", type: "bool", value: true });
     if (border.collides && border.to === TerrainName.WATER)
       properties.push({ name: "clearance", type: "int", value: LEDGE_CLEARANCE });
-    if (border.from === TerrainName.GRASS)
+    if (border.to === TerrainName.WATER)
+      properties.push({ name: "shore", type: "bool", value: true });
+    if (border.from === TerrainName.GRASS) {
       properties.push({ name: "meadow", type: "bool", value: true });
+      properties.push({ name: "meadowEdge", type: "bool", value: true });
+    }
 
     return properties.length ? properties : undefined;
   },

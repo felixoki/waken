@@ -177,6 +177,8 @@ export interface EntityDefinition {
   offset?: { x?: number; y?: number };
   flat?: boolean;
   floats?: boolean;
+  sinks?: boolean;
+  wades?: boolean;
 }
 
 export interface Icon {
@@ -482,6 +484,17 @@ export enum EntityName {
   REED1 = "reed1",
   REED2 = "reed2",
   REED3 = "reed3",
+  CATTAIL1 = "cattail1",
+  CATTAIL2 = "cattail2",
+  CATTAIL3 = "cattail3",
+  CATTAIL4 = "cattail4",
+  SEDGE1 = "sedge1",
+  SEDGE2 = "sedge2",
+  SEDGE3 = "sedge3",
+  SEDGE4 = "sedge4",
+  SEDGE5 = "sedge5",
+  WATER_LILY1 = "water_lily1",
+  WATER_LILY2 = "water_lily2",
   RING1 = "ring1",
   RING2 = "ring2",
   RING3 = "ring3",
@@ -506,6 +519,11 @@ export enum EntityName {
   PEBBLE3 = "pebble3",
   PEBBLE4 = "pebble4",
   PEBBLE5 = "pebble5",
+  MOSSY_ROCK1 = "mossy_rock1",
+  MOSSY_ROCK2 = "mossy_rock2",
+  MOSSY_ROCK3 = "mossy_rock3",
+  MOSSY_ROCK4 = "mossy_rock4",
+  MOSSY_ROCK5 = "mossy_rock5",
   ROCKS1 = "rocks1",
   ROCKS3 = "rocks3",
   ROCKS5 = "rocks5",

@@ -529,6 +529,7 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
     ],
   },
   [EntityName.SHADOW_WANDERER]: {
+    floats: true,
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 250,

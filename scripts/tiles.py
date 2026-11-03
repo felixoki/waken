@@ -45,6 +45,7 @@ from tmx import Map  # noqa: E402
 MAPS = {
     "village.tmx": None,
     "isles.tmx": None,
+    "water.tmx": None,
     "blacksmith.tmx": "blacksmith",
     "farm.tmx": "farm",
     "windmill.tmx": "farm",
@@ -96,6 +97,7 @@ RULES = {
     "isles_coasts": lambda i: "isles_ground",
     "isles_coasts2": lambda i: "isles_ground",
     "isles_waterfalls": lambda i: "isles_ground",
+    "waterfalls": lambda i: "ledge_waterfalls",
     "isles_details": lambda i: "isles_ground",
     "isles_rocks": lambda i: "isles_rocks",
     "isles_clouds": lambda i: "isles_clouds",
@@ -114,6 +116,7 @@ ANIMATED = {
     "isles_coasts": (29, 145),
     "isles_coasts2": (29, 145),
     "isles_waterfalls": (0, 209),
+    "waterfalls": [(0, 78, 468), (468, 26, 637), (637, 26, 819)],
 }
 FRAMES = 6
 FRAME_MS = 100
@@ -123,9 +126,13 @@ def frames_of(sources: dict, source: str, tid: int) -> list[int] | None:
     """The frame cycle of a tile on a sheet that stacks its animation frames, starting at that tile; None if it never changes."""
     if source not in ANIMATED:
         return None
-    first, stride = ANIMATED[source]
-    if tid < first:
+    ranges = ANIMATED[source]
+    if isinstance(ranges, tuple):
+        ranges = [(*ranges, float("inf"))]
+    match = next(((first, stride) for first, stride, end in ranges if first <= tid < end), None)
+    if not match:
         return None
+    first, stride = match
     f = (tid - first) // stride
     base = tid - stride * f
     frames = [base + stride * ((f + i) % FRAMES) for i in range(FRAMES)]

@@ -313,14 +313,18 @@ export const fishing = {
   },
 
   findZone: (entity: Entity, x: number, y: number): FishName[] | null => {
+    let found: Set<FishName> | null = null;
+
     for (const other of entity.scene.managers.entities.all) {
       const zone = other.getComponent<ZoneComponent>(ComponentName.ZONE);
 
-      if (!zone || zone.type !== ZoneName.FISH) continue;
-      if (zone.contains(x, y)) return zone.data.fish ?? [];
+      if (!zone || zone.type !== ZoneName.FISH || !zone.contains(x, y)) continue;
+
+      found ??= new Set();
+      for (const name of zone.data.fish ?? []) found.add(name);
     }
 
-    return null;
+    return found && [...found];
   },
 
   roll: (available: FishName[] | null): Hooked | null => {

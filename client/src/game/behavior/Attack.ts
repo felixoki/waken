@@ -236,7 +236,14 @@ export class AttackBehavior extends Behavior {
         return { facing: away, moving: [away], isRunning: canRun };
       }
 
-      if (this.spacing && distance <= this.spacing)
+      const reach = Math.max(
+        0,
+        ...attacks
+          .filter((config) => config.state !== StateName.WARNING)
+          .map((config) => config.range ?? 40),
+      );
+
+      if (this.spacing && distance <= Math.min(this.spacing, reach))
         return { facing, moving: [], isRunning: false };
 
       if (now - this.line.at > LINE_INTERVAL) {

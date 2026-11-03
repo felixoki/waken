@@ -1239,6 +1239,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
     ],
   },
   [EntityName.HERON]: {
+    wades: true,
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 240,
@@ -1276,8 +1277,8 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           width: 24,
           height: 18,
-          offsetX: 20,
-          offsetY: 32,
+          offsetX: 28,
+          offsetY: 41,
           pushable: false,
         },
       },

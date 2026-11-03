@@ -71,7 +71,7 @@ export type ComponentConfig =
   | { name: ComponentName.AURA; config: AuraConfig }
   | { name: ComponentName.BEHAVIOR_QUEUE }
   | { name: ComponentName.BODY; config: BodyConfig }
-  | { name: ComponentName.BOUNCE }
+  | { name: ComponentName.BOUNCE; config?: BounceConfig }
   | { name: ComponentName.CRAFTER; config: CrafterConfig }
   | { name: ComponentName.CONSUMABLE; config: ConsumableConfig }
   | { name: ComponentName.DAMAGEABLE; config?: DamageableConfig }
@@ -112,6 +112,10 @@ export type ComponentConfig =
   | { name: ComponentName.WINDSWAY }
   | { name: ComponentName.CONNECTABLE; config: ConnectableConfig }
   | { name: ComponentName.ZONE };
+
+export interface BounceConfig {
+  quiet?: boolean;
+}
 
 export interface ConnectableConfig {
   spritesheet: string;

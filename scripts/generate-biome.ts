@@ -12,13 +12,15 @@ const SPRITES = resolve(ROOT, "client/public/assets/sprites");
 const args = process.argv.slice(2);
 const force = args.includes("--force");
 const [biome, seed = biome] = args.filter((arg) => !arg.startsWith("--"));
+const stack = biome.split(",") as BiomeName[];
 const name =
-  args.find((arg) => arg.startsWith("--out="))?.slice("--out=".length) ?? biome;
+  args.find((arg) => arg.startsWith("--out="))?.slice("--out=".length) ??
+  stack.join("-");
 const out = resolve(ROOT, `tiled/${name}.tmx`);
 
-if (!Object.values(BiomeName).includes(biome as BiomeName)) {
+if (!stack.every((b) => Object.values(BiomeName).includes(b))) {
   console.error(
-    `usage: generate:biome <${Object.values(BiomeName).join("|")}> [seed] [--out=name] [--force]`,
+    `usage: generate:biome <${Object.values(BiomeName).join("|")}>[,...] [seed] [--out=name] [--force]`,
   );
   process.exit(1);
 }
@@ -28,7 +30,11 @@ if (existsSync(out) && !force) {
   process.exit(1);
 }
 
-const generated = generateBiome([{ biome: biome as BiomeName, spawn: true }], seed);
+const generated = generateBiome(
+  stack.map((b, i) => ({ biome: b, spawn: i === stack.length - 1 })),
+  seed,
+  Infinity,
+);
 
 if (!generated) {
   console.error(`✗ ${biome}: nothing generated`);
@@ -186,8 +192,17 @@ let layerId = 1;
 let xml = "";
 
 for (const layer of tilemap.layers) {
+  if (layer.type === "objectgroup") {
+    xml += ` <objectgroup id="${layerId++}" name="${layer.name}">\n` + properties(layer.properties, "  ");
+    for (const o of layer.objects)
+      xml += `  <object id="${o.id}" x="${o.x}" y="${o.y}" width="${o.width}" height="${o.height}"/>\n`;
+    xml += ` </objectgroup>\n`;
+    continue;
+  }
+
+  const hidden = layer.visible === false ? ` visible="0"` : "";
   xml +=
-    ` <layer id="${layerId++}" name="${layer.name}" width="${width}" height="${height}">\n` +
+    ` <layer id="${layerId++}" name="${layer.name}" width="${width}" height="${height}"${hidden}>\n` +
     properties(layer.properties, "  ") +
     `  <data encoding="csv">\n${csv(layer.data)}\n</data>\n </layer>\n`;
 }
@@ -233,7 +248,9 @@ writeFileSync(
 
 console.log(`✓ tiled/${name}.tmx  ${width}x${height}  seed "${seed}"`);
 for (const layer of tilemap.layers)
-  console.log(`  ${layer.name.padEnd(14)} ${layer.data.filter((gid: number) => gid).length}`);
+  console.log(
+    `  ${layer.name.padEnd(14)} ${layer.data ? layer.data.filter((gid: number) => gid).length : `${layer.objects.length} objects`}`,
+  );
 console.log(`  ${entities.length} entities`);
 
 process.exit(0);

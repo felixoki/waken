@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="67" nextobjectid="1864">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="67" nextobjectid="1873">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -5181,7 +5181,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,13081,13082,13083,13084,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="37" name="lilis_details" width="76" height="134">
+ <layer id="37" name="objects" width="76" height="134">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -5319,7 +5319,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="38" name="lilis_details" width="76" height="134">
+ <layer id="38" name="objects" width="76" height="134">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -10438,6 +10438,15 @@
   <object id="1861" name="Visitor1" x="1104" y="1872" width="1" height="1"/>
   <object id="1862" name="Visitor2" x="944" y="1984" width="1" height="1"/>
   <object id="1863" name="Cult_tent" x="1168" y="1855" width="1" height="1"/>
+  <object id="1864" name="Water_lily1" x="440" y="176" width="1" height="1"/>
+  <object id="1865" name="Water_lily1" x="56" y="256" width="1" height="1"/>
+  <object id="1866" name="Water_lily1" x="312" y="272" width="1" height="1"/>
+  <object id="1867" name="Water_lily2" x="424" y="80" width="1" height="1"/>
+  <object id="1868" name="Water_lily2" x="88" y="240" width="1" height="1"/>
+  <object id="1869" name="Water_lily2" x="328" y="256" width="1" height="1"/>
+  <object id="1870" name="Water_lily2" x="72" y="272" width="1" height="1"/>
+  <object id="1871" name="Water_lily1" x="152" y="304" width="1" height="1"/>
+  <object id="1872" name="Water_lily2" x="296" y="320" width="1" height="1"/>
  </objectgroup>
  <layer id="40" name="chimneys" width="76" height="134">
   <properties>

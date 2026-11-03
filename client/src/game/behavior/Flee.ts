@@ -21,6 +21,8 @@ export class FleeBehavior extends Behavior {
     interval: 200,
   };
   private attempts: number = 0;
+  private origin: Waypoint = { x: 0, y: 0 };
+  private resume: number = 0;
   private flying: boolean = false;
 
   public name = BehaviorName.FLEE;
@@ -43,6 +45,7 @@ export class FleeBehavior extends Behavior {
     this.path = [];
     this.exit = null;
     this.attempts = 0;
+    this.resume = 0;
   }
 
   update(entity: Entity): Partial<Input> {
@@ -51,6 +54,9 @@ export class FleeBehavior extends Behavior {
     const map = entity.scene.tileManager.map;
     const mapW = map.widthInPixels;
     const mapH = map.heightInPixels;
+    const now = entity.scene.time.now;
+
+    if (now < this.resume) return { facing: entity.facing, moving: [] };
 
     if (!this.exit) {
       const exit = this._getExitPoint(entity, mapW, mapH);
@@ -62,6 +68,9 @@ export class FleeBehavior extends Behavior {
 
       this.exit = exit;
       this.path = [];
+      this.origin = { x: entity.x, y: entity.y };
+      this.stuck.lastPosition = { x: entity.x, y: entity.y };
+      this.stuck.lastCheck = now;
     }
 
     if (this.flying) return this._flyToExit(entity, mapW, mapH);
@@ -69,35 +78,19 @@ export class FleeBehavior extends Behavior {
     if (this.exit && !this.path.length) {
       this.path = handlers.path.plan(entity, this.exit, false) ?? [];
 
-      if (!this.path.length) {
-        this.attempts++;
-        this.exit = null;
-
-        if (this.attempts > 3) {
-          this._despawn(entity);
-          return {};
-        }
-
-        return { facing: entity.facing, moving: [], ...this._move() };
-      }
+      if (!this.path.length) return this._retry(entity, now);
     }
 
-    const now = entity.scene.time.now;
-
-    if (this.path.length && handlers.path.stuck(entity, this.stuck, now, 4)) {
-      this.attempts++;
-      this.path = [];
-      this.exit = null;
-
-      if (this.attempts > 3) {
-        this._despawn(entity);
-        return {};
-      }
-
-      return { facing: entity.facing, moving: [], ...this._move() };
-    }
+    if (this.path.length && handlers.path.stuck(entity, this.stuck, now, 4))
+      return this._retry(entity, now);
 
     if (this.path.length) {
+      if (
+        Math.hypot(entity.x - this.origin.x, entity.y - this.origin.y) >
+        map.tileWidth
+      )
+        this.attempts = 0;
+
       const input = handlers.path.follow(entity, this.path, PATH_ARRIVAL, true);
 
       if (!input) {
@@ -116,6 +109,25 @@ export class FleeBehavior extends Behavior {
     this.exit = null;
     this.targetId = "";
     this.attempts = 0;
+    this.resume = 0;
+  }
+
+  private _retry(entity: Entity, now: number): Partial<Input> {
+    this.attempts++;
+    this.path = [];
+    this.exit = null;
+
+    if (this.attempts > 3) {
+      if (!entity.scene.cameras.main.worldView.contains(entity.x, entity.y)) {
+        this._despawn(entity);
+        return {};
+      }
+
+      this.attempts = 1;
+      this.resume = now + 1000;
+    }
+
+    return { facing: entity.facing, moving: [], ...this._move() };
   }
 
   private _flyToExit(

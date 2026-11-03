@@ -1,7 +1,9 @@
-import { DirectionVectors, EffectName, Item } from "@server/types";
+import { DirectionVectors, EffectName, Item, StateName } from "@server/types";
 import { configs } from "@server/configs";
+import { SPEED_SWIMMING } from "@server/globals";
 import { Entity } from "../Entity";
 import { robe } from "./robe";
+import { water } from "./water";
 
 const vector = new Phaser.Math.Vector2(0, 0);
 
@@ -44,6 +46,14 @@ export const move = {
       vector.x += dv.x;
       vector.y += dv.y;
     });
+
+    if (
+      entity.state !== StateName.SWIMMING &&
+      entity.state !== StateName.FLYING &&
+      entity.z <= 0 &&
+      water.swimming(entity)
+    )
+      speed = Math.min(speed, SPEED_SWIMMING * entity.speed);
 
     if (vector.x !== 0 || vector.y !== 0) vector.normalize().scale(speed);
 

@@ -37,7 +37,7 @@ export const INTERPOLATION_SPEED = 10;
 
 export const AUTOSAVE_INTERVAL = 30 * 1000;
 
-export const PHASE_TRANSITION_DURATION = 3000;
+export const PHASE_TRANSITION_DURATION = 20000;
 export const PHASE_STARTS = [
   { phase: TimePhase.DAWN, start: 0 },
   { phase: TimePhase.DAY, start: 0.1 },
@@ -212,6 +212,24 @@ export const WATER_SPECULAR_ALPHA = 1;
 export const WATER_FOAM_SCALE = 0.16;
 export const WATER_FOAM_COLOR = 0x56cddc;
 export const WATER_FOAM_ALPHA = 1;
+export const WATER_FLOW_LENGTH = 40;
+export const WATER_FLOW_RIDGE = 10;
+export const WATER_FLOW_NARROW = 7;
+export const WATER_FLOW_WIDE = 10;
+export const WATER_FLOW_BLUR = 2;
+export const WATER_FLOW_PASSES = 3;
+export const WATER_FLOW_SPEED = 0.3;
+export const WATER_FLOW_CYCLE = 2.4;
+export const WATER_LAKES = 3;
+export const WATER_LAKE_RADIUS = [14, 22];
+export const WATER_RIVERS = 2;
+export const WATER_RIVER_WIDTH = [4, 11];
+export const WATER_RIVER_GROW = 50;
+export const WATER_RIVER_SLOPE = 1.5;
+export const WATER_BEACH_RING = [2, 5];
+export const WATER_CREEK_MIN = 8;
+export const WATER_CREEK_REEDS = 150;
+export const WATER_BED_REACH = 4;
 export const WATER_PALETTES = {
   lake: {
     gradient: WATER_GRADIENT,
@@ -322,6 +340,28 @@ export const SINK_BOB_SPEED = 2.5;
 export const SINK_BAND = 2;
 export const SINK_BAND_ALPHA = 0.4;
 export const SINK_TINT = 0.35;
+export const WATERFALL_LIP = 6;
+export const WATERFALL_BASE = 10;
+export const WATERFALL_EDGE = 4;
+export const WATERFALL_DEPTH = 999;
+export const WATERFALL_MIST_PAD = 20;
+export const WATERFALL_BARE_GROUND = 0x967e5d;
+export const WATERFALL_MIST_BELOW = 12;
+export const WATERFALL_MIST_ALPHA = 0.3;
+export const WATERFALL_WAVES = 3;
+export const WATERFALL_WAVE_PERIOD = 3.2;
+export const WATERFALL_WAVE_REACH = 0.7;
+export const WATERFALL_WAVE_SQUASH = 0.35;
+export const WATERFALL_WAVE_WIDTH = 2;
+export const WATERFALL_WAVE = 0.45;
+export const ROOT_RING = 0.5;
+export const ROOT_SPREAD = 0.6;
+export const ROOT_CURVE = 0.3;
+export const ROOT_DEPTH = 0.25;
+export const ROOT_DEPTH_MAX = 12;
+export const ROOT_WIDTH = 1.5;
+export const ROOT_CONTACT = 0.25;
+export const ROOT_RIPPLE = 0.5;
 
 /** Swimming */
 export const SWIM_DEPTH = 4;
@@ -415,7 +455,8 @@ export const RANGE_HITBOX_DETECTION = 100;
 /** Vision */
 export const VISION_PROXIMITY = 200;
 export const PATH_DEADZONE = 2;
-export const FACING_LOOKAHEAD = 3;
+export const FACING_HOLD = 140;
+export const SPAWN_JITTER = 0.4;
 export const LINE_INTERVAL = 150;
 export const PATH_ARRIVAL = 4;
 export const PATH_MARGIN = PATH_ARRIVAL;

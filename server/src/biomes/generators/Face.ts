@@ -31,7 +31,10 @@ export class FaceGenerator {
     this.seed = seed;
   }
 
-  generate(elevation: Uint8Array): {
+  generate(
+    elevation: Uint8Array,
+    reserved: { level: number; from: number; to: number }[] = [],
+  ): {
     data: number[];
     stairs: number[];
     under: Map<number, TerrainName>;
@@ -85,12 +88,17 @@ export class FaceGenerator {
       }
     }
 
-    this.stairs(tops, data, stairs);
+    this.stairs(tops, data, stairs, reserved);
 
     return { data, stairs, under };
   }
 
-  private stairs(tops: number[][], data: number[], stairs: number[]): void {
+  private stairs(
+    tops: number[][],
+    data: number[],
+    stairs: number[],
+    reserved: { level: number; from: number; to: number }[],
+  ): void {
     const { width: w, height: h, terraces } = this.config;
     if (!terraces) return;
 
@@ -138,6 +146,7 @@ export class FaceGenerator {
 
         if (start < 0) start = x;
         if (x < 1 || x > w - 3 || c + 2 >= h) continue;
+        if (reserved.some((r) => r.level === level && x + 1 >= r.from && x <= r.to)) continue;
 
         if (x >= 3 && x <= w - 4 && flat(t, x, -2, 3)) wide.push(x);
         else if (flat(t, x, -1, 2)) narrow.push(x);
@@ -343,6 +352,29 @@ export class FaceGenerator {
 
       put(x, n, piece(TileRole.END_SHADOW, side, lower));
     }
+  }
+
+  footings(): Map<number, number> {
+    const swaps = new Map<number, number>();
+    if (!this.config.terraces) return swaps;
+
+    for (const position of [
+      FacePosition.FLAT,
+      FacePosition.JUNCTION_LEFT,
+      FacePosition.JUNCTION_RIGHT,
+      FacePosition.INNER_WEST,
+      FacePosition.INNER_EAST,
+      FacePosition.CAP_LEFT,
+      FacePosition.CAP_RIGHT,
+    ]) {
+      const grass = this.piece(TerrainName.EARTH, TileRole.BASE, position, TerrainName.GRASS);
+      const earth = this.piece(TerrainName.EARTH, TileRole.BASE, position, TerrainName.EARTH);
+
+      for (let k = 0; k < Math.min(grass.height, earth.height); k++)
+        swaps.set(grass.gid + k * grass.columns, earth.gid + k * earth.columns);
+    }
+
+    return swaps;
   }
 
   private piece(

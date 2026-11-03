@@ -37,6 +37,7 @@ import { StairGenerator } from "../generators/Stair";
 import { TerraceGenerator } from "../generators/Terrace";
 import { TerrainGenerator } from "../generators/Terrain";
 import { WallGenerator } from "../generators/Wall";
+import { WaterGenerator, WaterResult } from "../generators/Water";
 import { TerrainSmoother } from "../smoothers/Terrain";
 import { DetailSpawner } from "../spawners/Detail";
 import { EntitySpawner } from "../spawners/Entity";
@@ -177,9 +178,14 @@ export class MapBuilder {
 
     const ledges = new Array(width * height).fill(0);
     const overlay = new Array(width * height).fill(0);
+    const rims = new Array(width * height).fill(0);
     const rock = new Uint8Array(width * height);
     const elevation = new Uint8Array(width * height);
     let hasLedges = false;
+
+    const watered = bands.find((b) => b.config.water);
+    const waters = watered && new WaterGenerator(width, height, watered.y, this.seed);
+    const footings = new Map<number, number>();
 
     for (let b = 0; b < bands.length; b++) {
       const local = elevations[b];
@@ -190,11 +196,23 @@ export class MapBuilder {
       const seed = config.noise.seed ?? this.seed;
       const gid = (name: string) => firstgids.get(name)!;
 
+      const reserved =
+        waters && watered && y < watered.y
+          ? waters.flatten(
+              local,
+              grid,
+              offset,
+              config.height,
+              seed,
+              config.terraces?.earth ?? 0,
+              (config.terraces?.earth ?? 0) + (config.terraces?.snow ?? 0),
+            )
+          : [];
       elevation.set(local, offset);
 
-      const faces = new FaceGenerator(config, this.loader, gid, seed).generate(
-        local,
-      );
+      const face = new FaceGenerator(config, this.loader, gid, seed);
+      const faces = face.generate(local, reserved);
+      for (const [from, to] of face.footings()) footings.set(from, to);
       const patches = new PatchGenerator(config, this.loader, gid, seed).generate(
         local,
         faces.data,
@@ -208,11 +226,24 @@ export class MapBuilder {
 
         if (faces.data[i] || faces.stairs[i]) rock[offset + i] = 1;
         overlay[offset + i] = faces.stairs[i] || patches.data[i];
+        if (!faces.stairs[i]) rims[offset + i] = patches.data[i];
       }
 
       for (const [i, t] of faces.under) grid[offset + i] = t;
       for (const i of patches.grass) grid[offset + i] = TerrainName.GRASS;
     }
+
+    const water: WaterResult | undefined = waters?.generate(grid, {
+      ledges,
+      overlay,
+      rock,
+      elevation,
+      ledge: firstgids.get("grass_ground") ?? 0,
+    });
+
+    if (water)
+      for (let i = 0; i < grid.length; i++)
+        if (grid[i] === TerrainName.WATER) overlay[i] = 0;
 
     const blocked = new Uint8Array(width * height);
 
@@ -233,6 +264,18 @@ export class MapBuilder {
             blocked[ny * width + nx] = 1;
         }
     }
+
+    if (water)
+      for (let i = 0; i < grid.length; i++) {
+        if (grid[i] !== TerrainName.WATER) continue;
+
+        const x = i % width;
+        const y = (i - x) / width;
+        for (let dy = -1; dy <= 1; dy++)
+          for (let dx = -1; dx <= 1; dx++)
+            if (handlers.generation.inBounds(x + dx, y + dy, width, height))
+              blocked[(y + dy) * width + x + dx] = 1;
+      }
 
     const terrain = this.mask(grid, region, this.host);
     const view = { ...this.config, width, height };
@@ -325,6 +368,9 @@ export class MapBuilder {
       );
     }
 
+    if (water && watered)
+      layerId = this.shore(water, watered, grid, ledges, footings, tiledLayers, firstgids, layerId);
+
     /**
      * Build overlay layer
      */
@@ -346,6 +392,27 @@ export class MapBuilder {
         );
       }
     }
+
+    for (let i = 0; i < rims.length; i++) {
+      if (overlay[i] && overlay[i] === rims[i]) overlay[i] = 0;
+      else rims[i] = 0;
+    }
+
+    if (rims.some((gid) => gid !== 0))
+      tiledLayers.push(
+        handlers.generation.createLayer(
+          layerId++,
+          "grass_earth_border",
+          width,
+          height,
+          rims,
+          handlers.generation.borderProperties({
+            from: TerrainName.GRASS,
+            to: TerrainName.EARTH,
+            tileset: "grass_ground",
+          }),
+        ),
+      );
 
     if (overlay.some((gid) => gid !== 0))
       tiledLayers.push(
@@ -373,6 +440,28 @@ export class MapBuilder {
           ],
         ),
       );
+
+    if (water)
+      for (const [name, cells, properties] of [
+        ["water_overhang", water.overhang, [{ name: "overhang", type: "bool", value: true }]],
+        [
+          "waterfall_ledges",
+          water.hidden,
+          [
+            { name: "clearance", type: "int", value: LEDGE_CLEARANCE },
+            { name: "collides", type: "bool", value: true },
+            { name: "seeThrough", type: "bool", value: true },
+          ],
+        ],
+      ] as const) {
+        const data = new Array(width * height).fill(0);
+        for (const [i, gid] of cells) data[i] = gid;
+
+        tiledLayers.push({
+          ...handlers.generation.createLayer(layerId++, name, width, height, data, [...properties]),
+          visible: false,
+        });
+      }
 
     const soaked: number[] = [];
 
@@ -720,6 +809,9 @@ export class MapBuilder {
 
       const overlaid = tiledLayers.find((l) => l.name === "overlay");
       if (overlaid) for (const i of separated) overlaid.data[i] = 0;
+
+      const rimmed = tiledLayers.find((l) => l.name === "grass_earth_border");
+      if (rimmed) for (const i of separated) rimmed.data[i] = 0;
     }
 
     const sanctums = roomSetpieces.map((p) => ({
@@ -738,6 +830,7 @@ export class MapBuilder {
      * Build border layers
      */
     const borderGenerator = new BorderGenerator({ width, height }, this.loader);
+    const shoreline = grid.map((t) => (t === TerrainName.WATER ? TerrainName.GROUND : t));
 
     const elevate = (t: TerrainName): number => TERRAIN_ORDER.indexOf(t);
 
@@ -758,7 +851,7 @@ export class MapBuilder {
     for (const { border, band } of sorted) {
       const gid = firstgids.get(border.tileset)!;
       const data = this.clip(
-        borderGenerator.generate(grid, border, gid),
+        borderGenerator.generate(water ? shoreline : grid, border, gid),
         region,
         band,
       );
@@ -818,6 +911,22 @@ export class MapBuilder {
 
       borderLayers.set(name, layer);
       tiledLayers.push(layer);
+    }
+
+    if (water && watered) {
+      const b = bands.indexOf(watered);
+
+      for (const border of watered.config.borders) {
+        if (border.to === TerrainName.WATER || border.from === TerrainName.WATER) continue;
+
+        const layer = borderLayers.get(`${border.from}_${border.to}_border`);
+        if (!layer) continue;
+
+        const fresh = borderGenerator.generate(shoreline, border, firstgids.get(border.tileset)!);
+        for (let i = 0; i < fresh.length; i++)
+          if (region[i] !== b && fresh[i] && !layer.data[i] && !ledges[i] && grid[i] === TerrainName.GROUND)
+            layer.data[i] = fresh[i];
+      }
     }
 
     /**
@@ -929,7 +1038,7 @@ export class MapBuilder {
       }
 
       const wells = handlers.generation.find.positions.well(
-        view,
+        { ...view, terrain: [TerrainName.GRASS] },
         terrain,
         spawn,
         10,
@@ -975,6 +1084,8 @@ export class MapBuilder {
         }
       }
     }
+
+    if (water && waters) entities.push(...waters.decorate(grid, water, entities));
 
     /**
      * Torches and ladders (dungeon and temple only)
@@ -1314,7 +1425,32 @@ export class MapBuilder {
       compressionlevel: -1,
       height,
       infinite: false,
-      layers: tiledLayers.filter((l) => l.data.some((gid: number) => gid !== 0)),
+      layers: [
+        ...tiledLayers.filter((l) => l.data.some((gid: number) => gid !== 0)),
+        ...(water?.falls.length
+          ? [
+              {
+                id: layerId++,
+                name: "waterfalls",
+                type: "objectgroup",
+                visible: true,
+                opacity: 1,
+                x: 0,
+                y: 0,
+                draworder: "topdown",
+                properties: [{ name: "waterfalls", type: "bool", value: true }],
+                objects: water.falls.map((f, i) => ({
+                  id: i + 1,
+                  name: "",
+                  type: "",
+                  rotation: 0,
+                  visible: true,
+                  ...f,
+                })),
+              },
+            ]
+          : []),
+      ],
       nextlayerid: layerId,
       nextobjectid: 1,
       orientation: "orthogonal",
@@ -1351,6 +1487,121 @@ export class MapBuilder {
       spawn,
       entities,
     };
+  }
+
+  private shore(
+    water: WaterResult,
+    band: BiomeBand,
+    grid: TerrainName[],
+    ledges: number[],
+    footings: Map<number, number>,
+    tiledLayers: any[],
+    firstgids: Map<string, number>,
+    layerId: number,
+  ): number {
+    const { width, height } = this;
+    const fill = (terrain: TerrainName) => {
+      const config = band.config.layers.find((l) => l.terrain === terrain);
+      const tile = config && this.loader.query(config.tileset, { role: TileRole.FILL, terrain })[0];
+      return config && tile ? { gid: firstgids.get(config.tileset)! + tile.id, config } : undefined;
+    };
+    const layer = (terrain: TerrainName) => {
+      let found = tiledLayers.find((l) => l.name === terrain);
+      const source = fill(terrain);
+
+      if (!found && source) {
+        found = handlers.generation.createLayer(
+          layerId++,
+          terrain,
+          width,
+          height,
+          new Array(width * height).fill(0),
+          handlers.generation.terrainProperties(terrain, source.config.tileset, source.config.surface),
+        );
+        tiledLayers.unshift(found);
+      }
+
+      return found;
+    };
+
+    const footing = (i: number) => {
+      let below = i + width;
+      while (below < grid.length && ledges[below] && below - i < width * 4) below += width;
+
+      const under = below < grid.length && !ledges[below] ? grid[below] : TerrainName.GRASS;
+      return grid[i] === TerrainName.WATER || under === TerrainName.GROUND || under === TerrainName.WATER;
+    };
+
+    for (let pass = 0, spread = true; pass < 4 && spread; pass++) {
+      spread = false;
+      for (let i = 0; i < grid.length; i++) {
+        if (!ledges[i] || !footing(i)) continue;
+
+        const x = i % width;
+        for (const dx of [-1, 1]) {
+          const n = i + dx;
+          if (x + dx < 0 || x + dx >= width || ledges[n] || grid[n] !== TerrainName.GRASS) continue;
+
+          grid[n] = TerrainName.GROUND;
+          spread = true;
+        }
+      }
+    }
+
+    const pool = layer(TerrainName.WATER);
+    const ground = layer(TerrainName.GROUND);
+    const grass = tiledLayers.find((l) => l.name === TerrainName.GRASS);
+    const wet = fill(TerrainName.WATER)?.gid ?? 0;
+    const dirt = fill(TerrainName.GROUND)?.gid ?? 0;
+
+    for (let i = 0; i < grid.length; i++) {
+      if (grid[i] === TerrainName.WATER) {
+        for (const l of tiledLayers) if (l !== pool) l.data[i] = 0;
+        continue;
+      }
+
+      if (pool)
+        pool.data[i] =
+          !water.dry[i] && handlers.generation.nearTerrain(grid, i, width, TerrainName.WATER) ? wet : 0;
+      if (grid[i] !== TerrainName.GROUND) continue;
+      if (grass) grass.data[i] = 0;
+      if (ground && !ground.data[i]) ground.data[i] = dirt;
+    }
+    if (pool) for (let i = 0; i < grid.length; i++) if (grid[i] === TerrainName.WATER) pool.data[i] = wet;
+
+    const footed = new Uint8Array(grid.length);
+    for (let i = 0; i < grid.length; i++) if (ledges[i] && footing(i)) footed[i] = 1;
+
+    for (let i = 0; i < grid.length; i++) {
+      if (!footed[i]) continue;
+
+      ledges[i] = footings.get(ledges[i]) ?? ledges[i];
+      if (grid[i] === TerrainName.WATER) continue;
+
+      grid[i] = TerrainName.GROUND;
+      if (!grass?.data[i]) continue;
+
+      grass.data[i] = 0;
+      if (ground && !ground.data[i]) ground.data[i] = dirt;
+    }
+
+    const bed = new Array(width * height).fill(0);
+    for (let i = 0; i < grid.length; i++) {
+      if (!water.bed[i]) continue;
+
+      bed[i] = ground?.data[i] || dirt;
+      if (ground) ground.data[i] = 0;
+    }
+
+    tiledLayers.splice(
+      Math.max(0, pool ? tiledLayers.indexOf(pool) : 0),
+      0,
+      handlers.generation.createLayer(layerId++, "beach", width, height, bed, [
+        { name: "beach", type: "bool", value: true },
+      ]),
+    );
+
+    return layerId;
   }
 
   private smooth(config: BiomeConfig, terrain: TerrainName[]): TerrainName[] {

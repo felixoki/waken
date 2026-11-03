@@ -76,6 +76,7 @@ export const meadow = {
     scene: Scene,
     layers: Phaser.Tilemaps.TilemapLayer[],
     palette: MeadowPalette = "grass",
+    edges: Phaser.Tilemaps.TilemapLayer[] = [],
   ) => {
     if (!layers.length) return;
 
@@ -88,9 +89,11 @@ export const meadow = {
       y >= rows ||
       layers.some((layer) => layer.layer.data[y][x].index > 0);
 
+    const centres = layers.filter((layer) => !edges.includes(layer));
+
     for (let y = 0; y < rows; y++)
       for (let x = 0; x < columns; x++) {
-        let inside = filled(x, y);
+        let inside = centres.some((layer) => layer.layer.data[y][x].index > 0);
         for (let dy = -1; dy <= 1 && inside; dy++)
           for (let dx = -1; dx <= 1 && inside; dx++)
             inside = filled(x + dx, y + dy);

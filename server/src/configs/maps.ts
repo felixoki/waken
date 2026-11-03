@@ -665,6 +665,27 @@ const animals: Spritesheet[] = [
   },
 ];
 
+const fishes: Spritesheet[] = [
+  {
+    key: "perch",
+    file: "animals/perch_jumping.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "carp",
+    file: "animals/carp_jumping.png",
+    frameWidth: 48,
+    frameHeight: 32,
+  },
+  {
+    key: "pike",
+    file: "animals/pike_jumping.png",
+    frameWidth: 48,
+    frameHeight: 32,
+  },
+];
+
 const citizens: Spritesheet[] = [
   {
     key: "citizen1-idle",
@@ -1004,24 +1025,7 @@ export const maps: Record<MapName, MapConfig> = {
         frameWidth: 32,
         frameHeight: 32,
       },
-      {
-        key: "perch",
-        file: "animals/perch_jumping.png",
-        frameWidth: 32,
-        frameHeight: 32,
-      },
-      {
-        key: "carp",
-        file: "animals/carp_jumping.png",
-        frameWidth: 48,
-        frameHeight: 32,
-      },
-      {
-        key: "pike",
-        file: "animals/pike_jumping.png",
-        frameWidth: 48,
-        frameHeight: 32,
-      },
+      ...fishes,
       {
         key: "benches",
         file: "tiles/benches.png",
@@ -1414,6 +1418,7 @@ export const maps: Record<MapName, MapConfig> = {
       ...entities,
       ...animals,
       ...creatures,
+      ...fishes,
       {
         key: "cave_walls_floor",
         file: "tiles/cave_walls_floor.png",

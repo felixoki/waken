@@ -40,7 +40,10 @@ export class MapFactory {
     let objectLayerIndex = 0;
     let beach: Phaser.Tilemaps.TilemapLayer | undefined;
     const meadows = new Map<MeadowPalette, Phaser.Tilemaps.TilemapLayer[]>();
+    const edges: Phaser.Tilemaps.TilemapLayer[] = [];
+    const overhangs: Phaser.Tilemaps.TilemapLayer[] = [];
     const decks: Phaser.Tilemaps.TilemapLayer[] = [];
+    const falls: Phaser.Geom.Rectangle[] = [];
     let waters: { layer: Phaser.Tilemaps.TilemapLayer; palette?: WaterPalette } | undefined;
 
     const thresholds: Threshold[] = [];
@@ -102,12 +105,22 @@ export class MapFactory {
             palette: properties?.find((p) => p.name === "waterPalette")
               ?.value as WaterPalette | undefined,
           };
-        if (properties?.some((p) => p.name === "deck" && p.value === true))
+        if (
+          properties?.some(
+            (p) => (p.name === "deck" || p.name === "shore") && p.value === true,
+          )
+        )
           decks.push(layer);
+        if (properties?.some((p) => p.name === "overhang" && p.value === true))
+          overhangs.push(layer);
         if (meadow) {
           const palette = (properties?.find((p) => p.name === "meadowPalette")
             ?.value ?? "grass") as MeadowPalette;
           meadows.set(palette, [...(meadows.get(palette) ?? []), layer]);
+          if (
+            properties?.some((p) => p.name === "meadowEdge" && p.value === true)
+          )
+            edges.push(layer);
         }
 
         if (hasCollision) {
@@ -137,6 +150,17 @@ export class MapFactory {
 
         if (!properties || !Array.isArray(properties)) return;
 
+        if (properties.some((p) => p.name === "waterfalls" && p.value === true))
+          for (const object of layer.objects)
+            falls.push(
+              new Phaser.Geom.Rectangle(
+                object.x ?? 0,
+                object.y ?? 0,
+                object.width ?? 0,
+                object.height ?? 0,
+              ),
+            );
+
         const render = properties.some(
           (prop) => prop.name === "renders" && prop.value === true,
         );
@@ -161,9 +185,17 @@ export class MapFactory {
     });
 
     if (waters)
-      handlers.water.apply(scene, waters.layer, beach, waters.palette, decks);
+      handlers.water.apply(
+        scene,
+        waters.layer,
+        beach,
+        waters.palette,
+        decks,
+        overhangs,
+      );
+    handlers.water.falls(scene, falls);
     for (const [palette, layers] of meadows)
-      handlers.meadow.apply(scene, layers, palette);
+      handlers.meadow.apply(scene, layers, palette, edges);
 
     return { tilemap, thresholds, colliders };
   }

@@ -16,6 +16,7 @@ import {
   BEACH_SHALLOW_COLOR,
   BEACH_WET_ALPHA,
   BEACH_WET_COLOR,
+  WATERFALL_BARE_GROUND,
   WATER_CAUSTIC_FADER_MULTIPLIER,
   WATER_CAUSTIC_FADER_SCALE,
   WATER_CAUSTIC_MOVEMENT_AMOUNT,
@@ -24,6 +25,8 @@ import {
   WATER_CAUSTIC_SPEED,
   WATER_CAUSTIC_SQUASH,
   WATER_CAUSTIC_TEXTURE,
+  WATER_FLOW_CYCLE,
+  WATER_FLOW_SPEED,
   WATER_FOAM_SCALE,
   WATER_PALETTES,
   WATER_PIXELIZATION,
@@ -52,6 +55,7 @@ const DEPTH_UNIT = 1;
 const CAUSTICS_UNIT = 2;
 const WAKE_UNIT = 3;
 const SHORE_UNIT = 4;
+const FLOW_UNIT = 5;
 
 const rgb = (color: number): [number, number, number] => [
   ((color >> 16) & 0xff) / 255,
@@ -78,6 +82,9 @@ export class WaterPipeline extends SinglePipeline {
     this.set1i("uCaustics", CAUSTICS_UNIT);
     this.set1i("uWake", WAKE_UNIT);
     this.set1i("uShore", SHORE_UNIT);
+    this.set1i("uFlow", FLOW_UNIT);
+    this.set1f("uFlowSpeed", WATER_FLOW_SPEED);
+    this.set1f("uFlowCycle", WATER_FLOW_CYCLE);
     this.set1f("uPixelization", WATER_PIXELIZATION);
     this.set1f("uCausticScale", WATER_CAUSTIC_SCALE);
     this.set1f("uMovementScale", WATER_CAUSTIC_MOVEMENT_SCALE);
@@ -105,6 +112,7 @@ export class WaterPipeline extends SinglePipeline {
     this.set1f("uBeachFoamScale", BEACH_FOAM_SCALE);
     this.set4f("uBeachFoamColor", ...rgb(BEACH_FOAM_COLOR), BEACH_FOAM_ALPHA);
     this.set4f("uBeachWetColor", ...rgb(BEACH_WET_COLOR), BEACH_WET_ALPHA);
+    this.set3f("uBareGround", ...rgb(WATERFALL_BARE_GROUND));
     this.set1f("uWakePhase", WAKE_PHASE);
     this.set1f("uWakeSkew", WAKE_SKEW);
     this.set1f("uWakeSpeed", WAKE_SPEED);
@@ -144,7 +152,8 @@ export class WaterPipeline extends SinglePipeline {
     const depth = state?.depth.source[0].glTexture;
     const wake = state?.wake.getWebGLTexture();
     const shore = state?.shore.source[0].glTexture;
-    if (!state || !caustics || !depth || !wake || !shore) return;
+    const flow = state?.flow.source[0].glTexture;
+    if (!state || !caustics || !depth || !wake || !shore || !flow) return;
 
     const palette = WATER_PALETTES[state.palette];
     const [g0, g1, g2] = palette.gradient;
@@ -165,6 +174,7 @@ export class WaterPipeline extends SinglePipeline {
     this.bindTexture(caustics, CAUSTICS_UNIT);
     this.bindTexture(wake, WAKE_UNIT);
     this.bindTexture(shore, SHORE_UNIT);
+    this.bindTexture(flow, FLOW_UNIT);
     this.gl.activeTexture(this.gl.TEXTURE0);
   }
 }

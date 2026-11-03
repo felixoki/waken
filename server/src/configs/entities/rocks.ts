@@ -767,6 +767,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK9]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -797,6 +798,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK10]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -827,6 +829,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK11]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -857,6 +860,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK12]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -887,6 +891,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK13]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -917,6 +922,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK14]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -947,6 +953,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK15]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -977,6 +984,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK16]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1007,6 +1015,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK17]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1037,6 +1046,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK18]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1067,6 +1077,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.ROCK19]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1097,6 +1108,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.PEBBLE1]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1127,6 +1139,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.PEBBLE2]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1157,6 +1170,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.PEBBLE3]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1187,6 +1201,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.PEBBLE4]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1217,6 +1232,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
   },
   [EntityName.PEBBLE5]: {
+    flat: true,
     facing: Direction.DOWN,
     moving: [],
     components: [
@@ -1239,6 +1255,166 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
           offsetX: 1,
           offsetY: 1,
           collides: false,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK1]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 23, end: 26 },
+            { row: 51, start: 23, end: 26 },
+            { row: 52, start: 23, end: 26 },
+            { row: 53, start: 23, end: 26 },
+          ],
+        },
+        key: "mossy_rock1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 44,
+          height: 13,
+          offsetX: 10,
+          offsetY: 39,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK2]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 27, end: 30 },
+            { row: 51, start: 27, end: 30 },
+            { row: 52, start: 27, end: 30 },
+          ],
+        },
+        key: "mossy_rock2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 36,
+          height: 11,
+          offsetX: 14,
+          offsetY: 25,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK3]: {
+    sinks: true,
+    flat: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 50, start: 31, end: 32 },
+            { row: 51, start: 31, end: 32 },
+          ],
+        },
+        key: "mossy_rock3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 26,
+          height: 8,
+          offsetX: 3,
+          offsetY: 12,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK4]: {
+    sinks: true,
+    flat: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 52, start: 1, end: 2 },
+            { row: 53, start: 1, end: 2 },
+          ],
+        },
+        key: "mossy_rock4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 18,
+          height: 5,
+          offsetX: 7,
+          offsetY: 15,
+          static: true,
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK5]: {
+    sinks: true,
+    flat: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 20, start: 5, end: 5 },
+          ],
+        },
+        key: "mossy_rock5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 5,
+          offsetX: 2,
+          offsetY: 7,
           static: true,
         },
       },

@@ -235,6 +235,7 @@ export class EntitySpawner {
     const { width, height } = this.config;
 
     if (occupied.has(y * width + x)) return false;
+    if (rule.near && !this._near(x, y, rule.near, terrain)) return false;
 
     for (const [dx, dy] of this._footprint(rule)) {
       const nx = x + dx;
@@ -288,6 +289,25 @@ export class EntitySpawner {
     const footprint = [...cells.values()];
     this.footprints.set(rule, footprint);
     return footprint;
+  }
+
+  private _near(
+    x: number,
+    y: number,
+    near: NonNullable<SpawnRule["near"]>,
+    terrain: TerrainName[],
+  ): boolean {
+    const { width, height } = this.config;
+
+    for (let dy = -near.within; dy <= near.within; dy++)
+      for (let dx = -near.within; dx <= near.within; dx++) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx >= 0 && ny >= 0 && nx < width && ny < height && terrain[ny * width + nx] === near.terrain)
+          return true;
+      }
+
+    return false;
   }
 
   private _fits(index: number, rule: SpawnRule, terrain: TerrainName[]): boolean {

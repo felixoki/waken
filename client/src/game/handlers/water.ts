@@ -10,6 +10,14 @@ import {
   PLUNGE_RINGS,
   PLUNGE_SPEED,
   PLUNGE_SPREAD,
+  ROOT_CONTACT,
+  ROOT_CURVE,
+  ROOT_DEPTH,
+  ROOT_DEPTH_MAX,
+  ROOT_SPREAD,
+  ROOT_RING,
+  ROOT_RIPPLE,
+  ROOT_WIDTH,
   SINK_BOB,
   SINK_BOB_SPEED,
   SINK_EASE,
@@ -33,19 +41,40 @@ import {
   WAKE_STILL,
   WAKE_WIDTH,
   WATER_FALLOFF,
+  WATER_FLOW_BLUR,
+  WATER_FLOW_LENGTH,
+  WATER_FLOW_NARROW,
+  WATER_FLOW_PASSES,
+  WATER_FLOW_RIDGE,
+  WATER_FLOW_WIDE,
   WATER_LAND,
   WATER_SHORE,
   WATER_WADE,
+  WATERFALL_BASE,
+  WATERFALL_DEPTH,
+  WATERFALL_EDGE,
+  WATERFALL_LIP,
+  WATERFALL_MIST_ALPHA,
+  WATERFALL_MIST_BELOW,
+  WATERFALL_MIST_PAD,
+  WATERFALL_WAVE,
+  WATERFALL_WAVE_PERIOD,
+  WATERFALL_WAVE_REACH,
+  WATERFALL_WAVE_SQUASH,
+  WATERFALL_WAVE_WIDTH,
+  WATERFALL_WAVES,
   BEACH_BLUR,
   BEACH_INSET,
   BEACH_REACH,
   BEACH_RESOLUTION,
   type WaterPalette,
 } from "@server/globals";
-import { EntityName, PipelineName } from "@server/types";
+import { ComponentName, EntityName, PipelineName } from "@server/types";
 import { configs } from "@server/configs";
 import type { Scene } from "../scenes/Scene";
 import type { Entity } from "../Entity";
+import { getWaterfallFrag } from "../pipelines/frags/waterfall";
+import { getMistFrag } from "../pipelines/frags/mist";
 
 export interface Wake {
   xs: Float32Array;
@@ -78,10 +107,28 @@ export interface Wading {
   seen: boolean;
 }
 
+export interface Root {
+  entity: Entity;
+  x: number;
+  y: number;
+  rx: number;
+  ry: number;
+  seed: number;
+  strength: number;
+}
+
+export interface Basin {
+  x: number;
+  y: number;
+  rx: number;
+  seed: number;
+}
+
 export interface Water {
   palette: WaterPalette;
   depth: Phaser.Textures.Texture;
   shore: Phaser.Textures.Texture;
+  flow: Phaser.Textures.Texture;
   distance: Float32Array;
   columns: number;
   rows: number;
@@ -93,6 +140,9 @@ export interface Water {
   trails: Map<string, Wake>;
   sinks: Map<string, Wading>;
   entities: Map<string, Entity>;
+  roots: Map<string, Root>;
+  falls: Phaser.GameObjects.Shader[];
+  basins: Basin[];
   splashes: Splash[];
   x: number;
   y: number;
@@ -123,7 +173,10 @@ const encode = (across: number, strength: number, ring: boolean): number =>
   (channel(across) << 16) | (channel(strength) << 8) | (ring ? 255 : 0);
 
 export const water = {
-  distances: (layer: Phaser.Tilemaps.TilemapLayer): Int32Array => {
+  distances: (
+    layer: Phaser.Tilemaps.TilemapLayer,
+    overhangs: Phaser.Tilemaps.TilemapLayer[] = [],
+  ): Int32Array => {
     const { width, height, data } = layer.layer;
     const distance = new Int32Array(width * height).fill(-1);
     const queue = new Int32Array(width * height);
@@ -132,7 +185,11 @@ export const water = {
 
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++) {
-        if (data[y][x].index > 0) continue;
+        if (
+          data[y][x].index > 0 &&
+          !overhangs.some((o) => (o.layer.data[y]?.[x]?.index ?? -1) > 0)
+        )
+          continue;
 
         distance[y * width + x] = 0;
         queue[tail++] = y * width + x;
@@ -245,11 +302,27 @@ export const water = {
     return shore;
   },
 
+  bare: (
+    layer: Phaser.Tilemaps.TilemapLayer,
+    beach?: Phaser.Tilemaps.TilemapLayer,
+  ): Uint8Array => {
+    const { width: columns, height: rows, data } = layer.layer;
+    const bare = new Uint8Array(columns * rows);
+
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < columns; x++)
+        if (data[y][x].index > 0 && !((beach?.layer.data[y]?.[x]?.index ?? -1) > 0))
+          bare[y * columns + x] = 255;
+
+    return bare;
+  },
+
   depth: (
     scene: Scene,
     distance: Int32Array,
     columns: number,
     rows: number,
+    bare: Uint8Array,
   ): Phaser.Textures.Texture | null => {
     const pixels = new Uint8Array(columns * rows * 4);
 
@@ -264,10 +337,154 @@ export const water = {
 
       pixels[i * 4] = Math.round(t * 255);
       pixels[i * 4 + 1] = land ? 255 : 0;
+      pixels[i * 4 + 2] = bare[i];
       pixels[i * 4 + 3] = 255;
     }
 
     const key = `water_depth_${scene.scene.key}`;
+    if (scene.textures.exists(key)) scene.textures.remove(key);
+
+    const texture = scene.textures.addUint8Array(key, pixels, columns, rows);
+    texture?.setFilter(Phaser.Textures.FilterMode.LINEAR);
+
+    return texture;
+  },
+
+  flow: (distance: Int32Array, columns: number, rows: number): Float32Array => {
+    const size = columns * rows;
+    const out = new Float32Array(size * 3);
+    const travel = new Int32Array(size).fill(-1);
+    const queue = new Int32Array(size);
+    const wet = (x: number, y: number) =>
+      x >= 0 && y >= 0 && x < columns && y < rows && distance[y * columns + x] !== 0;
+
+    const width = Float32Array.from(distance, (d) => (d === -1 ? 99 : Math.max(0, d)));
+    const ridge = new Float32Array(size);
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < columns; x++) {
+        let max = 0;
+        const to = Math.min(columns - 1, x + WATER_FLOW_RIDGE);
+        for (let k = Math.max(0, x - WATER_FLOW_RIDGE); k <= to; k++)
+          max = Math.max(max, width[y * columns + k]);
+        ridge[y * columns + x] = max;
+      }
+    width.set(ridge);
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < columns; x++) {
+        let max = 0;
+        const to = Math.min(rows - 1, y + WATER_FLOW_RIDGE);
+        for (let k = Math.max(0, y - WATER_FLOW_RIDGE); k <= to; k++)
+          max = Math.max(max, width[k * columns + x]);
+        ridge[y * columns + x] = max;
+      }
+
+    for (let source = 0; source < size; source++) {
+      if (distance[source] === 0 || travel[source] !== -1) continue;
+
+      let head = 0;
+      let tail = 0;
+      travel[source] = 0;
+      queue[tail++] = source;
+      while (head < tail) {
+        const i = queue[head++];
+        const x = i % columns;
+        const y = (i - x) / columns;
+
+        for (const [dx, dy] of NEIGHBOURS) {
+          if (!wet(x + dx, y + dy)) continue;
+
+          const n = (y + dy) * columns + x + dx;
+          if (travel[n] !== -1) continue;
+
+          travel[n] = travel[i] + 1;
+          queue[tail++] = n;
+        }
+      }
+      if (travel[queue[tail - 1]] < WATER_FLOW_LENGTH) continue;
+
+      for (let q = 0; q < tail; q++) {
+        const i = queue[q];
+        const x = i % columns;
+        const y = (i - x) / columns;
+        let vx = 0;
+        let vy = 0;
+
+        for (const [dx, dy] of NEIGHBOURS) {
+          if (!wet(x + dx, y + dy)) continue;
+
+          const g = (travel[(y + dy) * columns + x + dx] - travel[i]) / (dx * dx + dy * dy);
+          vx += g * dx;
+          vy += g * dy;
+        }
+
+        const length = Math.hypot(vx, vy) || 1;
+        const t = Math.min(
+          1,
+          Math.max(0, (ridge[i] - WATER_FLOW_NARROW) / (WATER_FLOW_WIDE - WATER_FLOW_NARROW)),
+        );
+        out[i * 3] = vx / length;
+        out[i * 3 + 1] = vy / length;
+        out[i * 3 + 2] = 1 - t * t * (3 - 2 * t);
+      }
+    }
+
+    const copy = new Float32Array(size * 3);
+    for (let pass = 0; pass < WATER_FLOW_PASSES * 2; pass++) {
+      copy.set(out);
+      const [ax, ay] = pass % 2 ? [0, 1] : [1, 0];
+
+      for (let y = 0; y < rows; y++)
+        for (let x = 0; x < columns; x++) {
+          if (!wet(x, y)) continue;
+
+          let sx = 0;
+          let sy = 0;
+          let ss = 0;
+          let count = 0;
+          for (let k = -WATER_FLOW_BLUR; k <= WATER_FLOW_BLUR; k++) {
+            const nx = x + k * ax;
+            const ny = y + k * ay;
+            if (!wet(nx, ny)) continue;
+
+            const n = (ny * columns + nx) * 3;
+            sx += copy[n];
+            sy += copy[n + 1];
+            ss += copy[n + 2];
+            count++;
+          }
+
+          const i = (y * columns + x) * 3;
+          out[i] = sx / count;
+          out[i + 1] = sy / count;
+          out[i + 2] = ss / count;
+        }
+    }
+
+    for (let i = 0; i < size; i++) {
+      const length = Math.hypot(out[i * 3], out[i * 3 + 1]) || 1;
+      out[i * 3] /= length;
+      out[i * 3 + 1] /= length;
+    }
+
+    return out;
+  },
+
+  flows: (
+    scene: Scene,
+    flow: Float32Array,
+    columns: number,
+    rows: number,
+  ): Phaser.Textures.Texture | null => {
+    const pixels = new Uint8Array(columns * rows * 4);
+
+    for (let i = 0; i < columns * rows; i++) {
+      pixels[i * 4] = channel(flow[i * 3] * 0.5 + 0.5);
+      pixels[i * 4 + 1] = channel(flow[i * 3 + 1] * 0.5 + 0.5);
+      pixels[i * 4 + 2] = channel(flow[i * 3 + 2]);
+      pixels[i * 4 + 3] = 255;
+    }
+
+    const key = `water_flow_${scene.scene.key}`;
     if (scene.textures.exists(key)) scene.textures.remove(key);
 
     const texture = scene.textures.addUint8Array(key, pixels, columns, rows);
@@ -282,19 +499,21 @@ export const water = {
     beach?: Phaser.Tilemaps.TilemapLayer,
     palette: WaterPalette = "lake",
     decks: Phaser.Tilemaps.TilemapLayer[] = [],
+    overhangs: Phaser.Tilemaps.TilemapLayer[] = [],
   ) => {
     const { width: columns, height: rows, tileWidth } = layer.layer;
-    const distance = water.distances(layer);
+    const distance = water.distances(layer, overhangs);
     const shore = water.shores(distance, columns, rows, beach);
-    const depth = water.depth(scene, distance, columns, rows);
+    const depth = water.depth(scene, distance, columns, rows, water.bare(layer, beach));
     const field = water.field(scene, shore, columns, rows);
+    const flow = water.flows(scene, water.flow(distance, columns, rows), columns, rows);
     const covered = (l: Phaser.Tilemaps.TilemapLayer | undefined, i: number) =>
       (l?.layer.data[Math.floor(i / columns)]?.[i % columns]?.index ?? -1) > 0;
     const reach = Float32Array.from(distance, (d, i) => {
       if (decks.some((deck) => covered(deck, i))) return 0;
       return covered(beach, i) && d > 0 ? Math.max(0.01, d - BEACH_INSET) : d;
     });
-    if (!depth || !field) return;
+    if (!depth || !field || !flow) return;
 
     if (scene.water) water.destroy(scene, scene.water);
 
@@ -305,6 +524,7 @@ export const water = {
       palette,
       depth,
       shore: field,
+      flow,
       distance: reach,
       columns,
       rows,
@@ -316,6 +536,9 @@ export const water = {
       trails: new Map(),
       sinks: new Map(),
       entities: new Map(),
+      roots: new Map(),
+      falls: [],
+      basins: [],
       splashes: [],
       x: 0,
       y: 0,
@@ -422,15 +645,20 @@ export const water = {
       state.entities.delete(id);
     }
 
+    for (const fall of state.falls)
+      (fall.uniforms as Record<string, { value: number }>).uTime.value = state.time;
+
     water.splashes(state);
+    const rooted = water.roots(state, width, height) + water.waves(state, width, height);
 
     state.wake.clear();
-    if (state.trails.size || state.splashes.length)
+    if (state.trails.size || state.splashes.length || rooted)
       state.wake.draw(state.graphics);
   },
 
   track: (state: Water, scene: Scene, entity: Entity, delta: number) => {
     if (entity.scene !== scene || entity.isStatic || !entity.active) return;
+    if (configs.entities[entity.name as EntityName]?.floats) return;
 
     const body = entity.body as Phaser.Physics.Arcade.Body | null;
     if (!body) return;
@@ -461,8 +689,7 @@ export const water = {
     }
 
     trail.seen = true;
-    if (!configs.entities[entity.name as EntityName]?.floats)
-      water.sink(state, entity, body, distance, rx, ry, delta);
+    water.sink(state, entity, body, distance, rx, ry, delta);
 
     const presence = Math.min(1, Math.max(0, (distance - SINK_START) / WAKE_ENTRY));
     const airborne = entity.z > 0;
@@ -529,9 +756,10 @@ export const water = {
 
     const shallow = Math.min(SINK_MAX, Math.round(wading.feet * SINK_RATIO));
     const deep = Math.max(shallow, Math.round(wading.feet * SWIM_RATIO));
+    const wades = configs.entities[entity.name as EntityName]?.wades;
     const amount = Math.min(
       1,
-      Math.max(0, (distance - SINK_START) / (WATER_WADE - SINK_START)),
+      Math.max(0, (distance - SINK_START) / (wades ? 1 : WATER_WADE - SINK_START)),
     );
     const swim = Math.min(
       1,
@@ -566,6 +794,210 @@ export const water = {
 
   swimming: (entity: Entity): boolean =>
     !!(entity.scene as Scene | undefined)?.water?.sinks.get(entity.id)?.swimming,
+
+  root: (state: Water, entity: Entity) => {
+    const height = entity.frame.height;
+    const bottom = entity.y + height * (1 - entity.originY);
+    const distance = water.smooth(state, entity.x, bottom - 1);
+    const amount = Math.min(
+      1,
+      Math.max(0, (distance - SINK_START) / (WATER_WADE - SINK_START)),
+    );
+    if (amount <= 0) return;
+
+    const body = configs.entities[entity.name as EntityName]?.components.find(
+      (component) => component.name === ComponentName.BODY,
+    )?.config;
+    const left = entity.x - entity.frame.width * entity.originX;
+    const x = body ? left + body.offsetX + body.width / 2 : entity.x;
+    const width = body?.width ?? entity.frame.width;
+
+    if (entity.pipeline?.name === DEFAULT_PIPELINE) {
+      const rx = width * ROOT_SPREAD;
+      const ry = rx * ROOT_CURVE;
+      const depth = Math.round(
+        Math.min(ROOT_DEPTH_MAX, height * ROOT_DEPTH) * amount,
+      );
+
+      state.roots.set(entity.id, {
+        entity,
+        x: Math.round(x),
+        y: Math.round(bottom - rx * 0.5),
+        rx: Math.round(rx),
+        ry: Math.round(rx) * 0.5,
+        seed: Math.random(),
+        strength: amount,
+      });
+
+      if (depth <= 0) return;
+
+      const wading: Wading = {
+        depth,
+        feet: 0,
+        x,
+        y: bottom - ry,
+        rx,
+        ry,
+        swimming: false,
+        seen: true,
+      };
+
+      entity.setData("wading", wading);
+      entity.setPipeline(PipelineName.WADE);
+      return;
+    }
+
+    const rx = Math.round(width * ROOT_RING);
+
+    state.roots.set(entity.id, {
+      entity,
+      x: Math.round(x),
+      y: Math.round(bottom - 1),
+      rx,
+      ry: rx * 0.5,
+      seed: Math.random(),
+      strength: amount,
+    });
+
+    const depth = Math.round(Math.min(SINK_MAX, height * SINK_RATIO) * amount);
+    if (depth <= 0) return;
+
+    entity.setCrop(0, 0, entity.frame.width, height - depth);
+    entity.y += depth;
+  },
+
+  falls: (scene: Scene, rects: Phaser.Geom.Rectangle[]) => {
+    const state = scene.water;
+    if (!state || !rects.length) return;
+
+    const base = new Phaser.Display.BaseShader(
+      "waterfall",
+      getWaterfallFrag(),
+      undefined,
+      {
+        uTime: { type: "1f", value: 0 },
+        uSeed: { type: "1f", value: 0 },
+        uLip: { type: "1f", value: WATERFALL_LIP },
+        uBase: { type: "1f", value: WATERFALL_BASE },
+        uEdge: { type: "1f", value: WATERFALL_EDGE },
+      },
+    );
+
+    const veil = new Phaser.Display.BaseShader("waterfall_mist", getMistFrag(), undefined, {
+      uTime: { type: "1f", value: 0 },
+      uSeed: { type: "1f", value: 0 },
+      uFoot: { type: "1f", value: 0 },
+      uWidth: { type: "1f", value: 0 },
+      uAlpha: { type: "1f", value: WATERFALL_MIST_ALPHA },
+    });
+
+    for (const rect of rects) {
+      const x = Math.round(rect.centerX);
+      const width = Math.round(rect.width);
+      const bottom = Math.round(rect.bottom);
+      const seed = Math.random() * 100;
+      const fall = scene.add.shader(base, x, Math.round(rect.centerY), width, Math.round(rect.height));
+      (fall.uniforms as Record<string, { value: number }>).uSeed.value = seed;
+      fall.setDepth(WATERFALL_DEPTH);
+      state.falls.push(fall);
+
+      const height = Math.round(rect.height) + WATERFALL_MIST_BELOW;
+      const mist = scene.add.shader(
+        veil,
+        x,
+        bottom + WATERFALL_MIST_BELOW - height / 2,
+        width + WATERFALL_MIST_PAD * 2,
+        height,
+      );
+      const uniforms = mist.uniforms as Record<string, { value: number }>;
+      uniforms.uSeed.value = seed;
+      uniforms.uFoot.value = WATERFALL_MIST_BELOW + WATERFALL_BASE;
+      uniforms.uWidth.value = width;
+      mist.setDepth(WATERFALL_DEPTH + 0.5);
+      state.falls.push(mist);
+
+      state.basins.push({ x, y: bottom - WATERFALL_BASE, rx: width / 2, seed: seed % 1 });
+    }
+  },
+
+  waves: (state: Water, width: number, height: number): number => {
+    let drawn = 0;
+
+    for (const basin of state.basins) {
+      const cx = basin.x - state.x;
+      const cy = basin.y - state.y;
+      const reach = basin.rx * (1 + WATERFALL_WAVE_REACH);
+      if (cx < -reach || cy < -reach || cx > width + reach || cy > height + reach)
+        continue;
+
+      const ry = basin.rx * WATERFALL_WAVE_SQUASH;
+      for (let r = 0; r < WATERFALL_WAVES; r++) {
+        const t = (state.time / WATERFALL_WAVE_PERIOD + basin.seed + r / WATERFALL_WAVES) % 1;
+        const inner = 1 + t * WATERFALL_WAVE_REACH;
+        const strength = Math.min(1, t / 0.15) * (1 - t) * (1 - t) * WATERFALL_WAVE;
+
+        water.annulus(
+          state,
+          cx,
+          cy,
+          basin.rx,
+          ry,
+          inner,
+          inner + WATERFALL_WAVE_WIDTH / ry,
+          encode(0, strength, true),
+        );
+      }
+      drawn++;
+    }
+
+    return drawn;
+  },
+
+  roots: (state: Water, width: number, height: number): number => {
+    let drawn = 0;
+
+    for (const [id, root] of state.roots) {
+      if (!root.entity.active) {
+        state.roots.delete(id);
+        continue;
+      }
+
+      const cx = root.x - state.x;
+      const cy = root.y - state.y;
+      const reach = root.rx * (1 + WAKE_RIPPLE_REACH + 0.18);
+      if (cx < -reach || cy < -reach || cx > width + reach || cy > height + reach)
+        continue;
+
+      water.annulus(
+        state,
+        cx,
+        cy,
+        root.rx,
+        root.ry,
+        1 - ROOT_WIDTH / root.rx,
+        1,
+        encode(0, ROOT_CONTACT, true),
+      );
+      drawn++;
+
+      const t = (state.time / WAKE_RIPPLE_PERIOD + root.seed) % 1;
+      const inner = 1 + t * WAKE_RIPPLE_REACH;
+      const strength = (1 - t) * (1 - t) * ROOT_RIPPLE * root.strength;
+
+      water.annulus(
+        state,
+        cx,
+        cy,
+        root.rx,
+        root.ry,
+        inner,
+        inner + 0.18,
+        encode(0, strength, true),
+      );
+    }
+
+    return drawn;
+  },
 
   surface: (entity: Entity) => {
     if (entity.pipeline?.name === PipelineName.WADE) entity.resetPipeline();
@@ -852,12 +1284,16 @@ export const water = {
       if (entity.active) water.surface(entity);
 
     state.graphics.destroy();
+    for (const fall of state.falls) fall.destroy();
+    state.falls.length = 0;
+    state.basins.length = 0;
     state.trails.clear();
     state.sinks.clear();
     state.entities.clear();
     state.splashes.length = 0;
     if (scene.textures.exists(state.depth.key)) scene.textures.remove(state.depth);
     if (scene.textures.exists(state.shore.key)) scene.textures.remove(state.shore);
+    if (scene.textures.exists(state.flow.key)) scene.textures.remove(state.flow);
     if (scene.textures.exists(state.wake.key)) scene.textures.remove(state.wake);
   },
 };

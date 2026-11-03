@@ -115,7 +115,7 @@ export const vision = {
   ): boolean => {
     if (!vision.inRange(from, to, distance)) return false;
 
-    const grid = handlers.path.getGrid(from, handlers.path.canJump(from));
+    const grid = handlers.path.getGrid(from, handlers.path.canJump(from), true);
     const clear = scene.tileManager?.getSightMask();
     const actualDist = Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y);
 

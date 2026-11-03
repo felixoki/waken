@@ -8,7 +8,10 @@ export class EntityStore {
     this.entities.set(id, config);
 
     if (config.spawner || config.textureSpawner)
-      this.spawners.set(id, { lastAt: Date.now(), children: new Set() });
+      this.spawners.set(id, {
+        lastAt: Date.now() - Math.random() * (config.textureSpawner?.duration ?? 0),
+        children: new Set(),
+      });
   }
 
   get(id: string): EntityConfig | undefined {

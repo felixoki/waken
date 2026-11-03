@@ -793,6 +793,428 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
   },
+  [EntityName.CATTAIL1]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 4, end: 5 },
+            { row: 16, start: 4, end: 5 },
+          ],
+        },
+        key: "cattail1_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CATTAIL2]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 6, end: 7 },
+            { row: 16, start: 6, end: 7 },
+          ],
+        },
+        key: "cattail2_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CATTAIL3]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 8, end: 9 },
+            { row: 16, start: 8, end: 9 },
+          ],
+        },
+        key: "cattail3_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CATTAIL4]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 10, end: 11 },
+            { row: 16, start: 10, end: 11 },
+          ],
+        },
+        key: "cattail4_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.SEDGE1]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 12, end: 13 },
+            { row: 16, start: 12, end: 13 },
+          ],
+        },
+        key: "sedge1_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.SEDGE2]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 14, end: 15 },
+            { row: 16, start: 14, end: 15 },
+          ],
+        },
+        key: "sedge2_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.SEDGE3]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 16, end: 17 },
+            { row: 16, start: 16, end: 17 },
+          ],
+        },
+        key: "sedge3_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.SEDGE4]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 18, end: 19 },
+            { row: 16, start: 18, end: 19 },
+          ],
+        },
+        key: "sedge4_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.SEDGE5]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 20, end: 20 },
+            { row: 16, start: 20, end: 20 },
+          ],
+        },
+        key: "sedge5_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 12,
+          offsetX: 2,
+          offsetY: 18,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.WATER_LILY1]: {
+    floats: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 54, start: 1, end: 3 },
+            { row: 55, start: 1, end: 3 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 10,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 16,
+          offsetX: 8,
+          offsetY: 8,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+        config: { quiet: true },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Water lily",
+      stackable: true,
+      icon: { spritesheet: "items", row: 39, col: 24 },
+      weight: 0.05,
+    },
+  },
+  [EntityName.WATER_LILY2]: {
+    floats: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE_ANIMATION,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 54, start: 4, end: 6 },
+            { row: 55, start: 4, end: 6 },
+          ],
+          frames: 6,
+          direction: "vertical",
+          frameRate: 10,
+          repeat: -1,
+          autoplay: true,
+        },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 32,
+          height: 16,
+          offsetX: 8,
+          offsetY: 8,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+        config: { quiet: true },
+      },
+      { name: ComponentName.POINTABLE },
+      {
+        name: ComponentName.PICKABLE,
+        config: { item: EntityName.WATER_LILY1, quantity: 1 },
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Water lily",
+    },
+  },
   [EntityName.TREE9]: {
     facing: Direction.DOWN,
     moving: [],

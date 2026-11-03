@@ -233,6 +233,8 @@ export class EntityManager {
     entity.isLocked = config.isLocked;
     this.entities.set(config.id, entity);
 
+    if (definition?.sinks && scene.water) handlers.water.root(scene.water, entity);
+
     if (entity.isStatic && entity.hasComponent(ComponentName.DESTRUCTIBLE))
       scene.physicsManager.groups.wrecks.add(entity);
 

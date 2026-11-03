@@ -34,10 +34,13 @@ uniform sampler2D uDepth;
 uniform sampler2D uCaustics;
 uniform sampler2D uWake;
 uniform sampler2D uShore;
+uniform sampler2D uFlow;
 
 uniform vec2 uMapSize;
 uniform float uTime;
 uniform float uPixelization;
+uniform float uFlowSpeed;
+uniform float uFlowCycle;
 
 uniform vec3 uGradient0;
 uniform vec3 uGradient1;
@@ -77,6 +80,7 @@ uniform float uBeachFoamBreak;
 uniform float uBeachFoamScale;
 uniform vec4 uBeachFoamColor;
 uniform vec4 uBeachWetColor;
+uniform vec3 uBareGround;
 
 uniform vec2 uWakeOrigin;
 uniform vec2 uWakeSize;
@@ -147,10 +151,11 @@ float wake(vec2 pixel) {
   float strength = texel.g;
   float ring = texel.b;
 
-  float edge = mix(uWakeFill, 1.0, smoothstep(0.45, 0.95, across));
+  float still = ring * (1.0 - step(0.5, across));
+  float edge = mix(mix(uWakeFill, 1.0, smoothstep(0.45, 0.95, across)), 1.0, still);
   float along = mix(1.0 - strength, across, ring);
   float phase = along * uWakePhase + across * uWakeSkew * (1.0 - ring);
-  float ripple = (sin(phase - uTime * uWakeSpeed) * 0.5 + 0.5) * uWakeRipple;
+  float ripple = (sin(phase - uTime * uWakeSpeed) * 0.5 + 0.5) * uWakeRipple * (1.0 - still);
   float alpha = clamp(strength * edge * uWakeAlpha - ripple, 0.0, uWakeCutoff);
 
   float tail = mix(smoothstep(0.0, uWakeTail, strength), 1.0, ring);
@@ -161,19 +166,8 @@ float caustic(vec2 uv, float row) {
   return texture2D(uCaustics, vec2(fract(uv.x), (fract(uv.y) + row) * 0.5)).a;
 }
 
-void main(void) {
-  float mask = texture2D(uMainSampler, outTexCoord).a;
-  if (mask <= 0.0) {
-    gl_FragColor = vec4(0.0);
-    return;
-  }
-
-  vec2 pos = outWorld / 16.0;
+vec3 surface(vec3 depth, vec2 pos) {
   vec2 pix = floor(pos * uPixelization) / uPixelization;
-  vec4 info = texture2D(uDepth, outWorld / uMapSize);
-
-  vec3 depth = depthColor(info.r);
-
   vec2 squashed = pix * vec2(1.0, uSquash);
   float shift = gradientNoise(squashed + uTime * uCausticSpeed, uMovementScale);
   vec2 uv = squashed * uCausticScale - vec2(shift) * uMovementAmount;
@@ -188,13 +182,39 @@ void main(void) {
   float sparkle = step(overlay(left, right) - gradientNoise(pix, uSpecularScale2), uSpecularThreshold);
   vec4 specular = vec4(uSpecularColor.rgb, uSpecularColor.a * sparkle);
 
+  vec3 color = mix(depth, caustics.rgb, caustics.a);
+  return mix(color, specular.rgb, specular.a * ceil(caustics.a));
+}
+
+void main(void) {
+  float mask = texture2D(uMainSampler, outTexCoord).a;
+  if (mask <= 0.0) {
+    gl_FragColor = vec4(0.0);
+    return;
+  }
+
+  vec2 pos = outWorld / 16.0;
+  vec2 pix = floor(pos * uPixelization) / uPixelization;
+  vec4 info = texture2D(uDepth, outWorld / uMapSize);
+
+  vec3 depth = depthColor(info.r);
+  vec4 current = texture2D(uFlow, outWorld / uMapSize);
+
   vec2 cell = floor(outWorld) + 0.5;
   float shore = shoreAt(cell);
 
   vec4 foam = vec4(uFoamColor.rgb, uFoamColor.a * caustic(pix * uFoamScale, 0.0) * info.g * step(0.999, shore));
 
-  vec3 color = mix(depth, caustics.rgb, caustics.a);
-  color = mix(color, specular.rgb, specular.a * ceil(caustics.a));
+  vec3 color;
+  if (current.b > 0.004) {
+    vec2 flow = (current.rg * 2.0 - 1.0) * current.b * uFlowSpeed * uFlowCycle;
+    float phase = uTime / uFlowCycle + gradientNoise(pos, 0.15);
+    float a = fract(phase);
+    float b = fract(phase + 0.5);
+    color = mix(surface(depth, pos - flow * a), surface(depth, pos - flow * b), abs(a - 0.5) * 2.0);
+  } else {
+    color = surface(depth, pos);
+  }
   color = mix(color, foam.rgb, foam.a);
   color = mix(color, uWakeColor, wake(floor(outWorld)));
 
@@ -207,6 +227,12 @@ void main(void) {
     float crest = uBeachEdge - uBeachRun;
 
     if (field < line) {
+      if (texture2D(uDepth, (floor(outWorld / 16.0) + 0.5) * 16.0 / uMapSize).b > 0.5) {
+        vec3 ground = field < crest ? uBareGround : mix(uBareGround, uBeachWetColor.rgb, uBeachWetColor.a);
+        gl_FragColor = vec4(ground * mask, mask);
+        return;
+      }
+
       if (field < crest) {
         gl_FragColor = vec4(0.0);
         return;

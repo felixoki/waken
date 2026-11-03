@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 import { World } from "../World";
 import { configs } from "../configs";
 import { handlers } from ".";
-import { MAX_HEALTH } from "../globals";
+import { MAX_HEALTH, SPAWN_JITTER } from "../globals";
 import { Event, SpawnerConfig } from "../types";
 
 const pick = (cfg: SpawnerConfig) => {
@@ -82,7 +82,7 @@ export const spawner = {
 
         if (now - state.lastAt < cfg.duration) continue;
 
-        state.lastAt = now;
+        state.lastAt = now - Math.random() * cfg.duration * SPAWN_JITTER;
 
         const angle = Math.random() * Math.PI * 2;
         const distance = Math.random() * cfg.radius;

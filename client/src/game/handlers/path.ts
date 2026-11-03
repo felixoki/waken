@@ -6,13 +6,15 @@ import {
   LEDGE_CLEARANCE,
   SPEED_JUMPING,
   PATH_DEADZONE,
-  FACING_LOOKAHEAD,
+  FACING_HOLD,
   PATH_JUMP_ALIGN,
   PATH_JUMP_COST,
   PATH_JUMP_MARGIN,
   PATH_MARGIN,
   PATH_SNAP,
+  SWIM_DEPTH,
 } from "@server/globals";
+import { configs } from "@server/configs";
 import { Entity } from "../Entity";
 import {
   Direction,
@@ -23,6 +25,9 @@ import {
   Waypoint,
 } from "@server/types";
 import { handlers } from ".";
+
+const shallows = new WeakMap<number[][], number[][]>();
+const turning = new WeakMap<Entity, { facing: Direction; since: number }>();
 
 interface Node {
   x: number;
@@ -270,15 +275,27 @@ export const path = {
     return null;
   },
 
-  getGrid: (entity: Entity, jump: boolean = false): number[][] => {
+  getGrid: (entity: Entity, jump: boolean = false, sight: boolean = false): number[][] => {
     const { tileManager } = entity.scene;
     if (!tileManager) return [];
 
-    return entity.scene.managers.entities.getMergedGrid(
+    const grid = entity.scene.managers.entities.getMergedGrid(
       entity.scene,
       entity.map,
       jump,
     );
+    const water = entity.scene.water;
+    if (sight || !water || !configs.entities[entity.name]?.wades) return grid;
+
+    let wading = shallows.get(grid);
+    if (!wading) {
+      wading = grid.map((row, y) =>
+        row.map((cell, x) => (cell || water.distance[y * water.columns + x] >= SWIM_DEPTH ? 1 : 0)),
+      );
+      shallows.set(grid, wading);
+    }
+
+    return wading;
   },
 
   canJump: (entity: Entity): boolean =>
@@ -462,11 +479,18 @@ export const path = {
               : Direction.LEFT,
         );
 
-      const ahead = path[Math.min(FACING_LOOKAHEAD, path.length - 1)];
-      const facing = handlers.direction.fromAngle(
-        Math.atan2(ahead.y - oy, ahead.x - ox),
-        entity.facing,
-      );
+      const now = entity.scene.time.now;
+      const turn = turning.get(entity);
+      let facing = entity.facing;
+
+      if (direction === entity.facing || !entity.moving.length) {
+        facing = direction;
+        turning.delete(entity);
+      } else if (!turn || turn.facing !== direction) turning.set(entity, { facing: direction, since: now });
+      else if (now - turn.since >= FACING_HOLD) {
+        facing = direction;
+        turning.delete(entity);
+      }
 
       const jump =
         handlers.path.canJump(entity) &&
@@ -599,14 +623,14 @@ export const path = {
     return space;
   },
 
-  node: (space: Space, x: number, y: number, strict = false): number => {
+  node: (space: Space, x: number, y: number, strict = false, snap = PATH_SNAP): number => {
     const { data, width, height, step } = space;
     const ci = Math.round(x / step);
     const cj = Math.round(y / step);
     let best = -1;
     let distance = Infinity;
 
-    for (let r = 0; r <= PATH_SNAP && best < 0; r++)
+    for (let r = 0; r <= snap && best < 0; r++)
       for (let j = cj - r; j <= cj + r; j++)
         for (let i = ci - r; i <= ci + r; i++) {
           if (Math.max(Math.abs(i - ci), Math.abs(j - cj)) !== r) continue;
@@ -636,7 +660,8 @@ export const path = {
     const { data, width, step } = space;
     const from = handlers.path.position(entity);
     const start = handlers.path.node(space, from.x, from.y);
-    const end = handlers.path.node(space, to.x, to.y, true);
+    const wades = !!configs.entities[entity.name]?.wades;
+    const end = handlers.path.node(space, to.x, to.y, true, wades ? PATH_SNAP * 8 : PATH_SNAP);
     if (start < 0 || end < 0) return null;
 
     const size = data.length;

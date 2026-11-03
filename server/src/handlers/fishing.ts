@@ -51,16 +51,16 @@ export const fishing = {
     const zone = world.entities.getByMap(player.map).find((entity) => {
       if (entity.zone?.type !== ZoneName.FISH) return false;
 
-      const { width, height } = entity.zone;
+      const { width, height, fish } = entity.zone;
 
       return (
         Math.abs(data.originX - entity.x) <= width / 2 &&
-        Math.abs(data.originY - entity.y) <= height / 2
+        Math.abs(data.originY - entity.y) <= height / 2 &&
+        !!(fish as string[] | undefined)?.includes(data.name)
       );
     });
 
-    if (!zone || !(zone.zone!.fish as string[] | undefined)?.includes(data.name))
-      return;
+    if (!zone) return;
 
     const { min, max } = configs.fish[species].weight;
     const weight =

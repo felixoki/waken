@@ -104,23 +104,13 @@ export const forest: BiomeConfig = {
 
   borders: [
     {
-      from: TerrainName.GROUND,
-      to: TerrainName.WATER,
-      tileset: "water_coasts",
-      collides: true,
-    },
-    {
-      from: TerrainName.GRASS,
-      to: TerrainName.WATER,
-      tileset: "water_coasts",
-      collides: true,
-    },
-    {
       from: TerrainName.GRASS,
       to: TerrainName.GROUND,
       tileset: "grass_ground",
     },
   ],
+
+  water: true,
 
   terrain: [TerrainName.GROUND, TerrainName.GRASS],
 
@@ -174,7 +164,6 @@ export const forest: BiomeConfig = {
       entities: [
         EntityName.SUNFLOWER,
         EntityName.DAFFODIL,
-        EntityName.BLUE_LOTUS,
         EntityName.CLARY_SAGE,
         EntityName.BELLADONNA,
         EntityName.BEARDED_TOOTH_FUNGUS,
@@ -184,6 +173,13 @@ export const forest: BiomeConfig = {
       terrain: [TerrainName.GRASS],
       density: 0.2,
       spacing: 2,
+    },
+    {
+      entities: [EntityName.BLUE_LOTUS],
+      terrain: [TerrainName.GRASS],
+      density: 0.05,
+      spacing: 3,
+      near: { terrain: TerrainName.WATER, within: 7 },
     },
     {
       entities: [EntityName.HENBANE, EntityName.OPIUM_POPPY],
@@ -224,6 +220,7 @@ export const forest: BiomeConfig = {
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 1, max: 3 },
       spacing: 8,
+      near: { terrain: TerrainName.WATER, within: 12 },
     },
     {
       entities: [EntityName.WOLF1, EntityName.WOLF2],
@@ -247,12 +244,6 @@ export const forest: BiomeConfig = {
     },
     {
       entities: [EntityName.SHADOW_WANDERER],
-      terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 1, max: 3 },
-      spacing: 10,
-    },
-    {
-      entities: [EntityName.HERON],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 1, max: 3 },
       spacing: 10,
