@@ -270,6 +270,42 @@ const animals: Spritesheet[] = [
     frameHeight: 32,
   },
   {
+    key: "gosling-idle",
+    file: "animals/gosling_idle.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "gosling-walking",
+    file: "animals/gosling_walking.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "pig-idle",
+    file: "animals/pig_idle.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "pig-walking",
+    file: "animals/pig_walking.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "piglet-idle",
+    file: "animals/piglet_idle.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
+    key: "piglet-walking",
+    file: "animals/piglet_walking.png",
+    frameWidth: 32,
+    frameHeight: 32,
+  },
+  {
     key: "fox-idle",
     file: "animals/fox_idle.png",
     frameWidth: 32,
@@ -1539,7 +1575,7 @@ export const maps: Record<MapName, MapConfig> = {
       eclipse: { radius: 0.34, softness: 0.3, strength: 0.92 },
     },
     sound: {
-      music: [MusicName.THE_DEPTHS],
+      music: [MusicName.DRUMS_IN_THE_DEEP],
       ambience: [AmbienceName.CANALS],
     },
     spritesheets: [

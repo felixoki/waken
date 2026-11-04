@@ -216,6 +216,15 @@ export const forest: BiomeConfig = {
       group: { min: 0, max: 2, radius: 3 },
     },
     {
+      entities: [EntityName.PIG],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 1, max: 1 },
+      spacing: 10,
+      chance: 0.1,
+      requires: 3,
+      group: { min: 1, max: 1, radius: 2 },
+    },
+    {
       entities: [EntityName.BEAR],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
       count: { min: 1, max: 3 },

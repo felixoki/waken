@@ -33,6 +33,8 @@ const FOOTSTEPS: Partial<Record<SurfaceName, SoundName>> = {
   [SurfaceName.STONE]: SoundName.FOOTSTEP_STONE,
 };
 
+const WADE_STEP_DEPTH = 0.5;
+
 export class Player extends Entity {
   public socketId: string;
   public isAuthority: boolean;
@@ -232,6 +234,15 @@ export class Player extends Entity {
 
     if (this.stepAccumulator >= FOOTSTEP_DISTANCE) {
       this.stepAccumulator -= FOOTSTEP_DISTANCE;
+
+      const wading = this.scene.water?.sinks.get(this.id);
+      if (wading?.swimming) return;
+
+      if (wading && wading.depth > WADE_STEP_DEPTH) {
+        this.scene.managers.sound.play.sfx(SoundName.FOOTSTEP_WATER);
+        return;
+      }
+
       const surface = this.scene.tileManager?.surfaceAt(
         body.center.x,
         body.bottom,

@@ -92,12 +92,17 @@ export class InputManager {
     return moving;
   }
 
-  getNavigation(): HotbarDirection.PREV | HotbarDirection.NEXT | null {
-    if (Phaser.Input.Keyboard.JustDown(this.keys.Q))
-      return HotbarDirection.PREV;
+  isCaptured(): boolean {
+    return this.captured;
+  }
 
-    if (Phaser.Input.Keyboard.JustDown(this.keys.E))
-      return HotbarDirection.NEXT;
+  getNavigation(): HotbarDirection.PREV | HotbarDirection.NEXT | null {
+    const prev = Phaser.Input.Keyboard.JustDown(this.keys.Q);
+    const next = Phaser.Input.Keyboard.JustDown(this.keys.E);
+
+    if (this.captured) return null;
+    if (prev) return HotbarDirection.PREV;
+    if (next) return HotbarDirection.NEXT;
 
     return null;
   }
@@ -107,13 +112,11 @@ export class InputManager {
   }
 
   isJumping(): boolean {
-    return (
-      !this.captured && Phaser.Input.Keyboard.JustDown(this.keys.SPACE)
-    );
+    return Phaser.Input.Keyboard.JustDown(this.keys.SPACE) && !this.captured;
   }
 
   isRolling(): boolean {
-    return !this.captured && Phaser.Input.Keyboard.JustDown(this.keys.C);
+    return Phaser.Input.Keyboard.JustDown(this.keys.C) && !this.captured;
   }
 
   setTarget(target: { x: number; y: number }): void {

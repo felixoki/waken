@@ -355,6 +355,7 @@ export interface SpawnRule {
   group?: GroupConfig;
   loot?: (Item & { chance: number })[];
   near?: { terrain: TerrainName; within: number };
+  requires?: number;
 }
 
 export interface Entity {

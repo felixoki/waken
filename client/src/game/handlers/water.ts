@@ -63,6 +63,22 @@ import {
   WATERFALL_WAVE_SQUASH,
   WATERFALL_WAVE_WIDTH,
   WATERFALL_WAVES,
+  SKYFALL_COHESIVE,
+  SKYFALL_CONTRACT,
+  SKYFALL_END,
+  SKYFALL_BLEND,
+  SKYFALL_SPEED,
+  SKYFALL_SPREAD,
+  SKYFALL_SHIMMER,
+  SKYFALL_GLINTS,
+  SKYFALL_SPRAY_ALPHA,
+  SKYFALL_SPRAY_FREQUENCY,
+  SKYFALL_SPRAY_GRAVITY,
+  SKYFALL_SPRAY_KICK,
+  SKYFALL_SPRAY_PEEL,
+  SKYFALL_SPRAY_SIDE,
+  SKYFALL_SPRAY_TEXTURE,
+  SKYFALL_SPRAY_TINTS,
   BEACH_BLUR,
   BEACH_INSET,
   BEACH_REACH,
@@ -75,6 +91,7 @@ import type { Scene } from "../scenes/Scene";
 import type { Entity } from "../Entity";
 import { getWaterfallFrag } from "../pipelines/frags/waterfall";
 import { getMistFrag } from "../pipelines/frags/mist";
+import { getSkyfallFrag } from "../pipelines/frags/skyfall";
 
 export interface Wake {
   xs: Float32Array;
@@ -117,6 +134,11 @@ export interface Root {
   strength: number;
 }
 
+export interface Fall {
+  rect: Phaser.Geom.Rectangle;
+  open: boolean;
+}
+
 export interface Basin {
   x: number;
   y: number;
@@ -142,6 +164,7 @@ export interface Water {
   entities: Map<string, Entity>;
   roots: Map<string, Root>;
   falls: Phaser.GameObjects.Shader[];
+  sprays: Phaser.GameObjects.Particles.ParticleEmitter[];
   basins: Basin[];
   splashes: Splash[];
   x: number;
@@ -308,10 +331,11 @@ export const water = {
   ): Uint8Array => {
     const { width: columns, height: rows, data } = layer.layer;
     const bare = new Uint8Array(columns * rows);
+    if (!beach) return bare;
 
     for (let y = 0; y < rows; y++)
       for (let x = 0; x < columns; x++)
-        if (data[y][x].index > 0 && !((beach?.layer.data[y]?.[x]?.index ?? -1) > 0))
+        if (data[y][x].index > 0 && !((beach.layer.data[y]?.[x]?.index ?? -1) > 0))
           bare[y * columns + x] = 255;
 
     return bare;
@@ -538,6 +562,7 @@ export const water = {
       entities: new Map(),
       roots: new Map(),
       falls: [],
+      sprays: [],
       basins: [],
       splashes: [],
       x: 0,
@@ -866,9 +891,9 @@ export const water = {
     entity.y += depth;
   },
 
-  falls: (scene: Scene, rects: Phaser.Geom.Rectangle[]) => {
+  falls: (scene: Scene, falls: Fall[]) => {
     const state = scene.water;
-    if (!state || !rects.length) return;
+    if (!state || !falls.length) return;
 
     const base = new Phaser.Display.BaseShader(
       "waterfall",
@@ -891,15 +916,38 @@ export const water = {
       uAlpha: { type: "1f", value: WATERFALL_MIST_ALPHA },
     });
 
-    for (const rect of rects) {
+    const sky = new Phaser.Display.BaseShader("skyfall", getSkyfallFrag(), undefined, {
+      uTime: { type: "1f", value: 0 },
+      uSeed: { type: "1f", value: 0 },
+      uBlend: { type: "1f", value: SKYFALL_BLEND },
+      uSpeed: { type: "1f", value: SKYFALL_SPEED },
+      uContract: { type: "1f", value: SKYFALL_CONTRACT },
+      uSpread: { type: "1f", value: SKYFALL_SPREAD },
+      uCohesive: { type: "1f", value: SKYFALL_COHESIVE },
+      uEnd: { type: "1f", value: SKYFALL_END },
+      uShimmer: { type: "1f", value: SKYFALL_SHIMMER },
+      uGlints: { type: "1f", value: SKYFALL_GLINTS },
+    });
+
+    for (const { rect, open } of falls) {
       const x = Math.round(rect.centerX);
       const width = Math.round(rect.width);
       const bottom = Math.round(rect.bottom);
       const seed = Math.random() * 100;
-      const fall = scene.add.shader(base, x, Math.round(rect.centerY), width, Math.round(rect.height));
+      const fall = scene.add.shader(
+        open ? sky : base,
+        x,
+        Math.round(rect.centerY),
+        width,
+        Math.round(rect.height),
+      );
       (fall.uniforms as Record<string, { value: number }>).uSeed.value = seed;
       fall.setDepth(WATERFALL_DEPTH);
       state.falls.push(fall);
+      if (open) {
+        water.spray(scene, state, rect);
+        continue;
+      }
 
       const height = Math.round(rect.height) + WATERFALL_MIST_BELOW;
       const mist = scene.add.shader(
@@ -917,6 +965,56 @@ export const water = {
       state.falls.push(mist);
 
       state.basins.push({ x, y: bottom - WATERFALL_BASE, rx: width / 2, seed: seed % 1 });
+    }
+  },
+
+  spray: (scene: Scene, state: Water, rect: Phaser.Geom.Rectangle) => {
+    if (!scene.textures.exists(SKYFALL_SPRAY_TEXTURE)) {
+      const g = scene.add.graphics();
+      g.fillStyle(0xffffff);
+      g.fillRect(0, 0, 1, 1);
+      g.generateTexture(SKYFALL_SPRAY_TEXTURE, 1, 1);
+      g.destroy();
+    }
+
+    const left = Math.round(rect.x);
+    const right = Math.round(rect.right);
+    const lip = Math.round(rect.y) + SKYFALL_BLEND;
+    const shared = {
+      tint: SKYFALL_SPRAY_TINTS,
+      alpha: { start: SKYFALL_SPRAY_ALPHA, end: 0 },
+      gravityY: SKYFALL_SPRAY_GRAVITY,
+    };
+
+    const emitters = [
+      scene.add.particles(0, 0, SKYFALL_SPRAY_TEXTURE, {
+        ...shared,
+        x: { min: left, max: right },
+        y: { min: lip - 2, max: lip + 2 },
+        speedX: { min: -SKYFALL_SPRAY_SIDE, max: SKYFALL_SPRAY_SIDE },
+        speedY: { min: -SKYFALL_SPRAY_KICK, max: SKYFALL_SPRAY_KICK * 0.6 },
+        lifespan: { min: 250, max: 600 },
+        frequency: SKYFALL_SPRAY_FREQUENCY,
+      }),
+      ...[
+        { x: left, from: -SKYFALL_SPRAY_SIDE, to: -SKYFALL_SPRAY_SIDE * 0.2 },
+        { x: right, from: SKYFALL_SPRAY_SIDE * 0.2, to: SKYFALL_SPRAY_SIDE },
+      ].map(({ x, from, to }) =>
+        scene.add.particles(0, 0, SKYFALL_SPRAY_TEXTURE, {
+          ...shared,
+          x: { min: x - 1, max: x + 1 },
+          y: { min: lip, max: lip + SKYFALL_SPRAY_PEEL },
+          speedX: { min: from, max: to },
+          speedY: { min: 8, max: 24 },
+          lifespan: { min: 200, max: 450 },
+          frequency: SKYFALL_SPRAY_FREQUENCY * 4,
+        }),
+      ),
+    ];
+
+    for (const emitter of emitters) {
+      emitter.setDepth(WATERFALL_DEPTH + 1);
+      state.sprays.push(emitter);
     }
   },
 
@@ -1286,6 +1384,8 @@ export const water = {
     state.graphics.destroy();
     for (const fall of state.falls) fall.destroy();
     state.falls.length = 0;
+    for (const spray of state.sprays) spray.destroy();
+    state.sprays.length = 0;
     state.basins.length = 0;
     state.trails.clear();
     state.sinks.clear();

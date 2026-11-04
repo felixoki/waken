@@ -165,7 +165,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.WOLF1]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 50,
+    maxHealth: 75,
     speed: 1.3,
     components: [
       { name: ComponentName.ANIMATION },
@@ -215,7 +215,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
-        damage: { type: DamageType.PIERCING, amount: 12 },
+        damage: { type: DamageType.PIERCING, amount: 16 },
         range: 35,
         sound: SoundName.WOLF_SLASH,
       },
@@ -243,7 +243,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.WOLF2]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 90,
+    maxHealth: 135,
     speed: 1.25,
     components: [
       { name: ComponentName.ANIMATION },
@@ -293,7 +293,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
-        damage: { type: DamageType.PIERCING, amount: 20 },
+        damage: { type: DamageType.PIERCING, amount: 27 },
         range: 40,
         sound: SoundName.WOLF_SLASH,
       },
@@ -321,7 +321,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.WOLF3]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 180,
+    maxHealth: 270,
     speed: 1.2,
     components: [
       { name: ComponentName.ANIMATION },
@@ -371,7 +371,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
       {
         state: StateName.SLASHING,
         weapon: WeaponName.SLASH,
-        damage: { type: DamageType.PIERCING, amount: 32 },
+        damage: { type: DamageType.PIERCING, amount: 43 },
         range: 45,
         sound: SoundName.WOLF_SLASH,
       },
@@ -866,12 +866,160 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
         name: ComponentName.CAPTURABLE,
         config: { soul: EntityName.GOOSE },
       },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.WHEAT, EntityName.CABBAGE],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.BREEDABLE,
+        config: {
+          child: EntityName.GOSLING,
+          cooldown: 300000,
+          range: 96,
+        },
+      },
     ],
     states: [StateName.IDLE, StateName.WALKING],
     behaviors: [
       {
         name: BehaviorName.AMBLE,
         config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.GOSLING]: {
+    floats: true,
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 10,
+    speed: 0.75,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.GOOSE, duration: 120000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 6,
+          offsetX: 11,
+          offsetY: 20,
+          pushable: false,
+        },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 48, idle: { range: [8000, 16000] } },
+      },
+    ],
+  },
+  [EntityName.PIG]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 40,
+    speed: 0.7,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.PORK,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      { name: ComponentName.BUTCHERABLE },
+      {
+        name: ComponentName.CAPTURABLE,
+        config: { soul: EntityName.PIG },
+      },
+      {
+        name: ComponentName.FEEDABLE,
+        config: {
+          foods: [EntityName.HAZELNUT, EntityName.CARROT],
+          duration: 60000,
+        },
+      },
+      {
+        name: ComponentName.BREEDABLE,
+        config: {
+          child: EntityName.PIGLET,
+          cooldown: 300000,
+          range: 96,
+        },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 20,
+          height: 8,
+          offsetX: 6,
+          offsetY: 18,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.BOAR_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 60, idle: { range: [10000, 20000] } },
+      },
+    ],
+  },
+  [EntityName.PIGLET]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 15,
+    speed: 0.75,
+    components: [
+      { name: ComponentName.ANIMATION },
+      { name: ComponentName.DAMAGEABLE },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.MATURABLE,
+        config: { adult: EntityName.PIG, duration: 120000 },
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 12,
+          height: 6,
+          offsetX: 10,
+          offsetY: 20,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.BOAR_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [StateName.IDLE, StateName.WALKING],
+    behaviors: [
+      {
+        name: BehaviorName.AMBLE,
+        config: { radius: 48, idle: { range: [8000, 16000] } },
       },
     ],
   },
@@ -1278,7 +1426,7 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           width: 24,
           height: 18,
           offsetX: 28,
-          offsetY: 41,
+          offsetY: 26,
           pushable: false,
         },
       },

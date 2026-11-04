@@ -60,7 +60,11 @@ export class HotbarComponent extends Component {
   }
 
   select(index: number): void {
-    if (!this.entity.isControllable) return;
+    if (
+      !this.entity.isControllable ||
+      this.entity.inputManager?.isCaptured()
+    )
+      return;
     this.active = index;
     this.emit();
   }

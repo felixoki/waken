@@ -34,8 +34,9 @@ const ARCH = [431, 448, 465];
 
 const ATTEMPTS = 24;
 const SPACING = 5;
-const LEVER_MIN = 10;
-const LEVER_MAX = 48;
+const LEVER_MIN = 4;
+const LEVER_MAX = 18;
+const TIER_PENALTY = 4;
 
 type Side = "west" | "east";
 
@@ -184,19 +185,29 @@ export class SeparatorGenerator {
           if (place(r, null, attempt < attempts * 0.75)) break;
     }
 
+    const closed = new Uint8Array(blocked);
+
+    for (const gate of gates) for (const i of gate.piece.open) closed[i] = 1;
+
+    const walkable = (i: number) =>
+      (terrain[i] === TerrainName.FLOOR ||
+        terrain[i] === TerrainName.RECESSED ||
+        terrain[i] === TerrainName.ELEVATED) &&
+      !closed[i];
+    const reachable = this._reachable(rooms[0], walkable);
+    const walks = gates.map(({ piece }) => this._walk(piece.door!, walkable));
+
     for (let g = 0; g < gates.length; g++) {
       const { piece, room } = gates[g];
       const door = piece.door!;
-      const closed = new Uint8Array(blocked);
-
-      for (const gate of gates) for (const i of gate.piece.open) closed[i] = 1;
 
       const lever = this._lever(
         terrain,
-        rooms,
+        rooms[room],
         room,
-        door,
-        closed,
+        g,
+        walks,
+        reachable,
         occupied,
         owner,
         keepout,
@@ -625,32 +636,49 @@ export class SeparatorGenerator {
     return count;
   }
 
-  private _lever(
-    terrain: TerrainName[],
-    rooms: Room[],
-    room: number,
-    door: { x: number; y: number },
-    closed: Uint8Array,
-    occupied: Uint8Array,
-    owner: Int16Array,
-    keepout: Uint8Array,
-  ): number {
+  private _reachable(
+    start: Room,
+    walkable: (i: number) => boolean,
+  ): Uint8Array {
     const { width, height } = this;
-    const walkable = (i: number) =>
-      (terrain[i] === TerrainName.FLOOR ||
-        terrain[i] === TerrainName.RECESSED ||
-        terrain[i] === TerrainName.ELEVATED) &&
-      !closed[i];
-
-    const start = rooms[0];
     const seeds: number[] = [];
 
     for (let y = start.y; y < start.y + start.height; y++)
       for (let x = start.x; x < start.x + start.width; x++)
         if (walkable(y * width + x)) seeds.push(y * width + x);
 
-    const reachable = handlers.generation.flood(width, height, walkable, seeds);
-    const inside = rooms[room];
+    return handlers.generation.flood(width, height, walkable, seeds);
+  }
+
+  private _walk(
+    door: { x: number; y: number },
+    walkable: (i: number) => boolean,
+  ): Int32Array {
+    const { width, height } = this;
+    const seeds: number[] = [];
+
+    for (let y = door.y - 1; y <= door.y + 4; y++)
+      for (let x = door.x - 1; x <= door.x + 2; x++) {
+        if (x < 0 || x >= width || y < 0 || y >= height) continue;
+        if (walkable(y * width + x)) seeds.push(y * width + x);
+      }
+
+    return handlers.generation.steps(width, height, walkable, seeds);
+  }
+
+  private _lever(
+    terrain: TerrainName[],
+    inside: Room,
+    room: number,
+    gate: number,
+    walks: Int32Array[],
+    reachable: Uint8Array,
+    occupied: Uint8Array,
+    owner: Int16Array,
+    keepout: Uint8Array,
+  ): number {
+    const { width, height } = this;
+    const walk = walks[gate];
     const candidates: { index: number; distance: number }[] = [];
 
     for (let y = 1; y < height - 1; y++)
@@ -667,8 +695,12 @@ export class SeparatorGenerator {
         )
           continue;
 
-        const distance = Math.max(Math.abs(x - door.x), Math.abs(y - door.y));
+        const distance = walk[i];
         if (distance < LEVER_MIN || distance > LEVER_MAX) continue;
+        if (
+          walks.some((other, h) => h !== gate && other[i] >= 0 && other[i] <= distance)
+        )
+          continue;
 
         const hidden = [-1, 1, -width, width].some(
           (step) => owner[i + step] >= 0 && owner[i + step] !== room,
@@ -680,7 +712,7 @@ export class SeparatorGenerator {
             terrain[i + 1] === TerrainName.VOID);
         const tier = hidden ? 0 : cornered ? 1 : walled ? 2 : 3;
 
-        candidates.push({ index: i, distance: distance + tier * LEVER_MAX });
+        candidates.push({ index: i, distance: distance + tier * TIER_PENALTY });
       }
 
     if (!candidates.length) return -1;

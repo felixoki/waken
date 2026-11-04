@@ -14,7 +14,7 @@ export const animations: Partial<
     [StateName.FELLING]: { frameCount: 6, frameRate: 10, repeat: 0 },
     [StateName.MINING]: { frameCount: 6, frameRate: 10, repeat: 0 },
     [StateName.RAKING]: { frameCount: 6, frameRate: 10, repeat: 0 },
-    [StateName.WATERING]: { frameCount: 21, frameRate: 14, repeat: 0 },
+    [StateName.WATERING]: { frameCount: 20, frameRate: 14, repeat: 0 },
   },
   [EntityName.VILLAIN]: {
     [StateName.IDLE]: { frameCount: 8, frameRate: 8, repeat: -1 },
@@ -200,6 +200,18 @@ export const animations: Partial<
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },
   [EntityName.GOOSE]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.GOSLING]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.PIG]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+  },
+  [EntityName.PIGLET]: {
     [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
     [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
   },

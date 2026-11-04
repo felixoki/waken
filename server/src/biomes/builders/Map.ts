@@ -328,7 +328,9 @@ export class MapBuilder {
 
             const filled =
               fillTerrain === TerrainName.WATER
-                ? handlers.generation.nearTerrain(grid, idx, width, fillTerrain)
+                ? config.walls
+                  ? grid[idx] === fillTerrain
+                  : handlers.generation.nearTerrain(grid, idx, width, fillTerrain)
                 : isBaseLayer ||
                   (exact
                     ? grid[idx] === fillTerrain
@@ -730,6 +732,7 @@ export class MapBuilder {
           [
             { name: "collides", type: "bool", value: true },
             { name: "opaque", type: "bool", value: true },
+            { name: "face", type: "bool", value: true },
           ],
         ),
       );
@@ -744,6 +747,7 @@ export class MapBuilder {
           [
             { name: "collides", type: "bool", value: true },
             { name: "opaque", type: "bool", value: true },
+            { name: "face", type: "bool", value: true },
             { name: "rendersAbove", type: "bool", value: true },
           ],
         ),
@@ -949,6 +953,7 @@ export class MapBuilder {
       const spawner = new EntitySpawner(
         { ...band.config, width, height },
         band.config.noise.seed ?? this.seed,
+        this.unlocked,
       );
 
       const within =

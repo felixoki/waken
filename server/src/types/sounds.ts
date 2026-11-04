@@ -3,6 +3,7 @@ export enum SoundName {
   FOOTSTEP_SNOW = "footstep_snow",
   FOOTSTEP_GRASS = "footstep_grass",
   FOOTSTEP_STONE = "footstep_stone",
+  FOOTSTEP_WATER = "footstep_water",
   HIT = "hit",
   JUMP = "jump",
   LAND = "land",
@@ -82,6 +83,7 @@ export enum MusicName {
   INTO_THE_MIST = "into_the_mist",
   AT_DAYBREAK = "at_daybreak",
   THE_DEPTHS = "the_depths",
+  DRUMS_IN_THE_DEEP = "drums_in_the_deep",
 }
 
 export enum AmbienceName {

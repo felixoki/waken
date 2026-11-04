@@ -31,6 +31,7 @@ export const needs: NeedConfig[] = [
       { item: EntityName.BEANS, tier: 2, group: GroupName.PROTEIN },
       { item: EntityName.POULTRY, tier: 3, group: GroupName.PROTEIN },
       { item: EntityName.EGG, tier: 3, group: GroupName.PROTEIN },
+      { item: EntityName.PORK, tier: 4, group: GroupName.PROTEIN },
       { item: EntityName.CARROT, tier: 2, group: GroupName.VEGETABLES },
       { item: EntityName.TOMATO, tier: 2, group: GroupName.VEGETABLES },
       { item: EntityName.CABBAGE, tier: 2, group: GroupName.VEGETABLES },

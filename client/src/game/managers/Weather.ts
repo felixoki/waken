@@ -52,6 +52,7 @@ import { emitters, RainSplashes } from "../vfx/emitters";
 import type { Scene } from "../scenes/Scene";
 
 const WEATHER_TRANSITION_DURATION = PHASE_TRANSITION_DURATION * 3;
+const WEATHER_TRANSITION_EASE = "Sine.easeInOut";
 
 type WeatherModifier = Required<
   Omit<AmbienceModifier, "flash" | "wetness" | "frost">
@@ -322,7 +323,12 @@ export class WeatherManager {
     const target = WEATHERS[name] ?? CLEAR;
 
     const map = this.scene.managers.players.player?.map;
-    if (map) this.syncAmbience(map);
+    if (map)
+      this.syncAmbience(
+        map,
+        animate ? WEATHER_TRANSITION_DURATION : undefined,
+        animate ? WEATHER_TRANSITION_EASE : undefined,
+      );
 
     for (const pipeline of this._getPipelines()) {
       const mod = pipeline.layer(AmbienceLayer.WEATHER);
@@ -335,7 +341,7 @@ export class WeatherManager {
           targets: mod,
           ...target,
           duration: WEATHER_TRANSITION_DURATION,
-          ease: "Sine.easeInOut",
+          ease: WEATHER_TRANSITION_EASE,
         });
       } else Object.assign(mod, target);
     }
@@ -371,7 +377,7 @@ export class WeatherManager {
     else Object.assign(pipeline.wind, target);
   }
 
-  syncAmbience(map: MapName): void {
+  syncAmbience(map: MapName, duration?: number, ease?: string): void {
     const indoor = !!configs.maps[map]?.isIndoor;
     const wanted =
       indoor || this.frosty ? null : (AMBIENCES[this.current] ?? null);
@@ -380,9 +386,14 @@ export class WeatherManager {
       const playing = this.scene.managers.sound.hasAmbience(name);
 
       if (name === wanted && !playing)
-        this.scene.managers.sound.play.ambience(name, AmbienceDomain.WEATHER);
+        this.scene.managers.sound.play.ambience(
+          name,
+          AmbienceDomain.WEATHER,
+          duration,
+          ease,
+        );
       else if (name !== wanted && playing)
-        this.scene.managers.sound.stop.ambience(name);
+        this.scene.managers.sound.stop.ambience(name, duration, ease);
     }
   }
 

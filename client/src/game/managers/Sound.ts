@@ -132,7 +132,12 @@ export class SoundManager {
       this.play.queue(0);
     },
 
-    ambience: (name: AmbienceName, domain: AmbienceDomain) => {
+    ambience: (
+      name: AmbienceName,
+      domain: AmbienceDomain,
+      duration = CROSSFADE_DURATION,
+      ease = "Linear",
+    ) => {
       if (this.layers.has(name)) return;
 
       const config = configs.sounds.ambience[name] as AudioConfig;
@@ -154,7 +159,8 @@ export class SoundManager {
       this.scene.tweens.add({
         targets: sound,
         volume: target,
-        duration: CROSSFADE_DURATION,
+        duration,
+        ease,
       });
       this.layers.set(name, sound);
       this.domains.set(name, domain);
@@ -200,13 +206,17 @@ export class SoundManager {
       this._fade(current);
     },
 
-    ambience: (name: AmbienceName) => {
+    ambience: (
+      name: AmbienceName,
+      duration = CROSSFADE_DURATION,
+      ease = "Linear",
+    ) => {
       const sound = this.layers.get(name);
       if (!sound) return;
 
       this.layers.delete(name);
       this.domains.delete(name);
-      this._fade(sound);
+      this._fade(sound, duration, ease);
     },
 
     all: () => {
@@ -266,11 +276,12 @@ export class SoundManager {
     return result;
   }
 
-  private _fade(sound: Sound) {
+  private _fade(sound: Sound, duration = CROSSFADE_DURATION, ease = "Linear") {
     this.scene.tweens.add({
       targets: sound,
       volume: 0,
-      duration: CROSSFADE_DURATION,
+      duration,
+      ease,
       onComplete: () => sound.destroy(),
     });
   }

@@ -863,10 +863,26 @@
 - Refactor hyperbeam ✅
 - Improve fishing ✅
 
+#### 3.11.2026
+
+- Add river, lake and waterfall generation ✅
+- Fleeing entities despawn when stuck ✅
+- Add gosling and feedable to goose ✅
+- Hotbar stays active during fish reel ✅
+- Levers are too far away from their doors ✅
+- Ground around cave lakes is filled with water tiles ✅
+- Add footsteps for water ✅
+- Direction visibly resets after watering ✅
+- Add pigs and piglets ✅
+- Add villain health bar ✅
+- Add missing temple collisions ✅
+- Fix door lighting ✅
+- Refactor isles water ✅
+
 ### To Do
 
 - Add craftable candles from bear fat
-- Add pigs
+- Refactor effect visuals
 
 ### Bugs
 
@@ -875,9 +891,7 @@
 
 🔵 Low
 
-- Effect tint doesn't reset for other clients
 - Southern dungeon ledge corners render above players
-- Direction visibly resets after watering
 
 
 ### Backlog

@@ -307,6 +307,7 @@ export class TileManager {
     } = this.tilemap;
     const solid = new Uint8Array(width * height);
     const drop = new Uint8Array(width * height);
+    const span = new Uint8Array(width * height);
     const pixels = new Map<Phaser.Tilemaps.Tileset, Uint8ClampedArray>();
 
     const read = (tileset: Phaser.Tilemaps.Tileset): Uint8ClampedArray => {
@@ -332,6 +333,10 @@ export class TileManager {
       const properties = layer.properties as TiledProperty[] | undefined;
       if (!properties?.some((p) => p.name === "opaque" && p.value === true))
         continue;
+
+      const face = properties.some(
+        (p) => p.name === "face" && p.value === true,
+      );
 
       for (const row of layer.data)
         for (const tile of row) {
@@ -362,6 +367,7 @@ export class TileManager {
               if (wx < 0 || wx >= width) continue;
 
               const sx = origin.x + (tile.flipX ? w - 1 - x : x);
+              if (face) span[wy * width + wx] = 1;
               if (data[(sy * stride + sx) * 4 + 3] >= LIGHT_ALPHA)
                 solid[wy * width + wx] = 1;
             }
@@ -372,8 +378,10 @@ export class TileManager {
     for (let x = 0; x < width; x++)
       for (let y = height - 2; y >= 0; y--) {
         const i = y * width + x;
-        if (solid[i]) drop[i] = Math.min(drop[i + width] + 1, 255);
+        if (solid[i] || span[i]) drop[i] = Math.min(drop[i + width] + 1, 255);
       }
+
+    for (let i = 0; i < drop.length; i++) if (!solid[i]) drop[i] = 0;
 
     return (this.opaque = { width, height, solid, drop });
   }

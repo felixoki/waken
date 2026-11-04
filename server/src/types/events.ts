@@ -111,6 +111,7 @@ export enum Event {
 
   /** Entities (UI) */
   ENTITIES_UPDATE = "entities_update",
+  BOSS_UPDATE = "boss_update",
   DAMAGE_NUMBER = "damage_number",
 
   /** Sleep */

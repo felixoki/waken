@@ -318,6 +318,43 @@ export const generation = {
     return visited;
   },
 
+  steps: (
+    width: number,
+    height: number,
+    passable: (index: number) => boolean,
+    seeds: Iterable<number>,
+  ): Int32Array => {
+    const dist = new Int32Array(width * height).fill(-1);
+    const queue = new Int32Array(width * height);
+    let head = 0;
+    let tail = 0;
+
+    for (const seed of seeds)
+      if (dist[seed] < 0 && passable(seed)) {
+        dist[seed] = 0;
+        queue[tail++] = seed;
+      }
+
+    while (head < tail) {
+      const i = queue[head++];
+      const x = i % width;
+      const d = dist[i] + 1;
+
+      const visit = (ni: number) => {
+        if (dist[ni] >= 0 || !passable(ni)) return;
+        dist[ni] = d;
+        queue[tail++] = ni;
+      };
+
+      if (x > 0) visit(i - 1);
+      if (x < width - 1) visit(i + 1);
+      if (i >= width) visit(i - width);
+      if (i < width * (height - 1)) visit(i + width);
+    }
+
+    return dist;
+  },
+
   isInBlock: (
     x: number,
     y: number,

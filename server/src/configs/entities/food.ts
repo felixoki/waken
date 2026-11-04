@@ -190,6 +190,36 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1.5,
     },
   },
+  [EntityName.PORK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 17, start: 17, end: 18 },
+            { row: 18, start: 17, end: 18 },
+          ],
+        },
+        key: "pork_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Pork",
+      description: "A round cut from the leg of a pig.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 18, col: 16 },
+      weight: 1.5,
+    },
+  },
   [EntityName.MILK]: {
     facing: Direction.DOWN,
     moving: [],

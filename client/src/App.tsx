@@ -4,6 +4,7 @@ import Phaser from "phaser";
 
 import { Inventory } from "./ui/Inventory";
 import { Entities } from "./ui/Entities";
+import { Boss } from "./ui/Boss";
 import { Hotbar } from "./ui/Hotbar";
 import { Menu } from "./ui/Menu";
 import { Dialogue } from "./ui/Dialogue";
@@ -72,6 +73,7 @@ function App() {
       <Location />
       <Chart />
       <Entities />
+      <Boss />
       <DamageNumbers />
       <Tooltip />
       <Fishing />

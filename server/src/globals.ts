@@ -238,6 +238,17 @@ export const WATER_PALETTES = {
     specular: [WATER_SPECULAR_COLOR, WATER_SPECULAR_ALPHA],
     foam: [WATER_FOAM_COLOR, WATER_FOAM_ALPHA],
   },
+  isles: {
+    gradient: [
+      { at: 0.094, color: 0x4491ab },
+      { at: 0.25, color: 0x4aa3b9 },
+      { at: 0.391, color: 0x4fb1c4 },
+    ],
+    caustic: [0x53bfcf, 0.06],
+    highlight: [0x57dfe7, 0.4],
+    specular: [0x57dfe7, 1],
+    foam: [0x53bfcf, 1],
+  },
   cave: {
     gradient: [
       { at: 0.094, color: 0x161c1d },
@@ -354,6 +365,22 @@ export const WATERFALL_WAVE_REACH = 0.7;
 export const WATERFALL_WAVE_SQUASH = 0.35;
 export const WATERFALL_WAVE_WIDTH = 2;
 export const WATERFALL_WAVE = 0.45;
+export const SKYFALL_BLEND = 9;
+export const SKYFALL_SPEED = 1;
+export const SKYFALL_CONTRACT = 1.5;
+export const SKYFALL_SPREAD = 2.5;
+export const SKYFALL_COHESIVE = 0.38;
+export const SKYFALL_END = 1.2;
+export const SKYFALL_SPRAY_TEXTURE = "skyfall_spray";
+export const SKYFALL_SPRAY_TINTS = [0x57dfe7, 0x53bfcf, 0x9dbccf];
+export const SKYFALL_SPRAY_ALPHA = 0.7;
+export const SKYFALL_SPRAY_GRAVITY = 140;
+export const SKYFALL_SPRAY_SIDE = 7;
+export const SKYFALL_SPRAY_KICK = 5;
+export const SKYFALL_SPRAY_PEEL = 30;
+export const SKYFALL_SPRAY_FREQUENCY = 60;
+export const SKYFALL_SHIMMER = 0.68;
+export const SKYFALL_GLINTS = 0.96;
 export const ROOT_RING = 0.5;
 export const ROOT_SPREAD = 0.6;
 export const ROOT_CURVE = 0.3;
@@ -429,7 +456,7 @@ export const DURATION_FELLING = 600;
 export const DURATION_MINING = 600;
 export const DURATION_EXTRACTION_BOUNCE = 800;
 export const DURATION_RAKING = 600;
-export const DURATION_WATERING = 1500;
+export const DURATION_WATERING = 1430;
 export const DURATION_CROP_DEHYDRATION = 86_400_000;
 export const RANGE_FELLING = 48;
 export const RANGE_MINING = 48;
@@ -723,4 +750,9 @@ export const FOLLOW_NEAR = 32;
 export const FOLLOW_LEASH = 56;
 export const FOLLOW_FAR = 96;
 export const FOLLOW_REPLAN = 24;
-export const MEATS = [EntityName.GAME_MEAT, EntityName.BEEF, EntityName.POULTRY];
+export const MEATS = [
+  EntityName.GAME_MEAT,
+  EntityName.BEEF,
+  EntityName.POULTRY,
+  EntityName.PORK,
+];

@@ -20,7 +20,7 @@ export const villain: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.VILLAIN]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 500,
+    maxHealth: 2500,
     components: [
       { name: ComponentName.ANIMATION },
       {
@@ -124,7 +124,7 @@ export const villain: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.DRAGON]: {
     facing: Direction.DOWN,
     moving: [],
-    maxHealth: 500,
+    maxHealth: 2500,
     components: [],
     states: [
       StateName.IDLE,

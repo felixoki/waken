@@ -15,11 +15,13 @@ export class EntitySpawner {
   private elevation?: Uint8Array;
   private within?: Uint8Array;
   private blocked?: Uint8Array;
+  private unlocked: number;
   private footprints = new Map<SpawnRule, [number, number][]>();
 
-  constructor(config: BiomeConfig, seed: string) {
+  constructor(config: BiomeConfig, seed: string, unlocked = 0) {
     this.config = config;
     this.seed = seed;
+    this.unlocked = unlocked;
   }
 
   spawn(
@@ -47,6 +49,8 @@ export class EntitySpawner {
 
     for (let r = 0; r < this.config.objects.length; r++) {
       const rule = this.config.objects[r];
+
+      if ((rule.requires ?? 0) > this.unlocked) continue;
 
       if (rule.count) {
         this._spawnCount(r, rule, terrain, entities, occupied);

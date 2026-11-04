@@ -151,6 +151,20 @@ export const sounds = {
       folder: "footsteps",
       variants: ["stepsnow1", "stepsnow2", "stepsnow3", "stepsnow4"],
     },
+    [SoundName.FOOTSTEP_WATER]: {
+      volume: 0.06,
+      folder: "footsteps",
+      variants: [
+        "stepwater1",
+        "stepwater2",
+        "stepwater3",
+        "stepwater4",
+        "stepwater5",
+        "stepwater6",
+        "stepwater7",
+        "stepwater8",
+      ],
+    },
     [SoundName.JUMP]: {
       volume: 0.2,
       folder: "footsteps",
@@ -433,6 +447,7 @@ export const sounds = {
     [MusicName.INTO_THE_MIST]: { volume: 0.5 },
     [MusicName.AT_DAYBREAK]: { volume: 0.5 },
     [MusicName.THE_DEPTHS]: { volume: 0.5 },
+    [MusicName.DRUMS_IN_THE_DEEP]: { volume: 0.5 },
   },
 
   ambience: {

@@ -5,6 +5,7 @@ import { Threshold } from "../managers/Tile";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 import type { MeadowPalette, WaterPalette } from "@server/globals";
+import type { Fall } from "../handlers/water";
 
 export class MapFactory {
   static create(
@@ -43,7 +44,7 @@ export class MapFactory {
     const edges: Phaser.Tilemaps.TilemapLayer[] = [];
     const overhangs: Phaser.Tilemaps.TilemapLayer[] = [];
     const decks: Phaser.Tilemaps.TilemapLayer[] = [];
-    const falls: Phaser.Geom.Rectangle[] = [];
+    const falls: Fall[] = [];
     let waters: { layer: Phaser.Tilemaps.TilemapLayer; palette?: WaterPalette } | undefined;
 
     const thresholds: Threshold[] = [];
@@ -152,14 +153,17 @@ export class MapFactory {
 
         if (properties.some((p) => p.name === "waterfalls" && p.value === true))
           for (const object of layer.objects)
-            falls.push(
-              new Phaser.Geom.Rectangle(
+            falls.push({
+              rect: new Phaser.Geom.Rectangle(
                 object.x ?? 0,
                 object.y ?? 0,
                 object.width ?? 0,
                 object.height ?? 0,
               ),
-            );
+              open: ((object.properties ?? []) as TiledProperty[]).some(
+                (p) => p.name === "open" && p.value === true,
+              ),
+            });
 
         const render = properties.some(
           (prop) => prop.name === "renders" && prop.value === true,
