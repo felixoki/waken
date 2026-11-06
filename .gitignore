@@ -13,3 +13,6 @@ ssh.pub
 logic
 plans
 wiki
+previews
+.preview
+.claude/previews

@@ -879,10 +879,14 @@
 - Fix door lighting ✅
 - Refactor isles water ✅
 
+#### 6.11.2026
+
+- Add swamp generation ✅
+- Refactor effect visuals ✅
+
 ### To Do
 
 - Add craftable candles from bear fat
-- Refactor effect visuals
 
 ### Bugs
 
