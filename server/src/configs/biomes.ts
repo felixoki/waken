@@ -55,7 +55,6 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.CARROT_SEED, quantity: 3, stackable: true, chance: 0.2 },
   { name: EntityName.CABBAGE_SEED, quantity: 3, stackable: true, chance: 0.2 },
   { name: EntityName.WHEAT_SEED, quantity: 4, stackable: true, chance: 0.2 },
-  { name: EntityName.TOMATO_SEED, quantity: 2, stackable: true, chance: 0.12 },
   { name: EntityName.BEAN_SEED, quantity: 3, stackable: true, chance: 0.12 },
   { name: EntityName.GRAPE_SEED, quantity: 2, stackable: true, chance: 0.06 },
   { name: EntityName.HOPS_SEED, quantity: 2, stackable: true, chance: 0.06 },
@@ -125,6 +124,7 @@ export const forest: BiomeConfig = {
       ],
       terrain: [TerrainName.GRASS],
       density: 0.5,
+      hive: 0.005,
       spacing: 2,
       margin: 2,
       cluster: true,
@@ -132,7 +132,7 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.REED1, EntityName.REED2, EntityName.REED3],
       terrain: [TerrainName.GRASS],
-      density: 0.3,
+      density: 0.053,
       spacing: 0,
       group: { min: 3, max: 4, radius: 1 },
     },
@@ -144,9 +144,16 @@ export const forest: BiomeConfig = {
         EntityName.ROCK8,
       ],
       terrain: [TerrainName.GRASS],
-      density: 0.1,
+      density: 0.012,
       spacing: 3,
       margin: 2,
+    },
+    {
+      entities: [EntityName.STUMP1, EntityName.STUMP2],
+      terrain: [TerrainName.GRASS],
+      count: { min: 18, max: 26 },
+      spacing: 4,
+      margin: 1,
     },
     {
       entities: [
@@ -171,13 +178,13 @@ export const forest: BiomeConfig = {
         EntityName.STRAWBERRY_BUSH,
       ],
       terrain: [TerrainName.GRASS],
-      density: 0.2,
+      density: 0.035,
       spacing: 2,
     },
     {
       entities: [EntityName.BLUE_LOTUS],
       terrain: [TerrainName.GRASS],
-      density: 0.05,
+      density: 0.0036,
       spacing: 3,
       near: { terrain: TerrainName.WATER, within: 7 },
     },
@@ -227,7 +234,8 @@ export const forest: BiomeConfig = {
     {
       entities: [EntityName.BEAR],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 1, max: 3 },
+      count: { min: 1, max: 1 },
+      chance: 0.25,
       spacing: 8,
       near: { terrain: TerrainName.WATER, within: 12 },
     },
@@ -239,16 +247,10 @@ export const forest: BiomeConfig = {
       group: { min: 0, max: 2, radius: 3 },
     },
     {
-      entities: [EntityName.GOBLIN1],
-      terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 7, max: 15 },
-      spacing: 5,
-      group: { min: 1, max: 2, radius: 3 },
-    },
-    {
       entities: [EntityName.TROLL],
       terrain: [TerrainName.GRASS, TerrainName.GROUND],
-      count: { min: 2, max: 4 },
+      count: { min: 1, max: 1 },
+      chance: 0.2,
       spacing: 8,
     },
     {
@@ -302,6 +304,235 @@ export const forest: BiomeConfig = {
     },
     {
       tileset: "grass_ground_details",
+      terrains: [TerrainName.GRASS],
+      density: 0.45,
+      stamps: grassStamps,
+      gap: 0,
+      cluster: true,
+    },
+  ],
+};
+
+export const swamp: BiomeConfig = {
+  id: BiomeName.SWAMP,
+  label: "Swamp",
+  width: 256,
+  height: 128,
+  tileWidth: 16,
+  tileHeight: 16,
+
+  noise: {
+    octaves: 4,
+    persistence: 0.5,
+    lacunarity: 2.0,
+    scale: 0.05,
+  },
+
+  layers: [
+    { terrain: TerrainName.GROUND, tileset: "grass_ground", threshold: -0.6 },
+    {
+      terrain: TerrainName.GRASS,
+      tileset: "grass_ground",
+      threshold: null,
+      surface: SurfaceName.GRASS,
+    },
+  ],
+
+  borders: [
+    {
+      from: TerrainName.GRASS,
+      to: TerrainName.GROUND,
+      tileset: "grass_ground",
+    },
+  ],
+
+  marsh: true,
+  grade: "swamp",
+
+  terrain: [TerrainName.GROUND, TerrainName.GRASS],
+
+  objects: [
+    {
+      entities: [
+        EntityName.TREE1,
+        EntityName.TREE2,
+        EntityName.TREE4,
+        EntityName.TREE5,
+      ],
+      terrain: [TerrainName.GRASS],
+      density: 0.5,
+      spacing: 2,
+      margin: 2,
+      cluster: true,
+      rows: { min: 0, max: 16 },
+      fade: true,
+    },
+    {
+      entities: [
+        EntityName.TREE15,
+        EntityName.TREE16,
+        EntityName.TREE17,
+        EntityName.TREE18,
+      ],
+      terrain: [TerrainName.GRASS],
+      density: 0.45,
+      spacing: 2,
+      margin: 1,
+      cluster: true,
+      rows: { min: 6, max: 30 },
+      fade: true,
+    },
+    {
+      entities: [
+        EntityName.BUSH1,
+        EntityName.BUSH2,
+        EntityName.BUSH3,
+        EntityName.BUSH4,
+      ],
+      terrain: [TerrainName.GRASS],
+      density: 0.3,
+      spacing: 2,
+      cluster: true,
+      rows: { min: 0, max: 14 },
+      fade: true,
+    },
+    {
+      entities: [EntityName.DEAD_TREE1, EntityName.DEAD_TREE2],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.0015,
+      spacing: 3,
+      margin: 1,
+    },
+    {
+      entities: [EntityName.MOSSY_ROCK6, EntityName.MOSSY_ROCK7],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.0025,
+      spacing: 3,
+    },
+    {
+      entities: [
+        EntityName.TREE15,
+        EntityName.TREE16,
+        EntityName.TREE17,
+        EntityName.TREE18,
+        EntityName.TREE15,
+        EntityName.TREE16,
+        EntityName.TREE12,
+        EntityName.TREE13,
+        EntityName.TREE14,
+      ],
+      terrain: [TerrainName.GRASS],
+      count: { min: 220, max: 280 },
+      spacing: 2,
+    },
+    {
+      entities: [EntityName.BUSH8, EntityName.BUSH9, EntityName.BUSH10, EntityName.BUSH11],
+      terrain: [TerrainName.GRASS],
+      count: { min: 120, max: 160 },
+      spacing: 2,
+    },
+    {
+      entities: [EntityName.REED4, EntityName.REED5, EntityName.REED6],
+      terrain: [TerrainName.GRASS],
+      count: { min: 200, max: 260 },
+      spacing: 0,
+      group: { min: 3, max: 4, radius: 1 },
+    },
+    {
+      entities: [EntityName.STUMP3, EntityName.STUMP4, EntityName.STUMP5],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.0029,
+      spacing: 4,
+    },
+    {
+      entities: [EntityName.MOSSY_ROCK8, EntityName.MOSSY_ROCK9, EntityName.MOSSY_ROCK9],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 50, max: 70 },
+      spacing: 3,
+    },
+    {
+      entities: [EntityName.BOG_IRON],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 6, max: 10 },
+      spacing: 10,
+      near: { terrain: TerrainName.WATER, within: 3 },
+    },
+    {
+      entities: [EntityName.VALERIAN],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 12, max: 18 },
+      spacing: 4,
+      near: { terrain: TerrainName.WATER, within: 5 },
+    },
+    {
+      entities: [EntityName.BOG_MYRTLE],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      density: 0.015,
+      spacing: 3,
+      near: { terrain: TerrainName.WATER, within: 2 },
+    },
+    {
+      entities: [EntityName.BLUE_LOTUS],
+      terrain: [TerrainName.GRASS],
+      density: 0.0095,
+      spacing: 4,
+      near: { terrain: TerrainName.WATER, within: 3 },
+    },
+    {
+      entities: [EntityName.GOBLIN1, EntityName.GOBLIN1, EntityName.GOBLIN2],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 7, max: 12 },
+      spacing: 5,
+      group: { min: 1, max: 2, radius: 3 },
+    },
+    {
+      entities: [EntityName.HEXGEIST],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 1, max: 2 },
+      spacing: 20,
+    },
+    {
+      entities: [EntityName.HOG_WITCH],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 1, max: 2 },
+      spacing: 30,
+    },
+    {
+      entities: [EntityName.BOG_TROLL],
+      terrain: [TerrainName.GRASS, TerrainName.GROUND],
+      count: { min: 3, max: 5 },
+      spacing: 16,
+      near: { terrain: TerrainName.WATER, within: 2 },
+    },
+  ],
+
+  sites: [
+    {
+      entity: EntityName.DUNGEON_ENTRANCE,
+      requires: 3,
+      width: 8,
+      height: 7,
+      terrain: [TerrainName.GRASS],
+      guards: EntityName.ORC1,
+      rows: { min: 64, max: 128 },
+    },
+  ],
+
+  generator: GeneratorName.TERRAIN,
+  exclusion: 0,
+  smoothing: { iterations: 2, threshold: 4 },
+
+  details: [
+    {
+      tileset: "swamp_details",
+      terrains: [TerrainName.GROUND],
+      density: 0.4,
+      stamps: groundStamps,
+      gap: 0,
+      cluster: true,
+    },
+    {
+      tileset: "swamp_details",
       terrains: [TerrainName.GRASS],
       density: 0.45,
       stamps: grassStamps,
@@ -372,6 +603,7 @@ export const dungeon: BiomeConfig = {
       chance: { hidden: 0.1, puzzle: 0.12 },
     },
     hasRecesses: true,
+    boss: EntityName.ORC3,
     separators: {
       chance: 0.35,
       large: { min: 3, max: 4 },
@@ -399,7 +631,7 @@ export const dungeon: BiomeConfig = {
         water: { coverage: 0.15 },
         enemies: [
           {
-            entities: [EntityName.RAT, EntityName.GOBLIN1],
+            entities: [EntityName.RAT, EntityName.RAT, EntityName.GOBLIN1, EntityName.ORC1],
             count: { min: 4, max: 6 },
           },
         ],
@@ -409,10 +641,10 @@ export const dungeon: BiomeConfig = {
         type: RoomType.FEAST,
         difficulty: RoomDifficulty.HARD,
         weight: 6,
-        depth: { min: 2, max: undefined },
+        depth: { min: 1, max: undefined },
         enemies: [
           {
-            entities: [EntityName.ORC1, EntityName.GOBLIN2],
+            entities: [EntityName.ORC1, EntityName.ORC1, EntityName.GOBLIN2, EntityName.ORC2],
             count: { min: 3, max: 5 },
           },
         ],
@@ -422,10 +654,10 @@ export const dungeon: BiomeConfig = {
         type: RoomType.FEAST,
         difficulty: RoomDifficulty.HARD,
         weight: 6,
-        depth: { min: 4, max: undefined },
+        depth: { min: 3, max: undefined },
         enemies: [
           {
-            entities: [EntityName.GOBLIN2, EntityName.ORC2],
+            entities: [EntityName.ORC2, EntityName.ORC2, EntityName.GOBLIN2, EntityName.ORC1],
             count: { min: 3, max: 4 },
           },
         ],
@@ -874,7 +1106,7 @@ export const mountain: BiomeConfig = {
     {
       entities: [EntityName.REED1, EntityName.REED2, EntityName.REED3],
       terrain: [TerrainName.GRASS],
-      density: 0.3,
+      density: 0.061,
       spacing: 0,
       group: { min: 3, max: 4, radius: 1 },
     },
@@ -906,6 +1138,13 @@ export const mountain: BiomeConfig = {
       entities: [EntityName.SHEEP],
       terrain: [TerrainName.GRASS, TerrainName.EARTH],
       count: { min: 1, max: 3 },
+      spacing: 20,
+    },
+    {
+      entities: [EntityName.CHICKEN],
+      terrain: [TerrainName.GRASS, TerrainName.EARTH],
+      count: { min: 1, max: 1 },
+      chance: 0.08,
       spacing: 20,
     },
     {
@@ -972,7 +1211,7 @@ export const mountain: BiomeConfig = {
   sites: [
     {
       entity: EntityName.TEMPLE_ENTRANCE,
-      requires: 2,
+      requires: 4,
       width: 11,
       height: 9,
       base: 5,
@@ -994,9 +1233,12 @@ export const mountain: BiomeConfig = {
 
 const APSE_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.POTION2, quantity: 2, stackable: true, chance: 0.6 },
-  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.25 },
-  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.25 },
-  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.25 },
+  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.12 },
+  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.1 },
+  { name: EntityName.POTION7, quantity: 1, stackable: true, chance: 0.1 },
+  { name: EntityName.POTION8, quantity: 1, stackable: true, chance: 0.08 },
+  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.05 },
+  { name: EntityName.POTION9, quantity: 1, stackable: true, chance: 0.05 },
   { name: EntityName.QUARTZ1, quantity: 4, stackable: true, chance: 0.6 },
   { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.4 },
   { name: EntityName.SPELL_PAGE_SHIELD, quantity: 1, stackable: false, chance: 0.2 },
@@ -1130,7 +1372,7 @@ export const temple: BiomeConfig = {
         { entities: [EntityName.GOLEM], count: { min: 0, max: 1 } },
       ],
       boss: EntityName.MAGE,
-      exit: { entity: EntityName.CLOUDLADDER, requires: 3 },
+      exit: { entity: EntityName.CLOUDLADDER, requires: 5 },
       loot: APSE_LOOT,
     },
     templates: [

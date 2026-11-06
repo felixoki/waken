@@ -13,9 +13,11 @@ import {
   bounceSlotName,
 } from "./pipelines/Bounce";
 import { SheenPipeline } from "./pipelines/Sheen";
+import { GlowPipeline } from "./pipelines/Glow";
 import { WaterPipeline } from "./pipelines/Water";
 import { WadePipeline } from "./pipelines/Wade";
 import { BlazePipeline } from "./pipelines/Blaze";
+import { StatusPipeline } from "./pipelines/Status";
 import { MeadowPipeline } from "./pipelines/Meadow";
 import { MapName, PipelineName } from "@server/types";
 import { HomeScene } from "./scenes/Home";
@@ -30,6 +32,7 @@ import ForestScene from "./scenes/Forest";
 import DungeonScene from "./scenes/Dungeon";
 import TempleScene from "./scenes/Temple";
 import IslesScene from "./scenes/Isles";
+import NetherScene from "./scenes/Nether";
 import SublevelScene from "./scenes/Sublevel";
 
 export const config: Phaser.Types.Core.GameConfig = {
@@ -58,6 +61,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     TempleScene,
     new SublevelScene(MapName.CAVE),
     IslesScene,
+    NetherScene,
   ],
   physics: {
     default: "arcade",
@@ -91,7 +95,9 @@ export const config: Phaser.Types.Core.GameConfig = {
       renderer.pipelines.add(PipelineName.WATER, new WaterPipeline(game));
       renderer.pipelines.add(PipelineName.WADE, new WadePipeline(game));
       renderer.pipelines.add(PipelineName.BLAZE, new BlazePipeline(game));
+      renderer.pipelines.add(PipelineName.STATUS, new StatusPipeline(game));
       renderer.pipelines.add(PipelineName.MEADOW, new MeadowPipeline(game));
+      renderer.pipelines.add(PipelineName.GLOW, new GlowPipeline(game));
       renderer.pipelines.add(
         PipelineName.LIGHT,
         new OccludedLightPipeline(game),

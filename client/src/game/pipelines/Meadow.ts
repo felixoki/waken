@@ -5,6 +5,7 @@ import {
   MEADOW_BENT_SHADE,
   MEADOW_CHARACTERS,
   MEADOW_FRAMERATE,
+  MEADOW_GRADES,
   MEADOW_LEAN,
   MEADOW_PALETTES,
   MEADOW_PUSH,
@@ -27,6 +28,7 @@ const SinglePipeline = Phaser.Renderer.WebGL.Pipelines.SinglePipeline;
 const BLADES_UNIT = 1;
 const MASK_UNIT = 2;
 const PATTERN_UNIT = 3;
+const BLEND_UNIT = 4;
 const PATTERN_SIZE = 538;
 const BLADE_TEXTURE = "meadow_blades";
 
@@ -55,6 +57,7 @@ export class MeadowPipeline extends SinglePipeline {
     this.set1i("uBlades", BLADES_UNIT);
     this.set1i("uMask", MASK_UNIT);
     this.set1i("uPattern", PATTERN_UNIT);
+    this.set1i("uBlend", BLEND_UNIT);
     this.set1f("uPatternSize", PATTERN_SIZE);
     this.set1f("uSpacing", MEADOW_SPACING);
     this.set2f("uAccents", MEADOW_ACCENTS[0], MEADOW_ACCENTS[1]);
@@ -116,6 +119,16 @@ export class MeadowPipeline extends SinglePipeline {
     this.set1f("uTile", state.tile);
     this.set4fv("uCharacters", state.characters);
     this.set1f("uCount", Math.min(state.count, MEADOW_CHARACTERS));
+
+    const blend = state.blend?.source[0].glTexture;
+    const grade = state.grade ? MEADOW_GRADES[state.grade] : undefined;
+    this.set1f("uGraded", blend && grade ? 1 : 0);
+    if (blend && grade) {
+      this.bindTexture(blend, BLEND_UNIT);
+      this.set1f("uSaturation", grade.saturation);
+      this.set3f("uTint", grade.tint[0], grade.tint[1], grade.tint[2]);
+      this.set1f("uBrightness", grade.brightness);
+    }
 
     this.bindTexture(blades, BLADES_UNIT);
     this.bindTexture(mask, MASK_UNIT);

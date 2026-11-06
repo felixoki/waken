@@ -119,8 +119,6 @@ export class Player extends Entity {
   }
 
   update(remoteInput?: Input): void {
-    this.components.forEach((component) => component.update());
-
     this.inputManager?.update();
 
     if (this.isControllable) {

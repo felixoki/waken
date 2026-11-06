@@ -147,11 +147,18 @@ export const generation = {
   },
 
   hashToUnit: (hash: number): number => {
-    return Math.abs(hash) / 2147483647;
+    return (hash >>> 0) / 4294967296;
+  },
+
+  mix: (h: number): number => {
+    h = Math.imul(h ^ (h >>> 16), 0x7feb352d);
+    h = Math.imul(h ^ (h >>> 15), 0x846ca68b);
+    return h ^ (h >>> 16);
   },
 
   spatialHash: (x: number, y: number, seed: number): number => {
-    return ((x * 73856093) ^ (y * 19349663) ^ (seed * 83492791)) >>> 0;
+    const h = generation.mix(generation.mix(seed + 0x9e3779b9) ^ x);
+    return generation.mix(h ^ y) >>> 0;
   },
 
   seededRandom: (seed: number): (() => number) => {

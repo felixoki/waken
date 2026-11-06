@@ -161,6 +161,32 @@ export class RoomGenerator {
 
       const lair = depths.lastIndexOf(Math.max(...depths));
 
+      if (roomConfig.boss && this.rooms[lair]) {
+        const room = this.rooms[lair];
+        const cx = room.x + (room.width >> 1);
+        const cy = room.y + (room.height >> 1);
+        let spot: number | undefined;
+
+        for (let r = 0; r < Math.max(room.width, room.height) && spot === undefined; r++)
+          for (let dy = -r; dy <= r && spot === undefined; dy++)
+            for (let dx = -r; dx <= r && spot === undefined; dx++) {
+              const x = cx + dx;
+              const y = cy + dy;
+              if (x <= room.x || y <= room.y || x >= room.x + room.width - 1 || y >= room.y + room.height - 1)
+                continue;
+
+              const i = y * width + x;
+              if (!separators.occupied[i] && !this._blocked(terrain, i)) spot = i;
+            }
+
+        if (spot !== undefined)
+          entities.push({
+            name: roomConfig.boss,
+            x: (spot % width) * tileWidth + tileWidth / 2,
+            y: Math.floor(spot / width) * tileHeight + tileHeight / 2,
+          });
+      }
+
       const byCorner = new Map<RoomInteriorOrigin, RoomInterior[]>();
 
       for (const piece of roomConfig.interior) {

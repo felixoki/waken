@@ -1,6 +1,6 @@
 import { configs } from "../../configs";
 import { handlers } from "../../handlers";
-import { BodyConfig, ComponentName, TextureConfig } from "../../types";
+import { BodyConfig, ComponentName, EntityName, TextureConfig } from "../../types";
 import {
   BiomeConfig,
   Entity,
@@ -16,12 +16,14 @@ export class EntitySpawner {
   private within?: Uint8Array;
   private blocked?: Uint8Array;
   private unlocked: number;
+  private top: number;
   private footprints = new Map<SpawnRule, [number, number][]>();
 
-  constructor(config: BiomeConfig, seed: string, unlocked = 0) {
+  constructor(config: BiomeConfig, seed: string, unlocked = 0, top = 0) {
     this.config = config;
     this.seed = seed;
     this.unlocked = unlocked;
+    this.top = top;
   }
 
   spawn(
@@ -99,6 +101,7 @@ export class EntitySpawner {
             x: pos.x + (offset?.x ?? 0),
             y: pos.y + (offset?.y ?? 0),
             loot: rule.loot,
+            ...(this._hive(name, x, y, r, rule) && { hive: true }),
           });
 
           if (rule.group) {
@@ -217,6 +220,7 @@ export class EntitySpawner {
         x: pos.x + (offset?.x ?? 0),
         y: pos.y + (offset?.y ?? 0),
         loot: rule.loot,
+        ...(this._hive(name, x, y, r, rule) && { hive: true }),
       });
       placed++;
 
@@ -239,6 +243,7 @@ export class EntitySpawner {
     const { width, height } = this.config;
 
     if (occupied.has(y * width + x)) return false;
+    if (rule.rows && (y - this.top < rule.rows.min || y - this.top >= rule.rows.max)) return false;
     if (rule.near && !this._near(x, y, rule.near, terrain)) return false;
 
     for (const [dx, dy] of this._footprint(rule)) {
@@ -341,6 +346,25 @@ export class EntitySpawner {
       }
   }
 
+  private _hive(
+    name: EntityName,
+    x: number,
+    y: number,
+    r: number,
+    rule: SpawnRule,
+  ): boolean {
+    if (!rule.hive) return false;
+
+    const fellable = configs.entities[name]?.components.find(
+      (c) => c.name === ComponentName.FELLABLE,
+    );
+    if (fellable?.name !== ComponentName.FELLABLE || !fellable.config.hive)
+      return false;
+
+    const hash = handlers.generation.spatialHash(x, y, r + 3000);
+    return handlers.generation.hashToUnit(hash) < rule.hive;
+  }
+
   private _shouldSpawn(
     x: number,
     y: number,
@@ -348,13 +372,17 @@ export class EntitySpawner {
     rule: SpawnRule,
     noise: NoiseGenerator | null,
   ): boolean {
+    const density =
+      (rule.density ?? 0) *
+      (rule.fade && rule.rows ? 1 - (y - this.top - rule.rows.min) / (rule.rows.max - rule.rows.min) : 1);
+
     if (noise) {
       const value = (noise.generate(x, y) + 1) / 2;
-      return value * (rule.density ?? 0) >= 0.25;
+      return value * density >= 0.25;
     }
 
     const hash = handlers.generation.spatialHash(x, y, r + 1000);
-    return handlers.generation.hashToUnit(hash) < (rule.density ?? 0);
+    return handlers.generation.hashToUnit(hash) < density;
   }
 
   private _nearWall(

@@ -56,6 +56,104 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 0.02,
     },
   },
+  [EntityName.VALERIAN]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 12, start: 29, end: 30 },
+            { row: 13, start: 29, end: 30 },
+          ],
+        },
+        key: "valerian_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 14,
+          offsetX: 6,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+      {
+        name: ComponentName.POINTABLE,
+      },
+      {
+        name: ComponentName.PICKABLE,
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Valerian",
+      description:
+        "Pale pink blossoms on tall stems, with a root that brings sleep.",
+      stackable: true,
+      icon: { spritesheet: "nature", row: 13, col: 28 },
+      weight: 0.02,
+    },
+  },
+  [EntityName.BOG_MYRTLE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 12, start: 26, end: 27 },
+            { row: 13, start: 26, end: 27 },
+          ],
+        },
+        key: "bog_myrtle_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 14,
+          offsetX: 6,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+      {
+        name: ComponentName.POINTABLE,
+      },
+      {
+        name: ComponentName.PICKABLE,
+      },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bog myrtle",
+      description:
+        "A resinous marsh shrub. Strewn in bedding, its scent keeps fleas away.",
+      stackable: true,
+      icon: { spritesheet: "nature", row: 13, col: 25 },
+      weight: 0.02,
+    },
+  },
   [EntityName.SUNFLOWER]: {
     facing: Direction.DOWN,
     moving: [],
@@ -801,7 +899,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       { name: ComponentName.HOVERABLE },
       {
         name: ComponentName.CONSUMABLE,
-        config: { unlock: 3 },
+        config: { unlock: 5 },
       },
       {
         name: ComponentName.TEXTURE,
@@ -823,6 +921,108 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A draught that climbs through the night, rooted in an ancient troll's heart.",
       stackable: true,
       icon: { spritesheet: "items", row: 22, col: 16 },
+      weight: 0.2,
+    },
+  },
+  [EntityName.POTION7]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { unlock: 3 },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 42, start: 8, end: 9 },
+            { row: 43, start: 8, end: 9 },
+          ],
+        },
+        key: "potion7_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Undertow",
+      description: "The sleep beneath sleep. It drags you down into the deep places.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 43, col: 7 },
+      weight: 0.2,
+    },
+  },
+  [EntityName.POTION8]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { unlock: 4 },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 42, start: 11, end: 12 },
+            { row: 43, start: 11, end: 12 },
+          ],
+        },
+        key: "potion8_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Vigil",
+      description: "Bitter with ergot. You do not sleep, you watch, and what you watch shows the way up.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 43, col: 10 },
+      weight: 0.2,
+    },
+  },
+  [EntityName.POTION9]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.CONSUMABLE,
+        config: { unlock: 5 },
+      },
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 42, start: 14, end: 15 },
+            { row: 43, start: 14, end: 15 },
+          ],
+        },
+        key: "potion9_texture",
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "To the Marrow",
+      description: "Brewed from what the deep left behind. It reaches past dreams into the bone of the world.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 43, col: 13 },
       weight: 0.2,
     },
   },

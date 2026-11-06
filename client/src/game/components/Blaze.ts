@@ -7,53 +7,35 @@ import {
   BLAZE_STEAM_LIFESPAN,
   BLAZE_STEAM_PUFF,
 } from "@server/globals";
-import { Entity } from "../Entity";
-import { Component } from "./Component";
+import { OverlayComponent } from "./Overlay";
 import { emitters } from "../vfx/emitters";
 import { STEAM_HEIGHT } from "../handlers/textures";
 import type { Wading } from "../handlers/water";
 import type { Flame } from "../pipelines/Blaze";
 
-export class BlazeComponent extends Component {
+export class BlazeComponent extends OverlayComponent {
   public name = ComponentName.BLAZE;
 
-  private sprite?: Phaser.GameObjects.Sprite;
+  protected readonly pipeline = PipelineName.BLAZE;
+  protected readonly bias = BLAZE_DEPTH_BIAS;
+
   private flame: Flame = { heat: 0, seed: Math.random() };
   private steam?: Phaser.GameObjects.Particles.ParticleEmitter;
   private hiss = 0;
   private side = 1;
   private burning = false;
 
-  constructor(private entity: Entity) {
-    super();
+  protected get present(): boolean {
+    return this.burning;
   }
 
-  attach(): void {
-    const entity = this.entity;
-
-    const sprite = entity.scene.add.sprite(
-      entity.x,
-      entity.y,
-      entity.texture.key,
-      entity.frame.name,
-    );
-
-    sprite.setPipeline(PipelineName.BLAZE);
+  protected bind(sprite: Phaser.GameObjects.Sprite): void {
     sprite.setData("flame", this.flame);
-    sprite.setVisible(false);
-    sprite.setActive(false);
-
-    this.sprite = sprite;
   }
 
-  update(): void {
+  protected advance(delta: number): number {
     const entity = this.entity;
-    const sprite = this.sprite;
-
-    if (!sprite || !entity.scene || !entity.active) return;
-
     const burning = entity.hasEffect(EffectName.BURNING);
-    const delta = entity.scene.game.loop.delta;
     const flame = this.flame;
 
     flame.heat += burning
@@ -72,31 +54,11 @@ export class BlazeComponent extends Component {
     this.burning = burning;
     flame.wading = wading;
 
-    if (!burning && flame.heat <= 0) {
-      entity.removeComponent(ComponentName.BLAZE);
-      return;
-    }
-
-    sprite.setVisible(entity.visible && flame.heat > 0);
-    if (!sprite.visible) return;
-
-    if (sprite.frame !== entity.frame)
-      sprite.setTexture(entity.texture.key, entity.frame.name);
-
-    sprite.setPosition(entity.x, entity.y);
-    sprite.setOrigin(entity.originX, entity.originY);
-    sprite.setDisplayOrigin(entity.displayOriginX, entity.displayOriginY);
-    sprite.setScale(entity.scaleX, entity.scaleY);
-    sprite.setFlip(entity.flipX, entity.flipY);
-    sprite.setAlpha(entity.alpha);
-
-    const depth = entity.depth + BLAZE_DEPTH_BIAS;
-    if (sprite.depth !== depth) sprite.setDepth(depth);
+    return flame.heat;
   }
 
   detach(): void {
-    this.sprite?.destroy();
-    this.sprite = undefined;
+    super.detach();
 
     const steam = this.steam;
     if (!steam) return;

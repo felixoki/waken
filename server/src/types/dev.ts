@@ -13,4 +13,5 @@ export enum DevCommand {
   GO = "go",
   EFFECT = "effect",
   RESEED = "reseed",
+  HIVE = "hive",
 }

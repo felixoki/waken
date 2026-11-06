@@ -1,4 +1,4 @@
-import { ComponentName, Direction, StateName } from "@server/types";
+import { ComponentName, Direction, ProjectileName, StateName } from "@server/types";
 import { DamageType } from "@server/types/damage";
 import { State } from "./State";
 import { Entity } from "../Entity";
@@ -19,12 +19,21 @@ import {
 import { Hitbox } from "../Hitbox";
 import { handlers } from "../handlers";
 import { vfx } from "../vfx";
+import { Scene } from "../scenes/Scene";
 
 const ROCK_SPAWN_OFFSET: Record<Direction, { x: number; y: number }> = {
   [Direction.DOWN]: { x: 0, y: -16 },
   [Direction.UP]: { x: 0, y: 32 },
   [Direction.LEFT]: { x: 0, y: -16 },
   [Direction.RIGHT]: { x: 0, y: -16 },
+};
+
+const PROJECTILES: Record<
+  ProjectileName,
+  { texture: string; splash: (scene: Scene, x: number, y: number) => void }
+> = {
+  [ProjectileName.ROCK]: { texture: "troll_throwing_rock", splash: vfx.emitters.dust },
+  [ProjectileName.MUD]: { texture: "bog_troll_mud", splash: vfx.emitters.mud },
 };
 
 export class Throwing implements State {
@@ -82,11 +91,13 @@ export class Throwing implements State {
     const offset = ROCK_SPAWN_OFFSET[entity.facing] ?? { x: 0, y: 0 };
     const startX = entity.x + offset.x;
     const startY = entity.y + offset.y;
-    const throwDamage = configs.entities[entity.name]?.attacks?.find(
+    const attack = configs.entities[entity.name]?.attacks?.find(
       (attack) => attack.state === StateName.THROWING,
-    )?.damage;
+    );
+    const throwDamage = attack?.damage;
+    const projectile = PROJECTILES[attack?.projectile ?? ProjectileName.ROCK];
 
-    const rock = entity.scene.add.image(startX, startY, "troll_throwing_rock");
+    const rock = entity.scene.add.image(startX, startY, projectile.texture);
     rock.setDepth(1000 + startY);
 
     entity.scene.tweens.add({
@@ -106,7 +117,7 @@ export class Throwing implements State {
       onComplete: () => {
         rock.destroy();
         if (!entity.scene) return;
-        vfx.emitters.dust(entity.scene, targetX, targetY);
+        projectile.splash(entity.scene, targetX, targetY);
 
         new Hitbox(
           entity.scene,

@@ -26,6 +26,7 @@ import { TextureAnimationComponent } from "../components/TextureAnimation";
 import { GrowableComponent } from "../components/Growable";
 import { FarmableComponent } from "../components/Farmable";
 import { FellableComponent } from "../components/Fellable";
+import { HiveComponent } from "../components/Hive";
 import { MineableComponent } from "../components/Mineable";
 import { AuraComponent } from "../components/Aura";
 import { StorageComponent } from "../components/Storage";
@@ -125,6 +126,11 @@ export class ComponentFactory {
           break;
         case ComponentName.FELLABLE:
           comp = new FellableComponent(entity);
+          if (definition.hive && component.config.hive)
+            map.set(
+              ComponentName.HIVE,
+              new HiveComponent(entity, component.config.hive),
+            );
           break;
         case ComponentName.MINEABLE:
           comp = new MineableComponent(entity);

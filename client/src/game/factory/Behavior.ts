@@ -9,6 +9,7 @@ import { WanderBehavior } from "../behavior/Wander";
 import { FleeBehavior } from "../behavior/Flee";
 import { SearchBehavior } from "../behavior/Search";
 import { FollowBehavior } from "../behavior/Follow";
+import { AmbushBehavior } from "../behavior/Ambush";
 
 export class BehaviorFactory {
   static create(behaviors: BehaviorConfig[]): Behavior[] {
@@ -41,6 +42,9 @@ export class BehaviorFactory {
           break;
         case BehaviorName.SEARCH:
           be = new SearchBehavior();
+          break;
+        case BehaviorName.AMBUSH:
+          be = new AmbushBehavior(behavior.config);
           break;
         case BehaviorName.FOLLOW:
           be = new FollowBehavior();

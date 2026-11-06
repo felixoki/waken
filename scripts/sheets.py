@@ -59,6 +59,8 @@ GROUPS = {
 PATTERNS = [
     (r"^(apple)?tree\d*$", "tree"),
     (r"^((cave_|mossy_)?rocks?|pebble)\d*$", "rock"),
+    (r"^stalagmite\d*$", "stalagmite"),
+    (r"^cave_fern\d*$", "fern"),
     (r"_ore$", "ore"),
     (r"^(bush\d*|raspberry|strawberry_bush)$", "bush"),
     (r"^(glowshroom\d*|bearded_tooth_fungus)$", "mushroom"),
@@ -88,7 +90,7 @@ NO_SHADOW: set[str] = {
     "pebble5",
 }
 NO_SHADOW_FILES = {"crops", "ingredients"}
-NO_SHADOW_PATTERN = re.compile(r"^(bush\d*|glowshroom\d*|reed\d*|cattail\d*|sedge\d*|water_lily\d*|mossy_rock\d*)$")
+NO_SHADOW_PATTERN = re.compile(r"^(bush\d*|glowshroom\d*|reed\d*|cattail\d*|sedge\d*|water_lily\d*|mossy_rock\d*|bog_iron|stalagmite\d*)$")
 SHADOW_MAX_HEIGHT = 32
 SOLID = 200
 SHADOW = (42, 40, 61, 100)

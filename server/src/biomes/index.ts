@@ -1,4 +1,4 @@
-import { forest, dungeon, cave, mountain, temple } from "../configs/biomes";
+import { forest, dungeon, cave, mountain, temple, swamp } from "../configs/biomes";
 import { TilesetLoader } from "../loaders/Tileset";
 import { BiomeConfig, BiomeName, LevelBiome } from "../types/generation";
 import { EntityName } from "../types/entities";
@@ -18,6 +18,7 @@ const biomes: Record<BiomeName, BiomeConfig> = {
   [BiomeName.CAVE]: cave,
   [BiomeName.MOUNTAIN]: mountain,
   [BiomeName.TEMPLE]: temple,
+  [BiomeName.SWAMP]: swamp,
 };
 
 export function generateBiome(

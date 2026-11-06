@@ -31,7 +31,10 @@ if (existsSync(out) && !force) {
 }
 
 const generated = generateBiome(
-  stack.map((b, i) => ({ biome: b, spawn: i === stack.length - 1 })),
+  stack.map((b, i) => ({
+    biome: b,
+    spawn: stack.includes(BiomeName.FOREST) ? b === BiomeName.FOREST : i === stack.length - 1,
+  })),
   seed,
   Infinity,
 );

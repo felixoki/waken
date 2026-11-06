@@ -131,4 +131,35 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1.1,
     },
   },
+  [EntityName.TENCH]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 14, end: 15 },
+            { row: 16, start: 14, end: 15 },
+          ],
+        },
+        key: "tench_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Tench",
+      description: "A slick olive tench from still, muddy water.",
+      stackable: false,
+      rarity: Rarity.COMMON,
+      icon: { spritesheet: "items", row: 16, col: 13 },
+      weight: 1.4,
+    },
+  },
 };

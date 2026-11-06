@@ -13,6 +13,11 @@ import { ZoneConfig } from "./zones.js";
 import type { BiomeName } from "./generation";
 import type { Position } from "./schedule";
 
+export enum ProjectileName {
+  ROCK = "rock",
+  MUD = "mud",
+}
+
 export interface AttackConfig {
   state: StateName;
   spell?: SpellName;
@@ -21,6 +26,7 @@ export interface AttackConfig {
   effects?: [EffectName, number, number?][];
   range?: number;
   minRange?: number;
+  projectile?: ProjectileName;
   cooldown?: number;
   opener?: boolean;
   mend?: boolean;
@@ -68,6 +74,7 @@ export interface EntityConfig {
   weight?: number;
   quantity?: number;
   soul?: EntityName;
+  hive?: boolean;
   dropped?: boolean;
   built?: boolean;
   link?: string;
@@ -232,6 +239,8 @@ export enum EntityName {
   BEER = "beer",
   BELL = "bell",
   BELLADONNA = "belladonna",
+  VALERIAN = "valerian",
+  BOG_MYRTLE = "bog_myrtle",
   BEVERAGE_SALER = "beverage_saler",
   BLACKSMITH = "blacksmith",
   BLADE = "blade",
@@ -266,6 +275,13 @@ export enum EntityName {
   BUSH5 = "bush5",
   BUSH6 = "bush6",
   BUSH7 = "bush7",
+  BUSH8 = "bush8",
+  BUSH9 = "bush9",
+  BUSH10 = "bush10",
+  BUSH11 = "bush11",
+  REED4 = "reed4",
+  REED5 = "reed5",
+  REED6 = "reed6",
   CABBAGE = "cabbage",
   CABBAGE_PLANT = "cabbage_plant",
   CABBAGE_SEED = "cabbage_seed",
@@ -333,10 +349,12 @@ export enum EntityName {
   PERCH = "perch",
   PIKE = "pike",
   CAVEFISH = "cavefish",
+  TENCH = "tench",
   CARP_TROPHY = "carp_trophy",
   PERCH_TROPHY = "perch_trophy",
   PIKE_TROPHY = "pike_trophy",
   CAVEFISH_TROPHY = "cavefish_trophy",
+  TENCH_TROPHY = "tench_trophy",
   FOX = "fox",
   FOX_PELT = "fox_pelt",
   COW = "cow",
@@ -421,6 +439,7 @@ export enum EntityName {
   OPIUM_POPPY = "opium_poppy",
   ORC1 = "orc1",
   ORC2 = "orc2",
+  ORC3 = "orc3",
   PLAYER = "player",
   PICKAXE = "pickaxe",
   QUARTZ1 = "quartz1",
@@ -429,6 +448,7 @@ export enum EntityName {
   AZURITE_ORE = "azurite_ore",
   IRON_ORE = "iron_ore",
   IRON_VEIN = "iron_vein",
+  BOG_IRON = "bog_iron",
   MILL_HOPPER = "mill_hopper",
   FORGE = "forge",
   WINDMILL_SAILS = "windmill_sails",
@@ -452,6 +472,8 @@ export enum EntityName {
   RAT_CLAWS = "rat_claws",
   RASPBERRY = "raspberry",
   RASPBERRY_JAM = "raspberry_jam",
+  HONEY = "honey",
+  CHEESE = "cheese",
   MAGE = "mage",
   REMAINS = "remains",
   ALCHEMIST_TABLE = "alchemist_table",
@@ -497,6 +519,13 @@ export enum EntityName {
   SEDGE3 = "sedge3",
   SEDGE4 = "sedge4",
   SEDGE5 = "sedge5",
+  CAVE_FERN1 = "cave_fern1",
+  CAVE_FERN2 = "cave_fern2",
+  CAVE_FERN3 = "cave_fern3",
+  CAVE_FERN4 = "cave_fern4",
+  CAVE_FERN5 = "cave_fern5",
+  CAVE_FERN6 = "cave_fern6",
+  CAVE_FERN7 = "cave_fern7",
   WATER_LILY1 = "water_lily1",
   WATER_LILY2 = "water_lily2",
   RING1 = "ring1",
@@ -528,6 +557,28 @@ export enum EntityName {
   MOSSY_ROCK3 = "mossy_rock3",
   MOSSY_ROCK4 = "mossy_rock4",
   MOSSY_ROCK5 = "mossy_rock5",
+  MOSSY_ROCK6 = "mossy_rock6",
+  MOSSY_ROCK7 = "mossy_rock7",
+  MOSSY_ROCK8 = "mossy_rock8",
+  MOSSY_ROCK9 = "mossy_rock9",
+  STALAGMITE1 = "stalagmite1",
+  STALAGMITE2 = "stalagmite2",
+  STALAGMITE3 = "stalagmite3",
+  STALAGMITE4 = "stalagmite4",
+  STALAGMITE5 = "stalagmite5",
+  STALAGMITE6 = "stalagmite6",
+  STALAGMITE7 = "stalagmite7",
+  STALAGMITE8 = "stalagmite8",
+  STALAGMITE9 = "stalagmite9",
+  STALAGMITE10 = "stalagmite10",
+  STALAGMITE11 = "stalagmite11",
+  STALAGMITE12 = "stalagmite12",
+  STALAGMITE13 = "stalagmite13",
+  STALAGMITE14 = "stalagmite14",
+  STALAGMITE15 = "stalagmite15",
+  STALAGMITE16 = "stalagmite16",
+  STALAGMITE17 = "stalagmite17",
+  STALAGMITE18 = "stalagmite18",
   ROCKS1 = "rocks1",
   ROCKS3 = "rocks3",
   ROCKS5 = "rocks5",
@@ -546,6 +597,9 @@ export enum EntityName {
   TENT2 = "tent2",
   STUMP1 = "stump1",
   STUMP2 = "stump2",
+  STUMP3 = "stump3",
+  STUMP4 = "stump4",
+  STUMP5 = "stump5",
   STUDENT = "student",
   STRAWBERRY = "strawberry",
   STRAWBERRY_BUSH = "strawberry_bush",
@@ -562,6 +616,11 @@ export enum EntityName {
   TROLL = "troll",
   ANCIENT_TROLL = "ancient_troll",
   GOLEM = "golem",
+  ZOMBIE1 = "zombie1",
+  ZOMBIE2 = "zombie2",
+  ZOMBIE3 = "zombie3",
+  HOG_WITCH = "hog_witch",
+  BOG_TROLL = "bog_troll",
   TROLL_SCALES = "troll_scales",
   TRUMPET_SNAIL = "trumpet_snail",
   ANCIENT_TROLL_HEART = "ancient_troll_heart",
@@ -570,6 +629,7 @@ export enum EntityName {
   TEMPLE_ENTRANCE = "temple_entrance",
   TORCH1 = "torch1",
   TUNIC = "tunic",
+  WOOL_CLOAK = "wool_cloak",
   SPIKE_TRAP1 = "spike_trap1",
   TREE1 = "tree1",
   TREE2 = "tree2",
@@ -581,6 +641,15 @@ export enum EntityName {
   TREE9 = "tree9",
   TREE10 = "tree10",
   TREE11 = "tree11",
+  TREE12 = "tree12",
+  TREE13 = "tree13",
+  TREE14 = "tree14",
+  TREE15 = "tree15",
+  TREE16 = "tree16",
+  TREE17 = "tree17",
+  TREE18 = "tree18",
+  DEAD_TREE1 = "dead_tree1",
+  DEAD_TREE2 = "dead_tree2",
   SPELL_PAGE_SHARD = "spell_page_shard",
   SPELL_PAGE_SLASH = "spell_page_slash",
   SPELL_PAGE_ILLUMINATE = "spell_page_illuminate",
@@ -612,10 +681,14 @@ export enum EntityName {
   POTION4 = "potion4",
   POTION5 = "potion5",
   POTION6 = "potion6",
+  POTION7 = "potion7",
+  POTION8 = "potion8",
+  POTION9 = "potion9",
   VASES1 = "vases1",
   VASES2 = "vases2",
   VEST = "vest",
   WATERING_CAN = "watering_can",
+  SMOKER = "smoker",
   WINTER_COAT = "winter_coat",
   WOOL_SOCK = "wool_sock",
   SOUP_OF_THE_HIKER = "soup_of_the_hiker",
@@ -628,6 +701,8 @@ export enum EntityName {
   WHEAT_PLANT = "wheat_plant",
   WHEAT_SEED = "wheat_seed",
   WINE = "wine",
+  MEAD = "mead",
+  BRANDY = "brandy",
   WINDMILL = "windmill",
   WOLF1 = "wolf1",
   WOLF2 = "wolf2",
@@ -646,4 +721,5 @@ export enum FishName {
   PERCH = "perch",
   PIKE = "pike",
   CAVEFISH = "cavefish",
+  TENCH = "tench",
 }

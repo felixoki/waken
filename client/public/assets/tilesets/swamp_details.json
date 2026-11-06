@@ -1,0 +1,12 @@
+{
+  "columns": 32,
+  "image": "../sprites/tiles/swamp_details.png",
+  "imageheight": 368,
+  "imagewidth": 512,
+  "margin": 0,
+  "name": "swamp_details",
+  "spacing": 0,
+  "tilecount": 736,
+  "tileheight": 16,
+  "tilewidth": 16
+}

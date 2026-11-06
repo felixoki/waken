@@ -19,6 +19,7 @@ export enum MapName {
   TEMPLE = "temple",
   CAVE = "cave",
   ISLES = "isles",
+  NETHER = "nether",
 }
 
 export enum SurfaceName {

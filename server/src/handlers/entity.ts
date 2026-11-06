@@ -3,18 +3,28 @@ import {
   BehaviorName,
   ComponentName,
   EntityConfig,
+  EntityName,
   Event,
   Input,
   Item,
   PickableConfig,
   PlayerConfig,
+  SlotType,
   Spot,
+  TrapConfig,
 } from "../types";
+import { DamageType } from "../types/damage";
 import { randomUUID } from "crypto";
 import { World } from "../World";
 import { handlers } from ".";
 import { configs } from "../configs";
-import { DURATION_EXTRACTION_BOUNCE, EXTRACTION_DAMAGE } from "../globals";
+import {
+  DURATION_EXTRACTION_BOUNCE,
+  EXTRACTION_DAMAGE,
+  HIVE_HONEY,
+  HIVE_STING,
+  HIVE_SWARM_SIZE,
+} from "../globals";
 
 export const entity = {
   create: (
@@ -209,6 +219,39 @@ export const entity = {
     entity.remove(data, Event.ENTITY_DESPAWN, socket, io, world);
   },
 
+  sting: (
+    hive: EntityConfig,
+    partyId: string | undefined,
+    socket: Socket,
+    io: Server,
+    world: World,
+  ) => {
+    const config: TrapConfig = {
+      name: hive.name,
+      damage: { type: DamageType.PIERCING, amount: HIVE_STING },
+      knockback: 0,
+      hitbox: { width: HIVE_SWARM_SIZE, height: HIVE_SWARM_SIZE },
+      delay: 0,
+      duration: 0,
+      cooldown: 0,
+    };
+
+    for (const target of world.players.getByMap(hive.map)) {
+      if (target.isDead) continue;
+      if (partyId && world.parties.getByPlayerId(target.id)?.id !== partyId)
+        continue;
+      if (Math.hypot(target.x - hive.x, target.y - hive.y) > HIVE_SWARM_SIZE)
+        continue;
+
+      handlers.combat.hit(
+        { config, attackerId: hive.id, targetId: target.id },
+        socket,
+        io,
+        world,
+      );
+    }
+  },
+
   extract: (data: { id: string }, socket: Socket, io: Server, world: World) => {
     const target = world.entities.get(data.id);
     if (!target) return;
@@ -243,10 +286,24 @@ export const entity = {
     const room = world.chunks.getChunkByEntity(data.id);
     const partyId = world.chunks.getPartyByEntity(data.id);
 
+    const player = world.players.getBySocketId(socket.id);
+    const calm =
+      !!target.hive &&
+      !!player?.hotbar.some(
+        (slot) =>
+          slot?.type === SlotType.ENTITY && slot.item.name === EntityName.SMOKER,
+      );
+
+    if (target.hive && !calm) entity.sting(target, partyId, socket, io, world);
+
     world.chunks.removeEntity(data.id);
     world.entities.remove(data.id);
 
-    const felled = { id: data.id, felled: true };
+    const felled = {
+      id: data.id,
+      felled: true,
+      ...(target.hive && { swarm: !calm }),
+    };
     if (room)
       handlers.broadcast.room(
         socket,
@@ -260,6 +317,11 @@ export const entity = {
     const { drop, bonus } = extractable.config;
     const drops = [drop];
     if (bonus && Math.random() < bonus.chance) drops.push(bonus);
+    if (calm)
+      drops.push({
+        name: EntityName.HONEY,
+        quantity: HIVE_HONEY[0] + Math.floor(Math.random() * (HIVE_HONEY[1] - HIVE_HONEY[0] + 1)),
+      });
 
     const count = drops.reduce((sum, d) => sum + d.quantity, 0);
     const jitter = count > 1 ? 10 : 0;

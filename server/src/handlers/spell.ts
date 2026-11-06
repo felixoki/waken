@@ -75,6 +75,7 @@ export const spell = {
   entity: (
     data: { id: string; name: SpellName },
     socket: Socket,
+    io: Server,
     world: World,
   ) => {
     const player = world.players.getBySocketId(socket.id);
@@ -124,8 +125,7 @@ export const spell = {
         { ...configs.spells[data.name], effects: buff.effects },
         world,
         now,
-        world.chunks.getChunkByEntity(id),
-        socket,
+        io,
       );
   },
 
@@ -157,17 +157,6 @@ export const spell = {
   ) => {
     const existing: Effect[] = recipient.effects ?? [];
 
-    const party = world.parties.getByPlayerId(recipient.id);
-    const partyId = configs.maps[recipient.map].isInstanced
-      ? party?.id
-      : undefined;
-    const key = world.chunks.toChunkKey(
-      recipient.map,
-      recipient.x,
-      recipient.y,
-      partyId,
-    );
-    const room = key ? `chunk:${key}` : recipient.socketId;
 
     for (const [name, duration, chance] of effects) {
       if (chance !== undefined && Math.random() > chance) continue;
@@ -181,7 +170,7 @@ export const spell = {
       };
       existing.push(effect);
 
-      handlers.broadcast.room(null, io, room, Event.EFFECT_APPLY, {
+      handlers.combat.effects.notify(world, io, recipient.id, Event.EFFECT_APPLY, {
         id: recipient.id,
         effect,
       });

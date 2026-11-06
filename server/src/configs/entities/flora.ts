@@ -193,6 +193,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           drop: { name: EntityName.WOOD, quantity: 1 },
           bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+          hive: { x: -15, y: 3 },
         },
       },
     ],
@@ -235,6 +236,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           drop: { name: EntityName.WOOD, quantity: 1 },
           bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+          hive: { x: -15, y: 2 },
         },
       },
     ],
@@ -278,6 +280,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           drop: { name: EntityName.WOOD, quantity: 1 },
           bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+          hive: { x: -24, y: 4 },
         },
       },
     ],
@@ -321,6 +324,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
         config: {
           drop: { name: EntityName.WOOD, quantity: 1 },
           bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+          hive: { x: -17, y: 4 },
         },
       },
     ],
@@ -1161,6 +1165,7 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
     behaviors: [],
     metadata: {
       displayName: "Water lily",
+      description: "A pale lily bloom on its pad, plucked from still water.",
       stackable: true,
       icon: { spritesheet: "items", row: 39, col: 24 },
       weight: 0.05,
@@ -1443,6 +1448,902 @@ export const flora: Partial<Record<EntityName, EntityDefinition>> = {
           height: 5,
           offsetX: 6,
           offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE12]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 13, end: 16 },
+            { row: 29, start: 13, end: 16 },
+            { row: 30, start: 13, end: 16 },
+            { row: 31, start: 13, end: 16 },
+            { row: 32, start: 13, end: 16 },
+          ],
+        },
+        key: "tree12_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 30, offsetX: 24, offsetY: 36, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE13]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 6, end: 8 },
+            { row: 29, start: 6, end: 8 },
+            { row: 30, start: 6, end: 8 },
+          ],
+        },
+        key: "tree13_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 14, height: 18, offsetX: 17, offsetY: 22, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE14]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 17, end: 19 },
+            { row: 29, start: 17, end: 19 },
+            { row: 30, start: 17, end: 19 },
+            { row: 31, start: 17, end: 19 },
+          ],
+        },
+        key: "tree14_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 14, height: 22, offsetX: 17, offsetY: 30, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.DEAD_TREE1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 66, start: 1, end: 8 },
+            { row: 67, start: 1, end: 8 },
+            { row: 68, start: 1, end: 8 },
+            { row: 69, start: 1, end: 8 },
+            { row: 70, start: 1, end: 8 },
+            { row: 71, start: 1, end: 8 },
+            { row: 72, start: 1, end: 8 },
+          ],
+        },
+        key: "dead_tree1_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 40, height: 22, offsetX: 41, offsetY: 54, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.DEAD_TREE2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 66, start: 9, end: 13 },
+            { row: 67, start: 9, end: 13 },
+            { row: 68, start: 9, end: 13 },
+            { row: 69, start: 9, end: 13 },
+            { row: 70, start: 9, end: 13 },
+          ],
+        },
+        key: "dead_tree2_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: { drop: { name: EntityName.WOOD, quantity: 1 } },
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 28, height: 18, offsetX: 28, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STUMP3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 21, start: 6, end: 8 },
+            { row: 22, start: 6, end: 8 },
+          ],
+        },
+        key: "stump3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 34, height: 10, offsetX: 7, offsetY: 10, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STUMP4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 21, start: 9, end: 10 },
+            { row: 22, start: 9, end: 10 },
+          ],
+        },
+        key: "stump4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 26, height: 8, offsetX: 3, offsetY: 12, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STUMP5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 21, start: 11, end: 12 },
+            { row: 22, start: 11, end: 12 },
+          ],
+        },
+        key: "stump5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 19, height: 6, offsetX: 7, offsetY: 14, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE15]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 20, end: 23 },
+            { row: 29, start: 20, end: 23 },
+            { row: 30, start: 20, end: 23 },
+            { row: 31, start: 20, end: 23 },
+            { row: 32, start: 20, end: 23 },
+          ],
+        },
+        key: "tree15_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 25,
+          offsetX: 24,
+          offsetY: 47,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE16]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 28, start: 24, end: 27 },
+            { row: 29, start: 24, end: 27 },
+            { row: 30, start: 24, end: 27 },
+            { row: 31, start: 24, end: 27 },
+          ],
+        },
+        key: "tree16_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 24,
+          offsetY: 32,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE17]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 43, start: 12, end: 17 },
+            { row: 44, start: 12, end: 17 },
+            { row: 45, start: 12, end: 17 },
+            { row: 46, start: 12, end: 17 },
+            { row: 47, start: 12, end: 17 },
+          ],
+        },
+        key: "tree17_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 25,
+          offsetX: 36,
+          offsetY: 47,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.TREE18]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 43, start: 18, end: 21 },
+            { row: 44, start: 18, end: 21 },
+            { row: 45, start: 18, end: 21 },
+            { row: 46, start: 18, end: 21 },
+            { row: 47, start: 18, end: 21 },
+          ],
+        },
+        key: "tree18_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 25,
+          offsetX: 24,
+          offsetY: 47,
+          static: true,
+        },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.FELLABLE,
+        config: {
+          drop: { name: EntityName.WOOD, quantity: 1 },
+          bonus: { name: EntityName.HAZELNUT, quantity: 1, chance: 0.25 },
+        },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 1, end: 1 },
+          ],
+        },
+        key: "cave_fern1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 5,
+          height: 4,
+          offsetX: 6,
+          offsetY: 1,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 2, end: 3 },
+            { row: 84, start: 2, end: 3 },
+          ],
+        },
+        key: "cave_fern2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 15,
+          height: 4,
+          offsetX: 8,
+          offsetY: 9,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 4, end: 5 },
+            { row: 84, start: 4, end: 5 },
+          ],
+        },
+        key: "cave_fern3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 5,
+          offsetX: 7,
+          offsetY: 8,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 6, end: 9 },
+            { row: 84, start: 6, end: 9 },
+          ],
+        },
+        key: "cave_fern4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 50,
+          height: 12,
+          offsetX: 7,
+          offsetY: 4,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 10, end: 12 },
+            { row: 84, start: 10, end: 12 },
+            { row: 85, start: 10, end: 12 },
+          ],
+        },
+        key: "cave_fern5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 28,
+          height: 8,
+          offsetX: 10,
+          offsetY: 15,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 13, end: 15 },
+            { row: 84, start: 13, end: 15 },
+            { row: 85, start: 13, end: 15 },
+          ],
+        },
+        key: "cave_fern6_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 36,
+          height: 11,
+          offsetX: 6,
+          offsetY: 19,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.CAVE_FERN7]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 83, start: 16, end: 19 },
+            { row: 84, start: 16, end: 19 },
+            { row: 85, start: 16, end: 19 },
+          ],
+        },
+        key: "cave_fern7_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 43,
+          height: 12,
+          offsetX: 10,
+          offsetY: 20,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH8]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 26, end: 28 },
+            { row: 2, start: 26, end: 28 },
+            { row: 3, start: 26, end: 28 },
+          ],
+        },
+        key: "bush8_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 24,
+          height: 12,
+          offsetX: 12,
+          offsetY: 24,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH9]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 29, end: 30 },
+            { row: 2, start: 29, end: 30 },
+          ],
+        },
+        key: "bush9_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 12,
+          offsetX: 8,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH10]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 86, start: 1, end: 3 },
+            { row: 87, start: 1, end: 3 },
+            { row: 88, start: 1, end: 3 },
+          ],
+        },
+        key: "bush10_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 27,
+          height: 14,
+          offsetX: 10,
+          offsetY: 24,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.BUSH11]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 31, end: 32 },
+            { row: 2, start: 31, end: 32 },
+          ],
+        },
+        key: "bush11_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 15,
+          height: 8,
+          offsetX: 8,
+          offsetY: 16,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.REED4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 21, end: 21 },
+          ],
+        },
+        key: "reed4_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.REED5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 22, end: 22 },
+          ],
+        },
+        key: "reed5_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 16,
+          offsetX: 0,
+          offsetY: 0,
+          collides: false,
+          static: true,
+        },
+      },
+      {
+        name: ComponentName.BOUNCE,
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.REED6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    offset: { y: -8 },
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 15, start: 23, end: 23 },
+            { row: 16, start: 23, end: 23 },
+          ],
+        },
+        key: "reed6_texture",
+      },
+      { name: ComponentName.WINDSWAY },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 24,
+          offsetX: 0,
+          offsetY: 8,
           collides: false,
           static: true,
         },

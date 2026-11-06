@@ -32,6 +32,9 @@ import { robe } from "./robe";
 import { connect } from "./connect";
 import { water } from "./water";
 import { meadow } from "./meadow";
+import { fog } from "./fog";
+import { glow } from "./glow";
+import { effects } from "./effects";
 
 export const handlers = {
   state,
@@ -68,4 +71,7 @@ export const handlers = {
   connect,
   water,
   meadow,
+  fog,
+  glow,
+  effects,
 };

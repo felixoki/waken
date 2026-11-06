@@ -120,8 +120,8 @@ export const combat = {
   absorb: (
     target: PlayerConfig | EntityConfig,
     damage: number,
-    socket: Socket,
-    _io: Server,
+    _socket: Socket,
+    io: Server,
     world: World,
   ): number => {
     if (damage <= 0) return damage;
@@ -143,20 +143,10 @@ export const combat = {
       const remaining = (target.effects ?? []).filter((e) => e !== shield);
       store.update(target.id, { effects: remaining });
 
-      const key = isEntity
-        ? world.chunks.getChunkByEntity(target.id)
-        : (() => {
-            const map = (target as PlayerConfig).map;
-            const party = world.parties.getByPlayerId(target.id);
-            const partyId = configs.maps[map].isInstanced
-              ? party?.id
-              : undefined;
-            return world.chunks.toChunkKey(map, target.x, target.y, partyId);
-          })();
-
-      const event = { id: target.id, name: shield.name };
-      if (key) socket.to(`chunk:${key}`).emit(Event.EFFECT_REMOVE, event);
-      socket.emit(Event.EFFECT_REMOVE, event);
+      combat.effects.notify(world, io, target.id, Event.EFFECT_REMOVE, {
+        id: target.id,
+        name: shield.name,
+      });
     } else store.update(target.id, { effects: target.effects });
 
     return damage - soaked;
@@ -269,6 +259,7 @@ export const combat = {
       if (player.sleep?.isAsleep) handlers.sleep.wake(player.id, io, world);
 
       world.players.update(player.id, { health: 0, isDead: true });
+      combat.effects.clear(player, false, world, io);
 
       const event = {
         id: player.id,
@@ -542,8 +533,7 @@ export const combat = {
         config,
         world,
         Date.now(),
-        key,
-        socket,
+        io,
         attacker.id,
       );
   },
@@ -555,8 +545,7 @@ export const combat = {
       config: CombatConfig,
       world: World,
       now: number,
-      key: string | undefined,
-      socket: Socket,
+      io: Server,
       attackerId?: string,
     ) => {
       const store = isEntity ? world.entities : world.players;
@@ -609,13 +598,52 @@ export const combat = {
         };
         existing.push(effect);
 
-        const applyEvent = { id: targetId, effect };
-        if (key) socket.to(`chunk:${key}`).emit(Event.EFFECT_APPLY, applyEvent);
-        socket.emit(Event.EFFECT_APPLY, applyEvent);
+        combat.effects.notify(world, io, targetId, Event.EFFECT_APPLY, {
+          id: targetId,
+          effect,
+        });
       }
 
       store.update(targetId, { effects: existing });
       world.affected.add(targetId);
+    },
+
+    notify: (
+      world: World,
+      io: Server,
+      id: string,
+      event: Event.EFFECT_APPLY | Event.EFFECT_REMOVE,
+      data: { id: string; effect: Effect } | { id: string; name: EffectName },
+    ): void => {
+      const player = world.players.get(id);
+
+      if (player) {
+        io.to([`map:${player.map}`, player.socketId]).emit(event, data);
+        return;
+      }
+
+      const key = world.chunks.getChunkByEntity(id);
+      if (key) io.to(`chunk:${key}`).emit(event, data);
+    },
+
+    clear: (
+      target: PlayerConfig | EntityConfig,
+      isEntity: boolean,
+      world: World,
+      io: Server,
+    ): void => {
+      const effects = target.effects ?? [];
+      if (!effects.length) return;
+
+      const store = isEntity ? world.entities : world.players;
+      store.update(target.id, { effects: [] });
+      world.affected.delete(target.id);
+
+      for (const effect of effects)
+        combat.effects.notify(world, io, target.id, Event.EFFECT_REMOVE, {
+          id: target.id,
+          name: effect.name,
+        });
     },
 
     cancelled: (effects: Effect[], name: EffectName, now: number): boolean =>
@@ -658,7 +686,10 @@ export const combat = {
             (!effect.held && now >= effect.expiresAt) ||
             combat.effects.cancelled(target.effects, effect.name, now)
           ) {
-            emit(Event.EFFECT_REMOVE, { id, name: effect.name });
+            combat.effects.notify(world, io, id, Event.EFFECT_REMOVE, {
+              id,
+              name: effect.name,
+            });
             continue;
           }
 

@@ -25,6 +25,8 @@ import {
   SINK_RATIO,
   SINK_START,
   SWIM_BOB,
+  AMBUSH_RISE_SPLASH,
+  AMBUSH_SHOW,
   SWIM_DEPTH,
   SWIM_EXIT,
   SWIM_RATIO,
@@ -83,9 +85,12 @@ import {
   BEACH_INSET,
   BEACH_REACH,
   BEACH_RESOLUTION,
+  type MeadowGrade,
   type WaterPalette,
 } from "@server/globals";
-import { ComponentName, EntityName, PipelineName } from "@server/types";
+import type { MeadowBlend } from "./meadow";
+import { BehaviorName, ComponentName, EntityName, PipelineName } from "@server/types";
+import type { BehaviorQueue } from "../components/BehaviorQueue";
 import { configs } from "@server/configs";
 import type { Scene } from "../scenes/Scene";
 import type { Entity } from "../Entity";
@@ -121,6 +126,7 @@ export interface Wading {
   rx: number;
   ry: number;
   swimming: boolean;
+  hidden: boolean;
   seen: boolean;
 }
 
@@ -148,6 +154,8 @@ export interface Basin {
 
 export interface Water {
   palette: WaterPalette;
+  grade?: MeadowGrade;
+  blend?: Phaser.Textures.Texture;
   depth: Phaser.Textures.Texture;
   shore: Phaser.Textures.Texture;
   flow: Phaser.Textures.Texture;
@@ -524,6 +532,7 @@ export const water = {
     palette: WaterPalette = "lake",
     decks: Phaser.Tilemaps.TilemapLayer[] = [],
     overhangs: Phaser.Tilemaps.TilemapLayer[] = [],
+    blend?: MeadowBlend,
   ) => {
     const { width: columns, height: rows, tileWidth } = layer.layer;
     const distance = water.distances(layer, overhangs);
@@ -546,6 +555,8 @@ export const water = {
 
     const state: Water = {
       palette,
+      grade: blend?.grade,
+      blend: blend?.texture,
       depth,
       shore: field,
       flow,
@@ -762,6 +773,7 @@ export const water = {
         rx,
         ry,
         swimming: false,
+        hidden: false,
         seen: true,
       };
       state.sinks.set(entity.id, wading);
@@ -795,7 +807,17 @@ export const water = {
         ? Math.sin(state.time * SINK_BOB_SPEED) *
           (SINK_BOB + (SWIM_BOB - SINK_BOB) * swim)
         : 0;
-    const target = shallow * amount + (deep - shallow) * swim + bob;
+    const hidden =
+      distance > SINK_START &&
+      entity.getComponent<BehaviorQueue>(ComponentName.BEHAVIOR_QUEUE)?.pending?.name ===
+        BehaviorName.AMBUSH;
+    if (wading.hidden && !hidden)
+      water.splash(state, entity.scene as Scene, body.center.x, body.bottom, rx, ry, AMBUSH_RISE_SPLASH, entity.depth + 1);
+    wading.hidden = hidden;
+
+    const target = hidden
+      ? Math.round(wading.feet + ry - AMBUSH_SHOW)
+      : shallow * amount + (deep - shallow) * swim + bob;
 
     wading.depth += (target - wading.depth) * Math.min(1, (SINK_EASE * delta) / 1000);
     wading.x = body.center.x;
@@ -864,6 +886,7 @@ export const water = {
         rx,
         ry,
         swimming: false,
+        hidden: false,
         seen: true,
       };
 

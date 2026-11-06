@@ -81,7 +81,7 @@ export const climate = {
     world.players.update(id, { effects });
     world.affected.add(id);
 
-    handlers.weather.announce(id, false, player.socketId, effect, world, io);
+    handlers.weather.announce(id, effect, world, io);
   },
 
   warm: (player: PlayerConfig, world: World, io: Server): void => {
@@ -95,7 +95,7 @@ export const climate = {
     effects.splice(index, 1);
     world.players.update(player.id, { effects });
 
-    handlers.broadcast.room(null, io, player.socketId, Event.EFFECT_REMOVE, {
+    handlers.combat.effects.notify(world, io, player.id, Event.EFFECT_REMOVE, {
       id: player.id,
       name: EffectName.COLD,
     });
@@ -115,6 +115,6 @@ export const climate = {
 
     world.players.update(id, { effects });
 
-    handlers.weather.announce(id, false, player.socketId, held, world, io);
+    handlers.weather.announce(id, held, world, io);
   },
 };

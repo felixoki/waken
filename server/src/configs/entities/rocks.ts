@@ -130,6 +130,41 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       description: "A dark, heavy outcrop veined with iron.",
     },
   },
+  [EntityName.BOG_IRON]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 66, start: 14, end: 16 },
+            { row: 67, start: 14, end: 16 },
+            { row: 68, start: 14, end: 16 },
+          ],
+        },
+        key: "bog_iron_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 31, height: 9, offsetX: 8, offsetY: 27, static: true },
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.HOVERABLE },
+      {
+        name: ComponentName.MINEABLE,
+        config: { drop: { name: EntityName.IRON_ORE, quantity: 2 } },
+      },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Bog Iron",
+      description: "A mossy boulder crusted with iron the marsh water left behind.",
+    },
+  },
   [EntityName.CAVE_ROCK1]: {
     facing: Direction.DOWN,
     moving: [],
@@ -1417,6 +1452,580 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
           offsetY: 7,
           static: true,
         },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK6]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 73, start: 1, end: 5 },
+            { row: 74, start: 1, end: 5 },
+            { row: 75, start: 1, end: 5 },
+            { row: 76, start: 1, end: 5 },
+          ],
+        },
+        key: "mossy_rock6_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 57, height: 13, offsetX: 11, offsetY: 39, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK7]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 73, start: 6, end: 9 },
+            { row: 74, start: 6, end: 9 },
+            { row: 75, start: 6, end: 9 },
+          ],
+        },
+        key: "mossy_rock7_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 45, height: 12, offsetX: 9, offsetY: 24, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK8]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 73, start: 10, end: 12 },
+            { row: 74, start: 10, end: 12 },
+            { row: 75, start: 10, end: 12 },
+          ],
+        },
+        key: "mossy_rock8_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 31, height: 9, offsetX: 8, offsetY: 27, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.MOSSY_ROCK9]: {
+    sinks: true,
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 52, start: 3, end: 4 },
+            { row: 53, start: 3, end: 4 },
+          ],
+        },
+        key: "mossy_rock9_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 25, height: 8, offsetX: 3, offsetY: 12, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 1, end: 3 },
+            { row: 78, start: 1, end: 3 },
+            { row: 79, start: 1, end: 3 },
+            { row: 80, start: 1, end: 3 },
+            { row: 81, start: 1, end: 3 },
+          ],
+        },
+        key: "stalagmite1_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 39, height: 18, offsetX: 5, offsetY: 46, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 4, end: 6 },
+            { row: 78, start: 4, end: 6 },
+            { row: 79, start: 4, end: 6 },
+            { row: 80, start: 4, end: 6 },
+            { row: 81, start: 4, end: 6 },
+            { row: 82, start: 4, end: 6 },
+          ],
+        },
+        key: "stalagmite2_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 27, height: 25, offsetX: 10, offsetY: 54, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 7, end: 8 },
+            { row: 78, start: 7, end: 8 },
+            { row: 79, start: 7, end: 8 },
+            { row: 80, start: 7, end: 8 },
+            { row: 81, start: 7, end: 8 },
+            { row: 82, start: 7, end: 8 },
+          ],
+        },
+        key: "stalagmite3_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 19, height: 23, offsetX: 7, offsetY: 54, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE4]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 9, end: 10 },
+            { row: 78, start: 9, end: 10 },
+            { row: 79, start: 9, end: 10 },
+            { row: 80, start: 9, end: 10 },
+          ],
+        },
+        key: "stalagmite4_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 23, offsetX: 8, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE5]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 11, end: 12 },
+            { row: 78, start: 11, end: 12 },
+            { row: 79, start: 11, end: 12 },
+            { row: 80, start: 11, end: 12 },
+          ],
+        },
+        key: "stalagmite5_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 10, height: 12, offsetX: 11, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE6]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 13, end: 14 },
+            { row: 78, start: 13, end: 14 },
+            { row: 79, start: 13, end: 14 },
+            { row: 80, start: 13, end: 14 },
+          ],
+        },
+        key: "stalagmite6_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 14, height: 17, offsetX: 7, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE7]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 15, end: 15 },
+            { row: 78, start: 15, end: 15 },
+            { row: 79, start: 15, end: 15 },
+          ],
+        },
+        key: "stalagmite7_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 9, height: 4, offsetX: 3, offsetY: 30, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE8]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 16, end: 16 },
+            { row: 78, start: 16, end: 16 },
+            { row: 79, start: 16, end: 16 },
+          ],
+        },
+        key: "stalagmite8_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 11, height: 9, offsetX: 2, offsetY: 30, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE9]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 17, end: 17 },
+            { row: 78, start: 17, end: 17 },
+          ],
+        },
+        key: "stalagmite9_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 10, height: 4, offsetX: 3, offsetY: 22, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE10]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 18, end: 20 },
+            { row: 78, start: 18, end: 20 },
+            { row: 79, start: 18, end: 20 },
+            { row: 80, start: 18, end: 20 },
+            { row: 81, start: 18, end: 20 },
+          ],
+        },
+        key: "stalagmite10_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 39, height: 18, offsetX: 5, offsetY: 46, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE11]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 21, end: 23 },
+            { row: 78, start: 21, end: 23 },
+            { row: 79, start: 21, end: 23 },
+            { row: 80, start: 21, end: 23 },
+            { row: 81, start: 21, end: 23 },
+            { row: 82, start: 21, end: 23 },
+          ],
+        },
+        key: "stalagmite11_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 27, height: 25, offsetX: 10, offsetY: 54, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE12]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 24, end: 25 },
+            { row: 78, start: 24, end: 25 },
+            { row: 79, start: 24, end: 25 },
+            { row: 80, start: 24, end: 25 },
+            { row: 81, start: 24, end: 25 },
+            { row: 82, start: 24, end: 25 },
+          ],
+        },
+        key: "stalagmite12_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 19, height: 23, offsetX: 7, offsetY: 54, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE13]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 26, end: 27 },
+            { row: 78, start: 26, end: 27 },
+            { row: 79, start: 26, end: 27 },
+            { row: 80, start: 26, end: 27 },
+          ],
+        },
+        key: "stalagmite13_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 16, height: 23, offsetX: 8, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE14]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 28, end: 29 },
+            { row: 78, start: 28, end: 29 },
+            { row: 79, start: 28, end: 29 },
+            { row: 80, start: 28, end: 29 },
+          ],
+        },
+        key: "stalagmite14_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 10, height: 12, offsetX: 11, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE15]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 30, end: 31 },
+            { row: 78, start: 30, end: 31 },
+            { row: 79, start: 30, end: 31 },
+            { row: 80, start: 30, end: 31 },
+          ],
+        },
+        key: "stalagmite15_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 14, height: 17, offsetX: 7, offsetY: 38, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE16]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 77, start: 32, end: 32 },
+            { row: 78, start: 32, end: 32 },
+            { row: 79, start: 32, end: 32 },
+          ],
+        },
+        key: "stalagmite16_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 9, height: 4, offsetX: 3, offsetY: 30, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE17]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 79, start: 17, end: 17 },
+            { row: 80, start: 17, end: 17 },
+            { row: 81, start: 17, end: 17 },
+          ],
+        },
+        key: "stalagmite17_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 11, height: 9, offsetX: 2, offsetY: 30, static: true },
+      },
+    ],
+    states: [],
+    behaviors: [],
+  },
+  [EntityName.STALAGMITE18]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "nature",
+          tileSize: 16,
+          tiles: [
+            { row: 80, start: 15, end: 15 },
+            { row: 81, start: 15, end: 15 },
+          ],
+        },
+        key: "stalagmite18_texture",
+      },
+      {
+        name: ComponentName.BODY,
+        config: { width: 10, height: 4, offsetX: 3, offsetY: 22, static: true },
       },
     ],
     states: [],

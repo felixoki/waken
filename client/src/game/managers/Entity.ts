@@ -94,14 +94,24 @@ export class EntityManager {
     this._drain();
 
     this.entities.forEach((entity) => {
-      if (!entity.isStatic) entity.update();
+      if (entity.isStatic) return;
+
+      entity.tick();
+      entity.update();
     });
 
     StorageComponent.tick();
   }
 
   add(config: EntityConfig, fresh = true): void {
-    if (this.entities.has(config.id) || this.queued.has(config.id)) return;
+    const existing = this.entities.get(config.id);
+
+    if (existing) {
+      handlers.effects.sync(existing, config.effects);
+      return;
+    }
+
+    if (this.queued.has(config.id)) return;
 
     this.queue.push(config);
     this.queued.add(config.id);
@@ -257,6 +267,7 @@ export class EntityManager {
     if (entity.isStatic) this._registerStatic(entity, config, scene);
     if (config.isOpen) this.toggle(config.id, true);
     handlers.connect.link(this.connected, entity, true);
+    handlers.effects.sync(entity, config.effects);
   }
 
   private _registerStatic(

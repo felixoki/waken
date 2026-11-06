@@ -1,8 +1,8 @@
 import { PlayerConfig, Input, StateName, ComponentName } from "@server/types";
 import { Player } from "../Player";
+import { handlers } from "../handlers";
 import { EntityName } from "@server/types";
 import { HotbarComponent } from "../components/Hotbar";
-import { TreadComponent } from "../components/Tread";
 import { Idle } from "../state/Idle";
 import { Walking } from "../state/Walking";
 import { Running } from "../state/Running";
@@ -42,10 +42,10 @@ export class PlayerManager {
   }
 
   update(): void {
+    this.player?.tick();
     this.player?.update();
 
-    for (const other of this.others.values())
-      other.getComponent<TreadComponent>(ComponentName.TREAD)?.update();
+    for (const other of this.others.values()) other.tick();
   }
 
   add(config: PlayerConfig, isLocal: boolean): void {
@@ -55,6 +55,7 @@ export class PlayerManager {
       if (existing) {
         if (existing.map === config.map) {
           existing.setPosition(config.x, config.y);
+          handlers.effects.sync(existing, config.effects);
           return;
         }
 
@@ -105,6 +106,8 @@ export class PlayerManager {
     scene.physicsManager.groups.players.add(player);
 
     if (config.robe) player.setRobe(config.robe[0] ?? null);
+
+    handlers.effects.sync(player, config.effects);
 
     if (isLocal) {
       this.player = player;

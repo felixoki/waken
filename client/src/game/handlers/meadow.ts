@@ -2,6 +2,9 @@ import {
   MEADOW_BAKE_MARGIN,
   MEADOW_BAKE_RATE,
   MEADOW_CHARACTERS,
+  MEADOW_GRADE_BLUR,
+  MEADOW_GRADE_PASSES,
+  type MeadowGrade,
   type MeadowPalette,
 } from "@server/globals";
 import { PipelineName } from "@server/types";
@@ -29,9 +32,16 @@ export interface Bake {
   image: Phaser.GameObjects.Image;
 }
 
+export interface MeadowBlend {
+  grade: MeadowGrade;
+  texture: Phaser.Textures.Texture;
+}
+
 export interface Meadow {
   palette: MeadowPalette;
   mask: Phaser.Textures.Texture;
+  grade?: MeadowGrade;
+  blend?: Phaser.Textures.Texture;
   width: number;
   height: number;
   tile: number;
@@ -77,6 +87,7 @@ export const meadow = {
     layers: Phaser.Tilemaps.TilemapLayer[],
     palette: MeadowPalette = "grass",
     edges: Phaser.Tilemaps.TilemapLayer[] = [],
+    blend?: MeadowBlend,
   ) => {
     if (!layers.length) return;
 
@@ -113,6 +124,8 @@ export const meadow = {
     const state: Meadow = {
       palette,
       mask,
+      grade: blend?.grade,
+      blend: blend?.texture,
       width: layers[0].layer.widthInPixels,
       height: layers[0].layer.heightInPixels,
       tile: tileWidth,
@@ -143,6 +156,49 @@ export const meadow = {
     });
 
     scene.meadows.push(state);
+  },
+
+  blend: (
+    scene: Scene,
+    layer: Phaser.Tilemaps.TilemapLayer,
+  ): Phaser.Textures.Texture | null => {
+    const { width: columns, height: rows, data } = layer.layer;
+    let a = new Float32Array(columns * rows);
+    let b = new Float32Array(columns * rows);
+
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < columns; x++) a[y * columns + x] = data[y][x].index > 0 ? 1 : 0;
+
+    for (let pass = 0; pass < MEADOW_GRADE_PASSES; pass++) {
+      for (let y = 0; y < rows; y++)
+        for (let x = 0; x < columns; x++) {
+          let sum = 0;
+          for (let k = -MEADOW_GRADE_BLUR; k <= MEADOW_GRADE_BLUR; k++)
+            sum += a[y * columns + Math.min(columns - 1, Math.max(0, x + k))];
+          b[y * columns + x] = sum / (MEADOW_GRADE_BLUR * 2 + 1);
+        }
+      for (let y = 0; y < rows; y++)
+        for (let x = 0; x < columns; x++) {
+          let sum = 0;
+          for (let k = -MEADOW_GRADE_BLUR; k <= MEADOW_GRADE_BLUR; k++)
+            sum += b[Math.min(rows - 1, Math.max(0, y + k)) * columns + x];
+          a[y * columns + x] = sum / (MEADOW_GRADE_BLUR * 2 + 1);
+        }
+    }
+
+    const pixels = new Uint8Array(columns * rows * 4);
+    for (let i = 0; i < a.length; i++) {
+      pixels[i * 4] = Math.round(a[i] * 255);
+      pixels[i * 4 + 3] = 255;
+    }
+
+    const key = `meadow_blend_${scene.scene.key}`;
+    if (scene.textures.exists(key)) scene.textures.remove(key);
+
+    const texture = scene.textures.addUint8Array(key, pixels, columns, rows);
+    texture?.setFilter(Phaser.Textures.FilterMode.LINEAR);
+
+    return texture;
   },
 
   canvas: (
@@ -249,5 +305,6 @@ export const meadow = {
 
     state.bakes.length = 0;
     if (scene.textures.exists(state.mask.key)) scene.textures.remove(state.mask);
+    if (state.blend && scene.textures.exists(state.blend.key)) scene.textures.remove(state.blend);
   },
 };

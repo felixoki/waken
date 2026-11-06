@@ -3,6 +3,7 @@ import { Item } from "./components";
 import { ZoneConfig } from "./zones";
 import type { MapName, SurfaceName } from "./maps";
 import type { TiledProperty } from "./tiled";
+import type { MeadowGrade } from "../globals";
 
 export interface Range {
   min: number;
@@ -15,6 +16,7 @@ export enum BiomeName {
   CAVE = "cave",
   MOUNTAIN = "mountain",
   TEMPLE = "temple",
+  SWAMP = "swamp",
 }
 
 export enum TerrainName {
@@ -275,6 +277,8 @@ export interface BiomeConfig {
   peak?: { entity: EntityName; requires: number };
   sites?: SiteConfig[];
   water?: boolean;
+  marsh?: boolean;
+  grade?: MeadowGrade;
 }
 
 export interface SiteConfig {
@@ -284,6 +288,8 @@ export interface SiteConfig {
   height: number;
   base?: number;
   terrain: TerrainName[];
+  guards?: EntityName;
+  rows?: Range;
 }
 
 export interface GeneratedMap {
@@ -347,6 +353,7 @@ export interface SpawnRule {
   density?: number;
   count?: Range;
   chance?: number;
+  hive?: number;
   spacing: number;
   margin?: number;
   wallAdjacent?: boolean;
@@ -356,6 +363,8 @@ export interface SpawnRule {
   loot?: (Item & { chance: number })[];
   near?: { terrain: TerrainName; within: number };
   requires?: number;
+  rows?: Range;
+  fade?: boolean;
 }
 
 export interface Entity {
@@ -367,6 +376,7 @@ export interface Entity {
   textureSpawner?: TextureSpawnerConfig;
   link?: string;
   origin?: BiomeName;
+  hive?: boolean;
 }
 
 export type Landmark = Pick<Entity, "name" | "x" | "y">;
@@ -494,6 +504,7 @@ export interface RoomConfig {
   intact?: boolean;
   alcoves?: boolean;
   altars?: AltarConfig;
+  boss?: EntityName;
   separators?: {
     chance: number;
     large: Range;

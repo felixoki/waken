@@ -33,6 +33,7 @@ export enum ComponentName {
   MILKABLE = "milkable",
   BUTCHERABLE = "butcherable",
   FELLABLE = "fellable",
+  HIVE = "hive",
   MINEABLE = "mineable",
   GROWABLE = "growable",
   HOTBAR = "hotbar",
@@ -60,6 +61,7 @@ export enum ComponentName {
   CAPTURABLE = "capturable",
   SLEEPABLE = "sleepable",
   SKIN = "skin",
+  STATUS = "status",
   WETSHEEN = "wetsheen",
   WINDSWAY = "windsway",
   ZONE = "zone",
@@ -127,6 +129,7 @@ export interface ConnectableConfig {
 export interface ExtractableConfig {
   drop: { name: EntityName; quantity: number };
   bonus?: { name: EntityName; quantity: number; chance: number };
+  hive?: { x: number; y: number };
 }
 
 export interface CapturableConfig {

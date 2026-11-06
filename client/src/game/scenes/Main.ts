@@ -44,6 +44,7 @@ import { Landmark } from "@server/types/generation";
 import type { Chart } from "../handlers/chart";
 import { DamageableComponent } from "../components/Damageable";
 import { DestructibleComponent } from "../components/Destructible";
+import { HiveComponent } from "../components/Hive";
 import { GrowableComponent } from "../components/Growable";
 import { CapturableComponent } from "../components/Capturable";
 import { vfx } from "../vfx";
@@ -51,7 +52,7 @@ import { DaycycleManager } from "../managers/Daycycle";
 import { WeatherManager } from "../managers/Weather";
 import { ChunkManager } from "../managers/Chunk";
 import { BuildManager } from "../managers/Build";
-import { EffectFactory } from "../factory/Effect";
+import type { Entity } from "../Entity";
 import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
 import ForestScene from "./Forest";
@@ -114,6 +115,7 @@ export class MainScene extends Phaser.Scene {
       MapName.FARM_HOUSE,
       MapName.WINDMILL,
       MapName.ISLES,
+      MapName.NETHER,
     ];
     const ready = new Set<string>();
 
@@ -440,13 +442,15 @@ export class MainScene extends Phaser.Scene {
 
     this.managers.socket.on(
       Event.EXTRACT_MATERIAL,
-      (data: { id: string; felled?: boolean }) => {
+      (data: { id: string; felled?: boolean; swarm?: boolean }) => {
         const entity = this.managers.entities.entities.get(data.id);
         if (!entity) return;
 
         /** @todo Introduce a handler */
         if (data.felled) {
           const { scene, x, y } = entity;
+          if (data.swarm)
+            entity.getComponent<HiveComponent>(ComponentName.HIVE)?.swarm();
           if (entity.getComponent(ComponentName.FELLABLE))
             this.managers.sound.play.sfx(SoundName.TREE_FALL, {
               position: { x, y },
@@ -584,60 +588,16 @@ export class MainScene extends Phaser.Scene {
     this.managers.socket.on(
       Event.EFFECT_APPLY,
       (data: { id: string; effect: ActiveEffect }) => {
-        const target =
-          this.managers.entities.entities.get(data.id) ||
-          this.managers.players.others.get(data.id) ||
-          (this.managers.players.player?.id === data.id
-            ? this.managers.players.player
-            : undefined);
-
-        if (!target?.scene) return;
-
-        target.addEffect(
-          EffectFactory.create(data.effect.name as EffectName, target),
-        );
-
-        if (this.managers.players.player?.id === data.id) {
-          const inventory = target.getComponent<InventoryComponent>(
-            ComponentName.INVENTORY,
-          );
-          if (inventory)
-            target.speed = handlers.move.speed(
-              inventory.get(),
-              target.effects.keys(),
-            );
-
-          EventBus.emit(Event.EFFECT_APPLY, data.effect);
-        }
+        const target = this._affected(data.id);
+        if (target) handlers.effects.apply(target, data.effect);
       },
     );
 
     this.managers.socket.on(
       Event.EFFECT_REMOVE,
       (data: { id: string; name: EffectName }) => {
-        const target =
-          this.managers.entities.entities.get(data.id) ||
-          this.managers.players.others.get(data.id) ||
-          (this.managers.players.player?.id === data.id
-            ? this.managers.players.player
-            : undefined);
-
-        if (!target) return;
-
-        target.removeEffect(data.name);
-
-        if (this.managers.players.player?.id === data.id) {
-          const inventory = target.getComponent<InventoryComponent>(
-            ComponentName.INVENTORY,
-          );
-          if (inventory)
-            target.speed = handlers.move.speed(
-              inventory.get(),
-              target.effects.keys(),
-            );
-
-          EventBus.emit(Event.EFFECT_REMOVE, data.name);
-        }
+        const target = this._affected(data.id);
+        if (target) handlers.effects.remove(target, data.name);
       },
     );
 
@@ -1348,5 +1308,9 @@ export class MainScene extends Phaser.Scene {
 
   shutdown(): void {
     this.managers.socket.disconnect();
+  }
+
+  private _affected(id: string): Entity | undefined {
+    return this.managers.entities.entities.get(id) ?? this.managers.players.get(id);
   }
 }

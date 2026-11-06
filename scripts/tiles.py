@@ -46,6 +46,7 @@ MAPS = {
     "village.tmx": None,
     "isles.tmx": None,
     "water.tmx": None,
+    "nether.tmx": None,
     "blacksmith.tmx": "blacksmith",
     "farm.tmx": "farm",
     "windmill.tmx": "farm",
@@ -102,6 +103,11 @@ RULES = {
     "isles_rocks": lambda i: "isles_rocks",
     "isles_clouds": lambda i: "isles_clouds",
     "isles_clouds_animated": lambda i: "isles_clouds_animated",
+    "glowing_cave_ground": lambda i: "nether_ground",
+    "glowing_cave_water": lambda i: "nether_water",
+    "glowing_cave_details": lambda i: "nether_details",
+    "glowing_cave_shinies": lambda i: "nether_details",
+    "glowing_cave_objects": lambda i: "nether_objects",
     "mountain_ground": lambda i: "snow",
     "snow_details": lambda i: "snow_details",
     "blacksmith_forge": lambda i: "blacksmith_forge",
@@ -116,6 +122,7 @@ ANIMATED = {
     "isles_coasts": (29, 145),
     "isles_coasts2": (29, 145),
     "isles_waterfalls": (0, 209),
+    "glowing_cave_water": (0, 130),
     "waterfalls": [(0, 78, 468), (468, 26, 637), (637, 26, 819)],
 }
 FRAMES = 6

@@ -51,6 +51,10 @@ export class BehaviorQueue extends Component {
     return this.current;
   }
 
+  get pending(): Behavior | null {
+    return this.current ?? this.queue[0] ?? null;
+  }
+
   add(behavior: Behavior): void {
     this.queue.push(behavior);
   }

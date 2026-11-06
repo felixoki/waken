@@ -141,21 +141,28 @@ export const COLD_INTERVAL = 1_000;
 export const COLD_DURATION = 5_000;
 
 /** Wet sheen on entities */
-export const SHEEN_DARKEN = 0.72;
-export const SHEEN_DEEPEN = 1.35;
-export const SHEEN_STRENGTH = 0.62;
+export const SHEEN_GAMMA = 1.15;
+export const SHEEN_SATURATE = 1.2;
+export const SHEEN_STRENGTH = 0.3;
 export const SHEEN_SCALE = 2.6;
 export const SHEEN_SPEED = 0.45;
 export const SHEEN_STEPS = 3;
 export const SHEEN_FADE = 0.22;
-export const SHEEN_FACING = 0.1;
-export const SHEEN_FACING_LOW = 0.28;
-export const SHEEN_FACING_HIGH = 0.52;
+export const SHEEN_FACING = 0.25;
+export const SHEEN_RELIEF = 0.04;
+export const SHEEN_CREST = 0.7;
 export const SHEEN_SOAK_DURATION = 8_000;
 export const SHEEN_DRY_DURATION = 6_000;
 export const SHEEN_DEPTH_BIAS = 0.01;
 export const SHEEN_RISE_DURATION = 1_200;
 export const SHEEN_SHALLOW = 0.35;
+
+/** Status overlay */
+export const STATUS_PAD = 8;
+export const STATUS_FADE_IN = 300;
+export const STATUS_FADE_OUT = 600;
+export const STATUS_DEPTH_BIAS = 0.015;
+export const STATUS_TRAIL_EASE = 150;
 
 /** Blaze */
 export const BLAZE_PAD = 6;
@@ -230,6 +237,25 @@ export const WATER_BEACH_RING = [2, 5];
 export const WATER_CREEK_MIN = 8;
 export const WATER_CREEK_REEDS = 150;
 export const WATER_BED_REACH = 4;
+export const MARSH_WATER = 0.75;
+export const MARSH_LENGTH = [5, 22];
+export const MARSH_RADIUS = [3.4, 4.2];
+export const MARSH_SPACING = 2;
+export const MARSH_BEND = 1.6;
+export const MARSH_PACE = 3;
+export const MARSH_ATTEMPTS = 40000;
+export const MARSH_OPEN = 2.5;
+export const MARSH_GAP = 7;
+export const MARSH_LINKS = 0.75;
+export const MARSH_NECK = 1.1;
+export const MARSH_LEAST_LAND = 12;
+export const MARSH_EDGE = [4, 14];
+export const MARSH_HUMMOCKS = 3;
+export const MARSH_HUMMOCK_RADIUS = [8, 10];
+export const MARSH_RING = [0, 1];
+export const MARSH_RIVER_REACH = 24;
+export const MARSH_HERONS = [2, 4];
+export const GRADE_EDGE = [6, 14];
 export const WATER_PALETTES = {
   lake: {
     gradient: WATER_GRADIENT,
@@ -294,6 +320,39 @@ export const MEADOW_PUSH = 3.5;
 export const MEADOW_PUSH_SQUASH = 0.55;
 export const MEADOW_BENT = 0.5;
 export const MEADOW_BENT_SHADE = 0.93;
+export const MEADOW_GRADES = {
+  swamp: { saturation: 0.62, tint: [1.1, 1.0, 0.7], brightness: 0.92 },
+};
+export type MeadowGrade = keyof typeof MEADOW_GRADES;
+export const WATER_GRADES: Record<MeadowGrade, (typeof MEADOW_GRADES)[MeadowGrade]> = {
+  swamp: { saturation: 0.55, tint: [1.15, 1.0, 0.62], brightness: 0.72 },
+};
+export const MEADOW_GRADE_BLUR = 3;
+export const FOG_GRADES: MeadowGrade[] = ["swamp"];
+export const FOG_ALPHA = 0.22;
+export const FOG_COLOR = 0xe0e8dc;
+export const FOG_SCALE = [0.01, 0.026];
+export const FOG_DRIFT = [4, 1.2];
+export const FOG_EDGE = [0.5, 0.78];
+export const FOG_DEPTH = 900;
+export const MEADOW_GRADE_PASSES = 3;
+
+/** Pit glow */
+export const GLOW_TINT = [0.32, 0.75, 1.0];
+export const GLOW_ROCK = [45, 42, 58];
+export const GLOW_HOT = 0x4ac7f2;
+export const GLOW_LIGHT = 2.6;
+export const GLOW_CURVE = 1.5;
+export const GLOW_EMIT = 0.35;
+export const GLOW_FACE = 21;
+export const GLOW_GAP = 8;
+export const GLOW_BLUR = 3;
+export const GLOW_STRENGTH = 0.8;
+export const GLOW_DRIFT = 0.08;
+export const GLOW_BREATH = 0.1;
+export const GLOW_BREATH_PERIOD = 4;
+export const GLOW_DRIFT_SCALE = 1 / 40;
+export const GLOW_DRIFT_SPEED = 0.18;
 
 /** Beaches */
 export const BEACH_REACH = 3;
@@ -395,6 +454,10 @@ export const SWIM_DEPTH = 4;
 export const SWIM_EXIT = 3.6;
 export const SWIM_RATIO = 0.45;
 export const SWIM_BOB = 1.5;
+export const AMBUSH_SHOW = 28;
+export const AMBUSH_HOME_DEPTH = 2;
+export const AMBUSH_HOME_SEARCH = 8;
+export const AMBUSH_RISE_SPLASH = 1.4;
 
 /** Water splashes */
 export const PLUNGE_DURATION = 0.75;
@@ -455,6 +518,9 @@ export const DURATION_THROWING = 1000;
 export const DURATION_FELLING = 600;
 export const DURATION_MINING = 600;
 export const DURATION_EXTRACTION_BOUNCE = 800;
+export const HIVE_HONEY: [number, number] = [2, 3];
+export const HIVE_STING = 20;
+export const HIVE_SWARM_SIZE = 72;
 export const DURATION_RAKING = 600;
 export const DURATION_WATERING = 1430;
 export const DURATION_CROP_DEHYDRATION = 86_400_000;

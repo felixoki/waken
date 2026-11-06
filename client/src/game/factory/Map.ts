@@ -4,7 +4,8 @@ import { configs } from "@server/configs";
 import { Threshold } from "../managers/Tile";
 import { Entity } from "../Entity";
 import { handlers } from "../handlers";
-import type { MeadowPalette, WaterPalette } from "@server/globals";
+import type { MeadowGrade, MeadowPalette, WaterPalette } from "@server/globals";
+import type { MeadowBlend } from "../handlers/meadow";
 import type { Fall } from "../handlers/water";
 
 export class MapFactory {
@@ -40,11 +41,15 @@ export class MapFactory {
     let tileLayerIndex = 0;
     let objectLayerIndex = 0;
     let beach: Phaser.Tilemaps.TilemapLayer | undefined;
+    let grading: { grade: MeadowGrade; layer: Phaser.Tilemaps.TilemapLayer } | undefined;
     const meadows = new Map<MeadowPalette, Phaser.Tilemaps.TilemapLayer[]>();
     const edges: Phaser.Tilemaps.TilemapLayer[] = [];
     const overhangs: Phaser.Tilemaps.TilemapLayer[] = [];
     const decks: Phaser.Tilemaps.TilemapLayer[] = [];
     const falls: Fall[] = [];
+    let pits: Phaser.Tilemaps.TilemapLayer | undefined;
+    let faces: Phaser.Tilemaps.TilemapLayer | undefined;
+    const drawn: Phaser.Tilemaps.TilemapLayer[] = [];
     let waters: { layer: Phaser.Tilemaps.TilemapLayer; palette?: WaterPalette } | undefined;
 
     const thresholds: Threshold[] = [];
@@ -61,6 +66,14 @@ export class MapFactory {
         if (!data || data.name === "objects") return;
 
         const properties = data.properties as TiledProperty[] | undefined;
+
+        const grade = properties?.find((prop) => prop.name === "meadowGrade")
+          ?.value as MeadowGrade | undefined;
+        if (grade) {
+          const mask = tilemap.createLayer(currentIndex, tilesets, 0, 0);
+          if (mask) grading = { grade, layer: mask.setVisible(false) };
+          return;
+        }
 
         const hasCollision = properties?.some(
           (prop) => prop.name === "collides" && prop.value === true,
@@ -100,6 +113,11 @@ export class MapFactory {
         if (rawLayer.visible === false) layer.setVisible(false);
 
         if (lakebed) beach = layer;
+        drawn.push(layer);
+        if (properties?.some((p) => p.name === "void" && p.value === true))
+          pits = layer;
+        if (properties?.some((p) => p.name === "faces" && p.value === true))
+          faces = layer;
         if (water)
           waters = {
             layer,
@@ -188,6 +206,10 @@ export class MapFactory {
       }
     });
 
+    const texture = grading && handlers.meadow.blend(scene, grading.layer);
+    const blend: MeadowBlend | undefined =
+      grading && texture ? { grade: grading.grade, texture } : undefined;
+
     if (waters)
       handlers.water.apply(
         scene,
@@ -196,10 +218,18 @@ export class MapFactory {
         waters.palette,
         decks,
         overhangs,
+        blend,
       );
     handlers.water.falls(scene, falls);
+    if (pits && faces)
+      handlers.glow.apply(
+        scene,
+        pits,
+        drawn.slice(drawn.indexOf(pits) + 1, drawn.indexOf(faces) + 1).reverse(),
+      );
     for (const [palette, layers] of meadows)
-      handlers.meadow.apply(scene, layers, palette, edges);
+      handlers.meadow.apply(scene, layers, palette, edges, blend);
+    if (blend) handlers.fog.apply(scene, blend, tilemap.widthInPixels, tilemap.heightInPixels);
 
     return { tilemap, thresholds, colliders };
   }

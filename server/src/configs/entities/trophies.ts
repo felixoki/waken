@@ -87,4 +87,12 @@ export const trophies: Partial<Record<EntityName, EntityDefinition>> = {
       resist: { [EffectName.POISONED]: 0.5 },
     },
   ),
+  [EntityName.TENCH_TROPHY]: trophy(
+    EntityName.TENCH_TROPHY,
+    4,
+    "Mounted Tench",
+    "An olive tench from the bog, still smelling faintly of mud.",
+    Rarity.UNCOMMON,
+    { unique: true, bonus: { health: 25 } },
+  ),
 };

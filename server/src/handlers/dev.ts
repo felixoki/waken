@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import {
+  ComponentName,
   DevCommand,
   DialogueNode,
   DialogueText,
@@ -15,7 +16,7 @@ import {
   TimeState,
   VillageState,
 } from "../types";
-import { DAY, LEAN_TAKEN, PHASE_STARTS } from "../globals.js";
+import { DAY, LEAN_TAKEN, MAX_HEALTH, PHASE_STARTS } from "../globals.js";
 import { DEV_COMMANDS } from "../server.js";
 import { configs } from "../configs/index.js";
 import { World } from "../World";
@@ -130,7 +131,7 @@ export const dev = {
       effects.push(effect);
       world.players.update(player.id, { effects });
 
-      handlers.weather.announce(player.id, false, player.socketId, effect, world, io);
+      handlers.weather.announce(player.id, effect, world, io);
       dev.reply(socket, `effect ${name}`);
     },
 
@@ -301,6 +302,38 @@ export const dev = {
 
       handlers.player.transition({ to: map, x, y }, io, socket, world);
       dev.reply(socket, `going to ${map}`);
+    },
+
+    [DevCommand.HIVE]: ([tree], socket, io, world) => {
+      const player = world.players.getBySocketId(socket.id);
+      const name = (tree ?? EntityName.TREE1) as EntityName;
+      const fellable = configs.entities[name]?.components.find(
+        (c) => c.name === ComponentName.FELLABLE,
+      );
+
+      if (!player || fellable?.name !== ComponentName.FELLABLE || !fellable.config.hive)
+        return dev.reply(socket, `"${name}" can't carry a hive`);
+
+      const maxHealth = configs.entities[name]?.maxHealth ?? MAX_HEALTH;
+      const party = world.parties.getByPlayerId(player.id);
+
+      handlers.entity.create(
+        {
+          name,
+          map: player.map,
+          x: player.x + 56,
+          y: player.y - 16,
+          health: maxHealth,
+          maxHealth,
+          isLocked: false,
+          hive: true,
+        },
+        socket,
+        io,
+        world,
+        configs.maps[player.map].isInstanced ? party?.id : undefined,
+      );
+      dev.reply(socket, `hive on ${name}`);
     },
 
     [DevCommand.VILLAGE]: (_args, socket, _io, world) => {

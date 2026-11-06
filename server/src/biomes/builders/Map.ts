@@ -6,6 +6,7 @@ import {
   DUNGEON_CANDLE_CLEARANCE,
   DUNGEON_LADDER_COUNT,
   DIRECTIONS_CARDINAL,
+  GRADE_EDGE,
   LEDGE_CLEARANCE,
   PEAK_CLEARANCE,
   SEAM_MARGIN,
@@ -183,8 +184,9 @@ export class MapBuilder {
     const elevation = new Uint8Array(width * height);
     let hasLedges = false;
 
-    const watered = bands.find((b) => b.config.water);
-    const waters = watered && new WaterGenerator(width, height, watered.y, this.seed);
+    const marshed = bands.find((b) => b.config.marsh);
+    const watered = bands.find((b) => b.config.water) ?? marshed;
+    const waters = watered && new WaterGenerator(width, height, watered.y, this.seed, marshed?.y);
     const footings = new Map<number, number>();
 
     for (let b = 0; b < bands.length; b++) {
@@ -464,6 +466,30 @@ export class MapBuilder {
           visible: false,
         });
       }
+
+    for (const band of bands) {
+      const { grade, height: rows } = band.config;
+      if (!grade) continue;
+
+      const random = handlers.generation.seededRandom(handlers.generation.hash(`${this.seed}-${grade}`));
+      const waves = [0.05, 0.13].map((f) => [f * (0.7 + random() * 0.6), random() * Math.PI * 2]);
+      const [lo, hi] = GRADE_EDGE;
+      const gid = firstgids.get("grass_ground") ?? 1;
+      const data = new Array(width * height).fill(0);
+
+      for (let x = 0; x < width; x++) {
+        const wave = waves.reduce((sum, [f, p]) => sum + Math.sin(f * x + p), 0) / waves.length;
+        const edge = Math.round(lo + (hi - lo) * (0.5 + 0.5 * wave));
+        for (let y = edge; y < rows; y++) data[(band.y + y) * width + x] = gid;
+      }
+
+      tiledLayers.push({
+        ...handlers.generation.createLayer(layerId++, `${grade}_grade`, width, height, data, [
+          { name: "meadowGrade", type: "string", value: grade },
+        ]),
+        visible: false,
+      });
+    }
 
     const soaked: number[] = [];
 
@@ -954,6 +980,7 @@ export class MapBuilder {
         { ...band.config, width, height },
         band.config.noise.seed ?? this.seed,
         this.unlocked,
+        band.y,
       );
 
       const within =
@@ -1000,7 +1027,7 @@ export class MapBuilder {
      */
     for (let b = 0; b < bands.length; b++)
       for (const site of bands[b].config.sites ?? []) {
-        if (site.requires > this.unlocked || !elevations[b]) continue;
+        if (site.requires > this.unlocked) continue;
 
         const origin = this.site(bands[b], site, grid, elevation, blocked);
         if (!origin) continue;
@@ -1022,6 +1049,10 @@ export class MapBuilder {
           y: (origin.y + site.height / 2) * tileHeight,
           origin: bands[b].config.id,
         });
+
+        if (site.guards)
+          for (const x of [origin.x - 1, origin.x + site.width])
+            entities.push({ name: site.guards, x: x * tileWidth, y: (origin.y + site.height) * tileHeight });
       }
 
     /**
@@ -1721,8 +1752,8 @@ export class MapBuilder {
     blocked: Uint8Array,
   ): { x: number; y: number } | null {
     const { width } = this;
-    const top = band.y;
-    const bottom = band.y + band.config.height;
+    const top = band.y + (site.rows?.min ?? 0);
+    const bottom = band.y + (site.rows?.max ?? band.config.height);
     const seed = handlers.generation.hash(
       `${band.config.noise.seed ?? this.seed}-${site.entity}`,
     );

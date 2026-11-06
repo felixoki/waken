@@ -10,5 +10,7 @@ export enum PipelineName {
   WATER = "water",
   WADE = "wade",
   BLAZE = "blaze",
+  STATUS = "status",
   MEADOW = "meadow",
+  GLOW = "glow",
 }

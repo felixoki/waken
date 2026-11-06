@@ -1467,6 +1467,43 @@ export const emitters = {
     });
   },
 
+  mud: (scene: Scene, x: number, y: number) => {
+    const splat = scene.add.particles(x, y, "particle_circle", {
+      tint: [0x4a3a26, 0x5e4a30, 0x3a2e20, 0x6a5636],
+      alpha: { start: 0.85, end: 0 },
+      scale: { start: 0.32, end: 0.06 },
+      speed: { min: 30, max: 85 },
+      angle: { min: 195, max: 345 },
+      gravityY: 220,
+      lifespan: 520,
+      quantity: 16,
+      frequency: -1,
+      blendMode: "NORMAL",
+    });
+    splat.setDepth(2000);
+    splat.explode();
+
+    const drops = scene.add.particles(x, y, "particle_square", {
+      tint: [0x2e2418, 0x56462c, 0x5c6230],
+      alpha: { start: 0.9, end: 0 },
+      scale: { start: 0.16, end: 0.04 },
+      speed: { min: 50, max: 120 },
+      angle: { min: 200, max: 340 },
+      gravityY: 300,
+      lifespan: 450,
+      quantity: 10,
+      frequency: -1,
+      blendMode: "NORMAL",
+    });
+    drops.setDepth(2001);
+    drops.explode();
+
+    scene.time.delayedCall(600, () => {
+      splat.destroy();
+      drops.destroy();
+    });
+  },
+
   butterfly: (scene: Scene, x: number, y: number) => {
     const emitter = scene.add.particles(x, y, "particle_butterfly", {
       tint: [

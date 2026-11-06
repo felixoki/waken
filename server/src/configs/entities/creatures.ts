@@ -4,6 +4,7 @@ import {
   Direction,
   EntityDefinition,
   EntityName,
+  ProjectileName,
   Rarity,
   SpellName,
   StateName,
@@ -148,6 +149,86 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
         weapon: WeaponName.SLASH,
         damage: { type: DamageType.PIERCING, amount: 50 },
         range: 40,
+        sound: SoundName.ORC_SLASH,
+        swing: SoundName.SWORD_SWING,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1000 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.ORC3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 900,
+    speed: 1.0,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.QUARTZ1,
+              quantity: 10,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.IRON1,
+              quantity: 6,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.SOULSTONE,
+              quantity: 2,
+              stackable: true,
+              chance: 1,
+            },
+          ],
+          weaknesses: [DamageType.BURNING],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 14,
+          height: 18,
+          offsetX: 23,
+          offsetY: 23,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.ORC_IDLE, interval: [5000, 12000] },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PIERCING, amount: 90 },
+        range: 44,
         sound: SoundName.ORC_SLASH,
         swing: SoundName.SWORD_SWING,
       },
@@ -1195,6 +1276,350 @@ export const creatures: Partial<Record<EntityName, EntityDefinition>> = {
           fov: Math.PI * 2,
         },
       },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.ZOMBIE1]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 70,
+    speed: 0.8,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.BONE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 12,
+          offsetX: 26,
+          offsetY: 28,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 14 },
+        range: 36,
+        swing: SoundName.DAGGER_SWING,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 60,
+          scan: { interval: 2500 },
+          idle: { duration: 1600 },
+          vision: 220,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.ZOMBIE2]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 80,
+    speed: 0.8,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.BONE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 12,
+          offsetX: 26,
+          offsetY: 28,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 16 },
+        range: 36,
+        swing: SoundName.DAGGER_SWING,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 60,
+          scan: { interval: 2500 },
+          idle: { duration: 1600 },
+          vision: 220,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.ZOMBIE3]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 90,
+    speed: 0.9,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.BONE,
+              quantity: 1,
+              stackable: true,
+              chance: 0.6,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 12,
+          offsetX: 26,
+          offsetY: 28,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 18 },
+        range: 36,
+        swing: SoundName.DAGGER_SWING,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 60,
+          scan: { interval: 2500 },
+          idle: { duration: 1600 },
+          vision: 220,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.HOG_WITCH]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 180,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.SPELL_PAGE_LIGHTNING_STRIKE,
+              quantity: 1,
+              stackable: false,
+              chance: 0.35,
+            },
+            {
+              name: EntityName.SPELL_PAGE_GAIN_MOMENTUM,
+              quantity: 1,
+              stackable: false,
+              chance: 0.35,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 10,
+          height: 12,
+          offsetX: 26,
+          offsetY: 28,
+          pushable: false,
+        },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.CASTING,
+    ],
+    attacks: [
+      {
+        state: StateName.CASTING,
+        spell: SpellName.GAIN_MOMENTUM,
+        range: 200,
+        cooldown: 15000,
+        windup: 500,
+      },
+      {
+        state: StateName.CASTING,
+        spell: SpellName.LIGHTNING_STRIKE,
+        damage: { type: DamageType.PHYSICAL, amount: 35 },
+        range: 110,
+        cooldown: 5000,
+        windup: 700,
+      },
+    ],
+    behaviors: [
+      {
+        name: BehaviorName.PATROL,
+        config: {
+          radius: 80,
+          scan: { interval: 2000 },
+          idle: { duration: 1200 },
+          vision: 300,
+          fov: Math.PI * 2,
+        },
+      },
+      { name: BehaviorName.ATTACK, config: { spacing: 100, recovery: 1600 } },
+      { name: BehaviorName.SEARCH },
+    ],
+  },
+  [EntityName.BOG_TROLL]: {
+    facing: Direction.DOWN,
+    moving: [],
+    maxHealth: 340,
+    speed: 1.05,
+    components: [
+      { name: ComponentName.ANIMATION },
+      {
+        name: ComponentName.DAMAGEABLE,
+        config: {
+          loot: [
+            {
+              name: EntityName.TROLL_SCALES,
+              quantity: 1,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.PERCH,
+              quantity: 2,
+              stackable: true,
+              chance: 1,
+            },
+            {
+              name: EntityName.AMULET1,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            },
+            {
+              name: EntityName.FISHING_HOOK,
+              quantity: 1,
+              stackable: true,
+              chance: 0.25,
+            },
+          ],
+        },
+      },
+      { name: ComponentName.BEHAVIOR_QUEUE },
+      {
+        name: ComponentName.BODY,
+        config: {
+          width: 16,
+          height: 20,
+          offsetX: 32,
+          offsetY: 30,
+          pushable: false,
+        },
+      },
+      {
+        name: ComponentName.AMBIENT_SOUND,
+        config: { name: SoundName.TROLL_IDLE, interval: [6000, 14000] },
+      },
+    ],
+    states: [
+      StateName.IDLE,
+      StateName.WALKING,
+      StateName.RUNNING,
+      StateName.SLASHING,
+      StateName.THROWING,
+    ],
+    attacks: [
+      {
+        state: StateName.SLASHING,
+        weapon: WeaponName.SLASH,
+        damage: { type: DamageType.PHYSICAL, amount: 45 },
+        range: 40,
+        sound: SoundName.TROLL_SLASH,
+      },
+      {
+        state: StateName.THROWING,
+        range: 200,
+        minRange: 50,
+        cooldown: 4000,
+        projectile: ProjectileName.MUD,
+      },
+    ],
+    behaviors: [
+      { name: BehaviorName.AMBUSH, config: { radius: 80 } },
       { name: BehaviorName.ATTACK },
       { name: BehaviorName.SEARCH },
     ],

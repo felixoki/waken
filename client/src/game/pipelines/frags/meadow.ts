@@ -65,6 +65,11 @@ uniform sampler2D uPattern;
 uniform float uPatternSize;
 uniform vec4 uCharacters[CHARACTERS];
 uniform float uCount;
+uniform sampler2D uBlend;
+uniform float uGraded;
+uniform float uSaturation;
+uniform vec3 uTint;
+uniform float uBrightness;
 
 varying vec2 outTexCoord;
 varying vec2 outWorld;
@@ -90,6 +95,20 @@ vec3 patchAt(vec2 p) {
   return texture2D(uPattern, (mod(floor(p), uPatternSize) + 0.5) / uPatternSize).rgb;
 }
 
+vec3 graded(vec3 c) {
+  if (uGraded < 0.5) return c;
+  float w = texture2D(uBlend, outWorld / uMapSize).r;
+  if (w <= 0.0) return c;
+  float l = dot(c, vec3(0.299, 0.587, 0.114));
+  vec3 g = clamp((vec3(l) + (c - l) * uSaturation) * uTint * uBrightness, 0.0, 1.0);
+  return mix(c, g, w);
+}
+
+vec4 gradedTile(vec4 tile) {
+  if (tile.a <= 0.0) return tile;
+  return vec4(graded(tile.rgb / tile.a) * tile.a, tile.a);
+}
+
 bool grass(vec2 p) {
   return texture2D(uMask, (floor(p / uTile) + 0.5) / (uMapSize / uTile)).r > 0.5;
 }
@@ -99,13 +118,13 @@ void main(void) {
   vec2 pixel = floor(outWorld);
 
   if (tile.a < 0.99) {
-    gl_FragColor = tile;
+    gl_FragColor = gradedTile(tile);
     return;
   }
 
   vec3 color = tile.rgb / tile.a;
   if (distance(color, uFill) >= 0.02) {
-    gl_FragColor = tile;
+    gl_FragColor = gradedTile(tile);
     return;
   }
 
@@ -184,10 +203,10 @@ void main(void) {
       ? uAccent0
       : bestPick < uAccents.x + uAccents.y ? uAccent1
       : patchAt(bestBase) * (bestBend > uBent ? uBentShade : 1.0);
-    gl_FragColor = vec4(blade, 1.0);
+    gl_FragColor = vec4(graded(blade), 1.0);
     return;
   }
 
-  gl_FragColor = vec4(patchAt(pixel), 1.0);
+  gl_FragColor = vec4(graded(patchAt(pixel)), 1.0);
 }
 `;

@@ -40,6 +40,66 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1.5,
     },
   },
+  [EntityName.CHEESE]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 14, end: 15 },
+            { row: 20, start: 14, end: 15 },
+          ],
+        },
+        key: "cheese_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Cheese",
+      description: "A wedge of hard cheese, pressed from milk and left to age.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 20, col: 13 },
+      weight: 0.5,
+    },
+  },
+  [EntityName.HONEY]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 11, end: 12 },
+            { row: 20, start: 11, end: 12 },
+          ],
+        },
+        key: "honey_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Honey",
+      description: "Wild honey taken from a hive while the bees slept in smoke.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 20, col: 10 },
+      weight: 0.4,
+    },
+  },
   [EntityName.RASPBERRY_JAM]: {
     facing: Direction.DOWN,
     moving: [],
@@ -308,6 +368,66 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
       stackable: true,
       icon: { spritesheet: "items", row: 18, col: 4 },
       weight: 0.5,
+    },
+  },
+  [EntityName.MEAD]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 20, end: 21 },
+            { row: 20, start: 20, end: 21 },
+          ],
+        },
+        key: "mead_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Mead",
+      description: "Honey and water, left to ferment in a clay jug.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 20, col: 19 },
+      weight: 0.9,
+    },
+  },
+  [EntityName.BRANDY]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 19, start: 17, end: 18 },
+            { row: 20, start: 17, end: 18 },
+          ],
+        },
+        key: "brandy_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Brandy",
+      description: "Wine distilled down to its strong amber heart.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 20, col: 16 },
+      weight: 0.6,
     },
   },
   [EntityName.WINE]: {

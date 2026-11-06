@@ -163,6 +163,8 @@ const player: Spritesheet[] = [
 ];
 
 const entities: Spritesheet[] = [
+  { key: "beehive", file: "effects/beehive.png" },
+  { key: "bee", file: "effects/bee.png" },
   {
     key: WATER_CAUSTIC_TEXTURE,
     file: "tiles/water_caustics.png",
@@ -890,6 +892,10 @@ const creatures: Spritesheet[] = [
   { key: "orc2-walking", file: "creatures/orc2_walking.png" },
   { key: "orc2-running", file: "creatures/orc2_running.png" },
   { key: "orc2-slashing", file: "creatures/orc2_slashing.png" },
+  { key: "orc3-idle", file: "creatures/orc3_idle.png" },
+  { key: "orc3-walking", file: "creatures/orc3_walking.png" },
+  { key: "orc3-running", file: "creatures/orc3_running.png" },
+  { key: "orc3-slashing", file: "creatures/orc3_slashing.png" },
   { key: "goblin1-idle", file: "creatures/goblin1_idle.png" },
   { key: "goblin1-walking", file: "creatures/goblin1_walking.png" },
   { key: "goblin1-running", file: "creatures/goblin1_running.png" },
@@ -898,6 +904,22 @@ const creatures: Spritesheet[] = [
   { key: "goblin2-walking", file: "creatures/goblin2_walking.png" },
   { key: "goblin2-running", file: "creatures/goblin2_running.png" },
   { key: "goblin2-slashing", file: "creatures/goblin2_slashing.png" },
+  { key: "zombie1-idle", file: "creatures/zombie1_idle.png" },
+  { key: "zombie1-walking", file: "creatures/zombie1_walking.png" },
+  { key: "zombie1-running", file: "creatures/zombie1_running.png" },
+  { key: "zombie1-slashing", file: "creatures/zombie1_slashing.png" },
+  { key: "zombie2-idle", file: "creatures/zombie2_idle.png" },
+  { key: "zombie2-walking", file: "creatures/zombie2_walking.png" },
+  { key: "zombie2-running", file: "creatures/zombie2_running.png" },
+  { key: "zombie2-slashing", file: "creatures/zombie2_slashing.png" },
+  { key: "zombie3-idle", file: "creatures/zombie3_idle.png" },
+  { key: "zombie3-walking", file: "creatures/zombie3_walking.png" },
+  { key: "zombie3-running", file: "creatures/zombie3_running.png" },
+  { key: "zombie3-slashing", file: "creatures/zombie3_slashing.png" },
+  { key: "hog_witch-idle", file: "creatures/hog_witch_idle.png" },
+  { key: "hog_witch-walking", file: "creatures/hog_witch_walking.png" },
+  { key: "hog_witch-running", file: "creatures/hog_witch_running.png" },
+  { key: "hog_witch-casting", file: "creatures/hog_witch_casting.png" },
   { key: "shadow_wanderer-idle", file: "creatures/shadow_wanderer_idle.png" },
   {
     key: "shadow_wanderer-walking",
@@ -982,6 +1004,36 @@ const creatures: Spritesheet[] = [
     frameHeight: 112,
   },
   {
+    key: "bog_troll-idle",
+    file: "creatures/bog_troll_idle.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "bog_troll-walking",
+    file: "creatures/bog_troll_walking.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "bog_troll-running",
+    file: "creatures/bog_troll_running.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "bog_troll-slashing",
+    file: "creatures/bog_troll_slashing.png",
+    frameWidth: 80,
+    frameHeight: 80,
+  },
+  {
+    key: "bog_troll-throwing",
+    file: "creatures/bog_troll_throwing.png",
+    frameWidth: 112,
+    frameHeight: 112,
+  },
+  {
     key: "ancient_troll-idle",
     file: "creatures/ancient_troll_idle.png",
     frameWidth: 80,
@@ -1012,6 +1064,7 @@ const creatures: Spritesheet[] = [
     frameHeight: 112,
   },
   { key: "troll_throwing_rock", file: "creatures/troll_throwing_rock.png" },
+  { key: "bog_troll_mud", file: "creatures/bog_troll_mud.png" },
 ];
 
 export const maps: Record<MapName, MapConfig> = {
@@ -1456,6 +1509,12 @@ export const maps: Record<MapName, MapConfig> = {
       ...creatures,
       ...fishes,
       {
+        key: "tench",
+        file: "animals/tench_jumping.png",
+        frameWidth: 32,
+        frameHeight: 32,
+      },
+      {
         key: "cave_walls_floor",
         file: "tiles/cave_walls_floor.png",
         frameWidth: 16,
@@ -1486,6 +1545,13 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "grass_ground_details",
         file: "tiles/grass_ground_details.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "swamp_details",
+        file: "tiles/swamp_details.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,
@@ -1750,6 +1816,38 @@ export const maps: Record<MapName, MapConfig> = {
       {
         key: "isles_rocks",
         file: "tiles/isles_rocks.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+    ],
+  },
+  [MapName.NETHER]: {
+    id: MapName.NETHER,
+    label: "Nether",
+    spawn: { x: 680, y: 1656 },
+    json: "nether.json",
+    isIndoor: false,
+    isInstanced: false,
+    ground: ["ground", "walls"],
+    spritesheets: [
+      ...player,
+      ...entities,
+      ...creatures,
+      { key: "blade-idle", file: "creatures/blade_idle.png" },
+      { key: "blade-walking", file: "creatures/blade_walking.png" },
+      { key: "blade-running", file: "creatures/blade_running.png" },
+      { key: "blade-slashing", file: "creatures/blade_slashing.png" },
+      {
+        key: "nether_ground",
+        file: "tiles/nether_ground.png",
+        frameWidth: 16,
+        frameHeight: 16,
+        asTileset: true,
+      },
+      {
+        key: "nether_details",
+        file: "tiles/nether_details.png",
         frameWidth: 16,
         frameHeight: 16,
         asTileset: true,

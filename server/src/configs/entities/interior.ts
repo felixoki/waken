@@ -25,9 +25,12 @@ const POTIONS_LOOT = [
   { name: EntityName.POTION1, quantity: 1, stackable: true, chance: 0.35 },
   { name: EntityName.POTION2, quantity: 1, stackable: true, chance: 0.35 },
   { name: EntityName.POTION3, quantity: 1, stackable: true, chance: 0.25 },
-  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.15 },
-  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.15 },
-  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.15 },
+  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.08 },
+  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.06 },
+  { name: EntityName.POTION7, quantity: 1, stackable: true, chance: 0.05 },
+  { name: EntityName.POTION8, quantity: 1, stackable: true, chance: 0.04 },
+  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.03 },
+  { name: EntityName.POTION9, quantity: 1, stackable: true, chance: 0.03 },
 ];
 
 const SPELLPAGES_LOOT = [
@@ -44,9 +47,12 @@ const REMAINS_LOOT = [
 
 const ALTAR_LOOT = [
   { name: EntityName.BONE, quantity: 3, stackable: true, chance: 0.8 },
-  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.3 },
-  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.3 },
-  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.3 },
+  { name: EntityName.POTION4, quantity: 1, stackable: true, chance: 0.15 },
+  { name: EntityName.POTION5, quantity: 1, stackable: true, chance: 0.12 },
+  { name: EntityName.POTION7, quantity: 1, stackable: true, chance: 0.1 },
+  { name: EntityName.POTION8, quantity: 1, stackable: true, chance: 0.08 },
+  { name: EntityName.POTION6, quantity: 1, stackable: true, chance: 0.05 },
+  { name: EntityName.POTION9, quantity: 1, stackable: true, chance: 0.05 },
   { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.15 },
   { name: EntityName.SPELL_PAGE_SUNDER, quantity: 1, stackable: false, chance: 0.1 },
   { name: EntityName.SPELL_PAGE_WELLSPRING, quantity: 1, stackable: false, chance: 0.1 },

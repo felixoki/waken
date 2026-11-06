@@ -97,9 +97,6 @@ export const weather = {
       handlers.climate.instance(world, target),
     ) !== SurfaceName.SNOW,
 
-  socket: (target: EntityConfig | PlayerConfig): string | undefined =>
-    "socketId" in target ? target.socketId : undefined,
-
   drench: (
     id: string,
     isEntity: boolean,
@@ -132,7 +129,7 @@ export const weather = {
     store.update(id, { effects });
     world.affected.add(id);
 
-    weather.announce(id, isEntity, weather.socket(target), effect, world, io);
+    weather.announce(id, effect, world, io);
   },
 
   dry: (world: World, io: Server, now: number, raining: boolean): void => {
@@ -153,43 +150,20 @@ export const weather = {
 
       store.update(id, { effects });
 
-      weather.announce(id, isEntity, weather.socket(target), held, world, io);
+      weather.announce(id, held, world, io);
     }
   },
 
   announce: (
     id: string,
-    isEntity: boolean,
-    socketId: string | undefined,
     effect: Effect,
     world: World,
     io: Server,
   ): void => {
-    const data = { id, effect };
-
-    if (!isEntity) {
-      if (socketId)
-        handlers.broadcast.room(
-          null,
-          io,
-          socketId,
-          Event.EFFECT_APPLY,
-          data,
-        );
-
-      return;
-    }
-
-    const key = world.chunks.getChunkByEntity(id);
-
-    if (key)
-      handlers.broadcast.room(
-        null,
-        io,
-        `chunk:${key}`,
-        Event.EFFECT_APPLY,
-        data,
-      );
+    handlers.combat.effects.notify(world, io, id, Event.EFFECT_APPLY, {
+      id,
+      effect,
+    });
   },
 
   roll: (world: World, server: Server): void => {

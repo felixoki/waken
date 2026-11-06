@@ -90,11 +90,13 @@ export class Entity extends Phaser.GameObjects.Sprite {
     this.setDepth(1000 + this.y + this.depthOffset);
   }
 
-  update(remoteInput?: Partial<Input>): void {
+  tick(): void {
     this.components.forEach((component) => {
       if (component.name !== ComponentName.BEHAVIOR_QUEUE) component.update();
     });
+  }
 
+  update(remoteInput?: Partial<Input>): void {
     const input = remoteInput || this._getInput();
 
     if (!input || this.isLocked) return;
@@ -240,14 +242,6 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (effect) {
       effect.detach();
       this.effects.delete(name);
-
-      let tint: number | undefined;
-
-      for (const remaining of this.effects.values())
-        if (remaining.tint !== undefined) tint = remaining.tint;
-
-      if (tint !== undefined) this.setTint(tint);
-      else this.clearTint();
     }
   }
 

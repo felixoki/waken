@@ -270,7 +270,7 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     {
       event: Event.ENTITY_CAST,
       handler: (data: { id: string; name: SpellName }) =>
-        handlers.spell.entity(data, socket, world),
+        handlers.spell.entity(data, socket, io, world),
     },
     /**
      * Spells

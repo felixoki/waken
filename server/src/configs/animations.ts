@@ -69,6 +69,12 @@ export const animations: Partial<
     [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
     [StateName.SLASHING]: { frameCount: 8, frameRate: 8, repeat: 0 },
   },
+  [EntityName.ORC3]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 8, frameRate: 7, repeat: 0 },
+  },
   [EntityName.BEAR]: {
     [StateName.IDLE]: { frameCount: 16, frameRate: 8, repeat: -1 },
     [StateName.WALKING]: { frameCount: 12, frameRate: 8, repeat: -1 },
@@ -366,5 +372,36 @@ export const animations: Partial<
   },
   [EntityName.BEVERAGE_SALER]: {
     [StateName.IDLE]: { frameCount: 12, frameRate: 12, repeat: -1 },
+  },
+  [EntityName.ZOMBIE1]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 10, frameRate: 12, repeat: 0 },
+  },
+  [EntityName.ZOMBIE2]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 10, frameRate: 12, repeat: 0 },
+  },
+  [EntityName.ZOMBIE3]: {
+    [StateName.IDLE]: { frameCount: 4, frameRate: 4, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 10, frameRate: 12, repeat: 0 },
+  },
+  [EntityName.HOG_WITCH]: {
+    [StateName.IDLE]: { frameCount: 12, frameRate: 8, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.CASTING]: { frameCount: 7, frameRate: 8, repeat: 0 },
+  },
+  [EntityName.BOG_TROLL]: {
+    [StateName.IDLE]: { frameCount: 7, frameRate: 7, repeat: -1 },
+    [StateName.WALKING]: { frameCount: 8, frameRate: 8, repeat: -1 },
+    [StateName.RUNNING]: { frameCount: 6, frameRate: 6, repeat: -1 },
+    [StateName.SLASHING]: { frameCount: 6, frameRate: 6, repeat: 0 },
+    [StateName.THROWING]: { frameCount: 10, frameRate: 10, repeat: 0 },
   },
 };

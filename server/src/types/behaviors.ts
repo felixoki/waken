@@ -8,6 +8,12 @@ export enum BehaviorName {
   FLEE = "flee",
   SEARCH = "search",
   FOLLOW = "follow",
+  AMBUSH = "ambush",
+}
+
+export interface AmbushBehaviorConfig {
+  radius?: number;
+  scan?: { interval: number };
 }
 
 export interface PatrolBehaviorConfig {
@@ -54,6 +60,7 @@ export interface AttackBehaviorConfig {
 
 export type BehaviorConfig =
   | { name: BehaviorName.PATROL; config?: PatrolBehaviorConfig }
+  | { name: BehaviorName.AMBUSH; config?: AmbushBehaviorConfig }
   | { name: BehaviorName.ATTACK; config?: AttackBehaviorConfig }
   | { name: BehaviorName.DEFEND; config?: DefendBehaviorConfig }
   | { name: BehaviorName.STAY }

@@ -201,6 +201,36 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1,
     },
   },
+  [EntityName.SMOKER]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 40, start: 11, end: 12 },
+            { row: 41, start: 11, end: 12 },
+          ],
+        },
+        key: "smoker_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Smoker",
+      description:
+        "A tin can of smouldering straw with leather bellows. Keep it in your hotbar and the bees stay calm.",
+      icon: { spritesheet: "items", row: 41, col: 10 },
+      weight: 1.2,
+    },
+  },
   [EntityName.WATERING_CAN]: {
     facing: Direction.DOWN,
     moving: [],

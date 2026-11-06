@@ -38,6 +38,36 @@ export const cloths: Partial<Record<EntityName, EntityDefinition>> = {
       weight: 1.2,
     },
   },
+  [EntityName.WOOL_CLOAK]: {
+    facing: Direction.DOWN,
+    moving: [],
+    components: [
+      {
+        name: ComponentName.TEXTURE,
+        config: {
+          spritesheet: "items",
+          tileSize: 16,
+          tiles: [
+            { row: 1, start: 23, end: 24 },
+            { row: 2, start: 23, end: 24 },
+          ],
+        },
+        key: "wool_cloak_texture",
+      },
+      { name: ComponentName.POINTABLE },
+      { name: ComponentName.PICKABLE },
+      { name: ComponentName.HOVERABLE },
+    ],
+    states: [],
+    behaviors: [],
+    metadata: {
+      displayName: "Wool cloak",
+      description: "A heavy cloak of undyed wool, trimmed with fleece.",
+      stackable: true,
+      icon: { spritesheet: "items", row: 2, col: 22 },
+      weight: 1.2,
+    },
+  },
   [EntityName.TUNIC]: {
     facing: Direction.DOWN,
     moving: [],

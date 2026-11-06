@@ -66,6 +66,12 @@ uniform vec4 uSpecularColor;
 uniform float uFoamScale;
 uniform vec4 uFoamColor;
 
+uniform sampler2D uBlend;
+uniform float uGraded;
+uniform float uSaturation;
+uniform vec3 uTint;
+uniform float uBrightness;
+
 uniform float uBeachEdge;
 uniform vec2 uBeachBands;
 uniform vec2 uBeachBandAlphas;
@@ -130,6 +136,15 @@ vec3 depthColor(float t) {
   if (t > uGradientAt.x) color = mix(uGradient0, uGradient1, clamp((t - uGradientAt.x) / (uGradientAt.y - uGradientAt.x), 0.0, 1.0));
   if (t > uGradientAt.y) color = mix(uGradient1, uGradient2, clamp((t - uGradientAt.y) / (uGradientAt.z - uGradientAt.y), 0.0, 1.0));
   return color;
+}
+
+vec3 graded(vec3 c) {
+  if (uGraded < 0.5) return c;
+  float w = texture2D(uBlend, outWorld / uMapSize).r;
+  if (w <= 0.0) return c;
+  float l = dot(c, vec3(0.299, 0.587, 0.114));
+  vec3 g = clamp((vec3(l) + (c - l) * uSaturation) * uTint * uBrightness, 0.0, 1.0);
+  return mix(c, g, w);
 }
 
 float shoreAt(vec2 cell) {
@@ -239,7 +254,7 @@ void main(void) {
       }
 
       float a = uBeachWetColor.a * mask;
-      gl_FragColor = vec4(uBeachWetColor.rgb * a, a);
+      gl_FragColor = vec4(graded(uBeachWetColor.rgb) * a, a);
       return;
     }
 
@@ -262,10 +277,10 @@ void main(void) {
     }
 
     alpha *= mask;
-    gl_FragColor = vec4(color * alpha, alpha);
+    gl_FragColor = vec4(graded(color) * alpha, alpha);
     return;
   }
 
-  gl_FragColor = vec4(color * mask, mask);
+  gl_FragColor = vec4(graded(color) * mask, mask);
 }
 `;

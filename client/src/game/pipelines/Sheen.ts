@@ -4,12 +4,12 @@ import { water, type Wading } from "../handlers/water";
 import {
   SINK_BAND,
   SINK_BAND_ALPHA,
-  SHEEN_DARKEN,
-  SHEEN_DEEPEN,
+  SHEEN_CREST,
   SHEEN_FACING,
-  SHEEN_FACING_HIGH,
-  SHEEN_FACING_LOW,
   SHEEN_FADE,
+  SHEEN_GAMMA,
+  SHEEN_RELIEF,
+  SHEEN_SATURATE,
   SHEEN_SCALE,
   SHEEN_SPEED,
   SHEEN_STEPS,
@@ -17,7 +17,7 @@ import {
 } from "@server/globals";
 import Phaser from "phaser";
 
-const MultiPipeline = Phaser.Renderer.WebGL.Pipelines.MultiPipeline;
+const SinglePipeline = Phaser.Renderer.WebGL.Pipelines.SinglePipeline;
 
 export interface SheenState {
   flash: number;
@@ -25,12 +25,14 @@ export interface SheenState {
 }
 
 export interface Soak {
+  wet: number;
   rise: number;
+  seed: number;
   wading?: Wading;
 }
 
-export class SheenPipeline extends MultiPipeline {
-  private soak?: Soak;
+export class SheenPipeline extends SinglePipeline {
+  private sprite?: Phaser.GameObjects.Sprite;
 
   public readonly state: SheenState = {
     flash: 0,
@@ -51,6 +53,22 @@ export class SheenPipeline extends MultiPipeline {
 
     this.set1f("uBand", SINK_BAND);
     this.set1f("uBandAlpha", SINK_BAND_ALPHA);
+    this.set1f("uGamma", SHEEN_GAMMA);
+    this.set1f("uSaturate", SHEEN_SATURATE);
+    this.set1f("uStrength", SHEEN_STRENGTH);
+    this.set1f("uScale", SHEEN_SCALE);
+    this.set1f("uSpeed", SHEEN_SPEED);
+    this.set1f("uSteps", SHEEN_STEPS);
+    this.set1f("uFade", SHEEN_FADE);
+    this.set1f("uFloor", SHEEN_FACING);
+    this.set1f("uRelief", SHEEN_RELIEF);
+    this.set1f("uCrest", SHEEN_CREST);
+  }
+
+  onPreRender() {
+    this.set1f("uTime", this.game.loop.time / 1000);
+    this.set1f("uFlash", this.state.flash);
+    this.set3f("uSky", this.state.sky.r, this.state.sky.g, this.state.sky.b);
   }
 
   onRender(_scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera) {
@@ -61,40 +79,31 @@ export class SheenPipeline extends MultiPipeline {
   }
 
   onBind(gameObject?: Phaser.GameObjects.GameObject) {
-    const soak = gameObject?.getData("soak") as Soak | undefined;
-    if (soak === this.soak) return;
+    const sprite = gameObject as Phaser.GameObjects.Sprite | undefined;
+    if (sprite === this.sprite) return;
 
     this.flush();
-    this.soak = soak;
+    this.sprite = sprite;
   }
 
   onBeforeFlush() {
-    const wading = this.soak?.wading;
+    const sprite = this.sprite;
+    const soak = sprite?.getData("soak") as Soak | undefined;
+    if (!sprite || !soak) return;
 
-    this.set1f("uRise", this.soak?.rise ?? 0);
+    const frame = sprite.frame;
+    const wading = soak.wading;
+
+    this.set4f("uFrame", frame.u0, frame.v0, frame.u1, frame.v1);
+    this.set2f("uTexel", 1 / frame.source.width, 1 / frame.source.height);
+    this.set1f("uWet", soak.wet);
+    this.set1f("uRise", soak.rise);
+    this.set1f("uSeed", soak.seed);
     this.set1f("uClip", wading ? 1 : 0);
     this.set1f("uDepth", wading?.depth ?? 0);
     if (!wading) return;
 
     this.set2f("uCenter", wading.x, wading.y);
     this.set2f("uRadius", wading.rx, wading.ry);
-  }
-
-  onPreRender() {
-    super.onPreRender();
-
-    this.set1f("time", this.game.loop.time / 1000);
-    this.set1f("darken", SHEEN_DARKEN);
-    this.set1f("deepen", SHEEN_DEEPEN);
-    this.set1f("strength", SHEEN_STRENGTH);
-    this.set1f("scale", SHEEN_SCALE);
-    this.set1f("speed", SHEEN_SPEED);
-    this.set1f("steps", SHEEN_STEPS);
-    this.set1f("fade", SHEEN_FADE);
-    this.set1f("facingFloor", SHEEN_FACING);
-    this.set1f("facingLow", SHEEN_FACING_LOW);
-    this.set1f("facingHigh", SHEEN_FACING_HIGH);
-    this.set1f("flash", this.state.flash);
-    this.set3f("skyColor", this.state.sky.r, this.state.sky.g, this.state.sky.b);
   }
 }

@@ -32,4 +32,12 @@ export const fish: Record<FishName, FishConfig> = {
     difficulty: { speed: 0.4, erratic: 2.1, bar: 0.12, drain: 18.5 },
     trophy: { minWeight: 2.3, item: EntityName.CAVEFISH_TROPHY },
   },
+  [FishName.TENCH]: {
+    rarity: Rarity.COMMON,
+    encounter: 90,
+    weight: { min: 0.4, max: 6, skew: 3.0 },
+    difficulty: { speed: 0.34, erratic: 1.45, bar: 0.12, drain: 15.5 },
+    trophy: { minWeight: 3.5, item: EntityName.TENCH_TROPHY },
+    meat: 1,
+  },
 };

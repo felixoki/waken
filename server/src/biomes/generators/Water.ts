@@ -1,6 +1,9 @@
 import { configs } from "../../configs";
 import { handlers } from "../../handlers";
 import {
+  MARSH_HERONS,
+  MARSH_RING,
+  MARSH_RIVER_REACH,
   WATER_BEACH_RING,
   WATER_BED_REACH,
   WATER_CREEK_MIN,
@@ -15,8 +18,9 @@ import {
 } from "../../globals";
 import { ComponentName, EntityName, FishName, TextureConfig, ZoneName } from "../../types";
 import { Entity, TerrainName } from "../../types/generation";
+import { MarshGenerator } from "./Marsh";
 
-export type WaterKind = "lake" | "river" | "creek";
+export type WaterKind = "lake" | "river" | "creek" | "marsh";
 
 export interface WaterBody {
   kind: WaterKind;
@@ -130,6 +134,7 @@ const LEAP = 4;
 const FISH: Record<Exclude<WaterKind, "creek">, FishName[]> = {
   lake: [FishName.PERCH, FishName.CARP, FishName.PIKE],
   river: [FishName.PERCH, FishName.PIKE],
+  marsh: [FishName.TENCH, FishName.PIKE],
 };
 const RIM = 51;
 const BASES = [147, 162];
@@ -144,6 +149,9 @@ export class WaterGenerator {
   private width: number;
   private height: number;
   private top: number;
+  private seed: string;
+  private marsh?: number;
+  private marshy!: Uint8Array;
   private random: () => number;
   private relief!: WaterRelief;
   private core!: Uint8Array;
@@ -153,10 +161,12 @@ export class WaterGenerator {
   private overhang = new Map<number, number>();
   private falls: WaterResult["falls"] = [];
 
-  constructor(width: number, height: number, top: number, seed: string) {
+  constructor(width: number, height: number, top: number, seed: string, marsh?: number) {
     this.width = width;
     this.height = height;
     this.top = top;
+    this.seed = seed;
+    this.marsh = marsh;
     this.random = handlers.generation.seededRandom(
       handlers.generation.hash(`${seed}-water`),
     );
@@ -172,6 +182,10 @@ export class WaterGenerator {
 
     const lakes = this.lakes(grid, owner);
     this.rivers(grid, owner, lakes);
+    this.marshy =
+      this.marsh === undefined
+        ? new Uint8Array(this.width * this.height)
+        : new MarshGenerator(this.width, this.height, this.marsh, this.seed).generate(grid);
     this.prune(grid);
     this.smooth(grid, ledges);
 
@@ -433,12 +447,15 @@ export class WaterGenerator {
         scatter(this.sample(shore, Math.floor(shore.length / 300)), [1, 2], 1.2, () => this.pick(SHORE), stony);
     }
 
-    const shallows = result.bodies
-      .filter((b) => b.kind === "lake")
-      .flatMap((b) => b.cells.filter((i) => depth[i] >= 1 && depth[i] <= 2 && !river(i) && !result.dry[i]));
-    const herons = HERONS[0] + Math.floor(this.random() * (HERONS[1] - HERONS[0] + 1));
+    const wading = (kind: WaterKind, [lo, hi]: number[]) =>
+      this.sample(
+        result.bodies
+          .filter((b) => b.kind === kind)
+          .flatMap((b) => b.cells.filter((i) => depth[i] >= 1 && depth[i] <= 2 && !river(i) && !result.dry[i])),
+        lo + Math.floor(this.random() * (hi - lo + 1)),
+      );
     const offset = configs.entities[EntityName.HERON]?.offset;
-    for (const i of this.sample(shallows, herons)) {
+    for (const i of [...wading("lake", HERONS), ...wading("marsh", MARSH_HERONS)]) {
       const x = i % width;
       const y = (i - x) / width;
       placed.push({
@@ -506,13 +523,15 @@ export class WaterGenerator {
   }
 
   private lakes(grid: TerrainName[], owner: Int16Array): Lake[] {
-    const { width, height, top } = this;
+    const { width, top } = this;
+    const height = this.marsh ?? this.height;
     const lakes: Lake[] = [];
 
     for (let tries = 0; lakes.length < WATER_LAKES && tries < 500; tries++) {
       const r = this.uniform(WATER_LAKE_RADIUS[0], WATER_LAKE_RADIUS[1]);
       const cx = this.uniform(r + 6, width - r - 6);
       const cy = this.uniform(top + r + 30, height - r - 8);
+      if (cy > height - r - 8) continue;
       if (lakes.some((l) => Math.hypot(cx - l.x, cy - l.y) < r + l.r + 30)) continue;
 
       lakes.push({ x: cx, y: cy, r });
@@ -570,7 +589,7 @@ export class WaterGenerator {
   private path(x0: number, y0: number, end: Lake | null, from = 0): Point[] {
     const { width, height } = this;
     const x1 = end ? end.x : this.uniform(40, width - 40);
-    const y1 = end ? Math.trunc(end.y) : height + 4;
+    const y1 = end ? Math.trunc(end.y) : this.marsh !== undefined ? this.marsh + MARSH_RIVER_REACH : height + 4;
     const slow = this.noise(512);
     const fast = this.noise(512);
     const swell = this.noise(512);
@@ -1027,9 +1046,11 @@ export class WaterGenerator {
 
       const kind: WaterKind = cells.some((i) => owner[i] > 0)
         ? "lake"
-        : cells.some((i) => owner[i] < 0)
-          ? "river"
-          : "creek";
+        : cells.some((i) => this.marshy[i])
+          ? "marsh"
+          : cells.some((i) => owner[i] < 0)
+            ? "river"
+            : "creek";
 
       if (kind === "creek" && cells.length < WATER_CREEK_MIN) {
         for (const i of cells) grid[i] = TerrainName.GROUND;
@@ -1074,16 +1095,16 @@ export class WaterGenerator {
   private rings(grid: TerrainName[], ledges: number[], bodies: WaterBody[]) {
     const { width } = this;
     const noise = this.noise(4096);
-    const [lo, hi] = WATER_BEACH_RING;
 
     for (const body of bodies)
-      for (const [i, d] of this.distance(grid, body.cells, hi)) {
+      for (const [i, d] of this.distance(grid, body.cells, WATER_BEACH_RING[1])) {
         const t = grid[i];
         if (!d || t === TerrainName.EARTH || t === TerrainName.SNOW || ledges[i] || this.relief.elevation[i])
           continue;
 
         const x = i % width;
         const y = (i - x) / width;
+        const [lo, hi] = this.marsh !== undefined && y >= this.marsh ? MARSH_RING : WATER_BEACH_RING;
         const reach = lo + (hi - lo) * (0.5 + 0.5 * noise((x * 0.37 + y * 0.61) / 3.1));
         if (d <= reach) grid[i] = TerrainName.GROUND;
       }

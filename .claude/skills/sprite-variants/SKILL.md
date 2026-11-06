@@ -53,6 +53,19 @@ per unique colour, so it can be as expensive as you like. Return values get roun
 5. **Build**, then hand off to the `new-entity` skill for the enum, definition, animations
    and `maps.ts` keys. Copy the source's animation timings and spritesheet entries exactly.
 
+## When a recolour is not enough
+
+A palette change alone can still read as the same creature. Felix rejected reshaping
+the body (thinner, longer arms) as too much; what he liked were small additions.
+A variant can add them in `designs/<target>_extras.py`, a second step after `build`
+that dresses every frame of every sheet. `bog_troll_extras.py` is the example: it
+finds the crown of the head per frame (searching above the body's centre so raised
+arms are not mistaken for it), seats a lily pad there, and scatters toad warts whose
+positions are hashed relative to that crown, so they move with the body instead of
+flickering. It reads the recoloured sheets, so always run `variant.py build` first,
+then the extras step, never the extras step twice. Review every direction of every
+sheet at 5x before building.
+
 ## Updating an existing variant
 
 Edit its design file and run `build` again. That overwrites every sheet in `SHEETS`.

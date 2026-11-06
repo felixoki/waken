@@ -22,6 +22,9 @@
   "glassblower_interior": "collection/glassblower_interior.png",
   "glassblower_master": "collection/glassblower_master.png",
   "glassblower_walls_floor": "collection/glassblower_walls_floor.png",
+  "glowing_cave_details": "collection/glowing_cave_details.png",
+  "glowing_cave_ground": "collection/glowing_cave_ground.png",
+  "glowing_cave_shinies": "collection/glowing_cave_shinies.png",
   "grass_stairs": "collection/grass_stairs.png",
   "ground_grass": "collection/ground_grass.png",
   "ground_grass_details": "collection/ground_grass_details.png",
@@ -16634,6 +16637,659 @@
    ]
   },
   "columns": 24
+ },
+ "nether_details": {
+  "aliases": {
+   "glowing_cave_details:452": "7,8"
+  },
+  "cells": {
+   "0,0": [
+    "glowing_cave_details",
+    379
+   ],
+   "0,1": [
+    "glowing_cave_details",
+    400
+   ],
+   "0,2": [
+    "glowing_cave_details",
+    421
+   ],
+   "0,3": [
+    "glowing_cave_details",
+    442
+   ],
+   "0,5": [
+    "glowing_cave_shinies",
+    0
+   ],
+   "0,6": [
+    "glowing_cave_shinies",
+    17
+   ],
+   "0,8": [
+    "glowing_cave_shinies",
+    53
+   ],
+   "1,0": [
+    "glowing_cave_details",
+    380
+   ],
+   "1,1": [
+    "glowing_cave_details",
+    401
+   ],
+   "1,2": [
+    "glowing_cave_details",
+    422
+   ],
+   "1,3": [
+    "glowing_cave_details",
+    443
+   ],
+   "1,5": [
+    "glowing_cave_shinies",
+    1
+   ],
+   "1,6": [
+    "glowing_cave_shinies",
+    18
+   ],
+   "1,8": [
+    "glowing_cave_shinies",
+    54
+   ],
+   "10,0": [
+    "glowing_cave_details",
+    389
+   ],
+   "10,2": [
+    "glowing_cave_details",
+    431
+   ],
+   "10,5": [
+    "glowing_cave_shinies",
+    11
+   ],
+   "10,6": [
+    "glowing_cave_shinies",
+    28
+   ],
+   "11,0": [
+    "glowing_cave_details",
+    390
+   ],
+   "11,1": [
+    "glowing_cave_details",
+    411
+   ],
+   "11,2": [
+    "glowing_cave_details",
+    432
+   ],
+   "11,3": [
+    "glowing_cave_details",
+    453
+   ],
+   "12,0": [
+    "glowing_cave_details",
+    391
+   ],
+   "12,1": [
+    "glowing_cave_details",
+    412
+   ],
+   "12,2": [
+    "glowing_cave_details",
+    433
+   ],
+   "12,3": [
+    "glowing_cave_details",
+    454
+   ],
+   "12,5": [
+    "glowing_cave_shinies",
+    13
+   ],
+   "12,6": [
+    "glowing_cave_shinies",
+    30
+   ],
+   "13,0": [
+    "glowing_cave_details",
+    392
+   ],
+   "13,1": [
+    "glowing_cave_details",
+    413
+   ],
+   "13,2": [
+    "glowing_cave_details",
+    434
+   ],
+   "13,3": [
+    "glowing_cave_details",
+    455
+   ],
+   "13,5": [
+    "glowing_cave_shinies",
+    14
+   ],
+   "13,6": [
+    "glowing_cave_shinies",
+    31
+   ],
+   "14,2": [
+    "glowing_cave_details",
+    435
+   ],
+   "14,3": [
+    "glowing_cave_details",
+    456
+   ],
+   "15,0": [
+    "glowing_cave_details",
+    394
+   ],
+   "15,2": [
+    "glowing_cave_details",
+    436
+   ],
+   "15,3": [
+    "glowing_cave_details",
+    457
+   ],
+   "15,5": [
+    "glowing_cave_shinies",
+    49
+   ],
+   "15,7": [
+    "glowing_cave_shinies",
+    56
+   ],
+   "16,0": [
+    "glowing_cave_details",
+    395
+   ],
+   "16,1": [
+    "glowing_cave_details",
+    416
+   ],
+   "16,2": [
+    "glowing_cave_details",
+    437
+   ],
+   "16,3": [
+    "glowing_cave_details",
+    458
+   ],
+   "17,0": [
+    "glowing_cave_details",
+    396
+   ],
+   "17,1": [
+    "glowing_cave_details",
+    417
+   ],
+   "17,6": [
+    "glowing_cave_shinies",
+    51
+   ],
+   "18,0": [
+    "glowing_cave_details",
+    397
+   ],
+   "18,1": [
+    "glowing_cave_details",
+    418
+   ],
+   "18,3": [
+    "glowing_cave_shinies",
+    16
+   ],
+   "18,4": [
+    "glowing_cave_shinies",
+    33
+   ],
+   "2,0": [
+    "glowing_cave_details",
+    381
+   ],
+   "2,1": [
+    "glowing_cave_details",
+    402
+   ],
+   "2,2": [
+    "glowing_cave_details",
+    423
+   ],
+   "2,3": [
+    "glowing_cave_details",
+    444
+   ],
+   "3,1": [
+    "glowing_cave_details",
+    403
+   ],
+   "3,3": [
+    "glowing_cave_details",
+    445
+   ],
+   "3,5": [
+    "glowing_cave_shinies",
+    3
+   ],
+   "3,6": [
+    "glowing_cave_shinies",
+    20
+   ],
+   "3,8": [
+    "glowing_cave_shinies",
+    59
+   ],
+   "4,0": [
+    "glowing_cave_details",
+    383
+   ],
+   "4,1": [
+    "glowing_cave_details",
+    404
+   ],
+   "4,2": [
+    "glowing_cave_details",
+    425
+   ],
+   "4,3": [
+    "glowing_cave_details",
+    446
+   ],
+   "4,5": [
+    "glowing_cave_shinies",
+    4
+   ],
+   "4,6": [
+    "glowing_cave_shinies",
+    21
+   ],
+   "5,0": [
+    "glowing_cave_details",
+    384
+   ],
+   "5,1": [
+    "glowing_cave_details",
+    405
+   ],
+   "5,2": [
+    "glowing_cave_details",
+    426
+   ],
+   "5,3": [
+    "glowing_cave_details",
+    447
+   ],
+   "5,8": [
+    "glowing_cave_shinies",
+    63
+   ],
+   "6,0": [
+    "glowing_cave_details",
+    385
+   ],
+   "6,1": [
+    "glowing_cave_details",
+    406
+   ],
+   "6,2": [
+    "glowing_cave_details",
+    427
+   ],
+   "6,3": [
+    "glowing_cave_details",
+    448
+   ],
+   "6,5": [
+    "glowing_cave_shinies",
+    7
+   ],
+   "6,6": [
+    "glowing_cave_shinies",
+    24
+   ],
+   "7,0": [
+    "glowing_cave_details",
+    386
+   ],
+   "7,1": [
+    "glowing_cave_details",
+    407
+   ],
+   "7,2": [
+    "glowing_cave_details",
+    428
+   ],
+   "7,3": [
+    "glowing_cave_details",
+    449
+   ],
+   "7,5": [
+    "glowing_cave_shinies",
+    8
+   ],
+   "7,6": [
+    "glowing_cave_shinies",
+    25
+   ],
+   "7,8": [
+    "glowing_cave_details",
+    410
+   ],
+   "8,0": [
+    "glowing_cave_details",
+    387
+   ],
+   "8,1": [
+    "glowing_cave_details",
+    408
+   ],
+   "8,2": [
+    "glowing_cave_details",
+    429
+   ],
+   "8,3": [
+    "glowing_cave_details",
+    450
+   ],
+   "9,0": [
+    "glowing_cave_details",
+    388
+   ],
+   "9,1": [
+    "glowing_cave_details",
+    409
+   ],
+   "9,2": [
+    "glowing_cave_details",
+    430
+   ],
+   "9,3": [
+    "glowing_cave_details",
+    451
+   ],
+   "9,6": [
+    "glowing_cave_shinies",
+    27
+   ]
+  },
+  "columns": 19
+ },
+ "nether_ground": {
+  "cells": {
+   "0,0": [
+    "glowing_cave_ground",
+    281
+   ],
+   "0,2": [
+    "glowing_cave_ground",
+    337
+   ],
+   "0,3": [
+    "glowing_cave_ground",
+    365
+   ],
+   "0,4": [
+    "glowing_cave_ground",
+    393
+   ],
+   "0,5": [
+    "glowing_cave_ground",
+    421
+   ],
+   "0,6": [
+    "glowing_cave_ground",
+    449
+   ],
+   "0,7": [
+    "glowing_cave_ground",
+    477
+   ],
+   "0,8": [
+    "glowing_cave_ground",
+    505
+   ],
+   "1,0": [
+    "glowing_cave_ground",
+    282
+   ],
+   "1,1": [
+    "glowing_cave_ground",
+    310
+   ],
+   "1,2": [
+    "glowing_cave_ground",
+    338
+   ],
+   "1,3": [
+    "glowing_cave_ground",
+    366
+   ],
+   "1,4": [
+    "glowing_cave_ground",
+    394
+   ],
+   "1,6": [
+    "glowing_cave_ground",
+    450
+   ],
+   "1,7": [
+    "glowing_cave_ground",
+    478
+   ],
+   "1,8": [
+    "glowing_cave_ground",
+    506
+   ],
+   "10,6": [
+    "glowing_cave_ground",
+    525
+   ],
+   "11,0": [
+    "glowing_cave_ground",
+    299
+   ],
+   "11,1": [
+    "glowing_cave_ground",
+    327
+   ],
+   "11,3": [
+    "glowing_cave_ground",
+    432
+   ],
+   "11,4": [
+    "glowing_cave_ground",
+    460
+   ],
+   "12,0": [
+    "glowing_cave_ground",
+    300
+   ],
+   "12,1": [
+    "glowing_cave_ground",
+    328
+   ],
+   "12,3": [
+    "glowing_cave_ground",
+    433
+   ],
+   "12,4": [
+    "glowing_cave_ground",
+    461
+   ],
+   "13,3": [
+    "glowing_cave_ground",
+    434
+   ],
+   "13,4": [
+    "glowing_cave_ground",
+    462
+   ],
+   "14,0": [
+    "glowing_cave_ground",
+    579
+   ],
+   "14,1": [
+    "glowing_cave_ground",
+    607
+   ],
+   "15,0": [
+    "glowing_cave_ground",
+    580
+   ],
+   "15,1": [
+    "glowing_cave_ground",
+    608
+   ],
+   "15,3": [
+    "glowing_cave_ground",
+    439
+   ],
+   "15,5": [
+    "glowing_cave_ground",
+    468
+   ],
+   "2,0": [
+    "glowing_cave_ground",
+    283
+   ],
+   "2,2": [
+    "glowing_cave_ground",
+    339
+   ],
+   "2,3": [
+    "glowing_cave_ground",
+    367
+   ],
+   "2,4": [
+    "glowing_cave_ground",
+    395
+   ],
+   "2,5": [
+    "glowing_cave_ground",
+    423
+   ],
+   "2,6": [
+    "glowing_cave_ground",
+    451
+   ],
+   "2,7": [
+    "glowing_cave_ground",
+    479
+   ],
+   "2,8": [
+    "glowing_cave_ground",
+    507
+   ],
+   "4,0": [
+    "glowing_cave_ground",
+    324
+   ],
+   "4,1": [
+    "glowing_cave_ground",
+    352
+   ],
+   "4,2": [
+    "glowing_cave_ground",
+    380
+   ],
+   "4,4": [
+    "glowing_cave_ground",
+    425
+   ],
+   "4,6": [
+    "glowing_cave_ground",
+    481
+   ],
+   "5,0": [
+    "glowing_cave_ground",
+    325
+   ],
+   "5,1": [
+    "glowing_cave_ground",
+    353
+   ],
+   "5,2": [
+    "glowing_cave_ground",
+    381
+   ],
+   "5,4": [
+    "glowing_cave_ground",
+    426
+   ],
+   "5,6": [
+    "glowing_cave_ground",
+    482
+   ],
+   "6,4": [
+    "glowing_cave_ground",
+    427
+   ],
+   "6,6": [
+    "glowing_cave_ground",
+    483
+   ],
+   "7,0": [
+    "glowing_cave_ground",
+    575
+   ],
+   "7,1": [
+    "glowing_cave_ground",
+    603
+   ],
+   "7,2": [
+    "glowing_cave_ground",
+    631
+   ],
+   "8,0": [
+    "glowing_cave_ground",
+    576
+   ],
+   "8,1": [
+    "glowing_cave_ground",
+    604
+   ],
+   "8,2": [
+    "glowing_cave_ground",
+    632
+   ],
+   "8,4": [
+    "glowing_cave_ground",
+    457
+   ],
+   "8,6": [
+    "glowing_cave_ground",
+    523
+   ],
+   "9,0": [
+    "glowing_cave_ground",
+    577
+   ],
+   "9,1": [
+    "glowing_cave_ground",
+    605
+   ],
+   "9,2": [
+    "glowing_cave_ground",
+    633
+   ],
+   "9,4": [
+    "glowing_cave_ground",
+    458
+   ],
+   "9,6": [
+    "glowing_cave_ground",
+    524
+   ]
+  },
+  "columns": 16
  },
  "road": {
   "cells": {

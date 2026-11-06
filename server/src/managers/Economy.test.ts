@@ -23,9 +23,16 @@ const stocked = (items: Partial<Record<EntityName, number>>) => {
 const tierOne = {
   [EntityName.RASPBERRY]: 10,
   [EntityName.GAME_MEAT]: 10,
-  [EntityName.MILK]: 10,
   [EntityName.TUNIC]: 10,
-  [EntityName.CANDLE]: 10,
+};
+
+const tierTwo = {
+  ...tierOne,
+  [EntityName.BEEF]: 10,
+  [EntityName.CABBAGE]: 10,
+  [EntityName.VEST]: 10,
+  [EntityName.MILK]: 10,
+  [EntityName.BOG_MYRTLE]: 10,
 };
 
 describe("groups", () => {
@@ -62,24 +69,18 @@ describe("groups", () => {
   });
 
   test("each tier adds a slot filled by an item of that tier", () => {
-    const tierTwo = {
-      ...tierOne,
-      [EntityName.CARROT]: 10,
-      [EntityName.VEST]: 10,
-    };
-
-    const twoOld = stocked(tierTwo);
+    const twoOld = stocked({ ...tierTwo, [EntityName.BEEF]: 0 });
     twoOld.economy.setTier(2);
     assert.equal(twoOld.economy.isLow(NeedName.FOOD), true);
 
-    const oldAndNew = stocked({ ...tierTwo, [EntityName.BEEF]: 10 });
+    const oldAndNew = stocked(tierTwo);
     oldAndNew.economy.setTier(2);
     assert.equal(oldAndNew.economy.isLow(NeedName.FOOD), false);
     assert.equal(oldAndNew.economy.canUpgrade(), true);
   });
 
   test("a group only has slots for tiers that have items", () => {
-    const { economy } = stocked(tierOne);
+    const { economy } = stocked(tierTwo);
     economy.setTier(3);
 
     const drinks = economy
@@ -91,8 +92,9 @@ describe("groups", () => {
     assert.equal(milk?.met, true);
   });
 
-  test("candles are rest, not warmth", () => {
-    const { economy } = stocked({ ...tierOne, [EntityName.CANDLE]: 0 });
+  test("bedding is rest, not warmth", () => {
+    const { economy } = stocked({ ...tierTwo, [EntityName.BOG_MYRTLE]: 0 });
+    economy.setTier(2);
 
     assert.equal(economy.isLow(NeedName.WARMTH), false);
     assert.equal(economy.getMood(), Mood.SLEEPLESS);
@@ -112,12 +114,12 @@ describe("groups", () => {
     const rest = economy
       .getSnapshot()
       .needs.find((need) => need.name === NeedName.REST);
-    const bedding = rest?.groups.find(
-      (group) => group.name === GroupName.BEDDING,
+    const light = rest?.groups.find(
+      (group) => group.name === GroupName.LIGHT,
     );
 
-    assert.equal(bedding?.required, false);
-    assert.equal(bedding?.met, true);
+    assert.equal(light?.required, false);
+    assert.equal(light?.met, true);
   });
 
   test("resources never block an upgrade", () => {
@@ -133,7 +135,6 @@ describe("game time", () => {
 
     for (let i = 0; i < 100; i++) economy.update(DAY / 100);
 
-    assert.ok(Math.abs(supply.get(EntityName.MILK) - 9.5) < 0.001);
     assert.ok(Math.abs(supply.get(EntityName.RASPBERRY) - 9.5) < 0.001);
     assert.ok(Math.abs(supply.get(EntityName.GAME_MEAT) - 9.5) < 0.001);
   });
@@ -142,18 +143,11 @@ describe("game time", () => {
     const { supply, economy } = stocked(tierOne);
     economy.update(500);
 
-    assert.equal(supply.get(EntityName.MILK), 10);
+    assert.equal(supply.get(EntityName.RASPBERRY), 10);
   });
 });
 
 describe("mood per villager", () => {
-  const tierTwo = {
-    ...tierOne,
-    [EntityName.BEEF]: 10,
-    [EntityName.TOMATO]: 10,
-    [EntityName.VEST]: 10,
-  };
-
   test("a villager minds their own item even when the village is fine", () => {
     const { economy } = stocked(tierTwo);
     economy.setTier(2);
@@ -171,10 +165,11 @@ describe("mood per villager", () => {
 
   test("unmet needs are spread across villagers, stably", () => {
     const { economy } = stocked({
-      ...tierOne,
+      ...tierTwo,
       [EntityName.MILK]: 0,
-      [EntityName.CANDLE]: 0,
+      [EntityName.BOG_MYRTLE]: 0,
     });
+    economy.setTier(2);
     const villagers = [
       EntityName.STUDENT,
       EntityName.TANNER,
@@ -196,14 +191,15 @@ describe("mood per villager", () => {
 });
 
 describe("demand", () => {
-  test("candles burn only at night", () => {
-    const { supply, economy } = stocked(tierOne);
+  test("rest is used only at night", () => {
+    const { supply, economy } = stocked(tierTwo);
+    economy.setTier(2);
 
     economy.update(DAY / 2, TimePhase.DAY);
-    assert.equal(supply.get(EntityName.CANDLE), 10);
+    assert.equal(supply.get(EntityName.BOG_MYRTLE), 10);
 
     economy.update(DAY / 2, TimePhase.NIGHT);
-    assert.ok(supply.get(EntityName.CANDLE) < 10);
+    assert.ok(supply.get(EntityName.BOG_MYRTLE) < 10);
   });
 
   test("rain wears clothing faster", () => {

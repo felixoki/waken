@@ -322,7 +322,10 @@ export const item = {
       world.players.update(player.id, { effects: existing });
       world.affected.add(player.id);
 
-      socket.emit(Event.EFFECT_APPLY, { id: player.id, effect });
+      handlers.combat.effects.notify(world, io, player.id, Event.EFFECT_APPLY, {
+        id: player.id,
+        effect,
+      });
     }
   },
 };

@@ -23,4 +23,20 @@ export const tiers: TierUpgrade[] = [
       { item: EntityName.GLASS, quantity: 50 },
     ],
   },
+  {
+    tier: 4,
+    requirements: [
+      { item: EntityName.WOOD, quantity: 150 },
+      { item: EntityName.WOOL, quantity: 30 },
+      { item: EntityName.IBEX_HORN, quantity: 10 },
+    ],
+  },
+  {
+    tier: 5,
+    requirements: [
+      { item: EntityName.WOOD, quantity: 200 },
+      { item: EntityName.IRON1, quantity: 100 },
+      { item: EntityName.RAT_CLAWS, quantity: 30 },
+    ],
+  },
 ];

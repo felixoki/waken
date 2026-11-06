@@ -28,6 +28,7 @@ import {
   WATER_FLOW_CYCLE,
   WATER_FLOW_SPEED,
   WATER_FOAM_SCALE,
+  WATER_GRADES,
   WATER_PALETTES,
   WATER_PIXELIZATION,
   WATER_SPECULAR_SCALE,
@@ -56,6 +57,7 @@ const CAUSTICS_UNIT = 2;
 const WAKE_UNIT = 3;
 const SHORE_UNIT = 4;
 const FLOW_UNIT = 5;
+const BLEND_UNIT = 6;
 
 const rgb = (color: number): [number, number, number] => [
   ((color >> 16) & 0xff) / 255,
@@ -83,6 +85,7 @@ export class WaterPipeline extends SinglePipeline {
     this.set1i("uWake", WAKE_UNIT);
     this.set1i("uShore", SHORE_UNIT);
     this.set1i("uFlow", FLOW_UNIT);
+    this.set1i("uBlend", BLEND_UNIT);
     this.set1f("uFlowSpeed", WATER_FLOW_SPEED);
     this.set1f("uFlowCycle", WATER_FLOW_CYCLE);
     this.set1f("uPixelization", WATER_PIXELIZATION);
@@ -175,6 +178,17 @@ export class WaterPipeline extends SinglePipeline {
     this.bindTexture(wake, WAKE_UNIT);
     this.bindTexture(shore, SHORE_UNIT);
     this.bindTexture(flow, FLOW_UNIT);
+
+    const blend = state.blend?.source[0].glTexture;
+    const grade = state.grade ? WATER_GRADES[state.grade] : undefined;
+    this.set1f("uGraded", blend && grade ? 1 : 0);
+    if (blend && grade) {
+      this.bindTexture(blend, BLEND_UNIT);
+      this.set1f("uSaturation", grade.saturation);
+      this.set3f("uTint", grade.tint[0], grade.tint[1], grade.tint[2]);
+      this.set1f("uBrightness", grade.brightness);
+    }
+
     this.gl.activeTexture(this.gl.TEXTURE0);
   }
 }
