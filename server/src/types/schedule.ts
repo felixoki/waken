@@ -12,6 +12,8 @@ export enum SpotName {
   TAVERN_EMY = "tavern.emy",
   LAKE_GLIMBLID = "lake.glimblid",
   ISLES_ENCOUNTER = "isles.encounter",
+  ED_TAR_STALL = "edTar.stall",
+  ED_TAR_SQUARE = "edTar.square",
 }
 
 export interface Position {

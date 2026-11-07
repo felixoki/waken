@@ -7,6 +7,7 @@ import {
   Event,
   MapName,
   Party,
+  PartyStatus,
   SleepableConfig,
   PlayerConfig,
 } from "../types/index.js";
@@ -66,6 +67,13 @@ export const sleep = {
     });
 
     sleep.occupancy(io, world, bed);
+
+    if (!world.parties.getByPlayerId(player.id)) {
+      const lobbies = world.parties.getLobbies();
+      if (lobbies.length) socket.emit(Event.PARTY_LIST, lobbies);
+      else handlers.party.create(socket, world);
+    }
+
     sleep.broadcast(io, world, player.id);
   },
 
@@ -92,6 +100,11 @@ export const sleep = {
     if (!player?.sleep) return;
 
     const landing = sleep.landing(player, world, direction);
+
+    const party = world.parties.getByPlayerId(id);
+    const socket = io.sockets.sockets.get(player.socketId);
+    if (party?.status === PartyStatus.LOBBY && socket)
+      handlers.party.leave(socket, io, world);
 
     sleep.clear(id, world, io);
 

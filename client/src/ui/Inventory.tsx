@@ -110,7 +110,7 @@ export function Inventory() {
           action !== Action.CONSUME
             ? undefined
             : consumable?.unlock !== undefined && !canUnlock
-              ? "Only in the village, with a party"
+              ? "Only in bed, before a dream"
               : consumable?.wake && !inRealm
                 ? "Only in a dream"
                 : consumable?.slots && items.length >= INVENTORY_MAX_SIZE

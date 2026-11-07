@@ -277,6 +277,7 @@ export class SoundManager {
   }
 
   private _fade(sound: Sound, duration = CROSSFADE_DURATION, ease = "Linear") {
+    this.scene.tweens.killTweensOf(sound);
     this.scene.tweens.add({
       targets: sound,
       volume: 0,

@@ -710,6 +710,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a bunch of grapes", many: "{n} bunches of grapes" },
       displayName: "Grape",
       description: "A bunch of grapes grown on a vine.",
       stackable: true,
@@ -850,6 +851,7 @@ export const crops: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a bundle of hops", many: "{n} bundles of hops" },
       displayName: "Hops",
       description: "Fragrant cones grown on a climbing hop bine.",
       stackable: true,

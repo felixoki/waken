@@ -34,7 +34,7 @@ export const COMMON_NODES: Record<string, DialogueNode[]> = {
         [Mood.THIRSTY]: [
           "Hello... *licks dry lips*",
           "Oh... hello. Throat's like sand.",
-          "Good day... I could murder a drink.",
+          "Good day... I'd give anything for a drink.",
         ],
         [Mood.SLEEPLESS]: [
           "*rubs eyes* Morning already? I'll take your word for it.",

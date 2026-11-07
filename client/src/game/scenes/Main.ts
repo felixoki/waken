@@ -1106,6 +1106,10 @@ export class MainScene extends Phaser.Scene {
       },
     );
 
+    EventBus.on(Event.PLAYER_WAKE_REQUEST, () => {
+      this.managers.socket.emit(Event.PLAYER_WAKE, {});
+    });
+
     this.managers.socket.on(
       Event.PLAYER_SLEEP,
       (data: { id: string; entityId: string; x: number; y: number }) => {
@@ -1117,6 +1121,9 @@ export class MainScene extends Phaser.Scene {
 
         if (player.state !== StateName.SLEEPING)
           player.transitionTo(StateName.SLEEPING);
+
+        if (player === this.managers.players.player)
+          EventBus.emit(Event.PLAYER_SLEEP);
       },
     );
 
@@ -1141,6 +1148,9 @@ export class MainScene extends Phaser.Scene {
 
         if (player.state === StateName.SLEEPING)
           player.transitionTo(StateName.IDLE);
+
+        if (player === this.managers.players.player)
+          EventBus.emit(Event.PLAYER_WAKE);
       },
     );
 

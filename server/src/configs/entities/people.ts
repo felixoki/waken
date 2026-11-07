@@ -15,6 +15,7 @@ import {
   NodeId,
   Recipe,
   SoundName,
+  SpotName,
   StateName,
   StoryEffect,
   StoryEffectName,
@@ -120,7 +121,7 @@ const tip = (
   ];
 };
 
-const fishwifeChoices: Array<DialogueChoice | DialogueReference> = [
+const fishwifeTopics: DialogueChoice[] = [
   {
     text: "Weigh my catch",
     effects: [
@@ -139,15 +140,13 @@ const fishwifeChoices: Array<DialogueChoice | DialogueReference> = [
       },
     ],
   },
-  { ref: ChoiceId.GOODBYE },
 ];
 
-const oddaChoices: Array<DialogueChoice | DialogueReference> = [
+const oddaTopics: DialogueChoice[] = [
   { text: "What do you brew here?", next: NodeId.STORY },
-  { ref: ChoiceId.GOODBYE },
 ];
 
-const emyChoices: Array<DialogueChoice | DialogueReference> = [
+const emyTopics: DialogueChoice[] = [
   {
     text: "I found this.",
     next: EMY_FRAME,
@@ -164,39 +163,36 @@ const emyChoices: Array<DialogueChoice | DialogueReference> = [
       unflags: [StoryFlag.EMY_FRAME, StoryFlag.EMY_TOLD],
     },
   },
-  { ref: ChoiceId.GOODBYE },
 ];
 
-const ilaChoices: Array<DialogueChoice | DialogueReference> = [
+const ilaTopics: DialogueChoice[] = [
   {
     text: "Have you read anything about dream wandering?",
     next: NodeId.STORY,
   },
-  { ref: ChoiceId.GOODBYE },
 ];
 
 const named = (
   early: string,
   late: string,
-  choices: Array<DialogueChoice | DialogueReference>,
   salience = 0,
   when: Condition = {},
 ): DialogueNode[] => [
   {
     text: early,
-    choices,
+    choices: [{ ref: ChoiceId.GOODBYE }],
     salience,
     when: { ...when, tier: 2, unflags: [StoryFlag.ED_TAR_KNOWN] },
   },
   {
     text: late,
-    choices,
+    choices: [{ ref: ChoiceId.GOODBYE }],
     salience,
     when: { ...when, tier: 2, flags: [StoryFlag.ED_TAR_KNOWN] },
   },
 ];
 
-const bookkeeperChoices: Array<DialogueChoice | DialogueReference> = [
+const bookkeeperTopics: DialogueChoice[] = [
   {
     text: "Hand over collectables",
     effects: [{ name: DialogueEffectName.ITEM_HAND_OVER }],
@@ -206,7 +202,6 @@ const bookkeeperChoices: Array<DialogueChoice | DialogueReference> = [
     effects: [{ name: DialogueEffectName.IMPROVEMENTS_OPEN }],
   },
   { text: "What do you keep in all these books?", next: NodeId.STORY },
-  { ref: ChoiceId.GOODBYE },
 ];
 
 const malieChoices: Array<DialogueChoice | DialogueReference> = [
@@ -214,7 +209,7 @@ const malieChoices: Array<DialogueChoice | DialogueReference> = [
   { ref: ChoiceId.GOODBYE },
 ];
 
-const lynhaChoices: Array<DialogueChoice | DialogueReference> = [
+const lynhaTopics: DialogueChoice[] = [
   {
     text: "Brought you some wood.",
     next: GIFT_WOOD,
@@ -225,7 +220,6 @@ const lynhaChoices: Array<DialogueChoice | DialogueReference> = [
     next: GIFT_BREAD,
     when: { carrying: [EntityName.BREAD], fresh: [StoryFlag.LYNHA_GIFT] },
   },
-  { ref: ChoiceId.GOODBYE },
 ];
 
 const ASSELME_LINES: [StoryFlag, string][] = [
@@ -270,17 +264,15 @@ const asselmeCase: DialogueNode[] = [
   },
 ];
 
-const asselmeChoices: Array<DialogueChoice | DialogueReference> = [
-  { text: "I never thought about it. Why is that?", next: NodeId.STORY },
+const asselmeTopics: DialogueChoice[] = [
   {
     text: "Tell me about your friends",
     next: ASSELME_CASE,
     when: { bond: { [EntityName.CITIZEN12]: BOND_FRIEND } },
   },
-  { ref: ChoiceId.GOODBYE },
 ];
 
-const aubrelChoices: Array<DialogueChoice | DialogueReference> = [
+const aubrelTopics: DialogueChoice[] = [
   { text: "Anything about Ivro?", next: AUBREL_IVRO, when: { tier: 2 } },
   {
     text: "Anything for me?",
@@ -297,13 +289,12 @@ const aubrelChoices: Array<DialogueChoice | DialogueReference> = [
     next: ERRAND_DONE,
     when: { errand: ErrandState.READY },
   },
-  { ref: ChoiceId.GOODBYE },
 ];
 
 const aubrelNews = (
   text: string[],
   when: Condition,
-): DialogueNode => ({ text, choices: aubrelChoices, when });
+): DialogueNode => ({ text, choices: [{ ref: ChoiceId.GOODBYE }], when });
 
 export const people: Partial<Record<EntityName, EntityDefinition>> = {
   [EntityName.HERBALIST]: {
@@ -461,20 +452,14 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Herbalist",
       description: "A village healer who brews potions from gathered herbs.",
     },
+    topics: oddaTopics,
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [
-            {
-              text: "What do you brew here?",
-              next: NodeId.STORY,
-            },
-          ],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "Emy's grandmother. She bought her last bottle here. *pause* I sold it to her. I told her the price, too.",
-          choices: oddaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          topics: false,
           salience: 2,
           when: {
             bond: { [EntityName.HERBALIST]: BOND_FRIEND },
@@ -484,7 +469,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "*sits down* Then it's over. For her, at least.",
-          choices: oddaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          topics: false,
           salience: 4,
           when: {
             flags: [StoryFlag.GRANDMOTHER_FREED, StoryFlag.ODDA_CONFESSED],
@@ -501,7 +487,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "I told Emy. About the bottle. I owed her that much.",
-          choices: oddaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          topics: false,
           salience: 2,
           when: {
             flags: [StoryFlag.ODDA_RELIEF],
@@ -511,14 +498,14 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "Those friends of Asselme's want twenty bottles of the deep stuff. Nobody needs twenty.",
-          choices: oddaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 3,
           when: { tier: 2, unflags: [StoryFlag.ODDA_ORDERS] },
           story: [flagSet(StoryFlag.ODDA_ORDERS)],
         },
         {
           text: "I sold it to them. The market house needed the coin. *looks away*",
-          choices: oddaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: {
             flags: [StoryFlag.ODDA_ORDERS],
@@ -527,7 +514,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "I told them I'm out. I'm not out.",
-          choices: oddaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { flags: [StoryFlag.ODDA_ORDERS] },
         },
@@ -701,25 +688,16 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Blacksmith",
       description: "A sturdy smith who forges tools and weapons from raw ore.",
     },
+    topics: [
+      { text: "What do you make here?", next: NodeId.STORY },
+      { text: "About the forge", next: FORGE },
+    ],
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [
-            {
-              text: "What do you make here?",
-              next: NodeId.STORY,
-            },
-            { text: "About the forge", next: FORGE },
-          ],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "A bucket. *eyes you* Who are you milking?",
-          choices: [
-            { text: "What do you make here?", next: NodeId.STORY },
-            { text: "About the forge", next: FORGE },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: {
             carrying: [EntityName.BUCKET],
@@ -809,23 +787,13 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "The smith's helping hand, curing hides into leather by the forge.",
     },
+    topics: [{ text: "You work for the smith?", next: NodeId.STORY }],
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [
-            {
-              text: "You work for the smith?",
-              next: NodeId.STORY,
-            },
-          ],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "*stops scraping* That's Bellan. *quietly* I never thought anyone would.",
-          choices: [
-            { text: "You work for the smith?", next: NodeId.STORY },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: {
             carrying: [EntityName.BELLAN_PELT],
@@ -854,7 +822,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "Hides, always hides. Deer if you can manage it, though a fox pelt never goes to waste. Take them to the market house, the bookkeeper keeps the ledger.",
+        text: "Hides, always hides. Deer if you can manage it, though a fox pelt never goes to waste. Take them to the market house. The bookkeeper keeps the ledger.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -893,28 +861,13 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "Keeper of the market house ledgers, who knows what every stall owes and is owed.",
     },
+    topics: bookkeeperTopics,
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [
-            {
-              text: "Hand over collectables",
-              effects: [{ name: DialogueEffectName.ITEM_HAND_OVER }],
-            },
-            {
-              text: "Improve the village",
-              effects: [{ name: DialogueEffectName.IMPROVEMENTS_OPEN }],
-            },
-            {
-              text: "What do you keep in all these books?",
-              next: NodeId.STORY,
-            },
-          ],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "The camp boy said there was one of them among us. I wrote it down as gossip. I'll have to correct the ledger.",
-          choices: bookkeeperChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           when: { tier: 2 },
         },
       ],
@@ -1026,16 +979,9 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "One of the bookkeeper's clerks, checking the market's weights and measures.",
     },
+    topics: [{ text: "Busy day?", next: NodeId.STORY }],
     dialogue: {
-      [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
-        individual: [
-          {
-            text: "Busy day?",
-            next: NodeId.STORY,
-          },
-        ],
-      },
+      [NodeId.GREETING]: { ref: NodeId.GREETING },
       [NodeId.STORY]: {
         text: "Always. Someone has to check the stallholders' sums, and they are rarely in the village's favour.",
         choices: [
@@ -1075,22 +1021,23 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A young reader set on the city university, full of questions about books and wandering.",
     },
+    topics: ilaTopics,
     dialogue: {
       [NodeId.GREETING]: [
         {
           text: [
-            "I wish I can go to the city one day and attend the university. They have a process to produce a hundred books at once. I wonder how that works.",
+            "I wish I could go to the city one day and attend the university. They have a process to produce a hundred books at once. I wonder how that works.",
             "Ivro says there's one of them in the village already. People laugh at him. I don't.",
           ],
-          choices: ilaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
         },
         {
           text: [
-            "I wish I can go to the city one day and attend the university. They have a process to produce a hundred books at once. I wonder how that works.",
+            "I wish I could go to the city one day and attend the university. They have a process to produce a hundred books at once. I wonder how that works.",
             "Ivro says there's one of them in the village already. People laugh at him. I don't.",
             "They smile at everyone. They don't smile at me. I take that as a compliment.",
           ],
-          choices: ilaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { tier: 2 },
         },
@@ -1109,7 +1056,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ...tip(
           4,
           StoryFlag.ILA_TIP_LIGHT,
-          "Shadows are only what's left where the light isn't. Make more light, and there's less of them to hide in.",
+          "Shadows are only what's left where the light isn't. Make more light, and there are fewer of them to hide in.",
           EntityName.SPELL_PAGE_ILLUMINATE,
         ),
         ...tip(
@@ -1207,16 +1154,9 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Glassblower",
       description: "A skilled artisan who crafts glass and vials from quartz.",
     },
+    topics: [{ text: "What is it you craft?", next: NodeId.STORY }],
     dialogue: {
-      [NodeId.GREETING]: {
-        ref: NodeId.GREETING,
-        individual: [
-          {
-            text: "What is it you craft?",
-            next: NodeId.STORY,
-          },
-        ],
-      },
+      [NodeId.GREETING]: { ref: NodeId.GREETING },
       [NodeId.STORY]: {
         text: "I coax glass out of quartz. There's a quiet magic in watching plain sand turn into something you can see clean through.",
         choices: [
@@ -1231,7 +1171,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "You'll find veins in caves surely, but those are rarely uninhabited so tread carefully. Don't forget to bring a pickaxe.",
+        text: "You'll surely find veins in caves, but they're rarely uninhabited, so tread carefully. Don't forget to bring a pickaxe.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -1323,23 +1263,15 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Greengrocer",
       description: "A trader who supplies fresh produce to villagers.",
     },
+    topics: [
+      { text: "Where do you get your goods from?", next: NodeId.STORY },
+    ],
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [
-            {
-              text: "Where do you get your goods from?",
-              next: NodeId.STORY,
-            },
-          ],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "Not a carrot left in the village. And I'm not eating venison, before you ask.",
-          choices: [
-            { text: "Where do you get your goods from?", next: NodeId.STORY },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { craving: true },
         },
@@ -1354,7 +1286,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           story: [flagSet(StoryFlag.AURIN_STREAK)],
         },
         {
-          text: "A whole week, and not one animal on a plate. *unties a cord from her neck* My grandmother carved this. She said animals can tell who means them no harm. I think they'll tell with you.",
+          text: "A whole week, and not one animal on a plate. *unties a cord from her neck* My grandmother carved this. She said animals can tell who means them no harm. I think they'll see it in you.",
           choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: {
@@ -1385,7 +1317,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
       ],
       [NodeId.STORY]: {
-        text: "I've got a farm up north, but I haven't been there a lot lately. Someone's got to mind the shop... You're welcome to use the plots yourself if you fancy growing something.",
+        text: "I've got a farm up north, but I haven't been up there much lately. Someone's got to mind the shop... You're welcome to use the plots yourself if you fancy growing something.",
         choices: [
           {
             text: "What sells best?",
@@ -1436,6 +1368,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "Keeper of the scales, who weighs every catch and remembers the best of them.",
     },
+    topics: fishwifeTopics,
     dialogue: {
       [NodeId.GREETING]: [
         {
@@ -1450,7 +1383,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             ],
             [Mood.THIRSTY]: [
               "Dry as old netting round here. What's in the creel?",
-              "*swallows* Nevermind me. Show me your catch.",
+              "*swallows* Never mind me. Show me your catch.",
             ],
             [Mood.SLEEPLESS]:
               "Up all night. Even the fish looked tired this morning.",
@@ -1460,11 +1393,11 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               "Small ones feed the village. Big ones get you something.",
             ],
           },
-          choices: fishwifeChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
         },
         {
           text: "Fish again. I gut them all day, I don't want to eat them too.",
-          choices: fishwifeChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { craving: true },
         },
@@ -1517,18 +1450,13 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Baker",
       description: "A warm-hearted baker who turns grain into bread for all.",
     },
+    topics: [{ text: "About the windmill", next: WINDMILL }],
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [{ text: "About the windmill", next: WINDMILL }],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "The oven's cold. No bread for anyone tonight, me included.",
-          choices: [
-            { text: "About the windmill", next: WINDMILL },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { craving: true },
         },
@@ -1754,63 +1682,37 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A vendor who mixes and sells refreshing drinks for villagers.",
     },
+    topics: [
+      {
+        text: "Are you drinking all of this on your own?",
+        next: NodeId.STORY,
+        when: { craving: false },
+      },
+    ],
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: [
-            {
-              text: "Are you drinking all of this on your own?",
-              next: NodeId.STORY,
-            },
-          ],
-        },
+        { ref: NodeId.GREETING },
         {
           text: "Slept? I closed my eyes. Different thing.",
-          choices: [
-            {
-              text: "Are you drinking all of this on your own?",
-              next: NodeId.STORY,
-            },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { mood: Mood.HAPPY },
         },
         {
-          text: "They know the voice. They called it the Daeowol. *quietly* I thought that was a tale for children.",
-          choices: [
-            {
-              text: "Are you drinking all of this on your own?",
-              next: NodeId.STORY,
-            },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          text: "They know the voice. They call it the Daeowol. *quietly* I thought that was a tale for children.",
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: { leaning: true },
         },
         ...named(
           "Poured one for the Almsfolk. Nice enough. Didn't stay.",
           "Poured one for the Ed Tar. *shrugs* Blood ghosts, the old ones call them. They tip well.",
-          [
-            {
-              text: "Are you drinking all of this on your own?",
-              next: NodeId.STORY,
-            },
-            { ref: ChoiceId.GOODBYE },
-          ],
           1,
           { mood: Mood.HAPPY },
         ),
         {
           text: "*looks into his empty cup* Out of wine. That's a first.",
-          choices: [
-            {
-              text: "Are you drinking all of this on your own?",
-              next: NodeId.STORY,
-            },
-            { ref: ChoiceId.GOODBYE },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: { craving: true },
         },
@@ -1821,6 +1723,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           {
             text: "Your daughter worries about you.",
             next: NodeId.QUEST,
+            when: { bond: { [EntityName.CITIZEN11]: 1 } },
           },
           {
             ref: ChoiceId.GOODBYE,
@@ -1866,14 +1769,10 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Aubrel" },
+    topics: aubrelTopics,
     dialogue: {
       [NodeId.GREETING]: [
-        {
-          ref: NodeId.GREETING,
-          individual: aubrelChoices.filter(
-            (choice): choice is DialogueChoice => "text" in choice,
-          ),
-        },
+        { ref: NodeId.GREETING },
         aubrelNews(
           [
             "Cart came up the coast road yesterday. Salt, nails, and a driver who wouldn't stop talking about the weather.",
@@ -1886,7 +1785,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           [
             "Word is the ford-keeper hasn't slept a full night since spring. Says something stands on the far bank and watches.",
             "Traveller swore three villages east of here have emptied out. Not burned, not robbed. Just nobody there.",
-            "They say whole towns out west share their stores now. Fairly, they say. *wipes the cup* Fair to whom.",
+            "They say whole towns out west share their stores now. Fairly, they say. *wipes the cup* Fair to whom?",
           ],
           { tier: 2 },
         ),
@@ -1907,23 +1806,22 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ...named(
           "The Almsfolk asked for the back room. I told them it's taken. *glances at the closed door* It isn't.",
           "The Ed Tar asked for the back room again. Blood ghosts in my tavern. *wipes the same cup again*",
-          aubrelChoices,
         ),
         {
           text: "Took their coin for the back room. Coin's coin. *wipes the same cup again*",
-          choices: aubrelChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { facts: { [FactName.VILLAGE]: VillageState.STRAINED } },
         },
       ],
       [ERRAND_OFFER]: {
-        text: "{for} is after {amount} {item}. Bring them here and I'll see you right.",
+        text: "{for} is after {items}. Bring {them} here and I'll see you right.",
         choices: [{ ref: ChoiceId.GOODBYE }],
         when: { errand: ErrandState.NONE },
         story: [{ name: StoryEffectName.ERRAND_START }],
       },
       [ERRAND_CHECK]: {
-        text: "{for} still wants {amount} {item}. No rush. *glances at the door*",
+        text: "{for} still wants {items}. No rush. *glances at the door*",
         choices: [
           { text: "I can't do it.", next: ERRAND_DROP },
           { ref: ChoiceId.GOODBYE },
@@ -1977,6 +1875,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Emy" },
+    topics: emyTopics,
     dialogue: {
       [NodeId.GREETING]: [
         {
@@ -1986,12 +1885,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
               text: "How could you tell?",
               next: NodeId.STORY,
             },
-            ...emyChoices,
+            { ref: ChoiceId.GOODBYE },
           ],
         },
         {
           text: "There are stones in the market house with people in them. *swallows* It makes me sick.",
-          choices: emyChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: {
             stock: { [EntityName.SHADOW_WANDERER]: 1 },
@@ -2001,7 +1900,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "You put them there. Didn't you.",
-          choices: emyChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: {
             stock: { [EntityName.SHADOW_WANDERER]: 1 },
@@ -2011,8 +1910,8 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           story: [flagSet(StoryFlag.EMY_SOULS)],
         },
         {
-          text: "After all that you've seen I thought you might change.",
-          choices: emyChoices,
+          text: "After all that you've seen, I thought you might change.",
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 3,
           when: {
             flags: [StoryFlag.GRANDMOTHER_FREED],
@@ -2023,7 +1922,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         },
         {
           text: "Odda told me where Grandmother got her last bottle. *pause* I haven't decided what I think yet.",
-          choices: emyChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: {
             flags: [StoryFlag.ODDA_TOLD_EMY],
@@ -2098,7 +1997,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "I mean, I don't know of course. I like to think so. Keep an eye out for her, would you? Maybe she's just forgotten her way home.",
+        text: "I mean, I don't know, of course. I like to think so. Keep an eye out for her, would you? Maybe she's just forgotten her way home.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -2143,7 +2042,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             "Morning. For once my head feels quiet.",
           ],
           [Mood.HUNGRY]: [
-            "*rubbing her arms* I can't sit still today. I haven't eaten.",
+            "*presses a hand to her stomach* I can't sit still today. I haven't eaten.",
             "Don't mind me pacing. I haven't eaten.",
           ],
           [Mood.COLD]: [
@@ -2152,7 +2051,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           ],
           [Mood.THIRSTY]: [
             "My mouth's gone dry as chalk. Is there nothing left to drink in this village?",
-            "*swallows hard* I keep dreaming of a cool cup of iced tea.",
+            "*swallows hard* I keep dreaming of a cool cup of spring water.",
           ],
           [Mood.SLEEPLESS]:
             "I didn't dream last night. I didn't sleep long enough to.",
@@ -2162,6 +2061,9 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             text: {
               [Mood.HAPPY]: "Long may it last.",
               [Mood.HUNGRY]: "Is it just the hunger, or something more?",
+              [Mood.COLD]: "You should sit by a fire for a while.",
+              [Mood.THIRSTY]: "I'll see what I can find.",
+              [Mood.SLEEPLESS]: "What kept you up?",
             },
             next: NodeId.STORY,
           },
@@ -2175,6 +2077,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           [Mood.HAPPY]: "That would be almost too much to ask for.",
           [Mood.HUNGRY]:
             "There's something lurking in the darkness. Last night a hand reached up through the floor and grabbed for my ankle. I woke with my heart in my throat. *shivers* I really should eat something.",
+          [Mood.COLD]:
+            "*holds her hands out* It's not the kind of cold a fire fixes. It comes from inside, at night.",
+          [Mood.THIRSTY]:
+            "The well tastes of iron lately. I'd rather go without.",
+          [Mood.SLEEPLESS]:
+            "No dreams at all. Just lying there, waiting for something to reach up again.",
         },
         choices: [
           {
@@ -2225,7 +2133,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.STORY]: {
-        text: "I remember the first time I set foot on a ship, I was feverish with excitement at the crackling atmosphere in the air... In the coming months, I could already picture us sailing to distant shores...",
+        text: "I remember the first time I set foot on a ship. I was feverish with excitement, the air crackling... I could already picture us sailing to distant shores in the months to come...",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -2261,12 +2169,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Ennor" },
+    topics: [{ text: "Listen", next: LISTEN }],
     dialogue: {
       [NodeId.GREETING]: [
         {
-          text: "*grumbles annoyed* ...I'm kind of busy here. Can't you see that?",
+          text: "*grumbles, annoyed* ...I'm kind of busy here. Can't you see that?",
           choices: [
-            { text: "Listen", next: LISTEN },
             {
               ref: ChoiceId.GOODBYE,
             },
@@ -2275,7 +2183,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         {
           text: "Sit. Don't talk. This one's new.",
           choices: [
-            { text: "Listen", next: LISTEN },
             { ref: ChoiceId.GOODBYE },
           ],
           salience: 1,
@@ -2338,7 +2245,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
             { text: "Found it in the woods. It's yours.", next: MEVY_GIVE },
             { ref: ChoiceId.GOODBYE },
           ],
-          salience: 1,
+          salience: 2,
           when: {
             carrying: [EntityName.LEFT_BOOT],
             unflags: [StoryFlag.MEVY_BOOT],
@@ -2402,7 +2309,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         {
           text: {
             [Mood.HAPPY]:
-              "I saw a bear in the woods once. I think I prefer it over a stranger. It didn't see me though, of course.",
+              "I saw a bear in the woods once. I think I'd prefer it to a stranger. It didn't see me though, of course.",
             [Mood.HUNGRY]:
               "*stomach growls loudly* ...let's both pretend you didn't hear that.",
             [Mood.SLEEPLESS]:
@@ -2533,12 +2440,12 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Ellin" },
+    topics: [{ text: "Listen", next: LISTEN }],
     dialogue: {
       [NodeId.GREETING]: [
         {
-          text: "Shh, listen. *pause* I practiced all week for this.",
+          text: "Shh, listen. *pause* I practised all week for this.",
           choices: [
-            { text: "Listen", next: LISTEN },
             {
               ref: ChoiceId.GOODBYE,
             },
@@ -2547,7 +2454,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         {
           text: "I wrote the middle part for you. Don't tell Ennor.",
           choices: [
-            { text: "Listen", next: LISTEN },
             { ref: ChoiceId.GOODBYE },
           ],
           salience: 1,
@@ -2588,23 +2494,21 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Valen" },
+    topics: [
+      {
+        text: "Here, I've got a spare hook.",
+        next: VALEN_HOOK,
+        when: {
+          carrying: [EntityName.FISHING_HOOK],
+          unflags: [StoryFlag.VALEN_HOOK],
+        },
+      },
+    ],
     dialogue: {
       [NodeId.GREETING]: [
         {
           text: "*sighs* How am I going to get another fishing hook...",
-          choices: [
-            {
-              text: "Here, I've got a spare hook.",
-              next: VALEN_HOOK,
-              when: {
-                carrying: [EntityName.FISHING_HOOK],
-                unflags: [StoryFlag.VALEN_HOOK],
-              },
-            },
-            {
-              ref: ChoiceId.GOODBYE,
-            },
-          ],
+          choices: [{ ref: ChoiceId.GOODBYE }],
         },
         {
           text: [
@@ -2627,7 +2531,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           story: [flagSet(StoryFlag.VALEN_RECORD)],
         },
         {
-          text: "Well my perch isn't that heavy. But I'm just a kid so it doesn't really count.",
+          text: "Well, my perch isn't that heavy. But I'm just a kid so it doesn't really count.",
           choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: {
@@ -2709,21 +2613,14 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Glimblid" },
+    topics: [{ text: "You used to wander?", next: NodeId.STORY }],
     dialogue: {
       [NodeId.GREETING]: {
         text: [
-          "Ah... the smell of cut grass and stapled wood in the cusp of summer. You must be a city dweller if you're unfamiliar with that.",
+          "Ah... the smell of cut grass and stacked wood on the cusp of summer. You must be a city dweller if you're unfamiliar with that.",
           "I once owned a ring that made me feel invincible. But I lost it in the river. *shakes head*",
         ],
-        choices: [
-          {
-            text: "You used to wander?",
-            next: NodeId.STORY,
-          },
-          {
-            ref: ChoiceId.GOODBYE,
-          },
-        ],
+        choices: [{ ref: ChoiceId.GOODBYE }],
       },
       [NodeId.STORY]: {
         text: "I used to walk the whole coast. Measured this village once, too. A hundred and thirty-four paces, near enough.",
@@ -2774,23 +2671,22 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ...named(
           "Two of the Open Hand waited by the stall this morning. Not for Father. For me.",
           "The Ed Tar were at the stall again. *swallows* They knew my name.",
-          malieChoices,
         ),
         {
           text: "They brought ribbon and honey. I didn't take it. *quietly* They said next time they wouldn't ask.",
-          choices: malieChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { facts: { [FactName.VILLAGE]: VillageState.STRAINED } },
         },
         {
           text: "I don't sleep at home any more. I stay where there are people.",
-          choices: malieChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: { facts: { [FactName.VILLAGE]: VillageState.SPLIT } },
         },
         {
           text: "They think I hear what he hears. That it runs in the family. *hugs herself* I don't even dream. Don't let them take me.",
-          choices: malieChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { tier: 2, bond: { [EntityName.CITIZEN11]: BOND_FRIEND } },
         },
@@ -2845,26 +2741,34 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Asselme" },
+    topics: asselmeTopics,
     dialogue: {
       [NodeId.GREETING]: [
         {
           text: "You ever notice how the village looks different at dusk?",
-          choices: asselmeChoices,
+          choices: [
+            { text: "I've never thought about it. Why is that?", next: NodeId.STORY },
+            { ref: ChoiceId.GOODBYE },
+          ],
         },
         {
           text: "These are friends of mine. They brought bread. That's all, for now.",
-          choices: asselmeChoices,
-          when: { tier: 2 },
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          salience: 1,
+          when: {
+            tier: 2,
+            at: { [EntityName.VISITOR1]: SpotName.ED_TAR_SQUARE },
+          },
         },
         {
           text: "The camp boy? He watches me. *smiles* He's not wrong to.",
-          choices: asselmeChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           when: { tier: 2 },
         },
       ],
       [ASSELME_CASE]: asselmeCase,
       [NodeId.STORY]: {
-        text: "It's the nightfall. That's when the real day begins, for some of us anyway. *winks* Sleep well, wanderer.",
+        text: "It's nightfall. That's when the real day begins, for some of us anyway. *winks* Sleep well, wanderer.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
@@ -2934,10 +2838,19 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           when: { within: { flag: StoryFlag.TELLIS_REFUSED, days: 7 } },
         },
         {
-          text: ["Hm. You again.", "Still carrying it, I see."],
+          text: "Hm. You again.",
           choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { flags: [StoryFlag.TELLIS_REFUSED] },
+        },
+        {
+          text: "Still carrying it, I see.",
+          choices: [{ ref: ChoiceId.GOODBYE }],
+          salience: 1,
+          when: {
+            flags: [StoryFlag.TELLIS_REFUSED],
+            carrying: [EntityName.SILVER_SWORD],
+          },
         },
         {
           text: "I polish it every morning. Every single morning.",
@@ -3019,7 +2932,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
     dialogue: {
       [NodeId.GREETING]: [
         {
-          text: "I can't stand the village life. All the rules and regulations. And I don't trust anyone there. I'm sure there are cultists among them.",
+          text: "I can't stand village life. All the rules and regulations. And I don't trust anyone there. I'm sure there are cultists among them.",
           choices: [{ ref: ChoiceId.GOODBYE }],
         },
         {
@@ -3068,13 +2981,13 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       [NodeId.GREETING]: [
         {
           text: [
-            "I ran from wolves once, barely escaped. Then I hid in a bush all day. I remember it was almost winter. I watched as the thin layer of snow from the previous evening melted in the day's warmth, before slowly reforming during the snowfall at nightfall.",
+            "I ran from wolves once, barely escaped. Then I hid in a bush all day. I remember it was almost winter. I watched as the thin layer of snow from the previous evening melted in the day's warmth, and settled again when it snowed that night.",
             "Had a dog, once. He ran the same day I did. I like to think he found somewhere warmer.",
           ],
           choices: [{ ref: ChoiceId.GOODBYE }],
         },
         {
-          text: "*stares past you* Brin? *the dog sniffs the air, then sits by your feet* He's yours now, it seems. Can't blame him.",
+          text: "*stares past you* Brin? *the dog sniffs the air, then sits at your feet* He's yours now, it seems. Can't blame him.",
           choices: [
             {
               text: "Give him something to stay for.",
@@ -3149,21 +3062,22 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
       },
     ],
     metadata: { name: "Lynha" },
+    topics: lynhaTopics,
     dialogue: {
       [NodeId.GREETING]: [
         {
           text: "The rainy nights are tough, I won't lie. I hope we have enough firewood.",
-          choices: lynhaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
         },
         {
           text: "Ila talks about you. A lot. *looks away*",
-          choices: lynhaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 1,
           when: { bond: { [EntityName.STUDENT]: BOND_FRIEND } },
         },
         {
           text: "If it rains tonight, there's room by the fire. Just so you know.",
-          choices: lynhaChoices,
+          choices: [{ ref: ChoiceId.GOODBYE }],
           salience: 2,
           when: { bond: { [EntityName.CITIZEN16]: BOND_FRIEND } },
         },

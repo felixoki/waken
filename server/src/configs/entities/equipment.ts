@@ -42,6 +42,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     ],
     metadata: {
       displayName: "Kro Dai",
+      phrase: { one: "the Kro Dai", many: "{n} of the Kro Dai" },
       description: "A dark amulet that infuses Slash with burning damage.",
       icon: { spritesheet: "items", row: 8, col: 1 },
       weight: 0.1,
@@ -612,6 +613,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     modifier: { multipliers: { damage: 2 } },
     metadata: {
       displayName: "Tei Hul",
+      phrase: { one: "the Tei Hul", many: "{n} of the Tei Hul" },
       description: "A heavy ring that doubles the force behind every blow.",
       icon: { spritesheet: "items", row: 12, col: 13 },
       weight: 0.02,
@@ -1021,6 +1023,7 @@ export const equipment: Partial<Record<EntityName, EntityDefinition>> = {
     modifier: { kill: { mana: 40 } },
     metadata: {
       displayName: "Ral Vey",
+      phrase: { one: "the Ral Vey", many: "{n} of the Ral Vey" },
       description:
         "A string of purple pearls that drinks in mana from everything you put to rest.",
       icon: { spritesheet: "items", row: 12, col: 4 },

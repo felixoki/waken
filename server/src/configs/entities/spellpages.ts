@@ -68,6 +68,10 @@ const page = (
   behaviors: [],
   metadata: {
     displayName,
+    phrase: {
+      one: `a spell page for ${displayName.replace("Spell page: ", "")}`,
+      many: `{n} spell pages for ${displayName.replace("Spell page: ", "")}`,
+    },
     description,
     icon: { spritesheet: "items", row: row(art), col: col(art) },
     stackable: false,

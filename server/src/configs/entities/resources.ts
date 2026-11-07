@@ -29,6 +29,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a piece of quartz", many: "{n} pieces of quartz" },
       displayName: "Quartz",
       description: "A small translucent crystal with a faint pale glow.",
       stackable: true,
@@ -89,6 +90,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a log of wood", many: "{n} logs of wood" },
       displayName: "Wood",
       description: "A rough-cut log split from a felled tree.",
       stackable: true,
@@ -208,6 +210,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a chunk of iron ore", many: "{n} chunks of iron ore" },
       displayName: "Iron ore",
       description: "A rough chunk of iron ore pulled from the earth.",
       stackable: true,
@@ -238,6 +241,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a sack of flour", many: "{n} sacks of flour" },
       displayName: "Flour",
       description: "Wheat ground fine at the windmill.",
       stackable: true,

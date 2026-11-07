@@ -6,6 +6,7 @@ import {
   FishName,
   Facts,
   Mood,
+  SpotName,
   StoryFlag,
 } from "../types";
 
@@ -22,6 +23,7 @@ export interface StoryContext {
   stock: (name: EntityName) => number;
   present: (name: EntityName) => number;
   raining: boolean;
+  at: (name: EntityName, spot: SpotName) => boolean;
   errand: ErrandState;
   record: (fish: FishName) => number;
 }
@@ -115,6 +117,12 @@ export const conditions = {
 
     if (when.raining !== undefined && when.raining !== context.raining)
       failures.push(when.raining ? "not raining" : "raining");
+
+    for (const [name, spot] of Object.entries(when.at ?? {}) as [
+      EntityName,
+      SpotName,
+    ][])
+      if (!context.at(name, spot)) failures.push(`${name} not at ${spot}`);
 
     return failures;
   },

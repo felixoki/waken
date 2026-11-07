@@ -14992,6 +14992,40 @@
                 }, 
                 {
                  "height":1,
+                 "id":1873,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"edTar.stall"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":632,
+                 "y":1232
+                }, 
+                {
+                 "height":1,
+                 "id":1874,
+                 "name":"Spot",
+                 "properties":[
+                        {
+                         "name":"spot",
+                         "type":"string",
+                         "value":"edTar.square"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":1,
+                 "x":712,
+                 "y":1304
+                }, 
+                {
+                 "height":1,
                  "id":1419,
                  "name":"Citizen11",
                  "rotation":0,
@@ -15568,7 +15602,8 @@
                  "width":1,
                  "x":80,
                  "y":1976
-                }, 
+                },
+            
                 {
                  "height":1,
                  "id":1561,
@@ -15590,8 +15625,7 @@
                  "width":1,
                  "x":64,
                  "y":1984
-                },
-            
+                }, 
                 {
                  "height":1,
                  "id":1563,
@@ -16574,7 +16608,7 @@
          "y":0
         }],
  "nextlayerid":67,
- "nextobjectid":1873,
+ "nextobjectid":1875,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

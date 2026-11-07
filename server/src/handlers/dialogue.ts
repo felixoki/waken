@@ -3,6 +3,7 @@ import { configs } from "../configs";
 import { World } from "../World";
 import { handlers } from ".";
 import { conditions, StoryContext } from "../story/conditions.js";
+import { topics } from "../story/topics.js";
 import {
   BehaviorName,
   ChoiceId,
@@ -26,6 +27,9 @@ export const dialogue = {
   },
 
   resolve: {
+    speaks: (text: DialogueText, mood: Mood): boolean =>
+      typeof text === "string" || Array.isArray(text) || mood in text,
+
     text: (text: DialogueText, mood: Mood): string => {
       if (typeof text === "string") return text;
 
@@ -67,15 +71,7 @@ export const dialogue = {
         ];
       if (!common || !common.length) return null;
 
-      const resolved = common[Math.floor(Math.random() * common.length)];
-
-      if (node.individual)
-        return {
-          ...resolved,
-          choices: [...(resolved.choices || []), ...node.individual],
-        };
-
-      return resolved;
+      return common[Math.floor(Math.random() * common.length)];
     },
 
     node: (
@@ -118,7 +114,7 @@ export const dialogue = {
     world: World,
     nodeId: NodeId,
     facing?: Direction,
-  ) => {
+  ): void => {
     const scripted = handlers.encounter.find(world, entityId);
     if (scripted)
       return handlers.encounter.choose(scripted, nodeId, socket, io, world);
@@ -138,7 +134,11 @@ export const dialogue = {
     const story = handlers.story.context(world, player, entity.name);
 
     const node = dialogue.resolve.node(def, story);
-    if (!node) return;
+    if (!node) {
+      if (nodeId === NodeId.GREETING || player.locked !== entityId) return;
+
+      return dialogue.iterate(entityId, socket, io, world, NodeId.GREETING);
+    }
 
     if (nodeId === NodeId.GREETING) {
       if (player.locked && player.locked !== entityId) {
@@ -212,7 +212,8 @@ export const dialogue = {
       player,
     );
 
-    const resolved = (node.choices || [])
+    const resolved = topics
+      .offer(node, nodeId, definition.topics)
       .map((choice) => ({
         isGoodbye: "ref" in choice && choice.ref === ChoiceId.GOODBYE,
         choice: dialogue.resolve.choice(choice),
@@ -220,6 +221,7 @@ export const dialogue = {
       .filter(
         (entry) =>
           entry.choice !== null &&
+          dialogue.resolve.speaks(entry.choice.text, mood) &&
           conditions.passes(entry.choice.when, story),
       );
 

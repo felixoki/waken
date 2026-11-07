@@ -4,7 +4,7 @@ import { MapName } from "./maps";
 import { ComponentConfig, Item } from "./components";
 import { StateName } from "./states";
 import { BehaviorConfig } from "./behaviors";
-import { Dialogue } from "./dialogue";
+import { Dialogue, DialogueChoice } from "./dialogue";
 import { SpellName } from "./spells";
 import { WeaponName } from "./weapons";
 import { Effect, EffectName } from "./effects.js";
@@ -181,6 +181,7 @@ export interface EntityDefinition {
   trigger?: Trigger;
   metadata?: EntityMetadata;
   dialogue?: Dialogue;
+  topics?: DialogueChoice[];
   offset?: { x?: number; y?: number };
   flat?: boolean;
   floats?: boolean;
@@ -201,9 +202,15 @@ export enum Rarity {
   LEGENDARY = "legendary",
 }
 
+export interface Phrase {
+  one: string;
+  many: string;
+}
+
 export interface EntityMetadata {
   name?: string;
   displayName?: string;
+  phrase?: Phrase;
   description?: string;
   icon?: Icon;
   stackable?: boolean;

@@ -1,5 +1,6 @@
 import { EntityName, FishName } from "./entities";
 import { Mood } from "./dialogue";
+import type { SpotName } from "./schedule";
 
 export enum StoryFlag {
   ENNA_BIG_HAND_IN = "enna.bigHandIn",
@@ -123,6 +124,7 @@ export interface Condition {
   stock?: Partial<Record<EntityName, number>>;
   present?: Partial<Record<EntityName, number>>;
   raining?: boolean;
+  at?: Partial<Record<EntityName, SpotName>>;
 }
 
 export enum StoryScope {

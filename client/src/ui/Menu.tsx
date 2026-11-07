@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SocketManager from "../game/managers/Socket";
 import { tryCatch } from "@server/utils/tryCatch";
 import { MenuOverlay } from "./MenuOverlay";
+import { useMenuAmbience } from "./useMenuAmbience";
+import { GlassTitle } from "./GlassTitle";
 
 const LOBBY_URL = (
   import.meta.env.VITE_LOBBY_URL || "http://localhost:3100"
@@ -45,6 +47,9 @@ export function Menu({ ready }: { ready: () => void }) {
   const [played, setPlayed] = useState(false);
   const [faded, setFaded] = useState(false);
   const [connected, setConnected] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useMenuAmbience(played);
 
   useEffect(() => {
     if (faded && connected) ready();
@@ -193,6 +198,7 @@ export function Menu({ ready }: { ready: () => void }) {
   return (
     <div className="fixed inset-0 flex flex-col">
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
@@ -243,23 +249,11 @@ export function Menu({ ready }: { ready: () => void }) {
         <div
           className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-200 ${modal || showWorlds ? "opacity-0!" : ""}`}
         >
-          <h1 className="font-arco text-white text-[10rem] leading-none animate-[fade-in-dream_3s_ease-out_forwards,dream-glow_4s_ease-in-out_3s_infinite] opacity-0 drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]">
-            <span className="inline-block animate-[letter-drift_14s_ease-in-out_infinite]">
-              w
-            </span>
-            <span className="inline-block animate-[letter-drift_12s_ease-in-out_1s_infinite]">
-              a
-            </span>
-            <span className="inline-block animate-[letter-drift_16s_ease-in-out_2s_infinite]">
-              k
-            </span>
-            <span className="inline-block animate-[letter-drift_13s_ease-in-out_3s_infinite]">
-              e
-            </span>
-            <span className="inline-block animate-[letter-drift_15s_ease-in-out_4s_infinite]">
-              n
-            </span>
-          </h1>
+          <GlassTitle
+            video={videoRef}
+            active={!modal && !showWorlds && !starting}
+            className="animate-[fade-in-dream_3s_ease-out_forwards] opacity-0"
+          />
           <p className="text-white/50 text-lg tracking-widest mt-4 animate-[fade-in_3s_ease-out_1.5s_forwards] opacity-0">
             by Discount Games
           </p>

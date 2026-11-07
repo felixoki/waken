@@ -26,7 +26,6 @@ export type DialogueText =
 
 export interface DialogueReference {
   ref: NodeId | ChoiceId;
-  individual?: DialogueChoice[];
 }
 
 export interface DialogueChoice {
@@ -53,6 +52,7 @@ export interface DialogueNode {
   text: DialogueText;
   choices?: Array<DialogueChoice | DialogueReference>;
   salience?: number;
+  topics?: boolean;
   when?: Condition;
   story?: StoryEffect[];
 }

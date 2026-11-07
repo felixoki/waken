@@ -4,7 +4,9 @@ import EventBus from "../game/EventBus";
 
 export function useParty() {
   const [party, setParty] = useState<Party | null>(null);
+  const [lobbies, setLobbies] = useState<Party[]>([]);
   const [inRealm, setInRealm] = useState(false);
+  const [asleep, setAsleep] = useState(false);
 
   useEffect(() => {
     const events = [
@@ -23,8 +25,17 @@ export function useParty() {
           setInRealm(false);
         },
       ],
-      [Event.PARTY_START_READY, () => setInRealm(true)],
+      [Event.PARTY_LIST, (data: Party[]) => setLobbies(data)],
+      [
+        Event.PARTY_START_READY,
+        () => {
+          setInRealm(true);
+          setAsleep(false);
+        },
+      ],
       [Event.PARTY_WIPE, () => setInRealm(false)],
+      [Event.PLAYER_SLEEP, () => setAsleep(true)],
+      [Event.PLAYER_WAKE, () => setAsleep(false)],
     ] as const;
 
     for (const [event, handler] of events) EventBus.on(event, handler);
@@ -34,5 +45,5 @@ export function useParty() {
     };
   }, []);
 
-  return { party, inRealm };
+  return { party, lobbies, inRealm, asleep };
 }

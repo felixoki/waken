@@ -1,4 +1,4 @@
-import { EntityName, ErrandConfig, ErrandReward } from "../types";
+import { EntityName, ErrandConfig, ErrandReward, Phrase } from "../types";
 import { ERRAND_RARE_CHANCE } from "../globals";
 
 export const errands = {
@@ -34,25 +34,32 @@ export const errands = {
     return open[open.length - 1];
   },
 
+  phrase: (displayName: string): Phrase => {
+    const noun = displayName.toLowerCase();
+
+    return {
+      one: `${/^[aeiou]/.test(noun) ? "an" : "a"} ${noun}`,
+      many: `{n} ${noun}s`,
+    };
+  },
+
+  count: (phrase: Phrase, quantity: number): string =>
+    quantity === 1 ? phrase.one : phrase.many.split("{n}").join(String(quantity)),
+
   fill: (
     text: string,
     errand: ErrandConfig,
     name: (entity: EntityName) => string,
+    phrase: (entity: EntityName) => Phrase,
     reward?: { item: EntityName; quantity: number },
   ): string =>
     text
-      .split("{amount}")
-      .join(String(errand.amount))
-      .split("{item}")
-      .join(name(errand.item))
+      .split("{items}")
+      .join(errands.count(phrase(errand.item), errand.amount))
+      .split("{them}")
+      .join(errand.amount === 1 ? "it" : "them")
       .split("{for}")
       .join(name(errand.for))
       .split("{reward}")
-      .join(
-        !reward
-          ? ""
-          : reward.quantity > 1
-            ? `${reward.quantity} ${name(reward.item)}`
-            : name(reward.item),
-      ),
+      .join(reward ? errands.count(phrase(reward.item), reward.quantity) : ""),
 };

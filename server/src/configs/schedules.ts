@@ -23,17 +23,27 @@ const tavern = (spot: SpotName, chance: number): ScheduleRule => ({
 
 const cult: Schedule = [{ when: { tier: 2 }, target: ANCHOR }, { target: AWAY }];
 
+const visit = (spot: SpotName): Schedule => [
+  {
+    phases: [TimePhase.DAY],
+    from: [0.12, 0.2],
+    until: [0.36, 0.46],
+    chance: 0.7,
+    when: { tier: 2 },
+    target: spot,
+  },
+  ...cult,
+];
+
 export const schedules: Partial<Record<EntityName, Schedule>> = {
-  [EntityName.VISITOR1]: cult,
-  [EntityName.VISITOR2]: cult,
+  [EntityName.VISITOR1]: visit(SpotName.ED_TAR_SQUARE),
+  [EntityName.VISITOR2]: visit(SpotName.ED_TAR_STALL),
   [EntityName.CULT_TENT]: cult,
-  [EntityName.TANNER]: [tavern(SpotName.TAVERN_TARRO, 0.7), night],
+  [EntityName.TANNER]: [tavern(SpotName.TAVERN_TARRO, 0.7)],
   [EntityName.CITIZEN7]: [tavern(SpotName.TAVERN_ESKEN, 0.5), night],
-  [EntityName.BOOKKEEPER]: [night],
   [EntityName.HELPER1]: [night],
   [EntityName.HELPER2]: [night],
   [EntityName.STUDENT]: [rain, night],
-  [EntityName.FISHWIFE]: [night],
   [EntityName.CITIZEN1]: [tavern(SpotName.TAVERN_EMY, 0.3), night],
   [EntityName.CITIZEN2]: [tavern(SpotName.TAVERN_FAIRE, 0.3), night],
   [EntityName.CITIZEN3]: [tavern(SpotName.TAVERN_DUNEAS, 0.6), night],

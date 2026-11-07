@@ -188,7 +188,12 @@ export const encounter = {
 
     const choices = (node.choices ?? []).flatMap((entry) => {
       const choice = handlers.dialogue.resolve.choice(entry);
-      if (!choice || !conditions.passes(choice.when, story)) return [];
+      if (
+        !choice ||
+        !handlers.dialogue.resolve.speaks(choice.text, mood) ||
+        !conditions.passes(choice.when, story)
+      )
+        return [];
 
       return [
         {

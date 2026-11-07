@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="67" nextobjectid="1873">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="76" height="134" tilewidth="16" tileheight="16" infinite="0" nextlayerid="67" nextobjectid="1875">
  <editorsettings>
   <export target="../client/public/assets/maps/village.json" format="json"/>
  </editorsettings>
@@ -10274,6 +10274,16 @@
   <object id="1860" name="Spot" x="152" y="364" width="1" height="1">
    <properties>
     <property name="spot" value="lake.glimblid"/>
+   </properties>
+  </object>
+  <object id="1873" name="Spot" x="632" y="1232" width="1" height="1">
+   <properties>
+    <property name="spot" value="edTar.stall"/>
+   </properties>
+  </object>
+  <object id="1874" name="Spot" x="712" y="1304" width="1" height="1">
+   <properties>
+    <property name="spot" value="edTar.square"/>
    </properties>
   </object>
   <object id="1419" name="Citizen11" x="598" y="1218" width="1" height="1"/>

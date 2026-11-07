@@ -112,13 +112,13 @@ export const party = {
         );
 
       handlers.encounter.clear(data.id, world);
-
-      data.status = PartyStatus.LOBBY;
-      data.unlocked = 0;
-      data.ready = [];
       handlers.authority.release(io, world, map, data.id);
 
-      io.to(`party:${data.id}`).emit(Event.PARTY_UPDATE, data);
+      const room = `party:${data.id}`;
+      io.to(room).emit(Event.PARTY_LEAVE);
+      io.in(room).socketsLeave(room);
+      world.parties.remove(data.id);
+
       party.broadcast(socket, world);
     }
   },
@@ -136,7 +136,8 @@ export const party = {
 
   create: (socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
-    if (!player) return;
+    if (!player?.sleep?.isAsleep || world.parties.getByPlayerId(player.id))
+      return;
 
     const id = randomUUID();
     const data = {
@@ -160,7 +161,7 @@ export const party = {
 
   join: (id: string, socket: Socket, world: World) => {
     const player = world.players.getBySocketId(socket.id);
-    if (!player) return;
+    if (!player?.sleep?.isAsleep) return;
 
     const existing = world.parties.getByPlayerId(player.id);
     if (existing) return;
@@ -229,6 +230,7 @@ export const party = {
       world.sublevels.takeReturn(player.id);
 
       party.cleanup(socket, io, world, data.id);
+      if (!world.parties.get(data.id)) return;
     }
 
     if (!data.members.length) {

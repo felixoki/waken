@@ -2,7 +2,9 @@ import { describe, test } from "node:test";
 import assert from "node:assert/strict";
 import { conditions, StoryContext } from "./conditions";
 import { configs } from "../configs";
+import { topics } from "./topics";
 import {
+  DialogueChoice,
   DialogueNode,
   EntityName,
   FactName,
@@ -11,6 +13,7 @@ import {
   StoryFlag,
   VillageState,
   ErrandState,
+  SpotName,
 } from "../types";
 
 const greeting = (name: EntityName): DialogueNode[] => {
@@ -30,6 +33,7 @@ const context = (options: {
   tier?: number;
   village?: VillageState;
   stock?: Partial<Record<EntityName, number>>;
+  at?: Partial<Record<EntityName, SpotName>>;
 }): StoryContext => ({
   facts: {
     [FactName.TIER]: options.tier ?? 1,
@@ -51,6 +55,7 @@ const context = (options: {
   stock: (name) => options.stock?.[name] ?? 0,
   present: () => 0,
   raining: false,
+  at: (name, spot) => options.at?.[name] === spot,
 });
 
 describe("ila's tips", () => {
@@ -255,5 +260,78 @@ describe("asselme makes his case in order", () => {
     ];
     const node = conditions.pick(nodes, context({ flags: told }));
     assert.equal(Array.isArray(node?.text), true);
+  });
+});
+
+describe("replies belong to the line, topics to the villager", () => {
+  const offered = (name: EntityName, story: StoryContext) => {
+    const node = conditions.pick(greeting(name), story)!;
+    const choices = topics
+      .offer(node, NodeId.GREETING, configs.entities[name]?.topics)
+      .filter(
+        (choice): choice is DialogueChoice =>
+          !("ref" in choice) && conditions.passes(choice.when, story),
+      )
+      .map((choice) => String(choice.text));
+
+    return { text: String(node.text), choices };
+  };
+
+  test("malie only asks after her father when she talks about him", () => {
+    const base = offered(EntityName.CITIZEN11, context({}));
+    assert.match(base.text, /worried about him/);
+    assert.deepEqual(base.choices, ["What's wrong?"]);
+
+    const watched = offered(EntityName.CITIZEN11, context({ tier: 2, flags: [StoryFlag.ED_TAR_KNOWN], village: VillageState.SPLIT }));
+    assert.match(watched.text, /don't sleep at home/);
+    assert.deepEqual(watched.choices, []);
+  });
+
+  test("asselme's camp boy line keeps his friends but not the dusk question", () => {
+    const story = context({ tier: 2, bond: { [EntityName.CITIZEN12]: 5 } });
+    for (let i = 0; i < 20; i++) {
+      const line = offered(EntityName.CITIZEN12, story);
+      if (/dusk/.test(line.text)) continue;
+      assert.match(line.text, /camp boy/);
+      assert.deepEqual(line.choices, ["Tell me about your friends"]);
+    }
+  });
+
+  test("asselme only calls them friends when they stand beside him", () => {
+    const away = context({ tier: 2 });
+    for (let i = 0; i < 20; i++)
+      assert.doesNotMatch(offered(EntityName.CITIZEN12, away).text, /friends of mine/);
+
+    const here = context({ tier: 2, at: { [EntityName.VISITOR1]: SpotName.ED_TAR_SQUARE } });
+    assert.match(offered(EntityName.CITIZEN12, here).text, /friends of mine/);
+  });
+
+  test("alya takes collectables whatever she is saying", () => {
+    const line = offered(EntityName.BOOKKEEPER, context({ tier: 2 }));
+    assert.ok(line.choices.includes("Hand over collectables"));
+    assert.ok(line.choices.includes("Improve the village"));
+  });
+
+  test("valen takes the hook even while he misses the dog", () => {
+    const line = offered(
+      EntityName.CITIZEN9,
+      context({ flags: [StoryFlag.FENN_DOG], carrying: [EntityName.FISHING_HOOK] }),
+    );
+    assert.match(line.text, /dog's gone/);
+    assert.ok(line.choices.includes("Here, I've got a spare hook."));
+  });
+
+  test("mevy's boot is not drowned out by the cat", () => {
+    const story = context({ flags: [StoryFlag.FENN_DOG], carrying: [EntityName.LEFT_BOOT] });
+    for (let i = 0; i < 20; i++)
+      assert.match(offered(EntityName.CITIZEN5, story).text, /steal my boot/);
+  });
+
+  test("topics never reach a node past the greeting", () => {
+    const node = configs.entities[EntityName.BOOKKEEPER]!.dialogue![NodeId.STORY] as DialogueNode;
+    assert.equal(
+      topics.offer(node, NodeId.STORY, configs.entities[EntityName.BOOKKEEPER]!.topics).length,
+      node.choices!.length,
+    );
   });
 });

@@ -363,6 +363,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a bottle of beer", many: "{n} bottles of beer" },
       displayName: "Beer",
       description: "A frothy mug of home-brewed beer.",
       stackable: true,
@@ -453,6 +454,7 @@ export const food: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a bottle of wine", many: "{n} bottles of wine" },
       displayName: "Wine",
       description: "A bottle of fine wine.",
       stackable: true,

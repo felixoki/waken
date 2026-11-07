@@ -1,7 +1,8 @@
 import { save } from "../db/save.js";
 import { load } from "../db/load.js";
 import { World } from "../World.js";
-import { EntityConfig } from "../types/index.js";
+import { EntityConfig, EntityName, MapName } from "../types/index.js";
+import { MapLoader } from "../loaders/Map.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
 
@@ -11,8 +12,26 @@ export const world = {
 
     if (state?.entities?.length) {
       state.entities = state.entities.filter(
-        (entity: EntityConfig) => !!configs.maps[entity.map],
+        (entity: EntityConfig) =>
+          !!configs.maps[entity.map] &&
+          !(
+            entity.name === EntityName.ZONE &&
+            !configs.maps[entity.map].isInstanced
+          ),
       );
+
+      const loader = new MapLoader();
+
+      for (const [name, config] of Object.entries(configs.maps)) {
+        if (config.isInstanced || !config.json) continue;
+
+        const tilemap = loader.load(config.json);
+        state.entities.push(
+          ...loader
+            .parseEntities(name as MapName, tilemap)
+            .filter((entity) => entity.name === EntityName.ZONE),
+        );
+      }
 
       state.entities.forEach((entity: EntityConfig) => {
         if (

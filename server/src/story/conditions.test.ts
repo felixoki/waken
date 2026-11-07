@@ -31,6 +31,7 @@ const context = (overrides: Partial<StoryContext> = {}): StoryContext => ({
   stock: () => 0,
   present: () => 0,
   raining: false,
+  at: () => false,
   ...overrides,
 });
 

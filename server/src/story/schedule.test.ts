@@ -165,16 +165,79 @@ describe("schedules", () => {
     }
   });
 
-  test("tavern guests are home by the end of the night", () => {
+  test("tavern guests have left the tavern by the end of the night", () => {
     for (const name of [EntityName.TANNER, EntityName.CITIZEN3])
       for (let day = 0; day < 30; day++)
-        assert.deepEqual(
-          timetable.place(
-            schedules[name],
-            at(TimePhase.NIGHT, 0.95, day),
-            name,
+        assert.equal(
+          "spot" in
+            timetable.place(
+              schedules[name],
+              at(TimePhase.NIGHT, 0.95, day),
+              name,
+              false,
+            ),
+          false,
+        );
+  });
+
+  test("anyone who serves the player is there all night", () => {
+    for (const name of [
+      EntityName.BOOKKEEPER,
+      EntityName.FISHWIFE,
+      EntityName.TANNER,
+    ])
+      for (let day = 0; day < 30; day++)
+        for (const progress of [0.6, 0.75, 0.95])
+          assert.equal(
+            "away" in
+              timetable.place(
+                schedules[name],
+                at(TimePhase.NIGHT, progress, day),
+                name,
+                false,
+              ),
             false,
-          ),
+          );
+  });
+});
+
+describe("the ed tar come up to the village", () => {
+  const tier = (min: number) => (when: Condition | undefined) =>
+    (when?.tier ?? 0) <= min;
+
+  const visits = (name: EntityName, spot: SpotName) => {
+    let days = 0;
+    for (let day = 0; day < 200; day++) {
+      const placement = timetable.place(
+        schedules[name],
+        at(TimePhase.DAY, 0.3, day),
+        name,
+        false,
+        tier(2),
+      );
+      if ("spot" in placement && placement.spot === spot) days++;
+    }
+    return days;
+  };
+
+  test("most mornings at tier 2", () => {
+    assert.ok(visits(EntityName.VISITOR1, SpotName.ED_TAR_SQUARE) > 100);
+    assert.ok(visits(EntityName.VISITOR2, SpotName.ED_TAR_STALL) > 100);
+  });
+
+  test("back at the camp in the evening", () => {
+    for (const name of [EntityName.VISITOR1, EntityName.VISITOR2])
+      assert.deepEqual(
+        timetable.place(schedules[name], DUSK, name, false, tier(2)),
+        { anchor: true },
+      );
+  });
+
+  test("nowhere before tier 2", () => {
+    for (const name of [EntityName.VISITOR1, EntityName.VISITOR2])
+      for (const clock of [at(TimePhase.DAY, 0.3), DUSK])
+        assert.deepEqual(
+          timetable.place(schedules[name], clock, name, false, tier(1)),
           { away: true },
         );
   });

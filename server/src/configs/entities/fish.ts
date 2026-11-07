@@ -92,6 +92,7 @@ export const fish: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a pike", many: "{n} pike" },
       displayName: "Pike",
       description: "A large predatory pike, common in freshwater lakes.",
       stackable: false,

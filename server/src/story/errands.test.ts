@@ -33,13 +33,37 @@ describe("pick", () => {
 describe("fill", () => {
   test("replaces every placeholder", () => {
     const text = errands.fill(
-      "{for} wants {amount} {item}. {reward} for you.",
+      "{for} wants {items}. Bring {them}. {reward} for you.",
       errand("a", 1),
       (name) => name,
+      (name) => errands.phrase(name),
       { item: EntityName.WINE, quantity: 2 },
     );
 
-    assert.equal(text, "tanner wants 3 deer_hide. 2 wine for you.");
+    assert.equal(
+      text,
+      "tanner wants 3 deer_hides. Bring them. 2 wines for you.",
+    );
+  });
+
+  test("one of something gets an article and 'it'", () => {
+    const one = { ...errand("a", 1), amount: 1 };
+    const text = errands.fill(
+      "{for} wants {items}. Bring {them}. {reward}.",
+      one,
+      (name) => name,
+      () => errands.phrase("Iron ore"),
+      { item: EntityName.WINE, quantity: 1 },
+    );
+
+    assert.equal(text, "tanner wants an iron ore. Bring it. an iron ore.");
+  });
+
+  test("a phrase overrides the default", () => {
+    assert.equal(
+      errands.count({ one: "a sack of flour", many: "{n} sacks of flour" }, 2),
+      "2 sacks of flour",
+    );
   });
 });
 

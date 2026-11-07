@@ -11,6 +11,7 @@ import {
   MapName,
   PlayerConfig,
   SlotType,
+  SpotName,
   StoryEffect,
   StoryEffectName,
   StoryFlag,
@@ -61,6 +62,7 @@ export const story = {
       record: (fish) => player.records?.[fish] ?? 0,
       stock: (name: EntityName) => world.items.get(name),
       present: (name: EntityName) => story.present(world, name),
+      at: (name: EntityName, spot: SpotName) => story.at(world, name, spot),
       raining: world.isRaining(),
       bond: (name: EntityName) => player.story.bond[name] ?? 0,
       since: (flag: StoryFlag) => {
@@ -90,6 +92,7 @@ export const story = {
     leaning: false,
     stock: (name: EntityName) => world.items.get(name),
     present: (name: EntityName) => story.present(world, name),
+    at: (name: EntityName, spot: SpotName) => story.at(world, name, spot),
     raining: world.isRaining(),
   }),
 
@@ -112,6 +115,12 @@ export const story = {
         !entity.away &&
         !entity.tame?.isTamed,
     ).length,
+
+  at: (world: World, name: EntityName, spot: SpotName): boolean =>
+    world.entities.all.some(
+      (entity) =>
+        entity.name === name && entity.placement === spot && !entity.away,
+    ),
 
   carried: (player: PlayerConfig): Item[] => [
     ...player.inventory.filter((item): item is Item => !!item),
@@ -204,9 +213,12 @@ export const story = {
       return errands.fill(
         text,
         errand,
+        (name) => configs.entities[name]?.metadata?.name ?? name,
         (name) => {
           const metadata = configs.entities[name]?.metadata;
-          return metadata?.name ?? metadata?.displayName?.toLowerCase() ?? name;
+          return (
+            metadata?.phrase ?? errands.phrase(metadata?.displayName ?? name)
+          );
         },
         player.story.lastReward,
       );

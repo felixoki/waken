@@ -78,7 +78,7 @@ export const villain: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [KEEPING]: {
-        text: "*looks past you, at the stones* Others were here long before you and me. With knowledge far beyond ours, and it ended them. *pause* Their secrets are still in this world though, and I am the only one who keeps them. *pause* I tried to protect you from it.",
+        text: "*looks past you, at the stones* Others were here long before you and me. With knowledge far beyond ours, and it ended them. *pause* Their secrets are still in this world, though, and I am the only one who keeps them. *pause* I tried to protect you from it.",
         choices: [
           {
             text: "Maybe they're not your secrets to keep to begin with. Knowledge is for everyone.",

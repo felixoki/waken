@@ -72,6 +72,9 @@ export class MapLoader {
     if (!name) return null;
 
     const maxHealth = configs.entities[name]?.maxHealth ?? MAX_HEALTH;
+    const zone = this._parseZone(obj);
+    const x = zone && obj.width > 1 ? obj.x + obj.width / 2 : obj.x;
+    const y = zone && obj.height > 1 ? obj.y + obj.height / 2 : obj.y;
 
     return {
       id: randomUUID(),
@@ -79,18 +82,18 @@ export class MapLoader {
       health: maxHealth,
       maxHealth,
       map: id,
-      x: obj.x,
-      y: obj.y,
+      x,
+      y,
       anchor:
         configs.entities[name]?.dialogue || configs.schedules[name]
-          ? { map: id, x: obj.x, y: obj.y }
+          ? { map: id, x, y }
           : undefined,
       createdAt: Date.now(),
       isLocked: false,
       loot: this._parseContents(obj),
       spawner: this._parseSpawner(obj),
       textureSpawner: this._parseTextureSpawner(obj),
-      zone: this._parseZone(obj),
+      zone,
       link: obj.properties?.find((p: any) => p.name === "link")?.value,
       quantity: obj.properties?.find((p: any) => p.name === "quantity")?.value,
     };

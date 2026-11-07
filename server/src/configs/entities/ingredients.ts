@@ -1053,6 +1053,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
     states: [],
     behaviors: [],
     metadata: {
+      phrase: { one: "a bowl of soup of the hiker", many: "{n} bowls of soup of the hiker" },
       displayName: "Soup of the hiker",
       description:
         "A thick broth of boar, milk and troll scales that keeps the cold out for a while.",
