@@ -190,4 +190,5 @@ export enum Event {
   DEV_COMMAND = "dev_command",
   DEV_OUTPUT = "dev_output",
   DEV_FREECAST = "dev_freecast",
+  DEV_CONSOLE = "dev_console",
 }

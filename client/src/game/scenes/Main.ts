@@ -174,8 +174,14 @@ export class MainScene extends Phaser.Scene {
           args: args.map(String),
         });
 
-      this.managers.socket.on(Event.DEV_OUTPUT, (lines: string[]) =>
-        console.log(lines.join("\n")),
+      EventBus.on(Event.DEV_COMMAND, (data: { name: string; args: string[] }) =>
+        this.managers.socket.emit(Event.DEV_COMMAND, data),
+      );
+
+      this.managers.socket.on(
+        Event.DEV_OUTPUT,
+        (data: { lines: string[]; error: boolean }) =>
+          EventBus.emit(Event.DEV_OUTPUT, data),
       );
 
       this.managers.socket.on(Event.DEV_FREECAST, (on: boolean) => {

@@ -26,6 +26,7 @@ import { Settings } from "./ui/Settings";
 import { Provider } from "./ui/Provider";
 import { Tooltip } from "./ui/Tooltip";
 import { Fishing } from "./ui/Fishing";
+import { Console } from "./ui/Console";
 
 function FPS({ game }: { game: React.RefObject<Phaser.Game | null> }) {
   const [fps, setFps] = useState(0);
@@ -104,6 +105,7 @@ function App() {
       </div>
       <Settings />
       <FPS game={game} />
+      {import.meta.env.DEV && <Console />}
     </div>
   );
 }

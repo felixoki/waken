@@ -41,13 +41,17 @@ export const dev = {
     if (!DEV_COMMANDS) return;
 
     const command: Command | undefined = dev.commands[data.name];
-    if (!command) return dev.reply(socket, `unknown command "${data.name}"`);
+    if (!command) return dev.fail(socket, `unknown command "${data.name}"`);
 
     command((data.args ?? []).map(String), socket, io, world);
   },
 
   reply: (socket: Socket, ...lines: string[]) => {
-    socket.emit(Event.DEV_OUTPUT, lines);
+    socket.emit(Event.DEV_OUTPUT, { lines, error: false });
+  },
+
+  fail: (socket: Socket, ...lines: string[]) => {
+    socket.emit(Event.DEV_OUTPUT, { lines, error: true });
   },
 
   preview: (text: DialogueText): string => {
@@ -71,7 +75,7 @@ export const dev = {
       const value = Number(tier);
       const max = Math.max(1, ...configs.tiers.map((t) => t.tier));
       if (!Number.isInteger(value) || value < 1 || value > max)
-        return dev.reply(_socket, `tier must be 1 to ${max}`);
+        return dev.fail(_socket, `tier must be 1 to ${max}`);
 
       world.economy.setTier(value);
       handlers.broadcast.store(io, world);
@@ -81,7 +85,7 @@ export const dev = {
     [DevCommand.IMPROVE]: ([name], socket, _io, world) => {
       const names = Object.values(ImprovementName) as string[];
       if (!names.includes(name))
-        return dev.reply(
+        return dev.fail(
           socket,
           `improvement must be one of ${names.join(", ")}`,
         );
@@ -93,7 +97,7 @@ export const dev = {
     [DevCommand.PHASE]: ([phase], _socket, io, world) => {
       const entry = PHASE_STARTS.find((p) => p.phase === phase);
       if (!entry)
-        return dev.reply(
+        return dev.fail(
           _socket,
           `phase must be one of ${PHASE_STARTS.map((p) => p.phase).join(", ")}`,
         );
@@ -105,7 +109,7 @@ export const dev = {
     [DevCommand.DAY]: ([day], _socket, io, world) => {
       const days = Number(day);
       if (!Number.isInteger(days) || days < 0)
-        return dev.reply(_socket, "day must be 0 or more");
+        return dev.fail(_socket, "day must be 0 or more");
 
       dev.time(io, world, { days });
       dev.reply(_socket, `day ${days}`);
@@ -113,11 +117,11 @@ export const dev = {
 
     [DevCommand.EFFECT]: ([name, duration], socket, io, world) => {
       const player = world.players.getBySocketId(socket.id);
-      if (!player) return dev.reply(socket, "no player");
+      if (!player) return dev.fail(socket, "no player");
 
       const names = Object.values(EffectName) as string[];
       if (!names.includes(name))
-        return dev.reply(socket, `effect must be one of ${names.join(", ")}`);
+        return dev.fail(socket, `effect must be one of ${names.join(", ")}`);
 
       const now = Date.now();
       const effect: Effect = {
@@ -138,7 +142,7 @@ export const dev = {
     [DevCommand.RESEED]: ([name], socket, _io, world) => {
       const map = Object.values(MapName).find((value) => value === name);
       if (!map)
-        return dev.reply(
+        return dev.fail(
           socket,
           `map must be one of ${Object.values(MapName).join(", ")}`,
         );
@@ -165,7 +169,7 @@ export const dev = {
 
     [DevCommand.FREECAST]: (_args, socket, _io, world) => {
       const player = world.players.getBySocketId(socket.id);
-      if (!player) return dev.reply(socket, "no player");
+      if (!player) return dev.fail(socket, "no player");
 
       const on = !world.freecast.has(player.id);
       if (on) world.freecast.add(player.id);
@@ -181,7 +185,7 @@ export const dev = {
       const amount = Number(quantity ?? 1);
 
       if (!player || !definition || !Number.isInteger(amount) || amount < 1)
-        return dev.reply(socket, `can't give "${name}"`);
+        return dev.fail(socket, `can't give "${name}"`);
 
       handlers.item.give(
         player,
@@ -201,7 +205,7 @@ export const dev = {
     [DevCommand.FLAG]: ([name, action, scope], socket, _io, world) => {
       const player = world.players.getBySocketId(socket.id);
       const flag = Object.values(StoryFlag).find((value) => value === name);
-      if (!player || !flag) return dev.reply(socket, `unknown flag "${name}"`);
+      if (!player || !flag) return dev.fail(socket, `unknown flag "${name}"`);
 
       handlers.story.apply(
         [
@@ -223,10 +227,10 @@ export const dev = {
     [DevCommand.WHY]: (_args, socket, _io, world) => {
       const player = world.players.getBySocketId(socket.id);
       const entity = player?.locked && world.entities.get(player.locked);
-      if (!player || !entity) return dev.reply(socket, "talk to someone first");
+      if (!player || !entity) return dev.fail(socket, "talk to someone first");
 
       const dialogue = configs.entities[entity.name]?.dialogue;
-      if (!dialogue) return dev.reply(socket, `${entity.name} has no dialogue`);
+      if (!dialogue) return dev.fail(socket, `${entity.name} has no dialogue`);
 
       const context = handlers.story.context(world, player, entity.name);
       const lines = [
@@ -263,8 +267,8 @@ export const dev = {
       const player = world.players.getBySocketId(socket.id);
       const entity = player?.locked && world.entities.get(player.locked);
       const value = Number(amount);
-      if (!player || !entity) return dev.reply(socket, "talk to someone first");
-      if (!Number.isInteger(value)) return dev.reply(socket, "bond needs a number");
+      if (!player || !entity) return dev.fail(socket, "talk to someone first");
+      if (!Number.isInteger(value)) return dev.fail(socket, "bond needs a number");
 
       player.story.bond[entity.name] = 0;
       handlers.story.bond(player, entity.name, value, world);
@@ -278,9 +282,9 @@ export const dev = {
       const player = world.players.getBySocketId(socket.id);
       const entity = player?.locked && world.entities.get(player.locked);
       const value = Number(amount);
-      if (!entity) return dev.reply(socket, "talk to someone first");
+      if (!entity) return dev.fail(socket, "talk to someone first");
       if (!Number.isInteger(value) || value < 0)
-        return dev.reply(socket, "lean needs a number from 0");
+        return dev.fail(socket, "lean needs a number from 0");
 
       world.story.setLean(entity.name, value);
       dev.reply(socket, `lean ${value} for ${entity.name}`);
@@ -289,7 +293,7 @@ export const dev = {
     [DevCommand.GO]: ([name, tx, ty], socket, io, world) => {
       const map = Object.values(MapName).find((value) => value === name);
       if (!map)
-        return dev.reply(
+        return dev.fail(
           socket,
           `map must be one of ${Object.values(MapName).join(", ")}`,
         );
@@ -298,7 +302,7 @@ export const dev = {
       const x = tx === undefined ? spawn.x : Number(tx);
       const y = ty === undefined ? spawn.y : Number(ty);
       if (!Number.isFinite(x) || !Number.isFinite(y))
-        return dev.reply(socket, "x and y must be numbers");
+        return dev.fail(socket, "x and y must be numbers");
 
       handlers.player.transition({ to: map, x, y }, io, socket, world);
       dev.reply(socket, `going to ${map}`);
@@ -312,7 +316,7 @@ export const dev = {
       );
 
       if (!player || fellable?.name !== ComponentName.FELLABLE || !fellable.config.hive)
-        return dev.reply(socket, `"${name}" can't carry a hive`);
+        return dev.fail(socket, `"${name}" can't carry a hive`);
 
       const maxHealth = configs.entities[name]?.maxHealth ?? MAX_HEALTH;
       const party = world.parties.getByPlayerId(player.id);
@@ -334,6 +338,39 @@ export const dev = {
         configs.maps[player.map].isInstanced ? party?.id : undefined,
       );
       dev.reply(socket, `hive on ${name}`);
+    },
+
+    [DevCommand.SPAWN]: ([name], socket, io, world) => {
+      const player = world.players.getBySocketId(socket.id);
+      if (!player) return dev.fail(socket, "no player");
+
+      const entity = Object.values(EntityName).find((value) => value === name);
+      if (!entity || !configs.entities[entity])
+        return dev.fail(socket, `unknown entity "${name}"`);
+
+      const maxHealth = configs.entities[entity]?.maxHealth ?? MAX_HEALTH;
+      const party = world.parties.getByPlayerId(player.id);
+      const config = {
+        name: entity,
+        map: player.map,
+        x: player.x + 48,
+        y: player.y,
+        health: maxHealth,
+        maxHealth,
+        isLocked: false,
+      };
+
+      handlers.entity.create(
+        {
+          ...config,
+          tame: handlers.taming.native({ ...config, id: "", createdAt: 0 }),
+        },
+        socket,
+        io,
+        world,
+        configs.maps[player.map].isInstanced ? party?.id : undefined,
+      );
+      dev.reply(socket, `spawned ${entity}`);
     },
 
     [DevCommand.VILLAGE]: (_args, socket, _io, world) => {

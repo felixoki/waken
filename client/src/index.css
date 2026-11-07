@@ -39,6 +39,17 @@ body {
   font-family: "Arco", sans-serif;
 }
 
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+}
+
+.font-jetbrains {
+  font-family: "JetBrains Mono", monospace;
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

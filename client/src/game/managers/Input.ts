@@ -44,6 +44,13 @@ export class InputManager {
     }) as typeof this.keys;
 
     this.registerPointerEvents();
+    EventBus.on(Event.DEV_CONSOLE, this.mute, this);
+  }
+
+  private mute(open: boolean): void {
+    const keyboard = this.scene.input.keyboard!;
+    keyboard.manager.enabled = !open;
+    keyboard.resetKeys();
   }
 
   update(): void {
@@ -177,5 +184,6 @@ export class InputManager {
   destroy(): void {
     this.scene.input.off("pointerdown");
     this.scene.input.off("pointerup");
+    EventBus.off(Event.DEV_CONSOLE, this.mute, this);
   }
 }
