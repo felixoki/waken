@@ -29,8 +29,8 @@ Status: ☐ open · ◐ claimed (date) · ✅ done (commit) · ✖ won't fix (re
 | S0.8 | ✅ a3dd8cd | Server | A Postgres error at boot makes `load.world` return null, so a fresh tmx world is built. Autosave then overwrites the real save (`world.ts:11`, `load.ts:21`) |
 | S0.9 | ✖ current behavior is correct; a duplicate player id is practically impossible | Net | A disconnect is invisible: no `disconnect`, reconnect or resync, so the game freezes silently (`Socket.ts:25`). Reconnect also races `player.create` and can leave a ghost session or duplicate items (`player.ts:46-120`) |
 | S0.10 | ✅ 54fd863 | Client perf | ✔ All 12 map scenes update every frame while hidden (`Scene.ts:133`, `Main.ts:122-140`; they use `setVisible(false)`, not `sleep`) |
-| S0.11 | ☐ | Client perf | `claw` creates 480 emitters, 840 timers and about 15k particles per cast. A full melee combo creates about 585 emitters. `dissolve` creates one Arc and one tween per pixel (`vfx/emitters.ts:709-1172`). Still open from the old audit |
-| S0.12 | ☐ | Audio perf | Every music and ambience file is decoded at boot, about 660 MB of PCM in RAM (`Main.ts:92`, `loaders/Sound.ts`). `storm1.ogg` alone is 279 s |
+| S0.11 | ◐ 2026-11-08 | Client perf | `claw` creates 480 emitters, 840 timers and about 15k particles per cast. A full melee combo creates about 585 emitters. `dissolve` creates one Arc and one tween per pixel (`vfx/emitters.ts:709-1172`). Still open from the old audit |
+| S0.12 | ✅ 8502a1e | Audio perf | Every music and ambience file is decoded at boot, about 660 MB of PCM in RAM (`Main.ts:92`, `loaders/Sound.ts`). `storm1.ogg` alone is 279 s |
 | S0.13 | ☐ | Security | Identity is a bare localStorage UUID. It is broadcast to every client, and the world never checks it against `world_members` (`player.ts:40`, `Menu.tsx:14`) |
 | S0.14 | ☐ | Security | `POST /worlds/:id/start` forks a process for any string, with no membership check, cap or rate limit (`lobby.ts:153`) |
 | S0.15 | ☐ | UX | No volume UI. `SoundManager.setVolume` has no caller and the Settings button is disabled (`Settings.tsx:171`) |
@@ -116,7 +116,7 @@ System:
 - `S2.7` ☐ 🟨 Looping fires all start at seek 0, so the 6 village torches comb-filter. Randomise seek and detune.
 - `S2.8` ☐ 🟨 `setVolume` doesn't update live loops (reel, charge). There's no master channel. `_load` JSON.parse is unguarded.
 - `S2.9` ☐ 🟨 Music queues loop with no gap, so the 58 s `drums_in_the_deep` repeats endlessly (`Sound.ts:188`).
-- `S2.10` ☐ ⬜ Music bypasses the bus and fades (`Sound.ts:175`). The listener is the player, not the camera. The charge sound doesn't follow the caster. `AmbientSoundConfig` has no `rate`, so calf, bull and goatling can't be pitched. Per-play allocations.
+- `S2.10` ☐ ⬜ ~~Music bypasses the bus and fades~~ (fixed in S0.12). The listener is the player, not the camera. The charge sound doesn't follow the caster. `AmbientSoundConfig` has no `rate`, so calf, bull and goatling can't be pitched. Per-play allocations.
 
 Entities with no voice at all:
 - `S2.11` ☐ Animals: fox, hare, gosling, sheep, lamb (no sheep asset exists), heron (attack also silent), chick, rat (attack also silent).
