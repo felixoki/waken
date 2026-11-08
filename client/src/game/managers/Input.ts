@@ -19,9 +19,7 @@ export class InputManager {
 
   constructor(scene: Scene) {
     this.scene = scene;
-    this.esc = scene.input.keyboard!.addKey(
-      Phaser.Input.Keyboard.KeyCodes.ESC,
-    );
+    this.esc = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     this.keys = this.bind(bindings.load());
 
     this.registerPointerEvents();
@@ -85,7 +83,10 @@ export class InputManager {
   }
 
   getReel(): number {
-    return (this.keys[Binding.RIGHT].isDown ? 1 : 0) - (this.keys[Binding.LEFT].isDown ? 1 : 0);
+    return (
+      (this.keys[Binding.RIGHT].isDown ? 1 : 0) -
+      (this.keys[Binding.LEFT].isDown ? 1 : 0)
+    );
   }
 
   getMoving(): Direction[] {
@@ -121,11 +122,15 @@ export class InputManager {
   }
 
   isJumping(): boolean {
-    return Phaser.Input.Keyboard.JustDown(this.keys[Binding.JUMP]) && !this.captured;
+    return (
+      Phaser.Input.Keyboard.JustDown(this.keys[Binding.JUMP]) && !this.captured
+    );
   }
 
   isRolling(): boolean {
-    return Phaser.Input.Keyboard.JustDown(this.keys[Binding.ROLL]) && !this.captured;
+    return (
+      Phaser.Input.Keyboard.JustDown(this.keys[Binding.ROLL]) && !this.captured
+    );
   }
 
   setTarget(target: { x: number; y: number }): void {

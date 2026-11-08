@@ -1,26 +1,35 @@
 import { useEffect, useState } from "react";
+import Phaser from "phaser";
 import { ChannelName, Event } from "@server/types";
 import { ArrowLeft } from "lucide-react";
 import EventBus from "../game/EventBus";
 import { loadVolume } from "../game/managers/Sound";
 import { MenuOverlay } from "./MenuOverlay";
+import { Binding, Bindings, bindings } from "../game/handlers/bindings";
 
 type View = "menu" | "controls" | "settings" | "credits";
 
-const controls = [
-  { action: "Forward", key: "W" },
-  { action: "Backward", key: "S" },
-  { action: "Left", key: "A" },
-  { action: "Right", key: "D" },
-  { action: "Run", key: "Shift" },
-  { action: "Jump", key: "Space" },
-  { action: "Roll", key: "C" },
-  { action: "Reel in fish", key: "A / D" },
-  { action: "Attack", key: "Left mouse" },
+const rebindable = [
+  { action: "Forward", binding: Binding.UP },
+  { action: "Backward", binding: Binding.DOWN },
+  { action: "Left", binding: Binding.LEFT },
+  { action: "Right", binding: Binding.RIGHT },
+  { action: "Run", binding: Binding.RUN },
+  { action: "Jump", binding: Binding.JUMP },
+  { action: "Roll", binding: Binding.ROLL },
+  { action: "Prev slot", binding: Binding.PREV },
+  { action: "Next slot", binding: Binding.NEXT },
+  { action: "Inventory", binding: Binding.INVENTORY },
+];
+
+const fixed = (current: Bindings) => [
+  {
+    action: "Reel in fish",
+    key: `${bindings.label(current[Binding.LEFT])} / ${bindings.label(current[Binding.RIGHT])}`,
+  },
+  { action: "Attack / interact", key: "Left mouse" },
+  { action: "Demolish", key: "Right mouse" },
   { action: "Aim", key: "Mouse" },
-  { action: "Prev slot", key: "Q" },
-  { action: "Next slot", key: "E" },
-  { action: "Inventory", key: "Tab" },
   { action: "Menu", key: "Esc" },
 ];
 
@@ -108,9 +117,11 @@ const credits = [
   },
 ];
 
-function Keycap({ label }: { label: string }) {
+function Keycap({ label, dim }: { label: string; dim?: boolean }) {
   return (
-    <kbd className="inline-flex items-center justify-center min-w-8 px-2.5 h-8 bg-linear-to-b from-neutral-600 to-neutral-700 rounded text-white/80 text-sm font-mono border border-neutral-800 shadow-[0_3px_0_0_#1a1a1a,0_4px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.06)]">
+    <kbd
+      className={`inline-flex items-center justify-center min-w-8 px-2.5 h-8 bg-linear-to-b from-neutral-600 to-neutral-700 rounded text-sm font-mono border border-neutral-800 shadow-[0_3px_0_0_#1a1a1a,0_4px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.06)] ${dim ? "text-white/40" : "text-white/80"}`}
+    >
       {label}
     </kbd>
   );
@@ -121,6 +132,14 @@ export function Settings() {
   const [closing, setClosing] = useState(false);
   const [view, setView] = useState<View>("menu");
   const [volume, setVolume] = useState(loadVolume);
+  const [keys, setKeys] = useState(bindings.load);
+  const [capturing, setCapturing] = useState<Binding | null>(null);
+
+  const apply = (next: Bindings) => {
+    bindings.save(next);
+    setKeys(next);
+    EventBus.emit(Event.BINDINGS_SET, next);
+  };
 
   useEffect(() => {
     const toggle = () => setOpen((prev) => !prev);
@@ -131,6 +150,26 @@ export function Settings() {
       EventBus.off(Event.MENU_TOGGLE, toggle);
     };
   }, []);
+
+  useEffect(() => {
+    if (!capturing) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (e.keyCode === Phaser.Input.Keyboard.KeyCodes.ESC)
+        return setCapturing(null);
+      if (!bindings.bindable(e.keyCode)) return;
+
+      apply(bindings.assign(keys, capturing, e.keyCode));
+      setCapturing(null);
+    };
+
+    window.addEventListener("keydown", onKey, true);
+
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [capturing, keys]);
 
   if (!open) return null;
 
@@ -144,6 +183,7 @@ export function Settings() {
         setOpen(false);
         setClosing(false);
         setView("menu");
+        setCapturing(null);
       }}
     >
       {view !== "menu" && (
@@ -199,15 +239,44 @@ export function Settings() {
 
       {view === "controls" && (
         <div className="flex flex-col items-center justify-center h-full gap-2">
-          {controls.map(({ action, key }) => (
+          {rebindable.map(({ action, binding }) => (
             <div
               key={action}
               className="flex items-center justify-between w-72"
             >
               <span className="text-white/50 text-base">{action}</span>
-              <Keycap label={key} />
+              <button
+                onClick={(e) => {
+                  e.currentTarget.blur();
+                  setCapturing(binding);
+                }}
+              >
+                <Keycap
+                  label={
+                    capturing === binding ? "…" : bindings.label(keys[binding])
+                  }
+                />
+              </button>
             </div>
           ))}
+          {fixed(keys).map(({ action, key }) => (
+            <div
+              key={action}
+              className="flex items-center justify-between w-72"
+            >
+              <span className="text-white/30 text-base">{action}</span>
+              <Keycap label={key} dim />
+            </div>
+          ))}
+          <button
+            onClick={() => {
+              setCapturing(null);
+              apply(bindings.defaults());
+            }}
+            className="mt-4 px-4 py-2 bg-white/10 rounded-md text-white/60 hover:text-white hover:bg-white/15 transition-colors text-base"
+          >
+            Reset to defaults
+          </button>
         </div>
       )}
 
