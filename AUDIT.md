@@ -169,7 +169,7 @@ Silent actions:
 - `S2.25` ☐ 🟨 Mined-out rock crumble (`Main.ts:460` only gates `FELLABLE`). Troll rock and mud throw and impact (`Throwing.ts`). Wanderer and grandmother dash. Grouse, villain and dragon flight.
 - `S2.26` ☐ ⬜ Harvest, crop mature, wither; hive swarm buzz; item drop; effect apply; miss and crit.
 - `S2.27` ◐ 2026-11-08 ⬜ All UI: panel open and close, hotbar switch, dialogue advance, menu clicks, location banner.
-  - `S2.27a` ◐ 2026-11-08 Tab inventory open plays Inventory Open 01, cut short on reopen. Adds `Event.SOUND_PLAY` so UI components can play sounds, and `SfxConfig.exclusive`.
+  - `S2.27a` ✅ 6a98aff Tab inventory open plays Inventory Open 01, cut short on reopen. Adds `Event.SOUND_PLAY` so UI components can play sounds, and `SfxConfig.exclusive`.
   - `S2.27b` ☐ Panel close; chest, crafter and improvements panels.
   - `S2.27c` ☐ Hotbar switch, dialogue advance, menu clicks, location banner.
 - `S2.28` ☐ ⬜ PICKUP, DRINK and COLLECT play before the server confirms, so they play even when the action is rejected.
