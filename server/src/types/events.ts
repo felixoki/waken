@@ -172,6 +172,7 @@ export enum Event {
   MENU_TOGGLE = "menu_toggle",
   TOOLTIP_TOGGLE = "tooltip_toggle",
   TRANSFORM_TOGGLE = "transform_toggle",
+  VOLUME_SET = "volume_set",
 
   /** Transitions */
   FADE_OUT = "fade_out",

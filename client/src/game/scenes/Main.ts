@@ -24,6 +24,7 @@ import {
   Effect as ActiveEffect,
   EffectName,
   Event,
+  ChannelName,
   SpellName,
   Slot,
   SlotType,
@@ -830,6 +831,13 @@ export class MainScene extends Phaser.Scene {
       Event.FISHING_WEIGH,
       (data: { entityId: string; action?: string }) => {
         this.managers.socket.emit(Event.FISHING_WEIGH, data);
+      },
+    );
+
+    EventBus.on(
+      Event.VOLUME_SET,
+      (data: { channel: ChannelName; value: number }) => {
+        this.managers.sound.setVolume(data.channel, data.value);
       },
     );
 

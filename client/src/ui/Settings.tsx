@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Event } from "@server/types";
+import { ChannelName, Event } from "@server/types";
 import { ArrowLeft } from "lucide-react";
 import EventBus from "../game/EventBus";
+import { loadVolume } from "../game/managers/Sound";
 import { MenuOverlay } from "./MenuOverlay";
 
-type View = "menu" | "controls" | "credits";
+type View = "menu" | "controls" | "settings" | "credits";
 
 const controls = [
   { action: "Forward", key: "W" },
@@ -21,6 +22,12 @@ const controls = [
   { action: "Next slot", key: "E" },
   { action: "Inventory", key: "Tab" },
   { action: "Menu", key: "Esc" },
+];
+
+const channels = [
+  { channel: ChannelName.MUSIC, label: "Music" },
+  { channel: ChannelName.AMBIENCE, label: "Ambience" },
+  { channel: ChannelName.SFX, label: "Effects" },
 ];
 
 const credits = [
@@ -113,6 +120,7 @@ export function Settings() {
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [view, setView] = useState<View>("menu");
+  const [volume, setVolume] = useState(loadVolume);
 
   useEffect(() => {
     const toggle = () => setOpen((prev) => !prev);
@@ -169,8 +177,8 @@ export function Settings() {
             Controls
           </button>
           <button
-            disabled
-            className="text-white/20 text-xl py-2 cursor-not-allowed"
+            onClick={() => setView("settings")}
+            className="text-white/60 text-xl hover:text-white transition-colors py-2"
           >
             Settings
           </button>
@@ -199,6 +207,31 @@ export function Settings() {
               <span className="text-white/50 text-base">{action}</span>
               <Keycap label={key} />
             </div>
+          ))}
+        </div>
+      )}
+
+      {view === "settings" && (
+        <div className="flex flex-col items-center justify-center h-full gap-4">
+          {channels.map(({ channel, label }) => (
+            <label
+              key={channel}
+              className="flex items-center justify-between w-72"
+            >
+              <span className="text-white/50 text-base">{label}</span>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={Math.round(volume[channel] * 100)}
+                onChange={(e) => {
+                  const value = Number(e.target.value) / 100;
+                  setVolume((prev) => ({ ...prev, [channel]: value }));
+                  EventBus.emit(Event.VOLUME_SET, { channel, value });
+                }}
+                className="w-40 accent-white/60"
+              />
+            </label>
           ))}
         </div>
       )}

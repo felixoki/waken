@@ -28,6 +28,12 @@ type Stream = {
 
 type Layer = { key: string; sound: Sound | null };
 
+export const loadVolume = (): Record<ChannelName, number> =>
+  JSON.parse(
+    localStorage.getItem("volume") ??
+      JSON.stringify({ music: 0.5, ambience: 0.5, sfx: 0.5 }),
+  );
+
 export class SoundManager {
   private scene: MainScene;
   private manager: Phaser.Sound.WebAudioSoundManager;
@@ -35,7 +41,7 @@ export class SoundManager {
   private current: Stream | null = null;
   private layers: Map<AmbienceName, Layer> = new Map();
   private domains: Map<AmbienceName, AmbienceDomain> = new Map();
-  private volume: { music: number; ambience: number; sfx: number };
+  private volume: Record<ChannelName, number>;
   private queue: { music: MusicName[]; index: number } = {
     music: [],
     index: 0,
@@ -43,7 +49,7 @@ export class SoundManager {
 
   constructor(scene: MainScene) {
     this.scene = scene;
-    this.volume = this._load();
+    this.volume = loadVolume();
     this.manager = scene.sound as Phaser.Sound.WebAudioSoundManager;
     this.bus = this.manager.context.createGain();
     this.bus.gain.value = 0;
@@ -385,13 +391,6 @@ export class SoundManager {
     const pan = Phaser.Math.Clamp(dx / SFX_FALLOFF_FAR, -1, 1) * SFX_MAX_PAN;
 
     return { volume, pan };
-  }
-
-  private _load() {
-    return JSON.parse(
-      localStorage.getItem("volume") ??
-        JSON.stringify({ music: 0.5, ambience: 0.5, sfx: 0.5 }),
-    );
   }
 
   private _save() {
