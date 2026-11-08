@@ -150,7 +150,7 @@ Entities that borrow another's sound:
   - `S2.18c` ☐ eating plays DRINK
   - `S2.18d` ☐ every transition plays DOOR: well, ladder, portal, caves
   - `S2.18e` ◐ 2026-11-08 ruins break with `MINE`
-  - `S2.18f` ◐ 2026-11-08 bowls break with `WOOD_BREAK`; the bowl is a clay planter, so it now plays `VASES_BREAK`
+  - `S2.18f` ✅ 26e1b6c bowls break with `WOOD_BREAK`; the bowl is a clay planter, so it now plays `VASES_BREAK`
 
 Silent actions:
 - `S2.19` ◐ 2026-11-08 🟧 Player death, inventory loss, revive.
