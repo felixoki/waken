@@ -23,3 +23,11 @@ License: commercial license from the asset pack; credit to pegonthetrack & ELVGa
 | `client/public/assets/sounds/misc/vases_break1.ogg`, `vases_break2.ogg`, `vases_break3.ogg` | `GS2_Vases_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
 | `client/public/assets/sounds/misc/wood_break1.ogg`, `wood_break2.ogg`, `wood_break3.ogg` | `GS2_Wood_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
 | `client/public/assets/sounds/misc/ruin_break.ogg` | `GS1_Spell_EarthPunch.wav` (Game Sound Effects 1) | Mixed to mono, re-encoded as Opus |
+
+**Nature Ambient Pack Vol 1** (author and license still to be recorded).
+
+| File in game | Original | Changes |
+|---|---|---|
+| `client/public/assets/sounds/ambience/rain.ogg` | `AMB_Nature Pack Vol 1_Weather_Light Rain.mp3` | Re-encoded |
+| `client/public/assets/sounds/ambience/storm2.ogg` | `AMB_Nature Pack Vol 1_Weather_Heavy Thunderstorm.mp3` | Re-encoded |
+| `client/public/assets/sounds/ambience/fog.ogg` | `AMB_Nature Pack Vol 1_Weather_Fog.mp3` | +3.7 dB, re-encoded as Opus |

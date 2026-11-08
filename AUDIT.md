@@ -176,7 +176,10 @@ Silent actions:
 - `S2.28` ☐ ⬜ DRINK and COLLECT play before the server confirms, so they play even when the action is rejected. (PICKUP waits for `ENTITY_PICKED` since S1.5.)
 
 Maps:
-- `S2.29` ☐ 🟧 Isles, Nether and Cave have no music and no ambience. `CAVE_DRIP` and `DUNGEON_DRONE` from `plans/sound.md` were never added. Dungeon and temple share `CANALS`.
+- `S2.29` ◐ 2026-11-08 🟧 Isles, Nether and Cave have no music and no ambience. `CAVE_DRIP` and `DUNGEON_DRONE` from `plans/sound.md` were never added. Dungeon and temple share `CANALS`.
+  - `S2.29a` ◐ 2026-11-08 Cave ambience: Fog from the Nature Ambient Pack.
+  - `S2.29b` ☐ Isles and Nether ambience (the Nature pack has Waterfall). Dungeon and temple still share `CANALS`.
+  - `S2.29c` ☐ Music for Isles, Nether and Cave.
 - `S2.30` ☐ 🟨 All 9 interiors are silent: music stops on entry. The tavern has no crowd, fire or music.
 - `S2.31` ☐ 🟨 Swamp and mountain bands inherit forest music and birds (birds over snow). `location.ts:38` already detects bands, so it could carry a sound override.
 - `S2.32` ☐ 🟨 Birds play at night. There are no crickets or owls. Cloudy weather has no wind. Snowfall is silent, because rain is suppressed in frost and nothing replaces it. Indoor rain cuts out instead of being muffled.

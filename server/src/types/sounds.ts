@@ -97,6 +97,7 @@ export enum AmbienceName {
   STORM = "storm",
   BIRDS = "birds",
   CANALS = "canals",
+  FOG = "fog",
 }
 
 export enum AmbienceDomain {

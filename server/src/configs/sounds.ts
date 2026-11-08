@@ -480,5 +480,6 @@ export const sounds = {
       variants: ["birds1", "birds2", "birds3"],
     },
     [AmbienceName.CANALS]: { volume: 1.2 },
+    [AmbienceName.FOG]: { volume: 1.2 },
   },
 };

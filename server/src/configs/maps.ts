@@ -1733,6 +1733,9 @@ export const maps: Record<MapName, MapConfig> = {
       vignette: { radius: 0.3, strength: 0.6 },
       eclipse: { radius: 0.34, softness: 0.3, strength: 0.92 },
     },
+    sound: {
+      ambience: [AmbienceName.FOG],
+    },
     spritesheets: [
       ...player,
       ...entities,
