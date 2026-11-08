@@ -27,7 +27,7 @@ import {
   TEMPLE_ROOM_FURNISH_CHANCE,
 } from "../globals";
 
-const CHEST_LOOT: (Item & { chance: number })[] = [
+export const CHEST_LOOT: (Item & { chance: number })[] = [
   { name: EntityName.WOOD, quantity: 5, stackable: true, chance: 0.75 },
   { name: EntityName.IRON1, quantity: 3, stackable: true, chance: 0.25 },
   { name: EntityName.QUARTZ1, quantity: 5, stackable: true, chance: 0.5 },
@@ -54,6 +54,7 @@ const CHEST_LOOT: (Item & { chance: number })[] = [
 
   { name: EntityName.CARROT_SEED, quantity: 3, stackable: true, chance: 0.2 },
   { name: EntityName.CABBAGE_SEED, quantity: 3, stackable: true, chance: 0.2 },
+  { name: EntityName.TOMATO_SEED, quantity: 2, stackable: true, chance: 0.12 },
   { name: EntityName.WHEAT_SEED, quantity: 4, stackable: true, chance: 0.2 },
   { name: EntityName.BEAN_SEED, quantity: 3, stackable: true, chance: 0.12 },
   { name: EntityName.GRAPE_SEED, quantity: 2, stackable: true, chance: 0.06 },
