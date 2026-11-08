@@ -474,7 +474,7 @@ Electron:
 - `S7.13` ☐ ⬜ No auto-update and no Steam integration at all. Presence only, not a request.
 
 Legal and meta:
-- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and lists the Little Robot Sound Factory library (CC BY 3.0) and the ElvGames break sounds; the rest of the shipped sounds and all art are still unrecorded. Get a written rights transfer for the Fiverr art.
+- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and lists the Little Robot Sound Factory library (CC BY 3.0), the ElvGames break sounds and the JC Sounds Nature Ambient Pack (CC BY 4.0); the rest of the shipped sounds and all art are still unrecorded. Get a written rights transfer for the Fiverr art.
 - `S7.15` ☐ 🟨 No privacy policy (player IDs and IPs are stored).
 
 Tooling and repo:

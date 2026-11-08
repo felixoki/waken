@@ -24,7 +24,9 @@ License: commercial license from the asset pack; credit to pegonthetrack & ELVGa
 | `client/public/assets/sounds/misc/wood_break1.ogg`, `wood_break2.ogg`, `wood_break3.ogg` | `GS2_Wood_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
 | `client/public/assets/sounds/misc/ruin_break.ogg` | `GS1_Spell_EarthPunch.wav` (Game Sound Effects 1) | Mixed to mono, re-encoded as Opus |
 
-**Nature Ambient Pack Vol 1** (author and license still to be recorded).
+**Nature Ambient Pack Vol 1** by JC Sounds.
+Source: https://jcsounds.itch.io/natureambientsfxvol1 and https://opengameart.org/node/180349
+License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ (attribution: "Credit: JC Sounds")
 
 | File in game | Original | Changes |
 |---|---|---|
