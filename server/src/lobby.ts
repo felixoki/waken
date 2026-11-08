@@ -7,7 +7,11 @@ import { LOBBY_PORT, DATABASE_URL, REDIS_URL } from "./server.js";
 import { randomUUID } from "crypto";
 import { pg } from "./db/postgres.js";
 import { migrate } from "./db/migrate.js";
-import { HEARTBEAT_INTERVAL, WORLD_INACTIVITY_TIMEOUT } from "./globals.js";
+import {
+  HEARTBEAT_INTERVAL,
+  MAX_WORLDS,
+  WORLD_INACTIVITY_TIMEOUT,
+} from "./globals.js";
 import { tryCatch } from "./utils/tryCatch.js";
 
 type World = {
@@ -47,12 +51,19 @@ const getEntryPath = () => {
   return path.join(__dirname, `index.${ext}`);
 };
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const start = (id: string) => {
   const existing = running.get(id);
 
   if (existing) {
     existing.lastActiveAt = Date.now();
     return existing;
+  }
+
+  if (running.size >= MAX_WORLDS) {
+    console.warn("World cap reached", { id, running: running.size });
+    return null;
   }
 
   const port = allocate();
@@ -101,6 +112,8 @@ app.post("/worlds", async (req, res) => {
   const name = String(req.body.name || "default");
 
   if (!playerId) return res.status(400).json({ error: "Missing playerId" });
+  if (running.size >= MAX_WORLDS)
+    return res.status(503).json({ error: "Server full" });
 
   const worldId = randomUUID();
 
@@ -123,6 +136,7 @@ app.post("/worlds", async (req, res) => {
   }
 
   const world = start(worldId);
+  if (!world) return res.status(503).json({ error: "Server full" });
 
   return res.json({ worldId, host: host(req), port: world.port });
 });
@@ -152,7 +166,26 @@ app.get("/worlds", async (req, res) => {
 
 app.post("/worlds/:id/start", async (req, res) => {
   const worldId = req.params.id;
+
+  if (!running.has(worldId)) {
+    if (!UUID.test(worldId))
+      return res.status(404).json({ error: "World not found" });
+
+    const { data: result, error } = await tryCatch(
+      pg.query("SELECT 1 FROM worlds WHERE id = $1", [worldId]),
+    );
+
+    if (error) {
+      console.error("POST /worlds/:id/start failed:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+
+    if (result.rowCount === 0)
+      return res.status(404).json({ error: "World not found" });
+  }
+
   const world = start(worldId);
+  if (!world) return res.status(503).json({ error: "Server full" });
 
   res.json({ worldId, host: host(req), port: world.port });
 });
@@ -177,6 +210,7 @@ app.post("/worlds/:id/join", async (req, res) => {
   }
 
   const world = start(worldId);
+  if (!world) return res.status(503).json({ error: "Server full" });
 
   res.json({ worldId, host: host(req), port: world.port });
 });

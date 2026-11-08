@@ -3,6 +3,7 @@ import { EntityName, MapName, TimePhase } from "./types/index.js";
 /** Server */
 export const HEARTBEAT_INTERVAL = 30_000;
 export const WORLD_INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+export const MAX_WORLDS = 16;
 
 /** World */
 export const GAME_WIDTH = 640;
