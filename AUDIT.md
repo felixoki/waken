@@ -279,23 +279,23 @@ Persistence (rule: save and load in the same change):
 - `S4.17` ☐ ⬜ The autosave interval can overlap a slow save. A save with zero entities re-adds the tmx entities.
 
 Authority (trusting the client):
-- `S4.18` ☐ 🟥 `flee` and `wither` delete any entity by id (`entity.ts:218`, `farming.ts:106`).
-- `S4.19` ☐ 🟥 Pickup has no pickable, range or map check ✔ (`entity.ts:114`).
-- `S4.20` ☐ 🟥 `hit` trusts the attacker, the damage config and the target, so a client can one-shot the Grandmother or heal with negative damage (`combat.ts:369`).
-- `S4.21` ☐ 🟧 Input is fully trusted: teleport, spoofing another `id`, relaying raw data (`player.ts:213`).
-- `S4.22` ☐ 🟧 `transition` accepts any target with no door check, so a solo player can enter party maps (`player.ts:374`).
-- `S4.23` ☐ 🟧 The sublevel `from` id isn't validated (`sublevel.ts:27`).
-- `S4.24` ☐ 🟧 Harvest has no growth check: plant and harvest immediately (`farming.ts:46`).
-- `S4.25` ☐ 🟧 The client picks the fish species and weight (`fishing.ts:27`).
-- `S4.26` ☐ 🟧 `learn` doesn't check for a scroll (`spell.ts:18`).
-- `S4.27` ☐ 🟧 Dialogue accepts any `nodeId`, so a client can jump straight to reward nodes (`dialogue.ts:110`).
-- `S4.28` ☐ 🟧 The slot `type` comes from the client, which can corrupt saves or delete items (`storage.ts:342`).
-- `S4.29` ☐ 🟨 Storage open has no range or STORAGE check.
-- `S4.30` ☐ 🟨 These events have no authority check: ENTITY_INPUT, SPOTTED, WATER, GROW, MATURE, LAY.
-- `S4.31` ☐ 🟨 Extract has no tool, range or cooldown, and spawns one entity per unit.
-- `S4.32` ☐ 🟨 Build place has no range or collision check. Capture, feed and milk have no range check.
-- `S4.33` ☐ 🟨 `isAuthority` is computed for VILLAGE even when the player spawns elsewhere. (The concurrent `PLAYER_CREATE` ghost was dropped: a rare race, to be fixed only if it shows up in testing.)
-- `S4.34` ☐ ⬜ Upgrade needs no created player. Encounter start works on any NPC. No rate limit; `maxHttpBufferSize` is 1 MB.
+- `S4.18` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟥 `flee` and `wither` delete any entity by id (`entity.ts:218`, `farming.ts:106`).
+- `S4.19` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟥 Pickup has no pickable, range or map check ✔ (`entity.ts:114`).
+- `S4.20` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟥 `hit` trusts the attacker, the damage config and the target, so a client can one-shot the Grandmother or heal with negative damage (`combat.ts:369`).
+- `S4.21` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 Input is fully trusted: teleport, spoofing another `id`, relaying raw data (`player.ts:213`).
+- `S4.22` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 `transition` accepts any target with no door check, so a solo player can enter party maps (`player.ts:374`).
+- `S4.23` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 The sublevel `from` id isn't validated (`sublevel.ts:27`).
+- `S4.24` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 Harvest has no growth check: plant and harvest immediately (`farming.ts:46`).
+- `S4.25` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 The client picks the fish species and weight (`fishing.ts:27`).
+- `S4.26` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 `learn` doesn't check for a scroll (`spell.ts:18`).
+- `S4.27` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 Dialogue accepts any `nodeId`, so a client can jump straight to reward nodes (`dialogue.ts:110`).
+- `S4.28` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟧 The slot `type` comes from the client, which can corrupt saves or delete items (`storage.ts:342`).
+- `S4.29` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟨 Storage open has no range or STORAGE check.
+- `S4.30` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟨 These events have no authority check: ENTITY_INPUT, SPOTTED, WATER, GROW, MATURE, LAY.
+- `S4.31` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟨 Extract has no tool, range or cooldown, and spawns one entity per unit.
+- `S4.32` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway 🟨 Build place has no range or collision check. Capture, feed and milk have no range check.
+- `S4.33` ◐ 2026-11-08 🟨 `isAuthority` is computed for VILLAGE even when the player spawns elsewhere. (The concurrent `PLAYER_CREATE` ghost was dropped: a rare race, to be fixed only if it shows up in testing.)
+- `S4.34` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway ⬜ Upgrade needs no created player. Encounter start works on any NPC. No rate limit; `maxHttpBufferSize` is 1 MB.
 
 Performance:
 - `S4.35` ☐ 🟧 Storage `drive` is O(n²) every second (`storage.ts:204`). The schedule scan runs every tick while a villager is locked (`schedule.ts:18`).
