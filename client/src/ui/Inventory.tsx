@@ -9,6 +9,7 @@ import {
   Item as ItemInterface,
   PartyStatus,
   SlotZone,
+  SoundName,
   SpellName,
 } from "@server/types";
 import EventBus from "../game/EventBus";
@@ -48,6 +49,9 @@ export function Inventory() {
       isOpenRef.current = !isOpenRef.current;
       setIsOpen(isOpenRef.current);
       setMenu(null);
+
+      if (isOpenRef.current)
+        EventBus.emit(Event.SOUND_PLAY, SoundName.INVENTORY_OPEN);
     };
 
     const transform = (active: boolean) => {

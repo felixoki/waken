@@ -359,6 +359,10 @@ export class MainScene extends Phaser.Scene {
       this.managers.sound.fade.out();
     });
 
+    EventBus.on(Event.SOUND_PLAY, (name: SoundName) => {
+      this.managers.sound.play.sfx(name);
+    });
+
     EventBus.on(Event.FADE_IN, () => {
       this.managers.sound.fade.in();
     });

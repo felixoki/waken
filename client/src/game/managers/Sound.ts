@@ -90,6 +90,8 @@ export class SoundManager {
         ? config.variants[Math.floor(Math.random() * config.variants.length)]
         : name;
 
+      if (config.exclusive) this.manager.stopByKey(key);
+
       const play = () =>
         this.manager.play(key, {
           volume,
