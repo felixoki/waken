@@ -36,3 +36,4 @@ export * from "./story.js";
 export * from "./schedule.js";
 export * from "./villain.js";
 export * from "./zones.js";
+export * from "./notices.js";

@@ -9,6 +9,7 @@ import {
   FactName,
   Item,
   MapName,
+  NoticeKind,
   PlayerConfig,
   SlotType,
   SpotName,
@@ -184,6 +185,14 @@ export const story = {
 
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
     socket.emit(Event.HOTBAR_SYNC, player.hotbar);
+
+    const taken = quantity - remaining;
+    if (taken > 0)
+      handlers.broadcast.notice(socket, {
+        kind: NoticeKind.TAKEN,
+        name,
+        quantity: taken,
+      });
   },
 
   errand: {
@@ -341,6 +350,7 @@ export const story = {
             ],
             socket,
             world,
+            villager,
           );
           break;
       }

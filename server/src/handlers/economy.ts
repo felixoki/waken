@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { World } from "../World.js";
-import { ImprovementName } from "../types/index.js";
+import { ImprovementName, NoticeKind } from "../types/index.js";
 import { configs } from "../configs/index.js";
 import { handlers } from "./index.js";
 
@@ -20,6 +20,7 @@ export const economy = {
 
     world.economy.upgradeTier();
     handlers.broadcast.store(io, world);
+    handlers.broadcast.notice(io, { kind: NoticeKind.TIER, tier: nextTier });
   },
 
   improve: (data: { name: ImprovementName }, io: Server, world: World) => {
@@ -37,5 +38,9 @@ export const economy = {
 
     world.economy.improve(data.name);
     handlers.broadcast.store(io, world);
+    handlers.broadcast.notice(io, {
+      kind: NoticeKind.IMPROVEMENT,
+      name: data.name,
+    });
   },
 };

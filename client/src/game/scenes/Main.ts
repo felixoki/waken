@@ -14,6 +14,7 @@ import {
   MapName,
   ComponentName,
   Item,
+  Notice,
   Transition,
   Spot,
   Party,
@@ -962,6 +963,10 @@ export class MainScene extends Phaser.Scene {
      */
     this.managers.socket.on(Event.ECONOMY_UPDATE, (data: EconomySnapshot) => {
       EventBus.emit(Event.ECONOMY_UPDATE, data);
+    });
+
+    this.managers.socket.on(Event.NOTIFY, (notice: Notice) => {
+      EventBus.emit(Event.NOTIFY, notice);
     });
 
     this.managers.socket.on(

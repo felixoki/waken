@@ -6,6 +6,7 @@ import {
   EntityConfig,
   EntityName,
   Event,
+  NoticeKind,
   SlotType,
   StoryFlag,
   TameState,
@@ -465,6 +466,11 @@ export const taming = {
 
     player.inventory = handlers.storage.add(player.inventory, item);
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.broadcast.notice(socket, {
+      kind: NoticeKind.ITEM,
+      name: item.name,
+      quantity: item.quantity,
+    });
 
     world.entities.update(target.id, {
       tame: { ...target.tame, milkedAt: now },

@@ -7,6 +7,7 @@ import {
   Event,
   Input,
   Item,
+  NoticeKind,
   PickableConfig,
   PlayerConfig,
   SlotType,
@@ -134,6 +135,12 @@ export const entity = {
 
     player.inventory = handlers.storage.add(player.inventory, item);
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.broadcast.notice(socket, {
+      kind: NoticeKind.ITEM,
+      name: item.name,
+      quantity: item.quantity,
+      soul: item.soul,
+    });
 
     if (world.relics.has(entity.name))
       world.relics.claim(entity.name, player.id);

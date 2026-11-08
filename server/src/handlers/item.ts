@@ -7,6 +7,7 @@ import {
   FactName,
   ImprovementName,
   Item,
+  NoticeKind,
   PartyStatus,
   PlayerConfig,
 } from "../types";
@@ -62,6 +63,7 @@ export const item = {
 
     player.inventory = inventory;
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.broadcast.notice(socket, { kind: NoticeKind.LEDGER, total });
     handlers.broadcast.economy(io, world);
     handlers.broadcast.store(io, world);
 
@@ -172,6 +174,7 @@ export const item = {
     entries: Item[],
     socket: Socket,
     world: World,
+    from?: EntityName,
   ) => {
     for (const entry of entries) {
       const fit = Math.min(
@@ -179,11 +182,19 @@ export const item = {
         handlers.storage.room(player.inventory, entry),
       );
 
-      if (fit > 0)
+      if (fit > 0) {
         player.inventory = handlers.storage.add(player.inventory, {
           ...entry,
           quantity: fit,
         });
+        handlers.broadcast.notice(socket, {
+          kind: NoticeKind.ITEM,
+          name: entry.name,
+          quantity: fit,
+          soul: entry.soul,
+          from,
+        });
+      }
 
       if (entry.quantity > fit)
         item.spill(

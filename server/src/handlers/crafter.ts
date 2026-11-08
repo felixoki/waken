@@ -56,6 +56,7 @@ export const crafter = {
       [{ name: data.output, quantity: recipe.quantity, stackable }],
       socket,
       world,
+      data.crafter,
     );
     handlers.broadcast.store(io, world);
     handlers.broadcast.economy(io, world);

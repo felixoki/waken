@@ -9,6 +9,7 @@ import {
   Event,
   Item,
   Modifier,
+  NoticeKind,
   Slot,
   SlotType,
   Input,
@@ -116,6 +117,11 @@ export const player = {
 
       world.players.add(player.id, player);
       socket.join(`map:${player.map}`);
+      handlers.broadcast.notice(socket.broadcast, {
+        kind: NoticeKind.PLAYER,
+        id: player.id,
+        joined: true,
+      });
 
       if (isAuthority) handlers.authority.assign(io, world, player.map, player.id);
     }
@@ -204,6 +210,11 @@ export const player = {
 
     const wasAuthority = world.authority.get(player.map) === player.id;
     world.players.remove(player.id);
+    handlers.broadcast.notice(socket.broadcast, {
+      kind: NoticeKind.PLAYER,
+      id: player.id,
+      joined: false,
+    });
 
     if (wasAuthority) {
       const candidates = world.players.getByMap(player.map);

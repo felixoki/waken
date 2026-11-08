@@ -789,6 +789,12 @@ export const SHADOW_CULL = 48;
 export const LOCATION_MARGIN = 4;
 export const LOCATION_HOLD = 2500;
 
+/** Toasts */
+
+export const TOAST_HOLD = 3000;
+export const TOAST_FADE = 300;
+export const TOAST_MAX = 5;
+
 /** Story */
 
 export const BIG_HAND_IN = 50;

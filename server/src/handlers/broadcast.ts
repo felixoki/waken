@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { Event, MapName } from "../types";
+import { Event, MapName, Notice } from "../types";
 import { World } from "../World";
 import { configs } from "../configs";
 
@@ -83,5 +83,12 @@ export const broadcast = {
 
   store: (io: Server, world: World) => {
     io.emit(Event.STORE_SYNC, world.items.snapshot());
+  },
+
+  notice: (
+    target: { emit: (event: Event, notice: Notice) => unknown },
+    notice: Notice,
+  ) => {
+    target.emit(Event.NOTIFY, notice);
   },
 };

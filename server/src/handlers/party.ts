@@ -5,6 +5,7 @@ import {
   EntityConfig,
   Event,
   MapName,
+  NoticeKind,
   Party,
   PartyStatus,
   PlayerConfig,
@@ -174,6 +175,11 @@ export const party = {
 
     socket.join(`party:${id}`);
     socket.to(`party:${id}`).emit(Event.PARTY_UPDATE, data);
+    handlers.broadcast.notice(socket.to(`party:${id}`), {
+      kind: NoticeKind.PARTY,
+      id: player.id,
+      joined: true,
+    });
     socket.emit(Event.PARTY_UPDATE, data);
 
     party.broadcast(socket, world);
@@ -191,6 +197,11 @@ export const party = {
 
     socket.leave(`party:${data.id}`);
     socket.emit(Event.PARTY_LEAVE);
+    handlers.broadcast.notice(socket.to(`party:${data.id}`), {
+      kind: NoticeKind.PARTY,
+      id: player.id,
+      joined: false,
+    });
 
     if (
       data.status === PartyStatus.IN_GAME &&

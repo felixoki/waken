@@ -21,6 +21,7 @@ import { Storage } from "./ui/Storage";
 import { Crafter } from "./ui/Crafter";
 import { Improvements } from "./ui/Improvements";
 import { Effects } from "./ui/Effects";
+import { Toasts } from "./ui/Toasts";
 import { DamageNumbers } from "./ui/DamageNumbers";
 import { Settings } from "./ui/Settings";
 import { Provider } from "./ui/Provider";
@@ -80,6 +81,7 @@ function App() {
       <Fishing />
       <Party />
       <div className="fixed bottom-0 left-0 p-4 flex flex-col gap-4">
+        <Toasts />
         <Effects />
         <Stats />
       </div>

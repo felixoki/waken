@@ -4,6 +4,7 @@ import {
   EffectName,
   EntityName,
   Event,
+  NoticeKind,
   PlayerConfig,
   Buff,
   SpellName,
@@ -31,6 +32,10 @@ export const spell = {
     });
 
     socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    handlers.broadcast.notice(socket, {
+      kind: NoticeKind.SPELL,
+      name: data.spell,
+    });
   },
 
   cast: (

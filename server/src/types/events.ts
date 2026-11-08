@@ -179,6 +179,7 @@ export enum Event {
   FADE_OUT_DONE = "fade_out_done",
   FADE_IN = "fade_in",
   LOCATION = "location",
+  NOTIFY = "notify",
   CHART = "chart",
   MAP_READY = "map_ready",
 
