@@ -50,8 +50,10 @@ export function Inventory() {
       setIsOpen(isOpenRef.current);
       setMenu(null);
 
-      if (isOpenRef.current)
-        EventBus.emit(Event.SOUND_PLAY, SoundName.INVENTORY_OPEN);
+      EventBus.emit(
+        Event.SOUND_PLAY,
+        isOpenRef.current ? SoundName.INVENTORY_OPEN : SoundName.INVENTORY_CLOSE,
+      );
     };
 
     const transform = (active: boolean) => {

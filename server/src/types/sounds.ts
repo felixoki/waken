@@ -48,6 +48,7 @@ export enum SoundName {
   COLLECT = "collect",
   LOSE = "lose",
   INVENTORY_OPEN = "inventory_open",
+  INVENTORY_CLOSE = "inventory_close",
   TRAP = "trap",
   DOOR = "door",
   DRINK = "drink",
@@ -118,6 +119,7 @@ export interface SfxConfig {
   folder: string;
   variants?: string[];
   exclusive?: boolean;
+  stops?: SoundName[];
 }
 
 export interface AmbientSoundConfig {

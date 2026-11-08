@@ -434,6 +434,12 @@ export const sounds = {
       folder: "misc",
       exclusive: true,
     },
+    [SoundName.INVENTORY_CLOSE]: {
+      volume: 0.45,
+      folder: "misc",
+      exclusive: true,
+      stops: [SoundName.INVENTORY_OPEN],
+    },
     [SoundName.TRAP]: {
       volume: 0.15,
       folder: "misc",

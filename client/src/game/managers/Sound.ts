@@ -92,6 +92,13 @@ export class SoundManager {
 
       if (config.exclusive) this.manager.stopByKey(key);
 
+      for (const stopped of config.stops ?? []) {
+        const other: SfxConfig | undefined =
+          configs.sounds.sfx[stopped as keyof typeof configs.sounds.sfx];
+        for (const variant of other?.variants ?? [stopped])
+          this.manager.stopByKey(variant);
+      }
+
       const play = () =>
         this.manager.play(key, {
           volume,

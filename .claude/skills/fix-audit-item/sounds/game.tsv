@@ -158,6 +158,7 @@ misc/hit3.ogg	misc	ogg	vorbis	0.86	2	44100	-0.7	-26.7	1790840852
 misc/hit4.ogg	misc	ogg	vorbis	0.86	2	44100	-0.1	-22.3	1790840852
 misc/hit5.ogg	misc	ogg	vorbis	1.07	2	44100	-1.1	-25.1	1790840852
 misc/hit6.ogg	misc	ogg	vorbis	1.07	2	44100	-0.6	-26.2	1790840852
+misc/inventory_close.ogg	misc	ogg	opus	0.41	1	48000	0.0	-23.8	1794169267
 misc/inventory_open.ogg	misc	ogg	opus	1.83	1	48000	0.0	-23.4	1794169133
 misc/lose.ogg	misc	ogg	opus	6.01	1	48000	0.0	-12.6	1794168893
 misc/mine1.ogg	misc	ogg	vorbis	1.71	2	44100	-0.6	-32.9	1790839519
