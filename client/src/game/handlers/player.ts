@@ -18,6 +18,7 @@ import { LightComponent } from "../components/Light";
 import { TrailComponent } from "../components/Trail";
 import { StorageComponent } from "../components/Storage";
 import type { MainScene } from "../scenes/Main";
+import type { Scene } from "../scenes/Scene";
 import { Entity } from "../Entity";
 import { Factory } from "../factory/Factory";
 import { handlers } from ".";
@@ -162,6 +163,7 @@ export const player = {
     }
 
     handlers.sound.sync(main, data.map as MapName);
+    handlers.location.reset(main.scene.get(data.map) as Scene | null);
   },
 
   lantern: {

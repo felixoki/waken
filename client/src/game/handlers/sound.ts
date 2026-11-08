@@ -1,9 +1,10 @@
 import { AmbienceDomain, MapName } from "@server/types";
+import type { LocationBand } from "@server/types/generation";
 import { configs } from "@server/configs";
 import type { MainScene } from "../scenes/Main";
 
 export const sound = {
-  sync: (main: MainScene, map: MapName): void => {
+  sync: (main: MainScene, map: MapName, band?: LocationBand): void => {
     const config = configs.maps[map]?.sound;
 
     const currentQueue = main.managers.sound.getActiveMusic();
@@ -19,7 +20,7 @@ export const sound = {
       else main.managers.sound.stop.music();
     }
 
-    const target = new Set(config?.ambience ?? []);
+    const target = new Set(band?.ambience ?? config?.ambience ?? []);
     const active = main.managers.sound.getActiveAmbience(AmbienceDomain.MAP);
 
     active.forEach((name) => {

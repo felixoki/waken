@@ -1,4 +1,4 @@
-import { EntityName, FishName, Item, SurfaceName } from "../types";
+import { AmbienceName, EntityName, FishName, Item, SurfaceName } from "../types";
 import {
   BiomeConfig,
   BiomeName,
@@ -317,6 +317,7 @@ export const forest: BiomeConfig = {
 export const swamp: BiomeConfig = {
   id: BiomeName.SWAMP,
   label: "Swamp",
+  ambience: [AmbienceName.SWAMP],
   width: 256,
   height: 128,
   tileWidth: 16,
@@ -1027,6 +1028,7 @@ export const cave: BiomeConfig = {
 export const mountain: BiomeConfig = {
   id: BiomeName.MOUNTAIN,
   label: "Mountain",
+  ambience: [AmbienceName.MOUNTAIN_PEAK],
   width: 256,
   height: 160,
   tileWidth: 16,

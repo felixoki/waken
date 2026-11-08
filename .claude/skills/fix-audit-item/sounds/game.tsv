@@ -4,10 +4,12 @@ ambience/birds2.ogg	ambience	ogg	opus	90.05	2	48000	-0.0	-29.0	1783860102
 ambience/birds3.ogg	ambience	ogg	opus	60.05	2	48000	0.0	-22.9	1783860103
 ambience/canals.ogg	ambience	ogg	flac	55.43	2	44100	-8.7	-22.7	1783929838
 ambience/fog.ogg	ambience	ogg	opus	78.01	2	48000	-4.7	-22.7	1794171900
+ambience/mountain_peak.ogg	ambience	ogg	opus	78.01	2	48000	-2.1	-26.0	1794172210
 ambience/people1.ogg	ambience	ogg	vorbis	60.00	2	48000	-9.8	-27.4	1786451085
 ambience/rain.ogg	ambience	ogg	vorbis	78.00	2	44100	-11.5	-40.4	1787745183
 ambience/storm1.ogg	ambience	ogg	vorbis	278.77	2	44100	-0.3	-22.6	1787744438
 ambience/storm2.ogg	ambience	ogg	vorbis	78.00	2	44100	-5.4	-29.0	1787745183
+ambience/swamp.ogg	ambience	ogg	opus	78.01	2	48000	-5.4	-26.0	1794172209
 animals/bear_idle.ogg	animals	ogg	flac	0.71	2	44100	-6.8	-22.0	1783944500
 animals/bear_slash.ogg	animals	ogg	flac	1.10	2	44100	-2.2	-13.7	1783944500
 animals/boar_idle1.ogg	animals	ogg	opus	0.34	2	48000	-3.5	-23.1	1781721007

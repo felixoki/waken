@@ -1499,6 +1499,7 @@ export class MapBuilder {
               label: config.label,
               y,
               height: config.height,
+              ambience: config.ambience,
             })),
           ),
         },

@@ -5,6 +5,7 @@ import type { LocationBand } from "@server/types/generation";
 import EventBus from "../EventBus";
 import type { Scene } from "../scenes/Scene";
 import type { MainScene } from "../scenes/Main";
+import { sound } from "./sound";
 
 interface TiledProperty {
   name: string;
@@ -35,12 +36,24 @@ export const location = {
     return bands.find((b) => row >= b.y && row < b.y + b.height);
   },
 
+  reset: (scene: Scene | null): void => {
+    if (!scene) return;
+
+    scene.row = -1;
+    scene.band = undefined;
+  },
+
   update: (scene: Scene, main: MainScene, y: number): void => {
     const row = Math.floor(y / scene.tileManager.map.tileHeight);
 
     if (row !== scene.row) {
       scene.row = row;
-      scene.band = location.band(scene.bands, row, scene.band);
+
+      const band = location.band(scene.bands, row, scene.band);
+      if (band !== scene.band) {
+        scene.band = band;
+        sound.sync(main, scene.scene.key as MapName, band);
+      }
     }
 
     const label =

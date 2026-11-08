@@ -33,3 +33,5 @@ License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ (attribution: "
 | `client/public/assets/sounds/ambience/rain.ogg` | `AMB_Nature Pack Vol 1_Weather_Light Rain.mp3` | Re-encoded |
 | `client/public/assets/sounds/ambience/storm2.ogg` | `AMB_Nature Pack Vol 1_Weather_Heavy Thunderstorm.mp3` | Re-encoded |
 | `client/public/assets/sounds/ambience/fog.ogg` | `AMB_Nature Pack Vol 1_Weather_Fog.mp3` | +3.7 dB, re-encoded as Opus |
+| `client/public/assets/sounds/ambience/swamp.ogg` | `AMB_Nature Pack Vol 1_Water Enviroments_Swamp.mp3` | +13.4 dB, re-encoded as Opus |
+| `client/public/assets/sounds/ambience/mountain_peak.ogg` | `AMB_Nature Pack Vol 1_Weather_Mountain Peak.mp3` | +13.7 dB, re-encoded as Opus |

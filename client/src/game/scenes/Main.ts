@@ -252,6 +252,7 @@ export class MainScene extends Phaser.Scene {
 
       handlers.ui.backdrop.hide(this, data.map);
       handlers.sound.sync(this, data.map);
+      handlers.location.reset(this.scene.get(data.map) as Scene | null);
     });
 
     this.managers.socket.on(

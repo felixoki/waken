@@ -481,5 +481,7 @@ export const sounds = {
     },
     [AmbienceName.CANALS]: { volume: 1.2 },
     [AmbienceName.FOG]: { volume: 1.2 },
+    [AmbienceName.SWAMP]: { volume: 1 },
+    [AmbienceName.MOUNTAIN_PEAK]: { volume: 1 },
   },
 };

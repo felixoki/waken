@@ -2,6 +2,7 @@ import { EntityName, FishName, TextureSpawnerConfig } from "./entities";
 import { Item } from "./components";
 import { ZoneConfig } from "./zones";
 import type { MapName, SurfaceName } from "./maps";
+import type { AmbienceName } from "./sounds";
 import type { TiledProperty } from "./tiled";
 import type { MeadowGrade } from "../globals";
 
@@ -278,6 +279,7 @@ export interface BiomeConfig {
   sites?: SiteConfig[];
   water?: boolean;
   marsh?: boolean;
+  ambience?: AmbienceName[];
   grade?: MeadowGrade;
 }
 
@@ -550,6 +552,7 @@ export interface LocationBand {
   label: string;
   y: number;
   height: number;
+  ambience?: AmbienceName[];
 }
 
 export interface Level {

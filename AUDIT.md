@@ -181,7 +181,9 @@ Maps:
   - `S2.29b` ☐ Isles and Nether ambience (the Nature pack has Waterfall). Dungeon and temple still share `CANALS`.
   - `S2.29c` ☐ Music for Isles, Nether and Cave.
 - `S2.30` ☐ 🟨 All 9 interiors are silent: music stops on entry. The tavern has no crowd, fire or music.
-- `S2.31` ☐ 🟨 Swamp and mountain bands inherit forest music and birds (birds over snow). `location.ts:38` already detects bands, so it could carry a sound override.
+- `S2.31` ◐ 2026-11-08 🟨 Swamp and mountain bands inherit forest music and birds (birds over snow). `location.ts:38` already detects bands, so it could carry a sound override.
+  - `S2.31a` ◐ 2026-11-08 Ambience per band: swamp plays Swamp, mountain plays Mountain Peak (`BiomeConfig.ambience`, carried on the band).
+  - `S2.31b` ☐ Music per band.
 - `S2.32` ☐ 🟨 Birds play at night. There are no crickets or owls. Cloudy weather has no wind. Snowfall is silent, because rain is suppressed in frost and nothing replaces it. Indoor rain cuts out instead of being muffled.
 - `S2.33` ☐ ⬜ The menu has rain only, no menu music.
 
