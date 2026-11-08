@@ -196,14 +196,14 @@ export function Menu({ ready }: { ready: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col">
+    <div className="fixed inset-0 flex flex-col bg-black">
       <video
         ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover opacity-0 animate-[fade-in_3s_ease-in-out_1.5s_forwards]"
         src="./assets/videos/mountains.mp4"
       />
       {starting && (
@@ -254,32 +254,34 @@ export function Menu({ ready }: { ready: () => void }) {
             active={!modal && !showWorlds && !starting}
             className="animate-[fade-in-dream_3s_ease-out_forwards] opacity-0"
           />
-          <p className="text-white/50 text-lg tracking-widest mt-4 animate-[fade-in_3s_ease-out_1.5s_forwards] opacity-0">
+          <p className="text-white/50 text-lg tracking-widest mt-4 animate-[fade-in_2.5s_ease-out_2.25s_forwards] opacity-0">
             by Discount Games
           </p>
         </div>
-        <div
-          className={`absolute bottom-0 inset-x-0 flex gap-4 px-8 pb-8 transition-opacity duration-200 ${modal || showWorlds ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-        >
-          <button
-            onClick={() => openModal("new")}
-            className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors"
+        <div className="opacity-0 animate-[fade-in_1.5s_ease-out_3s_forwards]">
+          <div
+            className={`absolute bottom-0 inset-x-0 flex gap-4 px-8 pb-8 transition-opacity duration-200 ${modal || showWorlds ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
-            New game
-          </button>
-          <button
-            onClick={() => openModal("join")}
-            className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors"
-          >
-            Join
-          </button>
-          <button
-            onClick={load}
-            disabled={loading}
-            className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors disabled:opacity-50"
-          >
-            {loading ? "Loading..." : "Load"}
-          </button>
+            <button
+              onClick={() => openModal("new")}
+              className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors"
+            >
+              New game
+            </button>
+            <button
+              onClick={() => openModal("join")}
+              className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors"
+            >
+              Join
+            </button>
+            <button
+              onClick={load}
+              disabled={loading}
+              className="flex-1 py-6 text-white text-xl font-semibold rounded-xl bg-black/40 hover:bg-black/60 transition-colors disabled:opacity-50"
+            >
+              {loading ? "Loading..." : "Load"}
+            </button>
+          </div>
         </div>
 
         {showWorlds && (
