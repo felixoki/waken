@@ -47,7 +47,6 @@ export const player = {
 
     if (!player) {
       const map = configs.maps[MapName.VILLAGE];
-      const isAuthority = !world.authority.get(map.id);
 
       const id = playerId || randomUUID();
       let saved = null;
@@ -70,11 +69,13 @@ export const player = {
       const savedMap = saved?.data?.map as MapName | undefined;
       const respawn =
         !!savedMap && (!configs.maps[savedMap] || configs.maps[savedMap].isInstanced);
+      const mapId = respawn || !savedMap ? map.id : savedMap;
+      const isAuthority = !world.authority.get(mapId);
 
       player = {
         id,
         socketId: socket.id,
-        map: respawn || !savedMap ? map.id : savedMap,
+        map: mapId,
         x: respawn ? map.spawn.x : saved?.position?.x || map.spawn.x,
         y: respawn ? map.spawn.y : saved?.position?.y || map.spawn.y,
         facing: (saved?.data?.facing as Direction) || Direction.DOWN,
