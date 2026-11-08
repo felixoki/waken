@@ -871,7 +871,7 @@ export const cave: BiomeConfig = {
       loot: CHEST_LOOT,
     },
     {
-      entities: [EntityName.REMAINS, EntityName.REMAINS2, EntityName.REMAINS3],
+      entities: [EntityName.REMAINS],
       terrain: [TerrainName.FLOOR],
       count: { min: 1, max: 2 },
       spacing: 6,
