@@ -16,7 +16,7 @@ export const ui = {
         if (resolved) return;
         resolved = true;
 
-        scene.events.off(Phaser.Scenes.Events.POST_UPDATE, check);
+        main.events.off(Phaser.Scenes.Events.POST_UPDATE, check);
         EventBus.emit(Event.FADE_IN);
       };
 
@@ -26,7 +26,7 @@ export const ui = {
         if (em.snapshotReady && !em.isPending && loaderIdle) resolve();
       };
 
-      scene.events.on(Phaser.Scenes.Events.POST_UPDATE, check);
+      main.events.on(Phaser.Scenes.Events.POST_UPDATE, check);
       setTimeout(() => resolve(), 15000);
     },
   },

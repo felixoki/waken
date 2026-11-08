@@ -123,7 +123,7 @@ export class MainScene extends Phaser.Scene {
       const scene = this.scene.get(key);
 
       scene.events.once(Phaser.Scenes.Events.CREATE, () => {
-        scene.scene.setVisible(false);
+        scene.scene.sleep();
         scene.input.enabled = false;
         ready.add(key);
 
@@ -217,7 +217,7 @@ export class MainScene extends Phaser.Scene {
       this.managers.players.add(data, true);
 
       const map = this.scene.get(data.map);
-      map.scene.setVisible(true);
+      map.scene.wake();
       map.input.enabled = true;
 
       const player = this.managers.players.player!;
@@ -1026,7 +1026,7 @@ export class MainScene extends Phaser.Scene {
           if (config) {
             this.scene.bringToTop(data.map);
             handlers.player.swap(config, this);
-          } else scene.scene.setVisible(false);
+          } else scene.scene.sleep();
 
           data.players
             .filter((p) => p.id !== localId)
@@ -1041,7 +1041,7 @@ export class MainScene extends Phaser.Scene {
           return;
         }
 
-        if (scene.scene.isActive()) {
+        if (scene.scene.isActive() || scene.scene.isSleeping()) {
           scene.rebuild(data.tilemap);
           onReady();
           return;
@@ -1181,7 +1181,7 @@ export class MainScene extends Phaser.Scene {
           if (config) {
             this.scene.bringToTop(data.map);
             handlers.player.swap(config, this);
-          } else scene.scene.setVisible(false);
+          } else scene.scene.sleep();
 
           data.players
             .filter((p) => p.id !== localId)
@@ -1190,7 +1190,7 @@ export class MainScene extends Phaser.Scene {
           handlers.ui.backdrop.hide(this, data.map);
         };
 
-        if (scene.scene.isActive()) {
+        if (scene.scene.isActive() || scene.scene.isSleeping()) {
           scene.rebuild(data.tilemap);
           onReady();
           return;

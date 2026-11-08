@@ -113,10 +113,10 @@ export const player = {
 
     const scene = main.scene.get(data.map);
 
-    prev.scene.scene.setVisible(false);
+    prev.scene.scene.sleep();
     prev.scene.input.enabled = false;
 
-    scene.scene.setVisible(true);
+    scene.scene.wake();
     scene.input.enabled = true;
 
     main.game.events.emit(Event.CAMERA_FOLLOW, {
