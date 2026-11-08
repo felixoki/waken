@@ -171,6 +171,7 @@ misc/mine7.ogg	misc	ogg	vorbis	0.75	2	44100	-8.4	-36.0	1790839519
 misc/pop.ogg	misc	ogg	vorbis	0.05	1	44100	0.0	-6.7	1782548316
 misc/reel1.ogg	misc	ogg	vorbis	2.14	2	44100	-5.8	-29.8	1790795145
 misc/reel2.ogg	misc	ogg	vorbis	2.14	2	44100	-3.1	-28.0	1790795145
+misc/ruin_break.ogg	misc	ogg	opus	2.51	1	48000	-3.6	-21.9	1794171062
 misc/rustle1.ogg	misc	ogg	vorbis	1.58	2	96000	-3.8	-30.4	1782546204
 misc/rustle10.ogg	misc	ogg	vorbis	0.42	2	96000	-5.6	-23.2	1782546205
 misc/rustle11.ogg	misc	ogg	vorbis	1.12	2	96000	-0.9	-27.5	1782546205

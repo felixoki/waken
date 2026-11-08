@@ -654,7 +654,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.DESTRUCTIBLE,
-        config: { sound: SoundName.MINE },
+        config: { sound: SoundName.RUIN_BREAK },
       },
     ],
     states: [],
@@ -690,7 +690,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.DESTRUCTIBLE,
-        config: { sound: SoundName.MINE },
+        config: { sound: SoundName.RUIN_BREAK },
       },
     ],
     states: [],
@@ -726,7 +726,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.DESTRUCTIBLE,
-        config: { sound: SoundName.MINE },
+        config: { sound: SoundName.RUIN_BREAK },
       },
     ],
     states: [],
@@ -761,7 +761,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.DESTRUCTIBLE,
-        config: { sound: SoundName.MINE },
+        config: { sound: SoundName.RUIN_BREAK },
       },
     ],
     states: [],
@@ -795,7 +795,7 @@ export const rocks: Partial<Record<EntityName, EntityDefinition>> = {
       },
       {
         name: ComponentName.DESTRUCTIBLE,
-        config: { sound: SoundName.MINE },
+        config: { sound: SoundName.RUIN_BREAK },
       },
     ],
     states: [],

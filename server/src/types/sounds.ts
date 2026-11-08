@@ -68,6 +68,7 @@ export enum SoundName {
   MINE = "mine",
   WOOD_BREAK = "wood_break",
   VASES_BREAK = "vases_break",
+  RUIN_BREAK = "ruin_break",
   REVIVE = "revive",
   GAIN_MOMENTUM = "gain_momentum",
   REFLECT_DAMAGE = "reflect_damage",

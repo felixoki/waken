@@ -149,7 +149,7 @@ Entities that borrow another's sound:
   - `S2.18b` ☐ a fish bite plays the watering-can pour
   - `S2.18c` ☐ eating plays DRINK
   - `S2.18d` ☐ every transition plays DOOR: well, ladder, portal, caves
-  - `S2.18e` ◐ 2026-11-08 ruins break with `MINE`
+  - `S2.18e` ◐ 2026-11-08 ruins break with `MINE`; now `RUIN_BREAK` (GS1 Earth Punch)
   - `S2.18f` ✅ 26e1b6c bowls break with `WOOD_BREAK`; the bowl is a clay planter, so it now plays `VASES_BREAK`
 
 Silent actions:
@@ -471,7 +471,7 @@ Electron:
 - `S7.13` ☐ ⬜ No auto-update and no Steam integration at all. Presence only, not a request.
 
 Legal and meta:
-- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and so far only lists the Little Robot Sound Factory library (CC BY 3.0); ElvGames packs need "pegonthetrack & ELVGames" credited if used. Get a written rights transfer for the Fiverr art.
+- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and lists the Little Robot Sound Factory library (CC BY 3.0) and the ElvGames break sounds; the rest of the shipped sounds and all art are still unrecorded. Get a written rights transfer for the Fiverr art.
 - `S7.15` ☐ 🟨 No privacy policy (player IDs and IPs are stored).
 
 Tooling and repo:

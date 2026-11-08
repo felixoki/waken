@@ -108,6 +108,7 @@ export const sounds = {
       folder: "misc",
       variants: ["vases_break1", "vases_break2", "vases_break3"],
     },
+    [SoundName.RUIN_BREAK]: { volume: 0.35, folder: "misc" },
     [SoundName.FOOTSTEP]: {
       volume: 0.1,
       folder: "footsteps",

@@ -14,3 +14,12 @@ License: CC BY 3.0, https://creativecommons.org/licenses/by/3.0/
 | `client/public/assets/sounds/misc/trap1.ogg`, `trap2.ogg`, `trap3.ogg` | `Trap_00.wav`, `Trap_01.wav`, `Trap_02.wav` | Mixed to mono, re-encoded as Opus |
 | `client/public/assets/sounds/misc/inventory_open.ogg` | `Inventory_Open_01.wav` | Mixed to mono, re-encoded as Opus |
 | `client/public/assets/sounds/misc/inventory_close.ogg` | `Inventory_Open_00.wav` | Mixed to mono, re-encoded as Opus |
+
+**Universal Sound Effects** by pegonthetrack & ELVGames (https://linktr.ee/elvgames).
+License: commercial license from the asset pack; credit to pegonthetrack & ELVGames required.
+
+| File in game | Original | Changes |
+|---|---|---|
+| `client/public/assets/sounds/misc/vases_break1.ogg`, `vases_break2.ogg`, `vases_break3.ogg` | `GS2_Vases_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
+| `client/public/assets/sounds/misc/wood_break1.ogg`, `wood_break2.ogg`, `wood_break3.ogg` | `GS2_Wood_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
+| `client/public/assets/sounds/misc/ruin_break.ogg` | `GS1_Spell_EarthPunch.wav` (Game Sound Effects 1) | Mixed to mono, re-encoded as Opus |
