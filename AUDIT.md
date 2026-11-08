@@ -294,7 +294,7 @@ Authority (trusting the client):
 - `S4.30` ☐ 🟨 These events have no authority check: ENTITY_INPUT, SPOTTED, WATER, GROW, MATURE, LAY.
 - `S4.31` ☐ 🟨 Extract has no tool, range or cooldown, and spawns one entity per unit.
 - `S4.32` ☐ 🟨 Build place has no range or collision check. Capture, feed and milk have no range check.
-- `S4.33` ☐ 🟨 `isAuthority` is computed for VILLAGE even when the player spawns elsewhere. Concurrent `PLAYER_CREATE` creates a ghost.
+- `S4.33` ☐ 🟨 `isAuthority` is computed for VILLAGE even when the player spawns elsewhere. (The concurrent `PLAYER_CREATE` ghost was dropped: a rare race, to be fixed only if it shows up in testing.)
 - `S4.34` ☐ ⬜ Upgrade needs no created player. Encounter start works on any NPC. No rate limit; `maxHttpBufferSize` is 1 MB.
 
 Performance:
