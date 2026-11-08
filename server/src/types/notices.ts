@@ -14,7 +14,9 @@ export enum NoticeKind {
   WARN = "warn",
 }
 
-export enum Warning {}
+export enum Warning {
+  INVENTORY_FULL = "inventory_full",
+}
 
 export type Notice =
   | {

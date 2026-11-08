@@ -42,6 +42,7 @@ import { configs } from "@server/configs";
 import { DURATION_EXTRACTION_BOUNCE } from "@server/globals";
 import { InventoryComponent } from "../components/Inventory";
 import { HotbarComponent } from "../components/Hotbar";
+import { PickableComponent } from "../components/Pickable";
 import { DialogueResponse, NodeId } from "@server/types/dialogue";
 import { Landmark } from "@server/types/generation";
 import type { Chart } from "../handlers/chart";
@@ -397,6 +398,18 @@ export class MainScene extends Phaser.Scene {
       this.managers.entities.remove(data);
     });
 
+    this.managers.socket.on(
+      Event.ENTITY_PICKED,
+      (data: { id: string; taken: number }) => {
+        if (data.taken > 0) this.managers.sound.play.sfx(SoundName.PICKUP);
+
+        this.managers.entities.entities
+          .get(data.id)
+          ?.getComponent<PickableComponent>(ComponentName.PICKABLE)
+          ?.release();
+      },
+    );
+
     this.managers.socket.on(Event.ENTITY_PICKUP, (data: string) => {
       if (this.managers.players.player?.isTransitioning) return;
 
@@ -686,7 +699,6 @@ export class MainScene extends Phaser.Scene {
 
     this.game.events.on(Event.ENTITY_PICKUP, (data: string) => {
       this.managers.socket.emit(Event.ENTITY_PICKUP, data);
-      this.managers.sound.play.sfx(SoundName.PICKUP);
     });
 
     this.game.events.on(Event.ENTITY_PLANT, (data: any) => {

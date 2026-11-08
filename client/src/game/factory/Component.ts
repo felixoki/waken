@@ -81,12 +81,7 @@ export class ComponentFactory {
           );
           break;
         case ComponentName.PICKABLE:
-          comp = new PickableComponent(
-            entity,
-            component.config,
-            definition.quantity,
-            definition.soul,
-          );
+          comp = new PickableComponent(entity);
           break;
         case ComponentName.INVENTORY:
           comp = new InventoryComponent();

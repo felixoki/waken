@@ -20,7 +20,9 @@ interface Row {
   leaving: boolean;
 }
 
-const WARNINGS: Record<Warning, string> = {};
+const WARNINGS: Record<Warning, string> = {
+  [Warning.INVENTORY_FULL]: "Inventory full",
+};
 
 function mergeKey(notice: Notice): string | null {
   switch (notice.kind) {

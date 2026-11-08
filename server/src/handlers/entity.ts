@@ -8,6 +8,7 @@ import {
   Input,
   Item,
   NoticeKind,
+  Warning,
   PickableConfig,
   PlayerConfig,
   SlotType,
@@ -131,16 +132,36 @@ export const entity = {
       weight: entity.weight ?? metadata?.weight,
     };
 
-    if (handlers.storage.room(player.inventory, item) < item.quantity) return;
+    const taken = Math.min(
+      item.quantity,
+      handlers.storage.room(player.inventory, item),
+    );
+    const left = item.quantity - taken;
 
-    player.inventory = handlers.storage.add(player.inventory, item);
-    socket.emit(Event.INVENTORY_SYNC, player.inventory);
-    handlers.broadcast.notice(socket, {
-      kind: NoticeKind.ITEM,
-      name: item.name,
-      quantity: item.quantity,
-      soul: item.soul,
-    });
+    socket.emit(Event.ENTITY_PICKED, { id: data, taken });
+
+    if (taken > 0) {
+      player.inventory = handlers.storage.add(player.inventory, {
+        ...item,
+        quantity: taken,
+      });
+      socket.emit(Event.INVENTORY_SYNC, player.inventory);
+      handlers.broadcast.notice(socket, {
+        kind: NoticeKind.ITEM,
+        name: item.name,
+        quantity: taken,
+        soul: item.soul,
+      });
+    }
+
+    if (left > 0) {
+      handlers.broadcast.notice(socket, {
+        kind: NoticeKind.WARN,
+        warning: Warning.INVENTORY_FULL,
+      });
+      if (taken > 0) entity.quantity = left;
+      return;
+    }
 
     if (world.relics.has(entity.name))
       world.relics.claim(entity.name, player.id);

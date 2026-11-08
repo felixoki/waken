@@ -34,6 +34,7 @@ export enum Event {
   ENTITY_DESPAWN = "entity_despawn",
   ENTITY_INPUT = "entity_input",
   ENTITY_PICKUP = "entity_pickup",
+  ENTITY_PICKED = "entity_picked",
   ENTITY_HURT = "entity_hurt",
   ENTITY_HEAL = "entity_heal",
   ENTITY_CAST = "entity_cast",
