@@ -1,9 +1,9 @@
-import { AmbienceName, AudioConfig, MusicName, SfxConfig, SoundName } from "@server/types";
+import { SfxConfig, SoundName } from "@server/types";
 import { configs } from "@server/configs";
 
 const SFX_PATH = "assets/sounds";
-const MUSIC_PATH = "assets/sounds/music";
-const AMBIENCE_PATH = "assets/sounds/ambience";
+export const MUSIC_PATH = "assets/sounds/music";
+export const AMBIENCE_PATH = "assets/sounds/ambience";
 
 export class Sound {
   static load(scene: Phaser.Scene) {
@@ -15,16 +15,6 @@ export class Sound {
       keys.forEach((key) =>
         scene.load.audio(key, `${SFX_PATH}/${config.folder}/${key}.ogg`),
       );
-    }
-
-    for (const name of Object.keys(configs.sounds.music) as MusicName[])
-      scene.load.audio(name, `${MUSIC_PATH}/${name}.ogg`);
-
-    for (const [name, config] of Object.entries(configs.sounds.ambience) as [AmbienceName, AudioConfig][]) {
-      if (config.variants)
-        config.variants.forEach((key) => scene.load.audio(key, `${AMBIENCE_PATH}/${key}.ogg`));
-      else
-        scene.load.audio(name, `${AMBIENCE_PATH}/${name}.ogg`);
     }
   }
 }

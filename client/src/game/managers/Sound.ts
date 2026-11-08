@@ -15,15 +15,25 @@ import {
   SFX_FALLOFF_FAR,
   SFX_MAX_PAN,
 } from "@server/globals";
+import { AMBIENCE_PATH, MUSIC_PATH } from "../loaders/Sound";
 
 type Sound = Phaser.Sound.WebAudioSound;
+
+type Stream = {
+  name: MusicName;
+  element: HTMLAudioElement;
+  source: MediaElementAudioSourceNode;
+  gain: GainNode;
+};
+
+type Layer = { key: string; sound: Sound | null };
 
 export class SoundManager {
   private scene: MainScene;
   private manager: Phaser.Sound.WebAudioSoundManager;
   private bus: GainNode;
-  private current: { name: MusicName; sound: Sound } | null = null;
-  private layers: Map<AmbienceName, Sound> = new Map();
+  private current: Stream | null = null;
+  private layers: Map<AmbienceName, Layer> = new Map();
   private domains: Map<AmbienceName, AmbienceDomain> = new Map();
   private volume: { music: number; ambience: number; sfx: number };
   private queue: { music: MusicName[]; index: number } = {
@@ -41,8 +51,8 @@ export class SoundManager {
   }
 
   fade = {
-    in: () => this._ramp(1, CROSSFADE_DURATION),
-    out: () => this._ramp(0, MASTER_FADE_OUT),
+    in: () => this._ramp(this.bus.gain, 1, CROSSFADE_DURATION),
+    out: () => this._ramp(this.bus.gain, 0, MASTER_FADE_OUT),
   };
 
   play = {
@@ -146,24 +156,30 @@ export class SoundManager {
       const key = config.variants
         ? config.variants[Math.floor(Math.random() * config.variants.length)]
         : name;
-      const target = config.volume * this.volume.ambience;
-      const sound = this._routed(
-        () =>
-          this.manager.add(key, {
-            volume: 0,
-            loop: true,
-          }) as Sound,
-      );
-      sound.play();
-
-      this.scene.tweens.add({
-        targets: sound,
-        volume: target,
-        duration,
-        ease,
-      });
-      this.layers.set(name, sound);
+      const layer: Layer = { key, sound: null };
+      this.layers.set(name, layer);
       this.domains.set(name, domain);
+
+      this._fetch(key, () => {
+        if (this.layers.get(name) !== layer) return this._evict(key);
+
+        const sound = this._routed(
+          () =>
+            this.manager.add(key, {
+              volume: 0,
+              loop: true,
+            }) as Sound,
+        );
+        sound.play();
+
+        this.scene.tweens.add({
+          targets: sound,
+          volume: config.volume * this.volume.ambience,
+          duration,
+          ease,
+        });
+        layer.sound = sound;
+      });
     },
 
     queue: (index: number) => {
@@ -171,39 +187,35 @@ export class SoundManager {
       const config = configs.sounds.music[name];
       if (!config) return;
 
-      const target = config.volume * this.volume.music;
-      const next = this.scene.sound.add(name, {
-        volume: 0,
-        loop: false,
-      }) as Sound;
+      const stream = this._stream(name);
+      this._ramp(
+        stream.gain.gain,
+        config.volume * this.volume.music,
+        CROSSFADE_DURATION,
+      );
 
-      next.play();
-
-      this.scene.tweens.add({
-        targets: next,
-        volume: target,
-        duration: CROSSFADE_DURATION,
-      });
-
-      next.once("complete", () => {
-        next.destroy();
-        if (this.current?.sound !== next) return;
+      stream.element.onended = () => {
+        if (this.current !== stream) return;
+        this._release(stream);
         this.current = null;
         this.queue.index = (index + 1) % this.queue.music.length;
         this.play.queue(this.queue.index);
-      });
+      };
 
-      this.current = { name, sound: next };
+      this.current = stream;
     },
   };
 
   stop = {
     music: () => {
       if (!this.current) return;
-      const current = this.current.sound;
+      const stream = this.current;
       this.current = null;
-      current.off("complete");
-      this._fade(current);
+      stream.element.onended = null;
+      this._ramp(stream.gain.gain, 0, CROSSFADE_DURATION);
+      this.scene.time.delayedCall(CROSSFADE_DURATION, () =>
+        this._release(stream),
+      );
     },
 
     ambience: (
@@ -211,12 +223,12 @@ export class SoundManager {
       duration = CROSSFADE_DURATION,
       ease = "Linear",
     ) => {
-      const sound = this.layers.get(name);
-      if (!sound) return;
+      const layer = this.layers.get(name);
+      if (!layer) return;
 
       this.layers.delete(name);
       this.domains.delete(name);
-      this._fade(sound, duration, ease);
+      this._fade(layer, duration, ease);
     },
 
     all: () => {
@@ -230,13 +242,15 @@ export class SoundManager {
     this._save();
 
     if (channel === ChannelName.MUSIC && this.current)
-      this.current.sound.setVolume(
+      this._ramp(
+        this.current.gain.gain,
         configs.sounds.music[this.current.name].volume * value,
+        0,
       );
 
     if (channel === ChannelName.AMBIENCE)
-      this.layers.forEach((sound, name) => {
-        sound.setVolume(configs.sounds.ambience[name].volume * value);
+      this.layers.forEach((layer, name) => {
+        layer.sound?.setVolume(configs.sounds.ambience[name].volume * value);
       });
   }
 
@@ -257,13 +271,55 @@ export class SoundManager {
     return this.queue.music.length ? [...this.queue.music] : null;
   }
 
-  private _ramp(volume: number, duration: number) {
-    const gain = this.bus.gain;
+  private _ramp(gain: AudioParam, volume: number, duration: number) {
     const now = this.manager.context.currentTime;
 
     gain.cancelScheduledValues(now);
     gain.setValueAtTime(gain.value, now);
     gain.linearRampToValueAtTime(volume, now + duration / 1000);
+  }
+
+  private _stream(name: MusicName): Stream {
+    const context = this.manager.context;
+    const element = new Audio(`${MUSIC_PATH}/${name}.ogg`);
+    const source = context.createMediaElementSource(element);
+    const gain = context.createGain();
+
+    gain.gain.value = 0;
+    source.connect(gain).connect(this.bus);
+
+    const start = () => {
+      if (element.src) element.play().catch(() => {});
+    };
+    if (this.manager.locked)
+      this.manager.once(Phaser.Sound.Events.UNLOCKED, start);
+    else start();
+
+    return { name, element, source, gain };
+  }
+
+  private _release(stream: Stream) {
+    stream.element.pause();
+    stream.element.removeAttribute("src");
+    stream.element.load();
+    stream.source.disconnect();
+    stream.gain.disconnect();
+  }
+
+  private _fetch(key: string, done: () => void) {
+    if (this.scene.cache.audio.exists(key)) return done();
+
+    this.scene.load.once(
+      `${Phaser.Loader.Events.FILE_KEY_COMPLETE}audio-${key}`,
+      done,
+    );
+    this.scene.load.audio(key, `${AMBIENCE_PATH}/${key}.ogg`);
+    this.scene.load.start();
+  }
+
+  private _evict(key: string) {
+    for (const layer of this.layers.values()) if (layer.key === key) return;
+    this.scene.cache.audio.remove(key);
   }
 
   private _routed<T>(create: () => T): T {
@@ -276,14 +332,20 @@ export class SoundManager {
     return result;
   }
 
-  private _fade(sound: Sound, duration = CROSSFADE_DURATION, ease = "Linear") {
+  private _fade(layer: Layer, duration: number, ease: string) {
+    const sound = layer.sound;
+    if (!sound) return;
+
     this.scene.tweens.killTweensOf(sound);
     this.scene.tweens.add({
       targets: sound,
       volume: 0,
       duration,
       ease,
-      onComplete: () => sound.destroy(),
+      onComplete: () => {
+        sound.destroy();
+        this._evict(layer.key);
+      },
     });
   }
 
