@@ -10,6 +10,7 @@ import {
   Event,
   ImprovementName,
   MapName,
+  NoticeKind,
   StoryEffectName,
   StoryFlag,
   StoryScope,
@@ -77,12 +78,16 @@ export const dev = {
       if (!Number.isInteger(value) || value < 1 || value > max)
         return dev.fail(_socket, `tier must be 1 to ${max}`);
 
+      const raised = value > world.economy.getTier();
+
       world.economy.setTier(value);
       handlers.broadcast.store(io, world);
+      if (raised)
+        handlers.broadcast.notice(io, { kind: NoticeKind.TIER, tier: value });
       dev.reply(_socket, `tier ${value}`);
     },
 
-    [DevCommand.IMPROVE]: ([name], socket, _io, world) => {
+    [DevCommand.IMPROVE]: ([name], socket, io, world) => {
       const names = Object.values(ImprovementName) as string[];
       if (!names.includes(name))
         return dev.fail(
@@ -90,7 +95,15 @@ export const dev = {
           `improvement must be one of ${names.join(", ")}`,
         );
 
-      world.economy.improve(name as ImprovementName);
+      const improvement = name as ImprovementName;
+      const fresh = !world.economy.has(improvement);
+
+      world.economy.improve(improvement);
+      if (fresh)
+        handlers.broadcast.notice(io, {
+          kind: NoticeKind.IMPROVEMENT,
+          name: improvement,
+        });
       dev.reply(socket, `improved ${name}`);
     },
 
