@@ -144,13 +144,13 @@ Entities that borrow another's sound:
   - dark wave, hypnic jerk, sunder, wellspring and delta wave all use `GRASP`, and no Grasp spell exists
   - catch soul uses the shard sounds
   - `absorb_life.ogg` and `fire_wave.ogg` are loaded but never played
-- `S2.18` ☐ World:
-  - weather thunder uses the spell `LIGHTNING_STRIKE`
-  - a fish bite plays the watering-can pour
-  - eating plays DRINK
-  - every transition plays DOOR: well, ladder, portal, caves
-  - ruins break with `MINE`
-  - bowls break with `WOOD_BREAK`
+- `S2.18` ◐ 2026-11-08 World:
+  - `S2.18a` ☐ weather thunder uses the spell `LIGHTNING_STRIKE`
+  - `S2.18b` ☐ a fish bite plays the watering-can pour
+  - `S2.18c` ☐ eating plays DRINK
+  - `S2.18d` ☐ every transition plays DOOR: well, ladder, portal, caves
+  - `S2.18e` ◐ 2026-11-08 ruins break with `MINE`
+  - `S2.18f` ◐ 2026-11-08 bowls break with `WOOD_BREAK`; the bowl is a clay planter, so it now plays `VASES_BREAK`
 
 Silent actions:
 - `S2.19` ◐ 2026-11-08 🟧 Player death, inventory loss, revive.
