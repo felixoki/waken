@@ -162,7 +162,7 @@ Silent actions:
 - `S2.22` ☐ 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.
 - `S2.23` ☐ 🟨 Errand hand-in, spell learn, build place and destroy. (Tier up and improvement play `ACHIEVEMENT` since S1.2.)
 - `S2.24` ◐ 2026-11-08 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
-  - `S2.24a` ◐ 2026-11-08 Spike trap plays one of three Trap variants at its position when tripped (`TrapConfig.sound`).
+  - `S2.24a` ✅ f226f4d Spike trap plays one of three Trap variants at its position when tripped (`TrapConfig.sound`).
   - `S2.24b` ☐ Chest open and close.
   - `S2.24c` ☐ Lever, door and temple door.
   - `S2.24d` ☐ Forge and mill working loop.
