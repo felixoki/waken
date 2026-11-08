@@ -35,6 +35,11 @@ export class TrapComponent extends Component {
 
     this.entity.play(this.animKey);
 
+    if (config.sound)
+      scene.managers.sound.play.sfx(config.sound, {
+        position: { x: this.entity.x, y: this.entity.y },
+      });
+
     this.timers.push(
       scene.time.delayedCall(config.delay, () => {
         const body = this.entity.body as Phaser.Physics.Arcade.Body | null;

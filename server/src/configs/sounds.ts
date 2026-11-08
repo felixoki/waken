@@ -429,6 +429,11 @@ export const sounds = {
     [SoundName.ACHIEVEMENT]: { volume: 0.6, folder: "misc" },
     [SoundName.COLLECT]: { volume: 0.6, folder: "misc" },
     [SoundName.LOSE]: { volume: 0.35, folder: "misc" },
+    [SoundName.TRAP]: {
+      volume: 0.15,
+      folder: "misc",
+      variants: ["trap1", "trap2", "trap3"],
+    },
     [SoundName.DOOR]: { volume: 0.6, folder: "misc" },
     [SoundName.DRINK]: { volume: 0.6, folder: "misc" },
     [SoundName.EQUIP]: { volume: 0.1, folder: "misc" },

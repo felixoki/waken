@@ -161,7 +161,11 @@ Silent actions:
 - `S2.21` ☐ 🟨 Pacify, resist, capture, feed, milk, lay, butcher.
 - `S2.22` ☐ 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.
 - `S2.23` ☐ 🟨 Errand hand-in, spell learn, build place and destroy. (Tier up and improvement play `ACHIEVEMENT` since S1.2.)
-- `S2.24` ☐ 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
+- `S2.24` ◐ 2026-11-08 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
+  - `S2.24a` ◐ 2026-11-08 Spike trap plays one of three Trap variants at its position when tripped (`TrapConfig.sound`).
+  - `S2.24b` ☐ Chest open and close.
+  - `S2.24c` ☐ Lever, door and temple door.
+  - `S2.24d` ☐ Forge and mill working loop.
 - `S2.25` ☐ 🟨 Mined-out rock crumble (`Main.ts:460` only gates `FELLABLE`). Troll rock and mud throw and impact (`Throwing.ts`). Wanderer and grandmother dash. Grouse, villain and dragon flight.
 - `S2.26` ☐ ⬜ Harvest, crop mature, wither; hive swarm buzz; item drop; effect apply; miss and crit.
 - `S2.27` ☐ ⬜ All UI: panel open and close, hotbar switch, dialogue advance, menu clicks, location banner.

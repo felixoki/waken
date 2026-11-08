@@ -194,6 +194,9 @@ misc/splash.ogg	misc	ogg	vorbis	0.96	2	44100	-1.3	-28.6	1790795221
 misc/sword_swing1.ogg	misc	ogg	opus	0.64	1	48000	-0.3	-17.6	1790842036
 misc/sword_swing2.ogg	misc	ogg	opus	0.61	1	48000	0.0	-17.4	1790842036
 misc/sword_swing3.ogg	misc	ogg	opus	0.61	1	48000	-0.0	-17.6	1790842036
+misc/trap1.ogg	misc	ogg	opus	0.90	1	48000	0.0	-16.5	1794169053
+misc/trap2.ogg	misc	ogg	opus	1.26	1	48000	0.0	-16.2	1794169053
+misc/trap3.ogg	misc	ogg	opus	1.09	1	48000	0.0	-15.7	1794169053
 misc/tree_fall1.ogg	misc	ogg	vorbis	3.86	2	44100	-0.1	-19.5	1790794065
 misc/tree_fall2.ogg	misc	ogg	vorbis	3.38	2	44100	0.0	-18.6	1790794065
 misc/tree_fall3.ogg	misc	ogg	vorbis	3.38	2	44100	0.0	-18.3	1790794065

@@ -47,6 +47,7 @@ export enum SoundName {
   ACHIEVEMENT = "achievement",
   COLLECT = "collect",
   LOSE = "lose",
+  TRAP = "trap",
   DOOR = "door",
   DRINK = "drink",
   EQUIP = "equip",

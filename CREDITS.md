@@ -11,3 +11,4 @@ License: CC BY 3.0, https://creativecommons.org/licenses/by/3.0/
 | `client/public/assets/sounds/ambience/canals.ogg` | `Ambience_Cave_00` | Renamed |
 | `client/public/assets/sounds/misc/achievement.ogg` | `Jingle_Achievement_00.wav` | Mixed to mono, re-encoded as Opus |
 | `client/public/assets/sounds/misc/lose.ogg` | `Jingle_Lose_00.wav` | Mixed to mono, re-encoded as Opus |
+| `client/public/assets/sounds/misc/trap1.ogg`, `trap2.ogg`, `trap3.ogg` | `Trap_00.wav`, `Trap_01.wav`, `Trap_02.wav` | Mixed to mono, re-encoded as Opus |

@@ -1908,6 +1908,7 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
           delay: 150,
           duration: 250,
           cooldown: 1000,
+          sound: SoundName.TRAP,
         },
       },
       {

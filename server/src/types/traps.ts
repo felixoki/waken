@@ -1,6 +1,7 @@
 import { Damage } from "./damage.js";
 import { EffectName } from "./effects.js";
 import { EntityName } from "./entities.js";
+import { SoundName } from "./sounds.js";
 
 export interface TrapConfig {
   name: EntityName;
@@ -11,4 +12,5 @@ export interface TrapConfig {
   duration: number;
   cooldown: number;
   effects?: [EffectName, number, number?][];
+  sound?: SoundName;
 }
