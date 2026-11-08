@@ -120,7 +120,7 @@ const credits = [
 function Keycap({ label, dim }: { label: string; dim?: boolean }) {
   return (
     <kbd
-      className={`inline-flex items-center justify-center min-w-8 px-2.5 h-8 bg-linear-to-b from-neutral-600 to-neutral-700 rounded text-sm font-mono border border-neutral-800 shadow-[0_3px_0_0_#1a1a1a,0_4px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.06)] ${dim ? "text-white/40" : "text-white/80"}`}
+      className={`inline-flex items-center justify-center min-w-8 px-2.5 h-8 bg-linear-to-b from-neutral-600 to-neutral-700 rounded text-sm font-mono border border-neutral-800 shadow-[0_3px_0_0_#1a1a1a,0_4px_4px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.06)] ${dim ? "text-white/40 cursor-not-allowed" : "text-white/80"}`}
     >
       {label}
     </kbd>
