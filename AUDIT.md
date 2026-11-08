@@ -149,7 +149,7 @@ Entities that borrow another's sound:
   - `S2.18b` ☐ a fish bite plays the watering-can pour
   - `S2.18c` ☐ eating plays DRINK
   - `S2.18d` ☐ every transition plays DOOR: well, ladder, portal, caves
-  - `S2.18e` ◐ 2026-11-08 ruins break with `MINE`; now `RUIN_BREAK` (GS1 Earth Punch)
+  - `S2.18e` ✅ e75277d ruins break with `MINE`; now `RUIN_BREAK` (GS1 Earth Punch)
   - `S2.18f` ✅ 26e1b6c bowls break with `WOOD_BREAK`; the bowl is a clay planter, so it now plays `VASES_BREAK`
 
 Silent actions:
