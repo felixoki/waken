@@ -177,7 +177,7 @@ Silent actions:
 
 Maps:
 - `S2.29` ◐ 2026-11-08 🟧 Isles, Nether and Cave have no music and no ambience. `CAVE_DRIP` and `DUNGEON_DRONE` from `plans/sound.md` were never added. Dungeon and temple share `CANALS`.
-  - `S2.29a` ◐ 2026-11-08 Cave ambience: Fog from the Nature Ambient Pack.
+  - `S2.29a` ✅ 3cfbf5a Cave ambience: Fog from the Nature Ambient Pack.
   - `S2.29b` ☐ Isles and Nether ambience (the Nature pack has Waterfall). Dungeon and temple still share `CANALS`.
   - `S2.29c` ☐ Music for Isles, Nether and Cave.
 - `S2.30` ☐ 🟨 All 9 interiors are silent: music stops on entry. The tavern has no crowd, fire or music.
