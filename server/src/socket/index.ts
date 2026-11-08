@@ -295,8 +295,17 @@ export function registerHandlers(io: Server, socket: Socket, world: World) {
     },
     {
       event: Event.SLOT_MOVE,
-      handler: (data: { source: SlotReference; target: SlotReference; type: SlotType }) =>
-        handlers.storage.move(data, socket, world),
+      handler: (data: {
+        source: SlotReference;
+        target: SlotReference;
+        type: SlotType;
+        quantity?: number;
+      }) => handlers.storage.move(data, socket, world),
+    },
+    {
+      event: Event.STORAGE_TAKE_ALL,
+      handler: (data: { entityId: string }) =>
+        handlers.storage.takeAll(data, socket, world),
     },
     /**
      * Crafter

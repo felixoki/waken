@@ -5,7 +5,7 @@ import { SpellConfig } from "@server/types/spells";
 import { Ingredient } from "@server/types/crafter";
 import { configs } from "@server/configs";
 import { Icon } from "./Icon";
-import { useIsDragging, type DragData } from "./Provider";
+import { useIsDragging, useSlotActions, type DragData } from "./Provider";
 
 interface Props {
   name: EntityName | SpellName | null;
@@ -55,6 +55,32 @@ export function Item({
   const [alignRight, setAlignRight] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
   const globalDragging = useIsDragging();
+  const slot = useSlotActions();
+
+  const click = (e: React.MouseEvent) => {
+    if (slot.holding) {
+      if (dropId) slot.place(dropId);
+      else slot.cancel();
+      return;
+    }
+
+    if (e.shiftKey && dragData && quantity && quantity > 1 && ref.current) {
+      slot.split(dragData, quantity, ref.current.getBoundingClientRect());
+      return;
+    }
+
+    onClick?.();
+  };
+
+  const contextMenu = (e: React.MouseEvent) => {
+    if (slot.holding) {
+      e.preventDefault();
+      slot.cancel();
+      return;
+    }
+
+    if (interactive) onContextMenu?.(e);
+  };
 
   const {
     attributes,
@@ -121,8 +147,8 @@ export function Item({
       <button
         className={`${baseClass} ${stateClass}`}
         disabled={disabled && !interactive}
-        onClick={disabled ? undefined : onClick}
-        onContextMenu={interactive ? onContextMenu : undefined}
+        onClick={disabled ? undefined : click}
+        onContextMenu={contextMenu}
       >
         {config?.metadata?.icon ? (
           <Icon icon={config.metadata.icon} />

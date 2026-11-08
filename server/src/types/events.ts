@@ -163,6 +163,7 @@ export enum Event {
   /** Storage */
   STORAGE_OPEN = "storage:open",
   STORAGE_CLOSE = "storage:close",
+  STORAGE_TAKE_ALL = "storage:take_all",
   STORAGE_SYNC = "storage:sync",
   STORAGE_CONFIRM = "storage:confirm",
   STORAGE_UPDATE = "storage:update",
@@ -173,7 +174,9 @@ export enum Event {
   TOOLTIP_TOGGLE = "tooltip_toggle",
   TRANSFORM_TOGGLE = "transform_toggle",
   VOLUME_SET = "volume_set",
+  BINDINGS_SET = "bindings_set",
   SOUND_PLAY = "sound_play",
+  INPUT_MUTE = "input_mute",
 
   /** Transitions */
   FADE_OUT = "fade_out",

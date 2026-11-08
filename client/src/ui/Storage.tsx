@@ -53,7 +53,18 @@ export function Storage() {
 
   return (
     <div className="bg-black/25 rounded-lg p-4 self-start">
-      <h3 className="text-white mb-2">Chest</h3>
+      <div className="mb-2 flex items-center justify-between">
+        <h3 className="text-white">Chest</h3>
+        <button
+          className="rounded-md bg-black/25 px-2.5 py-1 text-sm text-white/80 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:hover:bg-black/25"
+          disabled={!slots.some(Boolean)}
+          onClick={() =>
+            id && EventBus.emit(Event.STORAGE_TAKE_ALL, { entityId: id })
+          }
+        >
+          Take all
+        </button>
+      </div>
       <ul className="flex flex-wrap gap-1 max-w-135">
         {slots.map((item, i) => {
           const data: DragData | undefined =

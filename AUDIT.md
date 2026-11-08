@@ -42,11 +42,11 @@ Status: ☐ open · ◐ claimed (date) · ✅ done (commit) · ✖ won't fix (re
 The ones you named, all confirmed:
 - `S1.1` ✅ 8351c7e 🟧 **No pickup toast.** No toast or notification system exists at all. Proposal: one `Event.NOTIFY {text, kind, sound?}` socket event plus a `Toasts.tsx`. Hook points: `entity.pickup` after `INVENTORY_SYNC` (`entity.ts:136`) and `item.give` (`item.ts:198`, which covers harvest, craft and fish).
 - `S1.2` ✅ d733b5e 🟧 **No tier-up sound.** The toast is done in S1.1 (`NoticeKind.TIER` and `IMPROVEMENT`, sent from `economy.upgrade` and `economy.improve`). Still missing: a success sound for both, which doesn't exist yet.
-- `S1.3` ☐ 🟧 **No partial stack take.** `SLOT_MOVE` has no `quantity` (`storage.ts:342-481`, `Provider.tsx:118`). Add `quantity?`, make shift-drag move half, and add a "Take…" amount picker. Chest items have no context menu today (`Storage.tsx:70`).
-- `S1.4` ☐ 🟧 **No rebinding.** Keys are hard-coded (`Input.ts:32-44`) and mouse actions too (`Input.ts:162`, `Build.ts:90`). The Controls screen is a separate static table (`Settings.tsx:9`). Use one `bindings` map that is saved, drives `addKeys`, and renders the Controls screen.
+- `S1.3` ◐ 2026-11-08 🟧 **No partial stack take.** `SLOT_MOVE` has no `quantity` (`storage.ts:342-481`, `Provider.tsx:118`). Add `quantity?`, make shift-drag move half, and add a "Take…" amount picker. Chest items have no context menu today (`Storage.tsx:70`).
+- `S1.4` ◐ 2026-11-08 🟧 **No rebinding.** Keys are hard-coded (`Input.ts:32-44`) and mouse actions too (`Input.ts:162`, `Build.ts:90`). The Controls screen is a separate static table (`Settings.tsx:9`). Use one `bindings` map that is saved, drives `addKeys`, and renders the Controls screen.
 
 Silent failures (no feedback today):
-- `S1.5` ☐ 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
+- `S1.5` ◐ 2026-11-08 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
 - `S1.6` ☐ 🟧 No death or wipe screen. The inventory is cleared with no message (`Main.ts:1212-1233, 1302-1321`).
 - `S1.7` ☐ 🟧 Party "Leave" inside the realm wipes the inventory with no confirmation (`Party.tsx:56`, `party.ts:206`).
 - `S1.8` ☐ 🟨 Pickup removes the item before the server confirms. If the server rejects it, it vanishes locally but stays on the server (`Pickable.ts:58`).
@@ -62,7 +62,7 @@ Silent failures (no feedback today):
 
 Inventory, chest and crafter:
 - `S1.18` ☐ 🟨 Deposit with `index:-1` never merges into a partial stack, so it fails when the chest has no empty slot (`storage.ts:302`).
-- `S1.19` ☐ 🟨 No shift-click quick transfer, no "Take all" or "Deposit all".
+- `S1.19` ☐ 🟨 No quick transfer and no "Deposit all". "Take all" exists since S1.3. Shift-click is taken by the split window, so quick transfer needs another input (Valheim uses right-click).
 - `S1.20` ☐ 🟨 Crafter makes one at a time; no "craft N" or "craft max". Recipe tooltips don't show have/need (`Crafter.tsx:89`, `Item.tsx:375`).
 - `S1.21` ☐ ⬜ Drop and courier always take the whole stack. No sort. Dragging onto the world does nothing. Hotbar slots have no context menu.
 - `S1.22` ☐ ⬜ Every `STORAGE_SYNC` re-fires `STORAGE_OPEN`, so slots flash empty (`Main.ts:940`, `Storage.tsx:14`).

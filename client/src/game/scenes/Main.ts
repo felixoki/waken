@@ -871,6 +871,7 @@ export class MainScene extends Phaser.Scene {
         source: SlotReference;
         target: SlotReference;
         type: SlotType;
+        quantity?: number;
       }) => {
         this.managers.socket.emit(Event.SLOT_MOVE, data);
 
@@ -925,6 +926,11 @@ export class MainScene extends Phaser.Scene {
       this.managers.socket.emit(Event.STORAGE_OPEN, {
         entityId: data.entityId,
       });
+    });
+
+    EventBus.on(Event.STORAGE_TAKE_ALL, (data: { entityId: string }) => {
+      this.managers.socket.emit(Event.STORAGE_TAKE_ALL, data);
+      this.managers.sound.play.sfx(SoundName.GRAB);
     });
 
     EventBus.on(Event.STORAGE_CLOSE, (data: string) => {

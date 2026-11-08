@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -27,6 +28,9 @@ import {
 } from "@server/types";
 import EventBus from "../game/EventBus";
 import { Item } from "./Item";
+import { Icon } from "./Icon";
+import { Split } from "./Split";
+import { configs } from "@server/configs";
 import { EntityName, SpellName } from "@server/types";
 
 export interface DragData {
@@ -46,6 +50,38 @@ export function useIsDragging() {
   return useContext(IsDraggingContext);
 }
 
+interface Held {
+  source: DragData;
+  quantity: number;
+  x: number;
+  y: number;
+}
+
+interface Pending {
+  source: DragData;
+  total: number;
+  x: number;
+  y: number;
+}
+
+interface SlotActions {
+  holding: boolean;
+  split: (source: DragData, total: number, rect: DOMRect) => void;
+  place: (dropId: string) => void;
+  cancel: () => void;
+}
+
+const SlotActionsContext = createContext<SlotActions>({
+  holding: false,
+  split: () => {},
+  place: () => {},
+  cancel: () => {},
+});
+
+export function useSlotActions() {
+  return useContext(SlotActionsContext);
+}
+
 const collision: CollisionDetection = (args) => {
   const within = pointerWithin(args);
   if (within.length > 0) return within;
@@ -55,6 +91,10 @@ const collision: CollisionDetection = (args) => {
 export function Provider({ children }: { children: ReactNode }) {
   const [active, setActive] = useState<DragData | null>(null);
   const [storageEntityId, setStorageEntityId] = useState<string | null>(null);
+  const [held, setHeld] = useState<Held | null>(null);
+  const [pending, setPending] = useState<Pending | null>(null);
+  const follower = useRef<HTMLDivElement>(null);
+  const muted = useRef(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -63,7 +103,11 @@ export function Provider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const onOpen = (data: { entityId: string }) =>
       setStorageEntityId(data.entityId);
-    const onClose = () => setStorageEntityId(null);
+    const onClose = () => {
+      setStorageEntityId(null);
+      setHeld(null);
+      setPending(null);
+    };
 
     EventBus.on(Event.STORAGE_OPEN, onOpen);
     EventBus.on(Event.STORAGE_CLOSE, onClose);
@@ -74,7 +118,93 @@ export function Provider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const holding = !!held || !!pending;
+
+  useEffect(() => {
+    if (muted.current === holding) return;
+
+    muted.current = holding;
+    EventBus.emit(Event.INPUT_MUTE, holding);
+  }, [holding]);
+
+  useEffect(() => {
+    if (!held) return;
+
+    const move = (e: MouseEvent) => {
+      if (follower.current)
+        follower.current.style.transform = `translate(${e.clientX - 32}px, ${e.clientY - 32}px)`;
+    };
+
+    const key = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setHeld(null);
+    };
+
+    window.addEventListener("mousemove", move);
+    window.addEventListener("keydown", key);
+
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("keydown", key);
+    };
+  }, [held]);
+
+  const cancel = () => {
+    setHeld(null);
+    setPending(null);
+  };
+
+  const actions: SlotActions = {
+    holding: !!held,
+
+    split: (source, total, rect) => {
+      setHeld(null);
+      setPending({ source, total, x: rect.left, y: rect.bottom + 6 });
+    },
+
+    place: (dropId) => {
+      setHeld(null);
+      if (!held) return;
+
+      const target = parseDropId(dropId, storageEntityId);
+      const { source } = held;
+
+      if (
+        !target ||
+        (source.zone === target.zone &&
+          source.index === target.index &&
+          source.entityId === target.entityId)
+      )
+        return;
+
+      EventBus.emit(Event.SLOT_MOVE, {
+        source: {
+          zone: source.zone,
+          index: source.index,
+          entityId: source.entityId,
+        } as SlotReference,
+        target,
+        type: SlotType.ENTITY,
+        quantity: held.quantity,
+      });
+    },
+
+    cancel,
+  };
+
+  const confirm = (quantity: number) => {
+    if (!pending) return;
+
+    setPending(null);
+    setHeld({
+      source: pending.source,
+      quantity,
+      x: pending.x,
+      y: pending.y - 70,
+    });
+  };
+
   const onDragStart = (event: DragStartEvent) => {
+    cancel();
     setActive((event.active.data.current as DragData) ?? null);
   };
 
@@ -126,23 +256,61 @@ export function Provider({ children }: { children: ReactNode }) {
     });
   };
 
+  const heldIcon = held
+    ? configs.entities[held.source.name as EntityName]?.metadata?.icon
+    : undefined;
+
   return (
     <IsDraggingContext.Provider value={active !== null}>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={collision}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-      >
-        {children}
-        <DragOverlay dropAnimation={null}>
-          {active ? (
-            <ul>
-              <Item name={active.name} />
-            </ul>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+      <SlotActionsContext.Provider value={actions}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={collision}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+        >
+          {held && (
+            <div
+              className="fixed inset-0 -z-10"
+              onClick={cancel}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                cancel();
+              }}
+            />
+          )}
+          {children}
+          {pending && (
+            <Split
+              name={pending.source.name}
+              total={pending.total}
+              x={pending.x}
+              y={pending.y}
+              onConfirm={confirm}
+              onCancel={cancel}
+            />
+          )}
+          {held && (
+            <div
+              ref={follower}
+              className="fixed left-0 top-0 z-50 flex size-16 items-center justify-center pointer-events-none opacity-90 text-white"
+              style={{ transform: `translate(${held.x}px, ${held.y}px)` }}
+            >
+              {heldIcon && <Icon icon={heldIcon} />}
+              <span className="absolute bottom-0.5 right-0.5 text-sm [text-shadow:0_1px_2px_#000]">
+                {held.quantity}
+              </span>
+            </div>
+          )}
+          <DragOverlay dropAnimation={null}>
+            {active ? (
+              <ul>
+                <Item name={active.name} />
+              </ul>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      </SlotActionsContext.Provider>
     </IsDraggingContext.Provider>
   );
 }

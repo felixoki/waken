@@ -339,8 +339,48 @@ export const storage = {
     },
   } as Record<SlotZone, ZoneHandler>,
 
+  takeAll: (data: { entityId: string }, socket: Socket, world: World) => {
+    const player = world.players.getBySocketId(socket.id);
+    const entity = world.entities.get(data.entityId);
+
+    if (!player || !entity?.storing || entity.lockedBy !== player.id) return;
+
+    let inventory = player.inventory;
+    const storing = storage.clone(entity.storing);
+    let moved = false;
+
+    for (let i = 0; i < storing.length; i++) {
+      const item = storing[i];
+      if (!item) continue;
+
+      const fit = Math.min(item.quantity, storage.room(inventory, item));
+      if (fit <= 0) continue;
+
+      inventory = storage.add(inventory, { ...item, quantity: fit });
+      storing[i] =
+        fit < item.quantity ? { ...item, quantity: item.quantity - fit } : null;
+      moved = true;
+    }
+
+    if (!moved) return;
+
+    player.inventory = inventory;
+    entity.storing = storing;
+
+    socket.emit(Event.INVENTORY_SYNC, player.inventory);
+    socket.emit(Event.STORAGE_SYNC, {
+      entityId: data.entityId,
+      slots: entity.storing,
+    });
+  },
+
   move: (
-    data: { source: SlotReference; target: SlotReference; type: SlotType },
+    data: {
+      source: SlotReference;
+      target: SlotReference;
+      type: SlotType;
+      quantity?: number;
+    },
     socket: Socket,
     world: World,
   ) => {
@@ -395,6 +435,52 @@ export const storage = {
         src.slots[src.index] = null;
         zone.source.sync(socket, player, source, world);
       }
+
+      return;
+    }
+
+    const within =
+      source.zone === target.zone && source.entityId === target.entityId;
+    const split = storage.unwrap(source.zone, value.source);
+    const amount = data.quantity;
+
+    if (
+      !zone.source.readonly &&
+      split.type === SlotType.ENTITY &&
+      amount !== undefined &&
+      Number.isInteger(amount) &&
+      amount > 0 &&
+      amount < (split.core as Item).quantity
+    ) {
+      const fromItem = split.core as Item;
+      let moved = amount;
+
+      if (value.target === null) {
+        const wrapped = storage.wrap(
+          target.zone,
+          { ...fromItem, quantity: amount },
+          type,
+        );
+        if (wrapped === undefined) return;
+
+        tgt.slots[tgt.index] = wrapped;
+      } else {
+        const into = storage.unwrap(target.zone, value.target);
+        if (into.type !== SlotType.ENTITY) return;
+
+        const intoItem = into.core as Item;
+        if (!storage.stacks(fromItem, intoItem)) return;
+
+        moved = Math.min(MAX_STACK - intoItem.quantity, amount);
+        if (moved <= 0) return;
+
+        intoItem.quantity += moved;
+      }
+
+      fromItem.quantity -= moved;
+
+      zone.source.sync(socket, player, source, world);
+      if (!within) zone.target.sync(socket, player, target, world);
 
       return;
     }
