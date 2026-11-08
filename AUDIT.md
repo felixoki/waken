@@ -43,7 +43,7 @@ The ones you named, all confirmed:
 - `S1.1` ✅ 8351c7e 🟧 **No pickup toast.** No toast or notification system exists at all. Proposal: one `Event.NOTIFY {text, kind, sound?}` socket event plus a `Toasts.tsx`. Hook points: `entity.pickup` after `INVENTORY_SYNC` (`entity.ts:136`) and `item.give` (`item.ts:198`, which covers harvest, craft and fish).
 - `S1.2` ✅ d733b5e 🟧 **No tier-up sound.** The toast is done in S1.1 (`NoticeKind.TIER` and `IMPROVEMENT`, sent from `economy.upgrade` and `economy.improve`). Still missing: a success sound for both, which doesn't exist yet.
 - `S1.3` ✅ 73f4f59 🟧 **No partial stack take.** `SLOT_MOVE` has no `quantity` (`storage.ts:342-481`, `Provider.tsx:118`). Add `quantity?`, make shift-drag move half, and add a "Take…" amount picker. Chest items have no context menu today (`Storage.tsx:70`).
-- `S1.4` ◐ 2026-11-08 🟧 **No rebinding.** Keys are hard-coded (`Input.ts:32-44`) and mouse actions too (`Input.ts:162`, `Build.ts:90`). The Controls screen is a separate static table (`Settings.tsx:9`). Use one `bindings` map that is saved, drives `addKeys`, and renders the Controls screen.
+- `S1.4` ✅ b83b517 🟧 **No rebinding.** Keys are hard-coded (`Input.ts:32-44`) and mouse actions too (`Input.ts:162`, `Build.ts:90`). The Controls screen is a separate static table (`Settings.tsx:9`). Use one `bindings` map that is saved, drives `addKeys`, and renders the Controls screen.
 
 Silent failures (no feedback today):
 - `S1.5` ◐ 2026-11-08 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
@@ -91,7 +91,7 @@ Settings, menus and connection:
 - `S1.39` ☐ 🟨 `connect_error` isn't handled, so a refused connection waits 10 s before "timed out" (`Menu.tsx:182`). All errors read "Failed to …".
 - `S1.40` ☐ 🟨 "Quit" is `location.reload()`. There's no quit to desktop, and the main menu has no Quit, Settings or Credits (`Settings.tsx:184`, `Menu.tsx:263`).
 - `S1.41` ☐ ⬜ Worlds can't be deleted or renamed. The shared `loading` flag shows "Starting…" on every row. Esc doesn't close the menu overlays.
-- `S1.42` ☐ ⬜ The Controls list leaves out click-to-interact, hammer demolish and hotbar click.
+- `S1.42` ☐ ⬜ The Controls list leaves out hotbar click. (Attack / interact and Demolish rows added in S1.4.)
 
 HUD:
 - `S1.43` ☐ 🟨 `Interface.ts:50` runs `JSON.stringify` on damaged entities in every scene, every frame. React re-renders at 60 fps while any damaged entity is on screen. Health-bar position is relative to the player, not the camera.
