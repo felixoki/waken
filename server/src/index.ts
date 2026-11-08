@@ -4,7 +4,12 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { registerHandlers } from "./socket/index.js";
 import { SERVER_PORT, WORLD_ID } from "./server.js";
-import { AUTOSAVE_INTERVAL, HEARTBEAT_INTERVAL, TICK_RATE } from "./globals.js";
+import {
+  AUTOSAVE_INTERVAL,
+  HEARTBEAT_INTERVAL,
+  RESTORE_RETRIES,
+  TICK_RATE,
+} from "./globals.js";
 import { World } from "./World.js";
 import { handlers } from "./handlers/index.js";
 import { tryCatch } from "./utils/tryCatch.js";
@@ -26,9 +31,20 @@ const io = new Server(server, {
 const world = new World(io);
 world.loadSpots();
 
-const restored = WORLD_ID
-  ? await handlers.world.restore(WORLD_ID, world)
-  : false;
+const restore = async (id: string, attempt = 0): Promise<boolean> => {
+  const { data, error } = await tryCatch(handlers.world.restore(id, world));
+  if (!error) return data;
+
+  if (attempt >= RESTORE_RETRIES) {
+    console.error(`World ${id} restore failed, exiting:`, error);
+    process.exit(1);
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt));
+  return restore(id, attempt + 1);
+};
+
+const restored = WORLD_ID ? await restore(WORLD_ID) : false;
 
 if (!restored) world.load();
 

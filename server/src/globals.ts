@@ -36,6 +36,7 @@ export const TICK_RATE = 1000 / 60;
 export const INTERPOLATION_SPEED = 10;
 
 export const AUTOSAVE_INTERVAL = 30 * 1000;
+export const RESTORE_RETRIES = 3;
 
 export const PHASE_TRANSITION_DURATION = 20000;
 export const PHASE_STARTS = [

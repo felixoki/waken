@@ -20,7 +20,7 @@ export const load = {
 
     if (error) {
       console.error("load.player pg failed:", error);
-      return null;
+      throw error;
     }
 
     if (!result.rows.length) return null;
@@ -53,7 +53,7 @@ export const load = {
 
     if (error) {
       console.error("load.world pg failed:", error);
-      return null;
+      throw error;
     }
 
     if (!result.rows.length) return null;
