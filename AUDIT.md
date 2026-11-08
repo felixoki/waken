@@ -19,7 +19,7 @@ Status: ☐ open · ◐ claimed (date) · ✅ done (commit) · ✖ won't fix (re
 
 | ID | Status | Area | Issue |
 |---|---|---|---|
-| S0.1 | ☐ | Progression | ✔ Tier 5 needs 200 wood, but the store caps at 150 (`tiers.ts:37`, `globals.ts:647`). Tier 5 is unreachable |
+| S0.1 | ✅ 8b45351 | Progression | ✔ Tier 5 needs 200 wood, but the store caps at 150 (`tiers.ts:37`, `globals.ts:647`). Tier 5 is unreachable |
 | S0.2 | ☐ | Progression | ✔ Tomato seed only comes from a recipe that needs a tomato (`people.ts:1203`). The 3→4 upgrade is impossible |
 | S0.3 | ☐ | Progression | Each draught's recipe tier is one higher than its unlock. Each upgrade needs goods from the next step: quartz for 1→2, iron and seeds for 2→3, candle for 4→5. Without the Nightcap you stall at tiers 1, 2 and 4. Refusing Tellis (`people.ts:2826`) removes the only Nightcap for good: a softlock |
 | S0.4 | ☐ | Content | ✔ A Giant's Stalk (unlock 5) lies loose in the village (`village.tmx:10444`, object `Potion6`). It opens everything on day one |
@@ -248,7 +248,7 @@ Discoverability:
 Suggested verifier rules:
 - `S3.30` ☐ Sources must be reachable at or below their tier, accounting for unlocks and tools.
 - `S3.31` ☐ Recipe tier must be at least the ingredients' tier.
-- `S3.32` ☐ Tier requirements must fit within the store cap.
+- `S3.32` ✅ 8b45351 Tier requirements must fit within the store cap.
 - `S3.33` ☐ Greetings must cover every mood.
 - `S3.34` ☐ No duplicate icons without a whitelist.
 - `S3.35` ☐ Biome spawns must be included in the map's sheets.
