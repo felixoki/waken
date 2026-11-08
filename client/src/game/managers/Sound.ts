@@ -180,7 +180,7 @@ export class SoundManager {
 
         this.scene.tweens.add({
           targets: sound,
-          volume: config.volume * this.volume.ambience,
+          volume: { from: 0, to: config.volume * this.volume.ambience },
           duration,
           ease,
         });
