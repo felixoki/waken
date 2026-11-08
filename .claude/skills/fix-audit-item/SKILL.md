@@ -178,14 +178,17 @@ python3 $S find crow --max-dur 3                    # library: path terms are AN
 python3 $S find creatures growl --exclude loop --mono
 python3 $S find bite --index game                   # what the game ships now
 cut -f2 .claude/skills/fix-audit-item/sounds/library.tsv | sort | uniq -c   # packs
-python3 $S index                                     # rebuild after adding packs
+python3 $S index --full                              # re-probe everything (rarely needed)
 ```
 
 Output columns: duration (s), channels, sample rate, peak dBFS, mean dB, path.
 The index lives in `.claude/skills/fix-audit-item/sounds/` (`library.tsv`,
-`game.tsv`). Archives (zip, rar) aren't indexed; they're listed in
-`library.archives.txt`, and you can extract one into the scratchpad if a pack looks
-promising.
+`game.tsv`). It stays current by itself: every `find` checks modification times,
+probes only new or changed files and drops deleted ones, so new packs in the
+library and new sounds in the game show up without being mentioned. A changed
+`game.tsv` or `library.tsv` goes into the item's commit. Archives (zip, rar) aren't
+indexed; they're listed in `library.archives.txt`. If a pack looks promising,
+extract it next to the archive in the library folder, so it's indexed from then on.
 
 Workflow:
 
@@ -206,7 +209,7 @@ Workflow:
 6. **After approval:** convert to `.ogg` (mono for positional SFX, trimmed tails),
    place it in `client/public/assets/sounds/<folder>/`, and register it in
    `server/src/configs/sounds.ts` (`SoundName` in `server/src/types/sounds.ts`;
-   the `new-entity` skill covers entity voices). Then rerun `sounds.py index game`.
+   the `new-entity` skill covers entity voices).
 
 Never pick a sound without listening being possible: Felix decides by ear, so the
 preview is the proposal.
