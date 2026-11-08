@@ -636,6 +636,7 @@ export const FOOTSTEP_DISTANCE = 30;
 export const SFX_FALLOFF_NEAR = 80;
 export const SFX_FALLOFF_FAR = 480;
 export const SFX_MAX_PAN = 0.6;
+export const WATER_SOUND_EASE = 400;
 
 /** Stats */
 export const MAX_HEALTH = 100;

@@ -318,6 +318,7 @@ export const swamp: BiomeConfig = {
   id: BiomeName.SWAMP,
   label: "Swamp",
   ambience: [AmbienceName.SWAMP],
+  quiet: true,
   width: 256,
   height: 128,
   tileWidth: 16,

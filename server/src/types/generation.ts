@@ -280,6 +280,7 @@ export interface BiomeConfig {
   water?: boolean;
   marsh?: boolean;
   ambience?: AmbienceName[];
+  quiet?: boolean;
   grade?: MeadowGrade;
 }
 
@@ -548,11 +549,18 @@ export interface BiomeBand {
   y: number;
 }
 
+export enum WaterSound {
+  NONE = 0,
+  RIVER = 1,
+  LAKE = 2,
+}
+
 export interface LocationBand {
   label: string;
   y: number;
   height: number;
   ambience?: AmbienceName[];
+  quiet?: boolean;
 }
 
 export interface Level {

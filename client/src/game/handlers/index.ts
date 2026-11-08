@@ -23,6 +23,7 @@ import { sound } from "./sound";
 import { fishing } from "./fishing";
 import { sleep } from "./sleep";
 import { snow } from "./snow";
+import { waterSound } from "./waterSound";
 import { location } from "./location";
 import { shadows } from "./shadows";
 import { light } from "./light";
@@ -62,6 +63,7 @@ export const handlers = {
   fishing,
   sleep,
   snow,
+  waterSound,
   location,
   shadows,
   light,

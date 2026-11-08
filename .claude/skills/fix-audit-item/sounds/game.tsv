@@ -249,3 +249,6 @@ spells/shield.ogg	spells	ogg	opus	5.37	1	48000	-1.2	-26.2	1785097811
 spells/slash1.ogg	spells	ogg	opus	1.24	1	48000	-2.4	-19.5	1781709427
 spells/slash2.ogg	spells	ogg	opus	1.24	1	48000	-3.0	-19.9	1781709427
 spells/slash3.ogg	spells	ogg	opus	1.24	1	48000	-2.1	-20.6	1781709427
+water/lake.ogg	water	ogg	opus	30.01	1	48000	-4.7	-28.1	1794172964
+water/river.ogg	water	ogg	opus	30.01	1	48000	-1.9	-23.0	1794172963
+water/waterfall.ogg	water	ogg	opus	30.01	1	48000	-6.1	-19.9	1794172963

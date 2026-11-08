@@ -17,7 +17,9 @@ import {
   TERRAIN_INDEX,
   TERRAIN_ORDER,
   TerrainName,
+  WaterSound,
 } from "../types/generation";
+import type { WaterResult } from "../biomes/generators/Water";
 import { join, dirname } from "path";
 import {
   LEDGE_CLEARANCE,
@@ -115,6 +117,21 @@ export const generation = {
         }
 
     return null;
+  },
+
+  waters: (grid: TerrainName[], water: WaterResult): string => {
+    const bytes = Buffer.alloc(grid.length);
+
+    for (const body of water.bodies)
+      if (body.kind === "lake")
+        for (const i of body.cells)
+          if (grid[i] === TerrainName.WATER) bytes[i] = WaterSound.LAKE;
+
+    for (let i = 0; i < grid.length; i++)
+      if (water.owner[i] < 0 && grid[i] === TerrainName.WATER)
+        bytes[i] = WaterSound.RIVER;
+
+    return bytes.toString("base64");
   },
 
   chart: (grid: TerrainName[]): string => {

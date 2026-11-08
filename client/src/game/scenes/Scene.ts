@@ -16,6 +16,7 @@ import { shadows, type Shadows } from "../handlers/shadows";
 import { light } from "../handlers/light";
 import { water, type Water } from "../handlers/water";
 import { meadow, type Meadow } from "../handlers/meadow";
+import { waterSound, type WaterSounds } from "../handlers/waterSound";
 
 export class Scene extends Phaser.Scene {
   public physicsManager!: PhysicsManager;
@@ -23,6 +24,7 @@ export class Scene extends Phaser.Scene {
   public snow?: SnowTracks;
   public shadows?: Shadows;
   public water?: Water;
+  public waterSounds?: WaterSounds;
   public meadows: Meadow[] = [];
   public cameraManager!: CameraManager;
   public interfaceManager!: InterfaceManager;
@@ -91,6 +93,12 @@ export class Scene extends Phaser.Scene {
 
     this.game.events.off(Event.CAMERA_FOLLOW, this._follow, this);
     this.game.events.on(Event.CAMERA_FOLLOW, this._follow, this);
+
+    this.events.on(Phaser.Scenes.Events.SLEEP, this._hush, this);
+  }
+
+  private _hush(): void {
+    if (this.waterSounds) waterSound.stop(this.waterSounds);
   }
 
   private _follow(data: { key: string; player: Player }): void {
@@ -107,6 +115,8 @@ export class Scene extends Phaser.Scene {
     this.shadows = shadows.create(this, tiles.map);
     this.bands = location.bands(tiles.map);
     this.band = undefined;
+    this._hush();
+    this.waterSounds = waterSound.create(tiles.map);
     this.row = -1;
     this.chart = chart.create(tiles.map);
   }
@@ -117,6 +127,8 @@ export class Scene extends Phaser.Scene {
     this.shadows = undefined;
     if (this.water) water.destroy(this, this.water);
     this.water = undefined;
+    this._hush();
+    this.waterSounds = undefined;
     for (const state of this.meadows) meadow.destroy(this, state);
     this.meadows = [];
 
@@ -141,6 +153,9 @@ export class Scene extends Phaser.Scene {
 
       location.update(this, main, player.y);
       chart.update(this, main, player);
+
+      if (this.waterSounds)
+        waterSound.update(this, this.waterSounds, player, !!this.band?.quiet, delta);
     }
 
     if (this.snow) {

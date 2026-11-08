@@ -1500,9 +1500,19 @@ export class MapBuilder {
               y,
               height: config.height,
               ambience: config.ambience,
+              quiet: config.quiet,
             })),
           ),
         },
+        ...(water
+          ? [
+              {
+                name: "water",
+                type: "string",
+                value: handlers.generation.waters(grid, water),
+              },
+            ]
+          : []),
         {
           name: "chart",
           type: "string",
