@@ -46,10 +46,10 @@ The ones you named, all confirmed:
 - `S1.4` ✅ b83b517 🟧 **No rebinding.** Keys are hard-coded (`Input.ts:32-44`) and mouse actions too (`Input.ts:162`, `Build.ts:90`). The Controls screen is a separate static table (`Settings.tsx:9`). Use one `bindings` map that is saved, drives `addKeys`, and renders the Controls screen.
 
 Silent failures (no feedback today):
-- `S1.5` ◐ 2026-11-08 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
+- `S1.5` ✅ cb76a58 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
 - `S1.6` ☐ 🟧 No death or wipe screen. The inventory is cleared with no message (`Main.ts:1212-1233, 1302-1321`).
 - `S1.7` ☐ 🟧 Party "Leave" inside the realm wipes the inventory with no confirmation (`Party.tsx:56`, `party.ts:206`).
-- `S1.8` ☐ 🟨 Pickup removes the item before the server confirms. If the server rejects it, it vanishes locally but stays on the server (`Pickable.ts:58`).
+- `S1.8` ✅ cb76a58 🟨 Pickup removes the item before the server confirms. If the server rejects it, it vanishes locally but stays on the server (`Pickable.ts:58`).
 - `S1.9` ☐ 🟨 Craft overflow spills on the ground silently. The COLLECT sound plays before the server confirms (`crafter.ts:54`, `Main.ts:926`).
 - `S1.10` ☐ 🟨 Upgrade or improve can't afford, or lost a race (`economy.ts:11-33`). The handler isn't passed the `socket`.
 - `S1.11` ☐ 🟨 `PLAYER_TRANSITION_DENIED` carries no reason, e.g. locked area or dream too shallow (`player.ts:387,403`, `party.ts:513`).
@@ -173,7 +173,7 @@ Silent actions:
   - `S2.27b` ✅ 6ccafdc Tab inventory close plays Inventory Open 00 and stops the open sound (`SfxConfig.stops`).
   - `S2.27d` ☐ Chest, crafter and improvements panels open and close.
   - `S2.27c` ☐ Hotbar switch, dialogue advance, menu clicks, location banner.
-- `S2.28` ☐ ⬜ PICKUP, DRINK and COLLECT play before the server confirms, so they play even when the action is rejected.
+- `S2.28` ☐ ⬜ DRINK and COLLECT play before the server confirms, so they play even when the action is rejected. (PICKUP waits for `ENTITY_PICKED` since S1.5.)
 
 Maps:
 - `S2.29` ☐ 🟧 Isles, Nether and Cave have no music and no ambience. `CAVE_DRIP` and `DUNGEON_DRONE` from `plans/sound.md` were never added. Dungeon and temple share `CANALS`.
