@@ -41,7 +41,7 @@ Status: ☐ open · ◐ claimed (date) · ✅ done (commit) · ✖ won't fix (re
 
 The ones you named, all confirmed:
 - `S1.1` ✅ 8351c7e 🟧 **No pickup toast.** No toast or notification system exists at all. Proposal: one `Event.NOTIFY {text, kind, sound?}` socket event plus a `Toasts.tsx`. Hook points: `entity.pickup` after `INVENTORY_SYNC` (`entity.ts:136`) and `item.give` (`item.ts:198`, which covers harvest, craft and fish).
-- `S1.2` ☐ 🟧 **No tier-up sound.** The toast is done in S1.1 (`NoticeKind.TIER` and `IMPROVEMENT`, sent from `economy.upgrade` and `economy.improve`). Still missing: a success sound for both, which doesn't exist yet.
+- `S1.2` ◐ 2026-11-08 🟧 **No tier-up sound.** The toast is done in S1.1 (`NoticeKind.TIER` and `IMPROVEMENT`, sent from `economy.upgrade` and `economy.improve`). Still missing: a success sound for both, which doesn't exist yet.
 - `S1.3` ☐ 🟧 **No partial stack take.** `SLOT_MOVE` has no `quantity` (`storage.ts:342-481`, `Provider.tsx:118`). Add `quantity?`, make shift-drag move half, and add a "Take…" amount picker. Chest items have no context menu today (`Storage.tsx:70`).
 - `S1.4` ☐ 🟧 **No rebinding.** Keys are hard-coded (`Input.ts:32-44`) and mouse actions too (`Input.ts:162`, `Build.ts:90`). The Controls screen is a separate static table (`Settings.tsx:9`). Use one `bindings` map that is saved, drives `addKeys`, and renders the Controls screen.
 
@@ -157,7 +157,7 @@ Silent actions:
 - `S2.20` ☐ 🟨 Roll; swim strokes and water entry; falling into a hole; a missed fish.
 - `S2.21` ☐ 🟨 Pacify, resist, capture, feed, milk, lay, butcher.
 - `S2.22` ☐ 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.
-- `S2.23` ☐ 🟨 Tier up, improvement, errand hand-in, spell learn, build place and destroy.
+- `S2.23` ☐ 🟨 Errand hand-in, spell learn, build place and destroy. (Tier up and improvement play `ACHIEVEMENT` since S1.2.)
 - `S2.24` ☐ 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
 - `S2.25` ☐ 🟨 Mined-out rock crumble (`Main.ts:460` only gates `FELLABLE`). Troll rock and mud throw and impact (`Throwing.ts`). Wanderer and grandmother dash. Grouse, villain and dragon flight.
 - `S2.26` ☐ ⬜ Harvest, crop mature, wither; hive swarm buzz; item drop; effect apply; miss and crit.
@@ -460,7 +460,7 @@ Electron:
 - `S7.13` ☐ ⬜ No auto-update and no Steam integration at all. Presence only, not a request.
 
 Legal and meta:
-- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". Get a written rights transfer for the Fiverr art.
+- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and so far only lists the Little Robot Sound Factory library (CC BY 3.0); ElvGames packs need "pegonthetrack & ELVGames" credited if used. Get a written rights transfer for the Fiverr art.
 - `S7.15` ☐ 🟨 No privacy policy (player IDs and IPs are stored).
 
 Tooling and repo:

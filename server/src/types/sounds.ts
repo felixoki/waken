@@ -44,6 +44,7 @@ export enum SoundName {
   GOOSE_IDLE = "goose_idle",
   GROUSE_IDLE = "grouse_idle",
   CHICKEN_IDLE = "chicken_idle",
+  ACHIEVEMENT = "achievement",
   COLLECT = "collect",
   DOOR = "door",
   DRINK = "drink",

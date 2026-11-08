@@ -127,6 +127,7 @@ footsteps/stepwater6.wav	footsteps	wav	pcm_s24le	0.75	2	44100	-4.5	-25.1	1793733
 footsteps/stepwater7.ogg	footsteps	ogg	opus	0.76	1	48000	-2.8	-22.2	1793734437
 footsteps/stepwater7.wav	footsteps	wav	pcm_s24le	0.75	2	44100	-0.0	-26.6	1793733495
 footsteps/stepwater8.ogg	footsteps	ogg	opus	0.76	1	48000	-0.7	-24.4	1793734437
+misc/achievement.ogg	misc	ogg	opus	3.57	1	48000	0.0	-17.4	1794168271
 misc/bite1.ogg	misc	ogg	vorbis	0.86	2	44100	-10.5	-41.8	1790795067
 misc/bite2.ogg	misc	ogg	vorbis	0.54	2	44100	-11.5	-40.4	1790795067
 misc/bite3.ogg	misc	ogg	vorbis	0.64	2	44100	-10.6	-35.5	1790795067

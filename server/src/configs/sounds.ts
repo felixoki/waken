@@ -426,6 +426,7 @@ export const sounds = {
       folder: "animals",
       variants: ["grouse_idle1", "grouse_idle2"],
     },
+    [SoundName.ACHIEVEMENT]: { volume: 0.6, folder: "misc" },
     [SoundName.COLLECT]: { volume: 0.6, folder: "misc" },
     [SoundName.DOOR]: { volume: 0.6, folder: "misc" },
     [SoundName.DRINK]: { volume: 0.6, folder: "misc" },

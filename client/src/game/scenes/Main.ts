@@ -15,6 +15,7 @@ import {
   ComponentName,
   Item,
   Notice,
+  NoticeKind,
   Transition,
   Spot,
   Party,
@@ -967,6 +968,12 @@ export class MainScene extends Phaser.Scene {
 
     this.managers.socket.on(Event.NOTIFY, (notice: Notice) => {
       EventBus.emit(Event.NOTIFY, notice);
+
+      if (
+        notice.kind === NoticeKind.TIER ||
+        notice.kind === NoticeKind.IMPROVEMENT
+      )
+        this.managers.sound.play.sfx(SoundName.ACHIEVEMENT, { rate: 1 });
     });
 
     this.managers.socket.on(
