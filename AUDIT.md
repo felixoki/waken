@@ -154,7 +154,7 @@ Entities that borrow another's sound:
 
 Silent actions:
 - `S2.19` ◐ 2026-11-08 🟧 Player death, inventory loss, revive.
-  - `S2.19a` ◐ 2026-11-08 Party wipe plays Jingle Lose, outside the master fade so the transition doesn't cut it.
+  - `S2.19a` ✅ 026d551 Party wipe plays Jingle Lose, outside the master fade so the transition doesn't cut it.
   - `S2.19b` ☐ Own death: a short sting (a revive may still come). Needs a sound pick.
   - `S2.19c` ☐ Being revived. Needs a sound pick.
 - `S2.20` ☐ 🟨 Roll; swim strokes and water entry; falling into a hole; a missed fish.
