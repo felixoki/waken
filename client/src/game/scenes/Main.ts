@@ -1338,6 +1338,7 @@ export class MainScene extends Phaser.Scene {
       );
       inventory?.clear();
 
+      this.managers.sound.play.sfx(SoundName.LOSE, { rate: 1, direct: true });
       EventBus.emit(Event.PARTY_WIPE);
     });
   }

@@ -153,7 +153,10 @@ Entities that borrow another's sound:
   - bowls break with `WOOD_BREAK`
 
 Silent actions:
-- `S2.19` ☐ 🟧 Player death, inventory loss, revive.
+- `S2.19` ◐ 2026-11-08 🟧 Player death, inventory loss, revive.
+  - `S2.19a` ◐ 2026-11-08 Party wipe plays Jingle Lose, outside the master fade so the transition doesn't cut it.
+  - `S2.19b` ☐ Own death: a short sting (a revive may still come). Needs a sound pick.
+  - `S2.19c` ☐ Being revived. Needs a sound pick.
 - `S2.20` ☐ 🟨 Roll; swim strokes and water entry; falling into a hole; a missed fish.
 - `S2.21` ☐ 🟨 Pacify, resist, capture, feed, milk, lay, butcher.
 - `S2.22` ☐ 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.

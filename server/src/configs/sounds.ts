@@ -428,6 +428,7 @@ export const sounds = {
     },
     [SoundName.ACHIEVEMENT]: { volume: 0.6, folder: "misc" },
     [SoundName.COLLECT]: { volume: 0.6, folder: "misc" },
+    [SoundName.LOSE]: { volume: 0.35, folder: "misc" },
     [SoundName.DOOR]: { volume: 0.6, folder: "misc" },
     [SoundName.DRINK]: { volume: 0.6, folder: "misc" },
     [SoundName.EQUIP]: { volume: 0.1, folder: "misc" },

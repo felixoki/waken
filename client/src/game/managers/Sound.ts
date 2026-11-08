@@ -69,6 +69,7 @@ export class SoundManager {
         rate?: number;
         seek?: number;
         position?: { x: number; y: number };
+        direct?: boolean;
       },
     ) => {
       const config: SfxConfig =
@@ -89,14 +90,16 @@ export class SoundManager {
         ? config.variants[Math.floor(Math.random() * config.variants.length)]
         : name;
 
-      this._routed(() =>
+      const play = () =>
         this.manager.play(key, {
           volume,
           pan,
           rate: opts?.rate ?? 0.95 + Math.random() * 0.1,
           seek: opts?.seek ?? 0,
-        }),
-      );
+        });
+
+      if (opts?.direct) play();
+      else this._routed(play);
     },
 
     loop: (
