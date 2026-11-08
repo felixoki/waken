@@ -33,7 +33,7 @@ Status: ☐ open · ◐ claimed (date) · ✅ done (commit) · ✖ won't fix (re
 | S0.12 | ✅ 8502a1e | Audio perf | Every music and ambience file is decoded at boot, about 660 MB of PCM in RAM (`Main.ts:92`, `loaders/Sound.ts`). `storm1.ogg` alone is 279 s |
 | S0.13 | ✖ deferred to the player identity feature (Steam, names) in the DEVLOG backlog | Security | Identity is a bare localStorage UUID. It is broadcast to every client, and the world never checks it against `world_members` (`player.ts:40`, `Menu.tsx:14`) |
 | S0.14 | ✅ 418e647 | Security | `POST /worlds/:id/start` forks a process for any string, with no membership check, cap or rate limit (`lobby.ts:153`) |
-| S0.15 | ☐ | UX | No volume UI. `SoundManager.setVolume` has no caller and the Settings button is disabled (`Settings.tsx:171`) |
+| S0.15 | ✅ 4d7efb9 | UX | No volume UI. `SoundManager.setVolume` has no caller and the Settings button is disabled (`Settings.tsx:171`) |
 
 ---
 
