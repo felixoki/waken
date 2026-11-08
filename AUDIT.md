@@ -31,8 +31,8 @@ Status: ☐ open · ◐ claimed (date) · ✅ done (commit) · ✖ won't fix (re
 | S0.10 | ✅ 54fd863 | Client perf | ✔ All 12 map scenes update every frame while hidden (`Scene.ts:133`, `Main.ts:122-140`; they use `setVisible(false)`, not `sleep`) |
 | S0.11 | ✖ Measured old vs new in game: melee no difference (2.5 ms per frame either way), claw average equal and peak worse with pooled emitters; no stutter in play. Revisit if real performance issues show up | Client perf | `claw` creates 480 emitters, 840 timers and about 15k particles per cast. A full melee combo creates about 585 emitters. `dissolve` creates one Arc and one tween per pixel (`vfx/emitters.ts:709-1172`). Still open from the old audit |
 | S0.12 | ✅ 8502a1e | Audio perf | Every music and ambience file is decoded at boot, about 660 MB of PCM in RAM (`Main.ts:92`, `loaders/Sound.ts`). `storm1.ogg` alone is 279 s |
-| S0.13 | ☐ | Security | Identity is a bare localStorage UUID. It is broadcast to every client, and the world never checks it against `world_members` (`player.ts:40`, `Menu.tsx:14`) |
-| S0.14 | ☐ | Security | `POST /worlds/:id/start` forks a process for any string, with no membership check, cap or rate limit (`lobby.ts:153`) |
+| S0.13 | ✖ deferred to the player identity feature (Steam, names) in the DEVLOG backlog | Security | Identity is a bare localStorage UUID. It is broadcast to every client, and the world never checks it against `world_members` (`player.ts:40`, `Menu.tsx:14`) |
+| S0.14 | ◐ 2026-11-08 | Security | `POST /worlds/:id/start` forks a process for any string, with no membership check, cap or rate limit (`lobby.ts:153`) |
 | S0.15 | ☐ | UX | No volume UI. `SoundManager.setVolume` has no caller and the Settings button is disabled (`Settings.tsx:171`) |
 
 ---
