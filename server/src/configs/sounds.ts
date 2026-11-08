@@ -210,7 +210,7 @@ export const sounds = {
       variants: ["slash1", "slash2", "slash3"],
     },
     [SoundName.REVIVE]: {
-      volume: 2,
+      volume: 0.2,
       folder: "spells",
     },
     [SoundName.GAIN_MOMENTUM]: {
