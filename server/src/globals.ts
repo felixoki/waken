@@ -797,6 +797,10 @@ export const TOAST_HOLD = 3000;
 export const TOAST_FADE = 300;
 export const TOAST_MAX = 5;
 
+/** Wake */
+
+export const WAKE_FADE = 800;
+
 /** Story */
 
 export const BIG_HAND_IN = 50;

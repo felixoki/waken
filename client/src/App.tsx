@@ -28,6 +28,7 @@ import { Provider } from "./ui/Provider";
 import { Tooltip } from "./ui/Tooltip";
 import { Fishing } from "./ui/Fishing";
 import { Console } from "./ui/Console";
+import { Wake } from "./ui/Wake";
 
 function FPS({ game }: { game: React.RefObject<Phaser.Game | null> }) {
   const [fps, setFps] = useState(0);
@@ -80,6 +81,7 @@ function App() {
       <Tooltip />
       <Fishing />
       <Party />
+      <Wake />
       <div className="fixed bottom-0 left-0 p-4 flex flex-col gap-4">
         <Toasts />
         <Effects />

@@ -2,6 +2,7 @@ import { SpellConfig } from "./spells";
 import { WeaponConfig } from "./weapons";
 import { TrapConfig } from "./traps";
 import { EntityName, Trigger } from "./entities";
+import { Item } from "./components";
 
 export type CombatConfig = SpellConfig | WeaponConfig | TrapConfig | Trigger;
 
@@ -32,4 +33,9 @@ export interface Death {
   x: number;
   y: number;
   fell?: boolean;
+}
+
+export interface Wipe {
+  kept: boolean;
+  lost: Item[];
 }

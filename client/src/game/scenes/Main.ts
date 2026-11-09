@@ -23,6 +23,7 @@ import {
   TimeState,
   StateName,
   Death,
+  Wipe,
   Effect as ActiveEffect,
   EffectName,
   Event,
@@ -1279,16 +1280,7 @@ export class MainScene extends Phaser.Scene {
       if (player && data.fell) handlers.player.land(player, data.x, data.y);
       else if (player) player.transitionTo(StateName.DEAD);
 
-      if (isLocal && this.managers.players.player) {
-        const inventory =
-          this.managers.players.player.getComponent<InventoryComponent>(
-            ComponentName.INVENTORY,
-          );
-
-        inventory?.clear();
-
-        EventBus.emit(Event.PLAYER_HEALTH, 0);
-      }
+      if (isLocal) EventBus.emit(Event.PLAYER_HEALTH, 0);
 
       EventBus.emit(Event.PLAYER_DEATH, data);
     });
@@ -1370,18 +1362,21 @@ export class MainScene extends Phaser.Scene {
       inventory?.clear();
     });
 
-    this.managers.socket.on(Event.PARTY_WIPE, () => {
+    this.managers.socket.on(Event.PARTY_WIPE, (data: Wipe) => {
       const player = this.managers.players.player;
       if (!player) return;
 
-      const inventory = player.getComponent<InventoryComponent>(
-        ComponentName.INVENTORY,
-      );
-      inventory?.clear();
+      if (data.lost.length)
+        player
+          .getComponent<InventoryComponent>(ComponentName.INVENTORY)
+          ?.clear();
 
       this.managers.sound.boss.stop();
       this.managers.sound.play.sfx(SoundName.LOSE, { rate: 1, direct: true });
-      EventBus.emit(Event.PARTY_WIPE);
+      EventBus.emit(Event.PARTY_WIPE, {
+        ...data,
+        duration: this.managers.sound.getDuration(SoundName.LOSE),
+      });
     });
   }
 

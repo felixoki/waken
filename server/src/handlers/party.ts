@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import {
   EntityConfig,
   Event,
+  Item,
   MapName,
   NoticeKind,
   Party,
@@ -11,6 +12,7 @@ import {
   PlayerConfig,
   TiledMap,
   Transition,
+  Wipe,
 } from "../types";
 import { Landmark } from "../types/generation.js";
 import { levels } from "../configs/levels.js";
@@ -57,6 +59,13 @@ export const party = {
       const keeps = party.keeps(member);
       if (!keeps) world.relics.forfeit(member.inventory);
 
+      const wipe: Wipe = {
+        kept: keeps,
+        lost: keeps
+          ? []
+          : member.inventory.filter((item): item is Item => !!item),
+      };
+
       handlers.player.transfer(
         memberSocket,
         io,
@@ -76,7 +85,7 @@ export const party = {
         data.id,
       );
 
-      memberSocket.emit(Event.PARTY_WIPE);
+      memberSocket.emit(Event.PARTY_WIPE, wipe);
     }
 
     const firstMember = world.players.get(data.members[0]);

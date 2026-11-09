@@ -405,6 +405,11 @@ export class SoundManager {
     return this.layers.has(name);
   }
 
+  getDuration(name: SoundName): number {
+    const buffer = this.scene.cache.audio.get(name) as AudioBuffer | undefined;
+    return (buffer?.duration ?? 0) * 1000;
+  }
+
   getActiveMusic(): MusicName[] | null {
     if (!this.current) return null;
     return this.queue.music.length ? [...this.queue.music] : null;
