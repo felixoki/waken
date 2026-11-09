@@ -30,7 +30,9 @@ export const waterSound = {
       fall: [] as number[],
     };
 
-    const properties = (map.properties ?? []) as TiledProperty[];
+    const properties = Array.isArray(map.properties)
+      ? (map.properties as TiledProperty[])
+      : [];
     const grid = properties.find((p) => p.name === "water")?.value;
 
     if (typeof grid === "string") {
@@ -42,9 +44,11 @@ export const waterSound = {
     }
 
     for (const layer of map.objects) {
-      const falls = (layer.properties as TiledProperty[] | undefined)?.some(
-        (p) => p.name === "waterfalls" && p.value === true,
-      );
+      const falls =
+        Array.isArray(layer.properties) &&
+        (layer.properties as TiledProperty[]).some(
+          (p) => p.name === "waterfalls" && p.value === true,
+        );
       if (!falls) continue;
 
       for (const object of layer.objects) {
