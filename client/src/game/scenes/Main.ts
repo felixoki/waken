@@ -51,6 +51,7 @@ import { DestructibleComponent } from "../components/Destructible";
 import { HiveComponent } from "../components/Hive";
 import { GrowableComponent } from "../components/Growable";
 import { CapturableComponent } from "../components/Capturable";
+import { StorageComponent } from "../components/Storage";
 import { vfx } from "../vfx";
 import { DaycycleManager } from "../managers/Daycycle";
 import { WeatherManager } from "../managers/Weather";
@@ -385,6 +386,11 @@ export class MainScene extends Phaser.Scene {
           entity.getComponent(ComponentName.FELLABLE) ??
           entity.getComponent(ComponentName.MINEABLE);
 
+        if (configs.entities[entity.name]?.theme) {
+          if (entity.health <= 0) this.managers.sound.boss.end();
+          else this.managers.sound.boss.stop();
+        }
+
         if (destructible) {
           vfx.emitters.break(entity);
           this.managers.sound.play.sfx(
@@ -664,10 +670,18 @@ export class MainScene extends Phaser.Scene {
 
     this.managers.socket.on(Event.CUTSCENE_START, (data: EncounterStart) => {
       handlers.cutscene.start(this, data);
+
+      const entity = this.managers.entities.entities.get(data.entityId);
+      const theme = entity && configs.entities[entity.name]?.theme;
+      if (entity && theme) this.managers.sound.boss.start(theme, entity.map);
     });
 
     this.managers.socket.on(Event.CUTSCENE_END, (data: string) => {
       handlers.cutscene.end(this, data);
+
+      const entity = this.managers.entities.entities.get(data);
+      const theme = entity && configs.entities[entity.name]?.theme;
+      if (entity && theme) this.managers.sound.boss.fight(theme, entity.map);
     });
 
     this.game.events.on(Event.VILLAIN_ENCOUNTER, (data: string) => {
@@ -974,9 +988,13 @@ export class MainScene extends Phaser.Scene {
       Event.STORAGE_SYNC,
       (data: { entityId: string; slots: (Item | null)[] }) => {
         this.game.events.emit(Event.STORAGE_CONFIRM, data.entityId);
+        const storage = this.managers.entities.entities
+          .get(data.entityId)
+          ?.getComponent<StorageComponent>(ComponentName.STORAGE);
         EventBus.emit(Event.STORAGE_OPEN, {
           entityId: data.entityId,
           slots: data.slots.length,
+          quiet: !!storage?.sound,
         });
         EventBus.emit(Event.STORAGE_SYNC, data);
       },
@@ -1361,6 +1379,7 @@ export class MainScene extends Phaser.Scene {
       );
       inventory?.clear();
 
+      this.managers.sound.boss.stop();
       this.managers.sound.play.sfx(SoundName.LOSE, { rate: 1, direct: true });
       EventBus.emit(Event.PARTY_WIPE);
     });

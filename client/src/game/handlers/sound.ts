@@ -15,7 +15,10 @@ export const sound = {
       currentQueue.length === targetQueue.length &&
       currentQueue.every((t, i) => t === targetQueue[i]);
 
-    if (!sameQueue) {
+    const boss = main.managers.sound.boss.active(map);
+    if (!boss) main.managers.sound.boss.stop();
+
+    if (!boss && !sameQueue) {
       if (targetQueue) main.managers.sound.play.music(targetQueue);
       else main.managers.sound.stop.music();
     }

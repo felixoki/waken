@@ -631,6 +631,7 @@ export const REEL_WEIGHT_DRAIN = 0.2;
 
 export const CROSSFADE_DURATION = 1000;
 export const MASTER_FADE_OUT = 300;
+export const BOSS_LOOKAHEAD = 0.05;
 export const FOOTSTEP_DISTANCE = 30;
 
 export const SFX_FALLOFF_NEAR = 80;

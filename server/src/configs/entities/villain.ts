@@ -1,5 +1,6 @@
 import { TRANSFORM_RANGE } from "../../globals";
 import {
+  BossThemeName,
   ComponentName,
   DialogueEffectName,
   Direction,
@@ -21,6 +22,7 @@ export const villain: Partial<Record<EntityName, EntityDefinition>> = {
     facing: Direction.DOWN,
     moving: [],
     maxHealth: 2500,
+    theme: BossThemeName.WOODLAND,
     components: [
       { name: ComponentName.ANIMATION },
       {

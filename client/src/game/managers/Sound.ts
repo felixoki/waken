@@ -4,12 +4,18 @@ import {
   AmbienceDomain,
   AmbienceName,
   AudioConfig,
+  BossThemeName,
   ChannelName,
+  MapName,
   MusicName,
   SfxConfig,
   SoundName,
 } from "@server/types";
-import { CROSSFADE_DURATION, MASTER_FADE_OUT } from "@server/globals";
+import {
+  BOSS_LOOKAHEAD,
+  CROSSFADE_DURATION,
+  MASTER_FADE_OUT,
+} from "@server/globals";
 import {
   SFX_FALLOFF_NEAR,
   SFX_FALLOFF_FAR,
@@ -28,6 +34,19 @@ type Stream = {
 
 type Layer = { key: string; sound: Sound | null };
 
+type BossPart = "intro" | "loop" | "outro";
+
+type BossTrack = {
+  theme: BossThemeName;
+  map: MapName;
+  gain: GainNode;
+  source: AudioBufferSourceNode | null;
+  started: number;
+  part: BossPart;
+  resume: MusicName[] | null;
+  ready: boolean;
+};
+
 export const loadVolume = (): Record<ChannelName, number> =>
   JSON.parse(
     localStorage.getItem("volume") ??
@@ -39,6 +58,7 @@ export class SoundManager {
   private manager: Phaser.Sound.WebAudioSoundManager;
   private bus: GainNode;
   private current: Stream | null = null;
+  private track: BossTrack | null = null;
   private layers: Map<AmbienceName, Layer> = new Map();
   private domains: Map<AmbienceName, AmbienceDomain> = new Map();
   private volume: Record<ChannelName, number>;
@@ -224,6 +244,100 @@ export class SoundManager {
     },
   };
 
+  boss = {
+    start: (theme: BossThemeName, map: MapName) => {
+      if (this.track) return;
+
+      const config = configs.sounds.boss[theme];
+      const gain = this.manager.context.createGain();
+
+      gain.gain.value = 0;
+      gain.connect(this.bus);
+      this._ramp(gain.gain, config.volume * this.volume.music, CROSSFADE_DURATION);
+
+      const track: BossTrack = {
+        theme,
+        map,
+        gain,
+        source: null,
+        started: 0,
+        part: "intro",
+        resume: this.getActiveMusic(),
+        ready: false,
+      };
+
+      this.track = track;
+      this.stop.music();
+
+      const keys = [config.intro, config.loop, config.outro];
+      let pending = keys.length;
+
+      for (const key of keys)
+        this._fetch(
+          key,
+          () => {
+            if (--pending > 0) return;
+            if (this.track !== track) return this._unload(theme);
+
+            track.ready = true;
+            this._schedule(track, track.part, this.manager.context.currentTime);
+          },
+          MUSIC_PATH,
+        );
+    },
+
+    fight: (theme: BossThemeName, map: MapName) => {
+      if (!this.track) this.boss.start(theme, map);
+
+      const track = this.track;
+      if (!track || track.part !== "intro") return;
+
+      if (!track.ready || !track.source?.buffer) {
+        track.part = "loop";
+        return;
+      }
+
+      const length = track.source.buffer.duration;
+      const now = this.manager.context.currentTime;
+      const at =
+        track.started +
+        Math.ceil((now + BOSS_LOOKAHEAD - track.started) / length) * length;
+
+      this._schedule(track, "loop", at);
+    },
+
+    end: () => {
+      const track = this.track;
+      if (!track || track.part === "outro") return;
+      if (!track.ready || !track.source) return this.boss.stop();
+
+      const bar = (60 / configs.sounds.boss[track.theme].bpm) * 4;
+      const now = this.manager.context.currentTime;
+      const at =
+        track.started > now
+          ? track.started
+          : track.started +
+            Math.ceil((now + BOSS_LOOKAHEAD - track.started) / bar) * bar;
+
+      this._schedule(track, "outro", at);
+    },
+
+    stop: () => {
+      const track = this.track;
+      if (!track) return;
+
+      this.track = null;
+      this._ramp(track.gain.gain, 0, CROSSFADE_DURATION);
+      this.scene.time.delayedCall(CROSSFADE_DURATION, () => {
+        track.source?.stop();
+        track.gain.disconnect();
+        this._unload(track.theme);
+      });
+    },
+
+    active: (map: MapName): boolean => this.track?.map === map,
+  };
+
   stop = {
     music: () => {
       if (!this.current) return;
@@ -263,6 +377,13 @@ export class SoundManager {
       this._ramp(
         this.current.gain.gain,
         configs.sounds.music[this.current.name].volume * value,
+        0,
+      );
+
+    if (channel === ChannelName.MUSIC && this.track)
+      this._ramp(
+        this.track.gain.gain,
+        configs.sounds.boss[this.track.theme].volume * value,
         0,
       );
 
@@ -324,14 +445,47 @@ export class SoundManager {
     stream.gain.disconnect();
   }
 
-  private _fetch(key: string, done: () => void) {
+  private _schedule(track: BossTrack, part: BossPart, at: number) {
+    const config = configs.sounds.boss[track.theme];
+    const buffer = this.scene.cache.audio.get(config[part]) as AudioBuffer;
+    const source = this.manager.context.createBufferSource();
+
+    source.buffer = buffer;
+    source.loop = part !== "outro";
+    source.connect(track.gain);
+    source.start(at);
+    track.source?.stop(at);
+
+    track.source = source;
+    track.started = at;
+    track.part = part;
+
+    if (part === "outro")
+      source.onended = () => {
+        if (this.track !== track) return;
+
+        this.track = null;
+        track.gain.disconnect();
+        this._unload(track.theme);
+        if (track.resume) this.play.music(track.resume);
+      };
+  }
+
+  private _unload(theme: BossThemeName) {
+    const config = configs.sounds.boss[theme];
+
+    for (const key of [config.intro, config.loop, config.outro])
+      this.scene.cache.audio.remove(key);
+  }
+
+  private _fetch(key: string, done: () => void, path = AMBIENCE_PATH) {
     if (this.scene.cache.audio.exists(key)) return done();
 
     this.scene.load.once(
       `${Phaser.Loader.Events.FILE_KEY_COMPLETE}audio-${key}`,
       done,
     );
-    this.scene.load.audio(key, `${AMBIENCE_PATH}/${key}.ogg`);
+    this.scene.load.audio(key, `${path}/${key}.ogg`);
     this.scene.load.start();
   }
 

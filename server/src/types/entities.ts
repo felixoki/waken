@@ -8,7 +8,7 @@ import { Dialogue, DialogueChoice } from "./dialogue";
 import { SpellName } from "./spells";
 import { WeaponName } from "./weapons";
 import { Effect, EffectName } from "./effects.js";
-import { SoundName } from "./sounds";
+import { BossThemeName, SoundName } from "./sounds";
 import { ZoneConfig } from "./zones.js";
 import type { BiomeName } from "./generation";
 import type { Position } from "./schedule";
@@ -187,6 +187,7 @@ export interface EntityDefinition {
   floats?: boolean;
   sinks?: boolean;
   wades?: boolean;
+  theme?: BossThemeName;
 }
 
 export interface Icon {

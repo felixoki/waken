@@ -1,4 +1,10 @@
-import { AmbienceName, MusicName, SoundName } from "../types/sounds";
+import {
+  AmbienceName,
+  BossThemeConfig,
+  BossThemeName,
+  MusicName,
+  SoundName,
+} from "../types/sounds";
 
 export const sounds = {
   sfx: {
@@ -449,6 +455,13 @@ export const sounds = {
       folder: "misc",
       variants: ["trap1", "trap2", "trap3"],
     },
+    [SoundName.CHEST_OPEN]: { volume: 0.65, folder: "misc", exclusive: true },
+    [SoundName.CHEST_CLOSE]: {
+      volume: 0.4,
+      folder: "misc",
+      exclusive: true,
+      stops: [SoundName.CHEST_OPEN],
+    },
     [SoundName.DOOR]: { volume: 0.6, folder: "misc" },
     [SoundName.DRINK]: { volume: 0.6, folder: "misc" },
     [SoundName.EQUIP]: { volume: 0.1, folder: "misc" },
@@ -487,4 +500,14 @@ export const sounds = {
     [AmbienceName.SWAMP]: { volume: 1 },
     [AmbienceName.MOUNTAIN_PEAK]: { volume: 1 },
   },
+
+  boss: {
+    [BossThemeName.WOODLAND]: {
+      intro: "boss_woodland_intro",
+      loop: "boss_woodland_loop",
+      outro: "boss_woodland_outro",
+      bpm: 155,
+      volume: 0.3,
+    },
+  } satisfies Record<BossThemeName, BossThemeConfig>,
 };

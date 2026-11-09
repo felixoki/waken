@@ -23,6 +23,8 @@ License: commercial license from the asset pack; credit to pegonthetrack & ELVGa
 | `client/public/assets/sounds/misc/vases_break1.ogg`, `vases_break2.ogg`, `vases_break3.ogg` | `GS2_Vases_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
 | `client/public/assets/sounds/misc/wood_break1.ogg`, `wood_break2.ogg`, `wood_break3.ogg` | `GS2_Wood_Breaking_1-3.wav` (Game Sound Effects 2) | Re-encoded |
 | `client/public/assets/sounds/misc/ruin_break.ogg` | `GS1_Spell_EarthPunch.wav` (Game Sound Effects 1) | Mixed to mono, re-encoded as Opus |
+| `client/public/assets/sounds/misc/chest_open.ogg` | `GS2_Treasure_Chest_Open.wav` (Game Sound Effects 2) | Mixed to mono, re-encoded as Opus |
+| `client/public/assets/sounds/misc/chest_close.ogg` | `Close Drawer - 1.wav` (Loot & Inventory SFX Pack 1) | Mixed to mono, re-encoded as Opus |
 
 **Nature Ambient Pack Vol 1** by JC Sounds.
 Source: https://jcsounds.itch.io/natureambientsfxvol1 and https://opengameart.org/node/180349
@@ -38,3 +40,13 @@ License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ (attribution: "
 | `client/public/assets/sounds/water/waterfall.ogg` | `AMB_Nature Pack Vol 1_Water Enviroments_Waterfall.mp3` | 30 s loop cut from 0:10, crossfaded seam, mono, +4.9 dB, Opus |
 | `client/public/assets/sounds/water/river.ogg` | `AMB_Nature Pack Vol 1_Water Enviroments_Mountain Stream.mp3` | 30 s loop cut from 0:10, crossfaded seam, mono, +8.2 dB, Opus |
 | `client/public/assets/sounds/water/lake.ogg` | `AMB_Nature Pack Vol 1_Water Enviroments_Peaceful Lake .mp3` | 30 s loop cut from 0:10, crossfaded seam, mono, +9.0 dB, Opus |
+
+**Woodland Music Pack Vol 1** (files named "Fantasy Music Pack Vol 1") by JC Sounds.
+Source: https://jcsounds.itch.io/woodland-music-pack-vol-1 and https://opengameart.org/content/woodland-music-vol-1
+License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ (attribution: "Credit: JC Sounds")
+
+| File in game | Original | Changes |
+|---|---|---|
+| `client/public/assets/sounds/music/boss_woodland_intro.ogg` | `Boss_155bpm_Intro - Master.mp3` | Re-encoded as Opus |
+| `client/public/assets/sounds/music/boss_woodland_loop.ogg` | `Boss_155bpm_Main Loop - Master.mp3` | Re-encoded as Opus |
+| `client/public/assets/sounds/music/boss_woodland_outro.ogg` | `Boss_155bpm_Outro - Master.mp3` | Re-encoded as Opus |

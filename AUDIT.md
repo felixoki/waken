@@ -47,7 +47,7 @@ The ones you named, all confirmed:
 
 Silent failures (no feedback today):
 - `S1.5` ✅ cb76a58 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
-- `S1.6` ☐ 🟧 No death or wipe screen. The inventory is cleared with no message (`Main.ts:1212-1233, 1302-1321`).
+- `S1.6` ◐ 2026-11-09 🟧 No death or wipe screen. The inventory is cleared with no message (`Main.ts:1212-1233, 1302-1321`).
 - `S1.7` ☐ 🟧 Party "Leave" inside the realm wipes the inventory with no confirmation (`Party.tsx:56`, `party.ts:206`).
 - `S1.8` ✅ cb76a58 🟨 Pickup removes the item before the server confirms. If the server rejects it, it vanishes locally but stays on the server (`Pickable.ts:58`).
 - `S1.9` ☐ 🟨 Craft overflow spills on the ground silently. The COLLECT sound plays before the server confirms (`crafter.ts:54`, `Main.ts:926`).
@@ -157,13 +157,15 @@ Silent actions:
   - `S2.19a` ✅ 026d551 Party wipe plays Jingle Lose, outside the master fade so the transition doesn't cut it.
   - `S2.19b` ☐ Own death: a short sting (a revive may still come). Needs a sound pick.
   - `S2.19c` ☐ Being revived. Needs a sound pick.
-- `S2.20` ☐ 🟨 Roll; swim strokes and water entry; falling into a hole; a missed fish.
+- `S2.20` ☐ 🟨 Roll; swim strokes and water entry, including landing in water from a jump; falling into a hole; a missed fish.
 - `S2.21` ☐ 🟨 Pacify, resist, capture, feed, milk, lay, butcher.
-- `S2.22` ☐ 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.
+- `S2.22` ◐ 2026-11-09 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.
+  - `S2.22a` ◐ 2026-11-09 Boss music: Woodland Music boss theme, intro loops through the conversation, main loop from the fight, outro after the kill.
+  - `S2.22b` ☐ Sleep, wake, Sleepwander enter and exit, villain cutscene sounds.
 - `S2.23` ☐ 🟨 Errand hand-in, spell learn, build place and destroy. (Tier up and improvement play `ACHIEVEMENT` since S1.2.)
 - `S2.24` ◐ 2026-11-08 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
   - `S2.24a` ✅ f226f4d Spike trap plays one of three Trap variants at its position when tripped (`TrapConfig.sound`).
-  - `S2.24b` ☐ Chest open and close.
+  - `S2.24b` ◐ 2026-11-09 Chest open and close.
   - `S2.24c` ☐ Lever, door and temple door.
   - `S2.24d` ☐ Forge and mill working loop.
 - `S2.25` ☐ 🟨 Mined-out rock crumble (`Main.ts:460` only gates `FELLABLE`). Troll rock and mud throw and impact (`Throwing.ts`). Wanderer and grandmother dash. Grouse, villain and dragon flight.
@@ -476,7 +478,7 @@ Electron:
 - `S7.13` ☐ ⬜ No auto-update and no Steam integration at all. Presence only, not a request.
 
 Legal and meta:
-- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and lists the Little Robot Sound Factory library (CC BY 3.0), the ElvGames break sounds and the JC Sounds Nature Ambient Pack (CC BY 4.0); the rest of the shipped sounds and all art are still unrecorded. Get a written rights transfer for the Fiverr art.
+- `S7.14` ☐ 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and lists the Little Robot Sound Factory library (CC BY 3.0), the ElvGames break sounds and the JC Sounds Nature Ambient Pack and Woodland Music Pack (CC BY 4.0); the rest of the shipped sounds and all art are still unrecorded. Get a written rights transfer for the Fiverr art.
 - `S7.15` ☐ 🟨 No privacy policy (player IDs and IPs are stored).
 
 Tooling and repo:

@@ -50,6 +50,8 @@ export enum SoundName {
   INVENTORY_OPEN = "inventory_open",
   INVENTORY_CLOSE = "inventory_close",
   TRAP = "trap",
+  CHEST_OPEN = "chest_open",
+  CHEST_CLOSE = "chest_close",
   RIVER = "river",
   LAKE = "lake",
   WATERFALL = "waterfall",
@@ -103,6 +105,18 @@ export enum AmbienceName {
   FOG = "fog",
   SWAMP = "swamp",
   MOUNTAIN_PEAK = "mountain_peak",
+}
+
+export enum BossThemeName {
+  WOODLAND = "woodland",
+}
+
+export interface BossThemeConfig {
+  intro: string;
+  loop: string;
+  outro: string;
+  bpm: number;
+  volume: number;
 }
 
 export enum AmbienceDomain {
