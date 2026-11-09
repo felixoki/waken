@@ -12,11 +12,17 @@ export class InterfaceManager {
 
   constructor(scene: Scene) {
     this.scene = scene;
-    scene.events.on(Phaser.Scenes.Events.SLEEP, () => {
-      this._boss(null);
-      if (this.last !== "[]") EventBus.emit(Event.ENTITIES_UPDATE, []);
-      this.last = "";
-    });
+    scene.events.on(Phaser.Scenes.Events.SLEEP, this._hide, this);
+  }
+
+  destroy(): void {
+    this.scene.events.off(Phaser.Scenes.Events.SLEEP, this._hide, this);
+  }
+
+  private _hide(): void {
+    this._boss(null);
+    if (this.last !== "[]") EventBus.emit(Event.ENTITIES_UPDATE, []);
+    this.last = "";
   }
 
   update(): void {

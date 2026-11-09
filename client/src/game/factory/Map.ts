@@ -2,7 +2,6 @@ import { MapName, TiledProperty } from "@server/types";
 import { Scene } from "../scenes/Scene";
 import { configs } from "@server/configs";
 import { Threshold } from "../managers/Tile";
-import { Entity } from "../Entity";
 import { handlers } from "../handlers";
 import type { MeadowGrade, MeadowPalette, WaterPalette } from "@server/globals";
 import type { MeadowBlend } from "../handlers/meadow";
@@ -268,17 +267,7 @@ export class MapFactory {
   ): void {
     const tiles = layer.getTilesWithin().filter((t) => t.collides);
 
-    const process = (a: any, b: any): boolean => {
-      const entity = (a instanceof Entity ? a : b) as Entity;
-      const rect = (
-        a instanceof Entity ? b : a
-      ) as Phaser.GameObjects.Rectangle;
-      const clearance = rect.getData("clearance");
-
-      if (typeof clearance !== "number") return true;
-      
-      return entity.z <= clearance;
-    };
+    const walls = scene.managers.physics.groups.walls;
 
     tiles.forEach((tile) => {
       const tileset = tile.tileset;
@@ -310,7 +299,6 @@ export class MapFactory {
         );
 
         rect.setVisible(false);
-        scene.physics.add.existing(rect, true);
 
         const clearance = obj.properties?.find(
           (p: any) => p.name === "clearance",
@@ -321,21 +309,10 @@ export class MapFactory {
           rect.setData("clearance", tileClearance);
         if (walkable) rect.setData("walkable", true);
 
+        walls.add(rect);
+
         if (rendersAbove !== undefined) {
           isThreshold = true;
-
-          scene.physics.add.collider(
-            scene.managers.physics.groups.players,
-            rect,
-            undefined,
-            process,
-          );
-          scene.physics.add.collider(
-            scene.managers.physics.groups.entities,
-            rect,
-            undefined,
-            process,
-          );
 
           thresholds.push({
             body: rect,
@@ -349,19 +326,6 @@ export class MapFactory {
 
           return;
         }
-
-        scene.physics.add.collider(
-          scene.managers.physics.groups.players,
-          rect,
-          undefined,
-          process,
-        );
-        scene.physics.add.collider(
-          scene.managers.physics.groups.entities,
-          rect,
-          undefined,
-          process,
-        );
 
         colliders.push(rect);
       });

@@ -140,6 +140,11 @@ export class Scene extends Phaser.Scene {
     this.lightMask = null;
     this.tileManager?.destroy();
     this.tileManager = undefined!;
+
+    this.physicsManager.destroy();
+    this.cameraManager.destroy();
+    this.interfaceManager.destroy();
+    this.events.off(Phaser.Scenes.Events.SLEEP, this._hush, this);
   }
 
   update(_time: number, delta: number): void {
