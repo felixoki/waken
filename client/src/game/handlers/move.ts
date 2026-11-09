@@ -36,7 +36,7 @@ export const move = {
   },
 
   getVelocity: (entity: Entity, speed: number) => {
-    if (!entity.body) return;
+    if (!entity.body || entity.knockback) return;
 
     const moving = entity.moving;
     vector.set(0, 0);

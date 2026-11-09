@@ -70,7 +70,7 @@ export class Flying implements State {
       const body = entity.body as Phaser.Physics.Arcade.Body;
       body.offset.y = this.baseOffsetY;
       body.checkCollision.none = false;
-      body.setVelocity(0, 0);
+      if (!entity.knockback) body.setVelocity(0, 0);
     }
   }
 }

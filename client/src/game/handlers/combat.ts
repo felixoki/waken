@@ -293,6 +293,14 @@ export const combat = {
     });
   },
 
+  recover: (entity: Entity) => {
+    if (!entity.knockback) return;
+
+    entity.knockback.remove();
+    entity.knockback = undefined;
+    (entity.body as Phaser.Physics.Arcade.Body | null)?.setDrag(0);
+  },
+
   reflect: (entity: Entity, sourceId: string) => {
     const managers = entity.scene.managers;
     const local = managers.players.player;

@@ -29,6 +29,8 @@ export class Running implements State {
   }
 
   exit(entity: Entity): void {
+    if (entity.knockback) return;
+
     const body = entity.body as Phaser.Physics.Arcade.Body;
     body.setVelocity(0, 0);
   }
