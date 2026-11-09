@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
+import { useEscape } from "./escape";
 import { Event, Party as PartyData, Death, Item } from "@server/types";
 import { configs } from "@server/configs";
 import { levels } from "@server/configs/levels";
@@ -145,6 +146,8 @@ export const Party = () => {
   useEffect(() => {
     if (!inRealm) setOpen(false);
   }, [inRealm]);
+
+  useEscape(open && !!party && inRealm, () => setOpen(false));
 
   if (party && inRealm)
     return (

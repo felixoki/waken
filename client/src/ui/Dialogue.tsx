@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
 import { Event } from "@server/types";
+import { useEscape } from "./escape";
 
 export const Dialogue = () => {
   const [data, setData] = useState<DialogueResponse | null>(null);
@@ -84,6 +85,12 @@ export const Dialogue = () => {
       EventBus.off(Event.ENTITY_DIALOGUE_END, handler);
     };
   }, [data]);
+
+  useEscape(isOpen && !!data, () => {
+    if (data?.entityId) EventBus.emit(Event.ENTITY_DIALOGUE_END, data.entityId);
+    setIsOpen(false);
+    setData(null);
+  });
 
   if (!isOpen || !data) return null;
 

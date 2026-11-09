@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useEscape } from "./escape";
 
 export interface ContextMenuAction {
   label: string;
@@ -16,6 +17,8 @@ interface ContextMenuProps {
 
 export function ContextMenu({ x, y, actions, onClose }: ContextMenuProps) {
   const ref = useRef<HTMLDivElement>(null);
+
+  useEscape(actions.length > 0, onClose);
 
   useEffect(() => {
     const close = (e: MouseEvent) => {

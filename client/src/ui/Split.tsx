@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { EntityName, SpellName } from "@server/types";
 import { configs } from "@server/configs";
 import { Icon } from "./Icon";
+import { useEscape } from "./escape";
 
 interface Props {
   name: EntityName | SpellName;
@@ -18,6 +19,7 @@ export function Split({ name, total, x, y, onConfirm, onCancel }: Props) {
   const range = useRef<HTMLInputElement>(null);
 
   useEffect(() => range.current?.focus(), []);
+  useEscape(true, onCancel);
 
   const metadata =
     configs.entities[name as EntityName]?.metadata ??
@@ -27,7 +29,6 @@ export function Split({ name, total, x, y, onConfirm, onCancel }: Props) {
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") onConfirm(amount);
-    else if (e.key === "Escape") onCancel();
     else if (/^[0-9]$/.test(e.key)) {
       const next = typed + e.key;
       setTyped(next);

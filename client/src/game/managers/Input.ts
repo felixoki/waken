@@ -3,6 +3,7 @@ import { Scene } from "../scenes/Scene";
 import { handlers } from "../handlers";
 import { Binding, Bindings, bindings } from "../handlers/bindings";
 import EventBus from "../EventBus";
+import { escape } from "../../ui/escape";
 
 type Key = Phaser.Input.Keyboard.Key;
 
@@ -57,7 +58,7 @@ export class InputManager {
     if (Phaser.Input.Keyboard.JustDown(this.keys[Binding.INVENTORY]))
       EventBus.emit(Event.UI_TOGGLE);
 
-    if (Phaser.Input.Keyboard.JustDown(this.esc))
+    if (Phaser.Input.Keyboard.JustDown(this.esc) && !escape.close())
       EventBus.emit(Event.MENU_TOGGLE);
 
     if (this.scene.input.activePointer) {

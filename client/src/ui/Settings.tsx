@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import EventBus from "../game/EventBus";
 import { loadVolume } from "../game/managers/Sound";
 import { MenuOverlay } from "./MenuOverlay";
+import { useEscape } from "./escape";
 import { Binding, Bindings, bindings } from "../game/handlers/bindings";
 
 type View = "menu" | "controls" | "settings" | "credits";
@@ -171,9 +172,11 @@ export function Settings() {
     return () => window.removeEventListener("keydown", onKey, true);
   }, [capturing, keys]);
 
-  if (!open) return null;
-
   const close = () => setClosing(true);
+
+  useEscape(open && !closing, close);
+
+  if (!open) return null;
 
   return (
     <MenuOverlay

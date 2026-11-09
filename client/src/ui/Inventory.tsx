@@ -17,6 +17,7 @@ import { configs } from "@server/configs";
 import { INVENTORY_MAX_SIZE } from "@server/globals";
 import { ContextMenu, ContextMenuAction } from "./ContextMenu";
 import { useParty } from "./useParty";
+import { useEscape } from "./escape";
 import { Item } from "./Item";
 import type { DragData } from "./Provider";
 
@@ -109,6 +110,8 @@ export function Inventory() {
       EventBus.off(Event.SPELL_LEARN_CONFIRM, learn);
     };
   }, []);
+
+  useEscape(isOpen, () => EventBus.emit(Event.UI_TOGGLE));
 
   if (!isOpen) return null;
 
