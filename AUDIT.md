@@ -109,7 +109,7 @@ Root cause: the entity schema has no hurt or death sound field (`types/entities.
 System:
 - See S0.12 (decoded audio memory) and S0.15 (no volume UI).
 - `S2.1` ✅ 0622d94 🟥 `REVIVE` runs at volume 2 on a file that already peaks at 0 dBFS (`sounds.ts:213`) ✔.
-- `S2.2` ☐ 🟧 Remote players' casts are silent: the `Casting.ts:53` guard skips every player, not just the local one ✔.
+- `S2.2` ✅ ea366b6 🟧 Remote players' casts are silent: the `Casting.ts:53` guard skips every player, not just the local one ✔.
 - `S2.3` ☐ 🟧 Hitting a non-player entity is silent (`Main.ts:572`). Entity death is silent (`Main.ts:384`).
 - `S2.4` ☐ 🟨 Remote players' footsteps are silent (`Player.ts:124`).
 - `S2.5` ☐ 🟨 No per-name concurrency cap or cooldown, so herds, goblin packs and meteor tails stack (`Sound.ts:48`).
