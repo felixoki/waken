@@ -26,7 +26,6 @@ export enum SpellName {
   DARK_WAVE = "dark_wave",
   HYPNIC_JERK = "hypnic_jerk",
   SUNDER = "sunder",
-  WELLSPRING = "wellspring",
   DELTA_WAVE = "delta_wave",
 }
 

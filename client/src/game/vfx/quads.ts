@@ -3,7 +3,6 @@ import { Entity } from "../Entity";
 import { getWaveFrag } from "../pipelines/frags/wave";
 import { getTideFrag } from "../pipelines/frags/tide";
 import { getWardFrag } from "../pipelines/frags/ward";
-import { getWellspringFrag } from "../pipelines/frags/wellspring";
 import { getNovaFrag } from "../pipelines/frags/nova";
 import { getSunderFrag } from "../pipelines/frags/sunder";
 import { getBombFrag } from "../pipelines/frags/bomb";
@@ -69,14 +68,6 @@ const WARD_DELAY = 220;
 const WARD_APPEAR = 480;
 const WARD_BREAK = 320;
 
-const WELLSPRING: QuadDefinition = {
-  key: "quad_wellspring",
-  width: 300,
-  height: 200,
-  frag: getWellspringFrag,
-  uniforms: ["uTime", "uSeed", "uRadius", "uSpread", "uFlash", "uFade"],
-};
-
 const SWELL: QuadDefinition = {
   key: "quad_swell",
   width: 380,
@@ -107,10 +98,6 @@ const SWELL_SOAK = 4400;
 const SWELL_START = 0.24;
 const SWELL_DRIFT = 1.06;
 
-const WELLSPRING_RISE = 480;
-const WELLSPRING_HIT = 180;
-const WELLSPRING_HOLD = 1500;
-const WELLSPRING_FADE = 1100;
 
 const NOVA: QuadDefinition = {
   key: "quad_nova",
@@ -1450,54 +1437,6 @@ export const quads = {
     play(scene, ARC, [quad], ARC_LIFE, (ms, put) => {
       put("uBolt", clamp(ms / 30) * (1 - clamp((ms - 90) / (ARC_LIFE - 90))));
     });
-  },
-
-  wellspring: (
-    scene: Scene,
-    x: number,
-    y: number,
-    radius: number,
-    onSurge?: () => void,
-  ) => {
-    const total = WELLSPRING_HOLD + WELLSPRING_FADE;
-    const scale = (radius * 2.6) / WELLSPRING.width;
-
-    const quad = acquire(scene, WELLSPRING, x, y);
-    quad.setDepth(999);
-    quad.setScale(Math.max(1, scale));
-    set(quad, "uSeed", Math.random() * 10);
-    set(quad, "uRadius", radius / Math.max(1, scale));
-
-    const surge = once(onSurge);
-
-    const glints = scene.add.particles(x, y, "particle_circle", {
-      tint: [0x8fe6f2, 0xdcf7ff, 0x4fc3dc],
-      blendMode: "ADD",
-      alpha: { start: 0.7, end: 0 },
-      scale: { start: 0.05, end: 0.01 },
-      speedY: { min: -26, max: -8 },
-      lifespan: { min: 350, max: 800 },
-      emitting: false,
-    });
-    glints.setDepth(1000 + y + radius);
-
-    play(scene, WELLSPRING, [quad], total, (ms, put) => {
-      const spread = cubic(ms / WELLSPRING_RISE);
-
-      put("uSpread", 0.12 + 0.88 * spread);
-      put("uFlash", 1 - clamp((ms - 120) / 700));
-      put("uFade", clamp((ms - WELLSPRING_HOLD) / WELLSPRING_FADE));
-
-      if (ms >= WELLSPRING_HIT) surge();
-
-      if (ms < WELLSPRING_HOLD && Math.random() < 0.35) {
-        const a = Math.random() * Math.PI * 2;
-        const d = Math.sqrt(Math.random()) * radius * spread * 0.85;
-        glints.emitParticleAt(x + Math.cos(a) * d, y + Math.sin(a) * d * 0.6, 1);
-      }
-    });
-
-    scene.time.delayedCall(total + 900, () => glints.destroy());
   },
 
   swell: (

@@ -24,7 +24,7 @@ const PAGES: SpellName[] = [
   SpellName.BLINK,
   SpellName.HYPERBEAM,
   SpellName.SUNDER,
-  SpellName.WELLSPRING,
+  SpellName.BITE,
   SpellName.DELTA_WAVE,
   SpellName.HYPNIC_JERK,
   SpellName.DARK_WAVE,
@@ -42,7 +42,6 @@ const page = (
   spell: SpellName,
   displayName: string,
   description: string,
-  art: SpellName = spell,
 ): EntityDefinition => ({
   facing: Direction.DOWN,
   moving: [],
@@ -53,8 +52,8 @@ const page = (
         spritesheet: "items",
         tileSize: 16,
         tiles: [
-          { row: row(art) - 1, start: col(art) + 1, end: col(art) + 2 },
-          { row: row(art), start: col(art) + 1, end: col(art) + 2 },
+          { row: row(spell) - 1, start: col(spell) + 1, end: col(spell) + 2 },
+          { row: row(spell), start: col(spell) + 1, end: col(spell) + 2 },
         ],
       },
       key: `spell_page_${spell}_texture`,
@@ -73,7 +72,7 @@ const page = (
       many: `{n} spell pages for ${displayName.replace("Spell page: ", "")}`,
     },
     description,
-    icon: { spritesheet: "items", row: row(art), col: col(art) },
+    icon: { spritesheet: "items", row: row(spell), col: col(spell) },
     stackable: false,
     weight: 0.05,
   },
@@ -114,7 +113,6 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     SpellName.BITE,
     "Spell page: Bite",
     "A torn page that smells of wet stone and old teeth.",
-    SpellName.DRAGON_FORM,
   ),
   [EntityName.SPELL_PAGE_DRAGON_FORM]: page(
     SpellName.DRAGON_FORM,
@@ -170,11 +168,6 @@ export const spellPages: Partial<Record<EntityName, EntityDefinition>> = {
     SpellName.SUNDER,
     "Spell page: Sunder",
     "A page cracked clean through the middle, humming where the halves meet.",
-  ),
-  [EntityName.SPELL_PAGE_WELLSPRING]: page(
-    SpellName.WELLSPRING,
-    "Spell page: Wellspring",
-    "A page that never quite dries, the ink rippling when you tilt it.",
   ),
   [EntityName.SPELL_PAGE_DELTA_WAVE]: page(
     SpellName.DELTA_WAVE,

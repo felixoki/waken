@@ -1051,7 +1051,6 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
           3,
           StoryFlag.ILA_TIP_WATER,
           "Lightning looks for the shortest way down. Wet things are shorter.",
-          EntityName.SPELL_PAGE_WELLSPRING,
         ),
         ...tip(
           4,

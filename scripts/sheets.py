@@ -644,7 +644,23 @@ def cmd_build(_args: list[str]) -> None:
     print(f"{len(rewrites)} textures and {len(extra_moves)} animation, growth and connection blocks moved, {len(icons)} icons remapped in {changed} config files")
 
 
+def shared_icons() -> list[str]:
+    data = dump()
+    owners: dict[tuple[str, int, int], list[str]] = {}
+    named = [(n, v.get("icon")) for n, v in data["entities"].items()]
+    named += [(f"spell:{n}", icon) for n, icon in data["spells"].items()]
+    for name, icon in named:
+        if icon:
+            owners.setdefault((icon["spritesheet"], icon["row"], icon["col"]), []).append(name)
+    return [f"{s} {r},{c}: {', '.join(sorted(n))}" for (s, r, c), n in sorted(owners.items()) if len(n) > 1]
+
+
 def cmd_verify(_args: list[str]) -> None:
+    shared = shared_icons()
+    if shared:
+        print("icons shared by more than one entity or spell:")
+        print("\n".join(f"  {line}" for line in shared))
+        sys.exit(1)
     _, rewrites, icons = plan()
     rewrites.pop("#extras", None) if not rewrites.get("#extras") else None
     moved = [i for i in icons if not i[0] in CATEGORIES]

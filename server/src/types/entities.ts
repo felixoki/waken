@@ -677,7 +677,6 @@ export enum EntityName {
   SPELL_PAGE_HYPERBEAM = "spell_page_hyperbeam",
   SPELL_PAGE_DARK_WAVE = "spell_page_dark_wave",
   SPELL_PAGE_SUNDER = "spell_page_sunder",
-  SPELL_PAGE_WELLSPRING = "spell_page_wellspring",
   SPELL_PAGE_DELTA_WAVE = "spell_page_delta_wave",
   SPELL_PAGE_HYPNIC_JERK = "spell_page_hypnic_jerk",
   VIAL = "vial",

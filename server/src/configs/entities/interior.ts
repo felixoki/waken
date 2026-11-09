@@ -55,7 +55,6 @@ const ALTAR_LOOT = [
   { name: EntityName.POTION9, quantity: 1, stackable: true, chance: 0.05 },
   { name: EntityName.SPELL_PAGE_DARK_WAVE, quantity: 1, stackable: false, chance: 0.15 },
   { name: EntityName.SPELL_PAGE_SUNDER, quantity: 1, stackable: false, chance: 0.1 },
-  { name: EntityName.SPELL_PAGE_WELLSPRING, quantity: 1, stackable: false, chance: 0.1 },
   { name: EntityName.SPELL_PAGE_DELTA_WAVE, quantity: 1, stackable: false, chance: 0.1 },
   { name: EntityName.SPELL_PAGE_HYPNIC_JERK, quantity: 1, stackable: false, chance: 0.05 },
 ];

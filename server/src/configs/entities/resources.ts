@@ -575,7 +575,7 @@ export const resources: Partial<Record<EntityName, EntityDefinition>> = {
       displayName: "Bear pelt",
       description: "A thick pelt obtained from a wild bear.",
       stackable: true,
-      icon: { spritesheet: "items", row: 26, col: 3 },
+      icon: { spritesheet: "items", row: 24, col: 13 },
       weight: 6,
     },
   },

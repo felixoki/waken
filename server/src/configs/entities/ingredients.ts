@@ -371,7 +371,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A bright yellow flower with a cheerful trumpet-shaped centre.",
       stackable: true,
-      icon: { spritesheet: "nature", row: 14, col: 15 },
+      icon: { spritesheet: "nature", row: 13, col: 10 },
       weight: 0.03,
     },
   },
@@ -748,7 +748,7 @@ export const ingredients: Partial<Record<EntityName, EntityDefinition>> = {
       description:
         "A mysterious potion crafted from rare aquatic flowers and forest herbs.",
       stackable: true,
-      icon: { spritesheet: "items", row: 22, col: 19 },
+      icon: { spritesheet: "items", row: 22, col: 1 },
       weight: 0.3,
     },
   },

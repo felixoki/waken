@@ -308,22 +308,6 @@ export const spells: Record<SpellName, SpellConfig> = {
       icon: { spritesheet: "items", row: 39, col: 13 },
     },
   },
-  [SpellName.WELLSPRING]: {
-    name: SpellName.WELLSPRING,
-    sounds: { cast: SoundName.GRASP },
-    damage: { type: DamageType.COLD, amount: 30 },
-    knockback: 40,
-    mana: 25,
-    duration: 600,
-    radius: 110,
-    effects: [[EffectName.WET, 8000]],
-    metadata: {
-      description:
-        "Water wells up from under your feet and soaks everything standing in it.",
-      displayName: "Wellspring",
-      icon: { spritesheet: "items", row: 39, col: 19 },
-    },
-  },
   [SpellName.DELTA_WAVE]: {
     name: SpellName.DELTA_WAVE,
     sounds: { cast: SoundName.GRASP },

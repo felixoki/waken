@@ -127,7 +127,11 @@ const collect = (value: unknown): void => {
 collect((configs as unknown as Record<string, unknown>).biomes);
 collect((configs as unknown as Record<string, unknown>).setpieces);
 
+const spells: Record<string, unknown> = {};
+for (const [name, spell] of Object.entries(configs.spells))
+  spells[name] = spell.metadata?.icon;
+
 process.stdout.write(
-  JSON.stringify({ entities: out, refs, maps, biome: [...strings] }),
+  JSON.stringify({ entities: out, refs, maps, biome: [...strings], spells }),
   () => process.exit(0),
 );

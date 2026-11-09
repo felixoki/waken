@@ -496,14 +496,6 @@ export const spells: Record<SpellName, SpellHandler> = {
     );
   },
 
-  [SpellName.WELLSPRING]: (entity: Entity, config: SpellConfig) => {
-    const { x, y } = entity.body.center;
-
-    vfx.quads.wellspring(entity.scene, x, y, config.radius!, () =>
-      burst(entity, config, x, y),
-    );
-  },
-
   [SpellName.DELTA_WAVE]: (entity: Entity, config: SpellConfig) => {
     const scene = entity.scene;
     const radius = config.radius!;
