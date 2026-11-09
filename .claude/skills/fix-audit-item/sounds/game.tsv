@@ -131,10 +131,10 @@ footsteps/stepwater7.ogg	footsteps	ogg	opus	0.76	1	48000	-2.8	-22.2	1793734437
 footsteps/stepwater7.wav	footsteps	wav	pcm_s24le	0.75	2	44100	-0.0	-26.6	1793733495
 footsteps/stepwater8.ogg	footsteps	ogg	opus	0.76	1	48000	-0.7	-24.4	1793734437
 misc/achievement.ogg	misc	ogg	opus	3.57	1	48000	0.0	-17.4	1794168271
-misc/bite1.ogg	misc	ogg	vorbis	0.86	2	44100	-10.5	-41.8	1790795067
-misc/bite2.ogg	misc	ogg	vorbis	0.54	2	44100	-11.5	-40.4	1790795067
-misc/bite3.ogg	misc	ogg	vorbis	0.64	2	44100	-10.6	-35.5	1790795067
-misc/bite4.ogg	misc	ogg	vorbis	0.86	2	44100	-7.6	-35.9	1790795067
+misc/bite1.ogg	misc	ogg	opus	0.86	1	48000	-0.8	-31.4	1794250868
+misc/bite2.ogg	misc	ogg	opus	0.54	1	48000	-1.4	-28.8	1794250869
+misc/bite3.ogg	misc	ogg	opus	0.65	1	48000	-2.2	-25.6	1794250869
+misc/bite4.ogg	misc	ogg	opus	0.86	1	48000	-1.8	-29.8	1794250869
 misc/cast.ogg	misc	ogg	vorbis	2.57	2	44100	-1.8	-27.9	1790795043
 misc/chest_close.ogg	misc	ogg	opus	1.08	1	48000	-2.4	-22.0	1794209560
 misc/chest_open.ogg	misc	ogg	opus	1.05	1	48000	-3.3	-27.3	1794209560
@@ -173,7 +173,7 @@ misc/mine4.ogg	misc	ogg	vorbis	1.18	2	44100	0.0	-28.8	1790839519
 misc/mine5.ogg	misc	ogg	vorbis	1.18	2	44100	-0.5	-29.1	1790839519
 misc/mine6.ogg	misc	ogg	vorbis	0.37	2	44100	0.0	-25.6	1790839519
 misc/mine7.ogg	misc	ogg	vorbis	0.75	2	44100	-8.4	-36.0	1790839519
-misc/pop.ogg	misc	ogg	vorbis	0.05	1	44100	0.0	-6.7	1782548316
+misc/pop.ogg	misc	ogg	opus	0.06	1	48000	-6.1	-15.5	1794250855
 misc/reel1.ogg	misc	ogg	vorbis	2.14	2	44100	-5.8	-29.8	1790795145
 misc/reel2.ogg	misc	ogg	vorbis	2.14	2	44100	-3.1	-28.0	1790795145
 misc/ruin_break.ogg	misc	ogg	opus	2.51	1	48000	-3.6	-21.9	1794171062
