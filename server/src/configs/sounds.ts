@@ -104,6 +104,11 @@ export const sounds = {
       folder: "misc",
       variants: ["hit1", "hit2", "hit3", "hit4", "hit5", "hit6"],
     },
+    [SoundName.DISSOLVE]: {
+      volume: 0.3,
+      folder: "misc",
+      variants: ["dissolve1", "dissolve2", "dissolve3", "dissolve4"],
+    },
     [SoundName.WOOD_BREAK]: {
       volume: 0.5,
       folder: "misc",

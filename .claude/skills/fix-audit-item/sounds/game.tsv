@@ -152,6 +152,10 @@ misc/collect.ogg	misc	ogg	opus	0.32	2	48000	-0.7	-19.7	1781721639
 misc/dagger_swing1.ogg	misc	ogg	opus	0.24	1	48000	0.0	-17.2	1790842036
 misc/dagger_swing2.ogg	misc	ogg	opus	0.24	1	48000	-0.6	-17.2	1790842036
 misc/dagger_swing3.ogg	misc	ogg	opus	0.37	1	48000	-1.1	-19.6	1790842036
+misc/dissolve1.ogg	misc	ogg	vorbis	1.40	2	44100	-10.6	-33.6	1794251173
+misc/dissolve2.ogg	misc	ogg	vorbis	1.40	2	44100	-7.2	-33.5	1794251173
+misc/dissolve3.ogg	misc	ogg	vorbis	1.40	2	44100	-7.8	-33.1	1794251173
+misc/dissolve4.ogg	misc	ogg	vorbis	1.40	2	44100	-6.0	-34.9	1794251173
 misc/door.ogg	misc	ogg	opus	1.01	2	48000	0.0	-19.4	1781721639
 misc/drink.ogg	misc	ogg	opus	0.49	2	48000	-0.2	-18.1	1781721639
 misc/equip.ogg	misc	ogg	opus	0.76	2	48000	-0.1	-21.2	1781721639

@@ -411,6 +411,9 @@ export class MainScene extends Phaser.Scene {
           this.managers.sound.play.sfx(SoundName.HIT, {
             position: { x: entity.x, y: entity.y },
           });
+          this.managers.sound.play.sfx(SoundName.DISSOLVE, {
+            position: { x: entity.x, y: entity.y },
+          });
         }
         else if (extractable)
           vfx.emitters.puff(entity.scene, entity.x, entity.y);

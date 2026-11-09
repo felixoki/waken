@@ -5,6 +5,7 @@ export enum SoundName {
   FOOTSTEP_STONE = "footstep_stone",
   FOOTSTEP_WATER = "footstep_water",
   HIT = "hit",
+  DISSOLVE = "dissolve",
   JUMP = "jump",
   LAND = "land",
   GOBLIN_IDLE = "goblin_idle",
