@@ -15,14 +15,14 @@ const stacks = (lost: Wipe["lost"]): [EntityName, number][] => {
 };
 
 const Lost = ({ lost }: { lost: Wipe["lost"] }) => (
-  <div className="flex flex-wrap justify-center gap-2 max-w-xl">
+  <div className="flex flex-wrap justify-center gap-2 max-w-3xl">
     {stacks(lost).map(([name, quantity]) => {
       const icon = configs.entities[name]?.metadata?.icon;
       return (
         <div key={name} className="relative rounded-md bg-black/40 p-1 opacity-70">
-          {icon && <Icon icon={icon} zoom={3} />}
+          {icon && <Icon icon={icon} zoom={4} />}
           {quantity > 1 && (
-            <span className="absolute bottom-0 right-1 text-sm text-white tabular-nums">
+            <span className="absolute bottom-0 right-1 text-lg text-white tabular-nums">
               {quantity}
             </span>
           )}
@@ -91,7 +91,7 @@ export function Wake() {
   if (wipe)
     return (
       <div
-        className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-4 bg-black/80 pointer-events-none"
+        className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 bg-black pointer-events-none"
         style={{
           animation: `fade-in ${WAKE_FADE}ms ease-out`,
           opacity: leaving ? 0 : 1,
@@ -99,19 +99,18 @@ export function Wake() {
         }}
       >
         <p
-          className="text-white text-4xl tracking-wide"
-          style={{ textShadow: "0 2px 8px rgba(0,0,0,0.7)" }}
+          className="text-white text-7xl tracking-wide"
         >
           You wake up
         </p>
         {wipe.kept && (
-          <p className="text-white/60 text-lg">
+          <p className="text-white/60 text-3xl">
             You held on to everything you carried
           </p>
         )}
         {!!wipe.lost.length && (
           <>
-            <p className="text-white/60 text-lg">
+            <p className="text-white/60 text-3xl">
               What you carried stayed in the dream
             </p>
             <Lost lost={wipe.lost} />
