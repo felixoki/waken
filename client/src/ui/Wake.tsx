@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import EventBus from "../game/EventBus";
 import { Event, type Death, type EntityName, type Wipe } from "@server/types";
 import { configs } from "@server/configs";
-import { TOAST_HOLD, WAKE_FADE } from "@server/globals";
+import { TOAST_HOLD, WAKE_FADE, WAKE_FADE_IN } from "@server/globals";
 import { Icon } from "./Icon";
 
 type Shown = Wipe & { duration: number };
@@ -93,6 +93,7 @@ export function Wake() {
       <div
         className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8 bg-black pointer-events-none"
         style={{
+          animation: `fade-in ${WAKE_FADE_IN}ms ease-out`,
           opacity: leaving ? 0 : 1,
           transition: `opacity ${WAKE_FADE}ms ease-in`,
         }}

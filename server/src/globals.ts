@@ -800,6 +800,7 @@ export const TOAST_MAX = 5;
 /** Wake */
 
 export const WAKE_FADE = 800;
+export const WAKE_FADE_IN = 150;
 
 /** Story */
 
