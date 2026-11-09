@@ -319,7 +319,7 @@ Authority (trusting the client):
 - `S4.34` ✖ Client trust: we don't care about cheaters, the dev console cheats anyway ⬜ Upgrade needs no created player. Encounter start works on any NPC. No rate limit; `maxHttpBufferSize` is 1 MB.
 
 Performance:
-- `S4.35` ☐ 🟧 Storage `drive` is O(n²) every second (`storage.ts:204`). The schedule scan runs every tick while a villager is locked (`schedule.ts:18`).
+- `S4.35` ✅ e914baa 🟧 Storage `drive` searched every entity's components every second (`storage.ts:204`); it was one hopper, not O(n²). The schedule scan while a villager is locked measured 0.07 ms per tick at 5k entities: left as is.
 - `S4.36` ☐ 🟨 Every input packet spreads the whole PlayerConfig and rebuilds 25 chunk keys. Input is double-sent to the chunk and party rooms.
 - `S4.37` ☐ 🟨 The full economy snapshot goes to every socket every second. Full PlayerConfig (inventory, story, socketId) is sent to other players.
 - `S4.38` ☐ 🟨 `soak` scans every entity every 2 s. Map JSON is re-read synchronously mid-game. The world is stringified twice per save. Empty chunk sets are never deleted.
