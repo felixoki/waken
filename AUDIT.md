@@ -263,7 +263,7 @@ Economy:
 
 Discoverability:
 - `S3.27` ☐ 🟧 No tutorial or hints at all. Nothing explains sleeping, the party lobby, that draughts only work in the lobby (`item.ts:261`), the Nightcap's depth bonus, bookkeeper hand-ins, or soulstones.
-- `S3.28` ☐ 🟧 The only quartz hint points at the cave and a pickaxe (both locked). Nothing says goblins drop it (`people.ts:1174`).
+- `S3.28` ✅ 64ae5b2 🟧 Lonna's quartz hint sent players to mine cave veins, but the pickaxe is tier 2 (`people.ts:1174`). Tier 1 quartz comes from cave chests and swamp goblins, and nothing said so.
 - `S3.29` ☐ 🟨 Draught and Nightcap descriptions never mention dream depth. The grandmother (15%, once per world) has no hint.
 
 Suggested verifier rules:
