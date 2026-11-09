@@ -5,6 +5,7 @@ import { handlers } from "./index";
 import { World } from "../World";
 import { Event, MapName, PlayerConfig, Transition } from "../types";
 import { SublevelStore } from "../stores/Sublevel";
+import { AuthorityManager } from "../managers/Authority";
 import { redis } from "../db/redis";
 import { pg } from "../db/postgres";
 
@@ -67,5 +68,70 @@ describe("sublevel.enter", () => {
       Event.SUBLEVEL_START_LOADING,
       Event.PLAYER_TRANSITION_DENIED,
     ]);
+  });
+});
+
+const ENTRANCE = "cave1";
+
+const setup = (ids: string[]) => {
+  const players = new Map<string, PlayerConfig>(
+    ids.map((id) => [
+      id,
+      { id, socketId: `socket_${id}`, map: MapName.CAVE } as PlayerConfig,
+    ]),
+  );
+
+  const world = {
+    sublevels: new SublevelStore(),
+    authority: new AuthorityManager(),
+    players: {
+      get: (id: string) => players.get(id),
+      update: (id: string, data: Partial<PlayerConfig>) => {
+        const player = players.get(id);
+        if (player) players.set(id, { ...player, ...data });
+      },
+    },
+  } as unknown as World;
+
+  world.sublevels.setInstance(ENTRANCE, Promise.resolve(null), MapName.CAVE);
+
+  for (const id of ids) {
+    world.sublevels.join(ENTRANCE, id);
+    world.sublevels.setReturn(id, {
+      entranceId: ENTRANCE,
+      map: MapName.FOREST,
+      x: 10,
+      y: 20,
+    });
+  }
+
+  world.authority.set(MapName.CAVE, ids[0], ENTRANCE);
+
+  const io = { sockets: { sockets: new Map() } } as unknown as Server;
+  const socket = { id: `socket_${ids[0]}` } as unknown as Socket;
+
+  return { world, io, socket, player: players.get(ids[0])! };
+};
+
+describe("sublevel.leave", () => {
+  test("hands authority to the player still inside", () => {
+    const { world, io, socket, player } = setup(["a", "b"]);
+
+    handlers.sublevel.leave(io, socket, world, player);
+
+    assert.deepEqual(world.sublevels.occupants(ENTRANCE), ["b"]);
+    assert.equal(world.authority.get(MapName.CAVE, ENTRANCE), "b");
+    assert.equal(world.sublevels.entranceOf("a"), undefined);
+  });
+
+  test("lets the next player in take authority after the last one leaves", () => {
+    const { world, io, socket, player } = setup(["a"]);
+
+    const session = handlers.sublevel.leave(io, socket, world, player);
+
+    assert.equal(session?.map, MapName.FOREST);
+    assert.equal(world.authority.get(MapName.CAVE, ENTRANCE), undefined);
+    assert.ok(world.sublevels.getInstance(ENTRANCE));
+    assert.equal(world.sublevels.join(ENTRANCE, "a"), 1);
   });
 });

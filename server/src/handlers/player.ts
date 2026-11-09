@@ -202,6 +202,7 @@ export const player = {
       }
 
     handlers.party.leave(socket, io, world);
+    handlers.sublevel.leave(io, socket, world, player);
 
     const keys = handlers.chunks.clear(socket, world, player.id);
     keys.forEach((key) => {

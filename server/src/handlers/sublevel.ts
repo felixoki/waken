@@ -184,8 +184,26 @@ export const sublevel = {
     const player = world.players.getBySocketId(socket.id);
     if (!player) return;
 
-    const session = world.sublevels.takeReturn(player.id);
+    const session = handlers.sublevel.leave(io, socket, world, player);
     if (!session) return;
+
+    handlers.player.transfer(
+      socket,
+      io,
+      world,
+      player.id,
+      session.map,
+      session.x,
+      session.y,
+      undefined,
+      undefined,
+      session.entranceId,
+    );
+  },
+
+  leave: (io: Server, socket: Socket, world: World, player: PlayerConfig) => {
+    const session = world.sublevels.takeReturn(player.id);
+    if (!session) return undefined;
 
     const from = player.map;
     const { entranceId } = session;
@@ -218,18 +236,7 @@ export const sublevel = {
       world.surfaces.release(entranceId);
     }
 
-    handlers.player.transfer(
-      socket,
-      io,
-      world,
-      player.id,
-      session.map,
-      session.x,
-      session.y,
-      undefined,
-      undefined,
-      entranceId,
-    );
+    return session;
   },
 
   teardown: (
