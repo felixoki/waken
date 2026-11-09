@@ -97,67 +97,36 @@ export const vision = {
     return Phaser.Geom.Intersects.LineToCircle(ray, circle);
   },
 
-  inRange: (
-    from: { x: number; y: number },
-    to: { x: number; y: number },
-    distance: number,
-  ): boolean => {
-    return Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y) <= distance;
-  },
-
   canSee: (
     scene: Scene,
     from: Entity,
     to: Entity,
     distance: number,
     angle: number = Math.PI / 2,
-    count: number = 5,
   ): boolean => {
-    if (!vision.inRange(from, to, distance)) return false;
+    const dist = Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y);
+    if (dist > distance) return false;
+
+    const target = Phaser.Math.Angle.Between(from.x, from.y, to.x, to.y);
+
+    if (dist > VISION_PROXIMITY) {
+      const facing = handlers.direction.toAngle(from.facing);
+      if (Math.abs(Phaser.Math.Angle.Wrap(target - facing)) > angle / 2)
+        return false;
+    }
 
     const grid = handlers.path.getGrid(from, handlers.path.canJump(from), true);
     const clear = scene.tileManager?.getSightMask();
-    const actualDist = Phaser.Math.Distance.Between(from.x, from.y, to.x, to.y);
+    const hit = vision.raycast(
+      scene,
+      from.x,
+      from.y,
+      target,
+      distance,
+      grid,
+      clear,
+    );
 
-    if (actualDist <= VISION_PROXIMITY) {
-      const angleTo = Phaser.Math.Angle.Between(from.x, from.y, to.x, to.y);
-      const hit = vision.raycast(
-        scene,
-        from.x,
-        from.y,
-        angleTo,
-        distance,
-        grid,
-        clear,
-      );
-
-      return vision.intersects({ x: from.x, y: from.y }, hit, to);
-    }
-
-    const facing = handlers.direction.toAngle(from.facing);
-    const target = Phaser.Math.Angle.Between(from.x, from.y, to.x, to.y);
-    const diff = Phaser.Math.Angle.Wrap(target - facing);
-
-    if (Math.abs(diff) > angle / 2) return false;
-
-    const start = facing - angle / 2;
-    const step = angle / (count - 1);
-
-    for (let i = 0; i < count; i++) {
-      const rayAngle = start + step * i;
-      const hit = vision.raycast(
-        scene,
-        from.x,
-        from.y,
-        rayAngle,
-        distance,
-        grid,
-        clear,
-      );
-
-      if (vision.intersects({ x: from.x, y: from.y }, hit, to)) return true;
-    }
-
-    return false;
+    return vision.intersects({ x: from.x, y: from.y }, hit, to);
   },
 };

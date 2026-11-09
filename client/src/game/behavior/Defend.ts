@@ -129,7 +129,6 @@ export class DefendBehavior extends Behavior {
     const visible = handlers.player.nearest(entity, {
       distance: this.vision,
       fov: this.fov,
-      rays: 7,
     });
 
     if (visible) {

@@ -64,7 +64,6 @@ export class WanderBehavior extends Behavior {
             player,
             this.vision,
             this.fov,
-            7,
           )
         ) {
           entity.scene.game.events.emit(Event.ENTITY_SPOTTED_PLAYER, {

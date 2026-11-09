@@ -49,7 +49,7 @@ export class AmbushBehavior extends Behavior {
           p &&
           p.map === entity.map &&
           p.state !== StateName.DEAD &&
-          handlers.vision.canSee(entity.scene, entity, p, this.radius, Math.PI * 2, 7),
+          handlers.vision.canSee(entity.scene, entity, p, this.radius, Math.PI * 2),
       );
 
       if (prey) {

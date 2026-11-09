@@ -127,7 +127,6 @@ export const behavior: {
           player,
           600,
           Math.PI * 2,
-          7,
         )
       )
         continue;

@@ -34,7 +34,7 @@ const FALL_GRAVITY = 0.0006;
 export const player = {
   nearest: (
     entity: Entity,
-    vision?: { distance: number; fov: number; rays?: number },
+    vision?: { distance: number; fov: number },
   ): {
     player: { x: number; y: number; id: string };
     distance: number;
@@ -55,7 +55,6 @@ export const player = {
           p,
           vision.distance,
           vision.fov,
-          vision.rays ?? 5,
         )
       )
         continue;

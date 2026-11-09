@@ -81,7 +81,6 @@ export class AttackBehavior extends Behavior {
       target,
       600,
       Math.PI / 2,
-      7,
     );
 
     if (canSee) {
