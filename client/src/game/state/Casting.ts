@@ -50,7 +50,10 @@ export class Casting implements State {
     entity.setState(this.name);
     entity.isLocked = true;
 
-    if (config.sounds?.cast && !entity.scene.managers.players.get(entity.id))
+    if (
+      config.sounds?.cast &&
+      !entity.scene.managers.players.get(entity.id)?.isControllable
+    )
       entity.scene.managers.sound.play.sfx(config.sounds.cast, {
         position: { x: entity.x, y: entity.y },
       });
