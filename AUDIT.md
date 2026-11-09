@@ -256,14 +256,14 @@ Dialogue (flagged only; text is yours to write):
 - `S3.21` ☐ 🟨 Planned but missing: Garleas sleeps through and Malie's thanks (so Malie's quest never resolves), Faire's goats, Glimblid sad about the ducks, Aunne's cult-bread line. Smaller ones are listed in the report.
 
 Economy:
-- `S3.22` ☐ 🟧 Ring2 doubles damage. It drops at tier 1, and carried copies multiply (two rings give ×4). Same for boots1 ×1.5 speed, bell ×0.5 defense, feather and pickles +150 HP, silver sword ×1.75. Mark them `unique` or tone them down (`equipment.ts`, `player.ts:446`).
+- `S3.22` ✖ copies stacking is intended; `max` items not adding up is accepted 🟧 Ring2 doubles damage. It drops at tier 1, and carried copies multiply (two rings give ×4). Same for boots1 ×1.5 speed, bell ×0.5 defense, feather and pickles +150 HP, silver sword ×1.75. Mark them `unique` or tone them down (`equipment.ts`, `player.ts:446`).
 - `S3.23` ☐ 🟨 Needs drain 0.5 per group per day, so a full store lasts about 80 game days. Needs are not a real sink.
 - `S3.24` ☐ 🟨 Many raw goods have no consumer: wolf fang, bear fat, fungus, glowshroom, lily, down, ore.
 - `S3.25` ☐ ⬜ Wool comes only from killing sheep, so 30 for tier 4 is a grind.
 - `S3.26` ☐ ⬜ 2→3 needs 100 wood, above the base cap of 50. Nothing tells the player Storage is needed first.
 
 Discoverability:
-- `S3.27` ☐ 🟧 No tutorial or hints at all. Nothing explains sleeping, the party lobby, that draughts only work in the lobby (`item.ts:261`), the Nightcap's depth bonus, bookkeeper hand-ins, or soulstones.
+- `S3.27` ✖ deferred to DEVLOG backlog: tutorial grandma at Home 🟧 No tutorial or hints at all. Nothing explains sleeping, the party lobby, that draughts only work in the lobby (`item.ts:261`), the Nightcap's depth bonus, bookkeeper hand-ins, or soulstones.
 - `S3.28` ✅ 64ae5b2 🟧 Lonna's quartz hint sent players to mine cave veins, but the pickaxe is tier 2 (`people.ts:1174`). Tier 1 quartz comes from cave chests and swamp goblins, and nothing said so.
 - `S3.29` ☐ 🟨 Draught and Nightcap descriptions never mention dream depth. The grandmother (15%, once per world) has no hint.
 
@@ -339,7 +339,7 @@ Ops and security:
 
 Bugs:
 - `S5.1` ✖ scenes and the game live for the whole page; quit and disconnect reload; nothing restarts a scene 🟧 `shutdown()` is never called (`Main.ts:1325`, `Scene.ts:169`). About 31 EventBus listeners and all socket listeners are never removed.
-- `S5.2` ☐ 🟧 Torn-down maps leak physics colliders (2 per collision rect), and `rebuild()` creates new managers without destroying the old ones (`factory/Map.ts:305`, `Forest.ts:45`). Nether has about 10k colliders.
+- `S5.2` ◐ 2026-11-09 🟧 Torn-down maps leak physics colliders (2 per collision rect), and `rebuild()` creates new managers without destroying the old ones (`factory/Map.ts:305`, `Forest.ts:45`). Nether has about 10k colliders.
 - `S5.3` ✅ 0cc1ab7 🟧 Every chop or mine hit compiles a `BouncePipeline`, and `resetPipeline` permanently removes the tree's sway (`vfx/shaders.ts:63`).
 - `S5.4` ✅ 0d2a263 🟧 `effects.ts:22` recomputes speed without the robe, so any effect change wipes the robe speed bonus.
 - `S5.5` ✅ 7ef1361 🟧 Defend never reset `completed`, so after the first disengage wanderers never fought again (`Defend.ts:183`). Attack and Search were fine: `start()` clears it. Fixed centrally in `BehaviorQueue.ts:31`.

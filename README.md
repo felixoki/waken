@@ -4,6 +4,8 @@ Waken is a multiplayer cozy game with adventurous elements. Players tend to a sm
 
 The player possesses a rare gift: Sleepwander. They can traverse dimensions within dreams and materialize treasures from them. Their mission is to defeat a cunning entity that has long plagued the villagers' sleep. But they aren't the only ones who can walk the dream world. A dangerous cult seeks to empower the evil being further. And the dreamy realms they inhabit can be just as perilous as the creature they're hunting.
 
+Beyond the village lie five biomes to explore, home to more than 20 kinds of enemies and two boss arenas. 30 animals roam the wilds, and nine of them can be tamed. Gather over 70 resources and ingredients to craft equipment and potions, and master spells along the way. Plant, mine and fish. Befriend any of the 29 villagers, each with their own needs and routines, and grow the village from tier 1 to tier 5 as a living ecosystem that reacts to every choice you make. There's a full day and night cycle with changing weather, and you can play solo or with friends in multiplayer.
+
 ![Waken](client/public/assets/images/hero_mountains.png)
 
 ## Getting Started
