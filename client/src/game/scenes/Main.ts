@@ -324,6 +324,7 @@ export class MainScene extends Phaser.Scene {
 
       player.isLocked = false;
       player.isTransitioning = false;
+      EventBus.emit(Event.FADE_IN);
     });
 
     this.managers.socket.on(Event.PLAYER_AUTHORITY, (data: boolean) => {

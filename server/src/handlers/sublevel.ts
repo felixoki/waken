@@ -13,6 +13,7 @@ import { configs } from "../configs";
 import { handlers } from ".";
 import { MAX_HEALTH } from "../globals";
 import { randomUUID } from "crypto";
+import { tryCatch } from "../utils/tryCatch.js";
 
 export const sublevel = {
   enter: async (
@@ -51,10 +52,15 @@ export const sublevel = {
       world.sublevels.setInstance(entranceId, pending, map);
     }
 
-    const biome = await pending;
+    const { data: biome, error } = await tryCatch(pending);
 
-    if (!biome) {
-      if (isNew) world.sublevels.removeInstance(entranceId);
+    if (error || !biome) {
+      console.error("Sublevel generation failed:", error);
+
+      if (world.sublevels.getInstance(entranceId) === pending)
+        world.sublevels.removeInstance(entranceId);
+
+      socket.emit(Event.PLAYER_TRANSITION_DENIED);
       return;
     }
 

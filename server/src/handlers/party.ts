@@ -500,6 +500,7 @@ export const party = {
 
     if (!ok) {
       data.status = PartyStatus.LOBBY;
+      io.to(`party:${data.id}`).emit(Event.PLAYER_TRANSITION_DENIED);
 
       for (const memberId of data.members)
         handlers.sleep.wake(memberId, io, world);
@@ -544,6 +545,7 @@ export const party = {
 
     if (!ok) {
       data.depth = prevDepth;
+      socket.to(`party:${data.id}`).emit(Event.PLAYER_TRANSITION_DENIED);
       return false;
     }
 
