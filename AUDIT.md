@@ -281,7 +281,7 @@ Suggested verifier rules:
 Robustness:
 - `S4.1` ✖ crashing with the database is intended (lobby and world) 🟧 No `pg.on("error")`, so an idle client error crashes both lobby and world (`postgres.ts:4`).
 - `S4.2` ✅ cb99e13 🟧 A rejected sublevel generation stays cached, so that entrance is dead until restart (`Sublevel.ts:20`). The client is stuck on loading after failure (`sublevel.ts:35`, `party.ts:266`).
-- `S4.3` ☐ 🟧 Disconnecting inside a sublevel leaks the instance, its entities and its grid (`player.ts:146`).
+- `S4.3` ✅ e291159 🟧 Disconnecting inside a sublevel leaves the player listed as an occupant and as authority, so the next player in gets no authority and the cave's AI stands still until restart (`player.ts:146`). Reproduced in game. The instance itself is kept on purpose: the cave is `isPersistent`.
 - `S4.4` ☐ 🟨 Unbounded generator forks; a clean exit with no message hangs until the 30 s timeout (`generation.ts:642`).
 - `S4.5` ☐ 🟨 Fixed-delta `setInterval` tick, so the clock drifts when the loop lags (`World.ts:120`).
 - `S4.6` ☐ 🟨 ioredis retries 20× while Redis is down. `start()` can return a world that is still shutting down (`lobby.ts:50`). Crash exit codes aren't logged.
