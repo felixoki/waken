@@ -144,7 +144,7 @@ Entities that borrow another's sound:
   - zombies use the goblin dagger whoosh
 - `S2.17` ☐ Spells:
   - meteor shower, hyperbeam, dragon form and bite all use the sword `SLASH`
-  - dark wave, hypnic jerk, sunder, wellspring and delta wave all use `GRASP`, and no Grasp spell exists
+  - dark wave, hypnic jerk, sunder and delta wave all use `GRASP`, and no Grasp spell exists
   - catch soul uses the shard sounds
   - `absorb_life.ogg` and `fire_wave.ogg` are loaded but never played
 - `S2.18` ◐ 2026-11-08 World:
@@ -232,7 +232,7 @@ Progression and references (beyond section 0):
 - `S3.7` ☐ ⬜ `GRASS1` and `PLAYER` have no entity definition.
 
 Item data:
-- `S3.8` ☐ 🟧 Duplicate icons:
+- `S3.8` ✅ 1f34fb4 🟧 Duplicate icons:
   - daffodil and henbane
   - potion1 and soup of the hiker
   - deer hide and bear pelt
