@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import EventBus from "../game/EventBus";
-import { Event, Party as PartyData, Death } from "@server/types";
+import { Event, Party as PartyData, Death, Item } from "@server/types";
+import { configs } from "@server/configs";
 import { levels } from "@server/configs/levels";
 import { useParty } from "./useParty";
 
@@ -62,10 +63,53 @@ const Leave = ({ event }: { event: Event }) => (
   </button>
 );
 
+const RealmLeave = ({ items }: { items: (Item | null)[] }) => {
+  const [warning, setWarning] = useState(false);
+
+  const loses =
+    items.some(Boolean) &&
+    !items.some((item) => item && configs.entities[item.name]?.modifier?.keep);
+
+  if (!warning || !loses)
+    return (
+      <button
+        className="rounded-lg bg-white/10 px-6 py-3 text-lg text-white hover:bg-white/20"
+        onClick={() =>
+          loses ? setWarning(true) : EventBus.emit(Event.PARTY_LEAVE_REQUEST)
+        }
+      >
+        Leave
+      </button>
+    );
+
+  return (
+    <div className="flex flex-col gap-3">
+      <span className="text-lg text-white/80">
+        You'll wake with empty hands. Everything you carry stays in the dream.
+      </span>
+      <div className="flex gap-3">
+        <button
+          className="flex-1 rounded-lg bg-red-700 px-6 py-3 text-lg font-medium text-white hover:bg-red-800"
+          onClick={() => EventBus.emit(Event.PARTY_LEAVE_REQUEST)}
+        >
+          Leave anyway
+        </button>
+        <button
+          className="flex-1 rounded-lg bg-white/10 px-6 py-3 text-lg text-white hover:bg-white/20"
+          onClick={() => setWarning(false)}
+        >
+          Stay
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export const Party = () => {
   const [playerId, setPlayerId] = useState<string | null>(null);
   const [dead, setDead] = useState<Set<string>>(new Set());
   const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<(Item | null)[]>([]);
   const { party, lobbies, inRealm, asleep } = useParty();
 
   useEffect(() => {
@@ -88,6 +132,7 @@ export const Party = () => {
       [Event.PLAYER_DEATH, onDeath],
       [Event.PLAYER_REVIVE, onRevive],
       [Event.PARTY_WIPE, onWipe],
+      [Event.INVENTORY_UPDATE, (next: (Item | null)[]) => setItems(next)],
     ] as const;
 
     for (const [event, handler] of events) EventBus.on(event, handler);
@@ -115,7 +160,7 @@ export const Party = () => {
           <Screen>
             <Header party={party} />
             <Members party={party} playerId={playerId} dead={dead} />
-            <Leave event={Event.PARTY_LEAVE_REQUEST} />
+            <RealmLeave items={items} />
           </Screen>
         )}
       </>
