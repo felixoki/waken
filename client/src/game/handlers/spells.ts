@@ -543,15 +543,22 @@ export const spells: Record<SpellName, SpellHandler> = {
     direction: { x: number; y: number },
   ) => {
     const reach = config.hitbox!.width;
-    const girth = reach * FIRE_BREATH_SPREAD * 2;
-    const horizontal = direction.x !== 0;
-
-    const w = horizontal ? reach : girth;
-    const h = horizontal ? girth : reach;
 
     const length = Math.hypot(direction.x, direction.y) || 1;
     const dx = direction.x / length;
     const dy = direction.y / length;
+
+    const side = reach * FIRE_BREATH_SPREAD;
+    const fx = dx * reach;
+    const fy = dy * reach;
+    const ax = fx - dy * side;
+    const ay = fy + dx * side;
+    const bx = fx + dy * side;
+    const by = fy - dx * side;
+    const left = Math.min(0, ax, bx);
+    const top = Math.min(0, ay, by);
+    const w = Math.max(0, ax, bx) - left;
+    const h = Math.max(0, ay, by) - top;
 
     const startFrame = 10;
     const frameRate = config.animation?.frameRate ?? 12;
@@ -566,8 +573,8 @@ export const spells: Record<SpellName, SpellHandler> = {
 
       const hitbox = new Hitbox(
         entity.scene,
-        x + dx * (reach / 2),
-        y + dy * (reach / 2),
+        x + left + w / 2,
+        y + top + h / 2,
         w,
         h,
         entity.id,
@@ -614,7 +621,7 @@ export const spells: Record<SpellName, SpellHandler> = {
   ) => {
     const reach = config.hitbox!.width;
     const girth = config.hitbox!.height;
-    const horizontal = direction.x !== 0;
+    const horizontal = Math.abs(direction.x) >= Math.abs(direction.y);
 
     const bx = entity.x + direction.x * (reach * 0.5 + 12);
     const by = entity.y + direction.y * (reach * 0.5 + 12);
