@@ -97,7 +97,8 @@ HUD:
 - `S1.43` ☐ 🟨 `Interface.ts:50` runs `JSON.stringify` on damaged entities in every scene, every frame. React re-renders at 60 fps while any damaged entity is on screen. Health-bar position is relative to the player, not the camera.
 - `S1.44` ☐ 🟨 The FPS counter always shows, and it calls setState every rAF (`App.tsx:31-51`).
 - `S1.45` ☐ ⬜ Damage numbers are fixed to the screen and slide when the camera moves (`combat.ts:221`, `DamageNumbers.tsx:54`). Growable and Feedable tooltips don't follow their target.
-- `S1.46` ☐ ⬜ The health bar is 4 px off-centre (`Entities.tsx:36`). The boss bar vanishes instantly at 0. Effect timers use the client clock against the server's `expiresAt`. Stats show no numbers.
+- `S1.46` ☐ ⬜ The health bar is 4 px off-centre (`Entities.tsx:36`). The boss bar vanishes instantly at 0: ✔ the killing blow sends no `ENTITY_HURT`, only `ENTITY_DESTROY` (`combat.ts:490` returns after `kill.entity`), so client health never reaches 0. Because of this, `Main.ts:391` never calls `boss.end()`, and every themed boss kill crossfades out with `boss.stop()` instead of playing the outro. Effect timers use the client clock against the server's `expiresAt`. Stats show no numbers.
+- `S1.47` ☐ 🟧 ✔ The villain's health bar stays on screen after a party wipe, and after any map change during the fight. Found in play. Since S0.10, `handlers.player.transition` puts the old scene to sleep at once (`player.ts:117`), so its `InterfaceManager` never runs the update that clears the bar. The new scene has `visible: false` cached and never emits `null` either (`Interface.ts:59`). Each scene keeps its own `boss` cache, but they all drive one shared `Boss.tsx`.
 
 ---
 
