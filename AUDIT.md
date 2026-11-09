@@ -280,7 +280,7 @@ Suggested verifier rules:
 
 Robustness:
 - `S4.1` ✖ crashing with the database is intended (lobby and world) 🟧 No `pg.on("error")`, so an idle client error crashes both lobby and world (`postgres.ts:4`).
-- `S4.2` ☐ 🟧 A rejected sublevel generation stays cached, so that entrance is dead until restart (`Sublevel.ts:20`). The client is stuck on loading after failure (`sublevel.ts:35`, `party.ts:266`).
+- `S4.2` ✅ cb99e13 🟧 A rejected sublevel generation stays cached, so that entrance is dead until restart (`Sublevel.ts:20`). The client is stuck on loading after failure (`sublevel.ts:35`, `party.ts:266`).
 - `S4.3` ☐ 🟧 Disconnecting inside a sublevel leaks the instance, its entities and its grid (`player.ts:146`).
 - `S4.4` ☐ 🟨 Unbounded generator forks; a clean exit with no message hangs until the 30 s timeout (`generation.ts:642`).
 - `S4.5` ☐ 🟨 Fixed-delta `setInterval` tick, so the clock drifts when the loop lags (`World.ts:120`).
