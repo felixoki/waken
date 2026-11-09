@@ -345,7 +345,7 @@ Bugs:
 - `S5.5` ✅ 7ef1361 🟧 Defend never reset `completed`, so after the first disengage wanderers never fought again (`Defend.ts:183`). Attack and Search were fine: `start()` clears it. Fixed centrally in `BehaviorQueue.ts:31`.
 - `S5.6` ✅ 286aff2 🟧 `vision.canSee` past 200 px used a fixed fan of rays (60° apart for 360° vision), so it missed visible targets. Now one ray straight at the target after the FOV check.
 - `S5.7` ✅ f9487a3 🟧 Breath and bite: `direction.x !== 0` is checked on a normalised vector, so up and down cones are broken (`spells.ts:555, 625`).
-- `S5.8` ☐ 🟧 Knockback is overwritten by `setVelocity` on moving targets (`combat.ts:274`).
+- `S5.8` ✅ fca1d1c 🟧 Knockback was overwritten by `setVelocity` on moving targets (`combat.ts:274`). Movement input now waits out the 300 ms push; dash and roll recover from it.
 - `S5.9` ☐ 🟧 Pickables can be clicked from anywhere on screen (`Pickable.ts:46`).
 - `S5.10` ☐ 🟧 Remote interpolation only lerps when a message arrives, so remotes park off-position. Locked remotes snap (`interpolation.ts`, `Entity.ts:117`, `Player.ts:155`).
 - `S5.11` ☐ 🟨 State `exit()` always unlocks, overriding transition and system locks (Rolling, Jumping, Dashing, Felling, Mining, Raking, Watering, Casting).
