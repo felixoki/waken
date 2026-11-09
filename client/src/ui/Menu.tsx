@@ -4,6 +4,7 @@ import { tryCatch } from "@server/utils/tryCatch";
 import { MenuOverlay } from "./MenuOverlay";
 import { useMenuAmbience } from "./useMenuAmbience";
 import { GlassTitle } from "./GlassTitle";
+import { disconnect } from "./disconnect";
 
 const LOBBY_URL = (
   import.meta.env.VITE_LOBBY_URL || "http://localhost:3100"
@@ -47,6 +48,7 @@ export function Menu({ ready }: { ready: () => void }) {
   const [played, setPlayed] = useState(false);
   const [faded, setFaded] = useState(false);
   const [connected, setConnected] = useState(false);
+  const [notice, setNotice] = useState(disconnect.hint);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useMenuAmbience(played);
@@ -65,6 +67,7 @@ export function Menu({ ready }: { ready: () => void }) {
   };
 
   const openModal = (m: Modal) => {
+    setNotice("");
     setError("");
     setModal(m);
   };
@@ -107,6 +110,7 @@ export function Menu({ ready }: { ready: () => void }) {
   };
 
   const load = async () => {
+    setNotice("");
     setLoading(true);
     setError("");
 
@@ -259,6 +263,11 @@ export function Menu({ ready }: { ready: () => void }) {
           </p>
         </div>
         <div className="opacity-0 animate-[fade-in_1.5s_ease-out_3s_forwards]">
+          {notice && !modal && !showWorlds && (
+            <p className="absolute bottom-32 inset-x-0 text-center text-white/50 text-sm tracking-wide">
+              {notice}
+            </p>
+          )}
           <div
             className={`absolute bottom-0 inset-x-0 flex gap-4 px-8 pb-8 transition-opacity duration-200 ${modal || showWorlds ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >

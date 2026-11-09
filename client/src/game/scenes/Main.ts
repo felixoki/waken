@@ -64,6 +64,9 @@ import { Sound } from "../loaders/Sound";
 import ForestScene from "./Forest";
 import SublevelScene from "./Sublevel";
 import { Scene } from "./Scene";
+import { disconnect } from "../../ui/disconnect";
+
+const JOIN_TIMEOUT = 20_000;
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -76,6 +79,7 @@ export class MainScene extends Phaser.Scene {
   public socketManager = SocketManager;
   public location?: string;
   public chart?: Chart;
+  private joining?: ReturnType<typeof setTimeout>;
 
   constructor() {
     super("main");
@@ -135,6 +139,7 @@ export class MainScene extends Phaser.Scene {
 
         if (ready.size === scenes.length) {
           this._registerEvents();
+          this._watchConnection();
           const playerId = localStorage.getItem("playerId");
           this.managers.socket.emit(Event.PLAYER_CREATE, playerId);
         }
@@ -220,6 +225,7 @@ export class MainScene extends Phaser.Scene {
      * Players
      */
     this.managers.socket.on(Event.PLAYER_CREATE_LOCAL, (data: PlayerConfig) => {
+      clearTimeout(this.joining);
       this.managers.players.add(data, true);
 
       const map = this.scene.get(data.map);
@@ -1383,7 +1389,20 @@ export class MainScene extends Phaser.Scene {
   }
 
   shutdown(): void {
+    clearTimeout(this.joining);
     this.managers.socket.disconnect();
+  }
+
+  private _watchConnection(): void {
+    this.joining = setTimeout(
+      () => disconnect.leave("The world didn't respond"),
+      JOIN_TIMEOUT,
+    );
+
+    this.managers.socket.on("disconnect", (reason: string) => {
+      if (reason === "io client disconnect") return;
+      disconnect.leave("Disconnected from the world");
+    });
   }
 
   private _affected(id: string): Entity | undefined {

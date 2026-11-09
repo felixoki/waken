@@ -192,6 +192,16 @@ export const dev = {
       dev.reply(socket, `freecast ${on ? "on" : "off"}`);
     },
 
+    [DevCommand.DISCONNECT]: ([mode], socket, _io, world) => {
+      const player = world.players.getBySocketId(socket.id);
+      if (!player) return dev.fail(socket, "no player");
+      if (mode && mode !== "stall")
+        return dev.fail(socket, "usage: disconnect [stall]");
+
+      if (mode) world.stalled.add(player.id);
+      socket.disconnect(true);
+    },
+
     [DevCommand.GIVE]: ([name, quantity], socket, _io, world) => {
       const player = world.players.getBySocketId(socket.id);
       const definition = configs.entities[name as EntityName];
