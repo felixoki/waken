@@ -70,8 +70,8 @@ Inventory, chest and crafter:
 - `S1.24` ☐ ⬜ Status effects show the raw enum name, with no icon or description (`Effects.tsx:68`).
 
 Panels and input:
-- `S1.25` ☐ 🟧 Esc only toggles pause. It never closes a chest, crafter, dialogue, party screen or context menu (`Input.ts:60`).
-- `S1.26` ☐ 🟧 Input leaks under the pause menu (WASD, Space, Q/E, Tab). Solo worlds don't pause (`Settings.tsx:117`). Reuse `InputManager.mute`.
+- `S1.25` ✅ 226ba91 🟧 Esc only toggles pause. It never closes a chest, crafter, dialogue, party screen or context menu (`Input.ts:60`).
+- `S1.26` ✖ worlds should not pause, menu stays a non-pausing overlay 🟧 Input leaks under the pause menu (WASD, Space, Q/E, Tab). Solo worlds don't pause (`Settings.tsx:117`). Reuse `InputManager.mute`.
 - `S1.27` ☐ 🟨 Dragon form desyncs Tab: some panels ignore it and some don't, and the desync is permanent (`Economy.tsx:66`, `Seeds.tsx:13`, `Build.tsx:15` vs `Inventory.tsx:46`). Use one shared `uiOpen` state.
 - `S1.28` ☐ 🟨 Improvements never closes when you walk away (`Improvements.tsx:15`). Storage, Crafter and Improvements have no close button.
 - `S1.29` ☐ 🟨 No number keys or mouse wheel for hotbar slots (`Input.ts:106`).
@@ -79,15 +79,15 @@ Panels and input:
 - `S1.31` ☐ 🟨 The Tab layout has no overflow handling in the fixed 1280×720 window (`App.tsx:82`).
 
 Dialogue and party:
-- `S1.32` ☐ 🟨 Dialogue is mouse-only: no number keys, Enter or Esc (`Dialogue.tsx:104`).
+- `S1.32` ☐ 🟨 Dialogue is mouse-only: no number keys or Enter. Esc closes it since S1.25 (`Dialogue.tsx:110`).
 - `S1.33` ☐ ⬜ A choice with no `next` and no END keeps the panel open (`Dialogue.tsx:46`). Add a verifier rule.
 - `S1.34` ☐ 🟨 The party list shows UUID prefixes because there are no display names. Start is disabled with no reason given, and there's no ready indicator (`Party.tsx:45,132`).
 
 Settings, menus and connection:
-- `S1.35` ☐ 🟧 The window is fixed 1280×720 with `resizable:false`. No fullscreen and no saved size (`app/main.ts:9`).
+- `S1.35` ✖ the game is always 1280×720 by design 🟧 The window is fixed 1280×720 with `resizable:false`. No fullscreen and no saved size (`app/main.ts:9`).
 - `S1.36` ☐ 🟨 No UI scale or colourblind support. Bars rely on red and green alone.
 - `S1.37` ☐ 🟨 The disabled Save button is misleading while autosave runs. Show a "saved" indicator.
-- `S1.38` ☐ 🟧 Loading screen: if `PLAYER_CREATE_LOCAL` never arrives, the player is stuck grey with no way out (`Loading.tsx:36`, `ui.ts:11`).
+- `S1.38` ✅ 771028e 🟧 Loading screen: if `PLAYER_CREATE_LOCAL` never arrives, the player is stuck grey with no way out (`Loading.tsx:36`, `ui.ts:11`).
 - `S1.39` ☐ 🟨 `connect_error` isn't handled, so a refused connection waits 10 s before "timed out" (`Menu.tsx:182`). All errors read "Failed to …".
 - `S1.40` ☐ 🟨 "Quit" is `location.reload()`. There's no quit to desktop, and the main menu has no Quit, Settings or Credits (`Settings.tsx:184`, `Menu.tsx:263`).
 - `S1.41` ☐ ⬜ Worlds can't be deleted or renamed. The shared `loading` flag shows "Starting…" on every row. Esc doesn't close the menu overlays.
