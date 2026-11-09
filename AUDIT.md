@@ -160,7 +160,7 @@ Silent actions:
 - `S2.20` ☐ 🟨 Roll; swim strokes and water entry, including landing in water from a jump; falling into a hole; a missed fish.
 - `S2.21` ☐ 🟨 Pacify, resist, capture, feed, milk, lay, butcher.
 - `S2.22` ◐ 2026-11-09 🟨 Sleep, wake, Sleepwander enter and exit, villain cutscene. No boss music.
-  - `S2.22a` ◐ 2026-11-09 Boss music: Woodland Music boss theme, intro loops through the conversation, main loop from the fight, outro after the kill.
+  - `S2.22a` ✅ f952ed7 Boss music: Woodland Music boss theme, intro loops through the conversation, main loop from the fight, outro after the kill.
   - `S2.22b` ☐ Sleep, wake, Sleepwander enter and exit, villain cutscene sounds.
 - `S2.23` ☐ 🟨 Errand hand-in, spell learn, build place and destroy. (Tier up and improvement play `ACHIEVEMENT` since S1.2.)
 - `S2.24` ◐ 2026-11-08 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
