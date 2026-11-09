@@ -76,7 +76,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     antialias: false,
   },
   fps: {
-    target: 60,
+    target: 120,
   },
   callbacks: {
     /**
