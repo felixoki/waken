@@ -215,7 +215,7 @@ Assets:
 ## 3. Content, story, economy
 
 Progression and references (beyond section 0):
-- `S3.1` ◐ 2026-11-09 🟧 The `barren.ore` errand is tier 1 but needs iron ore, which needs a pickaxe (tier 2) and swamp access (`errands.ts:25`).
+- `S3.1` ✅ 65acb9d 🟧 The `barren.ore` errand is tier 1 but needs iron ore, which needs a pickaxe (tier 2) and swamp access (`errands.ts:25`).
 - `S3.2` ☐ 🟨 Tier-2 errands (flour, grapes, hops, carrots) need seeds that drop only in the cave or dungeon, at 6% (`errands.ts:39-66`).
 - `S3.3` ☐ 🟨 Recipe tier is below ingredient availability:
   - troll blood needs rat claws (`people.ts:332`)
