@@ -24,7 +24,7 @@ export const errands: ErrandConfig[] = [
   },
   {
     id: "barren.ore",
-    tier: 1,
+    tier: 2,
     for: EntityName.BLACKSMITH,
     item: EntityName.IRON_ORE,
     amount: 2,
