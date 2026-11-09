@@ -47,7 +47,7 @@ The ones you named, all confirmed:
 
 Silent failures (no feedback today):
 - `S1.5` ✅ cb76a58 🟧 Inventory full on pickup. Pickup is also all-or-nothing, so 3 free spaces against a stack of 5 takes none (`entity.ts:133`, `Pickable.ts:56`).
-- `S1.6` ◐ 2026-11-09 🟧 No death or wipe screen. The inventory is cleared with no message (`Main.ts:1212-1233, 1302-1321`).
+- `S1.6` ✅ f5e42c2 🟧 No death or wipe screen. The inventory is cleared with no message (`Main.ts:1212-1233, 1302-1321`).
 - `S1.7` ☐ 🟧 Party "Leave" inside the realm wipes the inventory with no confirmation (`Party.tsx:56`, `party.ts:206`).
 - `S1.8` ✅ cb76a58 🟨 Pickup removes the item before the server confirms. If the server rejects it, it vanishes locally but stays on the server (`Pickable.ts:58`).
 - `S1.9` ☐ 🟨 Craft overflow spills on the ground silently. The COLLECT sound plays before the server confirms (`crafter.ts:54`, `Main.ts:926`).
