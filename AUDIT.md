@@ -337,7 +337,7 @@ Ops and security:
 ## 5. Client game code
 
 Bugs:
-- `S5.1` ☐ 🟧 `shutdown()` is never called (`Main.ts:1325`, `Scene.ts:169`). About 31 EventBus listeners and all socket listeners are never removed.
+- `S5.1` ✖ scenes and the game live for the whole page; quit and disconnect reload; nothing restarts a scene 🟧 `shutdown()` is never called (`Main.ts:1325`, `Scene.ts:169`). About 31 EventBus listeners and all socket listeners are never removed.
 - `S5.2` ☐ 🟧 Torn-down maps leak physics colliders (2 per collision rect), and `rebuild()` creates new managers without destroying the old ones (`factory/Map.ts:305`, `Forest.ts:45`). Nether has about 10k colliders.
 - `S5.3` ☐ 🟧 Every chop or mine hit compiles a `BouncePipeline`, and `resetPipeline` permanently removes the tree's sway (`vfx/shaders.ts:63`).
 - `S5.4` ☐ 🟧 `effects.ts:22` recomputes speed without the robe, so any effect change wipes the robe speed bonus.
