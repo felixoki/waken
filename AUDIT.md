@@ -165,7 +165,7 @@ Silent actions:
 - `S2.23` ☐ 🟨 Errand hand-in, spell learn, build place and destroy. (Tier up and improvement play `ACHIEVEMENT` since S1.2.)
 - `S2.24` ◐ 2026-11-08 🟨 Chest open and close; lever, door and temple door; spike trap; forge and mill working loop.
   - `S2.24a` ✅ f226f4d Spike trap plays one of three Trap variants at its position when tripped (`TrapConfig.sound`).
-  - `S2.24b` ◐ 2026-11-09 Chest open and close.
+  - `S2.24b` ✅ 9d0081b Chest plays Treasure Chest Open and Close Drawer 1 at its position (`StorageConfig.sound`). The inventory panel stays silent while a storage with its own sound is open, so Tab still plays the inventory sounds.
   - `S2.24c` ☐ Lever, door and temple door.
   - `S2.24d` ☐ Forge and mill working loop.
 - `S2.25` ☐ 🟨 Mined-out rock crumble (`Main.ts:460` only gates `FELLABLE`). Troll rock and mud throw and impact (`Throwing.ts`). Wanderer and grandmother dash. Grouse, villain and dragon flight.
