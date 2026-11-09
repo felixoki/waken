@@ -326,8 +326,8 @@ Performance:
 - `S4.39` ☐ ⬜ 60 Hz spawner and texture ticks, and a 60 Hz tick overall where 10–20 Hz would do.
 
 Ops and security:
-- `S4.40` ☐ 🟧 CORS is `*`, and the server runs plain HTTP/WS to a hard-coded IP (`.env.production`, `Menu.tsx:12`).
-- `S4.41` ☐ 🟨 Default `waken:waken` credentials are used as fallbacks, and production runs the dev compose file.
+- `S4.40` ✖ before Steam: needs a domain. TLS via a Caddy proxy with path-routed worlds; CORS `*` is harmless (no credentials) 🟧 CORS is `*`, and the server runs plain HTTP/WS to a hard-coded IP (`.env.production`, `Menu.tsx:12`).
+- `S4.41` ☐ 🟨 Default `waken:waken` credentials are used as fallbacks, and production runs the dev compose file. TLS from S4.40 lands with the production setup.
 - `S4.42` ☐ 🟨 `npm start` (`node dist/lobby.js`) is broken: extensionless ESM imports, and `schema.sql` isn't copied.
 - `S4.43` ☐ 🟨 Each world has its own `pg.Pool` of 10, so about 10 worlds exhaust Postgres.
 - `S4.44` ☐ ⬜ World names have no length cap. `DEV_COMMANDS` is inherited by every world. `dev.commands[name]` resolves prototype keys.
