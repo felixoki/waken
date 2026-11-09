@@ -5,21 +5,26 @@ import {
   Event,
 } from "@server/types";
 import type { Entity } from "../Entity";
+import type { Player } from "../Player";
 import type { InventoryComponent } from "../components/Inventory";
 import { EffectFactory } from "../factory/Effect";
 import EventBus from "../EventBus";
 import { move } from "./move";
 
-const local = (entity: Entity): boolean =>
+const local = (entity: Entity): entity is Player =>
   "isControllable" in entity && entity.isControllable === true;
 
-const refresh = (entity: Entity): void => {
+const refresh = (entity: Player): void => {
   const inventory = entity.getComponent<InventoryComponent>(
     ComponentName.INVENTORY,
   );
 
   if (inventory)
-    entity.speed = move.speed(inventory.get(), entity.effects.keys());
+    entity.speed = move.speed(
+      inventory.get(),
+      entity.effects.keys(),
+      entity.robe,
+    );
 };
 
 export const effects = {
