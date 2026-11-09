@@ -67,4 +67,35 @@ describe("world persistence", () => {
     assert.ok(!added.includes("f"));
     assert.ok(!added.includes("d"));
   });
+
+  test("restore clears locks saved mid-use", async () => {
+    load.world = (async () => ({
+      entities: [
+        {
+          ...entity("chest", MapName.VILLAGE, EntityName.CHEST1),
+          isLocked: true,
+          lockedBy: "player1",
+        },
+        { ...entity("npc", MapName.VILLAGE, EntityName.STUDENT), isLocked: true },
+      ],
+    })) as unknown as typeof load.world;
+
+    const added: EntityConfig[] = [];
+    const world = {
+      entities: {
+        add: (_: string, e: EntityConfig) => added.push(e),
+        spawners: { get: () => undefined },
+      },
+      chunks: { registerEntity: () => {} },
+      dropped: { add: () => {} },
+    } as unknown as World;
+
+    await handlers.world.restore("w", world);
+
+    for (const id of ["chest", "npc"]) {
+      const restored = added.find((e) => e.id === id);
+      assert.equal(restored?.isLocked, false);
+      assert.equal(restored?.lockedBy, undefined);
+    }
+  });
 });

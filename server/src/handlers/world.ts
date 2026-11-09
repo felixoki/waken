@@ -39,6 +39,8 @@ export const world = {
           entity.anchor ??= { map: entity.map, x: entity.x, y: entity.y };
 
         entity.tame = handlers.taming.native(entity);
+        entity.isLocked = false;
+        entity.lockedBy = undefined;
 
         world.entities.add(entity.id, entity);
         if (!entity.away)
