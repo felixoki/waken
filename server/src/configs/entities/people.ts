@@ -1171,7 +1171,7 @@ export const people: Partial<Record<EntityName, EntityDefinition>> = {
         ],
       },
       [NodeId.QUEST]: {
-        text: "You'll surely find veins in caves, but they're rarely uninhabited, so tread carefully. Don't forget to bring a pickaxe.",
+        text: "Caves have veins, but they're rarely uninhabited, and you'll need a pickaxe from Barren to break them. Until then, check what's lying in those caves, or try the goblins in the swamp. They hoard anything that glitters.",
         choices: [
           {
             ref: ChoiceId.GOODBYE,
