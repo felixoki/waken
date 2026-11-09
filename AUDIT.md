@@ -288,7 +288,7 @@ Robustness:
 
 Persistence (rule: save and load in the same change):
 - `S4.7` ✖ needs a crash or stop within 30 s of a logout; too rare to engineer for 🟧 Player rows and the world row are separate writes, so a chest take, logout and crash duplicates items (`world.ts:68`, `save.ts:22`).
-- `S4.8` ☐ 🟧 Players in instanced maps are never saved. Party drop duplication.
+- `S4.8` ✖ intended: instanced maps are runs and never save; party drop dup is cheating 🟧 Players in instanced maps are never saved. Party drop duplication.
 - `S4.9` ☐ 🟧 Instanced entities get saved and restored as invisible orphans, piling up every restart (`world.ts:70`).
 - `S4.10` ☐ 🟧 `isLocked` and `lockedBy` are persisted, so a chest, bed or NPC locked at save time stays locked forever. It also makes the schedule scan run every tick.
 - `S4.11` ☐ 🟧 New tmx entities from content patches never reach existing saves; only zones are merged (`world.ts:13`).
