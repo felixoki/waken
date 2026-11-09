@@ -291,7 +291,7 @@ Persistence (rule: save and load in the same change):
 - `S4.8` ✖ intended: instanced maps are runs and never save; party drop dup is cheating 🟧 Players in instanced maps are never saved. Party drop duplication.
 - `S4.9` ✅ 999cb83 🟧 Instanced entities get saved and restored as invisible orphans, piling up every restart (`world.ts:70`).
 - `S4.10` ✅ 05fd70b 🟧 `isLocked` and `lockedBy` are persisted, so a chest, bed or NPC locked at save time stays locked forever. It also makes the schedule scan run every tick.
-- `S4.11` ☐ 🟧 New tmx entities from content patches never reach existing saves; only zones are merged (`world.ts:13`).
+- `S4.11` ✖ intended: existing saves keep their world; map changes reach new worlds only 🟧 New tmx entities from content patches never reach existing saves; only zones are merged (`world.ts:13`).
 - `S4.12` ☐ 🟨 Player saves miss mana, effects, sleep and isDead. `health || MAX` turns 0 health into full, and `x || spawn` treats x=0 as missing (`player.ts:78-81`). The save block is duplicated in two places.
 - `S4.13` ☐ 🟨 Weather, climate, `economy.meatEaten` and party `unlocked` aren't saved.
 - `S4.14` ☐ 🟨 A failed Redis write after Postgres succeeds leaves Redis stale, and Redis is read first (`load.ts:9`).
