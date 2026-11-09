@@ -58,7 +58,6 @@ export class World {
   public readonly dropped: Set<string> = new Set();
   public readonly chilled: Set<string> = new Set();
   public readonly freecast: Set<string> = new Set();
-  public readonly stalled: Set<string> = new Set();
   public readonly spots: Map<SpotName, Position> = new Map();
   public readonly encounters: Map<string, Encounter> = new Map();
   private scheduling = true;

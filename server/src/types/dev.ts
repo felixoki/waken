@@ -15,5 +15,4 @@ export enum DevCommand {
   RESEED = "reseed",
   HIVE = "hive",
   SPAWN = "spawn",
-  DISCONNECT = "disconnect",
 }

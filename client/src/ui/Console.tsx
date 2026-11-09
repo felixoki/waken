@@ -45,7 +45,6 @@ const ARGS: Record<string, readonly (readonly string[])[]> = {
     Object.values(StoryScope),
   ],
   [DevCommand.HIVE]: [entities.filter((name) => name.includes("tree"))],
-  [DevCommand.DISCONNECT]: [["stall"]],
 };
 
 function suggest(value: string): string[] {

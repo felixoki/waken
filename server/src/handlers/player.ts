@@ -44,8 +44,6 @@ export const player = {
     world: World,
     playerId?: string,
   ) => {
-    if (playerId && world.stalled.delete(playerId)) return;
-
     let player = world.players.getBySocketId(socket.id);
 
     if (!player) {
