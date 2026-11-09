@@ -7,9 +7,15 @@ import {
 import { Scene } from "../scenes/Scene";
 import { Entity } from "../Entity";
 import { StretchPipeline } from "../pipelines/Stretch";
-import { BouncePipeline } from "../pipelines/Bounce";
+import { BouncePipeline, pool } from "../pipelines/Bounce";
 
-const timers = new Map<string, Phaser.Time.TimerEvent>();
+interface Bounce {
+  slot: string;
+  previous: Phaser.Renderer.WebGL.WebGLPipeline;
+  timer: Phaser.Time.TimerEvent;
+}
+
+const bounces = new Map<string, Bounce>();
 
 export const shaders = {
   illuminate: (scene: Scene, duration: number) => {
@@ -41,6 +47,7 @@ export const shaders = {
 
     pipeline.trigger();
 
+    const previous = entity.pipeline;
     entity.setPipeline(PipelineName.STRETCH);
 
     entity.scene.time.delayedCall(200, () => {
@@ -55,40 +62,38 @@ export const shaders = {
 
     entity.scene.time.delayedCall(600, () => {
       if (!entity.scene) return;
-      entity.resetPipeline();
+      entity.setPipeline(previous);
       onComplete?.();
     });
   },
 
   bounce: (entity: Entity, onComplete?: () => void) => {
-    const game = entity.scene.game;
-    const renderer = game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
-    const name = `bounce_${entity.id}`;
+    const renderer = entity.scene.game
+      .renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    const running = bounces.get(entity.id);
+    const slot = running?.slot ?? pool.next();
+    const previous = running ? running.previous : entity.pipeline;
 
-    let pipeline = renderer.pipelines.get(name) as BouncePipeline;
+    running?.timer.remove(false);
 
-    if (!pipeline) {
-      pipeline = new BouncePipeline(game, name);
-      renderer.pipelines.add(name, pipeline);
-    }
-
-    pipeline.trigger(0.06, 2.0, 3.0, 18.0);
-    entity.setPipeline(name);
-
-    timers.get(name)?.remove(false);
+    (renderer.pipelines.get(slot) as BouncePipeline).trigger(
+      0.06,
+      2.0,
+      3.0,
+      18.0,
+    );
+    entity.setPipeline(slot);
 
     const timer = entity.scene.time.delayedCall(
       DURATION_EXTRACTION_BOUNCE,
       () => {
-        timers.delete(name);
-        if (entity.scene) entity.resetPipeline();
-        renderer.pipelines.remove(name);
-        pipeline.destroy();
+        bounces.delete(entity.id);
+        if (entity.scene) entity.setPipeline(previous);
         onComplete?.();
       },
     );
 
-    timers.set(name, timer);
+    bounces.set(entity.id, { slot, previous, timer });
   },
 
   jump: (entity: Entity) => {

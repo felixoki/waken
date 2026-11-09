@@ -1,44 +1,7 @@
 import { BounceConfig, ComponentName, Event, SoundName } from "@server/types";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
-import {
-  BOUNCE_POOL_SIZE,
-  BouncePipeline,
-  bounceSlotName,
-} from "../pipelines/Bounce";
-
-interface Slot {
-  name: string;
-  startTime: number;
-}
-
-const slots: Slot[] = Array.from({ length: BOUNCE_POOL_SIZE }, (_, i) => ({
-  name: bounceSlotName(i),
-  startTime: -Infinity,
-}));
-
-let cursor = 0;
-
-const pool = {
-  /**
-   * Slots are registered once at boot, so handing one out is free. Bounces
-   * landing within `tolerance` of a slot share its wave; anything later takes
-   * the next slot round-robin.
-   *
-   * `startTime` is deliberately not refreshed on a match: rolling it forward
-   * would funnel every bounce into one slot and re-trigger it forever, so
-   * reeds already riding that wave would never settle.
-   */
-  acquire(startTime: number, tolerance = 200): string {
-    for (const slot of slots)
-      if (Math.abs(slot.startTime - startTime) < tolerance) return slot.name;
-
-    const slot = slots[cursor++ % BOUNCE_POOL_SIZE];
-    slot.startTime = startTime;
-
-    return slot.name;
-  },
-};
+import { BouncePipeline, pool } from "../pipelines/Bounce";
 
 export class BounceComponent extends Component {
   private entity: Entity;
