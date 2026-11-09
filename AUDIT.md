@@ -343,7 +343,7 @@ Bugs:
 - `S5.3` ✅ 0cc1ab7 🟧 Every chop or mine hit compiles a `BouncePipeline`, and `resetPipeline` permanently removes the tree's sway (`vfx/shaders.ts:63`).
 - `S5.4` ✅ 0d2a263 🟧 `effects.ts:22` recomputes speed without the robe, so any effect change wipes the robe speed bonus.
 - `S5.5` ✅ 7ef1361 🟧 Defend never reset `completed`, so after the first disengage wanderers never fought again (`Defend.ts:183`). Attack and Search were fine: `start()` clears it. Fixed centrally in `BehaviorQueue.ts:31`.
-- `S5.6` ☐ 🟧 `vision.canSee` past 200 px uses a fixed fan of rays with about 100 px gaps, so it misses visible targets (`vision.ts:137`).
+- `S5.6` ✅ 286aff2 🟧 `vision.canSee` past 200 px used a fixed fan of rays (60° apart for 360° vision), so it missed visible targets. Now one ray straight at the target after the FOV check.
 - `S5.7` ☐ 🟧 Breath and bite: `direction.x !== 0` is checked on a normalised vector, so up and down cones are broken (`spells.ts:555, 625`).
 - `S5.8` ☐ 🟧 Knockback is overwritten by `setVelocity` on moving targets (`combat.ts:274`).
 - `S5.9` ☐ 🟧 Pickables can be clicked from anywhere on screen (`Pickable.ts:46`).
@@ -370,7 +370,7 @@ Performance:
 - `S5.25` ☐ 🟧 12 scenes preload the same 229 keys, about 1,128 redundant queue entries (`loaders/Texture.ts:134`). Use one Boot scene.
 - `S5.26` ☐ 🟧 Spell pools compile a program per pooled Shader on first cast, e.g. about 25 for meteors (`quads.ts:546`). Pre-warm them.
 - `S5.27` ☐ 🟨 The `managers` getter allocates on every access (`Scene.ts:46`). `_drain` uses `shift()` (`Entity.ts:201`). Tile animation walks every position on the map (`Tile.ts:103`). `setDepth` runs every frame on thresholds.
-- `S5.28` ☐ 🟨 Vision raycasts loop over the whole map width per Attack AI per frame. ENTITY_OVERLAP fires per pair per frame for 52 BOUNCE types.
+- `S5.28` ☐ 🟨 Vision raycasts loop over the whole map width; cap the loop at `maxDistance`. Since S5.6 there is one raycast per check instead of 7. ENTITY_OVERLAP fires per pair per frame for 52 BOUNCE types.
 - `S5.29` ☐ 🟨 Shadows are redrawn per scene per frame. `sprites.ts` creates a canvas and calls `getImageData` per death. Build `placeable` runs every frame. Splash creates a new emitter each time. One Shader per waterfall and mist, never culled. The legacy string A* allocates about 180k strings. The meadow re-bakes at 20 Hz even with a still camera.
 - `S5.30` ☐ 🟨 `Animation.play` runs every frame and rebuilds keys. All 19 states are instantiated per spawn. 61 types have needless dynamic bodies. The Feedable tooltip re-renders every frame.
 - `S5.31` ☐ 🟨 Hover compiles an OutlinePipeline plus a full-screen RT. About 20 `useProgram` calls per frame on idle pipelines. One Ambience pipeline per scene. Full-resolution fbm fog. The shadowmap is rebuilt every frame. One draw per overlay sprite. BITE creates 63 timers. `transform` issues a fillRect per particle per frame.
