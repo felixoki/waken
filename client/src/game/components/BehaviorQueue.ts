@@ -30,6 +30,7 @@ export class BehaviorQueue extends Component {
 
     if (this.current.completed) {
       if (this.current.repeat) {
+        this.current.completed = false;
         this.current.reset();
         this.queue.push(this.current);
       }
