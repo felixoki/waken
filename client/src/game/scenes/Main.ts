@@ -406,7 +406,12 @@ export class MainScene extends Phaser.Scene {
             destructible.config?.sound ?? SoundName.WOOD_BREAK,
             { position: { x: entity.x, y: entity.y } },
           );
-        } else if (damageable) vfx.emitters.dissolve(entity);
+        } else if (damageable) {
+          vfx.emitters.dissolve(entity);
+          this.managers.sound.play.sfx(SoundName.HIT, {
+            position: { x: entity.x, y: entity.y },
+          });
+        }
         else if (extractable)
           vfx.emitters.puff(entity.scene, entity.x, entity.y);
       }
@@ -608,6 +613,11 @@ export class MainScene extends Phaser.Scene {
     this.managers.socket.on(Event.ENTITY_HURT, (data: Hurt) => {
       const entity = this.managers.entities.entities.get(data.id);
       if (!entity) return;
+
+      if (!data.isMiss && data.health < entity.health)
+        this.managers.sound.play.sfx(SoundName.HIT, {
+          position: { x: entity.x, y: entity.y },
+        });
 
       handlers.combat.damage(entity, data.health, data.isCritical);
       handlers.behavior.react(entity, data.attackerId);
