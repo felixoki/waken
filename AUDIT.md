@@ -193,7 +193,7 @@ Maps:
 - `S2.33` ☐ ⬜ The menu has rain only, no menu music.
 
 Assets:
-- `S2.34` ☐ 🟧 `pop.ogg` (pickup) averages −6.7 dB, the loudest one-shot in the game. `bite1-4` (the key fishing cue) sit at −36 to −42 dB, probably inaudible.
+- `S2.34` ✅ 5f43fad 🟧 `pop.ogg` (pickup) averages −6.7 dB, the loudest one-shot in the game. `bite1-4` (the key fishing cue) sit at −36 to −42 dB, probably inaudible.
 - `S2.35` ☐ 🟨 Rain is 18 dB quieter than storm, and `useMenuAmbience` hard-codes GAIN 2 to compensate. Birds run at volume 0.005. Music varies by 10.8 dB across tracks.
 - `S2.36` ☐ 🟨 Large level gaps within variant sets (in dB):
   - stepgrass 10.2
@@ -215,7 +215,7 @@ Assets:
 ## 3. Content, story, economy
 
 Progression and references (beyond section 0):
-- `S3.1` ☐ 🟧 The `barren.ore` errand is tier 1 but needs iron ore, which needs a pickaxe (tier 2) and swamp access (`errands.ts:25`).
+- `S3.1` ◐ 2026-11-09 🟧 The `barren.ore` errand is tier 1 but needs iron ore, which needs a pickaxe (tier 2) and swamp access (`errands.ts:25`).
 - `S3.2` ☐ 🟨 Tier-2 errands (flour, grapes, hops, carrots) need seeds that drop only in the cave or dungeon, at 6% (`errands.ts:39-66`).
 - `S3.3` ☐ 🟨 Recipe tier is below ingredient availability:
   - troll blood needs rat claws (`people.ts:332`)
