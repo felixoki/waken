@@ -19,6 +19,17 @@ import { World } from "../World";
 import { handlers } from "./index.js";
 import { converter } from "../story/converter.js";
 
+const DRIVERS = new Map<EntityName, ConverterConfig>();
+
+for (const [name, definition] of Object.entries(configs.entities)) {
+  const component = definition?.components.find(
+    (c) => c.name === ComponentName.CONVERTER,
+  );
+
+  if (component?.name === ComponentName.CONVERTER && component.config.drives)
+    DRIVERS.set(name as EntityName, component.config);
+}
+
 export const storage = {
   stacks: (a: Item, b: Item): boolean =>
     a.name === b.name && a.stackable && b.stackable && a.soul === b.soul,
@@ -205,8 +216,8 @@ export const storage = {
     const now = converter.clock(world.getTime());
 
     for (const entity of world.entities.all) {
-      const recipe = storage.converter(entity.name);
-      if (!recipe?.drives) continue;
+      const recipe = DRIVERS.get(entity.name);
+      if (!recipe) continue;
 
       const running =
         !!entity.converting &&

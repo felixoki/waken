@@ -116,3 +116,39 @@ describe("storage split", () => {
     assert.deepEqual(ctx.player.inventory, [null]);
   });
 });
+
+describe("storage drive", () => {
+  test("the hopper turns the sails while milling and stops them when done", () => {
+    const hopper = {
+      id: "hopper",
+      name: EntityName.MILL_HOPPER,
+      converting: { at: 0, amount: 1 },
+    } as EntityConfig;
+    const sails = { id: "sails", name: EntityName.WINDMILL_SAILS } as EntityConfig;
+
+    let days = 0;
+    const world = {
+      getTime: () => ({ days, current: 1000 }),
+      entities: { all: [hopper, sails] },
+      chunks: { getChunkByEntity: () => "" },
+    } as unknown as World;
+
+    const { entity } = handlers.broadcast;
+    const animated: boolean[] = [];
+    handlers.broadcast.entity = ((...args: unknown[]) => {
+      animated.push((args[3] as { playing: boolean }).playing);
+    }) as typeof handlers.broadcast.entity;
+
+    handlers.storage.drive(world, {} as never);
+    assert.equal(sails.playing, true);
+
+    days = 2;
+    handlers.storage.drive(world, {} as never);
+    assert.equal(sails.playing, false);
+
+    handlers.storage.drive(world, {} as never);
+    handlers.broadcast.entity = entity;
+
+    assert.deepEqual(animated, [true, false]);
+  });
+});
