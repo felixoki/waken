@@ -377,6 +377,8 @@ export class MainScene extends Phaser.Scene {
       const entity = this.managers.entities.entities.get(data);
 
       if (entity) {
+        entity.health = 0;
+
         const damageable = entity.getComponent<DamageableComponent>(
           ComponentName.DAMAGEABLE,
         );

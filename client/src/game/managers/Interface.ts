@@ -12,6 +12,7 @@ export class InterfaceManager {
 
   constructor(scene: Scene) {
     this.scene = scene;
+    scene.events.on(Phaser.Scenes.Events.SLEEP, () => this._boss(null));
   }
 
   update(): void {
