@@ -342,7 +342,7 @@ Bugs:
 - `S5.2` ☐ 🟧 Torn-down maps leak physics colliders (2 per collision rect), and `rebuild()` creates new managers without destroying the old ones (`factory/Map.ts:305`, `Forest.ts:45`). Nether has about 10k colliders.
 - `S5.3` ✅ 0cc1ab7 🟧 Every chop or mine hit compiles a `BouncePipeline`, and `resetPipeline` permanently removes the tree's sway (`vfx/shaders.ts:63`).
 - `S5.4` ✅ 0d2a263 🟧 `effects.ts:22` recomputes speed without the robe, so any effect change wipes the robe speed bonus.
-- `S5.5` ☐ 🟧 Defend, Attack and Search never reset `completed`. After the first disengage, wanderers never fight again (`Defend.ts:183`). Fix it centrally in `BehaviorQueue.ts:31`.
+- `S5.5` ✅ 7ef1361 🟧 Defend never reset `completed`, so after the first disengage wanderers never fought again (`Defend.ts:183`). Attack and Search were fine: `start()` clears it. Fixed centrally in `BehaviorQueue.ts:31`.
 - `S5.6` ☐ 🟧 `vision.canSee` past 200 px uses a fixed fan of rays with about 100 px gaps, so it misses visible targets (`vision.ts:137`).
 - `S5.7` ☐ 🟧 Breath and bite: `direction.x !== 0` is checked on a normalised vector, so up and down cones are broken (`spells.ts:555, 625`).
 - `S5.8` ☐ 🟧 Knockback is overwritten by `setVelocity` on moving targets (`combat.ts:274`).
