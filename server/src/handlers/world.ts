@@ -14,10 +14,8 @@ export const world = {
       state.entities = state.entities.filter(
         (entity: EntityConfig) =>
           !!configs.maps[entity.map] &&
-          !(
-            entity.name === EntityName.ZONE &&
-            !configs.maps[entity.map].isInstanced
-          ),
+          !configs.maps[entity.map].isInstanced &&
+          entity.name !== EntityName.ZONE,
       );
 
       const loader = new MapLoader();
@@ -67,7 +65,9 @@ export const world = {
 
   save: async (id: string, world: World): Promise<void> => {
     await save.world(id, {
-      entities: world.entities.all,
+      entities: world.entities.all.filter(
+        (entity) => !configs.maps[entity.map]?.isInstanced,
+      ),
       chunks: {},
       time: world.getTime(),
       relics: world.relics.snapshot((playerId) => {
