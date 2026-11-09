@@ -28,6 +28,7 @@ export function Inventory() {
   const [storageEntityId, setStorageEntityId] = useState<string | null>(null);
   const isOpenRef = useRef(false);
   const transformedRef = useRef(false);
+  const quietRef = useRef(false);
   const [menu, setMenu] = useState<{
     index: number;
     x: number;
@@ -50,10 +51,13 @@ export function Inventory() {
       setIsOpen(isOpenRef.current);
       setMenu(null);
 
-      EventBus.emit(
-        Event.SOUND_PLAY,
-        isOpenRef.current ? SoundName.INVENTORY_OPEN : SoundName.INVENTORY_CLOSE,
-      );
+      if (!quietRef.current)
+        EventBus.emit(
+          Event.SOUND_PLAY,
+          isOpenRef.current
+            ? SoundName.INVENTORY_OPEN
+            : SoundName.INVENTORY_CLOSE,
+        );
     };
 
     const transform = (active: boolean) => {
@@ -66,12 +70,16 @@ export function Inventory() {
       }
     };
 
-    const onStorageOpen = (data: { entityId: string }) => {
+    const onStorageOpen = (data: { entityId: string; quiet?: boolean }) => {
+      quietRef.current = !!data.quiet;
       setStorageEntityId(data.entityId);
       if (!isOpenRef.current) EventBus.emit(Event.UI_TOGGLE);
     };
 
-    const onStorageClose = () => setStorageEntityId(null);
+    const onStorageClose = () => {
+      quietRef.current = false;
+      setStorageEntityId(null);
+    };
 
     const onCrafterOpen = () => {
       if (!isOpenRef.current) EventBus.emit(Event.UI_TOGGLE);

@@ -1746,7 +1746,13 @@ export const interior: Partial<Record<EntityName, EntityDefinition>> = {
       },
       { name: ComponentName.POINTABLE },
       { name: ComponentName.HOVERABLE },
-      { name: ComponentName.STORAGE, config: { slots: 16 } },
+      {
+        name: ComponentName.STORAGE,
+        config: {
+          slots: 16,
+          sound: { open: SoundName.CHEST_OPEN, close: SoundName.CHEST_CLOSE },
+        },
+      },
     ],
     states: [],
     behaviors: [],

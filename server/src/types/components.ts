@@ -310,6 +310,7 @@ export interface ConverterConfig {
 export interface StorageConfig {
   slots: number;
   loot?: (Item & { chance: number })[];
+  sound?: { open: SoundName; close: SoundName };
 }
 
 export enum Action {

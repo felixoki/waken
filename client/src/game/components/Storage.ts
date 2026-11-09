@@ -9,6 +9,7 @@ export class StorageComponent extends Component {
 
   private entity: Entity;
   private slots: number;
+  public readonly sound: StorageConfig["sound"];
   private range = RANGE_INTERACTING;
 
   public name = ComponentName.STORAGE;
@@ -26,6 +27,7 @@ export class StorageComponent extends Component {
     super();
     this.entity = entity;
     this.slots = config.slots;
+    this.sound = config.sound;
   }
 
   attach(): void {
@@ -91,7 +93,13 @@ export class StorageComponent extends Component {
   private _confirm(entityId: string): void {
     if (entityId !== this.entity.id) return;
 
+    const wasActive = StorageComponent.active === this;
     StorageComponent.active = this;
+
+    if (!wasActive && this.sound)
+      this.entity.scene.managers.sound.play.sfx(this.sound.open, {
+        position: { x: this.entity.x, y: this.entity.y },
+      });
 
     const animKey = `${this.entity.name}_tex_anim`;
     if (this.entity.scene.anims.exists(animKey)) this.entity.play(animKey);
@@ -100,7 +108,13 @@ export class StorageComponent extends Component {
   private _close(entityId: string): void {
     if (entityId !== this.entity.id) return;
 
-    if (StorageComponent.active === this) StorageComponent.active = null;
+    const wasActive = StorageComponent.active === this;
+    if (wasActive) StorageComponent.active = null;
+
+    if (wasActive && this.sound)
+      this.entity.scene.managers.sound.play.sfx(this.sound.close, {
+        position: { x: this.entity.x, y: this.entity.y },
+      });
 
     const animKey = `${this.entity.name}_tex_anim`;
 
