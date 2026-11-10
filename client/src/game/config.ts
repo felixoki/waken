@@ -67,6 +67,7 @@ export const config: Phaser.Types.Core.GameConfig = {
     default: "arcade",
     arcade: {
       debug: false,
+      fixedStep: false,
     },
   },
   backgroundColor: "302929",
