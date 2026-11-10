@@ -367,7 +367,7 @@ Bugs:
 Performance:
 - `S5.23` ✅ dff1c41 🟧 No send-rate cap: input is emitted on every frame (60–144 Hz) per player and per authority AI (`Player.ts:203`, `Entity.ts:127`).
 - `S5.24` ✅ c138c31 🟧 `state.resolve` builds about 20 objects and 40 closures per entity per frame (`state.ts:5`).
-- `S5.25` ☐ 🟧 12 scenes preload the same 229 keys, about 1,128 redundant queue entries (`loaders/Texture.ts:134`). Use one Boot scene.
+- `S5.25` ✅ fefef26 🟧 12 scenes preload the same 229 keys, about 1,128 redundant queue entries (`loaders/Texture.ts:134`). Use one Boot scene.
 - `S5.26` ☐ 🟧 Spell pools compile a program per pooled Shader on first cast, e.g. about 25 for meteors (`quads.ts:546`). Pre-warm them.
 - `S5.27` ☐ 🟨 The `managers` getter allocates on every access (`Scene.ts:46`). `_drain` uses `shift()` (`Entity.ts:201`). Tile animation walks every position on the map (`Tile.ts:103`). `setDepth` runs every frame on thresholds.
 - `S5.28` ☐ 🟨 Vision raycasts loop over the whole map width; cap the loop at `maxDistance`. Since S5.6 there is one raycast per check instead of 7. ENTITY_OVERLAP fires per pair per frame for 52 BOUNCE types.
