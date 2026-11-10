@@ -158,6 +158,8 @@ export const SHEEN_CREST = 0.7;
 export const SHEEN_SOAK_DURATION = 8_000;
 export const SHEEN_DRY_DURATION = 6_000;
 export const SHEEN_DEPTH_BIAS = 0.01;
+export const EFFECT_DEPTH_BIAS = 0.5;
+export const EFFECT_GLOW_BIAS = 0.6;
 export const SHEEN_RISE_DURATION = 1_200;
 export const SHEEN_SHALLOW = 0.35;
 

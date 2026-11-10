@@ -10,8 +10,11 @@ import {
   BLAZE_STEAM_ALPHA,
   BLAZE_STEAM_COLORS,
   BLAZE_STEAM_LIFESPAN,
+  EFFECT_DEPTH_BIAS,
+  EFFECT_GLOW_BIAS,
   SPLASH_LIFESPAN,
 } from "@server/globals";
+import { depth } from "./depth";
 
 export interface RainSplashes {
   ring: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -511,6 +514,8 @@ export const emitters = {
   },
 
   shard: (scene: Scene, x: number, y: number, chargePercent?: number) => {
+    const front = depth.at(y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(y, EFFECT_GLOW_BIAS);
     const power = chargePercent ?? 1;
     const emitter = scene.add.particles(x, y, "particle_circle", {
       tint: [0x00ccff, 0xaaffff, 0xffffff],
@@ -522,7 +527,7 @@ export const emitters = {
       quantity: Math.max(1, Math.round(2 * power)),
       blendMode: "ADD",
     });
-    emitter.setDepth(1000);
+    emitter.setDepth(front);
 
     const embers = scene.add.particles(x, y, "particle_circle", {
       tint: [0x00ccff, 0x88ddff, 0xaaffff],
@@ -534,7 +539,7 @@ export const emitters = {
       quantity: 2,
       blendMode: "ADD",
     });
-    embers.setDepth(1001);
+    embers.setDepth(glow);
     embers.startFollow(emitter);
 
     return { main: emitter, embers };
@@ -547,6 +552,7 @@ export const emitters = {
     toX: number,
     toY: number,
   ) => {
+    const front = depth.at(Math.max(fromY, toY), EFFECT_DEPTH_BIAS);
     const emitter = scene.add.particles(fromX, fromY, "particle_circle", {
       tint: [0x66ccff, 0xaaffff, 0xffffff],
       alpha: { start: 0.9, end: 0 },
@@ -557,7 +563,7 @@ export const emitters = {
       quantity: 2,
       blendMode: "ADD",
     });
-    emitter.setDepth(1500);
+    emitter.setDepth(front);
 
     scene.tweens.add({
       targets: emitter,
@@ -580,6 +586,7 @@ export const emitters = {
     toX: number,
     toY: number,
   ) => {
+    const front = depth.at(Math.max(fromY, toY), EFFECT_DEPTH_BIAS);
     const flight = 110;
     const degrees = Phaser.Math.RadToDeg(Math.atan2(toY - fromY, toX - fromX));
     const speed = (Math.hypot(toX - fromX, toY - fromY) / flight) * 1000;
@@ -595,7 +602,7 @@ export const emitters = {
       blendMode: "ADD",
       frequency: -1,
     });
-    streak.setDepth(1500);
+    streak.setDepth(front);
     streak.explode(7);
 
     scene.time.delayedCall(flight, () => {
@@ -611,7 +618,7 @@ export const emitters = {
         blendMode: "ADD",
         frequency: -1,
       });
-      burst.setDepth(1500);
+      burst.setDepth(front);
       burst.explode(10);
 
       scene.time.delayedCall(360, () => burst.destroy());
@@ -625,6 +632,7 @@ export const emitters = {
     caster: Entity,
     tint: number[],
   ) => {
+    const front = depth.at(Math.max(fromY, caster.y), EFFECT_DEPTH_BIAS);
     const emitter = scene.add.particles(fromX, fromY, "particle_circle", {
       tint,
       x: { min: -8, max: 8 },
@@ -638,13 +646,15 @@ export const emitters = {
       quantity: 1,
       blendMode: "ADD",
     });
-    emitter.setDepth(1500);
+    emitter.setDepth(front);
 
     scene.time.delayedCall(280, () => emitter.stop());
     scene.time.delayedCall(800, () => emitter.destroy());
   },
 
   leaf: (scene: Scene, x: number, y: number) => {
+    const front = depth.at(y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(y, EFFECT_GLOW_BIAS);
     const emitter = scene.add.particles(x, y, "particle_leaf", {
       tint: [0x4caf50, 0x81c784, 0xa5d6a7],
       alpha: { start: 0.9, end: 0 },
@@ -655,7 +665,7 @@ export const emitters = {
       frequency: 15,
       quantity: 2,
     });
-    emitter.setDepth(1000);
+    emitter.setDepth(front);
 
     const embers = scene.add.particles(x, y, "particle_leaf", {
       tint: [0x2e7d32, 0x66bb6a, 0xa5d6a7],
@@ -667,13 +677,14 @@ export const emitters = {
       frequency: 30,
       quantity: 2,
     });
-    embers.setDepth(1001);
+    embers.setDepth(glow);
     embers.startFollow(emitter);
 
     return { main: emitter, embers };
   },
 
   hearts: (scene: Scene, x: number, y: number) => {
+    const front = depth.at(y, EFFECT_DEPTH_BIAS);
     const emitter = scene.add.particles(x, y - 8, "particle_heart", {
       tint: [0xff4d6d, 0xff8095, 0xffb3c0],
       alpha: { start: 1, end: 0 },
@@ -686,7 +697,7 @@ export const emitters = {
       frequency: 170,
       quantity: 1,
     });
-    emitter.setDepth(2000);
+    emitter.setDepth(front);
 
     scene.time.delayedCall(700, () => emitter.stop());
     scene.time.delayedCall(2000, () => emitter.destroy());
@@ -697,6 +708,8 @@ export const emitters = {
     entity: Entity,
     direction: { x: number; y: number },
   ) => {
+    const front = depth.at(entity.y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(entity.y, EFFECT_GLOW_BIAS);
     const angle = Math.atan2(direction.y, direction.x);
     const degrees = Phaser.Math.RadToDeg(angle);
 
@@ -737,7 +750,7 @@ export const emitters = {
             frequency: -1,
           });
 
-          emitter.setDepth(2000);
+          emitter.setDepth(front);
           emitter.explode();
 
           if (step % 4 === 0) {
@@ -751,7 +764,7 @@ export const emitters = {
               quantity: 2,
               frequency: -1,
             });
-            ember.setDepth(2001);
+            ember.setDepth(glow);
             ember.explode();
 
             scene.time.delayedCall(600, () => ember.destroy());
@@ -770,6 +783,8 @@ export const emitters = {
     entity: Entity,
     direction: { x: number; y: number },
   ) => {
+    const front = depth.at(entity.y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(entity.y, EFFECT_GLOW_BIAS);
     const angle = Math.atan2(direction.y, direction.x);
     const degrees = Phaser.Math.RadToDeg(angle);
 
@@ -810,7 +825,7 @@ export const emitters = {
             frequency: -1,
           });
 
-          emitter.setDepth(2000);
+          emitter.setDepth(front);
           emitter.explode();
 
           if (step % 4 === 0) {
@@ -824,7 +839,7 @@ export const emitters = {
               quantity: 2,
               frequency: -1,
             });
-            ember.setDepth(2001);
+            ember.setDepth(glow);
             ember.explode();
 
             scene.time.delayedCall(600, () => ember.destroy());
@@ -839,6 +854,8 @@ export const emitters = {
   },
 
   stab: (scene: Scene, entity: Entity, direction: { x: number; y: number }) => {
+    const front = depth.at(entity.y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(entity.y, EFFECT_GLOW_BIAS);
     const angle = Math.atan2(direction.y, direction.x);
     const degrees = Phaser.Math.RadToDeg(angle);
     const rad = Phaser.Math.DegToRad(degrees);
@@ -890,7 +907,7 @@ export const emitters = {
                 frequency: -1,
               });
 
-              emitter.setDepth(2000);
+              emitter.setDepth(front);
               emitter.explode();
 
               if (step % 3 === 0) {
@@ -904,7 +921,7 @@ export const emitters = {
                   quantity: 2,
                   frequency: -1,
                 });
-                ember.setDepth(2001);
+                ember.setDepth(glow);
                 ember.explode();
 
                 scene.time.delayedCall(600, () => ember.destroy());
@@ -926,7 +943,7 @@ export const emitters = {
           quantity: 1,
           frequency: -1,
         });
-        spark.setDepth(2001);
+        spark.setDepth(glow);
         spark.explode();
 
         scene.time.delayedCall(120, () => spark.destroy());
@@ -940,6 +957,8 @@ export const emitters = {
     direction: { x: number; y: number },
     index: number,
   ) => {
+    const front = depth.at(entity.y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(entity.y, EFFECT_GLOW_BIAS);
     const degrees = Phaser.Math.RadToDeg(Math.atan2(direction.y, direction.x));
     const rad = Phaser.Math.DegToRad(degrees);
 
@@ -980,7 +999,7 @@ export const emitters = {
             frequency: -1,
           });
 
-          emitter.setDepth(2000);
+          emitter.setDepth(front);
           emitter.explode();
 
           scene.time.delayedCall(180, () => emitter.destroy());
@@ -996,7 +1015,7 @@ export const emitters = {
               quantity: 2,
               frequency: -1,
             });
-            ember.setDepth(2001);
+            ember.setDepth(glow);
             ember.explode();
 
             scene.time.delayedCall(600, () => ember.destroy());
@@ -1013,6 +1032,8 @@ export const emitters = {
     hitbox: { width: number; height: number },
     direction: { x: number; y: number },
   ) => {
+    const front = depth.at(y, EFFECT_DEPTH_BIAS);
+    const glow = depth.at(y, EFFECT_GLOW_BIAS);
     const slashes = 3;
     const gap = 10;
     const length = Math.max(hitbox.width, hitbox.height) * 0.8;
@@ -1088,7 +1109,7 @@ export const emitters = {
               quantity: 40,
               frequency: -1,
             });
-            emitter.setDepth(2000);
+            emitter.setDepth(front);
             emitter.explode();
 
             if (step % 3 === 0) {
@@ -1102,7 +1123,7 @@ export const emitters = {
                 quantity: 4,
                 frequency: -1,
               });
-              spark.setDepth(2001);
+              spark.setDepth(glow);
               spark.explode();
 
               scene.time.delayedCall(650, () => spark.destroy());
@@ -1281,6 +1302,7 @@ export const emitters = {
   },
 
   puff: (scene: Scene, x: number, y: number) => {
+    const front = depth.at(y, EFFECT_DEPTH_BIAS);
     const clouds = 6;
     const created: Phaser.GameObjects.Image[] = [];
 
@@ -1301,7 +1323,7 @@ export const emitters = {
         y + oy,
         `particle_cloud_${variant}`,
       );
-      cloud.setDepth(2000);
+      cloud.setDepth(front);
       cloud.setTint(tint);
       cloud.setFlipX(Math.random() < 0.5);
 
