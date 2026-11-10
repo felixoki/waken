@@ -22,14 +22,14 @@ const ID = "wood1";
 
 const setup = (room: number, quantity: number) => {
   const notices: Notice[] = [];
-  const picked: { id: string; taken: number }[] = [];
+  const picked: { id: string; taken: number; left: number }[] = [];
   const broadcasts: Event[] = [];
   const socket = {
     id: "socket1",
     emit: (event: Event, data: unknown) => {
       if (event === Event.NOTIFY) notices.push(data as Notice);
       if (event === Event.ENTITY_PICKED)
-        picked.push(data as { id: string; taken: number });
+        picked.push(data as { id: string; taken: number; left: number });
     },
   } as unknown as Socket;
 
@@ -89,7 +89,7 @@ describe("entity pickup", () => {
   test("takes the whole stack when it fits", () => {
     const { notices, picked, broadcasts, player, entities } = setup(5, 5);
 
-    assert.deepEqual(picked, [{ id: ID, taken: 5 }]);
+    assert.deepEqual(picked, [{ id: ID, taken: 5, left: 0 }]);
     assert.equal(player.inventory[0]?.quantity, MAX_STACK);
     assert.equal(notices.length, 1);
     assert.equal(notices[0].kind, NoticeKind.ITEM);
@@ -103,7 +103,7 @@ describe("entity pickup", () => {
       5,
     );
 
-    assert.deepEqual(picked, [{ id: ID, taken: 3 }]);
+    assert.deepEqual(picked, [{ id: ID, taken: 3, left: 2 }]);
     assert.equal(player.inventory[0]?.quantity, MAX_STACK);
     assert.deepEqual(notices, [
       {
@@ -125,7 +125,7 @@ describe("entity pickup", () => {
       5,
     );
 
-    assert.deepEqual(picked, [{ id: ID, taken: 0 }]);
+    assert.deepEqual(picked, [{ id: ID, taken: 0, left: 5 }]);
     assert.equal(player.inventory[0]?.quantity, MAX_STACK);
     assert.deepEqual(notices, [full]);
     assert.equal(entities.has(ID), true);

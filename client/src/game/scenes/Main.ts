@@ -425,13 +425,13 @@ export class MainScene extends Phaser.Scene {
 
     this.managers.socket.on(
       Event.ENTITY_PICKED,
-      (data: { id: string; taken: number }) => {
+      (data: { id: string; taken: number; left: number }) => {
         if (data.taken > 0) this.managers.sound.play.sfx(SoundName.PICKUP);
 
         this.managers.entities.entities
           .get(data.id)
           ?.getComponent<PickableComponent>(ComponentName.PICKABLE)
-          ?.release();
+          ?.release(data.left > 0);
       },
     );
 

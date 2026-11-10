@@ -139,7 +139,7 @@ export const entity = {
     );
     const left = item.quantity - taken;
 
-    socket.emit(Event.ENTITY_PICKED, { id: data, taken });
+    socket.emit(Event.ENTITY_PICKED, { id: data, taken, left });
 
     if (taken > 0) {
       player.inventory = handlers.storage.add(player.inventory, {
