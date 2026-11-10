@@ -384,7 +384,7 @@ Rendering and game feel:
 - `S5.35` ✅ 34848b4 🟧 The Ambience camera is one frame stale and uses raw scrollX, so snow, rain and fog wobble (`Ambience.ts:204`).
 - `S5.36` ✖ restarting neighbours is liked: a new touch sets them swinging again 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
 - `S5.37` ✅ 9761798 🟧 Unwrapped session time is fed into hashes, which collapse after about 18 minutes and band the waterfalls (Ambience, Blaze, Sheen, Status, Glow, Water, Meadow).
-- `S5.38` ☐ 🟧 `pow(neg, 2.0)` gives NaN on Metal (`mist.ts:22`, `swell.ts:87`, `hyperbeam.ts:118,135`).
+- `S5.38` ✅ 84dd247 🟧 `pow(neg, 2.0)` gives NaN on Metal (`mist.ts:22`, `swell.ts:87`, `hyperbeam.ts:118,135`).
 - `S5.39` ☐ 🟧 Creature slash hitboxes use a fixed 150 ms delay and 800 ms window, ignoring the animation (`Slashing.ts:45`).
 - `S5.40` ☐ 🟧 Combo clicks aren't buffered, so combos need frame-precise timing (`Casting.ts:93`).
 - `S5.41` ☐ 🟨 `startFollow(target, false)` gives sub-pixel camera scroll, so tiles crawl against sprites (`Camera.ts:17`). The pointer world position is one frame stale.
