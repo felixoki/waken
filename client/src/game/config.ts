@@ -7,7 +7,11 @@ import { AmbiencePipeline } from "./pipelines/Ambience";
 import { OccludedLightPipeline } from "./pipelines/Light";
 import { VortexPipeline } from "./pipelines/Vortex";
 import { WindPipeline } from "./pipelines/Wind";
-import { pool } from "./pipelines/Bounce";
+import {
+  BOUNCE_POOL_SIZE,
+  BouncePipeline,
+  bounceSlotName,
+} from "./pipelines/Bounce";
 import { SheenPipeline } from "./pipelines/Sheen";
 import { GlowPipeline } from "./pipelines/Glow";
 import { WaterPipeline } from "./pipelines/Water";
@@ -100,7 +104,10 @@ export const config: Phaser.Types.Core.GameConfig = {
         new OccludedLightPipeline(game),
       );
 
-      pool.register(game, renderer);
+      for (let i = 0; i < BOUNCE_POOL_SIZE; i++) {
+        const name = bounceSlotName(i);
+        renderer.pipelines.add(name, new BouncePipeline(game, name));
+      }
 
       game.sound.pauseOnBlur = false;
     },

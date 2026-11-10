@@ -2,7 +2,7 @@ import { BounceConfig, ComponentName, Event, SoundName } from "@server/types";
 import { PickableComponent } from "./Pickable";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
-import { pool } from "../pipelines/Bounce";
+import { BouncePipeline, pool } from "../pipelines/Bounce";
 
 export class BounceComponent extends Component {
   private entity: Entity;
@@ -38,10 +38,14 @@ export class BounceComponent extends Component {
         position: { x: this.entity.x, y: this.entity.y },
       });
 
-    const now = this.entity.scene.game.loop.time;
-    const name = pool.share(now, 2000, 0.15, 2.0, 2.5, 10.0);
+    const game = this.entity.scene.game;
+    const renderer = game.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
+    const name = pool.acquire(game.loop.time);
+    const pipeline = renderer.pipelines.get(name) as BouncePipeline;
+
     const previous = this.entity.pipeline;
 
+    pipeline.trigger(0.15, 2.0, 2.5, 10.0);
     this.entity.setPipeline(name);
 
     this.timer = this.entity.scene.time.delayedCall(2000, () => {

@@ -104,112 +104,46 @@ export class BouncePipeline extends MultiPipeline {
   }
 }
 
-const POOL_SIZE = 12;
-const SHARE_WINDOW = 200;
+export const BOUNCE_POOL_SIZE = 12;
+
+export const bounceSlotName = (index: number) => `bounce_pool_${index}`;
 
 interface Slot {
   name: string;
-  pipeline: BouncePipeline;
   startTime: number;
-  until: number;
 }
 
-const slots: Slot[] = [];
+const slots: Slot[] = Array.from({ length: BOUNCE_POOL_SIZE }, (_, i) => ({
+  name: bounceSlotName(i),
+  startTime: -Infinity,
+}));
 
 let cursor = 0;
 
-const take = (now: number): Slot => {
-  let best = cursor;
-
-  for (let i = 0; i < slots.length; i++) {
-    const index = (cursor + i) % slots.length;
-    if (slots[index].until <= now) {
-      best = index;
-      break;
-    }
-    if (slots[index].until < slots[best].until) best = index;
-  }
-
-  cursor = (best + 1) % slots.length;
-  return slots[best];
-};
-
-const start = (
-  slot: Slot,
-  now: number,
-  lifetime: number,
-  shared: boolean,
-  amplitude: number,
-  speed: number,
-  damping: number,
-  frequency: number,
-): string => {
-  slot.startTime = shared ? now : -Infinity;
-  slot.until = now + lifetime;
-  slot.pipeline.trigger(amplitude, speed, damping, frequency);
-
-  return slot.name;
-};
-
 export const pool = {
-  register(game: Phaser.Game, renderer: Phaser.Renderer.WebGL.WebGLRenderer) {
-    slots.length = 0;
-    cursor = 0;
-
-    for (let i = 0; i < POOL_SIZE; i++) {
-      const name = `bounce_pool_${i}`;
-      const pipeline = new BouncePipeline(game, name);
-      renderer.pipelines.add(name, pipeline);
-      slots.push({ name, pipeline, startTime: -Infinity, until: -Infinity });
-    }
-  },
-
-  share(
-    now: number,
-    lifetime: number,
-    amplitude: number,
-    speed: number,
-    damping: number,
-    frequency: number,
-  ): string {
+  /**
+   * Slots are registered once at boot, so handing one out is free. Bounces
+   * landing within `tolerance` of a slot share its wave; anything later takes
+   * the next slot round-robin.
+   *
+   * `startTime` is deliberately not refreshed on a match: rolling it forward
+   * would funnel every bounce into one slot and re-trigger it forever, so
+   * reeds already riding that wave would never settle.
+   */
+  acquire(startTime: number, tolerance = 200): string {
     for (const slot of slots)
-      if (now - slot.startTime < SHARE_WINDOW && slot.until > now) {
-        slot.until = Math.max(slot.until, now + lifetime);
-        return slot.name;
-      }
+      if (Math.abs(slot.startTime - startTime) < tolerance) return slot.name;
 
-    return start(
-      take(now),
-      now,
-      lifetime,
-      true,
-      amplitude,
-      speed,
-      damping,
-      frequency,
-    );
+    const slot = slots[cursor++ % BOUNCE_POOL_SIZE];
+    slot.startTime = startTime;
+
+    return slot.name;
   },
 
-  claim(
-    now: number,
-    lifetime: number,
-    amplitude: number,
-    speed: number,
-    damping: number,
-    frequency: number,
-    name?: string,
-  ): string {
-    const own = name ? slots.find((slot) => slot.name === name) : undefined;
+  next(): string {
+    const slot = slots[cursor++ % BOUNCE_POOL_SIZE];
+    slot.startTime = -Infinity;
 
-    return start(
-      own ?? take(now),
-      now,
-      lifetime,
-      false,
-      amplitude,
-      speed,
-      damping,
-      frequency,
-    );
+    return slot.name;
   },
 };
