@@ -534,7 +534,6 @@ export const RANGE_WATERING = 48;
 export const RANGE_PLANTING = 48;
 export const RANGE_CAPTURE = 64;
 export const RANGE_PICKUP = 64;
-export const RANGE_COLLECT = 8;
 export const RANGE_MAGNET = 56;
 export const MAGNET_SPEED = 20;
 export const MAGNET_ACCELERATION = 250;

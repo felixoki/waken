@@ -52,11 +52,18 @@ export const shaders = {
 
     entity.scene.time.delayedCall(200, () => {
       if (!entity.scene) return;
+      const rise = { y: 0 };
+      let applied = 0;
       entity.scene.tweens.add({
-        targets: entity,
-        y: entity.y - 6,
+        targets: rise,
+        y: -6,
         duration: 400,
         ease: "Sine.easeOut",
+        onUpdate: () => {
+          if (!entity.active) return;
+          entity.y += rise.y - applied;
+          applied = rise.y;
+        },
       });
     });
 

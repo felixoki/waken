@@ -2,7 +2,6 @@ import { ComponentName, Event, LooseKind } from "@server/types";
 import {
   MAGNET_ACCELERATION,
   MAGNET_SPEED,
-  RANGE_COLLECT,
   RANGE_MAGNET,
   RANGE_PICKUP,
 } from "@server/globals";
@@ -38,7 +37,7 @@ export class PickableComponent extends Component {
   }
 
   update(): void {
-    if (!this.loose || this.isPicking) return;
+    if (!this.loose) return;
 
     const scene = this.entity.scene;
     const player = scene.managers.players.player;
@@ -49,15 +48,7 @@ export class PickableComponent extends Component {
     const distanceSq = dx * dx + dy * dy;
 
     if (this.isPulling) {
-      if (player.isTransitioning || distanceSq > 4 * RANGE_MAGNET * RANGE_MAGNET) {
-        this._return();
-        return;
-      }
-
-      if (distanceSq <= RANGE_COLLECT * RANGE_COLLECT) {
-        this.pickup();
-        return;
-      }
+      if (player.isTransitioning || distanceSq === 0) return;
 
       const delta = scene.game.loop.delta / 1000;
       const distance = Math.sqrt(distanceSq);
@@ -71,6 +62,8 @@ export class PickableComponent extends Component {
       this.entity.setDepth(player.depth + 1);
       return;
     }
+
+    if (this.isPicking) return;
 
     const inside = distanceSq <= RANGE_MAGNET * RANGE_MAGNET;
 
@@ -86,6 +79,7 @@ export class PickableComponent extends Component {
     this.speed = MAGNET_SPEED;
     this.originDepth = this.entity.depth;
     this.returning?.stop();
+    this.pickup();
   }
 
   detach(): void {
