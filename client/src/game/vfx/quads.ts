@@ -16,6 +16,12 @@ import { getBreathFrag } from "../pipelines/frags/breath";
 import { getSpikesFrag } from "../pipelines/frags/spikes";
 import { getHyperbeamFrag } from "../pipelines/frags/hyperbeam";
 import { SPIKE_FRAMES } from "./spikeFrames";
+import { depth } from "./depth";
+import {
+  AIR_DEPTH,
+  EFFECT_DEPTH_BIAS,
+  EFFECT_GLOW_BIAS,
+} from "@server/globals";
 
 type Quad = Phaser.GameObjects.Shader;
 type Uniforms = Record<string, { type: string; value: number }>;
@@ -677,7 +683,7 @@ const fling = (scene: Scene, x: number, y: number, radius: number) => {
   add(2, 8);
 
   const glow = scene.add.graphics();
-  glow.setDepth(2401);
+  glow.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
   glow.setBlendMode(Phaser.BlendModes.ADD);
 
   const dirt = scene.add.graphics();
@@ -977,7 +983,7 @@ export const quads = {
     const plume = acquire(scene, PLUME, from.x, from.y);
     plume.setOrigin(PLUME_MARGIN / PLUME.width, 0.5);
     plume.setRotation(Math.atan2(dy, dx));
-    plume.setDepth(2399);
+    plume.setDepth(AIR_DEPTH - 1);
     set(plume, "uSeed", Math.random() * 10);
     set(plume, "uLength", length);
     set(plume, "uFall", METEOR_FALL * 0.001);
@@ -992,7 +998,7 @@ export const quads = {
     quad.setOrigin((METEOR.width - METEOR_NOSE) / METEOR.width, 0.5);
     quad.setRotation(Math.atan2(dy, dx));
     quad.setScale(METEOR_SCALE);
-    quad.setDepth(2400);
+    quad.setDepth(AIR_DEPTH);
     set(quad, "uSeed", Math.random() * 10);
     set(quad, "uSize", METEOR_SIZE);
 
@@ -1008,7 +1014,7 @@ export const quads = {
       blendMode: "ADD",
       emitting: false,
     });
-    embers.setDepth(2401);
+    embers.setDepth(AIR_DEPTH + 1);
 
     const ash = scene.add.particles(0, 0, "particle_square", {
       tint: [0x1a1210, 0x2a1d18, 0x3a2a22],
@@ -1020,7 +1026,7 @@ export const quads = {
       lifespan: { min: 500, max: 900 },
       emitting: false,
     });
-    ash.setDepth(2399);
+    ash.setDepth(AIR_DEPTH - 1);
 
     play(scene, METEOR, [quad], METEOR_FALL + METEOR_FADE, (ms, put) => {
       const t = clamp(ms / METEOR_FALL);
@@ -1070,7 +1076,7 @@ export const quads = {
     const total = WAVE_ERODE_START + WAVE_ERODE;
 
     const quad = acquire(scene, WAVE, origin.x, origin.y);
-    quad.setDepth(2400);
+    quad.setDepth(depth.at(origin.y, EFFECT_DEPTH_BIAS));
     set(quad, "uSeed", seed);
     set(quad, "uFacing", facing);
     set(quad, "uSpread", WAVE_SPREAD);
@@ -1085,9 +1091,10 @@ export const quads = {
       lifespan: { min: 300, max: 700 },
       emitting: false,
     });
-    embers.setDepth(2402);
+    embers.setDepth(depth.at(origin.y, EFFECT_GLOW_BIAS));
 
     const progress = { t: 0 };
+    let lastY = Math.round(origin.y);
 
     scene.tweens.add({
       targets: progress,
@@ -1107,6 +1114,13 @@ export const quads = {
         set(quad, "uSweep", clamp(rel / WAVE_SWEEP));
         set(quad, "uFront", front);
         set(quad, "uErode", erode);
+
+        const frontY = Math.round(origin.y + direction.y * front);
+        if (frontY !== lastY) {
+          lastY = frontY;
+          quad.setDepth(depth.at(frontY, EFFECT_DEPTH_BIAS));
+          embers.setDepth(depth.at(frontY, EFFECT_GLOW_BIAS));
+        }
 
         onFront?.(front, rel >= WAVE_TRAVEL);
 
@@ -1158,7 +1172,7 @@ export const quads = {
       frequency: 22,
       blendMode: "ADD",
     });
-    sparks.setDepth(2401);
+    sparks.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const shards = scene.add.particles(x, y, "particle_diamond", {
       tint: [0xe24dff, 0xff7ae6, 0xb46bff],
@@ -1168,7 +1182,7 @@ export const quads = {
       lifespan: { min: 500, max: 1300 },
       emitting: false,
     });
-    shards.setDepth(2401);
+    shards.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     play(scene, NOVA, [quad], 2400, (ms, put) => {
       const rel = ms - 320;
@@ -1214,7 +1228,10 @@ export const quads = {
     radius: number,
     onBlast?: () => void,
   ) => {
-    const layers = stack(scene, BOMB, x, y, BOMB_GROUND, [999, 2400]);
+    const layers = stack(scene, BOMB, x, y, BOMB_GROUND, [
+      999,
+      depth.at(y, EFFECT_DEPTH_BIAS),
+    ]);
     const blast = once(onBlast);
 
     const embers = scene.add.particles(x, y, "particle_circle", {
@@ -1229,7 +1246,7 @@ export const quads = {
       frequency: 40,
       blendMode: "ADD",
     });
-    embers.setDepth(2401);
+    embers.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const sparks = scene.add.particles(x, y, "particle_circle", {
       tint: [0xffd27a, 0xff8a2a],
@@ -1244,7 +1261,7 @@ export const quads = {
       frequency: 55,
       blendMode: "ADD",
     });
-    sparks.setDepth(2401);
+    sparks.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const debris = scene.add.particles(x, y, "particle_square", {
       tint: [0xf2c9a0, 0xff9a4d, 0x4d2a1a],
@@ -1257,7 +1274,7 @@ export const quads = {
       lifespan: { min: 400, max: 900 },
       emitting: false,
     });
-    debris.setDepth(2401);
+    debris.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     play(scene, BOMB, layers, 2600, (ms, put) => {
       const rel = ms - 520;
@@ -1292,7 +1309,10 @@ export const quads = {
     radius: number,
     onImpact?: () => void,
   ) => {
-    const layers = stack(scene, SUNDER, x, y, SUNDER_GROUND, [999, 2400]);
+    const layers = stack(scene, SUNDER, x, y, SUNDER_GROUND, [
+      999,
+      depth.at(y, EFFECT_DEPTH_BIAS),
+    ]);
     const impact = once(onImpact);
 
     play(scene, SUNDER, layers, 1700, (ms, put) => {
@@ -1319,7 +1339,10 @@ export const quads = {
     lift: number,
     onImpact?: () => void,
   ) => {
-    const layers = stack(scene, STORM, x, y, STORM_GROUND, [999, 2400]);
+    const layers = stack(scene, STORM, x, y, STORM_GROUND, [
+      999,
+      depth.at(y, EFFECT_DEPTH_BIAS),
+    ]);
     const impact = once(onImpact);
     const lean = (Math.random() * 2 - 1) * radius;
     const total = lift + STORM_AFTER;
@@ -1336,7 +1359,7 @@ export const quads = {
       lifespan: { min: 300, max: 650 },
       frequency: 45,
     });
-    dust.setDepth(2401);
+    dust.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const debris = scene.add.particles(x, y, "particle_square", {
       tint: [0x0f1317, 0x201a43, 0x584d8d, 0x13171c, 0xcec1f4],
@@ -1349,7 +1372,7 @@ export const quads = {
       lifespan: { min: 300, max: 700 },
       emitting: false,
     });
-    debris.setDepth(2401);
+    debris.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const motes = scene.add.particles(x, y, "particle_circle", {
       tint: [0xada5f9, 0x5954d5, 0xf3d7fe],
@@ -1364,7 +1387,7 @@ export const quads = {
       emitting: false,
       blendMode: "ADD",
     });
-    motes.setDepth(2401);
+    motes.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     let burst = false;
 
@@ -1407,7 +1430,10 @@ export const quads = {
   },
 
   gale: (scene: Scene, x: number, y: number, radius: number, duration: number) => {
-    const layers = stack(scene, GALE, x, y, GALE_GROUND, [999, 2400]);
+    const layers = stack(scene, GALE, x, y, GALE_GROUND, [
+      999,
+      depth.at(y, EFFECT_DEPTH_BIAS),
+    ]);
     const total = duration + 500;
 
     play(scene, GALE, layers, total, (ms, put) => {
@@ -1426,7 +1452,7 @@ export const quads = {
     const y = (from.y + to.y) * 0.5;
 
     const quad = acquire(scene, ARC, x, y);
-    quad.setDepth(2400);
+    quad.setDepth(depth.at(Math.max(from.y, to.y), EFFECT_DEPTH_BIAS));
     set(quad, "uSeed", Math.random() * 10);
     set(quad, "uLayer", 2);
     set(quad, "uAx", from.x - quad.x);
@@ -1449,7 +1475,10 @@ export const quads = {
   ): ((tx: number, ty: number) => void) => {
     const total = SWELL_CHARGE + duration + SWELL_SOAK;
     const scale = Math.max(1, radius / SWELL_REACH);
-    const layers = stack(scene, SWELL, x, y, SWELL_GROUND, [999, 2400]);
+    const layers = stack(scene, SWELL, x, y, SWELL_GROUND, [
+      999,
+      depth.at(y, EFFECT_DEPTH_BIAS),
+    ]);
     for (const quad of layers) quad.setScale(scale);
 
     const drops = scene.add.particles(x, y, "particle_circle", {
@@ -1465,7 +1494,7 @@ export const quads = {
       lifespan: { min: 320, max: 700 },
       emitting: false,
     });
-    drops.setDepth(2401);
+    drops.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const spray = scene.add.particles(0, 0, "particle_circle", {
       tint: [0xdcf7ff, 0x8fdcf5, 0x4fa8ea],
@@ -1476,7 +1505,7 @@ export const quads = {
       lifespan: { min: 240, max: 480 },
       emitting: false,
     });
-    spray.setDepth(2401);
+    spray.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const foam = scene.add.particles(0, 0, "particle_circle", {
       tint: [0xffffff, 0xdcf7ff, 0xb4e6f7],
@@ -1498,7 +1527,7 @@ export const quads = {
       lifespan: { min: 800, max: 1700 },
       emitting: false,
     });
-    motes.setDepth(2401);
+    motes.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const splashes = scene.add.particles(0, 0, "particle_circle", {
       tint: [0xffffff, 0xdcf7ff, 0x8fdcf5],
@@ -1509,7 +1538,7 @@ export const quads = {
       lifespan: { min: 300, max: 620 },
       emitting: false,
     });
-    splashes.setDepth(2401);
+    splashes.setDepth(depth.at(y, EFFECT_GLOW_BIAS));
 
     const ripples = scene.add.particles(0, 0, "particle_ring", {
       tint: [0xdcf7ff, 0x8fdcf5],

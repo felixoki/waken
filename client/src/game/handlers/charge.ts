@@ -1,6 +1,7 @@
 import { SpellConfig } from "@server/types";
 import { Entity } from "../Entity";
 import { handlers } from ".";
+import { EFFECT_DEPTH_BIAS, EFFECT_GLOW_BIAS } from "@server/globals";
 
 interface ChargeState {
   startTime: number;
@@ -65,6 +66,12 @@ function updateCharge(state: ChargeState): void {
 
   emitter.setPosition(tipX, tipY);
   emberEmitter.setPosition(tipX, tipY);
+
+  const front = entity.depth + EFFECT_DEPTH_BIAS;
+  if (emitter.depth !== front) {
+    emitter.setDepth(front);
+    emberEmitter.setDepth(entity.depth + EFFECT_GLOW_BIAS);
+  }
   spawnZone.setTo(0, 0, 4 + 46 * (1 - percent));
   emitter.quantity = Math.round(3 + percent * 6);
 }
@@ -92,7 +99,7 @@ export const charge = {
       source: spawnZone,
     } as Phaser.Types.GameObjects.Particles.ParticleEmitterRandomZoneConfig);
 
-    emitter.setDepth(2000);
+    emitter.setDepth(entity.depth + EFFECT_DEPTH_BIAS);
 
     const emberEmitter = entity.scene.add.particles(
       tipX,
@@ -115,7 +122,7 @@ export const charge = {
       source: spawnZone,
     } as Phaser.Types.GameObjects.Particles.ParticleEmitterRandomZoneConfig);
 
-    emberEmitter.setDepth(2001);
+    emberEmitter.setDepth(entity.depth + EFFECT_GLOW_BIAS);
 
     const updateListener = () => {
       const s = charges.get(entity.id);

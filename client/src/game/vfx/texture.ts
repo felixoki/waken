@@ -1,4 +1,6 @@
 import { Scene } from "../scenes/Scene";
+import { depth } from "./depth";
+import { EFFECT_DEPTH_BIAS } from "@server/globals";
 
 export const texture = {
   spawn: (
@@ -24,7 +26,7 @@ export const texture = {
       });
 
     const anim = scene.add.sprite(x, y, sprite);
-    anim.setDepth(y);
+    anim.setDepth(depth.at(y, EFFECT_DEPTH_BIAS));
     anim.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => anim.destroy());
     anim.play(key);
   },

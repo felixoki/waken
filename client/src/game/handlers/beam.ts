@@ -4,6 +4,7 @@ import { Entity } from "../Entity";
 import { Hitbox } from "../Hitbox";
 import { vfx } from "../vfx";
 import { handlers } from ".";
+import { EFFECT_DEPTH_BIAS, EFFECT_GLOW_BIAS } from "@server/globals";
 
 const CHARGE_MS = 180;
 const IGNITION_MS = 130;
@@ -108,7 +109,11 @@ export const beam = {
     const channel = config.channel!;
     const scene = entity.scene;
 
-    const quad = vfx.quads.hyperbeam(scene, channel.range, 2500);
+    const quad = vfx.quads.hyperbeam(
+      scene,
+      channel.range,
+      entity.depth + EFFECT_DEPTH_BIAS,
+    );
 
     const fling = { x: 0, y: 0 };
     const chip = scene.add.particles(0, 0, "particle_square", {
@@ -121,7 +126,7 @@ export const beam = {
       lifespan: { min: 260, max: 620 },
       emitting: false,
     });
-    chip.setDepth(2504);
+    chip.setDepth(entity.depth + EFFECT_GLOW_BIAS);
 
     const spark = scene.add.particles(0, 0, "particle_circle", {
       tint: [0xb8fff0, 0x5fe0d0],
@@ -132,7 +137,7 @@ export const beam = {
       blendMode: "ADD",
       emitting: false,
     });
-    spark.setDepth(2504);
+    spark.setDepth(entity.depth + EFFECT_GLOW_BIAS);
 
     const updateListener = () => {
       const state = beams.get(entity.id);
