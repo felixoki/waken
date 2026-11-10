@@ -378,7 +378,9 @@ Performance:
 
 Rendering and game feel:
 - `S5.33` ✅ be3c16c 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
-- `S5.34` ☐ 🟧 Effects use fixed depths (1000–2401) while entities use `1000+y`, so slash, puff and hearts draw under anything below y=1000 (`emitters.ts:740` and about 45 more sites).
+- `S5.34` ✅ b33b4c9 🟧 Effects use fixed depths (1000–2401) while entities use `1000+y`, so slash, puff and hearts draw under anything below y=1000 (`emitters.ts:740` and about 45 more sites).
+  - `S5.34a` ✅ 3edeb67 helper `vfx.depth.at`; melee, hit and projectile emitters in `emitters.ts`
+  - `S5.34b` ✅ b33b4c9 spell effects in `quads.ts`: grounded by y, airborne at `AIR_DEPTH` below roof layers; includes S5.43 `texture.ts` depth
 - `S5.35` ✅ 34848b4 🟧 The Ambience camera is one frame stale and uses raw scrollX, so snow, rain and fog wobble (`Ambience.ts:204`).
 - `S5.36` ✖ restarting neighbours is liked: a new touch sets them swinging again 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
 - `S5.37` ☐ 🟧 Unwrapped session time is fed into hashes, which collapse after about 18 minutes and band the waterfalls (Ambience, Blaze, Sheen, Status, Glow, Water, Meadow).
@@ -387,7 +389,7 @@ Rendering and game feel:
 - `S5.40` ☐ 🟧 Combo clicks aren't buffered, so combos need frame-precise timing (`Casting.ts:93`).
 - `S5.41` ☐ 🟨 `startFollow(target, false)` gives sub-pixel camera scroll, so tiles crawl against sprites (`Camera.ts:17`). The pointer world position is one frame stale.
 - `S5.42` ☐ 🟨 No hit-stop or white flash. EXTRACT fires about 250 ms after the visible impact. The dash is 50 ms against a 1000 ms animation. Meteor and lightning shake every client. Sway is in screen space. Melee trails are left behind on lunge.
-- `S5.43` ☐ 🟨 Health-bar and effect depth: `vfx/texture.ts:28` `setDepth(y)` without the 1000 base. `transform` stacks Vortex pipelines, including for offscreen casters.
+- `S5.43` ☐ 🟨 Health-bar and effect depth: ~~`vfx/texture.ts:28` `setDepth(y)` without the 1000 base~~ (fixed in S5.34b). `transform` stacks Vortex pipelines, including for offscreen casters.
 - `S5.44` ☐ ⬜ `frags/spikes.ts` pixel-snaps and posterizes, and `bomb.ts` dithers. Both conflict with the smooth-VFX rule. Six frags use mediump with world coordinates.
 
 Rule violations:
