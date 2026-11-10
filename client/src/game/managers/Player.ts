@@ -45,7 +45,12 @@ export class PlayerManager {
     this.player?.tick();
     this.player?.update();
 
-    for (const other of this.others.values()) other.tick();
+    const delta = this.main.game.loop.delta;
+
+    for (const other of this.others.values()) {
+      other.tick();
+      handlers.interpolation.settle(other, delta);
+    }
   }
 
   add(config: PlayerConfig, isLocal: boolean): void {
@@ -55,6 +60,8 @@ export class PlayerManager {
       if (existing) {
         if (existing.map === config.map) {
           existing.setPosition(config.x, config.y);
+          existing.driftX = 0;
+          existing.driftY = 0;
           handlers.effects.sync(existing, config.effects);
           return;
         }

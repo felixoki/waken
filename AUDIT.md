@@ -347,7 +347,7 @@ Bugs:
 - `S5.7` ✅ f9487a3 🟧 Breath and bite: `direction.x !== 0` is checked on a normalised vector, so up and down cones are broken (`spells.ts:555, 625`).
 - `S5.8` ✅ fca1d1c 🟧 Knockback was overwritten by `setVelocity` on moving targets (`combat.ts:274`). Movement input now waits out the 300 ms push; dash and roll recover from it.
 - `S5.9` ✖ intended: Felix likes picking up from anywhere on screen 🟧 Pickables can be clicked from anywhere on screen (`Pickable.ts:46`).
-- `S5.10` ☐ 🟧 Remote interpolation only lerps when a message arrives, so remotes park off-position. Locked remotes snap (`interpolation.ts`, `Entity.ts:117`, `Player.ts:155`).
+- `S5.10` ✅ fc12957 🟧 Remote interpolation only lerps when a message arrives, so remotes park off-position. Locked remotes snap (`interpolation.ts`, `Entity.ts:117`, `Player.ts:155`).
 - `S5.11` ☐ 🟨 State `exit()` always unlocks, overriding transition and system locks (Rolling, Jumping, Dashing, Felling, Mining, Raking, Watering, Casting).
 - `S5.12` ☐ 🟨 A transition locks without leaving the current state (`Main.ts:329`). Events dropped during a transition stay as ghosts if the transition is denied (`Main.ts:363`).
 - `S5.13` ☐ 🟨 Depth isn't updated while locked (roll, dash, knockback), so entities draw wrong against props (`Player.ts:136`, `Entity.ts:102`). `Player.ts:212` ignores `depthOffset`.

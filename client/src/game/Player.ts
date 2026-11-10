@@ -152,7 +152,7 @@ export class Player extends Entity {
         input.target = this.target;
       } else this.target = input.target;
 
-      if (remoteInput) this.setPosition(input.x, input.y);
+      if (remoteInput) handlers.interpolation.drift(this, input.x, input.y);
 
       this.states?.get(this.state)?.update(this);
 
@@ -192,13 +192,7 @@ export class Player extends Entity {
     handlers.player.lantern.sync(this, input.equipped);
     handlers.player.compass.sync(this, input.equipped);
 
-    if (remoteInput) {
-      const delta = this.scene.game.loop.delta;
-      const x = handlers.interpolation.lerp(this.x, input.x, delta);
-      const y = handlers.interpolation.lerp(this.y, input.y, delta);
-
-      this.setPosition(x, y);
-    }
+    if (remoteInput) handlers.interpolation.drift(this, input.x, input.y);
 
     if (this.isControllable && this._changed(input)) {
       this.lastInput = input;

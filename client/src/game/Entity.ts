@@ -42,6 +42,8 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public depthOffset: number = 0;
   public tame: TameState = {};
   public bed?: string;
+  public driftX: number = 0;
+  public driftY: number = 0;
 
   protected lastInput: Partial<Input> | null = null;
   protected depthY: number = 0;
@@ -114,13 +116,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
     if (state !== this.state) this.transitionTo(state);
     else this.states?.get(this.state)?.update(this);
 
-    if (remoteInput) {
-      const delta = this.scene.game.loop.delta;
-      const x = handlers.interpolation.lerp(this.x, input.x!, delta);
-      const y = handlers.interpolation.lerp(this.y, input.y!, delta);
-
-      this.setPosition(x, y);
-    }
+    if (remoteInput) handlers.interpolation.drift(this, input.x!, input.y!);
 
     const isAuthority = this.scene.managers.players?.player?.isAuthority;
 

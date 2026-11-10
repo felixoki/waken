@@ -93,10 +93,13 @@ export class EntityManager {
   update(): void {
     this._drain();
 
+    const delta = this.main.game.loop.delta;
+
     this.entities.forEach((entity) => {
       if (entity.isStatic) return;
 
       entity.tick();
+      handlers.interpolation.settle(entity, delta);
       entity.update();
     });
 
