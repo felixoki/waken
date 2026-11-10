@@ -61,12 +61,35 @@ import { BuildManager } from "../managers/Build";
 import type { Entity } from "../Entity";
 import { SoundManager } from "../managers/Sound";
 import { Sound } from "../loaders/Sound";
+import { Texture } from "../loaders/Texture";
 import ForestScene from "./Forest";
 import SublevelScene from "./Sublevel";
 import { Scene } from "./Scene";
 import { disconnect } from "../../ui/disconnect";
 
 const JOIN_TIMEOUT = 20_000;
+
+const STARTUP_MAPS = [
+  MapName.VILLAGE,
+  MapName.HERBALIST_HOUSE,
+  MapName.HOME,
+  MapName.BLACKSMITH_HOUSE,
+  MapName.MARKET_HOUSE,
+  MapName.TAVERN,
+  MapName.GLASSBLOWER_HOUSE,
+  MapName.FISHING_HUT,
+  MapName.FARM_HOUSE,
+  MapName.WINDMILL,
+  MapName.ISLES,
+  MapName.NETHER,
+];
+
+const GENERATED_MAPS = [
+  MapName.FOREST,
+  MapName.DUNGEON,
+  MapName.TEMPLE,
+  MapName.CAVE,
+];
 
 export class MainScene extends Phaser.Scene {
   public playerManager!: PlayerManager;
@@ -100,6 +123,7 @@ export class MainScene extends Phaser.Scene {
 
   preload(): void {
     Sound.load(this);
+    Texture.preload(this, [...STARTUP_MAPS, ...GENERATED_MAPS]);
   }
 
   create(): void {
@@ -113,20 +137,7 @@ export class MainScene extends Phaser.Scene {
     this.soundManager = new SoundManager(this);
     this.buildManager = new BuildManager(this);
 
-    const scenes = [
-      MapName.VILLAGE,
-      MapName.HERBALIST_HOUSE,
-      MapName.HOME,
-      MapName.BLACKSMITH_HOUSE,
-      MapName.MARKET_HOUSE,
-      MapName.TAVERN,
-      MapName.GLASSBLOWER_HOUSE,
-      MapName.FISHING_HUT,
-      MapName.FARM_HOUSE,
-      MapName.WINDMILL,
-      MapName.ISLES,
-      MapName.NETHER,
-    ];
+    const scenes = STARTUP_MAPS;
     const ready = new Set<string>();
 
     scenes.forEach((key) => {

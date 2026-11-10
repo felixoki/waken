@@ -4,6 +4,22 @@ import { configs } from "@server/configs";
 import { handlers } from "../handlers";
 
 export class Texture {
+  static preload(scene: Phaser.Scene, maps: MapName[]) {
+    const queued = new Set<string>();
+
+    for (const map of maps)
+      for (const sheet of configs.maps[map].spritesheets) {
+        if (queued.has(sheet.key) || scene.textures.exists(sheet.key))
+          continue;
+
+        queued.add(sheet.key);
+        scene.load.spritesheet(sheet.key, `assets/sprites/${sheet.file}`, {
+          frameWidth: sheet.frameWidth || 64,
+          frameHeight: sheet.frameHeight || 64,
+        });
+      }
+  }
+
   static load(scene: Scene, map: MapName) {
     const config = configs.maps[map];
 
