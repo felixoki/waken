@@ -413,7 +413,6 @@ Refactor candidates:
   - client: `emitters.ts` 2,324; `quads.ts` 1,788; `water.ts` 1,422; `path.ts` 819; `spells.ts` 650; `Fishing.ts` 607
   - server: `builders/Map.ts` 1,845; `Room.ts` 1,788; `generation.ts` 1,493; `Water.ts` 1,255; `globals.ts` 824; `combat.ts` 810; `player.ts` 624
 - `S5.58` ☐ 🟨 Duplicate pairs and groups to merge:
-- `S5.59` ✅ dbf07e4 🟧 Reeds keep bouncing every 2 s while you stand still in them: ENTITY_OVERLAP fires every step and the bounce only gates on its own 2 s timer (`components/Bounce.ts`).
   - Felling and Mining (identical states); Fellable and Mineable
   - Wander, Patrol and Amble (one roam loop)
   - the timed-state skeleton
@@ -421,6 +420,7 @@ Refactor candidates:
   - GLSL boilerplate
   - box blur, texture upload and BFS helpers
   - about 20 copies of one-shot emitter code; one `vfx.burst` registry fixes the duplication and the allocations together
+- `S5.59` ✅ dbf07e4 🟧 Reeds keep bouncing every 2 s while you stand still in them: ENTITY_OVERLAP fires every step and the bounce only gates on its own 2 s timer (`components/Bounce.ts`).
 
 ---
 
