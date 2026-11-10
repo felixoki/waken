@@ -175,9 +175,6 @@ export class Scene extends Phaser.Scene {
     const { width, height } = this.cameras.main;
     this.light.setSize(width, height);
 
-    const cam = this.cameras.main;
-    this.ambience?.setCamera(cam.scrollX, cam.scrollY, cam.zoom);
-
     if (this.indoor || !this.ambience) return;
 
     this.climate?.update(delta);

@@ -103,7 +103,6 @@ export interface AmbienceModifier {
 export class AmbiencePipeline extends PostFXPipeline {
   private base: AmbienceState;
   private layers: Map<AmbienceLayer, AmbienceModifier>;
-  private camera: { x: number; y: number; zoom: number };
   private sunlight: AmbienceSun;
   private rainClock = 0;
 
@@ -163,7 +162,6 @@ export class AmbiencePipeline extends PostFXPipeline {
       eclipse: { radius: 1.0, softness: 0.5, strength: 0.0 },
     };
     this.layers = new Map();
-    this.camera = { x: 0, y: 0, zoom: 1 };
     this.sunlight = { r: 1, g: 1, b: 1, intensity: 1 };
   }
 
@@ -199,12 +197,6 @@ export class AmbiencePipeline extends PostFXPipeline {
 
   clearLayer(name: AmbienceLayer) {
     this.layers.delete(name);
-  }
-
-  setCamera(x: number, y: number, zoom: number) {
-    this.camera.x = x;
-    this.camera.y = y;
-    this.camera.zoom = zoom;
   }
 
   private _setDirection(name: string, angle: number) {
@@ -305,8 +297,6 @@ export class AmbiencePipeline extends PostFXPipeline {
     this.set1f("rayCore", this.base.rays.core);
     this.set1f("rayHaze", this.base.rays.haze);
     this.set1f("rayGap", this.base.rays.gap);
-    this.set2f("cameraScroll", this.camera.x, this.camera.y);
-    this.set1f("cameraZoom", this.camera.zoom);
     this.set3f(
       "flashColor",
       this.base.flash.color[0],
@@ -318,5 +308,18 @@ export class AmbiencePipeline extends PostFXPipeline {
     this.set1f("eclipseSoftness", this.base.eclipse.softness);
     this.set1f("eclipseStrength", this.base.eclipse.strength);
     this.set2f("resolution", this.renderer.width, this.renderer.height);
+  }
+
+  onDraw(target: Phaser.Renderer.WebGL.RenderTarget) {
+    const cam = this.gameObject as unknown as Phaser.Cameras.Scene2D.Camera;
+    const { scrollX, scrollY, width, height, originX, originY, zoomX, zoomY } =
+      cam;
+    this.set2f(
+      "cameraScroll",
+      scrollX + width * originX * (1 - 1 / zoomX),
+      scrollY + height * originY * (1 - 1 / zoomY),
+    );
+    this.set1f("cameraZoom", zoomX);
+    this.bindAndDraw(target);
   }
 }
