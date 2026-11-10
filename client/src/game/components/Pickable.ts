@@ -9,37 +9,71 @@ import { Component } from "./Component";
 import { Entity } from "../Entity";
 
 export class PickableComponent extends Component {
+  private static loose = new Set<PickableComponent>();
+
   private entity: Entity;
-  private loose?: LooseKind;
+  private kind?: LooseKind;
   private armed: boolean;
   private returning?: Phaser.Tweens.Tween;
   private isPicking = false;
-  private isPulling = false;
   private speed = 0;
   private originX = 0;
   private originY = 0;
   private originDepth = 0;
+  private onArrive?: () => void;
 
+  public isPulling = false;
   public name = ComponentName.PICKABLE;
 
-  constructor(entity: Entity, loose?: LooseKind) {
+  static tick(): void {
+    for (const pickable of PickableComponent.loose) pickable._tick();
+  }
+
+  constructor(entity: Entity, kind?: LooseKind) {
     super();
 
     this.entity = entity;
-    this.loose = loose;
-    this.armed = loose === LooseKind.LOOT;
+    this.kind = kind;
+    this.armed = kind === LooseKind.LOOT;
   }
 
   attach(): void {
     this.entity.on("pointed", this._onPointed, this);
     this.originX = this.entity.x;
     this.originY = this.entity.y;
+    if (this.kind) PickableComponent.loose.add(this);
   }
 
-  update(): void {
-    if (!this.loose) return;
+  update(): void {}
 
+  detach(): void {
+    this.entity.off("pointed", this._onPointed, this);
+    PickableComponent.loose.delete(this);
+  }
+
+  pickup(): void {
+    if (this.isPicking) return;
+
+    this.isPicking = true;
+    this.entity.scene.game.events.emit(Event.ENTITY_PICKUP, this.entity.id);
+  }
+
+  release(remaining = false): void {
+    this.isPicking = false;
+    if (remaining && this.isPulling) this._return();
+  }
+
+  absorb(done: () => void): boolean {
+    if (!this.isPulling) return false;
+
+    this.onArrive = done;
+    return true;
+  }
+
+  private _tick(): void {
     const scene = this.entity.scene;
+    if (!scene) return;
+
     const player = scene.managers.players.player;
     if (!player) return;
 
@@ -48,7 +82,12 @@ export class PickableComponent extends Component {
     const distanceSq = dx * dx + dy * dy;
 
     if (this.isPulling) {
-      if (player.isTransitioning || distanceSq === 0) return;
+      if (player.isTransitioning) return;
+
+      if (distanceSq === 0) {
+        this._arrive();
+        return;
+      }
 
       const delta = scene.game.loop.delta / 1000;
       const distance = Math.sqrt(distanceSq);
@@ -60,6 +99,7 @@ export class PickableComponent extends Component {
         this.entity.y + (dy / distance) * step,
       );
       this.entity.setDepth(player.depth + 1);
+      if (step === distance) this._arrive();
       return;
     }
 
@@ -82,20 +122,20 @@ export class PickableComponent extends Component {
     this.pickup();
   }
 
-  detach(): void {
-    this.entity.off("pointed", this._onPointed, this);
-  }
+  private _arrive(): void {
+    const done = this.onArrive;
+    if (!done) return;
 
-  pickup(): void {
-    if (this.isPicking) return;
-
-    this.isPicking = true;
-    this.entity.scene.game.events.emit(Event.ENTITY_PICKUP, this.entity.id);
-  }
-
-  release(remaining = false): void {
-    this.isPicking = false;
-    if (remaining && this.isPulling) this._return();
+    this.onArrive = undefined;
+    PickableComponent.loose.delete(this);
+    this.entity.scene.tweens.add({
+      targets: this.entity,
+      alpha: 0,
+      scale: this.entity.scale * 0.5,
+      duration: 80,
+      ease: "Sine.easeIn",
+      onComplete: done,
+    });
   }
 
   private _return(): void {

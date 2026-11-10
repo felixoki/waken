@@ -18,6 +18,7 @@ import { Villain } from "../Villain";
 import { vfx } from "../vfx";
 import { SwitchComponent } from "../components/Switch";
 import { StorageComponent } from "../components/Storage";
+import { PickableComponent } from "../components/Pickable";
 import { TextureAnimationComponent } from "../components/TextureAnimation";
 import { handlers } from "../handlers";
 import type { ConnectIndex } from "../handlers/connect";
@@ -31,6 +32,7 @@ export class EntityManager {
   private fresh: Set<string> = new Set();
   private arriving: Set<string> = new Set();
   private grid: Map<string, Map<string, Rect>> = new Map();
+  private chunkKeys: Map<string, string> = new Map();
   private merged: Map<MapName, number[][]> = new Map();
   private jumps: Map<MapName, number[][]> = new Map();
   private dirty: Set<MapName> = new Set();
@@ -104,6 +106,7 @@ export class EntityManager {
     });
 
     StorageComponent.tick();
+    PickableComponent.tick();
   }
 
   add(config: EntityConfig, fresh = true): void {
@@ -280,6 +283,7 @@ export class EntityManager {
   ): void {
     const key = this._toChunkKey(config.map, config.x, config.y);
     const group = this._getChunkGroup(scene, key);
+    this.chunkKeys.set(config.id, key);
 
     group.add(entity);
 
@@ -305,7 +309,10 @@ export class EntityManager {
   private _unregisterStatic(id: string, entity: Entity): void {
     if (!entity) return;
 
-    const key = this._toChunkKey(entity.map, entity.x, entity.y);
+    const key =
+      this.chunkKeys.get(id) ??
+      this._toChunkKey(entity.map, entity.x, entity.y);
+    this.chunkKeys.delete(id);
     const chunk = this.grid.get(key);
 
     if (chunk) {
@@ -452,7 +459,9 @@ export class EntityManager {
       if (!entity) continue;
 
       if (entity.isStatic) {
-        const key = this._toChunkKey(entity.map, entity.x, entity.y);
+        const key =
+          this.chunkKeys.get(id) ??
+          this._toChunkKey(entity.map, entity.x, entity.y);
         affected.add(key);
         this._unregisterStatic(id, entity);
       }

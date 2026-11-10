@@ -441,9 +441,13 @@ export class MainScene extends Phaser.Scene {
       const entity = this.managers.entities.entities.get(data);
       if (!entity) return;
 
-      vfx.shaders.stretch(entity, () => {
-        this.managers.entities.remove(data);
-      });
+      const done = () => this.managers.entities.remove(data);
+      const pickable = entity.getComponent<PickableComponent>(
+        ComponentName.PICKABLE,
+      );
+      if (pickable?.absorb(done)) return;
+
+      vfx.shaders.stretch(entity, done);
     });
 
     this.managers.socket.on(Event.ENTITY_ARRIVE, (data: EntityConfig) => {

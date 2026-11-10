@@ -1,4 +1,5 @@
 import { BounceConfig, ComponentName, Event, SoundName } from "@server/types";
+import { PickableComponent } from "./Pickable";
 import { Entity } from "../Entity";
 import { Component } from "./Component";
 import { BouncePipeline, pool } from "../pipelines/Bounce";
@@ -24,6 +25,11 @@ export class BounceComponent extends Component {
   private _bounce = (entity: Entity, other: Entity) => {
     if (entity.id !== this.entity.id && other.id !== this.entity.id) return;
     if (this.isAnimating) return;
+    if (
+      this.entity.getComponent<PickableComponent>(ComponentName.PICKABLE)
+        ?.isPulling
+    )
+      return;
 
     this.isAnimating = true;
 
