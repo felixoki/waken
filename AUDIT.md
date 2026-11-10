@@ -346,7 +346,7 @@ Bugs:
 - `S5.6` ✅ 286aff2 🟧 `vision.canSee` past 200 px used a fixed fan of rays (60° apart for 360° vision), so it missed visible targets. Now one ray straight at the target after the FOV check.
 - `S5.7` ✅ f9487a3 🟧 Breath and bite: `direction.x !== 0` is checked on a normalised vector, so up and down cones are broken (`spells.ts:555, 625`).
 - `S5.8` ✅ fca1d1c 🟧 Knockback was overwritten by `setVelocity` on moving targets (`combat.ts:274`). Movement input now waits out the 300 ms push; dash and roll recover from it.
-- `S5.9` ✖ intended: Felix likes picking up from anywhere on screen 🟧 Pickables can be clicked from anywhere on screen (`Pickable.ts:46`).
+- `S5.9` ✅ c57c039 🟧 Pickables could be clicked from anywhere on screen. Clicks now reach 64 px; loot (kills, felling, mining, fish) is collected by walking over it, own drops once you step away and back.
 - `S5.10` ✅ fc12957 🟧 Remote interpolation only lerps when a message arrives, so remotes park off-position. Locked remotes snap (`interpolation.ts`, `Entity.ts:117`, `Player.ts:155`).
 - `S5.11` ☐ 🟨 State `exit()` always unlocks, overriding transition and system locks (Rolling, Jumping, Dashing, Felling, Mining, Raking, Watering, Casting).
 - `S5.12` ☐ 🟨 A transition locks without leaving the current state (`Main.ts:329`). Events dropped during a transition stay as ghosts if the transition is denied (`Main.ts:363`).
