@@ -26,7 +26,8 @@ export class BounceComponent extends Component {
     if (entity.id !== this.entity.id && other.id !== this.entity.id) return;
     if (this.isAnimating) return;
     const mover = entity.id === this.entity.id ? other : entity;
-    if (!mover.moving.length) return;
+    const { velocity } = mover.body;
+    if (velocity.x === 0 && velocity.y === 0) return;
     if (
       this.entity.getComponent<PickableComponent>(ComponentName.PICKABLE)
         ?.isPulling
