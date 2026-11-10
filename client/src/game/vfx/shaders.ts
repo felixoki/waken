@@ -7,7 +7,7 @@ import {
 import { Scene } from "../scenes/Scene";
 import { Entity } from "../Entity";
 import { StretchPipeline } from "../pipelines/Stretch";
-import { BouncePipeline, pool } from "../pipelines/Bounce";
+import { pool } from "../pipelines/Bounce";
 
 interface Bounce {
   slot: string;
@@ -75,19 +75,19 @@ export const shaders = {
   },
 
   bounce: (entity: Entity, onComplete?: () => void) => {
-    const renderer = entity.scene.game
-      .renderer as Phaser.Renderer.WebGL.WebGLRenderer;
     const running = bounces.get(entity.id);
-    const slot = running?.slot ?? pool.next();
     const previous = running ? running.previous : entity.pipeline;
 
     running?.timer.remove(false);
 
-    (renderer.pipelines.get(slot) as BouncePipeline).trigger(
+    const slot = pool.claim(
+      entity.scene.game.loop.time,
+      DURATION_EXTRACTION_BOUNCE,
       0.06,
       2.0,
       3.0,
       18.0,
+      running?.slot,
     );
     entity.setPipeline(slot);
 
