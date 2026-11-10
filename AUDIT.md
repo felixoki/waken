@@ -347,7 +347,7 @@ Bugs:
 - `S5.7` ✅ f9487a3 🟧 Breath and bite: `direction.x !== 0` is checked on a normalised vector, so up and down cones are broken (`spells.ts:555, 625`).
 - `S5.8` ✅ fca1d1c 🟧 Knockback was overwritten by `setVelocity` on moving targets (`combat.ts:274`). Movement input now waits out the 300 ms push; dash and roll recover from it.
 - `S5.9` ✅ c57c039 🟧 Pickables could be clicked from anywhere on screen. Clicks now reach 64 px; loot (kills, felling, mining, fish) is collected by walking over it, own drops once you step away and back.
-- `S5.10` ✅ fc12957 🟧 Remote interpolation only lerps when a message arrives, so remotes park off-position. Locked remotes snap (`interpolation.ts`, `Entity.ts:117`, `Player.ts:155`).
+- `S5.10` ✅ 3d735f5 🟧 Remote interpolation only lerps when a message arrives, so remotes park off-position. Locked remotes snap (`interpolation.ts`, `Entity.ts:117`, `Player.ts:155`).
 - `S5.11` ☐ 🟨 State `exit()` always unlocks, overriding transition and system locks (Rolling, Jumping, Dashing, Felling, Mining, Raking, Watering, Casting).
 - `S5.12` ☐ 🟨 A transition locks without leaving the current state (`Main.ts:329`). Events dropped during a transition stay as ghosts if the transition is denied (`Main.ts:363`).
 - `S5.13` ☐ 🟨 Depth isn't updated while locked (roll, dash, knockback), so entities draw wrong against props (`Player.ts:136`, `Entity.ts:102`). `Player.ts:212` ignores `depthOffset`.
@@ -365,7 +365,7 @@ Bugs:
 - `S5.22` ☐ ⬜ Socket `init` leaks when called while connecting, and `Menu.tsx:187` `off("connect")` removes the internal listener. Camera `dash` overlaps. Daycycle and weather tweens aren't killed before new ones. `Main.ts:539` uses the wrong tween manager. WAKE_REQUEST is handled on two buses. `createdAt ?? Date.now()` never falls back. Trap timers grow without bound. The hard-coded depth bands break at y ≈ 9000.
 
 Performance:
-- `S5.23` ☐ 🟧 No send-rate cap: input is emitted on every frame (60–144 Hz) per player and per authority AI (`Player.ts:203`, `Entity.ts:127`).
+- `S5.23` ✅ dff1c41 🟧 No send-rate cap: input is emitted on every frame (60–144 Hz) per player and per authority AI (`Player.ts:203`, `Entity.ts:127`).
 - `S5.24` ☐ 🟧 `state.resolve` builds about 20 objects and 40 closures per entity per frame (`state.ts:5`).
 - `S5.25` ☐ 🟧 12 scenes preload the same 229 keys, about 1,128 redundant queue entries (`loaders/Texture.ts:134`). Use one Boot scene.
 - `S5.26` ☐ 🟧 Spell pools compile a program per pooled Shader on first cast, e.g. about 25 for meteors (`quads.ts:546`). Pre-warm them.
