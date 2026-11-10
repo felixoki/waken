@@ -98,18 +98,24 @@ export const shaders = {
 
   jump: (entity: Entity) => {
     const scene = entity.scene;
-    const baseY = entity.y;
     const sx = entity.scaleX;
     const sy = entity.scaleY;
+    const hop = { y: 0 };
+    let applied = 0;
 
     scene.tweens.add({
-      targets: entity,
-      y: baseY - 12,
+      targets: hop,
+      y: -12,
       duration: 150,
       ease: "Sine.easeOut",
       yoyo: true,
+      onUpdate: () => {
+        if (!entity.active) return;
+        entity.y += hop.y - applied;
+        applied = hop.y;
+      },
       onComplete: () => {
-        if (entity.active) entity.y = baseY;
+        if (entity.active) entity.y -= applied;
       },
     });
 

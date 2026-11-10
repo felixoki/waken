@@ -536,9 +536,8 @@ export const RANGE_CAPTURE = 64;
 export const RANGE_PICKUP = 64;
 export const RANGE_COLLECT = 8;
 export const RANGE_MAGNET = 56;
-export const MAGNET_SPEED = 60;
-export const MAGNET_ACCELERATION = 1500;
-export const COLLECT_DELAY = 400;
+export const MAGNET_SPEED = 20;
+export const MAGNET_ACCELERATION = 250;
 export const EXTRACTION_DAMAGE = 35;
 export const EXTRACTION_IMPACT_FRAME = 4;
 

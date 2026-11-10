@@ -1,6 +1,5 @@
 import { ComponentName, Event, LooseKind } from "@server/types";
 import {
-  COLLECT_DELAY,
   MAGNET_ACCELERATION,
   MAGNET_SPEED,
   RANGE_COLLECT,
@@ -14,7 +13,7 @@ export class PickableComponent extends Component {
   private entity: Entity;
   private loose?: LooseKind;
   private armed: boolean;
-  private readyAt = 0;
+  private returning?: Phaser.Tweens.Tween;
   private isPicking = false;
   private isPulling = false;
   private speed = 0;
@@ -34,15 +33,14 @@ export class PickableComponent extends Component {
 
   attach(): void {
     this.entity.on("pointed", this._onPointed, this);
-    this.readyAt = this.entity.scene.time.now + COLLECT_DELAY;
+    this.originX = this.entity.x;
+    this.originY = this.entity.y;
   }
 
   update(): void {
     if (!this.loose || this.isPicking) return;
 
     const scene = this.entity.scene;
-    if (scene.time.now < this.readyAt) return;
-
     const player = scene.managers.players.player;
     if (!player) return;
 
@@ -86,10 +84,8 @@ export class PickableComponent extends Component {
     this.armed = false;
     this.isPulling = true;
     this.speed = MAGNET_SPEED;
-    this.originX = this.entity.x;
-    this.originY = this.entity.y;
     this.originDepth = this.entity.depth;
-    scene.tweens.killTweensOf(this.entity);
+    this.returning?.stop();
   }
 
   detach(): void {
@@ -112,7 +108,7 @@ export class PickableComponent extends Component {
     this.isPulling = false;
     this.armed = false;
     this.entity.setDepth(this.originDepth);
-    this.entity.scene.tweens.add({
+    this.returning = this.entity.scene.tweens.add({
       targets: this.entity,
       x: this.originX,
       y: this.originY,
