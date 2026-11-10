@@ -368,7 +368,7 @@ Performance:
 - `S5.23` ✅ dff1c41 🟧 No send-rate cap: input is emitted on every frame (60–144 Hz) per player and per authority AI (`Player.ts:203`, `Entity.ts:127`).
 - `S5.24` ✅ c138c31 🟧 `state.resolve` builds about 20 objects and 40 closures per entity per frame (`state.ts:5`).
 - `S5.25` ✅ fefef26 🟧 12 scenes preload the same 229 keys, about 1,128 redundant queue entries (`loaders/Texture.ts:134`). Use one Boot scene.
-- `S5.26` ☐ 🟧 Spell pools compile a program per pooled Shader on first cast, e.g. about 25 for meteors (`quads.ts:546`). Pre-warm them.
+- `S5.26` ✖ no visible stutter on first cast; revisit if one shows up 🟧 Spell pools compile a program per pooled Shader on first cast, e.g. about 25 for meteors (`quads.ts:546`). Pre-warm them.
 - `S5.27` ☐ 🟨 The `managers` getter allocates on every access (`Scene.ts:46`). `_drain` uses `shift()` (`Entity.ts:201`). Tile animation walks every position on the map (`Tile.ts:103`). `setDepth` runs every frame on thresholds.
 - `S5.28` ☐ 🟨 Vision raycasts loop over the whole map width; cap the loop at `maxDistance`. Since S5.6 there is one raycast per check instead of 7. ENTITY_OVERLAP fires per pair per frame for 52 BOUNCE types.
 - `S5.29` ☐ 🟨 Shadows are redrawn per scene per frame. `sprites.ts` creates a canvas and calls `getImageData` per death. Build `placeable` runs every frame. Splash creates a new emitter each time. One Shader per waterfall and mist, never culled. The legacy string A* allocates about 180k strings. The meadow re-bakes at 20 Hz even with a still camera.
@@ -377,7 +377,7 @@ Performance:
 - `S5.32` ☐ ⬜ Many per-frame allocations: Chunk keys, `getWorldPoint`, Input spreads, `light.setSize`, weather and daycycle filters, AmbientSound spatial. The details are in the agent report; ask if you want it.
 
 Rendering and game feel:
-- `S5.33` ☐ 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
+- `S5.33` ◐ 2026-11-10 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
 - `S5.34` ☐ 🟧 Effects use fixed depths (1000–2401) while entities use `1000+y`, so slash, puff and hearts draw under anything below y=1000 (`emitters.ts:740` and about 45 more sites).
 - `S5.35` ☐ 🟧 The Ambience camera is one frame stale and uses raw scrollX, so snow, rain and fog wobble (`Ambience.ts:204`).
 - `S5.36` ☐ 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
