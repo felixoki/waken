@@ -84,10 +84,10 @@ float noise(vec2 p) {
   vec2 i = floor(p);
   vec2 f = fract(p);
   f = f * f * (3.0 - 2.0 * f);
-  float a = hash(i);
-  float b = hash(i + vec2(1.0, 0.0));
-  float c = hash(i + vec2(0.0, 1.0));
-  float d = hash(i + vec2(1.0, 1.0));
+  float a = hash(mod(i, 289.0));
+  float b = hash(mod(i + vec2(1.0, 0.0), 289.0));
+  float c = hash(mod(i + vec2(0.0, 1.0), 289.0));
+  float d = hash(mod(i + vec2(1.0, 1.0), 289.0));
   return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 

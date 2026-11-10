@@ -1,5 +1,5 @@
 export const getAmbienceFrag = (): string => `
-precision mediump float;
+precision highp float;
 
 uniform sampler2D uMainSampler;
 uniform vec2 resolution;
@@ -66,6 +66,7 @@ uniform float eclipseStrength;
 varying vec2 outTexCoord;
 
 float hash(vec2 p) {
+  p = mod(p, 289.0);
   return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
 
