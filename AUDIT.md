@@ -377,7 +377,7 @@ Performance:
 - `S5.32` ☐ ⬜ Many per-frame allocations: Chunk keys, `getWorldPoint`, Input spreads, `light.setSize`, weather and daycycle filters, AmbientSound spatial. The details are in the agent report; ask if you want it.
 
 Rendering and game feel:
-- `S5.33` ◐ 2026-11-10 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
+- `S5.33` ✅ be3c16c 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
 - `S5.34` ☐ 🟧 Effects use fixed depths (1000–2401) while entities use `1000+y`, so slash, puff and hearts draw under anything below y=1000 (`emitters.ts:740` and about 45 more sites).
 - `S5.35` ☐ 🟧 The Ambience camera is one frame stale and uses raw scrollX, so snow, rain and fog wobble (`Ambience.ts:204`).
 - `S5.36` ☐ 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
