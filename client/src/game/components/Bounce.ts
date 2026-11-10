@@ -25,6 +25,8 @@ export class BounceComponent extends Component {
   private _bounce = (entity: Entity, other: Entity) => {
     if (entity.id !== this.entity.id && other.id !== this.entity.id) return;
     if (this.isAnimating) return;
+    const mover = entity.id === this.entity.id ? other : entity;
+    if (!mover.moving.length) return;
     if (
       this.entity.getComponent<PickableComponent>(ComponentName.PICKABLE)
         ?.isPulling
