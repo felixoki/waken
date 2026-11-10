@@ -81,7 +81,7 @@ export class ComponentFactory {
           );
           break;
         case ComponentName.PICKABLE:
-          comp = new PickableComponent(entity);
+          comp = new PickableComponent(entity, definition.loose);
           break;
         case ComponentName.INVENTORY:
           comp = new InventoryComponent();

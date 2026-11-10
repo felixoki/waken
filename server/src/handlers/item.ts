@@ -10,6 +10,7 @@ import {
   NoticeKind,
   PartyStatus,
   PlayerConfig,
+  LooseKind,
 } from "../types";
 import { DROP_LIFETIME, INVENTORY_MAX_SIZE } from "../globals.js";
 import { World } from "../World";
@@ -159,6 +160,7 @@ export const item = {
         soul: entry.soul,
         weight: entry.weight,
         dropped: !relic,
+        loose: LooseKind.DROP,
       },
       socket,
       world.server,

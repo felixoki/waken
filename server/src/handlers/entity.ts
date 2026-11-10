@@ -14,6 +14,7 @@ import {
   SlotType,
   Spot,
   TrapConfig,
+  LooseKind,
 } from "../types";
 import { DamageType } from "../types/damage";
 import { randomUUID } from "crypto";
@@ -366,6 +367,7 @@ export const entity = {
               health: 1,
               maxHealth: 1,
               isLocked: false,
+              loose: LooseKind.LOOT,
             },
             socket,
             io,

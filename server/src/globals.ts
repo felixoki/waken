@@ -532,6 +532,9 @@ export const RANGE_MINING = 48;
 export const RANGE_WATERING = 48;
 export const RANGE_PLANTING = 48;
 export const RANGE_CAPTURE = 64;
+export const RANGE_PICKUP = 64;
+export const RANGE_COLLECT = 28;
+export const COLLECT_DELAY = 400;
 export const EXTRACTION_DAMAGE = 35;
 export const EXTRACTION_IMPACT_FRAME = 4;
 

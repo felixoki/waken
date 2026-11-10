@@ -4,6 +4,7 @@ import {
   FishName,
   Item,
   ZoneName,
+  LooseKind,
 } from "../types";
 import { FISHING_LANDING_DISTANCE } from "../globals.js";
 import { World } from "../World";
@@ -80,6 +81,7 @@ export const fishing = {
         maxHealth: 1,
         isLocked: false,
         weight,
+        loose: LooseKind.LOOT,
       },
       socket,
       io,

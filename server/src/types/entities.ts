@@ -13,6 +13,11 @@ import { ZoneConfig } from "./zones.js";
 import type { BiomeName } from "./generation";
 import type { Position } from "./schedule";
 
+export enum LooseKind {
+  LOOT = "loot",
+  DROP = "drop",
+}
+
 export enum ProjectileName {
   ROCK = "rock",
   MUD = "mud",
@@ -76,6 +81,7 @@ export interface EntityConfig {
   soul?: EntityName;
   hive?: boolean;
   dropped?: boolean;
+  loose?: LooseKind;
   built?: boolean;
   link?: string;
   parent?: string;

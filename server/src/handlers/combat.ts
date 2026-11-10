@@ -11,6 +11,7 @@ import {
   PlayerConfig,
   SpellName,
   StoryFlag,
+  LooseKind,
 } from "../types";
 import { Effect, EffectName } from "../types/effects.js";
 import { DamageType } from "../types/damage.js";
@@ -351,6 +352,7 @@ export const combat = {
                 health: MAX_HEALTH,
                 maxHealth: MAX_HEALTH,
                 isLocked: false,
+                loose: LooseKind.LOOT,
               },
               socket,
               io,

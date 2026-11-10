@@ -6,7 +6,10 @@ import { World } from "../World";
 import {
   EntityName,
   Event,
+  EntityConfig,
   Item,
+  LooseKind,
+  MapName,
   Notice,
   NoticeKind,
   PlayerConfig,
@@ -107,5 +110,32 @@ describe("item notices", () => {
 
     assert.equal(total, 3);
     assert.deepEqual(notices, [{ kind: NoticeKind.LEDGER, total: 3 }]);
+  });
+
+  test("spill marks the item as a loose drop", () => {
+    const created: Omit<EntityConfig, "id" | "createdAt">[] = [];
+    const create = handlers.entity.create;
+    handlers.entity.create = (config) => {
+      created.push(config);
+      return { ...config, id: "0-0-0-0-drop1", createdAt: 0 };
+    };
+
+    const world = {
+      parties: { getByPlayerId: () => undefined },
+      dropped: new Set<string>(),
+    } as unknown as World;
+
+    handlers.item.spill(
+      { id: "player1", map: MapName.HOME, x: 0, y: 0 } as PlayerConfig,
+      { name: EntityName.WOOD, quantity: 2, stackable: true },
+      {} as Socket,
+      world,
+    );
+
+    handlers.entity.create = create;
+
+    assert.equal(created.length, 1);
+    assert.equal(created[0].loose, LooseKind.DROP);
+    assert.ok(world.dropped.has("0-0-0-0-drop1"));
   });
 });
