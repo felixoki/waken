@@ -19,6 +19,7 @@ import { vfx } from "../vfx";
 import { SwitchComponent } from "../components/Switch";
 import { StorageComponent } from "../components/Storage";
 import { PickableComponent } from "../components/Pickable";
+import { HoverableComponent } from "../components/Hoverable";
 import { TextureAnimationComponent } from "../components/TextureAnimation";
 import { handlers } from "../handlers";
 import type { ConnectIndex } from "../handlers/connect";
@@ -107,6 +108,7 @@ export class EntityManager {
 
     StorageComponent.tick();
     PickableComponent.tick();
+    HoverableComponent.tick();
   }
 
   add(config: EntityConfig, fresh = true): void {
