@@ -380,7 +380,7 @@ Rendering and game feel:
 - `S5.33` ✅ be3c16c 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
 - `S5.34` ☐ 🟧 Effects use fixed depths (1000–2401) while entities use `1000+y`, so slash, puff and hearts draw under anything below y=1000 (`emitters.ts:740` and about 45 more sites).
 - `S5.35` ✅ 34848b4 🟧 The Ambience camera is one frame stale and uses raw scrollX, so snow, rain and fog wobble (`Ambience.ts:204`).
-- `S5.36` ✅ 84d3861 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
+- `S5.36` ✖ restarting neighbours is liked: a new touch sets them swinging again 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
 - `S5.37` ☐ 🟧 Unwrapped session time is fed into hashes, which collapse after about 18 minutes and band the waterfalls (Ambience, Blaze, Sheen, Status, Glow, Water, Meadow).
 - `S5.38` ☐ 🟧 `pow(neg, 2.0)` gives NaN on Metal (`mist.ts:22`, `swell.ts:87`, `hyperbeam.ts:118,135`).
 - `S5.39` ☐ 🟧 Creature slash hitboxes use a fixed 150 ms delay and 800 ms window, ignoring the animation (`Slashing.ts:45`).
@@ -413,6 +413,7 @@ Refactor candidates:
   - client: `emitters.ts` 2,324; `quads.ts` 1,788; `water.ts` 1,422; `path.ts` 819; `spells.ts` 650; `Fishing.ts` 607
   - server: `builders/Map.ts` 1,845; `Room.ts` 1,788; `generation.ts` 1,493; `Water.ts` 1,255; `globals.ts` 824; `combat.ts` 810; `player.ts` 624
 - `S5.58` ☐ 🟨 Duplicate pairs and groups to merge:
+- `S5.59` ✅ dbf07e4 🟧 Reeds keep bouncing every 2 s while you stand still in them: ENTITY_OVERLAP fires every step and the bounce only gates on its own 2 s timer (`components/Bounce.ts`).
   - Felling and Mining (identical states); Fellable and Mineable
   - Wander, Patrol and Amble (one roam loop)
   - the timed-state skeleton
