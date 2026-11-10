@@ -380,7 +380,7 @@ Rendering and game feel:
 - `S5.33` ✅ be3c16c 🟧 The fixed 60 Hz Arcade step has no interpolation, so it judders on 120 Hz displays (`config.ts:66`).
 - `S5.34` ☐ 🟧 Effects use fixed depths (1000–2401) while entities use `1000+y`, so slash, puff and hearts draw under anything below y=1000 (`emitters.ts:740` and about 45 more sites).
 - `S5.35` ✅ 34848b4 🟧 The Ambience camera is one frame stale and uses raw scrollX, so snow, rain and fog wobble (`Ambience.ts:204`).
-- `S5.36` ☐ 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
+- `S5.36` ✅ 84d3861 🟧 `Bounce.trigger` on a shared slot restarts every reed already using it.
 - `S5.37` ☐ 🟧 Unwrapped session time is fed into hashes, which collapse after about 18 minutes and band the waterfalls (Ambience, Blaze, Sheen, Status, Glow, Water, Meadow).
 - `S5.38` ☐ 🟧 `pow(neg, 2.0)` gives NaN on Metal (`mist.ts:22`, `swell.ts:87`, `hyperbeam.ts:118,135`).
 - `S5.39` ☐ 🟧 Creature slash hitboxes use a fixed 150 ms delay and 800 ms window, ignoring the animation (`Slashing.ts:45`).
