@@ -16,7 +16,11 @@ import { EntityName } from "@server/types";
 import { Scene } from "./scenes/Scene";
 import { BehaviorQueue } from "./components/BehaviorQueue";
 import { handlers } from "./handlers";
-import { FLAT_DEPTH, SPEED_DEFAULT } from "@server/globals";
+import {
+  FLAT_DEPTH,
+  INPUT_SEND_INTERVAL,
+  SPEED_DEFAULT,
+} from "@server/globals";
 import { configs } from "@server/configs";
 
 export class Entity extends Phaser.GameObjects.Sprite {
@@ -46,6 +50,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
   public driftY: number = 0;
 
   protected lastInput: Partial<Input> | null = null;
+  protected lastSentAt: number = 0;
   protected depthY: number = 0;
 
   public components = new Map<ComponentName, Component>();
@@ -122,6 +127,7 @@ export class Entity extends Phaser.GameObjects.Sprite {
 
     if (isAuthority && input && this._changed(input)) {
       this.lastInput = input;
+      this.lastSentAt = this.scene.game.loop.time;
       this.scene.game.events.emit(Event.ENTITY_INPUT, input);
     }
 
@@ -139,16 +145,27 @@ export class Entity extends Phaser.GameObjects.Sprite {
     const last = this.lastInput;
     if (!last) return true;
 
-    return (
-      input.x !== last.x ||
-      input.y !== last.y ||
+    if (
       input.facing !== last.facing ||
       input.state !== last.state ||
       (input.moving?.length ?? 0) !== (last.moving?.length ?? 0) ||
-      (input.moving?.some((d, i) => d !== last.moving?.[i]) ?? false) ||
-      input.target?.x !== last.target?.x ||
-      input.target?.y !== last.target?.y
-    );
+      (input.moving?.some((d, i) => d !== last.moving?.[i]) ?? false)
+    )
+      return true;
+
+    if (
+      input.x === last.x &&
+      input.y === last.y &&
+      input.target?.x === last.target?.x &&
+      input.target?.y === last.target?.y
+    )
+      return false;
+
+    return this._due();
+  }
+
+  protected _due(): boolean {
+    return this.scene.game.loop.time - this.lastSentAt >= INPUT_SEND_INTERVAL;
   }
 
   protected _getInput(): Partial<Input> | null {

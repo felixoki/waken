@@ -158,6 +158,7 @@ export class Player extends Entity {
 
       if (this.isControllable && this._changed(input)) {
         this.lastInput = input;
+        this.lastSentAt = this.scene.game.loop.time;
         this.scene.game.events.emit(Event.PLAYER_INPUT, input);
       }
 
@@ -196,6 +197,7 @@ export class Player extends Entity {
 
     if (this.isControllable && this._changed(input)) {
       this.lastInput = input;
+      this.lastSentAt = this.scene.game.loop.time;
       this.scene.game.events.emit(Event.PLAYER_INPUT, input);
     }
 
@@ -300,9 +302,7 @@ export class Player extends Entity {
     const last = this.lastInput;
     if (!last) return true;
 
-    return (
-      input.x !== last.x ||
-      input.y !== last.y ||
+    if (
       input.facing !== last.facing ||
       input.bed !== last.bed ||
       input.state !== last.state ||
@@ -314,10 +314,19 @@ export class Player extends Entity {
       input.equipped !== last.equipped ||
       input.active !== last.active ||
       input.moving.length !== (last.moving?.length ?? 0) ||
-      input.moving.some((d, i) => d !== last.moving?.[i]) ||
-      input.target?.x !== last.target?.x ||
-      input.target?.y !== last.target?.y
-    );
+      input.moving.some((d, i) => d !== last.moving?.[i])
+    )
+      return true;
+
+    if (
+      input.x === last.x &&
+      input.y === last.y &&
+      input.target?.x === last.target?.x &&
+      input.target?.y === last.target?.y
+    )
+      return false;
+
+    return input.state === StateName.CASTING || this._due();
   }
 
   destroy(): void {
