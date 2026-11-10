@@ -19,7 +19,8 @@ void main(void) {
   float reach = d.y > 0.0 ? resolution.y - uFoot : uFoot;
   float spread = uWidth * 0.5 + max(0.0, d.y) * 0.3;
   float across = 1.0 - smoothstep(spread - 6.0, spread + 8.0, abs(d.x));
-  float along = exp(-pow(d.y / (reach * 0.45), 2.0));
+  float drop = d.y / (reach * 0.45);
+  float along = exp(-drop * drop);
 
   vec2 q = vec2(fragCoord.x * 0.07 + uSeed, fragCoord.y * 0.09 - uTime * 0.45);
   q.x += (noise(vec2(fragCoord.y * 0.05 - uTime * 0.3, uSeed)) - 0.5) * 1.5;

@@ -115,7 +115,8 @@ void main(void) {
     float side = clamp(v / cw, -1.0, 1.0) * uUp;
     float vu = clamp(v / cw, -1.0, 1.0);
     float dome = sqrt(max(1.0 - vu * vu, 0.0));
-    float crest = exp(-pow(vu - 0.38 * uUp, 2.0) / 0.07);
+    float crestV = vu - 0.38 * uUp;
+    float crest = exp(-crestV * crestV / 0.07);
     float h = (0.06 + 0.82 * dome * dome + crest * 0.40 + side * 0.12 + (flow - 0.5) * 0.35 + (brush - 0.5) * 0.45 + (hair - 0.5) * 0.10) * lit;
     vec3 stream = teal(h);
     float shade = smoothstep(0.52, 0.72, fbm(vec2(x * 0.015 - uTime * 5.0, v * 3.0 - uSeed * 2.0)));
@@ -132,7 +133,8 @@ void main(void) {
     float fray = smoothstep(tipX - 70.0, tipX - 5.0, x);
     stream = mix(stream, DEEP * 0.8, fray * 0.5);
     float strands = smoothstep(0.25, 0.65, brush + hair * 0.3 - fray * 0.25);
-    float rim = exp(-pow(vu - 0.80 * uUp, 2.0) / 0.012) * abs(uUp) * (0.6 + 0.4 * flow);
+    float rimV = vu - 0.80 * uUp;
+    float rim = exp(-rimV * rimV / 0.012) * abs(uUp) * (0.6 + 0.4 * flow);
     stream += CORE * rim * 0.35 * lit;
 
     float deep = fbm(vec2(x * 0.030 - uTime * 2.2, v * 2.0 - uSeed));

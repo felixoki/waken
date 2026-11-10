@@ -84,7 +84,8 @@ float surf(vec2 e, float R) {
   float fine = 0.5 + 0.5 * sin(back * 43.0 - (n1 - 0.5) * 9.0 + n2 * 4.0 + uTime * 3.6);
   fine *= fine * smoothstep(0.30, 0.70, n2);
   float swell = 0.5 + 0.5 * sin(ang * 2.0 + r * 5.0 - uTime * 1.6 + (n1 - 0.5) * 3.0);
-  float lead = exp(-pow((t - 0.80) / 0.13, 2.0)) * (0.45 + 1.10 * n1);
+  float ahead = (t - 0.80) / 0.13;
+  float lead = exp(-ahead * ahead) * (0.45 + 1.10 * n1);
   float eye = exp(-pow(r / max(uSpread, 0.2), 2.0) * 30.0) * (1.0 - uHollow) * (1.0 - uDome);
 
   float h = roll * mix(0.42, 0.70, uHollow) * (0.55 + 0.90 * n2) + fine * 0.24 + swell * 0.22 + (n2 - 0.5) * 0.40;
