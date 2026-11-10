@@ -75,7 +75,7 @@ void main(void) {
   float body = core * (0.35 + 0.85 * storm);
 
   /** White-hot fusion flash at the core, strongest at peak progress. */
-  float hot = pow(core, 5.0) * pow(uProgress, 2.0);
+  float hot = pow(core, 5.0) * uProgress * uProgress;
 
   /** Colour ramp: indigo -> violet -> electric blue -> cyan -> white. */
   vec3 col = mix(vec3(0.16, 0.08, 0.42), vec3(0.42, 0.18, 0.85), storm);

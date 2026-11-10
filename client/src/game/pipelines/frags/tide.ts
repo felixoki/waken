@@ -76,7 +76,7 @@ vec4 ribbon(vec3 q, float shell, float px) {
   float shimmer = 0.70 + 0.30 * churn;
 
   vec3 c = mix(HAZE, AQUA, across);
-  c = mix(c, PALE, pow(across, 2.0));
+  c = mix(c, PALE, across * across);
   c = mix(c, FOAM, foam * 0.8);
 
   return vec4(c, max(body * beam * shimmer * 0.20 + foam * body * 0.12, spray * 0.16));
@@ -104,7 +104,8 @@ vec4 shellHit(vec3 o, vec3 d, float shell, float side) {
   vec3 n = normalize(q / radii) * -side;
   float lit = 0.80 + 0.36 * max(dot(n, LIGHT), 0.0);
   float spec = pow(max(dot(reflect(-LIGHT, n), -d), 0.0), 26.0);
-  float rim = pow(1.0 - abs(dot(n, -d)), 2.0);
+  float rim = 1.0 - abs(dot(n, -d));
+  rim *= rim;
 
   col.rgb = col.rgb * lit + FOAM * spec * 0.30 * col.a;
 

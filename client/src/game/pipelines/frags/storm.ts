@@ -287,7 +287,8 @@ void main(void) {
       float column = exp(-p.x * p.x / (uRadius * uRadius * 1.2));
       float rise = smoothstep(0.0, uRadius * 0.4, p.y) * smoothstep(uRadius * 4.2, uRadius * 0.8, p.y);
       float streak = pow(noise(vec2(p.x * 0.24 + uSeed, p.y * 0.030 - uTime * 2.6)), 3.0);
-      float wisp = pow(noise(vec2(p.x * 0.09 - uSeed, p.y * 0.016 - uTime * 1.4)), 2.0);
+      float wisp = noise(vec2(p.x * 0.09 - uSeed, p.y * 0.016 - uTime * 1.4));
+      wisp *= wisp;
       lay(col, alpha, MIST, (streak * 0.75 + wisp * 0.30) * column * rise * uLift * 0.18);
     }
 

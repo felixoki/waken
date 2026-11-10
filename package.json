@@ -12,6 +12,7 @@
     "dev:client": "npm run dev --workspace=client",
     "dev": "concurrently --kill-others --kill-signal SIGTERM \"npm run dev:server\" \"npm run dev:client\"",
     "verify:maps": "node scripts/verify-maps.mjs",
+    "verify:shaders": "node scripts/verify-shaders.mjs",
     "sheets": "python3 scripts/sheets.py build",
     "verify:sheets": "python3 scripts/sheets.py verify",
     "tiles": "python3 scripts/tiles.py build",
