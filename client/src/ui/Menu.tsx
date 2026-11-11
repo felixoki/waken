@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import SocketManager from "../game/managers/Socket";
 import { tryCatch } from "@server/utils/tryCatch";
+import { VERSION } from "@server/globals";
 import { MenuOverlay } from "./MenuOverlay";
 import { useMenuAmbience } from "./useMenuAmbience";
 import { GlassTitle } from "./GlassTitle";
@@ -11,6 +12,19 @@ const LOBBY_URL = (
 ).replace(/\/$/, "");
 
 const PROTOCOL = LOBBY_URL.startsWith("https") ? "https" : "http";
+
+const HEADERS = {
+  "Content-Type": "application/json",
+  "X-Waken-Version": VERSION,
+};
+
+const refused = async (response: Response, fallback: string) => {
+  if (response.status !== 426) return fallback;
+
+  const body = await tryCatch<{ server?: string }>(response.json());
+
+  return `Update required: you have ${VERSION}, the server runs ${body.data?.server ?? "another version"}`;
+};
 
 const getPlayerId = (): string => {
   let playerId = localStorage.getItem("playerId");
@@ -93,14 +107,15 @@ export function Menu({ ready }: { ready: () => void }) {
     const result = await tryCatch(
       fetch(`${LOBBY_URL}/worlds`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: HEADERS,
         body: JSON.stringify({ playerId, name: world.trim() }),
       }),
     );
 
     if (result.error) return fail("Failed to create world");
 
-    if (!result.data.ok) return fail("Failed to create world");
+    if (!result.data.ok)
+      return fail(await refused(result.data, "Failed to create world"));
 
     const dataResult = await tryCatch(result.data.json());
 
@@ -115,12 +130,15 @@ export function Menu({ ready }: { ready: () => void }) {
     setError("");
 
     const result = await tryCatch(
-      fetch(`${LOBBY_URL}/worlds?playerId=${encodeURIComponent(playerId)}`),
+      fetch(`${LOBBY_URL}/worlds?playerId=${encodeURIComponent(playerId)}`, {
+        headers: HEADERS,
+      }),
     );
 
     if (result.error) return fail("Failed to load worlds");
 
-    if (!result.data.ok) return fail("Failed to load worlds");
+    if (!result.data.ok)
+      return fail(await refused(result.data, "Failed to load worlds"));
 
     const dataResult = await tryCatch(result.data.json());
 
@@ -140,12 +158,14 @@ export function Menu({ ready }: { ready: () => void }) {
     const result = await tryCatch(
       fetch(`${LOBBY_URL}/worlds/${worldId}/start`, {
         method: "POST",
+        headers: HEADERS,
       }),
     );
 
     if (result.error) return fail("Failed to start world");
 
-    if (!result.data.ok) return fail("Failed to start world");
+    if (!result.data.ok)
+      return fail(await refused(result.data, "Failed to start world"));
 
     const dataResult = await tryCatch(result.data.json());
 
@@ -167,14 +187,17 @@ export function Menu({ ready }: { ready: () => void }) {
     const result = await tryCatch(
       fetch(`${LOBBY_URL}/worlds/${joinId.trim()}/join`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: HEADERS,
         body: JSON.stringify({ playerId }),
       }),
     );
 
     if (result.error) return fail("Failed to join world");
 
-    if (!result.data.ok) return fail("World not found or failed to join");
+    if (!result.data.ok)
+      return fail(
+        await refused(result.data, "World not found or failed to join"),
+      );
 
     const dataResult = await tryCatch(result.data.json());
 

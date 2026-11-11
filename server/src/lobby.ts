@@ -10,6 +10,7 @@ import { migrate } from "./db/migrate.js";
 import {
   HEARTBEAT_INTERVAL,
   MAX_WORLDS,
+  VERSION,
   WORLD_INACTIVITY_TIMEOUT,
 } from "./globals.js";
 import { tryCatch } from "./utils/tryCatch.js";
@@ -30,7 +31,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Headers", "Content-Type, X-Waken-Version");
 
   if (req.method === "OPTIONS") return res.sendStatus(200);
 
@@ -106,6 +107,13 @@ const start = (id: string) => {
 };
 
 app.get("/health", (_req, res) => res.status(200).json({ ok: true }));
+
+app.use("/worlds", (req, res, next) => {
+  if (req.get("X-Waken-Version") !== VERSION)
+    return res.status(426).json({ error: "version", server: VERSION });
+
+  next();
+});
 
 app.post("/worlds", async (req, res) => {
   const playerId = String(req.body.playerId || "");

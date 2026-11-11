@@ -1,6 +1,7 @@
 import { EntityName, MapName, TimePhase } from "./types/index.js";
 
 /** Server */
+export const VERSION = "0.0.1";
 export const HEARTBEAT_INTERVAL = 30_000;
 export const WORLD_INACTIVITY_TIMEOUT = 5 * 60 * 1000;
 export const MAX_WORLDS = 16;
