@@ -38,11 +38,13 @@ export class Slashing implements State {
         position: { x: entity.x, y: entity.y },
       });
 
+    const timing = this._timing(entity);
+
     this.timer = {
-      duration: entity.scene.time.delayedCall(DURATION_SLASHING, () => {
+      duration: entity.scene.time.delayedCall(timing.duration, () => {
         this.exit(entity);
       }),
-      delay: entity.scene.time.delayedCall(DELAY_ATTACK, () => {
+      delay: entity.scene.time.delayedCall(timing.impact, () => {
         if (!entity.scene) return;
 
         const offset = handlers.direction.getDirectionalOffset(
@@ -62,6 +64,7 @@ export class Slashing implements State {
 
         const config: WeaponConfig = {
           ...weapon,
+          duration: timing.window,
           ...(attack?.damage && { damage: attack.damage }),
           effects: [...(weapon.effects ?? []), ...(attack?.effects ?? [])],
         };
@@ -76,6 +79,30 @@ export class Slashing implements State {
   }
 
   update(_entity: Entity): void {}
+
+  private _timing(entity: Entity): {
+    impact: number;
+    window: number;
+    duration: number;
+  } {
+    const config = configs.animations[entity.name]?.[StateName.SLASHING];
+
+    if (!config)
+      return {
+        impact: DELAY_ATTACK,
+        window: DURATION_SLASHING - DELAY_ATTACK,
+        duration: DURATION_SLASHING,
+      };
+
+    const frame = 1000 / config.frameRate;
+    const impact = config.impact ?? Math.floor(config.frameCount / 2);
+
+    return {
+      impact: impact * frame,
+      window: 2 * frame,
+      duration: config.frameCount * frame,
+    };
+  }
 
   exit(entity: Entity): void {
     this.hitbox?.destroy();

@@ -3,4 +3,5 @@ export interface AnimationConfig {
   frameRate: number;
   repeat: number;
   airborne?: [number, number];
+  impact?: number;
 }
