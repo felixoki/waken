@@ -474,7 +474,11 @@ Network and accounts: see S0.9, S0.13 and S0.14.
 - `S7.1` ✅ 30f999d 🟧 No client/server version handshake.
 - `S7.2` ✖ deferred to the domain and TLS work (S4.40), DEVLOG backlog 🟧 Lobby worlds use sequential raw ports from 3001, which is NAT and firewall hostile. Route them through one TLS port.
 - `S7.3` ✖ multiplayer game, online only for now; local worlds in the DEVLOG backlog 🟧 No offline or singleplayer mode: decide before early access. A bundled local lobby is feasible.
-- `S7.4` ☐ 🟧 Migrations are `CREATE IF NOT EXISTS` on boot, with no versioning. The JSONB saves have no version field. No backups. `server:clear` truncates production in one command.
+- `S7.4` ✖ split, all parts closed 🟧 Migrations are `CREATE IF NOT EXISTS` on boot, with no versioning. The JSONB saves have no version field. No backups. `server:clear` truncates production in one command.
+  - `S7.4a` ✖ deferred: the schema is additive only; add a `schema_migrations` table with the first non-additive change Migration versioning.
+  - `S7.4b` ✖ deferred: a missing field reads as v0 later; add it with the first breaking save change Save version field.
+  - `S7.4c` ✖ moved to the DEVLOG backlog Backups.
+  - `S7.4d` ✖ not reachable: `clear` only targets the local `docker-compose.dev.yml`, and `server:deploy` ships only `./server/` `server:clear` truncates production.
 - `S7.5` ☐ 🟨 Corrupt Redis JSON crashes the world at boot (`load.ts:10`). No player cap. No crash reporter or log file.
 
 Electron:
