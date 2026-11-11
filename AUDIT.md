@@ -482,7 +482,7 @@ Network and accounts: see S0.9, S0.13 and S0.14.
 - `S7.5` ☐ 🟨 Corrupt Redis JSON crashes the world at boot (`load.ts:10`). No player cap. No crash reporter or log file.
 
 Electron:
-- `S7.6` ☐ 🟧 No signing or notarization, and no `appBundleId` (`forge.config.ts`).
+- `S7.6` ✖ deferred to release: set appBundleId before the first public build, sign only if shipping outside Steam 🟧 No signing or notarization, and no `appBundleId` (`forge.config.ts`).
 - `S7.7` ☐ 🟨 `productName` is missing, so user data, including the player UUID, lives under "client". Set it before release or identities get orphaned.
 - `S7.8` ☐ 🟨 The default menu ships, so DevTools are reachable in production. No `setWindowOpenHandler`, so credit links open Electron windows. No CSP. The `webPreferences` aren't pinned.
 - `S7.9` ☐ 🟨 The installers use the default icon (no Squirrel `setupIcon`, no DMG icon). There's a white flash before mount (no `backgroundColor` or `ready-to-show`). No favicon.
