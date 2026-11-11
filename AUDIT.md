@@ -455,7 +455,7 @@ Maps:
 
 Bloat and orphans:
 - `S6.19` ✅ 36984b5 🟧 `maps/water.json` (8.5 MB) is shipped but not in any config.
-- `S6.20` ☐ 🟧 `sprites/collection/` (4.3 MB of source art) is copied into every build.
+- `S6.20` ✅ b68627d 🟧 `sprites/collection/` (4.3 MB of source art) is copied into every build.
 - `S6.21` ☐ 🟨 `forest_glade.png` and `dungeon_corridor.png` are 4.3 MB each: convert to WebP. `hero_mountains.png` is used only in the README.
 - `S6.22` ☐ ⬜ `ledge_waterfalls.png` is only used by `water.tmx`. Cave, isles and nether have no loading backdrop. `mountains_start.mp4` could be re-encoded. ARCO could be woff2.
 
