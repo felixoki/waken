@@ -464,7 +464,7 @@ Texture performance:
   - `S6.23a` ✖ not worth it: a released soul stone can put any capturable creature on any map, so the village must hold them all; on-demand loading would be the only real fix Per-biome pools: the shared `entities` list (193 sheets, every creature and animal) is spread into every map, so the village alone needs 260 sheets (137 MB).
   - `S6.23b` ☐ Atlases: one atlas per entity instead of one texture per state. Measure distinct textures drawn per frame in the village and a forest band first; drop to ⬜ if under the batch limit.
 - `S6.24` ✖ negligible: png padding compresses away, ~22 MB VRAM 🟧 Heavy padding: zombies, goblins, blade, mage, golem, rat and trolls use only 14–31% of each frame.
-- `S6.25` ◐ 2026-11-11 🟨 The dragon (about 22 MB) and tornado sheets load on every map. Load them lazily, like robes.
+- `S6.25` ✅ 4db752c tornado dropped; dragon ✖ needed synchronously at cast, ~19 MB isn't worth the lazy-load plumbing 🟨 The dragon (about 22 MB) and tornado sheets load on every map. Load them lazily, like robes.
 
 ---
 
