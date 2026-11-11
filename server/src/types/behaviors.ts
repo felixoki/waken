@@ -52,10 +52,18 @@ export interface DefendBehaviorConfig {
   repeat?: boolean;
 }
 
+export interface StandoffConfig {
+  warn: number;
+  charge: number;
+  patience: number;
+  leave: number;
+}
+
 export interface AttackBehaviorConfig {
   spacing?: number;
   recovery?: number;
   evasive?: boolean;
+  standoff?: StandoffConfig;
 }
 
 export type BehaviorConfig =

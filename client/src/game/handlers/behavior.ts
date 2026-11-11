@@ -9,13 +9,13 @@ import { FollowBehavior } from "../behavior/Follow";
 import { handlers } from "./index";
 
 export const behavior: {
-  react: (entity: Entity, targetId: string) => void;
+  react: (entity: Entity, targetId: string, provoked: boolean) => void;
   search: (entity: Entity, position: Waypoint | null) => void;
   follow: (entity: Entity) => void;
   lookAround: (entity: Entity, attack: AttackBehavior) => Partial<Input>;
   retarget: (entity: Entity, attack: AttackBehavior) => boolean;
 } = {
-  react: (entity: Entity, targetId: string) => {
+  react: (entity: Entity, targetId: string, provoked: boolean) => {
     const queue = entity.getComponent<BehaviorQueue>(
       ComponentName.BEHAVIOR_QUEUE,
     );
@@ -44,7 +44,8 @@ export const behavior: {
     }
 
     if (attack) {
-      if (!engaged) attack.start(targetId);
+      if (!engaged) attack.start(targetId, provoked);
+      else if (provoked) attack.provoke();
       queue.shiftTo(BehaviorName.ATTACK);
     }
   },
@@ -143,7 +144,7 @@ export const behavior: {
 
     if (!best) return false;
 
-    attack.start(best.id);
+    attack.start(best.id, false);
 
     return true;
   },

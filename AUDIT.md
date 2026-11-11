@@ -423,6 +423,7 @@ Refactor candidates:
   - box blur, texture upload and BFS helpers
   - about 20 copies of one-shot emitter code; one `vfx.burst` registry fixes the duplication and the allocations together
 - `S5.59` ✅ bd0a149 🟧 Reeds keep bouncing every 2 s while you stand still in them: ENTITY_OVERLAP fires every step and the bounce only gates on its own 2 s timer (`components/Bounce.ts`).
+- `S5.60` ☐ 🟧 Bears warn the moment they spot you and charge 1.8 s later whatever you do: no chance to back off (`Attack.ts:88`). They should stand off, warn when you come close, and charge only if you keep coming, stay, or hit them.
 
 ---
 

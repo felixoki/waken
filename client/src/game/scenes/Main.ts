@@ -639,7 +639,7 @@ export class MainScene extends Phaser.Scene {
         });
 
       handlers.combat.damage(entity, data.health, data.isCritical);
-      handlers.behavior.react(entity, data.attackerId);
+      handlers.behavior.react(entity, data.attackerId, true);
       handlers.combat.hurt(entity, data.health);
       handlers.combat.knockback(entity, data.knockback);
 
@@ -683,7 +683,7 @@ export class MainScene extends Phaser.Scene {
       const entity = this.managers.entities.get(data.entityId);
       if (!entity) return;
 
-      handlers.behavior.react(entity, data.playerId);
+      handlers.behavior.react(entity, data.playerId, false);
     });
 
     this.managers.socket.on(

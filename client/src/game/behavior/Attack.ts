@@ -3,6 +3,7 @@ import {
   BehaviorName,
   Input,
   SpellName,
+  StandoffConfig,
   StateName,
   Stuck,
   Waypoint,
@@ -28,6 +29,8 @@ export class AttackBehavior extends Behavior {
   private spacing: number;
   private recovery: number;
   private evasive: boolean;
+  private standoff: StandoffConfig | null;
+  private wary = { active: false, warned: false, patience: 0 };
   public alert = { active: false, time: 0, duration: 800 };
   private line = { at: 0, clear: true };
   private mend = { at: 0, needed: false };
@@ -45,9 +48,10 @@ export class AttackBehavior extends Behavior {
     this.spacing = config?.spacing ?? 0;
     this.recovery = config?.recovery ?? 0;
     this.evasive = config?.evasive ?? false;
+    this.standoff = config?.standoff ?? null;
   }
 
-  start(targetId: string): void {
+  start(targetId: string, provoked: boolean): void {
     this.target.id = targetId;
     this.line = { at: 0, clear: true };
     this.completed = false;
@@ -58,6 +62,15 @@ export class AttackBehavior extends Behavior {
     this.lastAttackTime = 0;
     this.cooldowns.clear();
     this.alert.active = false;
+    this.wary = {
+      active: !!this.standoff && !provoked,
+      warned: false,
+      patience: 0,
+    };
+  }
+
+  provoke(): void {
+    this.wary.active = false;
   }
 
   update(entity: Entity): Partial<Input> {
@@ -83,13 +96,18 @@ export class AttackBehavior extends Behavior {
       Math.PI / 2,
     );
 
+    if (this.wary.active && this.standoff) {
+      const input = this.hold(entity, target, canSee, this.standoff);
+      if (input) return input;
+    }
+
     if (canSee) {
       this.target.lastPosition = { x: target.x, y: target.y };
       this.lostSightTime = 0;
 
       const canWarn = entity.states?.has(StateName.WARNING);
 
-      if (canWarn) {
+      if (canWarn && !this.standoff) {
         const hasWarned = this.cooldowns.has(StateName.WARNING);
 
         if (!hasWarned) {
@@ -347,5 +365,63 @@ export class AttackBehavior extends Behavior {
     this.lastAttackTime = 0;
     this.cooldowns.clear();
     this.alert.active = false;
+    this.wary.active = false;
+  }
+
+  private hold(
+    entity: Entity,
+    target: Entity,
+    canSee: boolean,
+    standoff: StandoffConfig,
+  ): Partial<Input> | null {
+    const distance = Phaser.Math.Distance.Between(
+      entity.x,
+      entity.y,
+      target.x,
+      target.y,
+    );
+
+    const angle = Phaser.Math.Angle.Between(
+      entity.x,
+      entity.y,
+      target.x,
+      target.y,
+    );
+    const facing = handlers.direction.fromAngle(angle);
+
+    if (canSee) this.lostSightTime = 0;
+    else this.lostSightTime += entity.scene.game.loop.delta;
+
+    if (
+      distance > standoff.leave ||
+      this.lostSightTime > this.lostSightThreshold
+    ) {
+      this.wary.active = false;
+      this.completed = true;
+      return { facing: entity.facing, moving: [], isRunning: false };
+    }
+
+    if (!canSee) return { facing, moving: [], isRunning: false };
+
+    if (distance < standoff.charge || this.wary.patience > standoff.patience) {
+      this.wary.active = false;
+      return null;
+    }
+
+    if (distance < standoff.warn) {
+      if (!this.wary.warned) {
+        this.wary.warned = true;
+        return {
+          facing,
+          moving: [],
+          isRunning: false,
+          state: StateName.WARNING,
+        };
+      }
+
+      this.wary.patience += entity.scene.game.loop.delta;
+    }
+
+    return { facing, moving: [], isRunning: false };
   }
 }

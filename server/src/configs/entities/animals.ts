@@ -83,7 +83,12 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           fov: Math.PI * 2,
         },
       },
-      { name: BehaviorName.ATTACK },
+      {
+        name: BehaviorName.ATTACK,
+        config: {
+          standoff: { warn: 140, charge: 70, patience: 2000, leave: 300 },
+        },
+      },
       { name: BehaviorName.SEARCH },
     ],
   },
@@ -158,7 +163,12 @@ export const animals: Partial<Record<EntityName, EntityDefinition>> = {
           fov: Math.PI * 2,
         },
       },
-      { name: BehaviorName.ATTACK },
+      {
+        name: BehaviorName.ATTACK,
+        config: {
+          standoff: { warn: 140, charge: 70, patience: 2000, leave: 300 },
+        },
+      },
       { name: BehaviorName.SEARCH },
     ],
   },
