@@ -910,7 +910,7 @@
 - UI ⭐
 - Player identity and names (S0.13): enter a name on first start, Steam-compatible accounts, stop broadcasting the localStorage id that doubles as the save key, check world_members on /worlds/:id/start and on connect to the world (S0.14)
 - Tutorial (S3.27): a grandma next to or in Home who explains sleeping, the party lobby, that draughts only work in the lobby, the Nightcap's depth bonus, bookkeeper hand-ins and soulstones
-- TLS before Steam (S4.40): get a domain, put Caddy in front for Let's Encrypt, route worlds by path (wss://host/world/3001) instead of by port, point .env.production at https; together with the production compose (S4.41)
+- TLS before Steam (S4.40, S7.2): get a domain, put Caddy in front for Let's Encrypt, point .env.production at https; together with the production compose (S4.41). Route worlds through the lobby port: lobby handles `upgrade` on /world/<id>/socket.io and pipes to the world on 127.0.0.1:<port>, worlds listen on 127.0.0.1 with that socket.io path, lobby returns only worldId, Menu.tsx connects to LOBBY_URL with the path; then close 3001–3016 on the VPS firewall
 - Ideas
   - Remove among player collisions
   - Behavior among animals, i.e. hunt
