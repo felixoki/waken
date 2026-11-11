@@ -488,7 +488,7 @@ Electron:
 - `S7.9` ☐ 🟨 The installers use the default icon (no Squirrel `setupIcon`, no DMG icon). There's a white flash before mount (no `backgroundColor` or `ready-to-show`). No favicon.
 - `S7.10` ☐ 🟨 No asar. `Phaser.AUTO` crashes without WebGL. Zoom ignores DPR, so 125% and 150% scaling shimmer. A minimized authority client stops simulating AI for everyone.
 - `S7.11` ☐ ⬜ `tsconfig.electron.json` fails typecheck (`esModuleInterop`) and isn't in `npm run typecheck`. Package names mix "waking" and "client". Version 0.0.1 is never shown.
-- `S7.12` ☐ 🟧 Pixelify Sans loads from Google Fonts: offline it falls back to sans-serif, and it's a GDPR issue. Bundle it.
+- `S7.12` ✖ deferred to the UI pass: the font may change; bundle whichever font ships 🟧 Pixelify Sans loads from Google Fonts: offline it falls back to sans-serif, and it's a GDPR issue. Bundle it.
 - `S7.13` ☐ ⬜ No auto-update and no Steam integration at all. Presence only, not a request.
 
 Legal and meta:
