@@ -113,18 +113,6 @@ const player: Spritesheet[] = [
     frameHeight: 32,
   },
   {
-    key: "player-transforming",
-    file: "effects/tornado.png",
-    frameWidth: 144,
-    frameHeight: 109,
-  },
-  {
-    key: "villain-transforming",
-    file: "effects/tornado.png",
-    frameWidth: 144,
-    frameHeight: 109,
-  },
-  {
     key: "dragon-idle",
     file: "creatures/dragon_idle.png",
     frameWidth: 112,
