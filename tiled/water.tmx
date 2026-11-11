@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="256" height="416" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="7518">
- <editorsettings>
-  <export target="../client/public/assets/maps/water.json" format="json"/>
- </editorsettings>
+ <properties>
+  <property name="reference" type="bool" value="true"/>
+ </properties>
  <tileset firstgid="1" name="water_coasts" tilewidth="16" tileheight="16" tilecount="768" columns="32">
   <image source="../client/public/assets/sprites/tiles/water_coasts.png" width="512" height="384"/>
   <tile id="18">
