@@ -1,4 +1,4 @@
-import { AnimationConfig, EntityName, StateName } from "../types";
+import { AnimationConfig, Direction, EntityName, StateName } from "../types";
 
 export const animations: Partial<
   Record<EntityName, Partial<Record<StateName, AnimationConfig>>>
@@ -125,7 +125,17 @@ export const animations: Partial<
   [EntityName.HERON]: {
     [StateName.IDLE]: { frameCount: 10, frameRate: 8, repeat: -1 },
     [StateName.WALKING]: { frameCount: 14, frameRate: 12, repeat: -1 },
-    [StateName.SLASHING]: { frameCount: 7, frameRate: 7, repeat: 0, impact: 3 },
+    [StateName.SLASHING]: {
+      frameCount: 7,
+      frameRate: 7,
+      repeat: 0,
+      impact: {
+        [Direction.DOWN]: 4,
+        [Direction.UP]: 3,
+        [Direction.LEFT]: 2,
+        [Direction.RIGHT]: 2,
+      },
+    },
   },
   [EntityName.SHADOW_WANDERER]: {
     [StateName.IDLE]: { frameCount: 6, frameRate: 6, repeat: -1 },

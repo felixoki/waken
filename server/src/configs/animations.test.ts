@@ -10,8 +10,14 @@ describe("slashing animations", () => {
 
     test(`${entity} lands its hit inside the animation`, () => {
       assert.ok(slashing.impact !== undefined, "impact frame is set");
-      assert.ok(slashing.impact >= 0);
-      assert.ok(slashing.impact + 2 <= slashing.frameCount);
+      const frames =
+        typeof slashing.impact === "object"
+          ? Object.values(slashing.impact)
+          : [slashing.impact];
+      for (const frame of frames) {
+        assert.ok(frame >= 0);
+        assert.ok(frame + 2 <= slashing.frameCount);
+      }
     });
   }
 });

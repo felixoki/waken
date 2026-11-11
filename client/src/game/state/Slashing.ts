@@ -95,7 +95,10 @@ export class Slashing implements State {
       };
 
     const frame = 1000 / config.frameRate;
-    const impact = config.impact ?? Math.floor(config.frameCount / 2);
+    const impact =
+      typeof config.impact === "object"
+        ? config.impact[entity.facing]
+        : (config.impact ?? Math.floor(config.frameCount / 2));
 
     return {
       impact: impact * frame,
