@@ -911,6 +911,7 @@
 - Player identity and names (S0.13): enter a name on first start, Steam-compatible accounts, stop broadcasting the localStorage id that doubles as the save key, check world_members on /worlds/:id/start and on connect to the world (S0.14)
 - Tutorial (S3.27): a grandma next to or in Home who explains sleeping, the party lobby, that draughts only work in the lobby, the Nightcap's depth bonus, bookkeeper hand-ins and soulstones
 - TLS before Steam (S4.40, S7.2): get a domain, put Caddy in front for Let's Encrypt, point .env.production at https; together with the production compose (S4.41). Route worlds through the lobby port: lobby handles `upgrade` on /world/<id>/socket.io and pipes to the world on 127.0.0.1:<port>, worlds listen on 127.0.0.1 with that socket.io path, lobby returns only worldId, Menu.tsx connects to LOBBY_URL with the path; then close 3001–3016 on the VPS firewall
+- Local worlds (S7.3): Electron main starts the built lobby on localhost (ELECTRON_RUN_AS_NODE) and kills it on quit; storage split into Postgres+Redis online and JSON files in userData locally, with a version field; menu shows Local worlds next to Online worlds; localhost only, no LAN. Needs productName first (S7.7) and the server outside asar (S7.10)
 - Ideas
   - Remove among player collisions
   - Behavior among animals, i.e. hunt
