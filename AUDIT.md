@@ -429,7 +429,7 @@ Refactor candidates:
 ## 6. Art and maps
 
 Animation bugs:
-- `S6.1` ☐ 🟧 ✔ Bear and bellan `WARNING` has `frameCount 8`, but the sheet has 14 frames, so 3 directions play frames from the wrong rows (`animations.ts:82,89`).
+- `S6.1` ✅ 71513ae 🟧 ✔ Bear and bellan `WARNING` has `frameCount 8`, but the sheet has 14 frames, so 3 directions play frames from the wrong rows (`animations.ts:82,89`).
 - `S6.2` ☐ 🟧 Herbalist and blacksmith rows are ordered D, L, R, U instead of D, U, L, R, and the up row has 2 of 6 frames. Hidden today only by STAY.
 - `S6.3` ☐ 🟧 The Villain has CASTING and FLYING states with no sheets, so the boss freezes on its last frame while casting.
 - `S6.4` ☐ 🟨 citizen12's right row faces left. citizen9 idle plays 6 of 12 frames. Hexgeist casting is identical in all 4 directions. Apprentice walking uses the idle sheet.
