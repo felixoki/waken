@@ -3,6 +3,9 @@
  <editorsettings>
   <export target="../client/public/assets/maps/generated-dungeon.json" format="json"/>
  </editorsettings>
+ <properties>
+  <property name="reference" type="bool" value="true"/>
+ </properties>
  <tileset firstgid="1" name="dungeon_walls_floor" tilewidth="16" tileheight="16" tilecount="493" columns="17">
   <image source="../client/public/assets/sprites/tiles/dungeon_walls_floor.png" width="272" height="464"/>
   <tile id="18">

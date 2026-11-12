@@ -3,6 +3,9 @@
  <editorsettings>
   <export target="../client/public/assets/maps/temple-generated.json" format="json"/>
  </editorsettings>
+ <properties>
+  <property name="reference" type="bool" value="true"/>
+ </properties>
  <tileset firstgid="1" name="temple_walls_floor" tilewidth="16" tileheight="16" tilecount="442" columns="17">
   <image source="../client/public/assets/sprites/tiles/temple_walls_floor.png" width="272" height="416"/>
   <tile id="18">
