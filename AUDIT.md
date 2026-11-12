@@ -445,7 +445,7 @@ Missing polish:
 - `S6.11` ☐ ⬜ HOUSE2 is unused. The tornado is loaded twice (2 × 4.3 MB).
 
 Maps:
-- `S6.12` ☐ 🟨 `verify:maps` fails on `generated-dungeon*.tmx` and `temple-generated.tmx`: mark them `reference` or delete them.
+- `S6.12` ✅ f6c16d7 🟨 `verify:maps` fails on `generated-dungeon*.tmx` and `temple-generated.tmx`: mark them `reference` or delete them.
 - `S6.13` ☐ 🟨 Dead `Light` objects in blacksmith, glassblower, herbalist and village. `Key` and `Locked_door` in generated-dungeon.
 - `S6.14` ☐ 🟨 `tavern.tmx:480-486`: 7 bottle tile-objects show in Tiled but not in game.
 - `S6.15` ☐ 🟨 The dungeon spawns rat, chicken, rooster and goat without loading their sheets. The tanner in the tavern has the same problem. Both work only because the village loaded the sheets first.
@@ -501,7 +501,7 @@ Legal and meta:
 - `S7.15` ☐ 🟨 No privacy policy (player IDs and IPs are stored).
 
 Tooling and repo:
-- `S7.16` ☐ 🟧 No CI. Add typecheck, test, `verify:*` and the vite build.
+- `S7.16` ✅ f6c16d7 🟧 No CI. Add typecheck, test, `verify:*` and the vite build.
 - `S7.17` ☐ 🟨 No save→restore round-trip test, and no tests for storage.move or reconnect.
 - `S7.18` ☐ 🟨 Pin the Python with Pillow for the `verify:sheets` and `verify:tiles` scripts.
 - `S7.19` ☐ 🟨 The README is outdated (it says port 3001; the lobby is 3100).
