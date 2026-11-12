@@ -192,6 +192,7 @@ Maps:
   - `S2.31b` ☐ Music per band.
 - `S2.32` ☐ 🟨 Birds play at night. There are no crickets or owls. Cloudy weather has no wind. Snowfall is silent, because rain is suppressed in frost and nothing replaces it. Indoor rain cuts out instead of being muffled.
 - `S2.33` ☐ ⬜ The menu has rain only, no menu music.
+- `S2.42` ☐ 🟨 Village crowd chatter plays at night when nobody is out. The `PEOPLE` emitter loops forever with no schedule or time-of-day check (`AmbientSound.ts:22`, `people.ts:3196`), while the villagers go `AWAY` at night (`schedules.ts`).
 
 Assets:
 - `S2.34` ✅ 5f43fad 🟧 `pop.ogg` (pickup) averages −6.7 dB, the loudest one-shot in the game. `bite1-4` (the key fishing cue) sit at −36 to −42 dB, probably inaudible.
@@ -254,6 +255,9 @@ Dialogue (flagged only; text is yours to write):
 - `S3.19` ☐ ⬜ Esken is unchanged after ESKEN_GLIMBLID. Fishwife's "Fish again…" can fire at tier 1. Odda's "dusk" lotus hint has no time gating. Lynha's gift checks for any wood but takes 5. Aubrel's rumour never replaces the report.
 - `S3.20` ☐ ⬜ "Beverage saler" typo. Ennor's "kind of busy". MEATS excludes fish meat, so fish never break Aurin's streak.
 - `S3.21` ☐ 🟨 Planned but missing: Garleas sleeps through and Malie's thanks (so Malie's quest never resolves), Faire's goats, Glimblid sad about the ducks, Aunne's cult-bread line. Smaller ones are listed in the report.
+- `S3.36` ☐ 🟨 Tarro (`TANNER`) at the tavern (`TAVERN_TARRO`, `schedules.ts:42`):
+  - `S3.36a` ☐ He uses the wrong sprite there.
+  - `S3.36b` ☐ His dialogue is the same as in the village, with nothing specific to the tavern.
 
 Economy:
 - `S3.22` ✖ copies stacking is intended; `max` items not adding up is accepted 🟧 Ring2 doubles damage. It drops at tier 1, and carried copies multiply (two rings give ×4). Same for boots1 ×1.5 speed, bell ×0.5 defense, feather and pickles +150 HP, silver sword ×1.75. Mark them `unique` or tone them down (`equipment.ts`, `player.ts:446`).
@@ -386,7 +390,7 @@ Rendering and game feel:
 - `S5.37` ✅ 9761798 🟧 Unwrapped session time is fed into hashes, which collapse after about 18 minutes and band the waterfalls (Ambience, Blaze, Sheen, Status, Glow, Water, Meadow).
 - `S5.38` ✅ 84dd247 🟧 `pow(neg, 2.0)` gives NaN on Metal (`mist.ts:22`, `swell.ts:87`, `hyperbeam.ts:118,135`).
 - `S5.39` ✅ 223aa31 🟧 Creature slash hitboxes use a fixed 150 ms delay and 800 ms window, ignoring the animation (`Slashing.ts:45`).
-- `S5.40` ☐ 🟧 Combo clicks aren't buffered, so combos need frame-precise timing (`Casting.ts:93`).
+- `S5.40` ✖ combo works as intended, fast clicking chains fine 🟧 Combo clicks aren't buffered, so combos need frame-precise timing (`Casting.ts:93`).
 - `S5.41` ☐ 🟨 `startFollow(target, false)` gives sub-pixel camera scroll, so tiles crawl against sprites (`Camera.ts:17`). The pointer world position is one frame stale.
 - `S5.42` ☐ 🟨 No hit-stop or white flash. EXTRACT fires about 250 ms after the visible impact. The dash is 50 ms against a 1000 ms animation. Meteor and lightning shake every client. Sway is in screen space. Melee trails are left behind on lunge.
 - `S5.43` ☐ 🟨 Health-bar and effect depth: ~~`vfx/texture.ts:28` `setDepth(y)` without the 1000 base~~ (fixed in S5.34b). `transform` stacks Vortex pipelines, including for offscreen casters.
