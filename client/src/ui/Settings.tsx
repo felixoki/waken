@@ -93,6 +93,11 @@ const credits = [
         name: "Animals Sound Effects Audio Package",
         source: "Aligned Games",
       },
+      {
+        name: "Crowd Ambience",
+        source: "Gravity Sound",
+        href: "https://gravity-sound.itch.io/crowd-ambience",
+      },
       { name: "RPGSounds", source: "Kenney.nl", href: "https://kenney.nl" },
       {
         name: "Little Robot Sound Factory",

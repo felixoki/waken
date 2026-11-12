@@ -50,3 +50,10 @@ License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ (attribution: "
 | `client/public/assets/sounds/music/boss_woodland_intro.ogg` | `Boss_155bpm_Intro - Master.mp3` | Re-encoded as Opus |
 | `client/public/assets/sounds/music/boss_woodland_loop.ogg` | `Boss_155bpm_Main Loop - Master.mp3` | Re-encoded as Opus |
 | `client/public/assets/sounds/music/boss_woodland_outro.ogg` | `Boss_155bpm_Outro - Master.mp3` | Re-encoded as Opus |
+
+**Crowd Ambience** by Gravity Sound.
+Source: https://gravity-sound.itch.io/crowd-ambience (purchased on itch.io)
+
+| File in game | Original | Changes |
+|---|---|---|
+| `client/public/assets/sounds/ambience/people1.ogg` | `Crowd_1.wav` | Re-encoded |
