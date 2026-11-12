@@ -66,8 +66,8 @@ const credits = [
       },
       {
         name: "Sweet Village",
-        source: "16pixel.itch.io",
-        href: "https://16pixel.itch.io",
+        source: "16Pixel, CC BY-SA 4.0",
+        href: "https://opengameart.org/content/village-game-ost",
       },
     ],
   },
@@ -76,8 +76,8 @@ const credits = [
     entries: [
       {
         name: "Sky Rae",
-        source: "skyraevoicing.com",
-        href: "https://www.skyraevoicing.com/",
+        source: "Dying Voices by Galacti-Chron, CC BY 3.0",
+        href: "https://opengameart.org/content/dying-voices-female-rpg",
       },
     ],
   },
@@ -85,7 +85,7 @@ const credits = [
     title: "Sound effects by",
     entries: [
       {
-        name: "JC Sounds – Fantasy SFX Pack Vol 1, Nature Ambient Pack Vol 1",
+        name: "JC Sounds – Fantasy SFX Pack Vol 1, Nature Ambient Pack Vol 1, Woodland Music Pack Vol 1",
         source: "JC Sounds, CC BY 4.0",
         href: "https://www.patreon.com/jcsounds",
       },
@@ -101,8 +101,8 @@ const credits = [
       { name: "RPGSounds", source: "Kenney.nl", href: "https://kenney.nl" },
       {
         name: "Little Robot Sound Factory",
-        source: "littlerobotsoundfactory.com",
-        href: "https://www.littlerobotsoundfactory.com",
+        source: "Fantasy Sound Effects Library, CC BY 3.0",
+        href: "https://opengameart.org/content/fantasy-sound-effects-library",
       },
       {
         name: "CelesteVidal",

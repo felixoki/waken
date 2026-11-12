@@ -57,3 +57,21 @@ Source: https://gravity-sound.itch.io/crowd-ambience (purchased on itch.io)
 | File in game | Original | Changes |
 |---|---|---|
 | `client/public/assets/sounds/ambience/people1.ogg` | `Crowd_1.wav` | Re-encoded |
+
+## Music
+
+**Village Music** ("Sweet Village") by 16Pixel (https://16pixel.itch.io/).
+Source: https://opengameart.org/content/village-game-ost
+License: CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/
+
+| File in game | Original | Changes |
+|---|---|---|
+| `client/public/assets/sounds/music/sweet_village.ogg` | Village Music | Re-encoded |
+
+The other music is by Discount Dylan, our own production.
+
+## Voices
+
+**Dying Voices (Female RPG)** voiced by Sky Rae (https://www.skyraevoicing.com/), released by Galacti-Chron.
+Source: https://opengameart.org/content/dying-voices-female-rpg
+License: CC BY 3.0, https://creativecommons.org/licenses/by/3.0/ (the page also states CC0; credited as CC BY to be safe)
