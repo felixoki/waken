@@ -493,9 +493,9 @@ Electron:
 
 Legal and meta:
 - `S7.14` ◐ 2026-11-11 🟧 No LICENSE or EULA. No license records for third-party packs: CraftPix, Kenney, JC Sounds CC BY, `tiled/_gc`, "Aligned Games". `CREDITS.md` exists since S1.2 and lists the Little Robot Sound Factory library (CC BY 3.0), the ElvGames break sounds and the JC Sounds Nature Ambient Pack and Woodland Music Pack (CC BY 4.0); the rest of the shipped sounds and all art are still unrecorded. Get a written rights transfer for the Fiverr art.
-  - `S7.14a` ✖ not needed: crediting each author is enough, no per-file provenance Sound provenance: every shipped sound traced to pack, original and changes in CREDITS.md.
-  - `S7.14b` ☐ Art records: CraftPix packs mapped to shipped sheets and tilesets, Fiverr art, `tiled/_gc`, the dragon.
-  - `S7.14c` ☐ Licence terms per pack; in-game credits match CREDITS.md (CelesteVidal, Discount Dylan, 16pixel).
+  - `S7.14a` ✖ not needed: crediting each author is enough, no per-file provenance. Sound provenance: every shipped sound traced to pack, original and changes in CREDITS.md.
+  - `S7.14b` ✖ not needed: CraftPix and Ngan Nguyen are credited, no per-sheet mapping. Art records: CraftPix packs mapped to shipped sheets and tilesets, Fiverr art, `tiled/_gc`, the dragon.
+  - `S7.14c` ☐ Check that each credited pack's licence allows commercial use in a game, and that the attribution wording matches what it asks for. Gravity Sound added in 841be9c.
   - `S7.14d` ☐ LICENSE (proprietary, third-party excluded) and EULA decision.
   - `S7.14e` ☐ Written rights transfer for the Fiverr art.
 - `S7.15` ☐ 🟨 No privacy policy (player IDs and IPs are stored).

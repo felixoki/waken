@@ -48,7 +48,9 @@ Work through these in order. Paths are stable, line numbers are not.
    do this in the same change that creates the entity.
 8. **Sprites** into `client/public/assets/sprites/animals/`, `creatures/` or `people/`
    (see `references/assets.md`); the `maps.ts` `file` includes that folder.
-9. **Audio** into `client/public/assets/sounds/<category>/`.
+9. **Audio** into `client/public/assets/sounds/<category>/`. If a sprite or sound
+   comes from a pack or author not yet credited, add them to the `credits` list in
+   `client/src/ui/Settings.tsx` and to `CREDITS.md`. Credit the author, not each file.
 10. **Tiled** — place an object in the relevant `tiled/*.tmx`, then export from
     Tiled (File then Export As, or Ctrl+E to repeat the recorded target).
 

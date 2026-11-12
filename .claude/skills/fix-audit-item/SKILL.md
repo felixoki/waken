@@ -209,7 +209,9 @@ Workflow:
 6. **After approval:** convert to `.ogg` (mono for positional SFX, trimmed tails),
    place it in `client/public/assets/sounds/<folder>/`, and register it in
    `server/src/configs/sounds.ts` (`SoundName` in `server/src/types/sounds.ts`;
-   the `new-entity` skill covers entity voices).
+   the `new-entity` skill covers entity voices). If the pack's author isn't in the
+   `credits` list in `client/src/ui/Settings.tsx` and in `CREDITS.md` yet, add them
+   there. Credit the author, not each file.
 
 Never pick a sound without listening being possible: Felix decides by ear, so the
 preview is the proposal.
